@@ -1,0 +1,182 @@
+[
+  {
+    "key": "pathuq82_momo_sniper",
+    "file": "pathuq82_momo_sniper.png",
+    "bytes": 608956,
+    "sha256": "e31020b28d4544be2b6f6fffd55fb6e15f61f0a201ac8e4d61ac782b1a197d59",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_momo_shotgun",
+    "file": "pathuq82_momo_shotgun.png",
+    "bytes": 628077,
+    "sha256": "dde9a67ce9a89088bb202e94484f90d5f97741cce9860f957975dd80bc56eb21",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_momo_ricochet",
+    "file": "pathuq82_momo_ricochet.png",
+    "bytes": 642396,
+    "sha256": "742498bde949c70e75c63f92a1760900ad47b5b50309eaefd549a8a8134a049a",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_mint_glacier",
+    "file": "pathuq82_mint_glacier.png",
+    "bytes": 604444,
+    "sha256": "92946060ea51d68d7f7dfc05c075fdc05fbc0a6f357e10b912bbb2742f631a55",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_mint_barrage",
+    "file": "pathuq82_mint_barrage.png",
+    "bytes": 632079,
+    "sha256": "39b1a3bb2e2bb9313b5fee342c95d93c2b3dde557bdbd5bfff194873b0ac1d65",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_mint_pierce",
+    "file": "pathuq82_mint_pierce.png",
+    "bytes": 553514,
+    "sha256": "ac585b9f1ed551212a15b430e8e1987ecf233caaa6945ba3d22c1bb9ec87c43d",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_cocoa_brawler",
+    "file": "pathuq82_cocoa_brawler.png",
+    "bytes": 623292,
+    "sha256": "cf10abd3b022eecae24e5e0489144380994fc9a9f19968b71dcbc6783b575a61",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_cocoa_titan",
+    "file": "pathuq82_cocoa_titan.png",
+    "bytes": 587797,
+    "sha256": "1c9a81153202aeea1716d0ea13cbca43accd8ed982eac85e2b007e2e2d6f2843",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_cocoa_dashboxer",
+    "file": "pathuq82_cocoa_dashboxer.png",
+    "bytes": 582733,
+    "sha256": "7849368865022a1b8ac6f87d9e2aabcf1d4f56dc637ba36b2549ef9d934e9da3",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_taro_storm",
+    "file": "pathuq82_taro_storm.png",
+    "bytes": 599362,
+    "sha256": "0bfe81cf560262d30c3fb96aa8a30fb3e508e90aa06349f63469929a72e0f62d",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_taro_smite",
+    "file": "pathuq82_taro_smite.png",
+    "bytes": 597234,
+    "sha256": "3c3de1ab1865957750560381bbb9a3e05ee6c9cd50c86cdd0213afdd8e0db213",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_taro_tempest",
+    "file": "pathuq82_taro_tempest.png",
+    "bytes": 606383,
+    "sha256": "4b008046b46eda1f32dc15e614524ea8eef95bf0e9a2b56ba18d947df00251f7",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_yuzu_zestSwarm",
+    "file": "pathuq82_yuzu_zestSwarm.png",
+    "bytes": 609317,
+    "sha256": "bd88b8666d82bbe49b9adda6409e00318ca5a1b6534581ae216dc4dc0a28d5e9",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_yuzu_citrusGuardian",
+    "file": "pathuq82_yuzu_citrusGuardian.png",
+    "bytes": 587961,
+    "sha256": "f285d4874f5d83acc8abfb6034092504962f8ae0772ab5d5c35357fed1d57764",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_yuzu_juiceWorkshop",
+    "file": "pathuq82_yuzu_juiceWorkshop.png",
+    "bytes": 627246,
+    "sha256": "15a9fbe9df17a6b0feec8fe1d32253ab68deb0bc2987010964c0010395a6e226",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_sesame_prism",
+    "file": "pathuq82_sesame_prism.png",
+    "bytes": 642278,
+    "sha256": "f2a6f0c8ee1b42e7cc393fd8d875bd37201f001d1810a169ae53925bd462f855",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_sesame_lens",
+    "file": "pathuq82_sesame_lens.png",
+    "bytes": 612882,
+    "sha256": "ba588074eb4f26bbb61dea70d0fa9a7c99b7a9efb255f78586b831d265884a94",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  },
+  {
+    "key": "pathuq82_sesame_sentinel",
+    "file": "pathuq82_sesame_sentinel.png",
+    "bytes": 629269,
+    "sha256": "c732210c89811e5fb1f06719c7b0b6ba8f94d192547c89815c5f3b9c60dab1f9",
+    "width": 1024,
+    "height": 424,
+    "frameCount": 1,
+    "background": "opaque"
+  }
+]

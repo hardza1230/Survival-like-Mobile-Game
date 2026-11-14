@@ -35,7 +35,7 @@
 | 79 | `79_RESULTS_HEADER_CORE_LORE.md` | หัวหน้าจบด่าน (แผง 9-slice · เหรียญฮีโร่ · พื้นเหรียญ · แสงหมุน · ช่องดาว) + ภาพเรื่องเมล็ดหัวใจกับ Flavor Cores 3 เส้น · ฝั่งอาร์ตส่งไฟล์ · Claude ผูก | 6 | กลาง | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | 80 | `80_SPECIAL_PICKS.md` | หน้าเลือกพิเศษ: ห้องสมบัติ Relic (พื้นหลัง+แท่นแก้ว) · ทั่งเตาหลอม Evolution · สมุดสูตร Mutation (กาง 2 หน้า+แสงหมึก) · การ์ดภาพวาด Build Path 15 ใบ + หลังการ์ด · ฝั่งอาร์ตส่งไฟล์ · Claude ผูก | 21 | สูง | 🟢 ผูกแล้ว v8.1.137 · รอ QA มือถือ |
 | 81 | `81_RELICS_SPECIAL_ICONS.md` | ไอคอน Relic ที่ขาด 8 · ไอคอน Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3 · (ไม่บังคับ) แก้การ์ด Cocoa Titan/Dash Boxer 2 | 54 | 🟠 | 🟡 รออาร์ต |
-| 82 | `82_BUILD_PATH_UNIQUE_ART.md` | ภาพการ์ด Build Path เต็มการ์ดแนวนอน 1024×424 เน้น Unique Skill ของแต่ละ Build · 6 ฮีโร่ × 3 | 18 | สูง (เลือก Build ทุกด่าน) | 🟡 รออาร์ต |
+| 82 | `82_BUILD_PATH_UNIQUE_ART.md` | ภาพการ์ด Build Path เต็มการ์ดแนวนอน 1024×424 เน้น Unique Skill ของแต่ละ Build · 6 ฮีโร่ × 3 | 18 | สูง (เลือก Build ทุกด่าน) | 📦 ส่งแล้ว รอผูก · 18/18 |
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 58 | `58_POWER_FAMILY_EXTRA.md` | ภาพประกอบการ์ดสรุป Weave/Equipment/Merge/Forge + ภาพหน้าว่าง 3 แบบ | 7 | เล็ก | 🟢 ผูกแล้ว v8.0.79 |

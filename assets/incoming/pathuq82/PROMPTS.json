@@ -1,0 +1,202 @@
+[
+  {
+    "key": "pathuq82_momo_sniper",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical momo character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: One very thick straight magenta beam runs diagonally through a row of dark candy enemies, with a scope ring as part of Momo’s physical blaster. Low side view, poised stance, one continuous line dominates. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_momo.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-9ed38563-1ea1-41c4-96ff-9000a3d7734b.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_momo_shotgun",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical momo character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Berry Blast: leaping Momo unleashes a close broad cone of scarlet berry seeds and visible muzzle smoke, captured from a high oblique view. Red fan shape dominates. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_momo.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-d5e828cd-1b96-4a93-b241-57adf4152e8c.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_momo_ricochet",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical momo character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Multiple coral and pink berry seeds trace a big sharp zigzag, visibly rebounding between surfaces and foes; small floating pink hearts communicate healing. Rear three-quarter turn and angular bounce path. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_momo.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-7f6189c1-c391-4fbb-a719-96cffc5b3a6f.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_mint_glacier",
+    "tool": "ImageGen",
+    "prompt": "Create ONE original Mochi Mayhem Build Path full-bleed landscape background, very wide 2.415:1 (target 1024×424). The attached canonical Mint hero art is a character-design reference only. Preserve her face, mint hair, white flower, white-mint costume and recognizable silhouette. Show GLACIER BLOOM at peak impact. Compose entirely for the left 55%: Mint at x=26%, full figure roughly 65% of frame height, spear planted down, white-teal cloak whipping. A huge low horizontal icy blue ring bursts along the ground around her; two small dark confectionery monsters visibly flash-frozen and cracking into a few large cyan crystalline shards. A clear ring and breaking ice statues are the two main readable silhouettes. Keep these elements and the hero's face away from frame edges, with 6% breathing space. The RIGHTMOST 45% is all quiet deep navy-teal haze, soft atmospheric continuation of the same environment gently darkening toward the right edge, nearly flat, no bright particles, action, characters, objects, or hotspots there, reserved for white game UI. No hard split down the center. If available canvas is taller than 2.4:1, keep all hero and skill features inside the central 63% of the image height, leaving the top and bottom as expendable atmospheric overscan for a 2.4:1 center crop. Full-bleed opaque hand-painted confectionery fantasy anime action frame, rich cool blue and pale cyan, gentle dark ink contours, pale candy ice translucence, controlled highlights. Must read at 360×150. Absolutely zero writing, lettering, numbers, decorative glyphs, icons, UI, labels, logos, watermark, card frame or borders.",
+    "references": [
+      "assets/character_cards/card_mint.png"
+    ],
+    "source": "exec-49f0b4a9-2fb8-498e-89ac-07719b9929e7.png",
+    "postprocess": "Approved sample, unchanged. Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_mint_barrage",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical mint character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Mint Gale: Mint sprints through a tall jade-green spiraling wind funnel with large mint leaves, several distinct floating small ice spears and enemies knocked outward. Elevated oblique view, green spiral dominates. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_mint.png",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-f6c5f225-0a44-486a-b3c6-9cd8dfc5123d.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_mint_pierce",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical mint character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Frost Lance Charge: Mint dashes horizontally at ground level carrying one huge turquoise crystal spear through a line of shadow enemies, leaving a long frozen trail. Low side view. One bright elongated wedge, strong lateral motion. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_mint.png",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-8c5e3eb0-0554-4c91-8036-a43879b0204d.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_cocoa_brawler",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical cocoa character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Rocket Gauntlet: Cocoa launches exactly three flame-powered orange boxing gloves which rocket along distinct curved trajectories toward one bulky candy enemy. Orange exhaust tails and three large orange fists. Three-quarter rear stance. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_cocoa.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-d46131b4-0875-42c8-8cf0-58180a4dc0c3.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_cocoa_titan",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical cocoa character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Colossus Fist: one enormous crimson gauntlet larger than the heroine slams downward and breaks the cookie-stone floor into a crater; red magical Blood Rage aura and expanding shockwave. High angle, Cocoa braced behind fist. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_cocoa.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-c113196a-d2ff-47ad-9bb8-dac6f0a56912.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_cocoa_dashboxer",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical cocoa character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Phantom Rush: Cocoa springs down onto one boss, four visible purple afterimages trace a continuous curved aerial route, solid heroine at the leading end. Strong sweeping composition in dark violet. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_cocoa.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-e724cde6-da87-4a3e-a0f5-0dd0a37557f0.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_taro_storm",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical taro character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Plasma Field: a clear cobalt-cyan circular plasma ring expanding horizontally from Taro, enemies electrified at its rim with fine magnetic ground lines. High three-quarter view; the ring is the dominant silhouette. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_taro.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-a7e4bb14-7f7b-49e7-be45-0177c4398208.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_taro_smite",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical taro character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Storm Mark: one massive golden yellow lightning bolt falls vertically onto a large candy enemy, a diegetic light halo marks the target, many small golden sparks converge on it. Taro points from the side, bright vertical shaft. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_taro.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-7f038d97-b4a6-4911-9465-78804534cfc2.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_taro_tempest",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical taro character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Sentry Overdrive: exactly three separate small violet electric sentry turrets set in a triangle around Taro fire prominent purple lightning orbs in different directions. Oblique overhead shot, three distinct turrets. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_taro.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-552cc7ac-eafc-4755-8e97-6dd7eb3558bb.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_yuzu_zestSwarm",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical yuzu character design, match face, hairstyle, costume and proportions. Second image is lime's canonical companion design. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Piercing Shot: the foreground Lime archer fires exactly three clear lime-green light arrows in a spreading fan through enemies into a large enemy with a magical halo mark. Yuzu directs from behind. Show Lime’s bow and the three trajectories distinctly. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_yuzu.webp",
+      "assets/art/yuzu_companions/yz_lime.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-4e76c37c-733f-47e3-ae77-5bf0b701d7b2.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_yuzu_citrusGuardian",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical yuzu character design, match face, hairstyle, costume and proportions. Second image is pomelo's canonical companion design. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Meteor Peel: large Pomelo drops from above to slam the marked ground at peak impact, exactly two gold shockwave rings expand along the floor; Yuzu directs from behind. Low view, honey yellow and amber. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_yuzu.webp",
+      "assets/art/yuzu_companions/yz_pomelo.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-750a7c2b-20f2-4c3d-ad5c-2306d4377eef.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_yuzu_juiceWorkshop",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical yuzu character design, match face, hairstyle, costume and proportions. Second image is bloodorange's canonical companion design. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Flavor Storm: Blood Orange casts in front, with Yuzu directing from behind. A floor vortex pulls enemy silhouettes inward, then erupts in a thick upright rose-red blood-orange light column. Oblique overhead view, vivid rose and coral. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_yuzu.webp",
+      "assets/art/yuzu_companions/yz_bloodorange.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-c1cf5e0e-ae00-43eb-a367-0aee2f6ab946.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_sesame_prism",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical sesame character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Prism Barrage: Sesame’s mirror prism splits magic into many thin rainbow beams, a large distinct fan sweeping a crowd of candy enemies. Oblique wide action angle. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_sesame.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-fbaf6e13-2ea8-4637-b29e-e37c660d4e21.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_sesame_lens",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical sesame character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Focus: Sesame channels a single very thick white-violet beam through a circular lens into a large close boss. Strong compact beam and visible lens, deep amethyst setting. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_sesame.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-e0d86e8a-3ac7-4db6-a4d3-6ee9b34a08fd.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  },
+  {
+    "key": "pathuq82_sesame_sentinel",
+    "tool": "ImageGen",
+    "prompt": "Create ONE new original Mochi Mayhem full-bleed card illustration. Extra wide landscape aspect 2.415:1, target 1024×424. First image is canonical sesame character design, match face, hairstyle, costume and proportions. Last image is the approved example: match its LEFT illustration / RIGHT empty dark gradient composition and painterly candy-fantasy rendering only. The new subject and effect are: Sentinel: Sesame stands safely in the near foreground, a floating sentinel mirror shoots a very long narrow amethyst line down a receding corridor to a tiny distant enemy. Strong perspective and extra long thin beam; its faint continuation may enter the text-safe side. Show the peak moment, large clear skill silhouette and the hero at roughly 65–70% of frame height. Place every face, major object and skill focal point inside the LEFT 55% with 6% edge breathing room. Rightmost 45% is quiet DARK atmospheric continuation fading darker toward the right, almost flat, reserved for white interface text added later. Keep bright particles out of the right side; no hard center split. If using a taller canvas, keep hero and key effects within the central 63% of height for a wide center crop. Clean dark contours, bold silhouettes, controlled highlights, visually distinct effects at mobile 360×150. Opaque and full bleed. No words, numbers, runes, UI, text, logos, frame or borders. Non-graphic cartoon fantasy, no blood.",
+    "references": [
+      "assets/character_cards/card_sesame.webp",
+      "assets/incoming/pathuq82/pathuq82_mint_glacier.png"
+    ],
+    "source": "exec-7c598d34-7fb3-4279-b08f-c395f2dc7c7d.png",
+    "postprocess": "Center crop and Lanczos resize to 1024x424, navy fade over the right side."
+  }
+]

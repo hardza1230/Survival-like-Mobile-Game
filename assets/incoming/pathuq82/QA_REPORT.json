@@ -1,0 +1,20 @@
+[
+  {"key": "pathuq82_momo_sniper", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.9, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_momo_shotgun", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 18.52, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_momo_ricochet", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.32, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_mint_glacier", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 13.57, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_mint_barrage", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 16.98, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_mint_pierce", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.22, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_cocoa_brawler", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.61, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_cocoa_titan", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 18.89, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_cocoa_dashboxer", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 18.78, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_taro_storm", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 16.76, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_taro_smite", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.71, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_taro_tempest", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 18.39, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_yuzu_zestSwarm", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.91, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_yuzu_citrusGuardian", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.09, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_yuzu_juiceWorkshop", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.86, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_sesame_prism", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 16.83, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_sesame_lens", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 18.05, "preview": "360x150", "noBakedText": true, "skillReadable": true},
+  {"key": "pathuq82_sesame_sentinel", "result": "pass", "size": "1024x424", "opaque": true, "whiteContrastP05": 17.94, "preview": "360x150", "noBakedText": true, "skillReadable": true}
+]
