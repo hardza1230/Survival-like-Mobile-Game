@@ -1,0 +1,122 @@
+[
+  {
+    "key": "chest_shake_build",
+    "provider": "ElevenLabs Sound Effects",
+    "requests": [
+      {
+        "text": "Continuous two-second rising suspense swell, tight hollow wooden chest rattles accelerate and grow louder under a rising sugar-glass shimmer. Crescendo through the final instant. No release, no lid pop, no ending hit.",
+        "duration_seconds": 2.0,
+        "prompt_influence": 0.65,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_attempt": 3,
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trimmed the audible rattle sequence from the third donor, stretched it to fit the 1.15s cue, shaped a rising gain envelope and applied a short ending fade."
+  },
+  {
+    "key": "chest_burst_common",
+    "provider": "ElevenLabs Sound Effects",
+    "requests": [
+      {
+        "text": "Tiny sweet wooden treasure chest lid pops open immediately with one soft dry hollow wooden pok, followed by one single clear glass-bell ping and a short soft decay. One pitch only, no chord or melody. Intimate, playful, lowest intensity. Original isolated mobile-game one-shot, clean dry attack, soft treble, audible on a small phone speaker. No background, looping bed, gambling sounds, coins, machinery or speech.",
+        "duration_seconds": 0.99,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_attempt": 1,
+    "output_format": "mp3_44100_128",
+    "postprocess": "Mono downmix, onset trim, exact decoded length, short boundary fade and per-cue level adjustment."
+  },
+  {
+    "key": "chest_burst_rare",
+    "provider": "ElevenLabs Sound Effects",
+    "requests": [
+      {
+        "text": "Immediate wooden candy chest pop, three rising glass-bell notes, a light spill of fine crystal sparks and a short fade. Bright sweet fantasy one-shot; no coins or speech.",
+        "duration_seconds": 1.3900000000000001,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_attempt": 1,
+    "output_format": "mp3_44100_128",
+    "postprocess": "Mono downmix, onset trim, exact decoded length, short boundary fade and per-cue level adjustment."
+  },
+  {
+    "key": "chest_burst_epic",
+    "provider": "ElevenLabs Sound Effects",
+    "requests": [
+      {
+        "text": "Immediate soft bassy fwoom and wooden lid pop. Short full mysterious string chord swells behind the hit, then scattering crystal chimes. Compact magic treasure reveal, no choir.",
+        "duration_seconds": 1.8900000000000001,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_attempt": 1,
+    "output_format": "mp3_44100_128",
+    "postprocess": "Mono downmix, onset trim, exact decoded length, short boundary fade and per-cue level adjustment."
+  },
+  {
+    "key": "chest_burst_legend",
+    "provider": "ElevenLabs Sound Effects",
+    "requests": [
+      {
+        "text": "Immediate grand golden magic burst and wooden lid pop, short brass-and-bell fanfare with airy wordless ah choir, then falling sugar sparkles. Strong climax and short resolved tail.",
+        "duration_seconds": 2.69,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_attempt": 1,
+    "output_format": "mp3_44100_128",
+    "postprocess": "Mono downmix, onset trim, exact decoded length, short boundary fade and per-cue level adjustment."
+  },
+  {
+    "key": "chest_confetti",
+    "provider": "ElevenLabs Sound Effects",
+    "requests": [
+      {
+        "text": "An immediate light spray of tiny candy-glass stars fluttering and fizzing outward, several delicate airy high sprinkles, very short. A transparent layer over a larger reveal. No lid, pop impact, chord or bass. Original isolated mobile-game one-shot, clean dry attack, soft treble, audible on a small phone speaker. No background, looping bed, gambling sounds, coins, machinery or speech.",
+        "duration_seconds": 0.69,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_attempt": 1,
+    "output_format": "mp3_44100_128",
+    "postprocess": "Mono downmix, onset trim, exact decoded length, short boundary fade and per-cue level adjustment."
+  },
+  {
+    "key": "chest_item_land",
+    "provider": "ElevenLabs Sound Effects",
+    "requests": [
+      {
+        "text": "One tiny wrapped confection lands and bounces with an immediate pillowy muted thump and a single miniature high crystal tick. Entire audible gesture fits inside 0.30 seconds, extremely tight dry UI feedback. Original isolated mobile-game one-shot, clean dry attack, soft treble, audible on a small phone speaker. No background, looping bed, gambling sounds, coins, machinery or speech.",
+        "duration_seconds": 0.59,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_attempt": 1,
+    "output_format": "mp3_44100_128",
+    "postprocess": "Mono downmix, onset trim, exact decoded length, short boundary fade and per-cue level adjustment."
+  },
+  {
+    "key": "chest_duplicate",
+    "provider": "ElevenLabs Sound Effects",
+    "requests": [
+      {
+        "text": "Immediate quick silky spool-of-thread winding zip, rising and resolving into one cheerful light glass chime within 0.45 seconds. Positive conversion reward. No error tone, buzzer or metallic clank. Original isolated mobile-game one-shot, clean dry attack, soft treble, audible on a small phone speaker. No background, looping bed, gambling sounds, coins, machinery or speech.",
+        "duration_seconds": 0.59,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_attempt": 1,
+    "output_format": "mp3_44100_128",
+    "postprocess": "Mono downmix, onset trim, exact decoded length, short boundary fade and per-cue level adjustment."
+  }
+]

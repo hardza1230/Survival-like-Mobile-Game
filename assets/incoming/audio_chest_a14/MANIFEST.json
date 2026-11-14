@@ -1,0 +1,58 @@
+[
+  {
+    "key": "chest_shake_build",
+    "file": "chest_shake_build.mp3",
+    "bytes": 19687,
+    "sha256": "e99cbc6186e0044aaded36fcffeafa727231671f508b9eb600b4a3f73600b3bf",
+    "duration_ms": 1150
+  },
+  {
+    "key": "chest_burst_common",
+    "file": "chest_burst_common.mp3",
+    "bytes": 15507,
+    "sha256": "71faacf4f29df0cb0a2a64b5b49b780740692149b3cb38918ea7de0b668131ec",
+    "duration_ms": 900
+  },
+  {
+    "key": "chest_burst_rare",
+    "file": "chest_burst_rare.mp3",
+    "bytes": 21776,
+    "sha256": "59cb449018f1b4bfcc7ecf8e2b6769998d67b9b2b32f60100bc3c8d8e185caab",
+    "duration_ms": 1300
+  },
+  {
+    "key": "chest_burst_epic",
+    "file": "chest_burst_epic.mp3",
+    "bytes": 29718,
+    "sha256": "27c53965b7dfd2a0e84ced3037204069b6ca1825862583794fcce85956faf545",
+    "duration_ms": 1800
+  },
+  {
+    "key": "chest_burst_legend",
+    "file": "chest_burst_legend.mp3",
+    "bytes": 42674,
+    "sha256": "0f05d1e325dedc4d4460f0d89ae53b6c5e5342e17c58c0d61ee21b81858a9037",
+    "duration_ms": 2600
+  },
+  {
+    "key": "chest_confetti",
+    "file": "chest_confetti.mp3",
+    "bytes": 10492,
+    "sha256": "69c98043acbff5ded9053a909bd4b95ffd181801b4ee81f9c6ef37c8a40532bf",
+    "duration_ms": 600
+  },
+  {
+    "key": "chest_item_land",
+    "file": "chest_item_land.mp3",
+    "bytes": 6730,
+    "sha256": "4a9ab9aa53523bd1fdc58dbea5001c2d0dba8863695edcc31f421fcfcd7021b2",
+    "duration_ms": 350
+  },
+  {
+    "key": "chest_duplicate",
+    "file": "chest_duplicate.mp3",
+    "bytes": 9238,
+    "sha256": "b99239c93eb113bcc2a63c9cf2e83b3be6dcac1d62194baf7ed7cde286a7f40c",
+    "duration_ms": 500
+  }
+]
