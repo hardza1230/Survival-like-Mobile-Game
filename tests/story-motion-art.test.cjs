@@ -5,7 +5,8 @@ vm.runInContext(src.slice(src.indexOf('const ASSET_IMAGES ='),src.indexOf('class
 vm.runInContext(src.slice(src.indexOf('const RUBY_STORYBOOK='),src.indexOf('\n',src.indexOf('const MC_HERO_SCENE=')))+';this.m={MOTION_COMICS,MC_HERO_SCENE,MC_STAGE_STORY,MC_AFTER_STAGE};',ctx);
 const {ASSET_IMAGES,ASSET_FX,artClass,MENU_ONLY_RE,bootKeep}=ctx.r,{MOTION_COMICS,MC_HERO_SCENE,MC_STAGE_STORY,MC_AFTER_STAGE}=ctx.m;
 // 1. ต้นฉบับตรง MANIFEST + ไฟล์ WebP ที่แพ็กแล้วลงทะเบียนเป็น menu-lazy (ไม่ใช่ boot / ไม่โหลดในด่าน)
-let n=0;for(const f of idx.folders)for(const e of JSON.parse(fs.readFileSync(kit+f.manifest,'utf8')).assets){ n++;
+const RETIRED=new Set(['cs_fx_flash','cs_fx_speedlines']);   // v8.1.143: code/none instead of art (owner: cutscenes = art only, flash unused)
+let n=0;for(const f of idx.folders)for(const e of JSON.parse(fs.readFileSync(kit+f.manifest,'utf8')).assets){ n++; if(RETIRED.has(e.key))continue;
   const b=fs.readFileSync(kit+f.folder+'/'+e.file);assert.equal(b.length,e.bytes,e.key);assert.equal(hash(b),e.sha256,e.key);
   const url='assets/art/story/'+e.key+'.webp',w=fs.readFileSync(url);assert.equal(w.subarray(0,4).toString(),'RIFF');assert.equal(w.subarray(8,12).toString(),'WEBP');
   const reg=(e.frames||1)>1?ASSET_FX[e.key]:ASSET_IMAGES[e.key];assert(reg,'not registered '+e.key);assert.equal(reg.url||reg,url);

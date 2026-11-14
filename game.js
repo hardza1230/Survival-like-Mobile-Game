@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.142';
+const GAME_VERSION = '8.1.143';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.143',date:'2026-11-14',title:'Lighter effects',items:['Simple glows, rings and screen veils are now drawn by the game instead of images, so phones use less memory']},
   {v:'8.1.142',date:'2026-11-13',title:'Smoother ads, mission button, louder chests',items:['Rewarded ads load in advance so the button works at once, and game music pauses during the ad','Missions start with a Start mission button instead of a ring','Chest openings build up and burst with rarity sounds and confetti','C1-1 has its own music again; the level-up screen fades in gently','Pinnacle: going Back before the run gives your entry back']},
   {v:'8.1.141',date:'2026-11-13',title:'Clearer training',items:['Training points with a finger instead of a moving ring','Sweets to pick up glow during training','Dash and Unique lessons dim the screen around the button','The Lobby hero keeps retrying if its picture did not load']},
   {v:'8.1.140',date:'2026-11-13',title:'Real rewarded ads (test mode)',items:['Double Sugar, boss loot reroll and revive now play a real video ad in the Android app (test ads during the closed test)','Watch the ad to the end to get the reward','Thread is earned by playing: Temple Depths and Daily Login (no purchases)']},
@@ -2036,7 +2037,6 @@ const ASSET_IMAGES = {
   cs_pup_mochi_taro_free:'assets/art/story/cs_pup_mochi_taro_free.webp',
   cs_pup_mochi_yuzu_free:'assets/art/story/cs_pup_mochi_yuzu_free.webp',
   cs_pup_mochi_sesame_free:'assets/art/story/cs_pup_mochi_sesame_free.webp',
-  cs_fx_flash:'assets/art/story/cs_fx_flash.webp',
   reveal_theater:'assets/art/mobile_ui_789/reveal_theater.webp',
   bshot_01:'assets/art/boss_vfx/bshot_01.webp', bshot_02:'assets/art/boss_vfx/bshot_02.webp', bshot_03:'assets/art/boss_vfx/bshot_03.webp', bshot_04:'assets/art/boss_vfx/bshot_04.webp', bshot_05:'assets/art/boss_vfx/bshot_05.webp', bshot_06:'assets/art/boss_vfx/bshot_06.webp', bshot_07:'assets/art/boss_vfx/bshot_07.webp', bshot_08:'assets/art/boss_vfx/bshot_08.webp',   // v8.0.80 ใบ 60 กระสุนบอสภาพวาด
   bshot_09:'assets/art/boss_vfx/bshot_09.webp', bshot_10:'assets/art/boss_vfx/bshot_10.webp', bshot_11:'assets/art/boss_vfx/bshot_11.webp', bshot_12:'assets/art/boss_vfx/bshot_12.webp', bshot_13:'assets/art/boss_vfx/bshot_13.webp', bshot_14:'assets/art/boss_vfx/bshot_14.webp', bshot_15:'assets/art/boss_vfx/bshot_15.webp', bshot_pin:'assets/art/boss_vfx/bshot_pin.webp',
@@ -2235,7 +2235,7 @@ const ASSET_IMAGES = {
   bk_cover_open:'assets/art/book/bk_cover_open.webp',
   bk_cover_glow:'assets/art/book/bk_cover_glow.webp',
   bk_open_long:'assets/art/book/bk_open_long.webp',bk_clasp:'assets/art/book/bk_clasp.webp',bk_emblem_spin:'assets/art/book/bk_emblem_spin.webp',vfx_bk_magic:'assets/art/book/vfx_bk_magic.webp',bk_page_riffle:'assets/art/book/bk_page_riffle.webp',vfx_bk_burst:'assets/art/book/vfx_bk_burst.webp',bk_cover_clean_plate:'assets/art/book/bk_cover_clean_plate.webp',   // v7.9.69 ใบ 39 เปิดหนังสือแบบเต็ม (lazy เฉพาะหน้าเปิดเกม · ใช้แล้วคืนหน่วยความจำ)
-  chest_silver:'assets/art/chest/chest_silver.webp',chest_gold:'assets/art/chest/chest_gold.webp',chest_silver_open:'assets/art/chest/chest_silver_open.webp',chest_gold_open:'assets/art/chest/chest_gold_open.webp',vfx_chest_rays:'assets/art/chest/vfx_chest_rays.webp',bz_chest_card:'assets/art/chest/bz_chest_card.webp',   // v7.9.79 ใบ 40 หีบ (lazy กับ Bazaar · scripts/pack-chest-shop.py)
+  chest_silver:'assets/art/chest/chest_silver.webp',chest_gold:'assets/art/chest/chest_gold.webp',chest_silver_open:'assets/art/chest/chest_silver_open.webp',chest_gold_open:'assets/art/chest/chest_gold_open.webp',bz_chest_card:'assets/art/chest/bz_chest_card.webp',   // v7.9.79 ใบ 40 หีบ (lazy กับ Bazaar · scripts/pack-chest-shop.py)
   ic_nav_bazaar:'assets/art/lobby/ic_nav_bazaar.webp',ic_nav_upgrade:'assets/art/lobby/ic_nav_upgrade.webp',ic_side_mail:'assets/art/lobby/ic_side_mail.webp',
   screen_temple_weave:'assets/art/temple/ui/screen_temple_weave.webp',
   temple_altar_trio:'assets/art/temple/ui/temple_altar_trio.webp',
@@ -2283,9 +2283,8 @@ const ASSET_IMAGES = {
   hub_ui_background:'assets/art/hub_motion/hub_bg_far.webp',   // v7.8.59 ใบ 25: ฉากหลังไม่มีโมโม่ (โมโม่เป็นชั้นหุ่นเชิด HUB_LAYERS) · ภาพเดิม assets/art/hub_reference/background.webp
   hub_ui_candy:'assets/art/hub_reference/candy.webp',
   // v7.8.59 art orders 23–25: level-up cards, pause screen, hub motion (scripts/pack-ui-orders-23-25.py)
-  tut_ic_welcome:'assets/art/tutorial/tut_ic_welcome.webp',tut_ic_move:'assets/art/tutorial/tut_ic_move.webp',tut_ic_attack:'assets/art/tutorial/tut_ic_attack.webp',tut_ic_sweets:'assets/art/tutorial/tut_ic_sweets.webp',tut_ic_cards:'assets/art/tutorial/tut_ic_cards.webp',tut_ic_dash:'assets/art/tutorial/tut_ic_dash.webp',tut_ic_unique:'assets/art/tutorial/tut_ic_unique.webp',tut_ic_hp:'assets/art/tutorial/tut_ic_hp.webp',tut_ic_ready:'assets/art/tutorial/tut_ic_ready.webp',tut_finger:'assets/art/tutorial/tut_finger.webp',tut_card_frame:'assets/art/tutorial/tut_card_frame.webp',vfx_tut_ring:'assets/art/tutorial/vfx_tut_ring.webp',vfx_tut_great:'assets/art/tutorial/vfx_tut_great.webp',   // v7.9.68 ใบ 38 บทสอน (lazy: โหลดตอนเข้าบทสอน)
+  tut_ic_welcome:'assets/art/tutorial/tut_ic_welcome.webp',tut_ic_move:'assets/art/tutorial/tut_ic_move.webp',tut_ic_attack:'assets/art/tutorial/tut_ic_attack.webp',tut_ic_sweets:'assets/art/tutorial/tut_ic_sweets.webp',tut_ic_cards:'assets/art/tutorial/tut_ic_cards.webp',tut_ic_dash:'assets/art/tutorial/tut_ic_dash.webp',tut_ic_unique:'assets/art/tutorial/tut_ic_unique.webp',tut_ic_hp:'assets/art/tutorial/tut_ic_hp.webp',tut_ic_ready:'assets/art/tutorial/tut_ic_ready.webp',tut_finger:'assets/art/tutorial/tut_finger.webp',tut_card_frame:'assets/art/tutorial/tut_card_frame.webp',vfx_tut_great:'assets/art/tutorial/vfx_tut_great.webp',   // v7.9.68 ใบ 38 บทสอน (lazy: โหลดตอนเข้าบทสอน)
   ic_lb_settings:'assets/art/lobby/ic_lb_settings.webp',lb_currency_plain:'assets/art/lobby/lb_currency_plain.webp',lb_stage_panel:'assets/art/lobby/lb_stage_panel.webp',lb_battle_btn:'assets/art/lobby/lb_battle_btn.webp',lb_arrow_btn:'assets/art/lobby/lb_arrow_btn.webp',lb_side_btn:'assets/art/lobby/lb_side_btn.webp',lb_profile_frame:'assets/art/lobby/lb_profile_frame.webp',lb_avatar_ring:'assets/art/lobby/lb_avatar_ring.webp',lb_currency_pill:'assets/art/lobby/lb_currency_pill.webp',ic_lb_battle:'assets/art/lobby/ic_lb_battle.webp',ic_nav_home:'assets/art/lobby/ic_nav_home.webp',ic_nav_heroes:'assets/art/lobby/ic_nav_heroes.webp',ic_nav_play:'assets/art/lobby/ic_nav_play.webp',ic_nav_gear:'assets/art/lobby/ic_nav_gear.webp',ic_nav_activities:'assets/art/lobby/ic_nav_activities.webp',ic_side_codex:'assets/art/lobby/ic_side_codex.webp',ic_side_inbox:'assets/art/lobby/ic_side_inbox.webp',ic_side_news:'assets/art/lobby/ic_side_news.webp',ic_side_daily:'assets/art/lobby/ic_side_daily.webp',ic_side_awards:'assets/art/lobby/ic_side_awards.webp',lb_nav_bg:'assets/art/lobby/lb_nav_bg.webp',lb_nav_active:'assets/art/lobby/lb_nav_active.webp',lb_nav_divider:'assets/art/lobby/lb_nav_divider.webp',lb_star:'assets/art/lobby/lb_star.webp',lb_power_pill:'assets/art/lobby/lb_power_pill.webp',lb_hero_shadow:'assets/art/lobby/lb_hero_shadow.webp',vfx_lb_battle_shine:'assets/art/lobby/vfx_lb_battle_shine.webp',vfx_lb_sparkle:'assets/art/lobby/vfx_lb_sparkle.webp',   // v7.9.51 ใบ 33 Lobby (lazy · LAZY_MENU_ART_RE)
-  lvl_screen_veil:'assets/art/levelup/lvl_screen_veil.webp',
   lvl_title_banner_sheet:'assets/art/levelup/lvl_title_banner_sheet.webp',
   lvl_title_burst:'assets/art/levelup/lvl_title_burst.webp',
   lvl_held_chip_sheet:'assets/art/levelup/lvl_held_chip_sheet.webp',
@@ -2327,7 +2326,6 @@ const ASSET_IMAGES = {
   hud_ic_sound:'assets/art/hud/hud_ic_sound.webp',
   hud_round_btn:'assets/art/hud_ink820/hud_round_btn.webp',
   hud_speed_ring:'assets/art/hud/hud_speed_ring.webp',
-  pause_veil:'assets/art/pause/pause_veil.webp',
   pause_crest:'assets/art/pause/pause_crest.webp',
   pause_title_divider:'assets/art/pause/pause_title_divider.webp',
   pause_chip:'assets/art/pause/pause_chip.webp',
@@ -3639,7 +3637,6 @@ const ASSET_FX = {
   vfx813_body_charge:{url:'assets/art/boss_outline813/vfx813_body_charge.webp',fw:256,fh:128,frames:6,rate:14,anchor:'center'},
   // v8.0.2 ใบ 45 Motion Comic FX (โหลดทีละฉาก)
   cs_fx_root_burst:{url:'assets/art/story/cs_fx_root_burst.webp',fw:270,fh:270,frames:6,rate:10,anchor:'center'},   // v8.0.8 ใบ 46 รากพุ่ง (ค้างเฟรมสุดท้าย)
-  cs_fx_speedlines:{url:'assets/art/story/cs_fx_speedlines.webp',fw:540,fh:960,frames:4,rate:12,anchor:'center',add:true},
   cs_fx_transform:{url:'assets/art/story/cs_fx_transform.webp',fw:384,fh:384,frames:8,rate:12,anchor:'center',add:true},
   cs_fx_seed_glow:{url:'assets/art/story/cs_fx_seed_glow.webp',fw:192,fh:192,frames:6,rate:12,anchor:'center',add:true},
   cs_fx_flavor_ribbon:{url:'assets/art/story/cs_fx_flavor_ribbon.webp',fw:512,fh:128,frames:6,rate:12,anchor:'center',add:true},
@@ -4004,17 +4001,12 @@ const ASSET_FX = {
   fx_mint_shatter:{url:'assets/vfx/mint_lance_shatter_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
   fx_mint_gale:{url:'assets/vfx/mint_gale_sheet.webp',fw:320,fh:320,frames:8,rate:20,anchor:'center'},
   fx_cocoa_punch:{ url:'assets/fx_cocoa_punch_sheet.webp', fw:128, fh:128, frames:8, rate:30, anchor:'center' },
-  fx_beam:     { url:'assets/fx_beam_sheet.webp',     fw:352, fh:366, frames:8, rate:26, anchor:'left'   },
   fx_boom:     { url:'assets/fx_boom_sheet.webp',     fw:352, fh:366, frames:8, rate:24, anchor:'center' },
   fx_frostnova:{ url:'assets/fx_frostnova_sheet.webp',fw:352, fh:366, frames:8, rate:24, anchor:'center' },
   fx_vortex:   { url:'assets/fx_vortex_sheet.webp',   fw:352, fh:366, frames:8, rate:22, anchor:'center' },
-  fx_slash:    { url:'assets/fx_slash_sheet.webp',    fw:352, fh:366, frames:8, rate:30, anchor:'left'   },
   fx_levelup:  { url:'assets/fx_levelup_sheet.webp',  fw:61,  fh:64,  frames:8, rate:24, anchor:'center' },
   fx_thunder:  { url:'assets/fx_thunder_sheet.webp',  fw:61,  fh:64,  frames:8, rate:30, anchor:'bottom' },
   fx_heal:     { url:'assets/fx_heal_sheet.webp',     fw:352, fh:366, frames:8, rate:22, anchor:'center' },
-  fx_wave:     { url:'assets/fx_wave_sheet.webp',     fw:352, fh:366, frames:8, rate:26, anchor:'center' },
-  fx_bubble:   { url:'assets/fx_bubble_sheet.webp',   fw:352, fh:366, frames:8, rate:22, anchor:'center' },
-  fx_aura:     { url:'assets/fx_aura_sheet.webp',     fw:352, fh:366, frames:8, rate:14, anchor:'center', loop:true },   // ออร่าถาวร วนลูป
   fx_mine:     { url:'assets/fx_mine_sheet.webp',     fw:61,  fh:70,  frames:8, rate:24, anchor:'center' },
   fx_donutimpact:{ url:'assets/fx_donutimpact_sheet.webp',fw:286,fh:92,frames:8,rate:24, anchor:'center' },
   fx_bossnova: { url:'assets/fx_bossnova_sheet.webp', fw:286, fh:64,  frames:8, rate:22, anchor:'center' },
@@ -4046,7 +4038,6 @@ const ASSET_FX = {
   msn71_crystal_blast:{url:'assets/art/missions71/msn71_crystal_blast.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',black:true},
   msn71_lantern:{url:'assets/art/missions71/msn71_lantern.webp',fw:160,fh:224,frames:4,rate:8,anchor:'feet',loop:true},
   msn71_lantern_out:{url:'assets/art/missions71/msn71_lantern_out.webp',fw:160,fh:224,frames:1,rate:8,anchor:'feet'},
-  msn71_start_pad:{url:'assets/art/missions71/msn71_start_pad.webp',fw:192,fh:192,frames:6,rate:8,anchor:'center',loop:true},
   msn71_overcharge_pad:{url:'assets/art/missions71/msn71_overcharge_pad.webp',fw:192,fh:192,frames:6,rate:8,anchor:'center',loop:true},
   msn71_season_shrines:{url:'assets/art/missions71/msn71_season_shrines.webp',fw:192,fh:192,frames:4,rate:8,anchor:'center'},
   msn71_petals:{url:'assets/art/missions71/msn71_petals.webp',fw:64,fh:64,frames:4,rate:8,anchor:'center'},
@@ -4686,6 +4677,28 @@ function bgmKeyFor(kind,stageNum){
   const n=String(Math.max(1,Math.min(15,stageNum|0||1))).padStart(2,'0');return (kind==='boss'?'bgm_b':'bgm_s')+n;   // v8.1.139 เพลงสำรองเก่าถูกลบ → ใช้เพลงประจำด่านที่ใกล้สุด
 }
 
+/* v8.1.143 owner: simple battle FX drawn by code instead of 352×366×8 sheets (5 sheets ≈ 19.5 MB GPU → ≈ 1.3 MB) · same keys, same anims */
+const CODE_FX={
+  fx_wave:  {fw:128,fh:128,frames:8,rate:26,anchor:'center'},
+  fx_bubble:{fw:128,fh:128,frames:8,rate:22,anchor:'center'},
+  fx_aura:  {fw:128,fh:128,frames:8,rate:14,anchor:'center',loop:true},
+  fx_slash: {fw:128,fh:128,frames:8,rate:30,anchor:'left'},
+  fx_beam:  {fw:128,fh:48, frames:8,rate:26,anchor:'left'},
+};
+function makeCodeFx(scene){ if(typeof document==='undefined'||!scene||!scene.textures)return; const TAU=Math.PI*2;
+  const draw={
+    fx_wave:(c,i,n,w,h)=>{ const t=i/(n-1),r=8+t*(w/2-10); c.lineWidth=Math.max(2,10*(1-t)); c.strokeStyle='rgba(255,236,214,'+(1-t*.85)+')'; c.beginPath(); c.arc(w/2,h/2,r,0,TAU); c.stroke(); c.lineWidth=2; c.strokeStyle='rgba(255,190,220,'+(.7*(1-t))+')'; c.beginPath(); c.arc(w/2,h/2,r*.82,0,TAU); c.stroke(); },
+    fx_bubble:(c,i,n,w,h)=>{ const t=i/(n-1),pop=t>.7; if(!pop){ const r=10+t/.7*(w/2-14),g=c.createRadialGradient(w/2-r*.3,h/2-r*.3,r*.1,w/2,h/2,r); g.addColorStop(0,'rgba(255,255,255,.9)'); g.addColorStop(.6,'rgba(200,235,255,.35)'); g.addColorStop(1,'rgba(160,220,255,.8)'); c.fillStyle=g; c.beginPath(); c.arc(w/2,h/2,r,0,TAU); c.fill(); }
+      else { const k=(t-.7)/.3; c.fillStyle='rgba(220,245,255,'+(1-k)+')'; for(let j=0;j<10;j++){ const a=j/10*TAU,d=(w/2-14)*(1+k*.3); c.beginPath(); c.arc(w/2+Math.cos(a)*d,h/2+Math.sin(a)*d,3*(1-k)+1,0,TAU); c.fill(); } } },
+    fx_aura:(c,i,n,w,h)=>{ const t=i/n,r=w/2-8,g=c.createRadialGradient(w/2,h/2,r*.55,w/2,h/2,r); g.addColorStop(0,'rgba(255,170,215,0)'); g.addColorStop(.8,'rgba(255,190,225,'+(.35+.15*Math.sin(t*TAU))+')'); g.addColorStop(1,'rgba(255,220,240,0)'); c.fillStyle=g; c.beginPath(); c.arc(w/2,h/2,r,0,TAU); c.fill();
+      c.fillStyle='rgba(255,240,250,.85)'; for(let j=0;j<6;j++){ const a=t*TAU+j/6*TAU; c.beginPath(); c.arc(w/2+Math.cos(a)*r*.86,h/2+Math.sin(a)*r*.86,2.5,0,TAU); c.fill(); } },
+    fx_slash:(c,i,n,w,h)=>{ const t=i/(n-1),sweep=Math.min(1,t*1.6),fade=t<.6?1:1-(t-.6)/.4; c.strokeStyle='rgba(255,240,210,'+fade+')'; c.lineCap='round'; c.lineWidth=10*fade+2; c.beginPath(); c.arc(-12,h/2,w-24,-.55,-.55+1.1*sweep); c.stroke(); c.lineWidth=3; c.strokeStyle='rgba(255,255,255,'+fade+')'; c.beginPath(); c.arc(-12,h/2,w-24,-.55,-.55+1.1*sweep); c.stroke(); },
+    fx_beam:(c,i,n,w,h)=>{ const t=i/(n-1),th=(h/2-4)*(t<.25?t/.25:1-(t-.25)/.75*.9),g=c.createLinearGradient(0,h/2-th,0,h/2+th); g.addColorStop(0,'rgba(255,224,138,0)'); g.addColorStop(.5,'rgba(255,250,220,'+(1-t*.6)+')'); g.addColorStop(1,'rgba(255,224,138,0)'); c.fillStyle=g; c.fillRect(0,h/2-th,w,th*2); },
+  };
+  for(const k in CODE_FX){ if(scene.textures.exists(k))continue; const d=CODE_FX[k],cv=document.createElement('canvas'); cv.width=d.fw*d.frames; cv.height=d.fh; const c=cv.getContext('2d'); if(!c)continue;
+    for(let i=0;i<d.frames;i++){ c.save(); c.translate(i*d.fw,0); c.beginPath(); c.rect(0,0,d.fw,d.fh); c.clip(); draw[k](c,i,d.frames,d.fw,d.fh); c.restore(); }
+    try{ scene.textures.addSpriteSheet(k,cv,{frameWidth:d.fw,frameHeight:d.fh}); if(!scene.anims.exists(k))scene.anims.create({key:k,frames:scene.anims.generateFrameNumbers(k,{start:0,end:d.frames-1}),frameRate:d.rate,repeat:d.loop?-1:0}); }catch(e){} } }
+
 let ASSET_VER = '';   // build-www ใส่เลข build → append ?v= กันรูปค้าง cache (แก้รูปแล้วโหลดใหม่เสมอ)
 let ASSET_FILE_VERSIONS = null; // build-www ใส่ hash ของแต่ละไฟล์ → เปลี่ยน URL เฉพาะไฟล์ที่แก้จริง
 let ASSET_FILE_SIZES = null; // v6.48.2 build-www ใส่ขนาดไฟล์ (byte) → หลอดโหลดเดียวบอก MB ที่เหลือ/ความเร็ว
@@ -4729,7 +4742,7 @@ const STAGE_SHEETS=[
 let _stageOnlyArt=null;
 function stageOnlyArtKeys(){ if(_stageOnlyArt)return _stageOnlyArt; const s=new Set(STAGE_SHEET_KEYS); try{ for(const i in STAGE_DECOR){ const d=STAGE_DECOR[i]; if(d&&d.items)for(const it of d.items)s.add(it.key); } }catch(e){} for(const k in ASSET_IMAGES)if(/^floor_c\d/.test(k))s.add(k); for(const k of [...s])if(bootKeep(k))s.delete(k); return _stageOnlyArt=s; }
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||k.startsWith('epilogue_s')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
-const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_tpl_normal", "lvl_tpl_mutation", "lvl_tpl_relic", "lvl_tpl_unique", "lvl_tpl_crest", "lvl_tpl_fx_mutation", "lvl_tpl_fx_relic", "lvl_tpl_fx_unique", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));
+const PLAY_UI_KEYS=["lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_tpl_normal", "lvl_tpl_mutation", "lvl_tpl_relic", "lvl_tpl_unique", "lvl_tpl_crest", "lvl_tpl_fx_mutation", "lvl_tpl_fx_relic", "lvl_tpl_fx_unique", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));
 const HUD_KEYS=["hud_top_panel","hud_mission_card","hud_exp_frame","hud_exp_fill","hud_level_badge","hud_counter_pill","hud_mission_bar_frame","hud_mission_bar_fill","hud_boss_bar_frame","hud_boss_bar_fill","hud_boss_plate","hud_ic_kill","hud_ic_sugar","hud_wave_pips","hud_ic_pause","hud_ic_sound","hud_round_btn","hud_speed_ring"];HUD_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v8.0.10 ใบ 47 HUD ส่วนบน (stage-lazy)
 const XP_ORB_KEYS=['xp_orbs','xp_orb_shadow','vfx_xp_pickup','vfx_xp_pickup_big','vfx_xp_trail','vfx_xp_merge','xp_bar_icon'];XP_ORB_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.9.26 ใบ 29 โหลดพร้อมทุกด่าน ไม่ใช่บูต
 const XP_ORB_PX=[0,22,26,31,37,44,56],XP_TIER_COL=[0,0xff8fb5,0x8be6a4,0x7fc9ff,0xb98cff,0xffd75e,0xfff0a0];   // ขนาดเม็ดในโลก (ส่วนที่เห็น ~75% ของเฟรม) · สีย้อม VFX ตามระดับ
@@ -4761,7 +4774,7 @@ Object.assign(MENU_ORDER_ART,{
 for(const [k,d] of Object.entries(MENU_ORDER_ART))TEMPLE_UI[k]=d.slice(0,4);
 
 Object.assign(TEMPLE_UI,{"sc79_header_plate":[512,192,1,[48,40,48,40]],"sc79_star_socket":[128,128,2,null]});   // v8.1.108 ใบ 79
-Object.assign(TEMPLE_UI,{"lvl_screen_veil":[540,960,1,null],"lvl_title_banner_sheet":[500,48,1,[50,16,50,16]],"lvl_title_burst":[320,160,1,null],"lvl_held_chip_sheet":[64,64,3,null],"lvl_held_bar":[800,44,1,[16,12,16,12]],"lvl_card_base":[384,150,1,[32,28,32,28]],"lvl_tpl_normal":[384,150,1,[32,28,32,28]],"lvl_tpl_mutation":[384,150,1,[32,28,32,28]],"lvl_tpl_relic":[384,150,1,[32,28,32,28]],"lvl_tpl_unique":[384,150,1,[32,28,32,28]],"lvl_tpl_crest":[96,96,4,null],"lvl_tpl_fx_mutation":[384,150,6,null],"lvl_tpl_fx_relic":[384,150,6,null],"lvl_tpl_fx_unique":[384,150,6,null],"lvl_card_accent":[384,150,1,[32,28,32,28]],"lvl_card_glow":[416,182,1,[40,40,40,40]],"lvl_card_select":[400,166,1,[40,36,40,36]],"lvl_icon_socket":[96,96,2,null],"lvl_ribbon_sheet":[180,28,1,[24,8,24,8]],"lvl_pill_sheet":[120,22,1,[12,8,12,8]],"lvl_combo_chip_sheet":[48,48,2,null],"lvl_type_badge_sheet":[64,64,7,null],"lvl_sparkle_sheet":[64,64,4,null],"lvl_shine_strip":[48,256,1,null],"pause_veil":[540,960,1,null],"pause_crest":[500,180,1,null],"pause_title_divider":[400,20,1,null],"pause_chip":[200,32,1,[20,12,20,12]],"pause_stat_bar":[850,64,1,[60,24,60,24]],"pause_stat_sep":[8,64,1,null],"pause_panel":[440,150,1,[30,40,30,25]],"pause_panel_header_line":[350,16,1,[16,6,24,6]],"pause_tile":[270,100,1,[24,24,24,24]],"pause_detail_strip":[800,32,1,[20,12,20,12]],"pause_skill_slot":[128,128,3,null],"pause_level_badge":[64,64,1,null],"pause_relic_row":[800,110,1,[135,32,120,32]],"pause_count_badge":[96,64,1,[24,24,24,24]],"pause_btn_resume":[850,130,1,[220,32,100,32]],"pause_btn_settings":[410,100,1,[40,32,40,32]],"pause_btn_quit":[410,100,1,[40,32,40,32]],"pause_icon_sheet":[128,128,4,null],"pause_loot_icon_sheet":[160,160,3,null],"hub_cloud_sheet":[174,70,3,null],"hub_momo_blink":[152,81,3,null]});   // v7.8.59 ใบ 23/24 ชิ้น UI (tuPanel/tuImg ใช้ร่วม)
+Object.assign(TEMPLE_UI,{"lvl_title_banner_sheet":[500,48,1,[50,16,50,16]],"lvl_title_burst":[320,160,1,null],"lvl_held_chip_sheet":[64,64,3,null],"lvl_held_bar":[800,44,1,[16,12,16,12]],"lvl_card_base":[384,150,1,[32,28,32,28]],"lvl_tpl_normal":[384,150,1,[32,28,32,28]],"lvl_tpl_mutation":[384,150,1,[32,28,32,28]],"lvl_tpl_relic":[384,150,1,[32,28,32,28]],"lvl_tpl_unique":[384,150,1,[32,28,32,28]],"lvl_tpl_crest":[96,96,4,null],"lvl_tpl_fx_mutation":[384,150,6,null],"lvl_tpl_fx_relic":[384,150,6,null],"lvl_tpl_fx_unique":[384,150,6,null],"lvl_card_accent":[384,150,1,[32,28,32,28]],"lvl_card_glow":[416,182,1,[40,40,40,40]],"lvl_card_select":[400,166,1,[40,36,40,36]],"lvl_icon_socket":[96,96,2,null],"lvl_ribbon_sheet":[180,28,1,[24,8,24,8]],"lvl_pill_sheet":[120,22,1,[12,8,12,8]],"lvl_combo_chip_sheet":[48,48,2,null],"lvl_type_badge_sheet":[64,64,7,null],"lvl_sparkle_sheet":[64,64,4,null],"lvl_shine_strip":[48,256,1,null],"pause_crest":[500,180,1,null],"pause_title_divider":[400,20,1,null],"pause_chip":[200,32,1,[20,12,20,12]],"pause_stat_bar":[850,64,1,[60,24,60,24]],"pause_stat_sep":[8,64,1,null],"pause_panel":[440,150,1,[30,40,30,25]],"pause_panel_header_line":[350,16,1,[16,6,24,6]],"pause_tile":[270,100,1,[24,24,24,24]],"pause_detail_strip":[800,32,1,[20,12,20,12]],"pause_skill_slot":[128,128,3,null],"pause_level_badge":[64,64,1,null],"pause_relic_row":[800,110,1,[135,32,120,32]],"pause_count_badge":[96,64,1,[24,24,24,24]],"pause_btn_resume":[850,130,1,[220,32,100,32]],"pause_btn_settings":[410,100,1,[40,32,40,32]],"pause_btn_quit":[410,100,1,[40,32,40,32]],"pause_icon_sheet":[128,128,4,null],"pause_loot_icon_sheet":[160,160,3,null],"hub_cloud_sheet":[174,70,3,null],"hub_momo_blink":[152,81,3,null]});   // v7.8.59 ใบ 23/24 ชิ้น UI (tuPanel/tuImg ใช้ร่วม)
 Object.assign(TEMPLE_UI,{"jr_page_bg":[540,960,1,null],"jr_header_plaque":[450,75,1,null],"jr_btn_back":[180,55,2,null],"jr_chip_currency":[190,50,1,[16,12,16,12]],"jr_chip_plus":[36,36,1,null],"jr_panel":[400,200,1,[70,50,70,50]],"jr_panel_inset":[350,120,1,[50,30,50,30]],"jr_divider":[380,14,1,null],"jr_section_title_deco":[32,32,1,null],"jr_warning_ribbon":[500,40,1,[90,9,90,9]],"jr_slot":[80,90,4,null],"jr_bag_cell":[90,90,3,null],"jr_tag_level":[60,26,1,[9,6,9,6]],"jr_badge_new":[28,28,1,null],"jr_row":[750,60,1,[50,11,50,11]],"jr_icon_ring":[56,56,4,null],"jr_star":[28,28,2,null],"jr_chip_pct":[80,32,1,[10,8,10,8]],"jr_checkbox":[32,32,2,null],"jr_radio":[32,32,2,null],"jr_lock_cell":[32,32,1,null],"jr_btn_primary":[750,100,1,[165,22,60,22]],"jr_btn_secondary":[380,75,1,[50,16,50,16]],"jr_btn_accent":[260,75,1,[38,18,38,18]],"jr_btn_icon":[50,50,2,null],"jr_btn_pill":[220,40,1,[30,10,30,10]],"jr_btn_pager":[75,45,3,null],"jr_icon_sheet":[64,64,4,null],"jr_forge_summary":[750,150,1,[250,35,50,35]],"jr_forge_footer":[750,150,1,[90,35,90,50]],"bk_page_turn":[432,768,3,null],"bk_page_shadow":[216,384,3,null],"bk_spine":[51,1536,1,null],"vfx_bk_dust":[102,102,6,null],"bk_cover_closed":[864,1536,1,null],"bk_cover_open":[432,768,5,null],"bk_cover_glow":[410,410,1,null]});   // v7.9.10 ใบ 27 สมุด (jr_) + ใบ 28 หนังสือ (bk_) · [cellW,cellH,cols,nineSlice] หลังแพ็ก
 Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[192,40,1,[22,0,22,0]],"lb_stage_panel":[320,110,1,[45,30,45,30]],"lb_battle_btn":[320,90,1,[64,0,64,0]],"lb_arrow_btn":[48,60,1,null],"lb_side_btn":[80,80,1,[16,16,16,16]],"lb_profile_frame":[260,75,1,[35,18,35,18]],"lb_avatar_ring":[75,75,1,null],"lb_currency_pill":[150,45,1,[24,0,42,0]],"ic_lb_battle":[128,128,1,null],"ic_nav_home":[128,128,1,null],"ic_nav_heroes":[128,128,1,null],"ic_nav_play":[128,128,1,null],"ic_nav_gear":[128,128,1,null],"ic_nav_activities":[128,128,1,null],"ic_side_codex":[128,128,1,null],"ic_side_inbox":[128,128,1,null],"ic_side_news":[128,128,1,null],"ic_side_daily":[128,128,1,null],"ic_side_awards":[128,128,1,null],"lb_nav_bg":[540,75,1,[18,0,18,0]],"lb_nav_active":[150,70,1,[30,14,30,14]],"lb_nav_divider":[3,50,1,null],"lb_star":[48,48,1,null],"lb_power_pill":[210,40,1,[24,0,24,0]],"lb_hero_shadow":[200,60,1,null],"vfx_lb_battle_shine":[320,90,6,null],"vfx_lb_sparkle":[64,64,2,null]});   // v7.9.51 ใบ 33 Lobby UI (scripts/pack-lobby-ui.py)
 /* v7.9.58 ใบสั่งอาร์ต 34: ฮีโร่ขยับในหน้า Lobby (แพ็ก 75% = 384×480/เฟรม, เท้า y450) · โหลดเฉพาะฮีโร่ที่เลือก ไม่โหลดตอนบูต · Sesame ผูกด้วย (เจ้าของ 22 ต.ค.) */
@@ -4769,8 +4782,8 @@ const LH_SHEETS={lh_momo_idle:'assets/art/lobby_hero/momo/lh_momo_idle.webp',lh_
 const LH_USE_SHEETS=false;   /* v7.9.61 เจ้าของ: ชีตใบ 34 วาดใหม่ทุกเฟรม ดูยุบยับ → ปิด ใช้ภาพนิ่งดัดด้วยโค้ด (lobbyHeroWarp) แทน */
 const LH_FW=384,LH_FH=480,LH_FOOT=451,LH_BODY=390,LH_ACTS=['act1','act2','act3','act4'];
 const LH_MS={idle:[220,220,220,160,120,220,220,220],tap:[100,100,180,200,120,120],def:[100,110,140,180,220,140,110,100]};
-Object.assign(TEMPLE_UI,{"tut_ic_welcome":[128,128,1,null],"tut_ic_move":[128,128,1,null],"tut_ic_attack":[128,128,1,null],"tut_ic_sweets":[128,128,1,null],"tut_ic_cards":[128,128,1,null],"tut_ic_dash":[128,128,1,null],"tut_ic_unique":[128,128,1,null],"tut_ic_hp":[128,128,1,null],"tut_ic_ready":[128,128,1,null],"tut_finger":[128,128,1,null],"tut_card_frame":[390,300,1,[40,75,40,40]],"vfx_tut_ring":[128,128,6,null],"vfx_tut_great":[128,128,6,null]});
-const TUT_KEYS=["tut_ic_welcome", "tut_ic_move", "tut_ic_attack", "tut_ic_sweets", "tut_ic_cards", "tut_ic_dash", "tut_ic_unique", "tut_ic_hp", "tut_ic_ready", "tut_finger", "tut_card_frame", "vfx_tut_ring", "vfx_tut_great"];
+Object.assign(TEMPLE_UI,{"tut_ic_welcome":[128,128,1,null],"tut_ic_move":[128,128,1,null],"tut_ic_attack":[128,128,1,null],"tut_ic_sweets":[128,128,1,null],"tut_ic_cards":[128,128,1,null],"tut_ic_dash":[128,128,1,null],"tut_ic_unique":[128,128,1,null],"tut_ic_hp":[128,128,1,null],"tut_ic_ready":[128,128,1,null],"tut_finger":[128,128,1,null],"tut_card_frame":[390,300,1,[40,75,40,40]],"vfx_tut_great":[128,128,6,null]});
+const TUT_KEYS=["tut_ic_welcome", "tut_ic_move", "tut_ic_attack", "tut_ic_sweets", "tut_ic_cards", "tut_ic_dash", "tut_ic_unique", "tut_ic_hp", "tut_ic_ready", "tut_finger", "tut_card_frame", "vfx_tut_great"];
 const LB_KEYS=["lb_dialog_speech","lb_dialog_thought","ic_lb_settings","lb_currency_plain","ic_nav_bazaar","ic_nav_upgrade","ic_side_mail","lb_stage_panel","lb_battle_btn","lb_arrow_btn","lb_side_btn","lb_profile_frame","lb_avatar_ring","lb_currency_pill","ic_lb_battle","ic_nav_home","ic_nav_heroes","ic_nav_play","ic_nav_gear","ic_nav_activities","ic_side_codex","ic_side_inbox","ic_side_news","ic_side_daily","ic_side_awards","lb_nav_bg","lb_nav_active","lb_nav_divider","lb_star","lb_power_pill","lb_hero_shadow","vfx_lb_battle_shine","vfx_lb_sparkle"];
 const JR_REQ=['jr_page_bg','jr_header_plaque','jr_btn_back','jr_chip_currency','jr_panel','jr_divider','jr_warning_ribbon','jr_slot','jr_bag_cell','jr_row','jr_icon_ring','jr_checkbox','jr_btn_primary','jr_btn_secondary','jr_btn_accent','jr_btn_icon','jr_btn_pill','jr_btn_pager','jr_icon_sheet','jr_forge_summary','jr_forge_footer','jr_badge_new'];
 // สีตัวหนังสือธีมม่วง → หมึกบนกระดาษ (เกรด/ดาวใช้เฉดเข้มของสีเดิม)
@@ -4781,8 +4794,8 @@ const JR_INK=(()=>{const I='#3b2416',S='#6b4a33',G='#2f7a3c',R='#a8323e',Y='#8a5
   put(R,['#ff8da2','#ff6b81']); put('#8a6400',['#ffcf5a']); put('#6d3aa8',['#c9a3ff','#c891ff']); put('#b4531a',['#ff8f3a','#ffae3d','#ffb27a']); put('#1f5fa8',['#6fb8ff','#8bd3ff']); put('#2a7a6a',['#8be0c8']); return m;})();
 Object.assign(TEMPLE_UI,{"bk_open_long":[432,768,4,null],"bk_page_riffle":[432,768,4,null],"bk_clasp":[256,256,6,null],"bk_emblem_spin":[256,256,8,null],"vfx_bk_magic":[256,256,8,null],"vfx_bk_burst":[512,512,6,null],"bk_cover_clean_plate":[432,768,1,null],"ic_nav_bazaar":[256,256,1,null],"ic_nav_upgrade":[256,256,1,null],"ic_side_mail":[256,256,1,null]});
 Object.assign(TEMPLE_UI,{"hud_top_panel":[739,56,1,[24,8,24,8]],"hud_mission_card":[738,68,1,[24,8,24,8]],"hud_exp_frame":[300,14,1,[6,5,6,5]],"hud_exp_fill":[280,8,1,[3,3,3,3]],"hud_level_badge":[52,32,1,[11,11,11,11]],"hud_counter_pill":[80,28,1,[12,11,12,11]],"hud_mission_bar_frame":[240,12,1,[5,4,5,4]],"hud_mission_bar_fill":[230,8,1,[3,3,3,3]],"hud_boss_bar_frame":[320,22,1,[15,9,15,9]],"hud_boss_bar_fill":[300,12,1,[5,5,5,5]],"hud_boss_plate":[737,59,1,[24,8,24,8]],"hud_ic_kill":[32,32,1,null],"hud_ic_sugar":[32,32,1,null],"hud_wave_pips":[24,24,3,null],"hud_ic_pause":[32,32,1,null],"hud_ic_sound":[32,32,2,null],"hud_round_btn":[107,107,3,null],"hud_speed_ring":[64,64,4,null]});   // v8.0.10 ใบ 47 (scripts/pack-battle-hud-top.py)
-Object.assign(TEMPLE_UI,{chest_silver_open:[256,256,6,null],chest_gold_open:[256,256,6,null],vfx_chest_rays:[256,256,6,null],bz_chest_card:[390,200,1,[32,32,32,32]]});   // v7.9.79 ใบ 40
-const CHEST_KEYS=['chest_silver','chest_gold','chest_silver_open','chest_gold_open','vfx_chest_rays','bz_chest_card'];
+Object.assign(TEMPLE_UI,{chest_silver_open:[256,256,6,null],chest_gold_open:[256,256,6,null],bz_chest_card:[390,200,1,[32,32,32,32]]});   // v7.9.79 ใบ 40
+const CHEST_KEYS=['chest_silver','chest_gold','chest_silver_open','chest_gold_open','bz_chest_card'];
 const RUBY_STAGE_KEYS=['mascot_ruby','mascot_ruby_happy','mascot_ruby_alert','mascot_ruby_think','mascot_ruby_cheer','mascot_ruby_sad','ruby_point','vfx_ruby_sparkle'];
 const RUBY_COMIC_KEYS=['ruby_comic_s1_1','ruby_comic_s1_2','ruby_comic_s1_3','ruby_comic_s2_1','ruby_comic_s2_2','ruby_comic_s2_3','ruby_comic_s3_1','ruby_comic_s3_2','ruby_comic_s3_3','ruby_comic_s4_1','ruby_comic_s4_2','ruby_comic_s4_3','ruby_comic_s5_1','ruby_comic_s5_2','ruby_comic_s5_3'];
 const RUBY_STORY_KEYS=['ruby_story_pantry','ruby_story_furnace','ruby_story_frozen','ruby_story_crown','ruby_story_paper'];
@@ -9011,7 +9024,7 @@ const MOTION_COMICS={
   s01:{title:'THE HEART SEED',shots:[
     {bg:MC_PANTRY,zoom:[1,1.04],shake:[2100,400,.004],ms:2800,cap:'Hundreds of years later, a little strawberry mochi is tidying a quiet pantry…',L:[['cs_pup_mochi_berry_idle',145,350,150,150,{bob:3}],['cs_fx_crack',200,465,330,185,{fps:6,loop:false,at:2100,hold:1}]]},
     {bg:['cs_s01_far_roots_burst'],zoom:[1.08,1.02],shake:[250,700,.014],flash:[250,0x6a2fd6],cap:'…when the starving Hunger’s roots burst up through the floor!',L:[['cs_pup_mochi_berry_scared',85,410,135,145,{sq:250}],['cs_fx_root_burst',215,337,230,230,{fps:10,loop:false,hold:1}],['cs_fx_curse_smoke',240,300,260,260,{fps:9,loop:false,at:300}]]},
-    {bg:['cs_s01_far_shaft'],scroll:1,ms:2400,cap:'…and a little strawberry mochi falls into the dark!',L:[['cs_fx_speedlines',180,280,360,640,{fps:14}],['cs_pup_mochi_berry_fall',180,80,135,165,{to:[180,430],ms:2300,ease:'Sine.easeIn'}]]},
+    {bg:['cs_s01_far_shaft'],scroll:1,ms:2400,cap:'…and a little strawberry mochi falls into the dark!',L:[['cs_pup_mochi_berry_fall',180,80,135,165,{to:[180,430],ms:2300,ease:'Sine.easeIn'}]]},
     {bg:MC_NEST,zoom:[1,1.04],shake:[420,250,.008],cap:'She lands with a thump in a sour ant nest. Something pale is moving in the dark…',L:[['cs_pup_mochi_berry_scared',180,230,140,150,{to:[180,390],ms:420,ease:'Quad.easeIn',sq:420}],['cs_fx_dust',180,470,235,118,{fps:12,loop:false,at:420}],['cs_pup_blank_mochi_walk',-30,420,80,80,{at:900,to:[40,420],ms:2200,fade:700}]]},
     {bg:MC_NEST,pan:[-10,24],zoom:[1.04,1.08],cap:'Blank, flavorless mochi creep closer — toward a little jam spirit hiding behind a crystal.',L:[['cs_pup_mochi_berry_scared',165,390,130,140],['cs_pup_blank_mochi_walk',10,420,80,80,{to:[75,425],ms:3000}],['cs_pup_blank_mochi_leap',-20,440,75,75,{at:500,to:[60,440],ms:2600}],['cs_pup_ruby_hide',390,370,105,115,{at:700,to:[300,370],ms:900,ease:'Back.easeOut',rot:6,fade:500}],['cs_fx_sparkle',300,320,60,60,{fps:9,at:1500}]]},
     {bg:MC_ROOT,pan:[-24,0],zoom:[1,1.04],cap:'“This way!” squeaks Ruby. The two of them dash between the old roots.',L:[['cs_pup_ruby_hide',-40,360,95,105,{to:[230,345],ms:1300,ease:'Sine.easeOut'}],['cs_pup_mochi_berry_reach',-90,360,190,150,{to:[120,355],ms:1500,ease:'Sine.easeOut'}],['cs_fx_dust',110,430,200,100,{fps:12,loop:false,at:1300}]]},
@@ -9584,7 +9597,7 @@ class Game extends Phaser.Scene {
   create(){
     this.loopGuard?.();
     this._sesRuneButtons=null;
-    try{ if(typeof QA!=='undefined'){ QA.button(); QA.flush(); } }catch(e){} try{ if(typeof AdManager!=='undefined')AdManager.init(); }catch(e){} try{ if(!window.__teleSession){ window.__teleSession=1; Tele.ev('session',{native:!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()),mem:navigator.deviceMemory||null}); } }catch(e){}   /* v8.1.139 ปุ่ม 🐞 + ส่งรายงานที่ค้าง */this._sesRuneUI=null;this._sesRuneLabel=null;this._bossInkActors=null;   // v8.1.23 scene.restart (Back to Hub) เก็บ instance เดิม: ล้างอ้างอิงปุ่ม/บอสของรอบก่อนที่ถูกทำลายแล้ว
+    try{ makeCodeFx(this); }catch(e){} try{ if(typeof QA!=='undefined'){ QA.button(); QA.flush(); } }catch(e){} try{ if(typeof AdManager!=='undefined')AdManager.init(); }catch(e){} try{ if(!window.__teleSession){ window.__teleSession=1; Tele.ev('session',{native:!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()),mem:navigator.deviceMemory||null}); } }catch(e){}   /* v8.1.139 ปุ่ม 🐞 + ส่งรายงานที่ค้าง */this._sesRuneUI=null;this._sesRuneLabel=null;this._bossInkActors=null;   // v8.1.23 scene.restart (Back to Hub) เก็บ instance เดิม: ล้างอ้างอิงปุ่ม/บอสของรอบก่อนที่ถูกทำลายแล้ว
     this.renderDPR=RENDER_DPR;
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
     this.computeViewZoom();                                // zoom ปรับตามความกว้างจอ → มือถือ/แท็บเล็ตเห็นสนามพอ ๆ กัน
@@ -14172,7 +14185,7 @@ class Game extends Phaser.Scene {
       if(!status.active||this.state!=='menu'){ this._gachaBusy=false; this._chestOpen=false; return; }
       const t2=it?it.tier:'common',color=t2==='legend'?0xff8f3a:t2==='epic'?0xc9a3ff:t2==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
       if(anim){ chest.setAngle(0); this.tweens.add({targets:chest,y:h*.57,scale:cs*.62,alpha:.85,duration:260}); status.setY(h*.71); } else this.tweens.add({targets:chest,scale:cs*1.25,alpha:0,angle:0,duration:220});
-      if(this.realTex('vfx_chest_rays')){ this.tuFrames('vfx_chest_rays'); const ry=this.add.image(w/2,h*.47,'vfx_chest_rays','cell0').setDisplaySize(380,380).setBlendMode(Phaser.BlendModes.ADD).setTint(color); this.menu.addAt(ry,2); let f=0; const ev=this.time.addEvent({delay:100,loop:true,callback:()=>{ if(!ry.active){ ev.remove(); return; } f=(f+1)%6; ry.setFrame('cell'+f); }}); this.tweens.add({targets:ry,rotation:Math.PI*2,duration:9000,repeat:-1}); glow.setVisible(false); }
+      { /* v8.1.143 code-drawn rays instead of vfx_chest_rays (-1.5 MB GPU) */ const ry=this.add.graphics({x:w/2,y:h*.47}); for(let i=0;i<12;i++){ const a=i*Math.PI/6,sp=.12; ry.fillStyle(color,i%2?.22:.38).beginPath().moveTo(0,0).lineTo(Math.cos(a-sp)*200,Math.sin(a-sp)*200).lineTo(Math.cos(a+sp)*200,Math.sin(a+sp)*200).closePath().fillPath(); } ry.setBlendMode(Phaser.BlendModes.ADD); this.menu.addAt(ry,2); this.tweens.add({targets:ry,rotation:Math.PI*2,duration:9000,repeat:-1}); this.tweens.add({targets:ry,scale:{from:.6,to:1},duration:420,ease:'Back.out'}); glow.setVisible(false); }
       const gArt=it?('gear_'+it.id):null; if(gArt&&this.textures.exists(gArt)){ const gi=this.add.image(w/2,h*.47,gArt).setDisplaySize(130,130),ts=gi.scaleX; gi.setScale(ts*.2); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:360,ease:'Back.out'}); }
       glow.setTint(color).setScale(2.9).setAlpha(.9); this.screenFlash(color,t2==='legend'?.85:t2==='epic'?.65:.4,520); this.screenShake(t2==='legend'?620:300,t2==='legend'?.02:.008); this.chestBurst?.(w/2,h*.47,color,t2);
       /* v8.1.142 owner 🐞: chest sound did not fit → the rarity reveal stingers (box_reveal_*) instead of the generic clear/legend cue */ if(!(Sfx.orderCue?.('box_reveal_'+(t2==='legend'?'legend':t2==='epic'?'epic':t2==='rare'?'rare':'common'),t2==='legend'?.55:.45,.1))){ if(t2==='legend')Sfx.legend?.(); else Sfx.clear?.(); }
@@ -14696,7 +14709,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,U=this.pauseUI,p=this.player,T=(x,y,s,fs,col,ox=.5,oy=.5,bold=true)=>{const t=this.add.text(x,y,s,{fontFamily:'sans-serif',fontStyle:bold?'bold':'normal',fontSize:fs+'px',color:col}).setOrigin(ox,oy);U.add(t);return t;},
       ic=(cell,x,y,s)=>{if(!this.tuHas('pause_icon_sheet'))return null;this.tuFrames('pause_icon_sheet');const im=this.add.image(x,y,'pause_icon_sheet','cell'+cell).setDisplaySize(s,s);U.add(im);return im;},
       panel=(key,cell,x,y,pw,ph)=>{const c=this.tuPanel(key,cell,x,y,pw,ph);if(c)U.add(c);return c;},side=Math.max(10,w*.035),cw=w-side*2;
-    U.add(this.add.rectangle(0,0,w,h,0x120c1a,.35).setOrigin(0));if(this.textures.exists('pause_veil'))U.add(this.add.image(0,0,'pause_veil').setOrigin(0).setDisplaySize(w,h));
+    U.add(this.add.rectangle(0,0,w,h,0x1f1529,.9).setOrigin(0));   /* v8.1.143 code instead of pause_veil (flat dark veil, -2 MB GPU) */
     // หัวเรื่อง
     const crW=Math.min(w*.62,300),crH=crW*.36;let y=Math.max(6,h*.008);if(this.textures.exists('pause_crest'))U.add(this.add.image(w/2,y+crH/2,'pause_crest').setDisplaySize(crW,crH));ic(0,w/2,y+crH*.333,crH*.34);   /* v7.9.60 กลางวงอัญมณี (ภาพ: cx .5, cy 120/360, ⌀170) */
     const ttl=T(w/2,y+crH*.68,'Paused',Math.round(crH*.32),'#ff8fb5');ttl.setStroke('#4a1631',5);y+=crH+2;
@@ -16658,7 +16671,7 @@ class Game extends Phaser.Scene {
     const prefixes=[...(by[idx]||[])];
     if(this.recipeMode||this._recipeRequested||this.riftMode)prefixes.push('hm_','brm_','hs_','ult_');
     for(const prefix of prefixes)k.push(...pre(prefix),...(fx[prefix]||[]).map(name=>'vfx78_'+name));
-    k.push(...(m[idx]||[]),'msn71_start_pad','msn71_overcharge_pad','msn71_stalker_captain','msn71_stalker_captain_attack','msn71_stalker_captain_death'); if(idx<5)k.push('msn71_supply_crate');
+    k.push(...(m[idx]||[]),'msn71_overcharge_pad','msn71_stalker_captain','msn71_stalker_captain_attack','msn71_stalker_captain_death'); if(idx<5)k.push('msn71_supply_crate');
     return [...new Set(k)].filter(x=>x!=='hm_rim'&&A[x]); }
   artSpr(key,x,y,px,frame=0,o={}){ if(!key||!this.textures?.exists?.(key))return null; const fd=(typeof ASSET_FX!=='undefined'&&ASSET_FX[key])||{},s=this.camWorld(this.add.sprite(x,y,key,frame)),fw=fd.fw||s.width,fh=fd.fh||s.height;
     s.setScale(px/Math.max(fw,fh)); s.setOrigin(.5,(o.feet!=null?o.feet:fd.anchor==='feet')?.94:.5); s.setDepth(o.depth!=null?o.depth:y+2);
@@ -18329,8 +18342,8 @@ class Game extends Phaser.Scene {
     Sfx.eventLoopStop?.();const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
     const _sndForced=!!this._forcedOpts;   // v7.2 sound picked after the final choices are known (guaranteed Relic levels build their offer below)
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
-    const veil=this.textures.exists('lvl_screen_veil'),bg=this.add.rectangle(0,0,w,h,0x160f21,veil?0.62:0.94).setOrigin(0,0);   /* v8.1.142 owner 🐞: card screen too bright → darker veil + fade in */
-    this.lvlUp.add(bg);if(veil)this.lvlUp.add(this.add.image(0,0,'lvl_screen_veil').setOrigin(0).setDisplaySize(w,h));   // v7.8.59 ใบ 23 ม่าน
+    const bg=this.add.rectangle(0,0,w,h,0x1c1326,0.94).setOrigin(0,0);   /* v8.1.143 code instead of lvl_screen_veil (same flat dark veil, -2 MB GPU) · v8.1.142 darker + fade in */
+    this.lvlUp.add(bg);
     const heldBot0=this.drawHeldBar(this.lvlUp, 8);
     const heldBot=heldBot0;   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
     const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 Treasure — tap a card twice to pick':'⭐ LEVEL UP — tap a card twice to pick',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
@@ -21370,9 +21383,9 @@ class Game extends Phaser.Scene {
   // เล่น VFX flipbook (sprite animation) timesเดียวแล้วทำลาย · additive blend (พื้นดำหาย + เรืองแสง)
   spawnFxAnim(key,x,y,o={}){
     if(!this.textures.exists(key))return null;
-    if(!this.anims.exists(key)){ const fd=ASSET_FX[key]; if(!fd)return null; this.anims.create({key,frames:this.anims.generateFrameNumbers(key,{start:0,end:fd.frames-1}),frameRate:fd.rate,repeat:fd.loop?-1:0}); }   // v6.45 FX มาหลังเริ่มด่าน: สร้าง anim ตอนใช้ครั้งแรก
+    if(!this.anims.exists(key)){ const fd=ASSET_FX[key]||CODE_FX[key]; if(!fd)return null; this.anims.create({key,frames:this.anims.generateFrameNumbers(key,{start:0,end:fd.frames-1}),frameRate:fd.rate,repeat:fd.loop?-1:0}); }   // v6.45 FX มาหลังเริ่มด่าน: สร้าง anim ตอนใช้ครั้งแรก
     if(!o.force&&!this.fxOk())return null;
-    const fx=ASSET_FX[key]||{}; const s=this.camWorld(this.add.sprite(x,y,key,0));
+    const fx=ASSET_FX[key]||CODE_FX[key]||{}; const s=this.camWorld(this.add.sprite(x,y,key,0));
     s.setDepth(o.depth!=null?o.depth:7); s.setBlendMode(o.normal?Phaser.BlendModes.NORMAL:Phaser.BlendModes.ADD);   // ชีต VFX ใช้พื้นดำ: ADD เป็นค่าเริ่มต้นเพื่อไม่ให้เกิดกล่องดำบน WebGL/Android
     const ax=o.anchor||fx.anchor||'center'; s.setOrigin(ax==='left'?0:0.5, ax==='bottom'?1:0.5);
     if(o.rotation!=null)s.setRotation(o.rotation);
@@ -21579,7 +21592,7 @@ class Game extends Phaser.Scene {
     const lvl=this.skills&&this.skills.aura;if(!lvl){this.clearAuraFx();return;}
     const aw=lvl>=SKILL_AWAKEN_LV,r=(72+lvl*13)*(aw?1.35:1);this.ensureAuraFx();this._auraAngle=(this._auraAngle||0)+dt*(aw?1.45:1.05);this._sakuraHealCd=Math.max(0,(this._sakuraHealCd||0)-dt);
     if(this._auraFx&&this._auraFx.active){ this._auraFx.x=this.player.x; this._auraFx.y=this.player.y;
-      this._auraFx.setScale((2*r)/ASSET_FX.fx_aura.fw).setAlpha(Math.min(0.48,0.22+lvl*0.035)); }
+      this._auraFx.setScale((2*r)/CODE_FX.fx_aura.fw).setAlpha(Math.min(0.48,0.22+lvl*0.035)); }
     (this._auraPetals||[]).forEach((p,i)=>{const inner=aw&&i%2===1,rr=r*(inner?0.62:0.9),a=this._auraAngle+(i/this._auraPetals.length)*Math.PI*2*(inner?-1:1);p.setPosition(this.player.x+Math.cos(a)*rr,this.player.y+Math.sin(a)*rr).setRotation(a+Math.PI/2).setScale(inner?0.42:0.54);});
     this._auraTick=(this._auraTick||0)-dt;
     if(this._auraTick<=0){this._auraTick=lvl>=5?0.38:0.48;const touch=(1.2+lvl*0.5)*this.player.dmgMul*(BALANCE.skillPower.aura||1);
@@ -21591,7 +21604,7 @@ class Game extends Phaser.Scene {
     opt=opt||{}; const tint=opt.tint!=null?opt.tint:0xffe08a, rectColor=opt.tint!=null?opt.tint:0xffe08a;
     const px=opt.ox!=null?opt.ox:this.player.x, py=opt.oy!=null?opt.oy:this.player.y;   // v7.9.40 ox/oy = ยิงจากกระจกงาดำ
     if(this.textures.exists('fx_beam')&&this.anims.exists('fx_beam')){
-      const sx=len/ASSET_FX.fx_beam.fw, sy=0.42*(wide/15);
+      const sx=len/CODE_FX.fx_beam.fw, sy=0.42*(wide/15);
       this.spawnFxAnim('fx_beam',px,py,{rotation:ang,scaleX:sx,scaleY:sy,depth:6,anchor:'left',tint:opt.tint!=null?tint:null});
     } else {
       const g=this.camWorld(this.add.rectangle(px,py,len,wide,rectColor,0.75).setOrigin(0,0.5).setDepth(6)); g.setRotation(ang);
@@ -21605,7 +21618,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(delay,()=>{ if(this.state!=='play'&&this.state!=='levelup')return;
       const px=this.player.x, py=this.player.y, hit=new Set();
       this.hitCratesInRadius(px,py,maxR,dmg);
-      if(this.textures.exists('fx_wave')&&this.anims.exists('fx_wave')){ const wl=this.skills.wave||1; this.spawnFxAnim('fx_wave',px,py,{scale:(2*maxR)/ASSET_FX.fx_wave.fw,depth:3,anchor:'center',alpha:Math.min(1,0.5+wl*0.1)}); }
+      if(this.textures.exists('fx_wave')&&this.anims.exists('fx_wave')){ const wl=this.skills.wave||1; this.spawnFxAnim('fx_wave',px,py,{scale:(2*maxR)/CODE_FX.fx_wave.fw,depth:3,anchor:'center',alpha:Math.min(1,0.5+wl*0.1)}); }
       const ring=this.camWorld(this.add.image(px,py,'vfx_cream_ring').setDepth(3).setScale(20/256).setAlpha(0.9));
       const waveTrack={radius:10};
       this.tweens.add({targets:waveTrack,radius:maxR,duration:420,ease:'Quad.out',
@@ -21697,7 +21710,7 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:cage,scaleX:sc*1.14,scaleY:sc*1.14,duration:180,yoyo:true,repeat:1});
         this.time.delayedCall(430+lvl*35,()=>{ const bx=enemy.active?enemy.x:x,by=enemy.active?enemy.y:y; cage.destroy();
           if(this.state!=='play'&&this.state!=='levelup')return;
-          if(this.anims.exists('fx_bubble'))this.spawnFxAnim('fx_bubble',bx,by,{scale:(2*r)/ASSET_FX.fx_bubble.fw,depth:6,anchor:'center'});
+          if(this.anims.exists('fx_bubble'))this.spawnFxAnim('fx_bubble',bx,by,{scale:(2*r)/CODE_FX.fx_bubble.fw,depth:6,anchor:'center'});
           const prisonBonus=Math.min(55,prisonHp*0.035);this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,bx,by)<r)this.damage(e,dmg*(aw?1.25:0.90)+prisonBonus,e.x,e.y); });
           this.hitCratesInRadius(bx,by,r,dmg); this.vfxHitRing(bx,by,0x80e8d0,true); Sfx.boom();
         }); }
