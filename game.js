@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.148';
+const GAME_VERSION = '8.1.149';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.149',date:'2026-11-14',title:'owner 🐞 round 4 — Wardrobe tab, Great Hunger aura, Yuzu soft shadows',items:['b']},
   {v:'8.1.148',date:'2026-11-14',title:'Lobby hero feels alive — idle acts, shadow follow, depth motes (owner)',items:['b']},
   {v:'8.1.147',date:'2026-11-14',title:'Chest opening sounds',items:['New chest opening sounds: a shake build-up, then a burst that grows with rarity','Sparkle burst on Epic and Legend, plus item-land and duplicate sounds']},
   {v:'8.1.146',date:'2026-11-14',title:'Painted Build Path cards',items:['Each Build Path card now shows a full painting of that build’s Unique skill']},
@@ -14252,7 +14253,7 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
     /* v8.0.25 เจ้าของ: เหลือ 3 แท็บ — หีบ (เงิน/ทอง/Sugar) · ร้าน (ของ 4 + วัสดุ 2 รีเฟรชฟรีวันละครั้ง) · แลก (Trade-in + ขายวัสดุ) */
     const TAB={buy:'shop',orders:'shop',gamble:'chests',sell:'trade'},w=this.W,h=this.H,hs=this._hdrShift(),tab=this._bazTab=(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED&&this._bazTab==='thread')?'chests':(TAB[this._bazTab]||this._bazTab||'chests'),top=(tab==='shop'?153:121)+hs;
-    const bTabs=[['chests','Chests'],['shop','Shop'],['trade','Trade'],['thread','Thread']].filter(t=>typeof IAP_ENABLED==='undefined'||IAP_ENABLED||t[0]!=='thread');bTabs.forEach(([id,label],i)=>{const tw=(w-28)/bTabs.length;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();},'tab_'+id);});
+    const noIap=typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED,bTabs=[['chests','Chests'],['shop','Shop'],['trade','Trade'],noIap?['wardrobe','Wardrobe']:['thread','Thread']];bTabs.forEach(([id,label],i)=>{const tw=(w-28)/bTabs.length;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{ if(id==='wardrobe'){ this.menuScreen='wardrobe'; this.buildMenuScreen(); return; } this._bazTab=id;this.buildBazaar();},'tab_'+id);});   /* v8.1.149 เจ้าของ 🐞: ปิด IAP แล้วแท็บ Thread หาย → ทางเข้า Wardrobe (ร้านแฟชั่น) หายตาม · แทนด้วยแท็บ Wardrobe */
     if(tab==='chests'){ this.buildChestShop(top); this.menu.setVisible(true); return; }
     if(tab==='thread'){ this.buildThreadShop(top); this.menu.setVisible(true); return; }
     let y=top;
@@ -17292,9 +17293,9 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(4500,()=>cam.pan(px,py,900,'Sine.easeInOut'));
       this.time.delayedCall(5550,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setVisible(true).setAlpha(1).setScale(base);this.state='play';this.mode='boss';b.atkCd=1.35;
         if(this.anims.exists('boss5_sovereign_idle'))(this.bossInkIdle?.(b)||b.play('boss5_sovereign_idle',true));
-        b._aura=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-2).setAlpha(0.58).setTint(0xff3f78));b._auraIsFx=true;
-        b._hungerHalo=[this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-3).setScale(2.05).setAlpha(0.42).setTint(0xd95cff)),this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-4).setScale(2.62).setAlpha(0.26).setTint(0xffd166))];
-        b._hungerOrbs=[];for(let i=0;i<8;i++)b._hungerOrbs.push(this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(i%3===0?0xffd166:i%2?0xff3f78:0xd95cff).setDepth(b.y+2).setScale(0.38).setAlpha(0.88)));
+        b._aura=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-2).setAlpha(0.32).setTint(0xff3f78));b._auraIsFx=true;   /* v8.1.149 เจ้าของ 🐞: ออร่ารอบ Great Hunger บังตัวบอส → วง/ลูกแสงจางลง ลูกแสง 8→4 อยู่หลังตัว */
+        b._hungerHalo=[this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-3).setScale(2.05).setAlpha(0.2).setTint(0xd95cff)),this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(b.y-4).setScale(2.62).setAlpha(0.1).setTint(0xffd166))];
+        b._hungerOrbs=[];for(let i=0;i<4;i++)b._hungerOrbs.push(this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(i%3===0?0xffd166:i%2?0xff3f78:0xd95cff).setDepth(b.y+2).setScale(0.38).setAlpha(0.88)));
         this.spawnBossEscorts(3);
       });return;
     }
@@ -19515,7 +19516,7 @@ class Game extends Phaser.Scene {
     if(L.length&&(L[0].player!==p||L[0].basic!==b||L[0].kind!==cfg.t||L[0].epoch!==(this._artEpoch||0))){this.clearYuzuSeeds();L=this._yzSeeds;}
     while(L.length>want){const q=L.pop();q.spr?.destroy();q.shadow?.destroy();}
     while(L.length<want){const art=this.yuzuMinionArt({kind:cfg.t}),key=this.textures.exists(art)?art:this.textures.exists('minion_yuzling')?'minion_yuzling':'vfx_glow',spr=this.camWorld(this.add.sprite(p.x,p.y,key,0).setDisplaySize(YZ_SEED_SIZE,YZ_SEED_SIZE).setDepth(p.y));if(key!==art)spr.setTint(cfg.color);
-      const shadow=this.add.ellipse?this.camWorld(this.add.ellipse(p.x,p.y,16,5,0x17111b,.16)):null;
+      const shadow=this.add.graphics?this.camWorld(this.add.graphics().setPosition(p.x,p.y)):this.add.ellipse?this.camWorld(this.add.ellipse(p.x,p.y,16,5,0x17111b,.16)):null; if(shadow?.fillEllipse)shadow.fillStyle(0x17111b,.09).fillEllipse(0,0,28,10).fillStyle(0x17111b,.18).fillEllipse(0,0,18,6);   /* v8.1.149 เจ้าของ: ลูกน้อง Yuzu มีเงานุ่ม 2 ชั้น */
       const q={spr,shadow,kind:cfg.t,cfg,maxhp:1,player:p,basic:b,epoch:this._artEpoch||0,idx:L.length,vx:0,vy:0,retarget:0,target:null,combo:0,seen:new WeakMap()};L.push(q);this.yuzuSeedSpawn(q,q.idx,want);}
     const leader=this._yuzuCrew?.[0],foes=this.yuzuEnemies();
     for(const q of L){const sp=q.spr;q.alive=true;q.hp=q.maxhp||1;q.regrow=0;q.cd-=dt;q.retarget-=dt;
@@ -19667,7 +19668,7 @@ class Game extends Phaser.Scene {
     sp.setRotation(!red&&pose.state==='roll'?(m.motion.t-m.motion.prep)*14:v.rot).setAlpha(1).setDepth((m.groundY??sp.y)+2);
     m.visualState=pose.state;
     if(m.shadow){const air=Math.min(1,Math.max(0,((m.groundY??sp.y)-sp.y)/75)),gy=(m.groundY??sp.y)+size*(foot-.5);
-      m.shadow.clear().setDepth((m.groundY??sp.y)+1);m.shadow.fillStyle(0x160d20,.2-air*.13).fillEllipse(sp.x,gy,size*.62*(1-air*.35),Math.max(5,size*.15*(1-air*.3)));}
+      m.shadow.clear().setDepth((m.groundY??sp.y)+1);m.shadow.fillStyle(0x160d20,.1-air*.06).fillEllipse(sp.x,gy,size*.9*(1-air*.35),Math.max(7,size*.22*(1-air*.3)));m.shadow.fillStyle(0x160d20,.2-air*.13).fillEllipse(sp.x,gy,size*.62*(1-air*.35),Math.max(5,size*.15*(1-air*.3)));}
     m.label.setText((()=>{const F=typeof YUZU_FORMS!=='undefined'?YUZU_FORMS:{};return m.kind==='pomelo'?((F.pomelo||['Pomelo'])[form-1]||'Pomelo')+' · Form '+form:((F[m.kind]||[])[form-1]||({lime:'Lime',bloodorange:'Blood Orange',yuzling:'Yuzling'})[m.kind]);})()).setPosition(sp.x,sp.y-size*.58-14);
     const w=42,x=sp.x-w/2,y=sp.y-size*.58-4,u=this.yuzuBuff(),f=u?u.t/u.total:0;
     m.bar.clear();if(u){const color=({pomelo:0xffd466,lime:0xb7ff7c,bloodorange:0xef91c8})[m.kind]||0xffdc88;sp.setTint(color);m.label.setText(({pomelo:'Pomelo',lime:'Lime',bloodorange:'Blood Orange',yuzling:'Yuzling'})[m.kind]+' · '+Math.ceil(u.t)+'s');const gy=(m.groundY??sp.y)+size*(foot-.5)+7;m.bar.lineStyle(2,color,.7).strokeCircle(sp.x,gy,11);m.bar.lineStyle(3,color,.95);m.bar.beginPath?.();m.bar.arc?.(sp.x,gy,11,-Math.PI/2,-Math.PI/2+Math.PI*2*f);m.bar.strokePath?.();}
@@ -23743,8 +23744,8 @@ class Game extends Phaser.Scene {
     if(b._aura){ b._aura.setPosition(b.x,b.y);   // ออร่าEnraged
       if(b._auraIsFx) b._aura.setScale((b._baseScale||1)*2.4*(1+Math.sin(b._breathe*1.5)*0.06));
       else b._aura.setScale(1+Math.sin(b._breathe*1.5)*0.12).setAlpha(0.12+Math.abs(Math.sin(b._breathe))*0.1); }
-    if(b._hungerHalo){b._hungerHalo.forEach((h,i)=>{if(!h||!h.active)return;h.setPosition(b.x,b.y).setDepth(b.y-3-i).setRotation((b._hungerSpin||0)*(i?-.34:.48)).setScale((i?2.62:2.05)*(b.phase4?1.24:b.phase3?1.13:b.phase2?1.06:1)).setAlpha((i?0.26:0.42)+(b.phase4?0.12:0));});}
-    if(b._hungerOrbs){b._hungerSpin=(b._hungerSpin||0)+dt*(b.phase4?2.35:b.phase3?1.82:1.18);b._hungerOrbs.forEach((o,i)=>{if(!o||!o.active)return;const a=b._hungerSpin+i*TAU/b._hungerOrbs.length,r=(b.phase4?174:b.phase3?151:b.phase2?132:119);o.setPosition(b.x+Math.cos(a)*r,b.y+Math.sin(a)*r*0.55).setDepth(b.y+(Math.sin(a)>0?5:-4)).setScale((b.phase4?0.50:0.36)+(Math.sin(a)+1)*0.09).setAlpha(0.62+Math.abs(Math.sin(a))*0.34);});}
+    if(b._hungerHalo){b._hungerHalo.forEach((h,i)=>{if(!h||!h.active)return;h.setPosition(b.x,b.y).setDepth(b.y-3-i).setRotation((b._hungerSpin||0)*(i?-.34:.48)).setScale((i?2.62:2.05)*(b.phase4?1.24:b.phase3?1.13:b.phase2?1.06:1)).setAlpha((i?0.1:0.2)+(b.phase4?0.06:0));});}
+    if(b._hungerOrbs){b._hungerSpin=(b._hungerSpin||0)+dt*(b.phase4?2.35:b.phase3?1.82:1.18);b._hungerOrbs.forEach((o,i)=>{if(!o||!o.active)return;const a=b._hungerSpin+i*TAU/b._hungerOrbs.length,r=(b.phase4?174:b.phase3?151:b.phase2?132:119);o.setPosition(b.x+Math.cos(a)*r,b.y+Math.sin(a)*r*0.55).setDepth(b.y-4).setScale((b.phase4?0.36:0.26)+(Math.sin(a)+1)*0.06).setAlpha(0.32+Math.abs(Math.sin(a))*0.2);});}
     if(this.tickBossPhaseTransition(b,dt))return;
     if(b.frozen>0)return;
     if(b.atkCd===undefined)b.atkCd=1.6; b.atkCd-=dt*this.bossAggro(b)/(b.rageCdMul||1);

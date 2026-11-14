@@ -3994,3 +3994,8 @@ Owner: Strawberry never got to try a build — Build Path opened at C1-2 and C1-
 
 Delivery `asset-delivery/pathuq82` merged (18/18 match MANIFEST). `scripts/pack-pathuq82.py` → `assets/art/pathuq82/` 15 × 720×298 WebP q80 (483 KB · 0.82 MB GPU each, 3 per run); Sesame's 3 kept in incoming only (rune mode has no Build Path). Keys `pathuq82_<hero>_<path>` in ASSET_IMAGES, `artClass` stage, `stageArtKeys` loads the current hero's 3 (order-80 path cards no longer loaded; flip layout off since v8.1.144). `drawReadableChoiceCard` wide branch: Build Path with a loaded picture → full-card cover image (centred crop) + thin rarity-colour frame, text from 50% width in light colours with dark stroke; otherwise the v8.1.144 square crop / icon. Tests: new pathuq82-art; special-picks80-art updated (artClass regex, stage keys).
 
+
+# Delivery: v8.1.147 — audio order A14 wired — chest opening sounds (owner)
+
+Delivery `asset-delivery/audio-a14` merged (8/8 match MANIFEST). `scripts/pack-audio-a14.py` → `assets/audio/sfx/chest_a14/` 8 MP3 96k mono (114 KB). Keys `sfx_chest_shake_build`, `sfx_chest_burst_{common,rare,epic,legend}`, `sfx_chest_confetti`, `sfx_chest_item_land`, `sfx_chest_duplicate` in ASSET_AUDIO; lazy-loaded by `chestSfxLoad()` (called in `buildBazaar` and `openChest`). `openChest`: build-up `chest_shake_build` (fallback `Sfx.chest`), burst `chest_burst_<tier>` (fallback `box_reveal_*`), epic/legend + `chest_confetti` at 120 ms, `chest_item_land` / `chest_duplicate` at 380 ms. Test: new audio-a14.
+

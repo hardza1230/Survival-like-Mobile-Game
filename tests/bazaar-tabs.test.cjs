@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');const src=fs.readFileSync('game.js','utf8');
 function method(n){const a=src.indexOf('\n  '+n+'(');assert(a>0,n);let i=src.indexOf('{',a),d=0;for(;i<src.length;i++){if(src[i]==='{')d++;else if(src[i]==='}'&&--d===0)break;}return src.slice(a+3,i+1);}
-assert(src.includes("[['chests','Chests'],['shop','Shop'],['trade','Trade'],['thread','Thread']]"),'4 tabs (v8.1.45 Thread shop)');
+assert(src.includes("bTabs=[['chests','Chests'],['shop','Shop'],['trade','Trade'],noIap?['wardrobe','Wardrobe']:['thread','Thread']]")&&src.includes("if(id==='wardrobe'){ this.menuScreen='wardrobe';"),'4 tabs; Wardrobe replaces Thread while IAP is off (v8.1.149)');
 assert(src.includes("TAB={buy:'shop',orders:'shop',gamble:'chests',sell:'trade'}"),'old tab ids map');
 assert(method('buildChestShop').includes("id:'sugar',name:'Sugar Chest'"),'Sugar chest in chest tab');
 assert(method('buildChestShop').includes("more '+(pity===1?'open':'opens')+' → guaranteed Legend'"),'gold pity shown');
