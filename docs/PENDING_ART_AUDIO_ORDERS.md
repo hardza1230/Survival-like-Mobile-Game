@@ -13,7 +13,8 @@
 | 4 | `docs/art_orders/69_HERO_SKINS.md` | สกิน Festival: **Mint แก้ 4 ชีต** (gale f6 · impaler_release f4 · run f4/8/9/11+ ล้นขอบ → วาดตัวเล็กลง) แล้วตัวฮีโร่ที่เหลือจาก candidates → ตัวจริง · ตรวจด้วย `scripts/qa-skin69.py <hero>` ก่อนส่ง | 61 | ImageGen | `assets/incoming/skins69/` | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | 5 | `docs/art_orders/80_SPECIAL_PICKS.md` | **หน้าเลือกพิเศษ** ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ดภาพวาด Build Path 15+1 | 21 | ImageGen | `assets/incoming/special_picks80/` | 🟢 ผูกแล้ว v8.1.137 · รอ QA มือถือ |
 | 6 | `docs/art_orders/81_RELICS_SPECIAL_ICONS.md` | **ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3** (+ แก้การ์ด Cocoa 2 ไม่บังคับ) | 54 | ImageGen | `assets/incoming/relics81/` | 🟡 รออาร์ต |
-| 7 | `docs/art_orders/82_BUILD_PATH_UNIQUE_ART.md` | ภาพ Build Path เต็มการ์ดแนวนอน 1024×424 เน้น Unique · 6 ฮีโร่ × 3 | 18 | ImageGen | `assets/incoming/pathuq82/` | 📦 ส่งแล้ว รอผูก · 18/18 |
+| 7 | `docs/art_orders/82_BUILD_PATH_UNIQUE_ART.md` | ภาพ Build Path เต็มการ์ดแนวนอน 1024×424 เน้น Unique · 6 ฮีโร่ × 3 | 18 | ImageGen | `assets/incoming/pathuq82/` | 🟢 ผูกแล้ว v8.1.146 (15/18 · งาดำไม่ใช้) |
+| 8 | `docs/audio_orders/A14_CHEST_OPENING.md` | เสียงลุ้นเปิดกล่อง + ระเบิด 4 ระดับ + ประกาย/ไอเทมลง/ของซ้ำ | 8 | ElevenLabs Sound Effects | `assets/incoming/audio_chest_a14/` | 📦 ส่งแล้ว รอผูก · 8/8 |
 | — | `docs/audio_orders/A04_STORY_MUSIC_STINGERS.md` | เพลงเรื่อง/Lobby | 6 | ElevenLabs Music | `assets/incoming/audio_story_music/` | 🟢 ส่งและผูกครบ · เจ้าของฟังแล้วโอเค 8 พ.ย. 2026 |
 
 ## หมายเหตุ
@@ -22,4 +23,4 @@
 - **69:** เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว · ขายแยกเหลือ pet/trail/dash/pop
 - ใบ 72 `gp_ingredients` / `gp_recipe_card` ไม่ใช้แล้ว (Grandma's Pot เปลี่ยนเป็นแบบ Ritual v8.1.106) — ไม่ต้องทำเพิ่ม
 
-**ใหม่ 14 พ.ย.:** `docs/audio_orders/A14_CHEST_OPENING.md` (8 เสียง → `assets/incoming/audio_chest_a14/`)
+**ใหม่ 14 พ.ย.:** ใบ 82 (ผูกแล้ว v8.1.146) · A14 เสียงเปิดกล่อง (`assets/incoming/audio_chest_a14/`)

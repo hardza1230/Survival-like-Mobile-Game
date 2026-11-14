@@ -1,6 +1,6 @@
 # A14 — เสียงเปิดกล่อง (Bazaar / Weekly / Gift / Login) · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 14 พ.ย. 2026 · ส่งที่ `assets/incoming/audio_chest_a14/` พร้อม `MANIFEST.json` (key, file, bytes, sha256, duration_ms)
+สถานะ: 📦 ส่งแล้ว รอผูก · 8/8 · เขียน 14 พ.ย. 2026 · ส่งที่ `assets/incoming/audio_chest_a14/` พร้อม `MANIFEST.json` (key, file, bytes, sha256, duration_ms)
 เครื่องมือ: **ElevenLabs Sound Effects** (เจ้าของสั่ง: ห้ามเสียงสร้างด้วยโค้ด/Runway)
 
 ## ทำไมต้องสั่ง (🐞 เจ้าของ 13–14 พ.ย.)
@@ -40,3 +40,8 @@ MP3 mono 44.1 kHz 128 kbps (เกมบีบเหลือ 96k เอง) · 
 - ไฟล์ → `assets/audio/sfx/chest_a14/` · ลงทะเบียน `ASSET_AUDIO.sfx_chest_*` (menu-lazy)
 - `openChest()`: เริ่มสั่น → `Sfx.orderCue('chest_shake_build')` แทน `Sfx.chest()` · ระเบิด → `chest_burst_<tier>` แทน `box_reveal_*` (เก็บเป็น fallback) · epic/legend ซ้อน `chest_confetti` · ไอเทมเด้ง → `chest_item_land` · ของซ้ำแปลงด้าย → `chest_duplicate`
 - ใช้กับทุกที่ที่เรียก `openChest` (Bazaar, Weekly, Gift, Login)
+
+## ส่งมอบ
+
+- 14 พ.ย. 2026 · ส่งครบ 8/8 ไฟล์ที่ `assets/incoming/audio_chest_a14/` · ขาด 0 · 📦 ส่งแล้ว รอผูก
+- สร้างด้วย ElevenLabs Sound Effects · ตรวจ MP3 mono 44.1 kHz 128 kbps, ความยาว, พีกจริง และช่วงเงียบต้นไฟล์ด้วยสคริปต์ · รอฟังกับจังหวะเปิดกล่องจริงบนมือถือ
