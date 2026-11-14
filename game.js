@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.146';
+const GAME_VERSION = '8.1.147';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.147',date:'2026-11-14',title:'Chest opening sounds',items:['New chest opening sounds: a shake build-up, then a burst that grows with rarity','Sparkle burst on Epic and Legend, plus item-land and duplicate sounds']},
   {v:'8.1.146',date:'2026-11-14',title:'Painted Build Path cards',items:['Each Build Path card now shows a full painting of that build’s Unique skill']},
   {v:'8.1.145',date:'2026-11-14',title:'Build Paths from the first stage',items:['Strawberry can pick a Build Path from C1-1, so every hero gets to try a build before the next friend joins']},
   {v:'8.1.144',date:'2026-11-14',title:'Clearer rewards',items:['Miniboss loot shows what you got before the level-up and the chest','The stage results appear one by one','Build Path cards are wide again with painted art and short text','Herald gates no longer farm EXP; the Wisp walks slowly even when you are away','Drops have soft shadows; Chapter 1 bosses share one theme']},
@@ -4283,6 +4284,15 @@ const ASSET_AUDIO = {
   sfx_stage_victory:'assets/audio/story_music/sfx_stage_victory.mp3',
   sfx_stage_defeat:'assets/audio/story_music/sfx_stage_defeat.mp3',
   sfx_chapter_clear:'assets/audio/story_music/sfx_chapter_clear.mp3',
+  // v8.1.147 audio order A14: chest opening (build-up · 4 rarity bursts · confetti · item land · duplicate→Thread)
+  sfx_chest_shake_build:'assets/audio/sfx/chest_a14/chest_shake_build.mp3',
+  sfx_chest_burst_common:'assets/audio/sfx/chest_a14/chest_burst_common.mp3',
+  sfx_chest_burst_rare:'assets/audio/sfx/chest_a14/chest_burst_rare.mp3',
+  sfx_chest_burst_epic:'assets/audio/sfx/chest_a14/chest_burst_epic.mp3',
+  sfx_chest_burst_legend:'assets/audio/sfx/chest_a14/chest_burst_legend.mp3',
+  sfx_chest_confetti:'assets/audio/sfx/chest_a14/chest_confetti.mp3',
+  sfx_chest_item_land:'assets/audio/sfx/chest_a14/chest_item_land.mp3',
+  sfx_chest_duplicate:'assets/audio/sfx/chest_a14/chest_duplicate.mp3',
   sfx_box_reveal_common:'assets/audio/story_music/sfx_box_reveal_common.mp3',
   sfx_box_reveal_rare:'assets/audio/story_music/sfx_box_reveal_rare.mp3',
   sfx_box_reveal_epic:'assets/audio/story_music/sfx_box_reveal_epic.mp3',
@@ -14183,6 +14193,7 @@ class Game extends Phaser.Scene {
   chestVisual(c,x,y,sz){ for(const k of ['chest_'+c.id,'prize_chest','chest']){ if(this.realTex(k)){ const im=this.add.image(x,y,k); im.setScale(sz/Math.max(im.width,im.height)); if(k!=='chest_'+c.id&&c.id==='silver')im.setTint(0xd8e2f0); return im; } }
     return this.add.text(x,y,'🧰',{fontSize:Math.round(sz*.7)+'px'}).setOrigin(.5); }   // ใบสั่งอาร์ต 40 จะส่ง chest_silver/chest_gold
   /* v8.1.142 owner 🐞 "chest effects not grand": confetti + light rings by rarity (code-drawn, no new art) */
+  chestSfxLoad(){ try{ const sc=this,keys=['chest_shake_build','chest_burst_common','chest_burst_rare','chest_burst_epic','chest_burst_legend','chest_confetti','chest_item_land','chest_duplicate'].map(k=>'sfx_'+k).filter(k=>ASSET_AUDIO[k]&&!sc.cache?.audio?.exists(k)); if(!keys.length||!sc.load?.audio)return; keys.forEach(k=>sc.load.audio(k,verUrl(ASSET_AUDIO[k]))); if(!sc.load.isLoading())sc.load.start(); }catch(e){} }
   chestBurst(x,y,color,tier){ if(!this.add||!this.tweens)return; const n={legend:40,epic:26,rare:16}[tier]||10,rings=tier==='legend'?3:tier==='epic'?2:1,cols=[color,0xffffff,0xfff1a8];
     for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2,d=110+Math.random()*(tier==='legend'?260:180),r=3+Math.random()*(tier==='legend'?7:5),dot=i%3===2?this.add.star(x,y,5,r*.6,r*1.4,cols[i%3]):this.add.circle(x,y,r,cols[i%3]); dot.setDepth?.(60); this.menu.add(dot);
       this.tweens.add({targets:dot,x:x+Math.cos(a)*d,y:y+Math.sin(a)*d+40,alpha:0,scale:{from:1.2,to:.3},angle:Math.random()*360,duration:700+Math.random()*700,ease:'Cubic.out',onComplete:()=>dot.destroy()}); }
@@ -14197,7 +14208,7 @@ class Game extends Phaser.Scene {
     const glow=this.add.image(w/2,h*.47,'vfx_glow').setScale(.4).setAlpha(.3).setTint(c.tint),chest=anim?this.add.image(w/2,h*.47,ok,'cell0').setDisplaySize(230,230):this.chestVisual(c,w/2,h*.47,170),cs=chest.scale;
     if(anim){ let t=620; [100,90,90,110,140].forEach((ms,i)=>{ t+=ms; this.time.delayedCall(t,()=>{ if(chest.active)chest.setFrame('cell'+(i+1)); }); }); }   // ใบ 40: สั่น → ฝาเด้ง → แสง → ค้างเปิด
     const status=this.add.text(w/2,h*.66,'Tap… the lid is shaking!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#c7bdd6'}).setOrigin(.5);
-    glow.setVisible(false);this.menu.add(bg);this.revealBackdrop?.(this.menu,w,h);this.menu.add([title,glow,chest,status]); this.menu.setVisible(true); Sfx.chest?.(); { const tt=this.add.text(w/2,Math.max(26,h*.065),'🧶 Thread '+Save.threads(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#cfe9ff',stroke:'#1a0f1e',strokeThickness:4,backgroundColor:'#2a1d3acc',padding:{x:12,y:5}}).setOrigin(.5); this.menu.add(tt); this._chestThrTxt=tt; }   // v8.0.70 เจ้าของ: หน้าเปิดหีบบอก Thread ที่เหลือ
+    glow.setVisible(false);this.menu.add(bg);this.revealBackdrop?.(this.menu,w,h);this.menu.add([title,glow,chest,status]); this.menu.setVisible(true); this.chestSfxLoad?.(); if(!(Sfx.orderCue?.('chest_shake_build',.5,.1)))Sfx.chest?.(); { const tt=this.add.text(w/2,Math.max(26,h*.065),'🧶 Thread '+Save.threads(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#cfe9ff',stroke:'#1a0f1e',strokeThickness:4,backgroundColor:'#2a1d3acc',padding:{x:12,y:5}}).setOrigin(.5); this.menu.add(tt); this._chestThrTxt=tt; }   // v8.0.70 เจ้าของ: หน้าเปิดหีบบอก Thread ที่เหลือ
     this.tweens.add({targets:chest,angle:{from:-6,to:6},duration:80,yoyo:true,repeat:anim?3:10});
     if(!anim){ this.tweens.add({targets:chest,scale:{from:chest.scale,to:chest.scale*1.12},duration:1100,ease:'Quad.in'}); this.time.delayedCall(500,()=>this.screenShake?.(250,.004)); this.time.delayedCall(850,()=>this.screenShake?.(300,.008)); }   /* v8.1.142 owner 🐞: chest opening felt flat → tension builds before the pop */
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.4,alpha:{from:.2,to:.85},duration:1100,ease:'Cubic.in'});
@@ -14208,12 +14219,13 @@ class Game extends Phaser.Scene {
       { /* v8.1.143 code-drawn rays instead of vfx_chest_rays (-1.5 MB GPU) */ const ry=this.add.graphics({x:w/2,y:h*.47}); for(let i=0;i<12;i++){ const a=i*Math.PI/6,sp=.12; ry.fillStyle(color,i%2?.22:.38).beginPath().moveTo(0,0).lineTo(Math.cos(a-sp)*200,Math.sin(a-sp)*200).lineTo(Math.cos(a+sp)*200,Math.sin(a+sp)*200).closePath().fillPath(); } ry.setBlendMode(Phaser.BlendModes.ADD); this.menu.addAt(ry,2); this.tweens.add({targets:ry,rotation:Math.PI*2,duration:9000,repeat:-1}); this.tweens.add({targets:ry,scale:{from:.6,to:1},duration:420,ease:'Back.out'}); glow.setVisible(false); }
       const gArt=it?('gear_'+it.id):null; if(gArt&&this.textures.exists(gArt)){ const gi=this.add.image(w/2,h*.47,gArt).setDisplaySize(130,130),ts=gi.scaleX; gi.setScale(ts*.2); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:360,ease:'Back.out'}); }
       glow.setTint(color).setScale(2.9).setAlpha(.9); this.screenFlash(color,t2==='legend'?.85:t2==='epic'?.65:.4,520); this.screenShake(t2==='legend'?620:300,t2==='legend'?.02:.008); this.chestBurst?.(w/2,h*.47,color,t2);
-      /* v8.1.142 owner 🐞: chest sound did not fit → the rarity reveal stingers (box_reveal_*) instead of the generic clear/legend cue */ if(!(Sfx.orderCue?.('box_reveal_'+(t2==='legend'?'legend':t2==='epic'?'epic':t2==='rare'?'rare':'common'),t2==='legend'?.55:.45,.1))){ if(t2==='legend')Sfx.legend?.(); else Sfx.clear?.(); }
+      /* v8.1.142 owner 🐞: chest sound did not fit → the rarity reveal stingers (box_reveal_*) instead of the generic clear/legend cue */ const tn=t2==='legend'?'legend':t2==='epic'?'epic':t2==='rare'?'rare':'common'; if(t2==='legend'||t2==='epic')this.time.delayedCall(120,()=>Sfx.orderCue?.('chest_confetti',.4,.1)); this.time.delayedCall(380,()=>Sfx.orderCue?.(it?'chest_item_land':'chest_duplicate',.45,.1));   /* v8.1.147 A14 */
+      if(!(Sfx.orderCue?.('chest_burst_'+tn,t2==='legend'?.6:.5,.1))&&!(Sfx.orderCue?.('box_reveal_'+tn,t2==='legend'?.55:.45,.1))){ if(t2==='legend')Sfx.legend?.(); else Sfx.clear?.(); }
       title.setText(it?(t2==='legend'?'🌟 LEGEND 🌟':t2==='epic'?'✦ EPIC ✦':t2==='rare'?'★ RARE ★':'COMMON'):'All owned').setColor(hex);
       status.setText(it?(it.name+'\n'+TIER_LABEL[t2].name+gearDeliverySuffix(it)):'Refund 🧶'+Math.round(c.cost*.5)).setColor('#ffffff').setAlign('center').setFontSize('18px');
       const bw=Math.min(w-60,260),by=h*.82,btn=this.add.graphics(); btn.fillStyle(color,1).fillRoundedRect(w/2-bw/2,by-24,bw,48,16); const bt=this.add.text(w/2,by,'Collect',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#17101d'}).setOrigin(.5); this.menu.add([btn,bt]);
       this._gachaBusy=false; this._zone(w/2-bw/2,by-24,bw,48,()=>{ this._chestOpen=false; const bk=this._chestBack; this._chestBack=null; if(bk){ this.menuScreen=bk; } else { this._bazTab='chests'; this.menuScreen='bazaar'; } this.buildMenuScreen(); }); }); }
-  buildBazaar(){
+  buildBazaar(){ this.chestSfxLoad?.();   /* v8.1.147 preload A14 chest sounds while browsing */
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
     /* v8.0.25 เจ้าของ: เหลือ 3 แท็บ — หีบ (เงิน/ทอง/Sugar) · ร้าน (ของ 4 + วัสดุ 2 รีเฟรชฟรีวันละครั้ง) · แลก (Trade-in + ขายวัสดุ) */
     const TAB={buy:'shop',orders:'shop',gamble:'chests',sell:'trade'},w=this.W,h=this.H,hs=this._hdrShift(),tab=this._bazTab=(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED&&this._bazTab==='thread')?'chests':(TAB[this._bazTab]||this._bazTab||'chests'),top=(tab==='shop'?153:121)+hs;

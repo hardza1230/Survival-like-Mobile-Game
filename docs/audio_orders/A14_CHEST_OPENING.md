@@ -1,6 +1,6 @@
 # A14 — เสียงเปิดกล่อง (Bazaar / Weekly / Gift / Login) · ใบสั่งเสียง
 
-สถานะ: 📦 ส่งแล้ว รอผูก · 8/8 · เขียน 14 พ.ย. 2026 · ส่งที่ `assets/incoming/audio_chest_a14/` พร้อม `MANIFEST.json` (key, file, bytes, sha256, duration_ms)
+สถานะ: 🟢 ผูกแล้ว v8.1.147 · รอเจ้าของฟังบนมือถือ · 8/8 · เขียน 14 พ.ย. 2026 · ส่งที่ `assets/incoming/audio_chest_a14/` พร้อม `MANIFEST.json` (key, file, bytes, sha256, duration_ms)
 เครื่องมือ: **ElevenLabs Sound Effects** (เจ้าของสั่ง: ห้ามเสียงสร้างด้วยโค้ด/Runway)
 
 ## ทำไมต้องสั่ง (🐞 เจ้าของ 13–14 พ.ย.)
@@ -45,3 +45,4 @@ MP3 mono 44.1 kHz 128 kbps (เกมบีบเหลือ 96k เอง) · 
 
 - 14 พ.ย. 2026 · ส่งครบ 8/8 ไฟล์ที่ `assets/incoming/audio_chest_a14/` · ขาด 0 · 📦 ส่งแล้ว รอผูก
 - สร้างด้วย ElevenLabs Sound Effects · ตรวจ MP3 mono 44.1 kHz 128 kbps, ความยาว, พีกจริง และช่วงเงียบต้นไฟล์ด้วยสคริปต์ · รอฟังกับจังหวะเปิดกล่องจริงบนมือถือ
+- 14 พ.ย. 2026 · **ผูกแล้ว v8.1.147** · `scripts/pack-audio-a14.py` → `assets/audio/sfx/chest_a14/` MP3 96k mono (รวม 114 KB) · โหลดตอนเข้า Bazaar (`chestSfxLoad`) · ถ้าเสียงใหม่ยังไม่โหลด ใช้ `sfx_chest` / `box_reveal_*` เดิม

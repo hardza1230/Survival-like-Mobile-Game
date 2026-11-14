@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.146**. Next release:8.1.147. Fetch the deploy branch before new work.
+Current release: **8.1.147**. Next release:8.1.148. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.146 — art order 82 wired — Build Path full-card Unique art (owner)
+# Latest delivery: v8.1.147 — audio order A14 wired — chest opening sounds (owner)
+
+Delivery `asset-delivery/audio-a14` merged (8/8 match MANIFEST). `scripts/pack-audio-a14.py` → `assets/audio/sfx/chest_a14/` 8 MP3 96k mono (114 KB). Keys `sfx_chest_shake_build`, `sfx_chest_burst_{common,rare,epic,legend}`, `sfx_chest_confetti`, `sfx_chest_item_land`, `sfx_chest_duplicate` in ASSET_AUDIO; lazy-loaded by `chestSfxLoad()` (called in `buildBazaar` and `openChest`). `openChest`: build-up `chest_shake_build` (fallback `Sfx.chest`), burst `chest_burst_<tier>` (fallback `box_reveal_*`), epic/legend + `chest_confetti` at 120 ms, `chest_item_land` / `chest_duplicate` at 380 ms. Test: new audio-a14.
+
+# Previous delivery: v8.1.146 — art order 82 wired — Build Path full-card Unique art (owner)
 
 Delivery `asset-delivery/pathuq82` merged (18/18 match MANIFEST). `scripts/pack-pathuq82.py` → `assets/art/pathuq82/` 15 × 720×298 WebP q80 (483 KB · 0.82 MB GPU each, 3 per run); Sesame's 3 kept in incoming only (rune mode has no Build Path). Keys `pathuq82_<hero>_<path>` in ASSET_IMAGES, `artClass` stage, `stageArtKeys` loads the current hero's 3 (order-80 path cards no longer loaded; flip layout off since v8.1.144). `drawReadableChoiceCard` wide branch: Build Path with a loaded picture → full-card cover image (centred crop) + thin rarity-colour frame, text from 50% width in light colours with dark stroke; otherwise the v8.1.144 square crop / icon. Tests: new pathuq82-art; special-picks80-art updated (artClass regex, stage keys).
-
-# Previous delivery: v8.1.145 — Build Path from C1-1 (owner)
-
-Owner: Strawberry never got to try a build — Build Path opened at C1-2 and C1-2 already hands over to Mint. `CARD_UNLOCK.path` 1 → 0 (path pick at level 5 from C1-1; tutorial still excluded via `_inTutorial`). Lore: `CARD_INTRO.path` now says a page of Grandma's recipes was tucked in the Heart Seed; the C1-2 jam jar keeps its comic line (`ruby_comic_s2_3` has an exact voice line, test ruby-storybook) and `docs/STORY_CANON.md` C1-2 row notes the change.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -50,7 +50,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - ใบ 81 ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3 · (ไม่บังคับ) การ์ด Cocoa Titan/Dash Boxer ใหม่ 🟡 รออาร์ต · ส่งที่ `assets/incoming/relics81/`
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
-- A14 เสียงเปิดกล่อง 8 (ลุ้น + ระเบิด 4 ระดับ) 🟡 รอเสียง · `assets/incoming/audio_chest_a14/` · ผูกใน `openChest`
+- A14 เสียงเปิดกล่อง 8 ผูกแล้ว v8.1.147 (`openChest` · fallback เสียงเดิม) · รอฟังบนมือถือ
 - (A04 ส่งครบแล้ว · หัวไฟล์ A01–A05 อัปเดตเป็น ✅ 14 พ.ย.)
 
 **รอ QA บนมือถือของเจ้าของ**
