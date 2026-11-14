@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.144';
+const GAME_VERSION = '8.1.145';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -85,11 +85,12 @@ const STORY_WAVE_PLAN=[
 /* v7.9.86 เจ้าของ: มอน/บอส/มินิบอสห้ามเกิดนอกแมพ · จุดที่อยู่นอกแมพ → ย้ายไปกลางแมพ (สุ่มรอบ ๆ กลางเล็กน้อย) */
 function inMapPt(x,y,m=80){ const L=WORLD/2-m; return [Math.max(-L,Math.min(L,x)),Math.max(-L,Math.min(L,y))]; }   // v8.1.105 เจ้าของ: มอนโผล่กลางจอ — เดิมจุดนอกแมพถูกสุ่มไปใกล้กลางแมพ → ตอนนี้ดันเข้าขอบแมพแทน
 const STORY_HP_MUL=1.2;   // v7.9.85 เจ้าของ: ตัวละครตีแรงไป → มอน/Elite/มินิ/บอสใน Story ถึกขึ้น 20%
-const CARD_UNLOCK={path:1,relic:2,unique:3,mod:4,mutation:5,evolution:5,infusion:6,trade:7};
-const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 fighting styles for this stage. Your next cards follow that style.'],relic:['🔮','Relic','A strong passive bonus that lasts the whole stage. You can hold a few.'],unique:['⭐','Unique Upgrade','You used your Unique 3 times — now you can power it up.'],mod:['🧩','Modifier','Adds a new trick to your attack, like an explosion or chain hit.'],mutation:['⭐','Mutation','Change how your attack works. Pick 1, the other locks.'],evolution:['✨','Evolution','Your attack is maxed — evolve it into its final form!'],infusion:['🍯','Flavor Infusion','Give your attack a flavor: burn, freeze, poison or heal.'],trade:['⚖️','Trade-off','Big bonus with a cost. Read both sides before you take it.']};
+const CARD_UNLOCK={path:0,relic:2,unique:3,mod:4,mutation:5,evolution:5,infusion:6,trade:7};
+const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes was tucked in your Heart Seed! Pick 1 of 3 fighting styles for this stage. Your next cards follow that style.'],relic:['🔮','Relic','A strong passive bonus that lasts the whole stage. You can hold a few.'],unique:['⭐','Unique Upgrade','You used your Unique 3 times — now you can power it up.'],mod:['🧩','Modifier','Adds a new trick to your attack, like an explosion or chain hit.'],mutation:['⭐','Mutation','Change how your attack works. Pick 1, the other locks.'],evolution:['✨','Evolution','Your attack is maxed — evolve it into its final form!'],infusion:['🍯','Flavor Infusion','Give your attack a flavor: burn, freeze, poison or heal.'],trade:['⚖️','Trade-off','Big bonus with a cost. Read both sides before you take it.']};
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.145',date:'2026-11-14',title:'Build Paths from the first stage',items:['Strawberry can pick a Build Path from C1-1, so every hero gets to try a build before the next friend joins']},
   {v:'8.1.144',date:'2026-11-14',title:'Clearer rewards',items:['Miniboss loot shows what you got before the level-up and the chest','The stage results appear one by one','Build Path cards are wide again with painted art and short text','Herald gates no longer farm EXP; the Wisp walks slowly even when you are away','Drops have soft shadows; Chapter 1 bosses share one theme']},
   {v:'8.1.143',date:'2026-11-14',title:'Lighter effects',items:['Simple glows, rings and screen veils are now drawn by the game instead of images, so phones use less memory']},
   {v:'8.1.142',date:'2026-11-13',title:'Smoother ads, mission button, louder chests',items:['Rewarded ads load in advance so the button works at once, and game music pauses during the ad','Missions start with a Start mission button instead of a ring','Chest openings build up and burst with rarity sounds and confetti','C1-1 has its own music again; the level-up screen fades in gently','Pinnacle: going Back before the run gives your entry back']},
