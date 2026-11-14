@@ -7,8 +7,8 @@ for(const r of man){const raw=fs.readFileSync(kit+r.file);assert.equal(raw.lengt
   assert(src.includes("'"+out+"'"),r.key+' registered with a literal url');}
 assert(src.includes("book80_page_glow:{url:'assets/art/special_picks80/book80_page_glow.webp',fw:288,fh:360,frames:6"));
 // Loading class: stage (never boot); a run loads only the current hero's 3 path cards + back.
-assert(/if\(\/\^\(\?:vault80\|forge80\|book80\|pathcard80\)_\/\.test\(k\)\)return 'stage';/.test(src));
-assert(/keys\.push\('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow','pathcard80_back',\.\.\.\(\(typeof BASIC_PATHS/.test(src));
+assert(/if\(\/\^\(\?:vault80\|forge80\|book80\|pathcard80\|pathuq82\)_\/\.test\(k\)\)return 'stage';/.test(src));   // v8.1.146 + order 82
+assert(src.includes("keys.push('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow',...((typeof BASIC_PATHS!=='undefined'&&BASIC_PATHS[hh])||[]).map(p=>'pathuq82_'+hh+'_'+p.id))"));   // v8.1.146: Build Path art = order 82 (flip cards off since v8.1.144)
 // Hooks: book only with art and two Mutation options; painted cards only when all 3 + back are loaded; old cards otherwise.
 assert(src.includes("opts.length===2&&opts.every(o=>o&&o.mutation)&&this.realTex?.('book80_spread')"));
 assert(src.includes("opts.every(o=>o&&o.kind==='Build Path'&&this.realTex?.(pathCardKey(o.key)))&&this.realTex?.('pathcard80_back')"));

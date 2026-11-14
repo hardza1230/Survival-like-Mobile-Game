@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.145';
+const GAME_VERSION = '8.1.146';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.146',date:'2026-11-14',title:'Painted Build Path cards',items:['Each Build Path card now shows a full painting of that build’s Unique skill']},
   {v:'8.1.145',date:'2026-11-14',title:'Build Paths from the first stage',items:['Strawberry can pick a Build Path from C1-1, so every hero gets to try a build before the next friend joins']},
   {v:'8.1.144',date:'2026-11-14',title:'Clearer rewards',items:['Miniboss loot shows what you got before the level-up and the chest','The stage results appear one by one','Build Path cards are wide again with painted art and short text','Herald gates no longer farm EXP; the Wisp walks slowly even when you are away','Drops have soft shadows; Chapter 1 bosses share one theme']},
   {v:'8.1.143',date:'2026-11-14',title:'Lighter effects',items:['Simple glows, rings and screen veils are now drawn by the game instead of images, so phones use less memory']},
@@ -1811,6 +1812,22 @@ const ASSET_IMAGES = {
   /* v8.1.137 ใบ 80 หน้าเลือกพิเศษ (stage lazy · pathcard80 โหลดเฉพาะ 3 ใบของฮีโร่ที่เล่น) */
   vault80_bg:'assets/art/special_picks80/vault80_bg.webp',
   vault80_pedestal:'assets/art/special_picks80/vault80_pedestal.webp',
+  // v8.1.146 art order 82: Build Path full-card Unique art (Sesame has no Build Path in rune mode → not shipped)
+  pathuq82_momo_sniper:'assets/art/pathuq82/pathuq82_momo_sniper.webp',
+  pathuq82_momo_shotgun:'assets/art/pathuq82/pathuq82_momo_shotgun.webp',
+  pathuq82_momo_ricochet:'assets/art/pathuq82/pathuq82_momo_ricochet.webp',
+  pathuq82_mint_glacier:'assets/art/pathuq82/pathuq82_mint_glacier.webp',
+  pathuq82_mint_barrage:'assets/art/pathuq82/pathuq82_mint_barrage.webp',
+  pathuq82_mint_pierce:'assets/art/pathuq82/pathuq82_mint_pierce.webp',
+  pathuq82_cocoa_brawler:'assets/art/pathuq82/pathuq82_cocoa_brawler.webp',
+  pathuq82_cocoa_titan:'assets/art/pathuq82/pathuq82_cocoa_titan.webp',
+  pathuq82_cocoa_dashboxer:'assets/art/pathuq82/pathuq82_cocoa_dashboxer.webp',
+  pathuq82_taro_storm:'assets/art/pathuq82/pathuq82_taro_storm.webp',
+  pathuq82_taro_smite:'assets/art/pathuq82/pathuq82_taro_smite.webp',
+  pathuq82_taro_tempest:'assets/art/pathuq82/pathuq82_taro_tempest.webp',
+  pathuq82_yuzu_zestSwarm:'assets/art/pathuq82/pathuq82_yuzu_zestSwarm.webp',
+  pathuq82_yuzu_citrusGuardian:'assets/art/pathuq82/pathuq82_yuzu_citrusGuardian.webp',
+  pathuq82_yuzu_juiceWorkshop:'assets/art/pathuq82/pathuq82_yuzu_juiceWorkshop.webp',
   forge80_anvil:'assets/art/special_picks80/forge80_anvil.webp',
   book80_spread:'assets/art/special_picks80/book80_spread.webp',
   pathcard80_back:'assets/art/special_picks80/pathcard80_back.webp',
@@ -4845,7 +4862,7 @@ const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',b
 /* v8.1.138 เจ้าของ: ภาพ Glacier Bloom กับ Barrage สลับกัน (ภาพพายุหิมะ = Glacier · ภาพหนามน้ำแข็งแตก = Barrage) */
 const PATHCARD_ART={glacier:'pathcard80_barrage',barrage:'pathcard80_glacier'};
 function pathCardKey(id){ return PATHCARD_ART[id]||'pathcard80_'+id; }
-function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(/^(?:vault80|forge80|book80|pathcard80)_/.test(k))return 'stage'; if(/^(?:fp|hm|hh|gp|gg|hs|ult|msn71|brm)_|^cr_root_/.test(k)||/assets\/art\/vfx78\//.test(u))return 'stage'; if(/assets\/art\/(?:menu74|patrol70)\//.test(u))return 'menu';   /* v8.1.93 อาร์ตภารกิจ = stage · ไอคอน/Patrol = menu */ if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('core79_'))return 'menu'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('sc79_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(/^(?:vault80|forge80|book80|pathcard80|pathuq82)_/.test(k))return 'stage'; if(/^(?:fp|hm|hh|gp|gg|hs|ult|msn71|brm)_|^cr_root_/.test(k)||/assets\/art\/vfx78\//.test(u))return 'stage'; if(/assets\/art\/(?:menu74|patrol70)\//.test(u))return 'menu';   /* v8.1.93 อาร์ตภารกิจ = stage · ไอคอน/Patrol = menu */ if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('core79_'))return 'menu'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('sc79_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_motion823|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
@@ -9832,7 +9849,7 @@ class Game extends Phaser.Scene {
     keys.push(...Object.keys(ASSET_FX).filter(k=>k.startsWith('st_')),'st_icons');   // v8.0.85 ใบ 62 สถานะติดตัว ทุกด่านใช้ร่วม (≈3.8 MiB)
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
     keys.push(...(this.missionArtKeys?.(idx)||[]));   /* v8.1.93 อาร์ตภารกิจ */
-    keys.push('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow','pathcard80_back',...((typeof BASIC_PATHS!=='undefined'&&BASIC_PATHS[this.character||Save.data.character])||[]).map(p=>typeof pathCardKey==='function'?pathCardKey(p.id):'pathcard80_'+p.id));   /* v8.1.137 ใบ 80 */
+    { const hh=this.character||Save.data.character; keys.push('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow',...((typeof BASIC_PATHS!=='undefined'&&BASIC_PATHS[hh])||[]).map(p=>'pathuq82_'+hh+'_'+p.id)); }   /* v8.1.146 Build Path art = order 82 (order-80 path cards no longer loaded: flip layout off since v8.1.144) */   /* v8.1.137 ใบ 80 */
     const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
     return [...new Set(keys)].filter(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]||ASSET_FX[k]);   // v7.8.32 ASSET_FX เฉพาะด่าน (C2-4) โหลดพร้อมด่าน
   }
@@ -17931,9 +17948,12 @@ class Game extends Phaser.Scene {
     let dd=String(o.desc||''),tagS=''; if(o.kind==='Build Path'){ const m=dd.match(/^[^.!?]*[.!?]/); if(m&&m[0].length>=20)dd=m[0]; }   /* v8.1.144 owner: short, simple text */{const ti=dd.search(/\s{2}·\s{2}|\s⬆\s/);if(ti>=0){tagS=dd.slice(ti).replace(/^\s*·\s*/,'').trim();dd=dd.slice(0,ti);}}
     if(hl&&hl.t){const h=hl.t.replace(/^[^A-Za-z0-9+\-−×]+/,'').replace(/…$/,'').trim();if(h.length>3&&dd.trim().startsWith(h)){const r=dd.trim().slice(h.length).replace(/^[\s,·;—-]+/,'');if(r.length>3)dd=r.charAt(0).toUpperCase()+r.slice(1);}}
     if(wide){
-      const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
-      const halo=this.lvlSocket(iconX,iconY,Math.min(45,h*0.34)*2.05,color)||this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
-      icon=iconKey?this.add.image(iconX,iconY,iconKey,iconFrame).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
+      /* v8.1.146 art order 82: Build Path = painted Unique art over the whole card, text on the darker right side */
+      const fk=isPath?'pathuq82_'+((this.basicAttack&&this.basicAttack.character)||this.character||'')+'_'+o.key:null,full=!!(fk&&this.realTex?.(fk));
+      const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=full?x+w*0.5:x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
+      let halo; if(full){ const bg=this.add.image(x+w/2,y+h/2,fk),tw=bg.width||720,th=bg.height||298,sc=Math.max((w-4)/tw,(h-4)/th),cw=Math.min(tw,(w-4)/sc),chh=Math.min(th,(h-4)/sc); bg.setScale(sc); bg.setCrop?.((tw-cw)/2,(th-chh)/2,cw,chh); halo=bg; icon=this.add.graphics(); icon.lineStyle?.(2,color,0.85); icon.strokeRoundedRect?.(x+2,y+2,w-4,h-4,16); }
+      else { halo=this.lvlSocket(iconX,iconY,Math.min(45,h*0.34)*2.05,color)||this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
+      icon=iconKey?this.add.image(iconX,iconY,iconKey,iconFrame).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5); }
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:badgeColor}).setOrigin(0,0);
       nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:nameColor,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:roleColor,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
@@ -17942,6 +17962,7 @@ class Game extends Phaser.Scene {
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=isPath&&o.carry?this.add.text(textX,y+h-20,o.carry,{fontFamily:'sans-serif',fontSize:'9px',color:'#9be8ff',wordWrap:{width:Math.max(60,textW-110)},maxLines:2}).setOrigin(0,0.5):this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:rankColor}).setOrigin(0,0.5);   /* v7.8.28 การ์ด Build Path: บรรทัดการ์ดเริ่มต้นที่พาไปด้วย */
       ctaT=this.add.text(x+w-16,y+h-18,'CHOOSE ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
+      if(full){ for(const t of [nameT,descT,starsT]){ t.setColor?.(t===nameT?'#fff6e6':t===descT?'#f1e7f7':'#bfeaff'); t.setStroke?.('#120a1c',3); } }
       group.add([panel,halo]);this.lvlCta(group,ctaT,color,options);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);this.lvlBadge(group,o,badgeT);
     }else{
       const iconX=x+w/2,iconY=y+h*0.25,iconSize=Math.min(70,h*0.25),textW=w-22;

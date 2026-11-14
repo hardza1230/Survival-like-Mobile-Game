@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.145**. Next release:8.1.146. Fetch the deploy branch before new work.
+Current release: **8.1.146**. Next release:8.1.147. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.145 — Build Path from C1-1 (owner)
+# Latest delivery: v8.1.146 — art order 82 wired — Build Path full-card Unique art (owner)
+
+Delivery `asset-delivery/pathuq82` merged (18/18 match MANIFEST). `scripts/pack-pathuq82.py` → `assets/art/pathuq82/` 15 × 720×298 WebP q80 (483 KB · 0.82 MB GPU each, 3 per run); Sesame's 3 kept in incoming only (rune mode has no Build Path). Keys `pathuq82_<hero>_<path>` in ASSET_IMAGES, `artClass` stage, `stageArtKeys` loads the current hero's 3 (order-80 path cards no longer loaded; flip layout off since v8.1.144). `drawReadableChoiceCard` wide branch: Build Path with a loaded picture → full-card cover image (centred crop) + thin rarity-colour frame, text from 50% width in light colours with dark stroke; otherwise the v8.1.144 square crop / icon. Tests: new pathuq82-art; special-picks80-art updated (artClass regex, stage keys).
+
+# Previous delivery: v8.1.145 — Build Path from C1-1 (owner)
 
 Owner: Strawberry never got to try a build — Build Path opened at C1-2 and C1-2 already hands over to Mint. `CARD_UNLOCK.path` 1 → 0 (path pick at level 5 from C1-1; tutorial still excluded via `_inTutorial`). Lore: `CARD_INTRO.path` now says a page of Grandma's recipes was tucked in the Heart Seed; the C1-2 jam jar keeps its comic line (`ruby_comic_s2_3` has an exact voice line, test ruby-storybook) and `docs/STORY_CANON.md` C1-2 row notes the change.
-
-# Previous delivery: v8.1.144 — owner 🐞 round 3 (14 reports, C1-1/C1-2 on v8.1.143)
-
-**Death FX:** normal kills no longer throw orange `burst` dots (looked like EXP); pale puff `vfxDeathPoof(…,0xf1e6f4)`, pale dots only for big/elite. **Music:** `bgm_c11_boss` (Gates of the Calamity) for every Chapter 1 boss (`bgmKeyFor` stages 2–5; owner will upload Ch2–3 tracks). **Summary:** stars are `add.star` shapes centred on the socket (★ glyph sat off-centre); reveal is sequential — stars (330 ms apart) → Sugar count → each reward (step 110–380 ms, small pop) → growth cue (test result-sound still ≤ 3.1 s). **Drop shadows:** `tickDropShadows()` one Graphics at depth −97000 draws soft ellipses under loots/heals/vacs/gimmicks/chests/orbs (≤ 260, off at PERF.lvl ≥ 2). **Hunger Herald:** gates get a ground shadow + pulsing ADD glow ellipse and the ring lies flat; gate packs `_xpMul=.25` (killEnemy honours `e._xpMul`) so standing at the gates no longer farms EXP; horn → `lg_breach_open` (test audio-a12 updated). **Wisp:** `_wispTuning` escortR 160→130, speed 120→96, close bonus ×1.7→×1.25, drifts at ×0.38 when you are away (was stopping), drain ×0.6 (test sig-missions updated). **Miniboss loot order:** level-up waits `_levelHoldUntil` (2.9 s) in `queueLevelUp`; banner "🎁 Miniboss loot · Sugar · gear · crafting" at 0.7 s; the mini chest drops at 3.6 s and waits until play resumes with no pending level (≤ 16 s). **Build Path pick:** painted flip layout (`drawPathCards`) off → wide readable cards with the order-80 path card art as a square-cropped picture (`iconFrame 'sq'`), first-sentence descriptions. QA bot can save a screenshot of the first Build Path pick (`QA_SHOT_DIR`). **Next round (owner asked):** Shrine → pick 1 of 2–3 blessing/curse cards (Archero angel/devil style) instead of standing in a ring · Capture the Zone: progress fill + rush + finish moment, review every mission's ending · Strawberry: Build Path locked in C1-1 by story, then C1-2 hands over to Mint — rethink with the lore.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -46,7 +46,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 ## 5. ถัดไป
 **รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
 - ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) ผูกแล้ว v8.1.137 · v8.1.138 สลับภาพ Glacier/Barrage (`PATHCARD_ART`) · รอ QA มือถือ
-- ใบ 82 ภาพการ์ด Build Path เต็มการ์ด 1024×424 เน้น Unique (18 · `assets/incoming/pathuq82/`) 🟡 รออาร์ต · ตอนผูก: `drawReadableChoiceCard` วาดภาพเต็มการ์ด + ข้อความชิดขวา (ตอนนี้ใช้ภาพใบ 80 ตัดสี่เหลี่ยมซ้าย v8.1.144)
+- ใบ 82 ภาพการ์ด Build Path เต็มการ์ด ผูกแล้ว v8.1.146 (15 ภาพ · งาดำไม่ใช้) · รอ QA มือถือ
 - ใบ 81 ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3 · (ไม่บังคับ) การ์ด Cocoa Titan/Dash Boxer ใหม่ 🟡 รออาร์ต · ส่งที่ `assets/incoming/relics81/`
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
