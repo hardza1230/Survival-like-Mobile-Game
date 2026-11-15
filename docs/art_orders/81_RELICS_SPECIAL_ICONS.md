@@ -1,6 +1,6 @@
 # 81 — ไอคอน Relic ที่ขาด · ไอคอนการ์ดพิเศษในห้องสมบัติ (Modifier / Trade-off) · การ์ด Build Path ที่ขาด · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 13 พ.ย. 2026 · โค้ดจุดที่จะใช้มีอยู่แล้ว (ห้องสมบัติ v8.1.122 · การ์ด Build Path v8.1.137) · ตอนนี้ใช้อีโมจิ/ไอคอนอาวุธแทน
+สถานะ: 📦 ส่งแล้ว รอผูก · 52/52 ไฟล์หลัก
 ส่งไฟล์ที่ `assets/incoming/relics81/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ ตัวเลข หรือสัญลักษณ์อ่านได้ในภาพ**
 
@@ -109,4 +109,6 @@
 - MANIFEST ต่อแถว: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`(1), `columns`(1), `loop`(false), `anchor`(center), `background`(transparent) + การ์ด `textRect`
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกเมื่อส่ง)
+- 15 พ.ย. 2026 · ส่งครบ 52/52 ไฟล์หลักที่ `assets/incoming/relics81/` · ขาด 0 · 📦 ส่งแล้ว รอผูก
+- Relic 8 · Modifier 36 · Trade-off 5 · การ์ด Yuzu แนวตั้ง 3 · PNG32 alpha จริง ตรวจขนาด ขอบ และพื้นที่ป้ายด้วยสคริปต์
+- กลุ่ม E (Cocoa แนวตั้ง 2 ใบ) เป็นงานเสริมและข้ามไว้ เพราะหน้า Build Path ปัจจุบันใช้ภาพแนวนอนจากใบ 82 แล้ว

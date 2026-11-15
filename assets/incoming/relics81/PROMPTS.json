@@ -1,0 +1,782 @@
+[
+  {
+    "key": "relic_heavydough",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a standalone candy magical artifact with subtle soft violet aura #c07bff around it, no medallion or frame. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: stout heavy braided golden loaf with one dark stone crust. upper right: pink spiral lollipop with two orange speed streaks. lower left: large blue ice-candy cube with a bold snowflake carved on its front. lower right: copper pastry whisk with a bright gold lightning arc.",
+    "source": "exec-fbce742e-b5e1-48a3-a2d0-c33489ec723d.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "relic_sugarrush",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a standalone candy magical artifact with subtle soft violet aura #c07bff around it, no medallion or frame. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: stout heavy braided golden loaf with one dark stone crust. upper right: pink spiral lollipop with two orange speed streaks. lower left: large blue ice-candy cube with a bold snowflake carved on its front. lower right: copper pastry whisk with a bright gold lightning arc.",
+    "source": "exec-fbce742e-b5e1-48a3-a2d0-c33489ec723d.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "relic_frostcandy",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a standalone candy magical artifact with subtle soft violet aura #c07bff around it, no medallion or frame. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: stout heavy braided golden loaf with one dark stone crust. upper right: pink spiral lollipop with two orange speed streaks. lower left: large blue ice-candy cube with a bold snowflake carved on its front. lower right: copper pastry whisk with a bright gold lightning arc.",
+    "source": "exec-fbce742e-b5e1-48a3-a2d0-c33489ec723d.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "relic_copperwhisk",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a standalone candy magical artifact with subtle soft violet aura #c07bff around it, no medallion or frame. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: stout heavy braided golden loaf with one dark stone crust. upper right: pink spiral lollipop with two orange speed streaks. lower left: large blue ice-candy cube with a bold snowflake carved on its front. lower right: copper pastry whisk with a bright gold lightning arc.",
+    "source": "exec-fbce742e-b5e1-48a3-a2d0-c33489ec723d.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "relic_longspoon",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a standalone candy magical artifact with subtle soft violet aura #c07bff around it, no medallion or frame. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: elongated golden spoon shaped like a shooting star, single spoon. upper right: thick chocolate doughnut with deep radial compression creases. lower left: two connected miniature pink frosted cupcakes joined by a small golden magical spark, a single twin relic. lower right: upright oversized candy dagger with angular garnet blade and small boss horn on the hilt.",
+    "source": "exec-ef8cc4cc-3558-4b9a-8493-65686b51fe9d.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "relic_crowdcrush",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a standalone candy magical artifact with subtle soft violet aura #c07bff around it, no medallion or frame. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: elongated golden spoon shaped like a shooting star, single spoon. upper right: thick chocolate doughnut with deep radial compression creases. lower left: two connected miniature pink frosted cupcakes joined by a small golden magical spark, a single twin relic. lower right: upright oversized candy dagger with angular garnet blade and small boss horn on the hilt.",
+    "source": "exec-ef8cc4cc-3558-4b9a-8493-65686b51fe9d.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "relic_twinbake",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a standalone candy magical artifact with subtle soft violet aura #c07bff around it, no medallion or frame. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: elongated golden spoon shaped like a shooting star, single spoon. upper right: thick chocolate doughnut with deep radial compression creases. lower left: two connected miniature pink frosted cupcakes joined by a small golden magical spark, a single twin relic. lower right: upright oversized candy dagger with angular garnet blade and small boss horn on the hilt.",
+    "source": "exec-ef8cc4cc-3558-4b9a-8493-65686b51fe9d.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "relic_giantslayer",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a standalone candy magical artifact with subtle soft violet aura #c07bff around it, no medallion or frame. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: elongated golden spoon shaped like a shooting star, single spoon. upper right: thick chocolate doughnut with deep radial compression creases. lower left: two connected miniature pink frosted cupcakes joined by a small golden magical spark, a single twin relic. lower right: upright oversized candy dagger with angular garnet blade and small boss horn on the hilt.",
+    "source": "exec-ef8cc4cc-3558-4b9a-8493-65686b51fe9d.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_bloom",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette berry pink. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: strawberry seed detonates into a five-petal flower burst. upper center: a large berry heart linked to two small hearts by pink bolts. upper right: one massive glossy dark red heart with gold impact spikes. lower left: strawberry seed sitting precisely in a pink sight ring. lower center: low round glass jam mine showing red jam and a cork fuse. lower right: exactly six seeds orbit a central sweeping dash arc.",
+    "source": "exec-2668be7e-2105-40fd-92d0-7e50f9a68a34.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_love",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette berry pink. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: strawberry seed detonates into a five-petal flower burst. upper center: a large berry heart linked to two small hearts by pink bolts. upper right: one massive glossy dark red heart with gold impact spikes. lower left: strawberry seed sitting precisely in a pink sight ring. lower center: low round glass jam mine showing red jam and a cork fuse. lower right: exactly six seeds orbit a central sweeping dash arc.",
+    "source": "exec-2668be7e-2105-40fd-92d0-7e50f9a68a34.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_heart",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette berry pink. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: strawberry seed detonates into a five-petal flower burst. upper center: a large berry heart linked to two small hearts by pink bolts. upper right: one massive glossy dark red heart with gold impact spikes. lower left: strawberry seed sitting precisely in a pink sight ring. lower center: low round glass jam mine showing red jam and a cork fuse. lower right: exactly six seeds orbit a central sweeping dash arc.",
+    "source": "exec-2668be7e-2105-40fd-92d0-7e50f9a68a34.png",
+    "sourceCell": [
+      2,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_aim",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette berry pink. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: strawberry seed detonates into a five-petal flower burst. upper center: a large berry heart linked to two small hearts by pink bolts. upper right: one massive glossy dark red heart with gold impact spikes. lower left: strawberry seed sitting precisely in a pink sight ring. lower center: low round glass jam mine showing red jam and a cork fuse. lower right: exactly six seeds orbit a central sweeping dash arc.",
+    "source": "exec-2668be7e-2105-40fd-92d0-7e50f9a68a34.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_jam",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette berry pink. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: strawberry seed detonates into a five-petal flower burst. upper center: a large berry heart linked to two small hearts by pink bolts. upper right: one massive glossy dark red heart with gold impact spikes. lower left: strawberry seed sitting precisely in a pink sight ring. lower center: low round glass jam mine showing red jam and a cork fuse. lower right: exactly six seeds orbit a central sweeping dash arc.",
+    "source": "exec-2668be7e-2105-40fd-92d0-7e50f9a68a34.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_spray",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette berry pink. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: strawberry seed detonates into a five-petal flower burst. upper center: a large berry heart linked to two small hearts by pink bolts. upper right: one massive glossy dark red heart with gold impact spikes. lower left: strawberry seed sitting precisely in a pink sight ring. lower center: low round glass jam mine showing red jam and a cork fuse. lower right: exactly six seeds orbit a central sweeping dash arc.",
+    "source": "exec-2668be7e-2105-40fd-92d0-7e50f9a68a34.png",
+    "sourceCell": [
+      2,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_icemine",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ice blue. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: squat blue icy mine with sharp frost spikes. upper center: large fractured ice crystal scattering three angular shards. upper right: stout central snowflake inside an icy pulse ring. lower left: one long diagonal ice spear with far-travel streaks. lower center: wide horizontal cold comet wave with long white ribbon tail. lower right: two frosted crystal cubes joined by a bold electric-blue arc.",
+    "source": "exec-6fe11e56-466b-4960-9486-b2044eb0603d.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_shatter",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ice blue. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: squat blue icy mine with sharp frost spikes. upper center: large fractured ice crystal scattering three angular shards. upper right: stout central snowflake inside an icy pulse ring. lower left: one long diagonal ice spear with far-travel streaks. lower center: wide horizontal cold comet wave with long white ribbon tail. lower right: two frosted crystal cubes joined by a bold electric-blue arc.",
+    "source": "exec-6fe11e56-466b-4960-9486-b2044eb0603d.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_flurry",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ice blue. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: squat blue icy mine with sharp frost spikes. upper center: large fractured ice crystal scattering three angular shards. upper right: stout central snowflake inside an icy pulse ring. lower left: one long diagonal ice spear with far-travel streaks. lower center: wide horizontal cold comet wave with long white ribbon tail. lower right: two frosted crystal cubes joined by a bold electric-blue arc.",
+    "source": "exec-6fe11e56-466b-4960-9486-b2044eb0603d.png",
+    "sourceCell": [
+      2,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_throw",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ice blue. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: squat blue icy mine with sharp frost spikes. upper center: large fractured ice crystal scattering three angular shards. upper right: stout central snowflake inside an icy pulse ring. lower left: one long diagonal ice spear with far-travel streaks. lower center: wide horizontal cold comet wave with long white ribbon tail. lower right: two frosted crystal cubes joined by a bold electric-blue arc.",
+    "source": "exec-6fe11e56-466b-4960-9486-b2044eb0603d.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_glide",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ice blue. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: squat blue icy mine with sharp frost spikes. upper center: large fractured ice crystal scattering three angular shards. upper right: stout central snowflake inside an icy pulse ring. lower left: one long diagonal ice spear with far-travel streaks. lower center: wide horizontal cold comet wave with long white ribbon tail. lower right: two frosted crystal cubes joined by a bold electric-blue arc.",
+    "source": "exec-6fe11e56-466b-4960-9486-b2044eb0603d.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_coldarc",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ice blue. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: squat blue icy mine with sharp frost spikes. upper center: large fractured ice crystal scattering three angular shards. upper right: stout central snowflake inside an icy pulse ring. lower left: one long diagonal ice spear with far-travel streaks. lower center: wide horizontal cold comet wave with long white ribbon tail. lower right: two frosted crystal cubes joined by a bold electric-blue arc.",
+    "source": "exec-6fe11e56-466b-4960-9486-b2044eb0603d.png",
+    "sourceCell": [
+      2,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_quake",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette dark chocolate and flame orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: craggy mound exploding out of a wide cracked ground ring. upper center: large chocolate bear paw print crashing into earth. upper right: three stacked orange flames with the highest flame largest. lower left: a single caramel boxing glove crushing a nearby dark candy block. lower center: a heavy downward gold impact smashing a small cracked candy skull. lower right: a central fractured chocolate chunk bursting into a bold orange starburst.",
+    "source": "exec-c3ae4320-83ce-4226-b692-0a25bbe13ba3.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_stomp",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette dark chocolate and flame orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: craggy mound exploding out of a wide cracked ground ring. upper center: large chocolate bear paw print crashing into earth. upper right: three stacked orange flames with the highest flame largest. lower left: a single caramel boxing glove crushing a nearby dark candy block. lower center: a heavy downward gold impact smashing a small cracked candy skull. lower right: a central fractured chocolate chunk bursting into a bold orange starburst.",
+    "source": "exec-c3ae4320-83ce-4226-b692-0a25bbe13ba3.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_rage",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette dark chocolate and flame orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: craggy mound exploding out of a wide cracked ground ring. upper center: large chocolate bear paw print crashing into earth. upper right: three stacked orange flames with the highest flame largest. lower left: a single caramel boxing glove crushing a nearby dark candy block. lower center: a heavy downward gold impact smashing a small cracked candy skull. lower right: a central fractured chocolate chunk bursting into a bold orange starburst.",
+    "source": "exec-c3ae4320-83ce-4226-b692-0a25bbe13ba3.png",
+    "sourceCell": [
+      2,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_crush",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette dark chocolate and flame orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: craggy mound exploding out of a wide cracked ground ring. upper center: large chocolate bear paw print crashing into earth. upper right: three stacked orange flames with the highest flame largest. lower left: a single caramel boxing glove crushing a nearby dark candy block. lower center: a heavy downward gold impact smashing a small cracked candy skull. lower right: a central fractured chocolate chunk bursting into a bold orange starburst.",
+    "source": "exec-c3ae4320-83ce-4226-b692-0a25bbe13ba3.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_ko",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette dark chocolate and flame orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: craggy mound exploding out of a wide cracked ground ring. upper center: large chocolate bear paw print crashing into earth. upper right: three stacked orange flames with the highest flame largest. lower left: a single caramel boxing glove crushing a nearby dark candy block. lower center: a heavy downward gold impact smashing a small cracked candy skull. lower right: a central fractured chocolate chunk bursting into a bold orange starburst.",
+    "source": "exec-c3ae4320-83ce-4226-b692-0a25bbe13ba3.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_after",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette dark chocolate and flame orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: craggy mound exploding out of a wide cracked ground ring. upper center: large chocolate bear paw print crashing into earth. upper right: three stacked orange flames with the highest flame largest. lower left: a single caramel boxing glove crushing a nearby dark candy block. lower center: a heavy downward gold impact smashing a small cracked candy skull. lower right: a central fractured chocolate chunk bursting into a bold orange starburst.",
+    "source": "exec-c3ae4320-83ce-4226-b692-0a25bbe13ba3.png",
+    "sourceCell": [
+      2,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_over",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette lightning purple. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: a violet lightning fork links three small bright nodes. upper center: round lavender static ripple and little electric arcs around its edge. upper right: two lilac footsteps with a compact sideways thunderclap. lower left: upright bright pinned target struck by one gold lightning bolt. lower center: violet lightning explosion with thick radiating branches. lower right: a translucent magical battery charged by one bold gold bolt.",
+    "source": "exec-9e985dc1-e956-4f03-bc75-40d26ddcaf32.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_field",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette lightning purple. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: a violet lightning fork links three small bright nodes. upper center: round lavender static ripple and little electric arcs around its edge. upper right: two lilac footsteps with a compact sideways thunderclap. lower left: upright bright pinned target struck by one gold lightning bolt. lower center: violet lightning explosion with thick radiating branches. lower right: a translucent magical battery charged by one bold gold bolt.",
+    "source": "exec-9e985dc1-e956-4f03-bc75-40d26ddcaf32.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_step",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette lightning purple. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: a violet lightning fork links three small bright nodes. upper center: round lavender static ripple and little electric arcs around its edge. upper right: two lilac footsteps with a compact sideways thunderclap. lower left: upright bright pinned target struck by one gold lightning bolt. lower center: violet lightning explosion with thick radiating branches. lower right: a translucent magical battery charged by one bold gold bolt.",
+    "source": "exec-9e985dc1-e956-4f03-bc75-40d26ddcaf32.png",
+    "sourceCell": [
+      2,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_judge",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette lightning purple. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: a violet lightning fork links three small bright nodes. upper center: round lavender static ripple and little electric arcs around its edge. upper right: two lilac footsteps with a compact sideways thunderclap. lower left: upright bright pinned target struck by one gold lightning bolt. lower center: violet lightning explosion with thick radiating branches. lower right: a translucent magical battery charged by one bold gold bolt.",
+    "source": "exec-9e985dc1-e956-4f03-bc75-40d26ddcaf32.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_ion",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette lightning purple. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: a violet lightning fork links three small bright nodes. upper center: round lavender static ripple and little electric arcs around its edge. upper right: two lilac footsteps with a compact sideways thunderclap. lower left: upright bright pinned target struck by one gold lightning bolt. lower center: violet lightning explosion with thick radiating branches. lower right: a translucent magical battery charged by one bold gold bolt.",
+    "source": "exec-9e985dc1-e956-4f03-bc75-40d26ddcaf32.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_focus",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette lightning purple. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: a violet lightning fork links three small bright nodes. upper center: round lavender static ripple and little electric arcs around its edge. upper right: two lilac footsteps with a compact sideways thunderclap. lower left: upright bright pinned target struck by one gold lightning bolt. lower center: violet lightning explosion with thick radiating branches. lower right: a translucent magical battery charged by one bold gold bolt.",
+    "source": "exec-9e985dc1-e956-4f03-bc75-40d26ddcaf32.png",
+    "sourceCell": [
+      2,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_zest",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette sunny citrus yellow and orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one lemon peel curls outward in a yellow citrus burst. upper center: two tiny citrus halves joined by one amber lightning arc. upper right: a gold citrus-shaped horn emits broad concentric pulses. lower left: one lemon wedge visibly squeezed between two downward pressure arcs. lower center: three bright amber juice bombs along one curving dash trail. lower right: a big citrus crescent with a clean tooth-shaped bite mark.",
+    "source": "exec-b4a6fad2-e0b9-4cb7-a7d4-3477a4bce27a.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_crew",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette sunny citrus yellow and orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one lemon peel curls outward in a yellow citrus burst. upper center: two tiny citrus halves joined by one amber lightning arc. upper right: a gold citrus-shaped horn emits broad concentric pulses. lower left: one lemon wedge visibly squeezed between two downward pressure arcs. lower center: three bright amber juice bombs along one curving dash trail. lower right: a big citrus crescent with a clean tooth-shaped bite mark.",
+    "source": "exec-b4a6fad2-e0b9-4cb7-a7d4-3477a4bce27a.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_rally",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette sunny citrus yellow and orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one lemon peel curls outward in a yellow citrus burst. upper center: two tiny citrus halves joined by one amber lightning arc. upper right: a gold citrus-shaped horn emits broad concentric pulses. lower left: one lemon wedge visibly squeezed between two downward pressure arcs. lower center: three bright amber juice bombs along one curving dash trail. lower right: a big citrus crescent with a clean tooth-shaped bite mark.",
+    "source": "exec-b4a6fad2-e0b9-4cb7-a7d4-3477a4bce27a.png",
+    "sourceCell": [
+      2,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_sour",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette sunny citrus yellow and orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one lemon peel curls outward in a yellow citrus burst. upper center: two tiny citrus halves joined by one amber lightning arc. upper right: a gold citrus-shaped horn emits broad concentric pulses. lower left: one lemon wedge visibly squeezed between two downward pressure arcs. lower center: three bright amber juice bombs along one curving dash trail. lower right: a big citrus crescent with a clean tooth-shaped bite mark.",
+    "source": "exec-b4a6fad2-e0b9-4cb7-a7d4-3477a4bce27a.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_splash",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette sunny citrus yellow and orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one lemon peel curls outward in a yellow citrus burst. upper center: two tiny citrus halves joined by one amber lightning arc. upper right: a gold citrus-shaped horn emits broad concentric pulses. lower left: one lemon wedge visibly squeezed between two downward pressure arcs. lower center: three bright amber juice bombs along one curving dash trail. lower right: a big citrus crescent with a clean tooth-shaped bite mark.",
+    "source": "exec-b4a6fad2-e0b9-4cb7-a7d4-3477a4bce27a.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_bite",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette sunny citrus yellow and orange. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one lemon peel curls outward in a yellow citrus burst. upper center: two tiny citrus halves joined by one amber lightning arc. upper right: a gold citrus-shaped horn emits broad concentric pulses. lower left: one lemon wedge visibly squeezed between two downward pressure arcs. lower center: three bright amber juice bombs along one curving dash trail. lower right: a big citrus crescent with a clean tooth-shaped bite mark.",
+    "source": "exec-b4a6fad2-e0b9-4cb7-a7d4-3477a4bce27a.png",
+    "sourceCell": [
+      2,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_prism",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ivory and white gold. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one upright crystal prism explodes in rainbow light. upper center: one still silver oval mirror with a quiet white halo. upper right: one ivory telescope with a brass lens pointing diagonally. lower left: one white light beam splitting at a prism into two beams. lower center: one sharp mirror shard standing on a round magical mine. lower right: one diagonal white-gold beam breaking a small dark candy skull.",
+    "source": "exec-7aab1cd4-0fe9-4b33-a7e5-19ecbdb53e06.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_lens",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ivory and white gold. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one upright crystal prism explodes in rainbow light. upper center: one still silver oval mirror with a quiet white halo. upper right: one ivory telescope with a brass lens pointing diagonally. lower left: one white light beam splitting at a prism into two beams. lower center: one sharp mirror shard standing on a round magical mine. lower right: one diagonal white-gold beam breaking a small dark candy skull.",
+    "source": "exec-7aab1cd4-0fe9-4b33-a7e5-19ecbdb53e06.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_scope",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ivory and white gold. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one upright crystal prism explodes in rainbow light. upper center: one still silver oval mirror with a quiet white halo. upper right: one ivory telescope with a brass lens pointing diagonally. lower left: one white light beam splitting at a prism into two beams. lower center: one sharp mirror shard standing on a round magical mine. lower right: one diagonal white-gold beam breaking a small dark candy skull.",
+    "source": "exec-7aab1cd4-0fe9-4b33-a7e5-19ecbdb53e06.png",
+    "sourceCell": [
+      2,
+      0
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_refract",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ivory and white gold. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one upright crystal prism explodes in rainbow light. upper center: one still silver oval mirror with a quiet white halo. upper right: one ivory telescope with a brass lens pointing diagonally. lower left: one white light beam splitting at a prism into two beams. lower center: one sharp mirror shard standing on a round magical mine. lower right: one diagonal white-gold beam breaking a small dark candy skull.",
+    "source": "exec-7aab1cd4-0fe9-4b33-a7e5-19ecbdb53e06.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_mirror",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ivory and white gold. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one upright crystal prism explodes in rainbow light. upper center: one still silver oval mirror with a quiet white halo. upper right: one ivory telescope with a brass lens pointing diagonally. lower left: one white light beam splitting at a prism into two beams. lower center: one sharp mirror shard standing on a round magical mine. lower right: one diagonal white-gold beam breaking a small dark candy skull.",
+    "source": "exec-7aab1cd4-0fe9-4b33-a7e5-19ecbdb53e06.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mod_exec",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 6 isolated inventory icon sprites for Mochi Mayhem mobile game as one 3 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each icon is one round burnished orange (#ff9f43) jigsaw-gear medallion with a few bold gear teeth. Its circular center has the specified hero color, with a bright distinct effect in front. Infill palette ivory and white gold. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: one upright crystal prism explodes in rainbow light. upper center: one still silver oval mirror with a quiet white halo. upper right: one ivory telescope with a brass lens pointing diagonally. lower left: one white light beam splitting at a prism into two beams. lower center: one sharp mirror shard standing on a round magical mine. lower right: one diagonal white-gold beam breaking a small dark candy skull.",
+    "source": "exec-7aab1cd4-0fe9-4b33-a7e5-19ecbdb53e06.png",
+    "sourceCell": [
+      2,
+      1
+    ],
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "trade_armor",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a compact confectionery balance scale with #e0566e rose-red trim; left pan brightly lit gain, right pan muted cracked loss. Complete scale silhouette in each cell. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: bright golden shield on left pan; dark heavy boot on right pan. upper right: bright winged hourglass on left; dark cracked shield on right. lower left: bright angry scarlet flame fist on left; dark extinguished green healing heart on right. lower right: bright crossed candy dagger and experience gem on left; dark chipped potion bottle on right.",
+    "source": "exec-14cf7dde-8873-46a3-9f39-742409a31a3e.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "trade_rush",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a compact confectionery balance scale with #e0566e rose-red trim; left pan brightly lit gain, right pan muted cracked loss. Complete scale silhouette in each cell. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: bright golden shield on left pan; dark heavy boot on right pan. upper right: bright winged hourglass on left; dark cracked shield on right. lower left: bright angry scarlet flame fist on left; dark extinguished green healing heart on right. lower right: bright crossed candy dagger and experience gem on left; dark chipped potion bottle on right.",
+    "source": "exec-14cf7dde-8873-46a3-9f39-742409a31a3e.png",
+    "sourceCell": [
+      1,
+      0
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "trade_berserk",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a compact confectionery balance scale with #e0566e rose-red trim; left pan brightly lit gain, right pan muted cracked loss. Complete scale silhouette in each cell. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: bright golden shield on left pan; dark heavy boot on right pan. upper right: bright winged hourglass on left; dark cracked shield on right. lower left: bright angry scarlet flame fist on left; dark extinguished green healing heart on right. lower right: bright crossed candy dagger and experience gem on left; dark chipped potion bottle on right.",
+    "source": "exec-14cf7dde-8873-46a3-9f39-742409a31a3e.png",
+    "sourceCell": [
+      0,
+      1
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "trade_feast",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 4 isolated inventory icon sprites for Mochi Mayhem mobile game as one 2 columns by 2 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a compact confectionery balance scale with #e0566e rose-red trim; left pan brightly lit gain, right pan muted cracked loss. Complete scale silhouette in each cell. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. upper left: bright golden shield on left pan; dark heavy boot on right pan. upper right: bright winged hourglass on left; dark cracked shield on right. lower left: bright angry scarlet flame fist on left; dark extinguished green healing heart on right. lower right: bright crossed candy dagger and experience gem on left; dark chipped potion bottle on right.",
+    "source": "exec-14cf7dde-8873-46a3-9f39-742409a31a3e.png",
+    "sourceCell": [
+      1,
+      1
+    ],
+    "sourceGrid": [
+      2,
+      2
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "trade_oath",
+    "tool": "ImageGen",
+    "prompt": "Paint a batch of 1 isolated inventory icon sprites for Mochi Mayhem mobile game as one 1 columns by 1 rows contact atlas, landscape for 3x2, square for 2x2 and 1x1. The backing must be TRUE alpha transparency. No borders between cells, no cell backgrounds, no checkerboard. Each sprite stands alone exactly in the middle of its own equal-sized cell and occupies only 76% of its cell width and height; leave clearly transparent gutters all around so each can be cut separately. Each is a compact confectionery balance scale with #e0566e rose-red trim; left pan brightly lit gain, right pan muted cracked loss. Complete scale silhouette in each cell. Premium painterly pastel confectionery fantasy, bevels and candy highlights, dark outlines tinted to subject, simple strong silhouettes, readable when tiny. No words, numbers, labels, letters, logos or runes. Each cell is different. center: bright single glowing archery target on left; dark cracked slow hourglass on right.",
+    "source": "exec-b12c016b-9250-4f32-a66a-8a88a9c86d55.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      1,
+      1
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "pathcard80_zestSwarm",
+    "tool": "ImageGen",
+    "prompt": "One singular full-bleed portrait 2:3 collectible tarot Build Path card for Mochi Mayhem. First reference is canonical Yuzu, second is lime, third is approved card layout and border style only. Upper 75% shows Lime the green archer and little green bow minions launch a fan of bright citrus arrows across enemies. Preserve exact character designs, friendly anime confectionery painting, warm citrus-gold framing. Lower 25% is one absolutely blank, broad, simple deep berry-brown nameplate, no overlapping action. Thin antique cream and gold candy filigree around the four edges. Graphic occupies entire canvas to edges. No outer backdrop, mockup, writing, letters, numbers, glyphs or watermark.",
+    "source": "exec-37b661cf-548a-4f50-aad2-e9540b75fbf5.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      1,
+      1
+    ],
+    "transparent_background": false
+  },
+  {
+    "key": "pathcard80_citrusGuardian",
+    "tool": "ImageGen",
+    "prompt": "One singular full-bleed portrait 2:3 collectible tarot Build Path card for Mochi Mayhem. First reference is canonical Yuzu, second is pomelo, third is approved card layout and border style only. Upper 75% shows giant honey-yellow pomelo guardian shelters Yuzu behind its shield and slams out a gold ground shockwave. Preserve exact character designs, friendly anime confectionery painting, warm citrus-gold framing. Lower 25% is one absolutely blank, broad, simple deep berry-brown nameplate, no overlapping action. Thin antique cream and gold candy filigree around the four edges. Graphic occupies entire canvas to edges. No outer backdrop, mockup, writing, letters, numbers, glyphs or watermark.",
+    "source": "exec-d5d1bd75-1fcb-4601-beb4-29c72bb980c3.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      1,
+      1
+    ],
+    "transparent_background": false
+  },
+  {
+    "key": "pathcard80_juiceWorkshop",
+    "tool": "ImageGen",
+    "prompt": "One singular full-bleed portrait 2:3 collectible tarot Build Path card for Mochi Mayhem. First reference is canonical Yuzu, second is bloodorange, third is approved card layout and border style only. Upper 75% shows crimson blood orange mage and Yuzu channel fire, ice and lightning above a glowing ring on the floor. Preserve exact character designs, friendly anime confectionery painting, warm citrus-gold framing. Lower 25% is one absolutely blank, broad, simple deep berry-brown nameplate, no overlapping action. Thin antique cream and gold candy filigree around the four edges. Graphic occupies entire canvas to edges. No outer backdrop, mockup, writing, letters, numbers, glyphs or watermark.",
+    "source": "exec-eaccdf21-8260-4fa0-91b1-b4be7ebe240a.png",
+    "sourceCell": [
+      0,
+      0
+    ],
+    "sourceGrid": [
+      1,
+      1
+    ],
+    "transparent_background": false
+  }
+]
