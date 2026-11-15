@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.150**. Next release:8.1.151. Fetch the deploy branch before new work.
+Current release: **8.1.151**. Next release:8.1.152. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.150 — owner round 5 — short Relic / hero intro text, vault background, Capture the Zone polish
+# Latest delivery: v8.1.151 — art order 81 wired — Relic / Modifier / Trade-off icons (owner)
+
+Delivery `asset-delivery/relics81` merged (52/52 match MANIFEST). `scripts/pack-relics81.py` → `assets/art/relics81/` 49 × 128×128 WebP q80 (265 KB · 64 KB GPU each): `relic_` 8 (heavydough, sugarrush, frostcandy, copperwhisk, longspoon, crowdcrush, twinbake, giantslayer), `mod_<id>` 36 (all heroes' MODIFIERS, id without the `x_` prefix), `trade_` 5. `artClass` → stage for `assets/art/relics81/`; `stageArtKeys` loads the 8 relics + 5 trade-offs + the current hero's 6 modifiers. `modCard` / `tradeCard` use `mod_*` / `trade_*` when loaded, else the old weapon icon. The 3 Yuzu portrait Build Path cards (`pathcard80_*`) stay in incoming only — owner: order-82 landscape cards already cover Yuzu. Test: new relics81-art.
+
+# Previous delivery: v8.1.150 — owner round 5 — short Relic / hero intro text, vault background, Capture the Zone polish
 
 **Relic pick:** all 22 `RELICS.headline` rewritten as one plain line (≤28 chars, e.g. "Crits heal you", "+25% to far enemies"); relic options carry `short` + `note` (combo / evolves-into only); the vault info panel shows that line (16px bold) instead of desc + synergy + "for" text; Mods/Trade-offs show their first sentence. **Vault background:** `vault80_bg` now covers the whole screen (`addAt` index 1, under the header) — the top gap is gone. **Hero intros (`HERO_INTROS`):** one short line each ("I’m Cocoa! My punches smash the machines. Try me!"), bubble 150→96 px, 17px bold. Shrine left as is (owner). **Capture the Zone:** `captureHud` draws a progress arc on the ring edge + seconds left in the centre ("⬇ 12s" when outside); `capturePulse` at 25/50/75% hurts/pushes enemies within 1.25R (normal 40% max HP + knockback, elite/miniboss 8%, bosses untouched); `captureFinishSweep` on completion hits everything but bosses within max(2.2R, 520) (normal ×5 = cleared, elite/miniboss 25%). Mission text: "Stay in the ring until it fills. It blasts enemies every 25%!". Test: new owner-round150.
-
-# Previous delivery: v8.1.149 — owner 🐞 round 4 — Wardrobe tab, Great Hunger aura, Yuzu soft shadows
-
-Reports from v8.1.147. **Wardrobe:** its only entry was the Thread tab, hidden since v8.1.140 (`IAP_ENABLED=false`) → Bazaar's 4th tab is now Wardrobe while IAP is off (opens `menuScreen='wardrobe'`; Back returns to the Bazaar). **The Great Hunger (C1-5):** seal aura α .58→.32, halos .42/.26→.2/.1, orbs 8→4, smaller, α .32–.52 and always behind the body (`setDepth(b.y-4)`). **Yuzu:** seedlings' shadow is a 2-layer Graphics (28×10 α .09 + 18×6 α .18, was a 16×5 ellipse); companion shadow gets a wider faint outer layer. Tests: new owner-round149; bazaar-tabs updated.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -47,7 +47,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
 - ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) ผูกแล้ว v8.1.137 · v8.1.138 สลับภาพ Glacier/Barrage (`PATHCARD_ART`) · รอ QA มือถือ
 - ใบ 82 ภาพการ์ด Build Path เต็มการ์ด ผูกแล้ว v8.1.146 (15 ภาพ · งาดำไม่ใช้) · รอ QA มือถือ
-- ใบ 81 ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3 · (ไม่บังคับ) การ์ด Cocoa Titan/Dash Boxer ใหม่ 🟡 รออาร์ต · ส่งที่ `assets/incoming/relics81/`
+- ใบ 81 ไอคอน Relic 8 · Modifier 36 · Trade-off 5 ผูกแล้ว v8.1.151 · การ์ด Yuzu แนวตั้ง 3 ไม่ใช้ (เจ้าของ) · รอ QA มือถือ
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
 - A14 เสียงเปิดกล่อง 8 ผูกแล้ว v8.1.147 (`openChest` · fallback เสียงเดิม) · รอฟังบนมือถือ

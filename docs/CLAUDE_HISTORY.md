@@ -4004,3 +4004,8 @@ Delivery `asset-delivery/audio-a14` merged (8/8 match MANIFEST). `scripts/pack-a
 
 Owner asked for more depth and life on the Lobby hero (code only, no new art). `lobbyHeroWarp`: shadow (`_lhShadow`, now its own graphics + `lb_hero_shadow`) shrinks/fades with hops and stretches with breathing; new `st.lean` bends the strips sideways (cosmetics follow via `cosFollow`); untouched ≥5 s → `lobbyHeroAct` every 5.5–9.5 s picks peek / look / stretch / wiggle / hop (skipped below 35 FPS, tap resets the timer). New `lobbyHeroAmbient`: 'back' 7 light motes rising behind the hero, 'front' 3 faint bokeh in front drifting slowly; back glow pulses. All off with prefers-reduced-motion. Test: new lobby-alive.
 
+
+# Delivery: v8.1.149 — owner 🐞 round 4 — Wardrobe tab, Great Hunger aura, Yuzu soft shadows
+
+Reports from v8.1.147. **Wardrobe:** its only entry was the Thread tab, hidden since v8.1.140 (`IAP_ENABLED=false`) → Bazaar's 4th tab is now Wardrobe while IAP is off (opens `menuScreen='wardrobe'`; Back returns to the Bazaar). **The Great Hunger (C1-5):** seal aura α .58→.32, halos .42/.26→.2/.1, orbs 8→4, smaller, α .32–.52 and always behind the body (`setDepth(b.y-4)`). **Yuzu:** seedlings' shadow is a 2-layer Graphics (28×10 α .09 + 18×6 α .18, was a 16×5 ellipse); companion shadow gets a wider faint outer layer. Tests: new owner-round149; bazaar-tabs updated.
+
