@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.158';
+const GAME_VERSION = '8.1.159';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.159',date:'2026-11-16',title:'Clean Air fog of war + glTexture fix + Titan crush art back (owner)',items:['b']},
   {v:'8.1.158',date:'2026-11-16',title:'clear heal visual for Cocoa’s pre-path Unique (owner)',items:['b']},
   {v:'8.1.157',date:'2026-11-16',title:'code-drawn effects round 3 (8, 10–14) + calmer Cocoa Titan rage aura (owner)',items:['b']},
   {v:'8.1.156',date:'2026-11-16',title:'code-drawn effects, CODE_VS_ART round 2 items 2–7 (owner)',items:['b']},
@@ -4825,6 +4826,7 @@ Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[
 /* v7.9.58 ใบสั่งอาร์ต 34: ฮีโร่ขยับในหน้า Lobby (แพ็ก 75% = 384×480/เฟรม, เท้า y450) · โหลดเฉพาะฮีโร่ที่เลือก ไม่โหลดตอนบูต · Sesame ผูกด้วย (เจ้าของ 22 ต.ค.) */
 const LH_SHEETS={lh_momo_idle:'assets/art/lobby_hero/momo/lh_momo_idle.webp',lh_momo_greet:'assets/art/lobby_hero/momo/lh_momo_greet.webp',lh_momo_act1:'assets/art/lobby_hero/momo/lh_momo_act1.webp',lh_momo_act2:'assets/art/lobby_hero/momo/lh_momo_act2.webp',lh_momo_act3:'assets/art/lobby_hero/momo/lh_momo_act3.webp',lh_momo_act4:'assets/art/lobby_hero/momo/lh_momo_act4.webp',lh_momo_tap:'assets/art/lobby_hero/momo/lh_momo_tap.webp',lh_momo_poke:'assets/art/lobby_hero/momo/lh_momo_poke.webp',lh_yuzu_idle:'assets/art/lobby_hero/yuzu/lh_yuzu_idle.webp',lh_yuzu_greet:'assets/art/lobby_hero/yuzu/lh_yuzu_greet.webp',lh_yuzu_act1:'assets/art/lobby_hero/yuzu/lh_yuzu_act1.webp',lh_yuzu_act2:'assets/art/lobby_hero/yuzu/lh_yuzu_act2.webp',lh_yuzu_act3:'assets/art/lobby_hero/yuzu/lh_yuzu_act3.webp',lh_yuzu_act4:'assets/art/lobby_hero/yuzu/lh_yuzu_act4.webp',lh_yuzu_tap:'assets/art/lobby_hero/yuzu/lh_yuzu_tap.webp',lh_yuzu_poke:'assets/art/lobby_hero/yuzu/lh_yuzu_poke.webp',lh_mint_idle:'assets/art/lobby_hero/mint/lh_mint_idle.webp',lh_mint_greet:'assets/art/lobby_hero/mint/lh_mint_greet.webp',lh_mint_act1:'assets/art/lobby_hero/mint/lh_mint_act1.webp',lh_mint_act2:'assets/art/lobby_hero/mint/lh_mint_act2.webp',lh_mint_act3:'assets/art/lobby_hero/mint/lh_mint_act3.webp',lh_mint_act4:'assets/art/lobby_hero/mint/lh_mint_act4.webp',lh_mint_tap:'assets/art/lobby_hero/mint/lh_mint_tap.webp',lh_mint_poke:'assets/art/lobby_hero/mint/lh_mint_poke.webp',lh_cocoa_idle:'assets/art/lobby_hero/cocoa/lh_cocoa_idle.webp',lh_cocoa_greet:'assets/art/lobby_hero/cocoa/lh_cocoa_greet.webp',lh_cocoa_act1:'assets/art/lobby_hero/cocoa/lh_cocoa_act1.webp',lh_cocoa_act2:'assets/art/lobby_hero/cocoa/lh_cocoa_act2.webp',lh_cocoa_act3:'assets/art/lobby_hero/cocoa/lh_cocoa_act3.webp',lh_cocoa_act4:'assets/art/lobby_hero/cocoa/lh_cocoa_act4.webp',lh_cocoa_tap:'assets/art/lobby_hero/cocoa/lh_cocoa_tap.webp',lh_cocoa_poke:'assets/art/lobby_hero/cocoa/lh_cocoa_poke.webp',lh_taro_idle:'assets/art/lobby_hero/taro/lh_taro_idle.webp',lh_taro_greet:'assets/art/lobby_hero/taro/lh_taro_greet.webp',lh_taro_act1:'assets/art/lobby_hero/taro/lh_taro_act1.webp',lh_taro_act2:'assets/art/lobby_hero/taro/lh_taro_act2.webp',lh_taro_act3:'assets/art/lobby_hero/taro/lh_taro_act3.webp',lh_taro_act4:'assets/art/lobby_hero/taro/lh_taro_act4.webp',lh_taro_tap:'assets/art/lobby_hero/taro/lh_taro_tap.webp',lh_taro_poke:'assets/art/lobby_hero/taro/lh_taro_poke.webp',lh_sesame_idle:'assets/art/lobby_hero/sesame/lh_sesame_idle.webp',lh_sesame_greet:'assets/art/lobby_hero/sesame/lh_sesame_greet.webp',lh_sesame_act1:'assets/art/lobby_hero/sesame/lh_sesame_act1.webp',lh_sesame_act2:'assets/art/lobby_hero/sesame/lh_sesame_act2.webp',lh_sesame_act3:'assets/art/lobby_hero/sesame/lh_sesame_act3.webp',lh_sesame_act4:'assets/art/lobby_hero/sesame/lh_sesame_act4.webp',lh_sesame_tap:'assets/art/lobby_hero/sesame/lh_sesame_tap.webp',lh_sesame_poke:'assets/art/lobby_hero/sesame/lh_sesame_poke.webp'};
 const CODE_TELEGRAPH=true;
+const CLEANAIR_FOGWAR=true;   /* v8.1.159 เจ้าของ: Clean Air หมอกมืดทั้งจอ เปิดตามทาง Wisp (false = หมอกพิษลอยแบบ v8.1.154) */
 const CODE_VFX={bolt:true,aim:true,cocoa:true,xp:true,generic:true,bossWave:['b01'],lane:true,taroBurst:true,bubble:true,sparkle:true,trail:true,dust:true,heal:true};   /* v8.1.156 เจ้าของ: CODE_VS_ART รอบ 2 ข้อ 2–7 · ปิดทีละข้อได้ (false / [] = กลับเป็นภาพเดิม) */   /* v8.1.155 เจ้าของ: วงเตือนท่าบอส/hazard วาดด้วยโค้ด · false = ภาพ vfx_bXX_warn เดิม */
 const LH_USE_SHEETS=false;   /* v7.9.61 เจ้าของ: ชีตใบ 34 วาดใหม่ทุกเฟรม ดูยุบยับ → ปิด ใช้ภาพนิ่งดัดด้วยโค้ด (lobbyHeroWarp) แทน */
 const LH_FW=384,LH_FH=480,LH_FOOT=451,LH_BODY=390,LH_ACTS=['act1','act2','act3','act4'];
@@ -15879,7 +15881,7 @@ class Game extends Phaser.Scene {
     }else if(type==='purge'){
       o.target=3+(w>=4?1:0);o.desc='Protect the wisp as it purifies '+o.target+' cores — clear raiders near it';for(let i=0;i<o.target;i++)this.spawnWaveObjectiveNode(i,o.target);this.spawnPurifyWisp();
     }else if(type==='cleanAir'){
-      o.target=Math.max(20,Math.round((p.dur||52)*0.45));o.desc='Chase the wide clean-air ring for '+o.target+' seconds';this.spawnCleanAirZone();
+      o.target=Math.max(20,Math.round((p.dur||52)*0.45));o.desc='Follow the Wisp '+o.target+'s · the fog lifts where it walks';this.spawnCleanAirZone();
     }else if(type==='defendNectar'){
       o.target=Math.max(34,Math.round((p.dur||52)*.74));o.desc='Protect 1 flower · '+o.target+'s · stand close to heal it';this.spawnNectarGarden();
     }else if(type==='seasonCycle'){
@@ -15913,7 +15915,7 @@ class Game extends Phaser.Scene {
     for(let i=B.length-1;i>=0;i--){ const b=B[i]; b.life-=dt; const hit=p&&this.dist(p.x,p.y,b.img.x,b.img.y)<34; if(hit||b.life<=0){ if(hit){ o.progress=Math.min(o.target,o.progress+1.5); this.floatText?.(b.img.x,b.img.y-24,'+1.5s',0xbff6ff); this.burst?.(b.img.x,b.img.y,0xbff6ff); Sfx.orderCue?.('pickup_sugar_piece',.25,.05,1.3); } this.tweens.killTweensOf(b.img); b.img.destroy(); B.splice(i,1); } } }
   /* v8.1.154 เจ้าของ 🐞: Clean Air ต้องดูเป็นอากาศจริง → รอบนอกเป็นหมอกพิษฟุ้ง (ม่วงเขียว) ลอยช้า ๆ · วงของ Wisp กับทางที่จะไปโล่งสะอาด · ขอบวงเป็นปุยเมฆฟ้าขาว · ยืนนอกวง = หมอกรอบตัวหนาขึ้น */
   cleanAirFog(c,o,dt){ if(!this.add?.graphics)return 0; let g=this._cleanAirFog; if(!g||!g.scene)g=this._cleanAirFog=this.camWorld(this.add.graphics().setDepth(94000));
-    const V=this.cameras?.main?.worldView||{x:c.x-400,y:c.y-500,width:800,height:1000},low=typeof PERF!=='undefined'&&PERF.lvl>=2,N=low?12:26,F=c.fog||(c.fog=[]),R=Math.random,pad=120;
+    const V=this.cameras?.main?.worldView||{x:c.x-400,y:c.y-500,width:800,height:1000},low=typeof PERF!=='undefined'&&PERF.lvl>=2,N=(typeof CLEANAIR_FOGWAR!=='undefined'&&CLEANAIR_FOGWAR)?0:low?12:26,F=c.fog||(c.fog=[]),R=Math.random,pad=120;
     const put=q=>{ q.x=V.x-pad+R()*(V.width+pad*2); q.y=V.y-pad+R()*(V.height+pad*2); q.r=55+R()*70; q.ph=R()*TAU; q.vx=(R()-.5)*14; q.vy=-4-R()*8; return q; };
     while(F.length<N)F.push(put({})); if(F.length>N)F.length=N;
     const segD=(x,y,x0,y0,x1,y1)=>{ const vx=x1-x0,vy=y1-y0,L=vx*vx+vy*vy||1,t=Math.max(0,Math.min(1,((x-x0)*vx+(y-y0)*vy)/L)); return Math.hypot(x-(x0+vx*t),y-(y0+vy*t)); };
@@ -15922,9 +15924,17 @@ class Game extends Phaser.Scene {
     for(const q of F){ q.x+=q.vx*dt; q.y+=q.vy*dt; if(q.x<V.x-pad*1.5||q.x>V.x+V.width+pad*1.5||q.y<V.y-pad*1.5||q.y>V.y+V.height+pad*1.5)put(q);
       const k=clear(q.x,q.y); if(k<=0)continue; const br=1+.08*Math.sin(c.ft*.9+q.ph),a=.075*k;
       g.fillStyle(0x6b4a86,a).fillCircle(q.x,q.y,q.r*br); g.fillStyle(0x7f9a52,a*.8).fillCircle(q.x+q.r*.25,q.y-q.r*.15,q.r*.7*br); g.fillStyle(0x4a3560,a*.9).fillCircle(q.x-q.r*.2,q.y+q.r*.2,q.r*.45*br); drawn++; }
-    const P=this.player; if(P&&!low&&Math.hypot(P.x-c.x,P.y-c.y)>c.r){ for(let i=0;i<5;i++){ const an=c.ft*.6+i*TAU/5,d=60+12*Math.sin(c.ft*2+i); g.fillStyle(0x6b4a86,.09).fillCircle(P.x+Math.cos(an)*d,P.y+Math.sin(an)*d*.7,48); } }
+    const P=this.player; if(P&&!low&&!(typeof CLEANAIR_FOGWAR!=='undefined'&&CLEANAIR_FOGWAR)&&Math.hypot(P.x-c.x,P.y-c.y)>c.r){ for(let i=0;i<5;i++){ const an=c.ft*.6+i*TAU/5,d=60+12*Math.sin(c.ft*2+i); g.fillStyle(0x6b4a86,.09).fillCircle(P.x+Math.cos(an)*d,P.y+Math.sin(an)*d*.7,48); } }
     const n=low?8:14; for(let i=0;i<n;i++){ const an=c.ft*.35+i*TAU/n,rr=c.r*(.98+.04*Math.sin(c.ft*2+i)); g.fillStyle(0xe8fbff,.08).fillCircle(c.x+Math.cos(an)*rr,c.y+Math.sin(an)*rr,c.r*.2); g.fillStyle(0xbff6ff,.06).fillCircle(c.x+Math.cos(an+.2)*rr*.92,c.y+Math.sin(an+.2)*rr*.92,c.r*.14); }
     return drawn; }
+  /* v8.1.159 เจ้าของ: Clean Air แบบป่า Wildwood (PoE) · ทั้งจอมืดเป็นหมอก · วง Wisp สว่าง · ทางที่ Wisp เดินผ่านเปิดค้างไว้ (จำจุดทุก 34px สูงสุด 320 จุด) · รอบตัวเราสว่างเล็กน้อย · RenderTexture บนกล้อง UI ใต้ HUD */
+  cleanAirFogWar(c,dt,started){ if(typeof CLEANAIR_FOGWAR==='undefined'||!CLEANAIR_FOGWAR||!this.add?.renderTexture||!c)return 0; const W=this.W||390,H=this.H||844,cam=this.cameras?.main; if(!cam)return 0;
+    let rt=this._cleanAirFogRT; if(!rt||!rt.scene){ rt=this._cleanAirFogRT=this.camUI(this.add.renderTexture(0,0,W,H).setOrigin(0)); rt.setDepth?.(-5); }
+    if(!this._fogBrush){ if(!this.textures.exists('fog_brush')&&typeof document!=='undefined'){ const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d'),g=x.createRadialGradient(64,64,8,64,64,64); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.6,'rgba(255,255,255,.9)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas('fog_brush',cv); } this._fogBrush=this.make?.image?.({key:'fog_brush',add:false})?.setOrigin(.5); }
+    const R=c.rev||(c.rev=[]); if(started){ const L=R[R.length-1]; if(!L||Math.hypot(L.x-c.x,L.y-c.y)>34){ R.push({x:c.x,y:c.y,r:c.r*.95}); if(R.length>320)R.shift(); } }
+    const v=cam.worldView,z=cam.zoom||1,B=this._fogBrush; rt.clear(); rt.fill(0x0b0814,.74); let n=0;
+    const hole=(wx,wy,r)=>{ if(!B)return; const sx=(wx-v.x)*z,sy=(wy-v.y)*z,sr=r*z; if(sx<-sr||sy<-sr||sx>W+sr||sy>H+sr)return; B.setPosition(sx,sy).setScale(sr*2/128); rt.erase(B); n++; };
+    for(const q of R)hole(q.x,q.y,q.r); hole(c.x,c.y,c.r*1.15); const P=this.player; if(P)hole(P.x,P.y,95); return n; }
   cleanAirPreview(c,o){ const g=this._cleanAirPath||(this._cleanAirPath=this.camWorld(this.add.graphics().setDepth(2))); if(!g.scene)return; g.clear(); const pts=[[c.x,c.y],[c.tx,c.ty],[c.nx,c.ny]],a=.35+.25*Math.sin((c.t||0)*5);
     for(let k=0;k<2;k++){ const [x0,y0]=pts[k],[x1,y1]=pts[k+1],d=Math.hypot(x1-x0,y1-y0); if(d<20)continue; const n=Math.floor(d/26); for(let i=0;i<n;i+=2){ const t0=i/n,t1=Math.min(1,(i+1)/n); g.lineStyle(5,o.color,a*(k?0.55:1)).lineBetween(x0+(x1-x0)*t0,y0+(y1-y0)*t0,x0+(x1-x0)*t1,y0+(y1-y0)*t1); } }
     g.lineStyle(3,o.color,a*.8).strokeEllipse(c.tx,c.ty,c.r*1.6,c.r*1.1); g.lineStyle(2,o.color,a*.45).strokeEllipse(c.nx,c.ny,c.r*1.2,c.r*.8); }
@@ -15935,6 +15945,7 @@ class Game extends Phaser.Scene {
     this.cleanAirPreview?.(c,o);   /* v8.1.77 โชว์ทางที่วงจะไป */
     this.cleanAirBubbles?.(c,o,dt);
     this.cleanAirFog?.(c,o,dt);   /* v8.1.154 */
+    this.cleanAirFogWar?.(c,dt,true);   /* v8.1.159 */
     const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy),step=Math.min(d,82*dt);if(d>1){c.x+=dx/d*step;c.y+=dy/d*step;}
     for(const q of [this._cleanAirZone,this._cleanAirRing])if(q&&q.active)q.setPosition(c.x,c.y);if(this._cleanAirWisp&&this._cleanAirWisp.active)this._cleanAirWisp.setPosition(c.x,c.y-22+Math.sin(c.t*4)*5).setDepth(c.y+3);
     const inside=this.dist(this.player.x,this.player.y,c.x,c.y)<=c.r;o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:0),0,o.target);this._cleanAirZone.setFillStyle(o.color,inside?.20:.07);
@@ -16363,6 +16374,7 @@ class Game extends Phaser.Scene {
   missionArmable(o,planned,p){ return !!o&&!planned&&!(p&&p.forceType)&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!['survive','fill','hunt','vaultAltar','ultimatum'].includes(o.type)&&this.usesStoryBudget?.(); }
   /* v8.1.142 owner 🐞: the ✨ start ring → a "Start mission" button like Frozen Pantry's jar (tap anywhere in the stage · still starts by itself after 10 s) */
   missionArm(o,planned,p){ if(!this.missionArmable(o,planned,p)||!this.player)return; const q=this.objectivePosition(0,1,120,170),R=o._rw||(o._rw=this.missionReward?.(o)),objs=[];
+    if(o.type==='cleanAir'&&this._cleanAir){ const c=this._cleanAir,l=this.camWorld(this.add.text(c.x,c.y+c.r+18,'Step into the ring to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#e8fbff',stroke:'#0d0a14',strokeThickness:4}).setOrigin(.5).setDepth(95000)); this.tweens.add({targets:l,alpha:{from:1,to:.45},duration:600,yoyo:true,repeat:-1}); objs.push(l); o._armPad={x:c.x,y:c.y,objs,t:Infinity,ring:true,btn:null,btnR:{w:0,h:0}}; return; }   /* v8.1.159 เจ้าของ: Clean Air เริ่มได้เฉพาะตอนยืนในวง (ไม่มีปุ่ม/ไม่เริ่มเอง) */
     const W=this.W||390,H=this.H||844,bw=240,bh=58; let btn=null;
     if(this.add.container&&this.camUI){ btn=this.add.container(W/2,H-232).setDepth(9500); const g=this.add.graphics(); g.fillStyle(0x2a1a0e,.94).fillRoundedRect(-bw/2,-bh/2,bw,bh,bh/2); g.lineStyle(3,0xffe08a,1).strokeRoundedRect(-bw/2,-bh/2,bw,bh,bh/2);
       const t=this.add.text(0,R?-9:0,'▶ Start mission',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff3cf',stroke:'#2a1a0e',strokeThickness:4}).setOrigin(.5),c=this.add.text(0,R?13:20,R?'🎁 '+R.txt:'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#9fe8ff',stroke:'#2a1a0e',strokeThickness:3}).setOrigin(.5);
@@ -16384,7 +16396,7 @@ class Game extends Phaser.Scene {
     const h=y+20,g=this.add.graphics(); g.fillStyle?.(0x1a1224,.86); g.fillRoundedRect?.(-pw/2,-12,pw,h,16); g.lineStyle?.(3,col,.95); g.strokeRoundedRect?.(-pw/2,-12,pw,h,16); g.fillStyle?.(col,.9); g.fillRoundedRect?.(-pw/2+18,-12,pw-36,4,2);
     const c=this.add.container(0,0,[g,...items]); c._h=h; return c; }
   missionIntro(o,armed){ if(!o||this._inTutorial||!this.add?.container||!this.W)return false; this.missionCardClear(); const W=this.W,H=this.H,col=o.color||0xffd166,R=o._rw=this.missionReward(o),hx='#'+col.toString(16).padStart(6,'0');
-    /* v8.1.121 เจ้าของ: อ่านไม่ทัน ข้อความเยอะ เร็ว รก → 3 บรรทัด (ชื่อ · สิ่งที่ต้องทำสั้น ๆ · รางวัล) ค้าง 5.5 วิ */ const tip=typeof RUBY_TIPS!=='undefined'&&RUBY_TIPS[o.type]&&RUBY_TIPS[o.type].short,line=armed?'Step on ✨ to begin':((o.desc||'').length<=48?o.desc:(tip?tip.replace(/[\[\]]/g,''):o.desc));
+    /* v8.1.121 เจ้าของ: อ่านไม่ทัน ข้อความเยอะ เร็ว รก → 3 บรรทัด (ชื่อ · สิ่งที่ต้องทำสั้น ๆ · รางวัล) ค้าง 5.5 วิ */ const tip=typeof RUBY_TIPS!=='undefined'&&RUBY_TIPS[o.type]&&RUBY_TIPS[o.type].short,line=armed?(o.type==='cleanAir'?'Step into the ring to begin':'Step on ✨ to begin'):((o.desc||'').length<=48?o.desc:(tip?tip.replace(/[\[\]]/g,''):o.desc));
     const c=this.missionPanel([{t:o.emoji+' '+o.name,sz:22,c:hx,st:5,gap:6},{t:line,sz:15,c:'#ffffff',gap:6},R&&{t:'🎁 '+R.txt,sz:14,c:'#ffe08a',gap:2}],col);
     const y=Math.max(H*.2,this._ruby?this._ruby.bottom+28:0); c.setPosition(W/2,y-24).setDepth(61).setAlpha(0).setScale(.86); c.setScrollFactor?.(1); this.camUI(c); this._msnCard=c;
     this.tweens.add({targets:c,y,alpha:1,scale:1,duration:320,ease:'Back.out'});
@@ -16400,7 +16412,7 @@ class Game extends Phaser.Scene {
     const P=this.missionPoint?.(o); if(P)this.missionGo(o,P.x,P.y,false);
     this.time?.delayedCall?.(2300,()=>{ if(this._msnCard!==c)return; this.tweens.add({targets:c,y:y-40,alpha:0,duration:380,onComplete:()=>{ if(this._msnCard===c)this.missionCardClear(); }}); });
     return true; }
-  missionArmTick(o,dt){ const A=o._armPad; A.t-=dt; if(A.btn?._cd?.active&&!A.btn._R)A.btn._cd.setText('Starts by itself in '+Math.ceil(Math.max(0,A.t))+'s');
+  missionArmTick(o,dt){ const A=o._armPad; if(A.ring){ const c=this._cleanAir,P=this.player; if(c){ this.cleanAirFogWar?.(c,dt,false); } if(c&&P&&Math.hypot(P.x-c.x,P.y-c.y)<=c.r){ A.t=0; this.showBanner?.('🌬️ Follow the Wisp','Stay in its clean air — the fog lifts where it walks',1600); } else { this.renderWaveObjectiveHUD?.(); return true; } } A.t-=dt; if(A.btn?._cd?.active&&!A.btn._R)A.btn._cd.setText('Starts by itself in '+Math.ceil(Math.max(0,A.t))+'s');
     if(A.t<=0){ this.missionArmClear(o); this.vfxHitRing?.(A.x,A.y,0xffe08a,true); if(this.missionGo)this.missionGo(o,A.x,A.y,true); else { Sfx.orderCue?.('wave_start',.4,.3); this.floatText?.(this.player.x,this.player.y-70,'▶ Mission start!',0xffe08a); } return false; } this.renderWaveObjectiveHUD?.(); return true; }
   overchargeOffer(o){ if(!OVERCHARGE_ON)return false; if(o._ocDone||o._oc)return !!o._oc&&!o._ocDone; if(this.state!=='play'||this._inTutorial||this.recipeMode||this.riftMode||this.bossRush||['survive','fill','vaultAltar','ultimatum'].includes(o.type)||!this.usesStoryBudget?.()||!this.player)return false;
     const q=this.objectivePosition(0,1,110,150),pad=this.camWorld(this.add.circle(q.x,q.y,46,0xff7ab8,.18).setStrokeStyle(4,0xff7ab8,.95).setDepth(q.y-2)),t=this.artSpr('msn71_overcharge_pad',q.x,q.y,92,0,{sig:false,depth:q.y-1})||this.camWorld(this.add.text(q.x,q.y,'⚡',{fontSize:'30px'}).setOrigin(.5).setDepth(q.y+4)),l=this.camWorld(this.add.text(q.x,q.y+40,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd0e6',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(q.y+5));
@@ -17059,7 +17071,7 @@ class Game extends Phaser.Scene {
     for(const s of this._seasonShrines||[]){for(const q of [s.zone,s.ring,s.label])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._seasonShrines=null;
     { const st=this.waveObjective?.storm; if(st){ for(const d of st.drops||[]){ this.tweens.killTweensOf(d.img); d.img?.destroy(); } st.drops=[]; for(const sh of st.shrines||[]){ sh.ring?.destroy(); sh.t?.destroy(); } st.shrines=null; } }
     for(const b of this._cleanAir?.bub||[]){ this.tweens.killTweensOf(b.img); if(b.img.active)b.img.destroy(); }
-    for(const k of ['_captureZone','_captureRing','_captureFill','_captureArc','_captureSec','_cleanAirZone','_cleanAirRing','_cleanAirWisp','_cleanAirPath','_cleanAirFog']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
+    for(const k of ['_captureZone','_captureRing','_captureFill','_captureArc','_captureSec','_cleanAirZone','_cleanAirRing','_cleanAirWisp','_cleanAirPath','_cleanAirFog','_cleanAirFogRT']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);this.syncSeasonIcons?.(null);
@@ -20977,8 +20989,8 @@ class Game extends Phaser.Scene {
       p.iframe=Math.max(p.iframe||0,.4);{const d=this.dist(p.x,p.y,best.x,best.y);this.bpFx?.('bpx_cocoa_chainline',p.x,p.y,256,{anchor:'left',rotation:Math.atan2(best.y-p.y,best.x-p.x),scaleX:d/256,scaleY:.5});}this.cocoaGlideTo({x:best.x,y:best.y},.16);this.cocoaLater(.17,()=>{if(!p.active)return;this.cocoaHit(p.x,p.y,r*.85,power*.7,{push:160});this.cocoaVisual(p.x,p.y,r*.85,'fist',0xc9a3ff);this.cocoaLandingFx(p.x,p.y,r*.85);});});}
   /* v8.1.156 CODE_VS_ART รอบ 2 ข้อ 4/7: คลื่นกระแทกโค้ด · วงพื้น (แบนตามมุมกล้อง) ขยาย หนา→บาง · ฝุ่น/เศษกระเด็น · รอยร้าวสั้น ๆ (ท่าหนัก) · วงซ้อนได้ · ขนาดตรงรัศมีจริง */
   /* v8.1.156 CODE_VS_ART รอบ 2 ข้อ 6: แทนภาพ vfx_ring / vfx_glow / vfx_line (ใช้ ~85 จุด) ด้วยภาพวาดโค้ด 256×256 สีขาว (ย้อมสีแล้วได้สีตรง · คม) · วงหนาไม่เท่ากัน + จุดประกาย · เช็กทุก 1 วิ เผื่อโหลดภาพเดิมทับ */
-  codeGenericTex(){ if(typeof CODE_VFX==='undefined'||!CODE_VFX.generic||!this.textures||typeof document==='undefined')return 0; let n=0;
-    const make=(k,fn)=>{ if(!this.textures.exists(k))return; const t=this.textures.get(k); if(t&&t._codeTex)return; const c=document.createElement('canvas'); c.width=256; c.height=256; const x=c.getContext('2d'); if(!x)return; const id=x.createImageData(256,256),D=id.data;
+  codeGenericTex(){ if(typeof CODE_VFX==='undefined'||!CODE_VFX.generic||!this.textures||typeof document==='undefined')return 0; let n=0; let U=null; const inUse=k=>{ if(!U)U=this.texInUse?.()||new Set(); return U.has(k); }; this._texInUseFn=inUse;   /* v8.1.159 🐞 glTexture null: ห้ามเปลี่ยนภาพที่มีของบนจอใช้อยู่ (รอรอบถัดไป) */
+    const make=(k,fn)=>{ if(!this.textures.exists(k))return; const t=this.textures.get(k); if(t&&t._codeTex)return; if(inUse(k))return; const c=document.createElement('canvas'); c.width=256; c.height=256; const x=c.getContext('2d'); if(!x)return; const id=x.createImageData(256,256),D=id.data;
       for(let py=0;py<256;py++)for(let px=0;px<256;px++){ const a=fn(px,py); if(a<=0)continue; const i=(py*256+px)*4,v=Math.min(1,a); D[i]=255;D[i+1]=255;D[i+2]=255;D[i+3]=Math.round(v*255); }
       x.putImageData(id,0,0); this.textures.remove(k); const nt=this.textures.addCanvas(k,c); if(nt)nt._codeTex=true; n++; };
     const sm=(e0,e1,v)=>{ const t=Math.max(0,Math.min(1,(v-e0)/(e1-e0))); return t*t*(3-2*t); };
@@ -21006,7 +21018,7 @@ class Game extends Phaser.Scene {
     const DU=CODE_VFX.dust?{vfx_bk_dust:0,cs_fx_dust:0}:{};
     const star=(x,cx,cy,r,a,warm)=>{ if(r<.5||a<=0)return; x.save(); x.globalAlpha=a; const g=x.createRadialGradient(cx,cy,0,cx,cy,r*1.4); g.addColorStop(0,warm?'rgba(255,240,190,.9)':'rgba(255,255,255,.9)'); g.addColorStop(1,'rgba(255,220,140,0)'); x.fillStyle=g; x.beginPath(); x.arc(cx,cy,r*1.4,0,Math.PI*2); x.fill();
       x.fillStyle='#fffdf2'; x.beginPath(); for(let i=0;i<8;i++){ const ang=i*Math.PI/4-Math.PI/2,rr=i%2?r*.22:r; x.lineTo(cx+Math.cos(ang)*rr,cy+Math.sin(ang)*rr); } x.closePath(); x.fill(); x.restore(); };
-    const redo=(k,paint)=>{ if(!this.textures.exists(k))return; const t=this.textures.get(k); if(!t||t._codeTex)return; const src=t.getSourceImage?.(); const W=src?.width,H=src?.height; if(!W||!H)return;
+    const redo=(k,paint)=>{ if(!this.textures.exists(k))return; const t=this.textures.get(k); if(!t||t._codeTex)return; if(this._texInUseFn?.(k))return; const src=t.getSourceImage?.(); const W=src?.width,H=src?.height; if(!W||!H)return;
       const names=t.getFrameNames().filter(f=>f!=='__BASE'),fr=names.map(f=>{ const q=t.get(f); return {f,x:q.cutX,y:q.cutY,w:q.cutWidth,h:q.cutHeight}; });
       const c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d'); if(!x)return; const cells=fr.length?fr:[{f:null,x:0,y:0,w:W,h:H}];
       cells.forEach((q,i)=>{ x.save(); x.beginPath(); x.rect(q.x,q.y,q.w,q.h); x.clip(); paint(x,q,i,cells.length); x.restore(); });
@@ -22649,7 +22661,7 @@ class Game extends Phaser.Scene {
   clearBattleOutline(){for(const image of [...(this._battlePaintFx||[])])if(image.active)image.destroy();this._battlePaintFx?.clear();}
   bpAnim(key){if(!this.textures?.exists?.(key))return false;if(!this.anims.exists(key)){const fd=ASSET_FX[key];if(!fd)return false;this.anims.create({key,frames:this.anims.generateFrameNumbers(key,{start:0,end:fd.frames-1}),frameRate:fd.rate,repeat:fd.loop?-1:0});}return true;}
   // v6.60.3 one-shot painted build-path effect; size = on-screen cell width in px
-  bpFx(key,x,y,size,o={}){ if(typeof CODE_VFX!=='undefined'&&CODE_VFX.cocoa&&/^bpx_cocoa_(?:shockwave|dashring|crack|landing_dust)$/.test(key))return this.codeShock?.(x,y,size*.45,key==='bpx_cocoa_dashring'?0xc9a3ff:0xd59b65,{depth:o.depth,crack:key==='bpx_cocoa_crack',dust:key==='bpx_cocoa_crack'?0:10,rings:key==='bpx_cocoa_dashring'?2:1,dur:440}); const oldKey=key;key=this.battleOutlineKey?.(key)||key;if(!this.bpAnim(key))return null;const s=this.spawnFxAnim(key,x,y,{scale:size/256,scaleX:o.scaleX,scaleY:o.scaleY,rotation:o.rotation,anchor:o.anchor,depth:o.depth??8,normal:true,force:o.force});if(s){this.trackArtVfx(s);this.battleOutlineTrack?.(s,oldKey,key);}return s;}
+  bpFx(key,x,y,size,o={}){ if(typeof CODE_VFX!=='undefined'&&CODE_VFX.cocoa&&/^bpx_cocoa_(?:dashring|landing_dust)$/.test(key))   /* v8.1.159 เจ้าของ: Titan crush เสียความอลังการ → คลื่นกระแทก/รอยร้าวกลับเป็นภาพเดิม · โค้ดเหลือแค่วง Dash/ฝุ่นลงพื้น */return this.codeShock?.(x,y,size*.45,key==='bpx_cocoa_dashring'?0xc9a3ff:0xd59b65,{depth:o.depth,crack:key==='bpx_cocoa_crack',dust:key==='bpx_cocoa_crack'?0:10,rings:key==='bpx_cocoa_dashring'?2:1,dur:440}); const oldKey=key;key=this.battleOutlineKey?.(key)||key;if(!this.bpAnim(key))return null;const s=this.spawnFxAnim(key,x,y,{scale:size/256,scaleX:o.scaleX,scaleY:o.scaleY,rotation:o.rotation,anchor:o.anchor,depth:o.depth??8,normal:true,force:o.force});if(s){this.trackArtVfx(s);this.battleOutlineTrack?.(s,oldKey,key);}return s;}
   // v7.8.45 art order 20: hero VFX · w = on-screen width px (h defaults to frame aspect) · must = ignore fxOk budget (⭐⭐⭐) · loop sheets stay until destroyed or life · hold = keep last frame N sec then fade · follow = stick to an object
   heroFx(key,x,y,w,o={}){const oldKey=key;key=this.battleOutlineKey?.(key)||key;if(!this.bpAnim(key))return null;const fd=ASSET_FX[key];if(!o.must&&(this._artVfx?.size||0)>48)return null;const h=o.h??w*fd.fh/fd.fw;
     const s=this.spawnFxAnim(key,x,y,{scaleX:w/fd.fw,scaleY:h/fd.fh,rotation:o.rot,anchor:o.anchor,depth:o.depth??8,normal:true,force:o.must,tint:o.tint,alpha:o.alpha});if(!s)return null;this.trackArtVfx(s);

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.158**. Next release:8.1.159. Fetch the deploy branch before new work.
+Current release: **8.1.159**. Next release:8.1.160. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.158 — clear heal visual for Cocoa’s pre-path Unique (owner)
+# Latest delivery: v8.1.159 — Clean Air fog of war (Wildwood-style) + glTexture fix + Titan crush art back (owner)
+
+**Clean Air (`CLEANAIR_FOGWAR`):** `cleanAirFogWar` draws a screen-size RenderTexture on the UI camera (depth −5, under the HUD) filled dark (0x0b0814 α .74) and erases soft holes with a generated `fog_brush`: the Wisp ring (×1.15), a 95 px circle around the hero, and every 34 px of the Wisp's walked path (up to 320 points, culled off-screen) — the map opens behind the Wisp and stays open. The v8.1.154 drifting poison puffs are off while this is on (rim kept). The mission no longer uses the ▶ button or the 10 s auto start: `missionArm` puts "Step into the ring to start" under the ring and `missionArmTick` starts it only when the hero is inside (banner "Follow the Wisp"). Desc: "Follow the Wisp Ns · the fog lifts where it walks". **🐞 glTexture null (hub, v8.1.158):** `codeGenericTex` / `codeSheets` swapped textures that were on screen (Lobby sparkles); swaps now wait until no object uses the texture (`texInUse`). **🐞 Titan crush lost its punch:** `bpx_cocoa_shockwave` / `bpx_cocoa_crack` are art again; code keeps only Dash ring + landing dust. Test: new cleanair-fogwar.
+
+# Previous delivery: v8.1.158 — clear heal visual for Cocoa’s pre-path Unique (owner)
 
 Owner: the "flower" was the heal of Cocoa's Bear Grit Slam (Unique before a Build Path, levels 1–5) — `healAura` played `growth_unlock` tinted green. With `CODE_VFX.heal` it now runs `healAuraCode`: a green ground ring that pulses under the hero, a short green light column at the start, and green ＋ signs (dark outline) rising and fading around the hero every 0.32 s, for as long as `_cocoaRegenT` lasts; it follows the hero and fades out when the regen ends. Test: code-vfx-round3 extended.
-
-# Previous delivery: v8.1.157 — code-drawn effects round 3 (8, 10–14) + calmer Cocoa Titan rage aura (owner)
-
-New `CODE_VFX` switches `lane, taroBurst, bubble, sparkle, trail, dust`. **8 Lanes:** `kitLane` → `codeLane` follows the hidden `vfx_line` marker (position, angle, length, tint, fade): translucent band + bright edges blinking faster over time + white ›› chevrons flowing toward the dash; `o.key` lanes (stampede trail, prism beam) keep art. **10 Taro:** `codeBurst` (jagged rays, expanding ring, white core flash, sparks) replaces `bpx_taro_orb_burst / spark_burst / arc_overload_hit` in `taroArt` and `taroFx`; shock stacks are drawn by `taroShockCode` (one Graphics: k sparks orbit above the head, max stacks = flickering electric ellipse) instead of `bpx_taro_shock_marker/aura` sprites (cleared when Taro is off). **11 Bubbles:** generated `code_bubble` texture (clear centre, iridescent rim, highlight) used for Sugar Shell, C1-2 Trapping Bubble, C2-2 air pockets, C2-1 pod shield and Clean Air bubbles, with wobble. **12–14:** `codeSheets` redraws sparkle (7 sheets), trail (5) and dust (2) textures in code with the same size, frame names and rects (callers untouched; stale anims dropped and rebuilt). **Cocoa Titan rage (owner: flower-like aura too busy):** the art wreath `bpx_cocoa_rage1-3` is off; rage now shows small flame tongues at the feet + rising embers that grow with the rage level. Test: new code-vfx-round3; code-vfx-round2 switch check loosened.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
