@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.151';
+const GAME_VERSION = '8.1.152';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.152',date:'2026-11-16',title:'Unique wind-up before tap Uniques (owner)',items:['b']},
   {v:'8.1.151',date:'2026-11-15',title:'art order 81 wired — Relic / Modifier / Trade-off icons (owner)',items:['a']},
   {v:'8.1.150',date:'2026-11-14',title:'owner round 5 — short Relic / hero intro text, vault background, Capture the Zone polish',items:['b']},
   {v:'8.1.149',date:'2026-11-14',title:'owner 🐞 round 4 — Wardrobe tab, Great Hunger aura, Yuzu soft shadows',items:['b']},
@@ -10225,7 +10226,7 @@ class Game extends Phaser.Scene {
     const bw=86,bx=pl.x-bw/2,by=pl.y-122; g.fillStyle(0x1a1026,0.9); g.fillRoundedRect(bx-3,by-3,bw+6,16,7); g.lineStyle(2,0xffffff,0.8); g.strokeRoundedRect(bx-3,by-3,bw+6,16,7);
     g.fillStyle(s.full?0xffd166:0xff76a8,1); g.fillRoundedRect(bx,by,Math.max(4,bw*c),10,5); }
   releaseSnipe(){ this.heroScreenEffect?.(1.2); const s=this._snipe;if(!s)return; const c=this.snipeCharge(),ang=s.ang; this.cancelSnipe(); if(this.state!=='play'||this.uniqueCd>0)return;
-    if(s.kind==='yuzu'){this._yzCmdPt=this.yuzuCmdPoint?.(s)||null;return this.useCharacterSkill();}
+    if(s.kind==='yuzu'){this._yzCmdPt=this.yuzuCmdPoint?.(s)||null;return this.useCharacterSkill(true);}
     if(s.blast)return this.releaseBerryBlast(ang,c);
     if(s.kind==='bloom')return this.releaseGlacierBloom(c);
     if(s.kind==='lance')return this.releaseFrostLance(ang,c);
@@ -10430,8 +10431,19 @@ class Game extends Phaser.Scene {
       for(let k=1;k<=6;k++){ const tt=k/6; gw.lineTo(px+ca*L*tt+nx*side*Math.sin(tt*Math.PI)*12,py+sa*L*tt+ny*side*Math.sin(tt*Math.PI)*12); } gw.strokePath();
       this.tweens.add({targets:gw,x:nx*side*(26+c*30),y:ny*side*(26+c*30),alpha:0,duration:480+Math.random()*320,ease:'Cubic.out',onComplete:()=>gw.destroy()}); }
     this.burst&&this.burst(x0,y0,0xffffff); }
-  useCharacterSkill(){
+  /* v8.1.152 เจ้าของ (ไอเดีย acting จาก pixelfx): ท่า Unique แบบกดปุ๊บออกปั๊บ → ย่อตัวง้าง + แสงรวมเข้าตัว 0.17 วิ แล้วค่อยปล่อย (ยืดตัว + จอสั่นเบา) · ท่าที่กดค้างชาร์จอยู่แล้ว (ปล่อยจากการเล็ง) ไม่ต้องง้างซ้ำ */
+  useCharacterSkill(noWind){
     if(this.isSesRune?.())return this.sesRuneCast();
+    if(this.state!=='play'||this.uniqueCd>0||this._uqWind||(this.character==='cocoa'&&this._cocoaUniqueT>0))return;
+    if(!noWind&&!(this.character==='momo'&&this.basicAttack?.path==='sniper')&&this.uniqueWindup?.(()=>this.useCharacterSkillNow()))return;
+    return this.useCharacterSkillNow(); }
+  uniqueWindup(go,ms=170){ const p=this.player; if(!p||!this.time?.delayedCall)return false; this._uqWind=true; const col=(this.uniqueInfo?.()||{}).color||0xffd166;
+    this._sqX=1.28; this._sqY=0.78; Sfx.bp?.('shared_unique_charge_start',.35,.1);
+    if(this.add?.circle&&((typeof Save!=='undefined'&&Save.data?.settings?.vfx)??1)!==0){ for(let i=0;i<8;i++){ const a=i*Math.PI/4+Math.random()*.3,r=70+Math.random()*20,d=this.camWorld(this.add.circle(p.x+Math.cos(a)*r,p.y-20+Math.sin(a)*r,3.5,i%2?0xffffff:col,.95).setDepth(90480)); this.tweens.add({targets:d,x:p.x,y:p.y-20,scale:.4,duration:ms,ease:'Quad.in',onComplete:()=>d.destroy()}); }
+      const ring=this.camWorld(this.add.circle(p.x,p.y-20,64,col,0).setStrokeStyle(3,col,.8).setDepth(90479)); this.tweens.add({targets:ring,scale:.25,alpha:.2,duration:ms,ease:'Quad.in',onComplete:()=>ring.destroy()}); }
+    this.time.delayedCall(ms,()=>{ this._uqWind=false; if(this.state!=='play'||!this.player?.active)return; this._sqX=0.82; this._sqY=1.24; this.screenShake?.(90,.004); go(); });
+    return true; }
+  useCharacterSkillNow(){
     if(this.state!=='play'||this.uniqueCd>0||(this.character==='cocoa'&&this._cocoaUniqueT>0))return;
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
     this.heroScreenEffect?.(1.4);this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(520);this._coachUnique=(this._coachUnique||0)+1;if(!(this.character==='momo'&&this.basicAttack?.path==='sniper'))this.uniqueCastFx?.();this._mxSrc='unique';this.fireRecipes('unique');

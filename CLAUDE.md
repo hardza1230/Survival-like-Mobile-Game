@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.151**. Next release:8.1.152. Fetch the deploy branch before new work.
+Current release: **8.1.152**. Next release:8.1.153. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.151 — art order 81 wired — Relic / Modifier / Trade-off icons (owner)
+# Latest delivery: v8.1.152 — Unique wind-up before tap Uniques (owner, idea from pixelfx "acting")
+
+`useCharacterSkill(noWind)` now runs `uniqueWindup` first (170 ms): the jelly squash crouches (`_sqX 1.28 / _sqY .78`), 8 dots + a ring in the Unique colour gather into the hero, `shared_unique_charge_start` cue; then the body stretches (`.82 / 1.24`), a light shake (90 ms) and the cast (`useCharacterSkillNow`, the old body). `_uqWind` blocks double taps; leaving play during the wind-up cancels the cast. Skipped for charged releases (Yuzu command `useCharacterSkill(true)`, Mint/Momo charge paths already go through their own hold), Momo Sniper and Sesame runes; dots/ring off when settings vfx = 0. Tests: new unique-windup; cocoa-builds / cocoa-flicker / sesame-runes extract `useCharacterSkillNow`.
+
+# Previous delivery: v8.1.151 — art order 81 wired — Relic / Modifier / Trade-off icons (owner)
 
 Delivery `asset-delivery/relics81` merged (52/52 match MANIFEST). `scripts/pack-relics81.py` → `assets/art/relics81/` 49 × 128×128 WebP q80 (265 KB · 64 KB GPU each): `relic_` 8 (heavydough, sugarrush, frostcandy, copperwhisk, longspoon, crowdcrush, twinbake, giantslayer), `mod_<id>` 36 (all heroes' MODIFIERS, id without the `x_` prefix), `trade_` 5. `artClass` → stage for `assets/art/relics81/`; `stageArtKeys` loads the 8 relics + 5 trade-offs + the current hero's 6 modifiers. `modCard` / `tradeCard` use `mod_*` / `trade_*` when loaded, else the old weapon icon. The 3 Yuzu portrait Build Path cards (`pathcard80_*`) stay in incoming only — owner: order-82 landscape cards already cover Yuzu. Test: new relics81-art.
-
-# Previous delivery: v8.1.150 — owner round 5 — short Relic / hero intro text, vault background, Capture the Zone polish
-
-**Relic pick:** all 22 `RELICS.headline` rewritten as one plain line (≤28 chars, e.g. "Crits heal you", "+25% to far enemies"); relic options carry `short` + `note` (combo / evolves-into only); the vault info panel shows that line (16px bold) instead of desc + synergy + "for" text; Mods/Trade-offs show their first sentence. **Vault background:** `vault80_bg` now covers the whole screen (`addAt` index 1, under the header) — the top gap is gone. **Hero intros (`HERO_INTROS`):** one short line each ("I’m Cocoa! My punches smash the machines. Try me!"), bubble 150→96 px, 17px bold. Shrine left as is (owner). **Capture the Zone:** `captureHud` draws a progress arc on the ring edge + seconds left in the centre ("⬇ 12s" when outside); `capturePulse` at 25/50/75% hurts/pushes enemies within 1.25R (normal 40% max HP + knockback, elite/miniboss 8%, bosses untouched); `captureFinishSweep` on completion hits everything but bosses within max(2.2R, 520) (normal ×5 = cleared, elite/miniboss 25%). Mission text: "Stay in the ring until it fills. It blasts enemies every 25%!". Test: new owner-round150.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
