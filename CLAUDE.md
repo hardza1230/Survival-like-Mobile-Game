@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.161**. Next release:8.1.162. Fetch the deploy branch before new work.
+Current release: **8.1.162**. Next release:8.1.163. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.161 — Clean Air fog fixes + camera a bit farther (owner 🐞 ×3, v8.1.160)
+# Latest delivery: v8.1.162 — Clean Air → "Lost Wisps" (dark forest) + Taro lightning C/B/A (owner)
+
+**Lost Wisps (`CLEANAIR_V2`):** lure — one glowing Wisp (no labels, map bright); touching it starts `close`: an iris of darkness closes on the hero over 1 s, full black 0.3 s, then a white burst from the hero and the Wisp splits into 4 (5 from C3) that fly out across the map. `dark`: world-space fog (`cleanAirV2Fog`, RT at depth 94500) with a lantern around the hero (130 → 85 px, dims 2.2 px/s, refills on each free), permanent light (r 260) where Wisps were freed; Wisps pulse every 3 s above the fog and the objective arrow points to the nearest one; every 2.4 s 2–3 monsters emerge from the dark ahead of the hero's movement (glowing eyes for 0.6 s, then `spawnEnemy` + `spawnRise`). Standing within 85 px charges 1.5 s (arc ring; leaving pauses, never resets; `event_wisp_purify_charge`), then a light burst (code shock, normal enemies −60% max HP + knockback, elites −15%), Sugar 4+1.2×stage. All freed → Wisps fly to the hero, flash, fog lifts in 1 s, `completeWaveObjective`; done within 45 s of darkness = ×3 Sugar bonus. No ▶/auto start (not armable). HUD "n / N 🌟". Ruby tip text updated; the old voice lines talk about the ring, so they stay silent until audio order **A15** (2 lines) arrives. **Taro:** C — Unique chain hops 45 ms apart (bolt, ring and damage together); B — `taroZapReact` jolts the hit enemy's angle for 0.12 s + a pale flash (≤ once / 0.15 s; hooked on bolt ends via `taroZapAt` because the T5 damage resolvers are hash-locked); A — `taroChainStop` 30 ms hit-stop at most every 0.7 s. Tests: new cleanair-v2; ruby-a09-voice skips cleanAir until A15.
+
+# Previous delivery: v8.1.161 — Clean Air fog fixes + camera a bit farther (owner 🐞 ×3, v8.1.160)
 
 **Clean Air:** the lit area did not line up with the ring → `cleanAirFogWar` now draws in world space (a RenderTexture covering the camera's `worldView` + 60 px pad, moved there every frame, depth 94500) so holes use world coordinates directly (no zoom/scroll conversion). Before the hero steps in the map stays bright (no fog while armed); after the start the darkness falls over 1.6 s (`c.dark`), then the walked trail / ring (×1.12) / hero (90 px) stay open. Clutter: the "Follow the Wisp" banner is gone (small float text instead) and the ring label is "⬇ Step in". **Camera:** base zoom 0.78 → 0.74 (~5% farther, `computeViewZoom`). Tests: cleanair-fogwar and foe-shadow updated.
-
-# Previous delivery: v8.1.160 — livelier Taro lightning (owner)
-
-Owner: the code lightning still looked plain. `taroLightningVisual` now animates each bolt in one Graphics (same 20-live cap and lifetime): strike-in from the source (45% at once, full at 40 ms), the main bolt (glow / dark outline / colour / white core) plus two thin secondary strands crackling beside it, 1–2 side forks on long links, white sparks popping along the bolt, a white flash + 5–6 spark streaks at the target, a small glowing orb at the source, then two re-jags (85 ms, 140 ms) for flicker with a fading afterglow. Fill calls are optional-guarded for test stubs. Tests: code-vfx-round2 updated.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

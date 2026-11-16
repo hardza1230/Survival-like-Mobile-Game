@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.161';
+const GAME_VERSION = '8.1.162';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.162',date:'2026-11-16',title:'Clean Air → Lost Wisps (dark forest) + Taro lightning C/B/A (owner)',items:['b']},
   {v:'8.1.161',date:'2026-11-16',title:'Clean Air fog fixes + camera a bit farther (owner)',items:['b']},
   {v:'8.1.160',date:'2026-11-16',title:'livelier Taro lightning (owner)',items:['b']},
   {v:'8.1.159',date:'2026-11-16',title:'Clean Air fog of war + glTexture fix + Titan crush art back (owner)',items:['b']},
@@ -4828,6 +4829,7 @@ Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[
 /* v7.9.58 ใบสั่งอาร์ต 34: ฮีโร่ขยับในหน้า Lobby (แพ็ก 75% = 384×480/เฟรม, เท้า y450) · โหลดเฉพาะฮีโร่ที่เลือก ไม่โหลดตอนบูต · Sesame ผูกด้วย (เจ้าของ 22 ต.ค.) */
 const LH_SHEETS={lh_momo_idle:'assets/art/lobby_hero/momo/lh_momo_idle.webp',lh_momo_greet:'assets/art/lobby_hero/momo/lh_momo_greet.webp',lh_momo_act1:'assets/art/lobby_hero/momo/lh_momo_act1.webp',lh_momo_act2:'assets/art/lobby_hero/momo/lh_momo_act2.webp',lh_momo_act3:'assets/art/lobby_hero/momo/lh_momo_act3.webp',lh_momo_act4:'assets/art/lobby_hero/momo/lh_momo_act4.webp',lh_momo_tap:'assets/art/lobby_hero/momo/lh_momo_tap.webp',lh_momo_poke:'assets/art/lobby_hero/momo/lh_momo_poke.webp',lh_yuzu_idle:'assets/art/lobby_hero/yuzu/lh_yuzu_idle.webp',lh_yuzu_greet:'assets/art/lobby_hero/yuzu/lh_yuzu_greet.webp',lh_yuzu_act1:'assets/art/lobby_hero/yuzu/lh_yuzu_act1.webp',lh_yuzu_act2:'assets/art/lobby_hero/yuzu/lh_yuzu_act2.webp',lh_yuzu_act3:'assets/art/lobby_hero/yuzu/lh_yuzu_act3.webp',lh_yuzu_act4:'assets/art/lobby_hero/yuzu/lh_yuzu_act4.webp',lh_yuzu_tap:'assets/art/lobby_hero/yuzu/lh_yuzu_tap.webp',lh_yuzu_poke:'assets/art/lobby_hero/yuzu/lh_yuzu_poke.webp',lh_mint_idle:'assets/art/lobby_hero/mint/lh_mint_idle.webp',lh_mint_greet:'assets/art/lobby_hero/mint/lh_mint_greet.webp',lh_mint_act1:'assets/art/lobby_hero/mint/lh_mint_act1.webp',lh_mint_act2:'assets/art/lobby_hero/mint/lh_mint_act2.webp',lh_mint_act3:'assets/art/lobby_hero/mint/lh_mint_act3.webp',lh_mint_act4:'assets/art/lobby_hero/mint/lh_mint_act4.webp',lh_mint_tap:'assets/art/lobby_hero/mint/lh_mint_tap.webp',lh_mint_poke:'assets/art/lobby_hero/mint/lh_mint_poke.webp',lh_cocoa_idle:'assets/art/lobby_hero/cocoa/lh_cocoa_idle.webp',lh_cocoa_greet:'assets/art/lobby_hero/cocoa/lh_cocoa_greet.webp',lh_cocoa_act1:'assets/art/lobby_hero/cocoa/lh_cocoa_act1.webp',lh_cocoa_act2:'assets/art/lobby_hero/cocoa/lh_cocoa_act2.webp',lh_cocoa_act3:'assets/art/lobby_hero/cocoa/lh_cocoa_act3.webp',lh_cocoa_act4:'assets/art/lobby_hero/cocoa/lh_cocoa_act4.webp',lh_cocoa_tap:'assets/art/lobby_hero/cocoa/lh_cocoa_tap.webp',lh_cocoa_poke:'assets/art/lobby_hero/cocoa/lh_cocoa_poke.webp',lh_taro_idle:'assets/art/lobby_hero/taro/lh_taro_idle.webp',lh_taro_greet:'assets/art/lobby_hero/taro/lh_taro_greet.webp',lh_taro_act1:'assets/art/lobby_hero/taro/lh_taro_act1.webp',lh_taro_act2:'assets/art/lobby_hero/taro/lh_taro_act2.webp',lh_taro_act3:'assets/art/lobby_hero/taro/lh_taro_act3.webp',lh_taro_act4:'assets/art/lobby_hero/taro/lh_taro_act4.webp',lh_taro_tap:'assets/art/lobby_hero/taro/lh_taro_tap.webp',lh_taro_poke:'assets/art/lobby_hero/taro/lh_taro_poke.webp',lh_sesame_idle:'assets/art/lobby_hero/sesame/lh_sesame_idle.webp',lh_sesame_greet:'assets/art/lobby_hero/sesame/lh_sesame_greet.webp',lh_sesame_act1:'assets/art/lobby_hero/sesame/lh_sesame_act1.webp',lh_sesame_act2:'assets/art/lobby_hero/sesame/lh_sesame_act2.webp',lh_sesame_act3:'assets/art/lobby_hero/sesame/lh_sesame_act3.webp',lh_sesame_act4:'assets/art/lobby_hero/sesame/lh_sesame_act4.webp',lh_sesame_tap:'assets/art/lobby_hero/sesame/lh_sesame_tap.webp',lh_sesame_poke:'assets/art/lobby_hero/sesame/lh_sesame_poke.webp'};
 const CODE_TELEGRAPH=true;
+const CLEANAIR_V2=true;   /* v8.1.162 เจ้าของ: Clean Air ใหม่ = ป่ามืด (Viridian/Wildwood) · เดินหา Wisp ที่กระจายทั่วแมพ · ชาร์จ 1.5 วิ แล้วระเบิดแสง · false = แบบวงเดินตาม (v8.1.161) */
 const CLEANAIR_FOGWAR=true;   /* v8.1.159 เจ้าของ: Clean Air หมอกมืดทั้งจอ เปิดตามทาง Wisp (false = หมอกพิษลอยแบบ v8.1.154) */
 const CODE_VFX={bolt:true,aim:true,cocoa:true,xp:true,generic:true,bossWave:['b01'],lane:true,taroBurst:true,bubble:true,sparkle:true,trail:true,dust:true,heal:true};   /* v8.1.156 เจ้าของ: CODE_VS_ART รอบ 2 ข้อ 2–7 · ปิดทีละข้อได้ (false / [] = กลับเป็นภาพเดิม) */   /* v8.1.155 เจ้าของ: วงเตือนท่าบอส/hazard วาดด้วยโค้ด · false = ภาพ vfx_bXX_warn เดิม */
 const LH_USE_SHEETS=false;   /* v7.9.61 เจ้าของ: ชีตใบ 34 วาดใหม่ทุกเฟรม ดูยุบยับ → ปิด ใช้ภาพนิ่งดัดด้วยโค้ด (lobbyHeroWarp) แทน */
@@ -9003,7 +9005,7 @@ const RUBY_TIPS={
   defendNectar:{say:'Protect the [flower]! Stay close.',short:'Protect the [flower]!' },
   seasonCycle:{say:'Grab [petals] for all [4 seasons]!',short:'Gather [petals] for all [four seasons]!'},
   breakRoots:{say:'Stand next to each [root anchor] to snap it!',short:'Snap every [root anchor]!'},
-  cleanAir:{say:'Stay in the moving [clean-air ring]!',short:'Follow the [clean-air ring]!'},
+  cleanAir:{say:'Find the lost [Wisps] in the dark!',short:'Free the [Wisps]!'},   /* v8.1.162 ข้อความใหม่ (เสียงเดิมพูดเรื่องวง จึงไม่เล่น · ต้องสั่งเสียงใหม่) */
   counter:{say:'[Dash into] the glowing item to kick it at the boss!',short:'[Dash] into the glowing item!'},
   mini:{say:'A [Miniboss]! Beat it to spin the [reward wheel]!',short:'Beat the [Miniboss]!'},
   boss:{say:'The [Boss]! Dash away from [red warnings], then hit back!',short:'Defeat the [Boss]!'},
@@ -9245,7 +9247,7 @@ const WAVE_OBJECTIVES = {
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect one nectar flower. Losing it costs 1/3 max HP; a fresh flower blooms elsewhere'},
   seasonCycle:{emoji:'🌦️',name:'Seasonal Harvest',desc:'Pick up petals from defeated monsters · step on a shrine to call its season · fill all four'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Stand next to every corrupted root anchor to sever it before the throne pulse closes in'},
-  cleanAir:{emoji:'🫧',name:'Follow the Clean Air',desc:'Stay inside the moving clean-air ring while the marsh shifts'},
+  cleanAir:{emoji:'🫧',name:'Lost Wisps',desc:'Touch the Wisp, then free the lost Wisps in the dark'},
   /* v8.1.78 เจ้าของ: ภารกิจประจำด่าน Chapter 3 (แรงบันดาลใจ Breach / Strongbox / Expedition / Ritual / Delirium) */
   seedRift:{emoji:'🌀',name:'Seal the Seed Rift',desc:'Defeat enemies inside the rift — each kill keeps it open longer'},
   shakeTrees:{emoji:'🌳',name:'Shake the Hollow Trees',desc:'Stand under each tree to shake it — fruit or a hidden ambush falls out'},
@@ -15883,7 +15885,7 @@ class Game extends Phaser.Scene {
     }else if(type==='purge'){
       o.target=3+(w>=4?1:0);o.desc='Protect the wisp as it purifies '+o.target+' cores — clear raiders near it';for(let i=0;i<o.target;i++)this.spawnWaveObjectiveNode(i,o.target);this.spawnPurifyWisp();
     }else if(type==='cleanAir'){
-      o.target=Math.max(20,Math.round((p.dur||52)*0.45));o.desc='Follow the Wisp '+o.target+'s · the fog lifts where it walks';this.spawnCleanAirZone();
+      o.target=Math.max(20,Math.round((p.dur||52)*0.45));if(typeof CLEANAIR_V2!=='undefined'&&CLEANAIR_V2){ o._v2=true; o.target=(this.stageIndex||0)>=10?5:4; o.desc='Find '+o.target+' lost Wisps in the dark'; this.cleanAirV2Spawn?.(o); } else { o.desc='Follow the Wisp '+o.target+'s · the fog lifts where it walks';this.spawnCleanAirZone(); }
     }else if(type==='defendNectar'){
       o.target=Math.max(34,Math.round((p.dur||52)*.74));o.desc='Protect 1 flower · '+o.target+'s · stand close to heal it';this.spawnNectarGarden();
     }else if(type==='seasonCycle'){
@@ -15904,6 +15906,51 @@ class Game extends Phaser.Scene {
     this.missionArm?.(o,planned,p);
     if(!o._armPad&&!this._inTutorial)this.time?.delayedCall?.(450,()=>{ if(this.waveObjective===o&&!o.done)this.missionGo?.(o,null,null,false); });   /* v8.1.116 คลื่นเปิดภารกิจ */
   }
+  /* ===== v8.1.162 เจ้าของ: Clean Air ใหม่ "Lost Wisps" ·
+     lure: Wisp ดวงเดียวลอยเรืองแสง (ยังสว่าง ไม่มีป้าย) → เดินชน ·
+     close: ขอบจอมืดบีบเข้ากลาง 1 วิ + มืดสนิท 0.3 วิ → แสงวาบจากตัว · Wisp แตก 4 ดวง (C3 5) บินกระจายทั่วแมพ ·
+     dark: เห็นแค่ตะเกียงรอบตัว (130→85 หรี่ช้า ๆ · ปลดได้ = เต็มใหม่) · Wisp กะพริบให้เห็นในความมืด · มอนโผล่จากความมืดข้างหน้า (ตาเรืองแสงก่อน 0.6 วิ) ·
+     ยืนใกล้ 1.5 วิ (ออกแล้วหยุดไว้ ไม่รีเซ็ต) → ระเบิดแสง ผลัก/ดาเมจมอนรอบ ๆ · สว่างถาวร r260 · Sugar นิดหน่อย ·
+     ครบ = Wisp บินกลับหาเรา แสงวาบ หมอกสลาย 1 วิ · จบใน 45 วิ (นับจากมืด) = โบนัส Sugar ===== */
+  cleanAirV2Spawn(o){ const pos=this.objectivePosition(0,1,170,250); const c=this._cleanAir={v2:true,phase:'lure',x:pos.x,y:pos.y,r:70,t:0,darkT:0,lantern:130,wisps:[],lit:[],eyes:[],spawnT:1.6,dark:0,objs:[]};
+    const glow=this.camWorld(this.add.circle(pos.x,pos.y-20,46,0xbff6ff,.22).setDepth(94590)); this.tweens.add({targets:glow,scale:{from:.85,to:1.25},alpha:{from:.32,to:.12},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const spr=this.camWorld(this.add.image(pos.x,pos.y-22,'ch2_mycelium_enemy_atlas',7).setScale(.26).setDepth(94600)); this.tweens.add({targets:spr,y:pos.y-30,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    c.lure=[glow,spr]; c.objs.push(glow,spr); c.g=this.camWorld(this.add.graphics().setDepth(94610)); c.objs.push(c.g); return c; }
+  cleanAirV2Clear(){ const c=this._cleanAir; if(!c?.v2)return; if(c.charging)Sfx.eventLoopStop?.('event_wisp_purify_charge'); for(const q of [...c.objs,...c.wisps.map(w=>w.spr),...c.wisps.map(w=>w.glow),...c.eyes.map(e=>e.g)]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } c.objs=[]; c.eyes=[]; }
+  cleanAirV2Fog(c,holes,alpha){ const cam=this.cameras?.main; if(!cam||!this.add?.renderTexture)return; const v=cam.worldView,PAD=60,VW=Math.ceil((v.width||this.W||390)+PAD*2),VH=Math.ceil((v.height||this.H||844)+PAD*2);
+    let rt=this._cleanAirFogRT; if(rt&&rt.scene&&(rt.width<VW||rt.height<VH)){ rt.destroy(); rt=null; } if(!rt||!rt.scene){ rt=this._cleanAirFogRT=this.camWorld(this.add.renderTexture(0,0,VW+80,VH+80).setOrigin(0)); rt.setDepth?.(94500); }
+    if(!(alpha>0)){ rt.setVisible?.(false); return; } rt.setVisible?.(true);
+    if(!this._fogBrush){ if(!this.textures.exists('fog_brush')&&typeof document!=='undefined'){ const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d'),g=x.createRadialGradient(64,64,8,64,64,64); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.62,'rgba(255,255,255,.92)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas('fog_brush',cv); } this._fogBrush=this.make?.image?.({key:'fog_brush',add:false})?.setOrigin(.5); }
+    const ox=v.x-PAD,oy=v.y-PAD,B=this._fogBrush; rt.setPosition?.(ox,oy); rt.clear(); rt.fill(0x07050d,Math.min(.97,alpha)); if(!B)return;
+    for(const h of holes){ if(!(h.r>1))continue; const sx=h.x-ox,sy=h.y-oy; if(sx<-h.r||sy<-h.r||sx>VW+h.r||sy>VH+h.r)continue; B.setPosition(sx,sy).setScale(h.r*2/128); rt.erase(B); } }
+  cleanAirV2Tick(dt,o){ const c=this._cleanAir,P=this.player; if(!c||!o||!P)return; c.t+=dt; const g=c.g; g?.clear?.(); const ease=k=>1-Math.pow(1-Math.max(0,Math.min(1,k)),3);
+    if(c.phase==='lure'){ this.cleanAirV2Fog(c,[],0); if(this.dist(P.x,P.y,c.x,c.y)<c.r){ c.phase='close'; c.t=0; for(const q of c.lure)this.tweens.add({targets:q,x:P.x,y:P.y-20,alpha:0,duration:300,onComplete:()=>q.setVisible(false)}); Sfx.orderCue?.('wave_start',.4,.3); } return; }
+    const W=this.W||390,H=this.H||844,big=Math.hypot(W,H)/(this.cameras?.main?.zoom||1)*.6;
+    if(c.phase==='close'){ const k=c.t/1.0,hr=c.t<1?big*(1-ease(k)):0; this.cleanAirV2Fog(c,[{x:P.x,y:P.y,r:hr}],1);
+      if(c.t>=1.3){ c.phase='dark'; c.t=0; c.darkT=0; this.screenFlash?.(0xf2fbff,.7,320); this.screenShake?.(160,.006); this.cleanAirV2Burst(c,P.x,P.y,160,false); c.lgrow=0;
+        for(let i=0;i<o.target;i++){ const q=this.objectivePosition(i,o.target,420,820),glow=this.camWorld(this.add.circle(P.x,P.y-20,30,0xbff6ff,.25).setDepth(94590)),spr=this.camWorld(this.add.image(P.x,P.y-22,'ch2_mycelium_enemy_atlas',7).setScale(.2).setDepth(94600)),w={x:q.x,y:q.y,spr,glow,charge:0,freed:false,ph:Math.random()*3};
+          this.tweens.add({targets:[spr],x:q.x,y:q.y-22,duration:900+i*90,ease:'Cubic.out'}); this.tweens.add({targets:[glow],x:q.x,y:q.y-20,duration:900+i*90,ease:'Cubic.out'}); c.wisps.push(w); } }
+      return; }
+    if(c.phase==='end'){ const a=Math.max(0,1-c.t/1.0); this.cleanAirV2Fog(c,[{x:P.x,y:P.y,r:c.lantern+c.t*900},...c.lit],a*.92); if(c.t>=1.0&&!c.done){ c.done=true; this.cleanAirV2Fog(c,[],0); this.completeWaveObjective(); } return; }
+    // dark
+    c.darkT+=dt; c.lgrow=Math.min(1,(c.lgrow||0)+dt/.35); c.lantern=Math.max(85,c.lantern-dt*2.2); const lr=c.lantern*ease(c.lgrow);
+    let near=null;
+    for(const w of c.wisps){ if(!w.spr?.active)continue; const pulse=((c.darkT+w.ph)%3)<.35; w.spr.setAlpha(w.freed?.55:pulse?1:.6); w.glow?.setAlpha(w.freed?.18:pulse?.5:.2).setScale(pulse?1.5:1);
+      if(w.freed)continue; const d=this.dist(P.x,P.y,w.x,w.y); if(d<85)near=w;
+      if(w.charge>0&&g){ g.lineStyle(5,0x1a1028,.6).strokeCircle(w.x,w.y,40); g.lineStyle(4,0xbff6ff,.95); g.beginPath(); g.arc(w.x,w.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,w.charge/1.5),false); g.strokePath(); } }
+    if(near){ near.charge+=dt; if(!c.charging){ c.charging=true; Sfx.eventLoopStart?.('event_wisp_purify_charge',.2,1); } if(near.charge>=1.5)this.cleanAirV2Free(c,o,near); } else if(c.charging){ c.charging=false; Sfx.eventLoopStop?.('event_wisp_purify_charge'); }
+    // monsters from the dark
+    c.spawnT-=dt; if(c.spawnT<=0&&this.state==='play'){ c.spawnT=2.4; const mv=this.player.body?.velocity,ang0=mv&&Math.hypot(mv.x,mv.y)>20?Math.atan2(mv.y,mv.x):Math.random()*Math.PI*2,n=2+((this.stageIndex||0)>=10?1:0);
+      for(let i=0;i<n;i++){ const a=ang0+(Math.random()*2-1)*.9,d=lr+70+Math.random()*90,x=P.x+Math.cos(a)*d,y=P.y+Math.sin(a)*d; if(c.lit.some(L=>this.dist(x,y,L.x,L.y)<L.r*.8))continue; this.cleanAirV2Eyes(c,x,y); } }
+    for(let i=c.eyes.length-1;i>=0;i--){ const E=c.eyes[i]; E.t-=dt; if(E.t<=0){ c.eyes.splice(i,1); if(E.g?.active)E.g.destroy(); if(this.state!=='play')continue; const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'],e=this.spawnEnemy?.(types[Math.floor(Math.random()*types.length)]); if(e){ e.setPosition(E.x,E.y); if(e.body)e.body.reset?.(E.x,E.y); this.spawnRise?.(e,E.x,E.y); } } }
+    this.cleanAirV2Fog(c,[{x:P.x,y:P.y,r:lr},...c.lit,...c.wisps.filter(w=>!w.freed).map(w=>({x:w.x,y:w.y,r:34}))],.9); }
+  cleanAirV2Eyes(c,x,y){ const g=this.camWorld(this.add.graphics().setDepth(94605)); g.fillStyle(0xffe066,.95).fillCircle(x-7,y-4,3.2).fillCircle(x+7,y-4,3.2); g.fillStyle(0xff4d6d,.4).fillCircle(x-7,y-4,6).fillCircle(x+7,y-4,6); g.setAlpha(0); this.tweens.add({targets:g,alpha:1,duration:250}); c.eyes.push({x,y,t:.6,g}); }
+  cleanAirV2Burst(c,x,y,R,dmg){ this.codeShock?.(x,y,R,0xbff6ff,{depth:94606,dust:14,rings:2,dur:520,flat:.8}); if(!dmg)return 0; let n=0; (this.enemies?.getChildren?.()||[]).slice().forEach(e=>{ if(!e||!e.active||e.isBoss||e.isDummy)return; const d=this.dist(e.x,e.y,x,y); if(d>R)return; const hard=e.isElite||e.isMini,a=Math.atan2(e.y-y,e.x-x); this.damage?.(e,(e.maxhp||e.hp||10)*(hard?.15:.6),e.x,e.y); if(e.active&&!hard){ e.knock=Math.max(e.knock||0,.35); e.setVelocity?.(Math.cos(a)*560,Math.sin(a)*560); } n++; }); return n; }
+  cleanAirV2Free(c,o,w){ w.freed=true; w.charge=1.5; c.lit.push({x:w.x,y:w.y,r:260}); c.lantern=130; o.progress=Math.min(o.target,(o.progress||0)+1); this.screenFlash?.(0xe8fbff,.35,260); this.cleanAirV2Burst(c,w.x,w.y,230,true); Sfx.orderCue?.('mission_tube_pop',.45,.3);
+    const su=Math.round(4+(this.stageIndex||0)*1.2); this.sugarStage=(this.sugarStage||0)+su; this.sugarRun=(this.sugarRun||0)+su; this.floatText?.(w.x,w.y-60,'🌟 '+o.progress+'/'+o.target+'  🍬+'+su,0xbff6ff); this.renderWaveObjectiveHUD?.();
+    if(o.progress>=o.target){ if(c.charging){ c.charging=false; Sfx.eventLoopStop?.('event_wisp_purify_charge'); } const P=this.player; for(const q of c.wisps){ if(q.spr?.active)this.tweens.add({targets:q.spr,x:P.x,y:P.y-24,alpha:0,duration:700,ease:'Cubic.in'}); }
+      if(c.darkT<=45){ const b=Math.round(su*3); this.sugarStage+=b; this.sugarRun+=b; this.floatText?.(P.x,P.y-90,'⚡ Fast clear! 🍬+'+b,0xffe08a); }
+      this.time?.delayedCall?.(650,()=>{ if(this._cleanAir!==c)return; this.screenFlash?.(0xffffff,.8,420); c.phase='end'; c.t=0; }); } }
   spawnCleanAirZone(){
     const o=this.waveObjective;if(!o||o.type!=='cleanAir')return;const pos=this.objectivePosition(0,1,110,220),r=145;
     this._cleanAir={x:pos.x,y:pos.y,tx:pos.x,ty:pos.y,t:0,moveIn:3.5,r,damageIn:0};
@@ -15944,7 +15991,7 @@ class Game extends Phaser.Scene {
   cleanAirPreview(c,o){ const g=this._cleanAirPath||(this._cleanAirPath=this.camWorld(this.add.graphics().setDepth(2))); if(!g.scene)return; g.clear(); const pts=[[c.x,c.y],[c.tx,c.ty],[c.nx,c.ny]],a=.35+.25*Math.sin((c.t||0)*5);
     for(let k=0;k<2;k++){ const [x0,y0]=pts[k],[x1,y1]=pts[k+1],d=Math.hypot(x1-x0,y1-y0); if(d<20)continue; const n=Math.floor(d/26); for(let i=0;i<n;i+=2){ const t0=i/n,t1=Math.min(1,(i+1)/n); g.lineStyle(5,o.color,a*(k?0.55:1)).lineBetween(x0+(x1-x0)*t0,y0+(y1-y0)*t0,x0+(x1-x0)*t1,y0+(y1-y0)*t1); } }
     g.lineStyle(3,o.color,a*.8).strokeEllipse(c.tx,c.ty,c.r*1.6,c.r*1.1); g.lineStyle(2,o.color,a*.45).strokeEllipse(c.nx,c.ny,c.r*1.2,c.r*.8); }
-  tickCleanAir(dt){
+  tickCleanAir(dt){ if(this._cleanAir?.v2)return this.cleanAirV2Tick?.(dt,this.waveObjective);
     const o=this.waveObjective,c=this._cleanAir;if(!o||o.type!=='cleanAir'||!c)return;c.t+=dt;c.moveIn-=dt;
     if(!c.nx){const q=this.objectivePosition(0,1,210,420);c.nx=q.x;c.ny=q.y;}
     if(c.moveIn<=0){c.tx=c.nx;c.ty=c.ny;const q=this.objectivePosition(0,1,210,420);c.nx=q.x;c.ny=q.y;c.moveIn=3.5;}
@@ -16377,7 +16424,7 @@ class Game extends Phaser.Scene {
     this.renderWaveObjectiveHUD();o._huntSpawnAt=this.time.now+700;
   }
   /* ===== v8.1.79 เจ้าของ: เลือกจังหวะเริ่มเอง (แท่น ✨) + Overcharge (เสี่ยงต่อ 12 วิ ได้ของ ×2) — แรงบันดาลใจ Ritual / Delirium ===== */
-  missionArmable(o,planned,p){ return !!o&&!planned&&!(p&&p.forceType)&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!['survive','fill','hunt','vaultAltar','ultimatum'].includes(o.type)&&this.usesStoryBudget?.(); }
+  missionArmable(o,planned,p){ return !!o&&!planned&&!(p&&p.forceType)&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!['survive','fill','hunt','vaultAltar','ultimatum'].includes(o.type)&&!(o.type==='cleanAir'&&typeof CLEANAIR_V2!=='undefined'&&CLEANAIR_V2)&&this.usesStoryBudget?.(); }
   /* v8.1.142 owner 🐞: the ✨ start ring → a "Start mission" button like Frozen Pantry's jar (tap anywhere in the stage · still starts by itself after 10 s) */
   missionArm(o,planned,p){ if(!this.missionArmable(o,planned,p)||!this.player)return; const q=this.objectivePosition(0,1,120,170),R=o._rw||(o._rw=this.missionReward?.(o)),objs=[];
     if(o.type==='cleanAir'&&this._cleanAir){ const c=this._cleanAir,l=this.camWorld(this.add.text(c.x,c.y+c.r+18,'⬇ Step in',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#e8fbff',stroke:'#0d0a14',strokeThickness:4}).setOrigin(.5).setDepth(95000)); this.tweens.add({targets:l,alpha:{from:1,to:.45},duration:600,yoyo:true,repeat:-1}); objs.push(l); o._armPad={x:c.x,y:c.y,objs,t:Infinity,ring:true,btn:null,btnR:{w:0,h:0}}; return; }   /* v8.1.159 เจ้าของ: Clean Air เริ่มได้เฉพาะตอนยืนในวง (ไม่มีปุ่ม/ไม่เริ่มเอง) */
@@ -17012,7 +17059,7 @@ class Game extends Phaser.Scene {
   }
   renderWaveObjectiveHUD(){
     const o=this.waveObjective;if(!o||o.done){for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);this.syncSeasonIcons?.(null);return;}
-    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar'||o.type==='lastLight'||o._ultSec)?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o,this.realTex?.('ui_c24_season_icons')):Math.floor(o.progress)+' / '+o.target);
+    const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o._v2?Math.floor(o.progress)+' / '+o.target+' 🌟':o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar'||o.type==='lastLight'||o._ultSec)?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o,this.realTex?.('ui_c24_season_icons')):Math.floor(o.progress)+' / '+o.target);
     const step=o._huntPhase?'Step '+(o.progress*2+(o._huntPhase==='clear'?1:2))+'/'+(o.target*2)+' · '+(o._huntPhase==='clear'?'Clear '+o._huntKills+'/'+o._huntKillGoal:'Defeat marked Elite'):(o.type==='fill'&&this.usesStoryBudget?.()?'Step 1/2 · Clear '+Math.floor(o.progress)+'/'+o.target:null);
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText((step||(o.type==='seasonCycle'?value:(o.emoji+' '+o.name+' · '+value)))+(this.objBonusTag?.(o)||'')).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*(o._huntPhase?(o.progress*2+(o._huntPhase==='elite'?1:o._huntKills/o._huntKillGoal))/(o.target*2):(o.type==='fill'&&this.usesStoryBudget?.()?frac/2:frac)));
     this.syncSeasonIcons?.(o);
@@ -17077,6 +17124,7 @@ class Game extends Phaser.Scene {
     for(const s of this._seasonShrines||[]){for(const q of [s.zone,s.ring,s.label])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._seasonShrines=null;
     { const st=this.waveObjective?.storm; if(st){ for(const d of st.drops||[]){ this.tweens.killTweensOf(d.img); d.img?.destroy(); } st.drops=[]; for(const sh of st.shrines||[]){ sh.ring?.destroy(); sh.t?.destroy(); } st.shrines=null; } }
     for(const b of this._cleanAir?.bub||[]){ this.tweens.killTweensOf(b.img); if(b.img.active)b.img.destroy(); }
+    this.cleanAirV2Clear?.();
     for(const k of ['_captureZone','_captureRing','_captureFill','_captureArc','_captureSec','_cleanAirZone','_cleanAirRing','_cleanAirWisp','_cleanAirPath','_cleanAirFog','_cleanAirFogRT']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
@@ -18684,6 +18732,10 @@ class Game extends Phaser.Scene {
   taroCarryContext(callback){if(!this.taroIsSecondary())return callback;const t=this._taro,context=this._taroDamageContext;
     return ()=>{if(this._taro===t&&t.run===context.run&&t.pathEpoch===context.pathEpoch)this.taroWithDamage(context.source,callback,context);};
   }
+  /* v8.1.162 เจ้าของ (Taro B): มอนที่โดนสายฟ้ากระตุก (ส่ายมุมเร็ว ๆ 0.12 วิ) + วาบฟ้าขาวที่ตัว · ตัวละไม่เกิน 1 ครั้ง/0.15 วิ · ไม่แตะตำแหน่ง/ฟิสิกส์ */
+  taroZapReact(e){ if(!e||!e.active||!this.tweens||(typeof CODE_VFX!=='undefined'&&CODE_VFX.taroReact===false))return false; const now=this.time?.now||0; if(now-(e._zapAt||-1e9)<150)return false; e._zapAt=now; const a0=e._zapA0??e.angle??0; e._zapA0=a0; const q={t:0};
+    this.tweens.add({targets:q,t:1,duration:120,onUpdate:()=>{ if(e.active)e.angle=a0+Math.sin(q.t*Math.PI*6)*9*(1-q.t); },onComplete:()=>{ if(e.active)e.angle=a0; e._zapA0=undefined; }});
+    if(this.add?.circle){ const f=this.camWorld(this.add.circle(e.x,e.y,Math.max(16,(e.displayWidth||40)*.42),0xdff6ff,.55).setDepth((e.depth||e.y)+1)); this.tweens.add({targets:f,alpha:0,scale:1.25,duration:110,onComplete:()=>f.destroy()}); } return true; }
   taroDealDamage(token,amount,kind,meta={}){const _sb=this.basicAttack,_sk=_sb?.path==='storm'&&kind==='chain'?(_sb.lv?.p_arc_shock||0)*.04:_sb?.path==='smite'&&(kind==='spark'||kind==='sparkChild')?(_sb.lv?.p_spark_shock||0)*.03:0;if(_sk>0&&token?.enemy){token.enemy._arcShockT=(this.elapsed||0)+2;token.enemy._arcShockM=_sk;}   /* v7.9.23 Static Shock/Sparks */if(!this.player||!Number.isFinite(amount)||amount<=0||!taroTargetValid(token,this.player,meta.range??Infinity))return false;
     // v7.8.56: only Spark Build miniboss damage is reduced; apply once at the shared damage boundary.
     if(this.basicAttack?.path==='smite'&&token.enemy.isMini&&!token.enemy.isBoss)amount*=.85;
@@ -18740,7 +18792,9 @@ class Game extends Phaser.Scene {
   taroArcLoopHop(token,fn){const e=token?.enemy;if(!e?.active)return;const a=(e._arcLoopA=(e._arcLoopA??Math.random()*Math.PI*2)+2.3),r=90+Math.min(40,(e.displayWidth||40)*.3),px=e.x+Math.cos(a)*r,py=e.y+Math.sin(a)*r;
     if(!this.time?.delayedCall){fn();return;}const mx=(e.x+px)/2+Math.cos(a+1.57)*r*.45,my=(e.y+py)/2+Math.sin(a+1.57)*r*.45;this.taroArcBolt?.(e.x,e.y,mx,my);this.time.delayedCall(TARO_ARC_HOP_MS*.2,()=>{if(this.state==='play')this.taroArcBolt?.(mx,my,px,py);});
     this.time.delayedCall(TARO_ARC_HOP_MS*.45,()=>{if(this.state!=='play'||!e.active)return;this.taroArcBolt?.(px,py,e.x,e.y,true);fn();});}
-  taroArcBolt(x1,y1,x2,y2,loop=false){const d=Math.hypot(x2-x1,y2-y1);if(d>=4&&typeof CODE_VFX!=='undefined'&&CODE_VFX.bolt){ this.taroLightningVisual?.(x1,y1,x2,y2,false,loop); this.taroFx(loop?'bpx_taro_arc_overload_hit':'bpx_taro_arc_hit',x2,y2,loop?90:44,{life:.25}); return; }if(d<4||!this.taroFx(loop?'bpx_taro_arc_loop':'bpx_taro_arc_bolt',x1,y1,d,{h:loop?40:26,rot:Math.atan2(y2-y1,x2-x1),life:.22}))return this.chainBolt?.(x1,y1,x2,y2);this.taroFx(loop?'bpx_taro_arc_overload_hit':'bpx_taro_arc_hit',x2,y2,loop?90:44,{life:.25});}
+  taroZapAt(x,y){ let best=null,bd=26*26; (this.enemies?.getChildren?.()||[]).forEach(e=>{ if(!e||!e.active)return; const dx=e.x-x,dy=e.y-y,d=dx*dx+dy*dy; if(d<bd){bd=d;best=e;} }); return best?this.taroZapReact?.(best):false; }   /* v8.1.162 ปลายสายฟ้า → มอนที่โดน (resolver ดาเมจถูกล็อกด้วยเทส T5 จึงผูกที่ภาพแทน) */
+  taroChainStop(){ const now=this.time?.now||0; if(now-(this._taroStopAt||-1e9)<700||this.state!=='play')return false; this._taroStopAt=now; this.hitStop?.(30); return true; }   /* v8.1.162 เจ้าของ (Taro A): ค้าง 0.03 วิ ตอนสายฟ้าโดนตัวแรกของโซ่ · ไม่เกินครั้งละ 0.45 วิ */
+  taroArcBolt(x1,y1,x2,y2,loop=false){const d=Math.hypot(x2-x1,y2-y1);this.taroChainStop?.();if(d>=4&&typeof CODE_VFX!=='undefined'&&CODE_VFX.bolt){ this.taroLightningVisual?.(x1,y1,x2,y2,false,loop); this.taroFx(loop?'bpx_taro_arc_overload_hit':'bpx_taro_arc_hit',x2,y2,loop?90:44,{life:.25}); return; }if(d<4||!this.taroFx(loop?'bpx_taro_arc_loop':'bpx_taro_arc_bolt',x1,y1,d,{h:loop?40:26,rot:Math.atan2(y2-y1,x2-x1),life:.22}))return this.chainBolt?.(x1,y1,x2,y2);this.taroFx(loop?'bpx_taro_arc_overload_hit':'bpx_taro_arc_hit',x2,y2,loop?90:44,{life:.25});}
   taroArt(key,x,y,w,o={}){if((typeof CODE_VFX!=='undefined'&&CODE_VFX.taroBurst)&&/^bpx_taro_(?:orb_burst|spark_burst|arc_overload_hit)$/.test(key))return this.codeBurst?.(x,y,w*.42,o.tint??(this._taro?.path==='smite'?0xffda89:this._taro?.path==='tempest'?0xa9e8ee:0xc6a2ed),{depth:o.depth??90400,dur:(o.life||.3)*1100});const oldKey=key;key=this.battleOutlineKey?.(key)||key;const t=this._taro;if(!t?.enabled||!this.bpAnim?.(key))return null;if(o.life>0&&!this.taroVisualBudget(true))return null;const fd=ASSET_FX[key],s=this.camWorld(this.add.sprite(x,y,key,0)).setDepth(o.depth??90400);
     s.setOrigin(fd.anchor==='left'?0:.5,fd.anchor==='bottom'?1:.5).setDisplaySize(w,o.h??w*fd.fh/fd.fw);if(o.tint)s.setTint(o.tint);if(o.rot!=null)s.setRotation(o.rot);if(o.alpha!=null)s.setAlpha(o.alpha);s.play(key);this.battleOutlineTrack?.(s,oldKey,key);if(o.then&&this.bpAnim(o.then))s.chain(o.then);return o.track===false?s:this.taroTrackVisual(s,o.life||0);}
   taroNodeVisual(node){const t=this._taro;if(!t?.enabled)return null;const c=this.camWorld(this.add.container(node.x,node.y).setDepth(89990)),ring=this.add.circle(0,0,28,0x241c38,.12).setStrokeStyle(2,node.beacon?0xffda89:0xc6a2ed,.9),anim=this.bpAnim?.(node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy'),art=anim?this.add.sprite(0,node.beacon?-24:-14,node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy',0).setDisplaySize(node.beacon?80:58,node.beacon?80:58):this.textures.exists('fx_taro_sentry')?this.add.image(0,-14,'fx_taro_sentry').setDisplaySize(58,58):this.add.circle(0,-14,16,0xa98cf0,.9),bar=this.add.rectangle(-22,29,44,3,node.beacon?0xffda89:0xbba0ed).setOrigin(0,.5);c.add([ring,art,bar]);c._bar=bar;if(anim){c._art=art;art.play(node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy');if(!node.beacon&&this.bpAnim('bpx_taro_sentry_idle'))art.chain('bpx_taro_sentry_idle');}c._taroDuration=node.life;this.taroTrackVisual(c,0);return c;}
@@ -18849,7 +18903,7 @@ class Game extends Phaser.Scene {
       let from={x:this.player.x,y:this.player.y},token=f===0&&t.path==='smite'?taroPriorityTarget(candidates.filter(candidate=>!hit.has(candidate.id)&&taroTargetValid(candidate,from,760)).map(candidate=>candidate.enemy),from,760,rod):nearest(from,760);
       for(let j=0;j<jumps&&token&&hit.size<18;j++){
         if(this._taro!==t||this.state!=='play'||!taroTargetValid(token,from,j?range:760))break;
-        const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);this.chainBolt(from.x,from.y,point.x,point.y,true);this.vfxHitRing?.(point.x,point.y,0xd7b8ff,j===0);this.taroDealDamage(token,damage*Math.max(0,1-j*.045),'unique',{attackId,shrapnelD});from=point;token=nearest(from,range);
+        const point={x:token.enemy.x,y:token.enemy.y};hit.add(token.id);{ const tk=token,fr=from,jj=j,go=()=>{ if(jj&&!taroTargetValid(tk,this.player,Infinity))return; this.chainBolt(fr.x,fr.y,tk.enemy.x,tk.enemy.y,true);this.vfxHitRing?.(tk.enemy.x,tk.enemy.y,0xd7b8ff,jj===0);if(jj===0)this.taroChainStop?.();this.taroDealDamage(tk,damage*Math.max(0,1-jj*.045),'unique',{attackId,shrapnelD}); }; if(jj&&this.time?.delayedCall)this.time.delayedCall(jj*45,()=>{ if(this.state==='play'&&this._taro===t)go(); }); else go(); }   /* v8.1.162 เจ้าของ (Taro C): โซ่ Unique ฟาดทีละตัว ห่าง 45 ms */from=point;token=nearest(from,range);
       }
       if(hit.size)Sfx.bp?.('uq_taro_chain_hit',.4,.3)||Sfx.zap?.();
     },{attackId});
@@ -18985,6 +19039,7 @@ class Game extends Phaser.Scene {
         const tr=(strike?20:12)*k; g.lineStyle(3*k,col,.9*fade);g.strokeCircle(x2,y2,tr*(1+flash*.5));g.lineStyle(2*k,0xffffff,.9*fade);g.strokeCircle(x2,y2,4*k);
         if(flash>0){ FC(0xffffff,.75*flash,x2,y2,tr*1.1*flash+3); for(const q of sparks){ const d=tr*(.8+q.s*(1.6-flash)); g.lineStyle(2*k,col,.9*flash); g.lineBetween?.(x2+Math.cos(q.a)*d*.5,y2+Math.sin(q.a)*d*.5,x2+Math.cos(q.a)*d,y2+Math.sin(q.a)*d); } } }
       if(!strike){ FC(col,.35*fade,x1,y1,7*k); FC(0xffffff,.8*fade,x1,y1,2.5*k); } };
+    if(!strike)this.taroZapAt?.(x2,y2);
     build(); paint(.45); const on=this.time?.delayedCall&&(typeof CODE_VFX==='undefined'||CODE_VFX.bolt);
     if(on){ this.time.delayedCall(40,()=>paint(1,1)); this.time.delayedCall(85,()=>{ build(); paint(1,.6); }); this.time.delayedCall(140,()=>{ build(); paint(1,.25,.75); }); } else paint(1,1);
     return this.taroTrackVisual(g,big?.36:strike?.28:.24);
@@ -24571,6 +24626,7 @@ class Game extends Phaser.Scene {
   _nearestEnemy(){ let best=null,bd=Infinity; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<bd){bd=d;best=e;} }); return best; }
   _nearestWaveObjective(){
     const o=this.waveObjective;if(!o)return null;if(o.type==='capture'&&this._captureZone)return this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal?null:this._captureZone;
+    if(o.type==='cleanAir'&&this._cleanAir?.v2){ const c=this._cleanAir,P=this.player; if(c.phase==='lure')return this.dist(P.x,P.y,c.x,c.y)<70?null:c; let b=null,bd=Infinity; for(const w of c.wisps||[]){ if(w.freed)continue; const d=this.dist(P.x,P.y,w.x,w.y); if(d<bd){bd=d;b=w;} } return b&&bd>85?b:null; }
     if(o.type==='cleanAir'&&this._cleanAir)return this.dist(this.player.x,this.player.y,this._cleanAir.x,this._cleanAir.y)<=this._cleanAir.r?null:this._cleanAir;
     let best=null,bd=Infinity;
     if(o.type==='breakRoots'&&this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n||!n.active||!n._rootAnchor)return;const d=this.dist(n.x,n.y,this.player.x,this.player.y);if(d<bd){bd=d;best=n;}});
