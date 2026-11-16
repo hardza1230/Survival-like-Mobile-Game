@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.154';
+const GAME_VERSION = '8.1.155';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.155',date:'2026-11-16',title:'code-drawn hazard telegraph + faded-monster fix (owner)',items:['b']},
   {v:'8.1.154',date:'2026-11-16',title:'Clean Air poison fog (owner)',items:['b']},
   {v:'8.1.153',date:'2026-11-16',title:'Chapter 2 / 3 boss music from the owner',items:['b']},
   {v:'8.1.152',date:'2026-11-16',title:'Unique wind-up before tap Uniques (owner)',items:['b']},
@@ -4820,6 +4821,7 @@ Object.assign(TEMPLE_UI,{"jr_page_bg":[540,960,1,null],"jr_header_plaque":[450,7
 Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[192,40,1,[22,0,22,0]],"lb_stage_panel":[320,110,1,[45,30,45,30]],"lb_battle_btn":[320,90,1,[64,0,64,0]],"lb_arrow_btn":[48,60,1,null],"lb_side_btn":[80,80,1,[16,16,16,16]],"lb_profile_frame":[260,75,1,[35,18,35,18]],"lb_avatar_ring":[75,75,1,null],"lb_currency_pill":[150,45,1,[24,0,42,0]],"ic_lb_battle":[128,128,1,null],"ic_nav_home":[128,128,1,null],"ic_nav_heroes":[128,128,1,null],"ic_nav_play":[128,128,1,null],"ic_nav_gear":[128,128,1,null],"ic_nav_activities":[128,128,1,null],"ic_side_codex":[128,128,1,null],"ic_side_inbox":[128,128,1,null],"ic_side_news":[128,128,1,null],"ic_side_daily":[128,128,1,null],"ic_side_awards":[128,128,1,null],"lb_nav_bg":[540,75,1,[18,0,18,0]],"lb_nav_active":[150,70,1,[30,14,30,14]],"lb_nav_divider":[3,50,1,null],"lb_star":[48,48,1,null],"lb_power_pill":[210,40,1,[24,0,24,0]],"lb_hero_shadow":[200,60,1,null],"vfx_lb_battle_shine":[320,90,6,null],"vfx_lb_sparkle":[64,64,2,null]});   // v7.9.51 ใบ 33 Lobby UI (scripts/pack-lobby-ui.py)
 /* v7.9.58 ใบสั่งอาร์ต 34: ฮีโร่ขยับในหน้า Lobby (แพ็ก 75% = 384×480/เฟรม, เท้า y450) · โหลดเฉพาะฮีโร่ที่เลือก ไม่โหลดตอนบูต · Sesame ผูกด้วย (เจ้าของ 22 ต.ค.) */
 const LH_SHEETS={lh_momo_idle:'assets/art/lobby_hero/momo/lh_momo_idle.webp',lh_momo_greet:'assets/art/lobby_hero/momo/lh_momo_greet.webp',lh_momo_act1:'assets/art/lobby_hero/momo/lh_momo_act1.webp',lh_momo_act2:'assets/art/lobby_hero/momo/lh_momo_act2.webp',lh_momo_act3:'assets/art/lobby_hero/momo/lh_momo_act3.webp',lh_momo_act4:'assets/art/lobby_hero/momo/lh_momo_act4.webp',lh_momo_tap:'assets/art/lobby_hero/momo/lh_momo_tap.webp',lh_momo_poke:'assets/art/lobby_hero/momo/lh_momo_poke.webp',lh_yuzu_idle:'assets/art/lobby_hero/yuzu/lh_yuzu_idle.webp',lh_yuzu_greet:'assets/art/lobby_hero/yuzu/lh_yuzu_greet.webp',lh_yuzu_act1:'assets/art/lobby_hero/yuzu/lh_yuzu_act1.webp',lh_yuzu_act2:'assets/art/lobby_hero/yuzu/lh_yuzu_act2.webp',lh_yuzu_act3:'assets/art/lobby_hero/yuzu/lh_yuzu_act3.webp',lh_yuzu_act4:'assets/art/lobby_hero/yuzu/lh_yuzu_act4.webp',lh_yuzu_tap:'assets/art/lobby_hero/yuzu/lh_yuzu_tap.webp',lh_yuzu_poke:'assets/art/lobby_hero/yuzu/lh_yuzu_poke.webp',lh_mint_idle:'assets/art/lobby_hero/mint/lh_mint_idle.webp',lh_mint_greet:'assets/art/lobby_hero/mint/lh_mint_greet.webp',lh_mint_act1:'assets/art/lobby_hero/mint/lh_mint_act1.webp',lh_mint_act2:'assets/art/lobby_hero/mint/lh_mint_act2.webp',lh_mint_act3:'assets/art/lobby_hero/mint/lh_mint_act3.webp',lh_mint_act4:'assets/art/lobby_hero/mint/lh_mint_act4.webp',lh_mint_tap:'assets/art/lobby_hero/mint/lh_mint_tap.webp',lh_mint_poke:'assets/art/lobby_hero/mint/lh_mint_poke.webp',lh_cocoa_idle:'assets/art/lobby_hero/cocoa/lh_cocoa_idle.webp',lh_cocoa_greet:'assets/art/lobby_hero/cocoa/lh_cocoa_greet.webp',lh_cocoa_act1:'assets/art/lobby_hero/cocoa/lh_cocoa_act1.webp',lh_cocoa_act2:'assets/art/lobby_hero/cocoa/lh_cocoa_act2.webp',lh_cocoa_act3:'assets/art/lobby_hero/cocoa/lh_cocoa_act3.webp',lh_cocoa_act4:'assets/art/lobby_hero/cocoa/lh_cocoa_act4.webp',lh_cocoa_tap:'assets/art/lobby_hero/cocoa/lh_cocoa_tap.webp',lh_cocoa_poke:'assets/art/lobby_hero/cocoa/lh_cocoa_poke.webp',lh_taro_idle:'assets/art/lobby_hero/taro/lh_taro_idle.webp',lh_taro_greet:'assets/art/lobby_hero/taro/lh_taro_greet.webp',lh_taro_act1:'assets/art/lobby_hero/taro/lh_taro_act1.webp',lh_taro_act2:'assets/art/lobby_hero/taro/lh_taro_act2.webp',lh_taro_act3:'assets/art/lobby_hero/taro/lh_taro_act3.webp',lh_taro_act4:'assets/art/lobby_hero/taro/lh_taro_act4.webp',lh_taro_tap:'assets/art/lobby_hero/taro/lh_taro_tap.webp',lh_taro_poke:'assets/art/lobby_hero/taro/lh_taro_poke.webp',lh_sesame_idle:'assets/art/lobby_hero/sesame/lh_sesame_idle.webp',lh_sesame_greet:'assets/art/lobby_hero/sesame/lh_sesame_greet.webp',lh_sesame_act1:'assets/art/lobby_hero/sesame/lh_sesame_act1.webp',lh_sesame_act2:'assets/art/lobby_hero/sesame/lh_sesame_act2.webp',lh_sesame_act3:'assets/art/lobby_hero/sesame/lh_sesame_act3.webp',lh_sesame_act4:'assets/art/lobby_hero/sesame/lh_sesame_act4.webp',lh_sesame_tap:'assets/art/lobby_hero/sesame/lh_sesame_tap.webp',lh_sesame_poke:'assets/art/lobby_hero/sesame/lh_sesame_poke.webp'};
+const CODE_TELEGRAPH=true;   /* v8.1.155 เจ้าของ: วงเตือนท่าบอส/hazard วาดด้วยโค้ด · false = ภาพ vfx_bXX_warn เดิม */
 const LH_USE_SHEETS=false;   /* v7.9.61 เจ้าของ: ชีตใบ 34 วาดใหม่ทุกเฟรม ดูยุบยับ → ปิด ใช้ภาพนิ่งดัดด้วยโค้ด (lobbyHeroWarp) แทน */
 const LH_FW=384,LH_FH=480,LH_FOOT=451,LH_BODY=390,LH_ACTS=['act1','act2','act3','act4'];
 const LH_MS={idle:[220,220,220,160,120,220,220,220],tap:[100,100,180,200,120,120],def:[100,110,140,180,220,140,110,100]};
@@ -22906,15 +22908,16 @@ class Game extends Phaser.Scene {
     } }
   // hazard บอส: วงเตือน vector โปร่งใสจริง → ระเบิดหลัง 760ms
   spawnHazard(x,y,r,dmg,tint,inkOwner=null,inkGuard=null){
-    const color=tint||0xff5a4d,wk=this.bossKit('warn'),ik=this.bossKit('impact');let warn,inner;
-    if(wk){const [w,h]=this.kitSize(wk,r);warn=this.camWorld(this.add.sprite(x,y,wk,0).setDepth(2).setDisplaySize(w,h).setAlpha(0.5));warn.play(wk);inner=this.camWorld(this.add.image(x,y,'vfx_glow').setDepth(2).setScale((r*0.5)/256).setTint(color).setAlpha(0.08));
+    const color=tint||0xff5a4d,wk=this.bossKit('warn'),ik=this.bossKit('impact');let warn,inner,codeTg=null;
+    if(typeof CODE_TELEGRAPH!=='undefined'&&CODE_TELEGRAPH&&(codeTg=this.codeTelegraph?.(x,y,r,760,color))){ warn=codeTg.rim; inner=codeTg.fill; }   /* v8.1.155 เจ้าของ: วงเตือนวาดด้วยโค้ด (CODE_VS_ART รอบ 2 ข้อ 1) · ปิด = CODE_TELEGRAPH=false กลับเป็นภาพเดิม */
+    else if(wk){const [w,h]=this.kitSize(wk,r);warn=this.camWorld(this.add.sprite(x,y,wk,0).setDepth(2).setDisplaySize(w,h).setAlpha(0.5));warn.play(wk);inner=this.camWorld(this.add.image(x,y,'vfx_glow').setDepth(2).setScale((r*0.5)/256).setTint(color).setAlpha(0.08));
       this.tweens.add({targets:warn,alpha:1,duration:700,ease:'Quad.in'});this.tweens.add({targets:inner,scale:(r*1.6)/256,alpha:0.28,duration:700,ease:'Linear'});}   // v7.8.57 ใบ 22: วงเตือนตามธีมด่าน · ค่อย ๆ ชัดขึ้น = จังหวะระเบิด (ระยะ/เวลาเดิม)
     else{
     warn=this.camWorld(this.add.image(x,y,'vfx_telegraph').setDepth(2).setScale((r*2)/256*0.94).setTint(color).setAlpha(0.65));
     inner=this.camWorld(this.add.image(x,y,'vfx_glow').setDepth(2).setScale((r*0.65)/256).setTint(color).setAlpha(0.18));
     this.tweens.add({targets:warn,alpha:{from:0.4,to:0.92},scale:{from:(r*2)/256*0.92,to:(r*2)/256*1.03},duration:190,yoyo:true,repeat:1});
     this.tweens.add({targets:inner,scale:(r*1.75)/256,alpha:{from:0.12,to:0.48},duration:700,ease:'Linear'});}
-    const readable=this.makeHazardReadability?.(x,y,r,760);if(readable){this.tweens.killTweensOf(warn);this.tweens.killTweensOf(inner);warn.setAlpha(.18);inner.setAlpha(0);}
+    const readable=codeTg?null:this.makeHazardReadability?.(x,y,r,760);if(readable){this.tweens.killTweensOf(warn);this.tweens.killTweensOf(inner);warn.setAlpha(.18);inner.setAlpha(0);}
     this.time.delayedCall(760,()=>{ readable?.kill();if(this.state!=='play'&&this.state!=='levelup'){ warn.destroy();inner.destroy();return; }
       this.bossInkRelease?.(inkOwner,inkGuard);
       if(ik)this.heroFx(ik,x,y,r*2/.88,{must:true,depth:4});
@@ -23935,6 +23938,14 @@ class Game extends Phaser.Scene {
     if(/^(?:bpx_|fx_(?:momo|mint|cocoa|taro|sesame|yuzu|berry)|vfx_(?:glacier|frost|berry|recipe_))/.test(key))return Math.min(alpha,.68);
     if(w>=500&&/^vfx_b(?:05_eclipse|10_memory_eclipse|06_full_bloom|07_heartstorm|11_harvest_moon|12_empty_heart|15_first_bloom|pin_eclipse|pin_maw)$/.test(key))return Math.min(alpha,.58);return alpha;
   }
+  /* v8.1.155 วงเตือนด้วยโค้ด: ขนาดตรงพื้นที่โดนจริง · ไส้สีค่อย ๆ ขยายจากกลาง = เวลาที่เหลือ · ขอบกะพริบถี่ขึ้นช่วงท้าย · ขาววาบก่อนตก · สีตามท่า/บอส */
+  codeTelegraph(x,y,r,ms,color){ if(!this.add?.graphics||!this.tweens)return null; const fill=this.camWorld(this.add.graphics().setDepth(2)),rim=this.camWorld(this.add.graphics().setDepth(89001)),clock={p:0};
+    const draw=()=>{ if(!fill.active||!rim.active)return; const p=clock.p,e=1-(1-p)*(1-p);
+      fill.clear().fillStyle(color,.10).fillCircle(x,y,r).fillStyle(color,.16+.12*p).fillCircle(x,y,Math.max(2,r*e));
+      const blink=p<.55?.85:.55+.45*Math.abs(Math.sin(p*p*42));
+      rim.clear().lineStyle(6,0x1a0f24,.5).strokeCircle(x,y,r).lineStyle(3,color,blink).strokeCircle(x,y,r);
+      if(p>.82)rim.lineStyle(2.5,0xffffff,Math.min(1,(p-.82)/.15)).strokeCircle(x,y,r-1); };
+    draw(); this.tweens.add({targets:clock,p:1,duration:ms,ease:'Linear',onUpdate:draw,onComplete:draw}); return {fill,rim,clock,draw}; }
   makeHazardReadability(x,y,r,ms){if(!this.add?.graphics)return null;const g=this.add.graphics().setDepth(89001);this.camWorld?.(g);this.trackArtVfx?.(g);
     const rim=this.combatReadSprite('cr_warning_rim',x,y,r*2/COMBAT_WARN_FILL,r*2/COMBAT_WARN_FILL,89000),clock={p:0};let tween,dead=false;
     const draw=()=>{if(!g.active)return;g.clear().lineStyle(3,0x291124,.9).strokeCircle(x,y,r).lineStyle(1.5,0xff7352,.95).strokeCircle(x,y,r);if(clock.p>0)g.lineStyle(2.5,0xfff3ce,1).beginPath().arc(x,y,r,-Math.PI/2,-Math.PI/2+Math.PI*2*clock.p,false).strokePath();};
@@ -24084,7 +24095,7 @@ class Game extends Phaser.Scene {
     if(!this.textures.exists(K)){ const c=document.createElement('canvas'); c.width=128; c.height=48; const x=c.getContext('2d'); x.scale(1,48/128); const g=x.createRadialGradient(64,64,4,64,64,64); g.addColorStop(0,'rgba(10,5,16,0.62)'); g.addColorStop(.55,'rgba(10,5,16,0.34)'); g.addColorStop(1,'rgba(10,5,16,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas(K,c); }
     const P=this._foeSh||(this._foeSh=[]),dark=this._chapter25D?1.25:1; let n=0;
     const pl=this.player; this.enemies.children.iterate(e=>{ if(!e||!e.active||!e.visible)return;
-      /* v8.1.120 เจ้าของ: มอนที่ยืนบังตัวเรา (อยู่หน้าและทับตัว) จางลงครึ่งหนึ่ง เห็นตัวเราชัด */ const occ=!!pl&&e.depth>pl.depth&&Math.abs(e.x-pl.x)<(e.displayWidth||40)*.42&&e.y-pl.y<(e.displayHeight||40)*.7; if(occ&&!e._occ){ e._occ=true; e._occA=e.alpha; e.setAlpha(e.alpha*.5); } else if(!occ&&e._occ){ e._occ=false; e.setAlpha(e._occA??1); }
+      /* v8.1.120 เจ้าของ: มอนที่ยืนบังตัวเรา (อยู่หน้าและทับตัว) จางลงครึ่งหนึ่ง เห็นตัวเราชัด */ const occ=!!pl&&e.depth>pl.depth&&Math.abs(e.x-pl.x)<(e.displayWidth||40)*.42&&e.y-pl.y<(e.displayHeight||40)*.7; if(occ&&!e._occ&&e.alpha>=.95){ e._occ=true; e._occA=1; e.setAlpha(.5); } else if(!occ&&e._occ){ e._occ=false; if(e.alpha<=.55)e.setAlpha(1); }   /* v8.1.155 เจ้าของ 🐞 มอนตัวจางค้าง: เดิมจำค่า alpha ตอนกำลังเฟดเข้า (spawnRise 0→1) แล้วคืนค่านั้น = จางถาวร → จางเฉพาะตัวที่ทึบเต็ม · คืนเป็น 1 เสมอ */
       const ea=e._occ?(e._occA??1):e.alpha; if(ea<.05)return; let sh=P[n]; if(!sh||!sh.active){ sh=P[n]=this.camWorld(this.add.image(0,0,K).setDepth(-99000)); } n++;
       const w=Math.max(26,Math.min(260,(e.displayWidth||40)*.72)); sh.setPosition(e.x,e.y+(e.displayHeight||40)*.4).setDisplaySize(w,w*.34).setAlpha(Math.min(1,ea*dark)).setVisible(true); });
     this.drawPlayerLight?.();

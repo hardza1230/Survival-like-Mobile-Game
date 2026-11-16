@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.154**. Next release:8.1.155. Fetch the deploy branch before new work.
+Current release: **8.1.155**. Next release:8.1.156. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.154 — Clean Air poison fog (owner 🐞 15 Nov)
+# Latest delivery: v8.1.155 — code-drawn hazard telegraph + faded-monster fix (owner)
+
+**Telegraph (CODE_VS_ART round 2 #1):** `spawnHazard` now draws `codeTelegraph(x,y,r,760,color)` when `CODE_TELEGRAPH` is true: ground fill (depth 2) = faint disc at exactly `r` + an inner disc that grows from the centre to `r` over the 760 ms (ease-out) so the time left is readable; rim (depth 89001) = dark 6 px + colour 3 px at exactly `r`, blinking faster after 55%, plus a white flash ring in the last 18%. Same timing, radius, damage and impact art as before; the old `vfx_bXX_warn` sheet + `makeHazardReadability` rim are skipped (set `CODE_TELEGRAPH=false` to go back). **Faded monsters (owner 🐞):** the v8.1.120 "fade enemies in front of the hero" stored the enemy's current alpha and restored it later — when that happened during the 300 ms spawn fade-in (`spawnRise` 0→1) the enemy stayed see-through for good. Now only fully opaque enemies (α ≥ .95) are faded to .5 and they always come back to 1. Tests: new code-telegraph; foe-shadow updated.
+
+# Previous delivery: v8.1.154 — Clean Air poison fog (owner 🐞 15 Nov)
 
 Owner (C2-2): the Wisp ring should feel like air — poisoned fog outside, clean only where the Wisp leads. New `cleanAirFog(c,o,dt)` (one Graphics, depth 94000, ticked from `tickCleanAir`): 26 soft purple-green puffs (12 at PERF.lvl ≥ 2) drift across the camera view and respawn when they leave it; each fades out within the Wisp ring (×1.05) and along the path to its next stop (`r×0.55` from the segment), so the clean air reads as a clear pocket and lane. Standing outside the ring adds a thicker swirl of fog around the hero. The ring edge is a rotating fluffy white-cyan cloud rim; the old hard stroke (5 px → 3 px α .45) and `vfx_ring` (α .72 → .22–.42, cyan) are softened. Gameplay unchanged (damage outside, bubbles, timing). Cleaned up with the other `_cleanAir*` objects. Test: new cleanair-fog.
-
-# Previous delivery: v8.1.153 — Chapter 2 / 3 boss music from the owner
-
-Owner uploaded two tracks. Packed with ffmpeg to MP3 80 kbps stereo 44.1 kHz: `assets/audio/bgm/skyfall_sprint.mp3` (Skyfall Sprint, 2:29, 1.45 MB) = `bgm_c2_boss`, `assets/audio/bgm/skyfire_pursuit.mp3` (Skyfire Pursuit, 0:48 loop, 0.47 MB) = `bgm_c3_boss`. `bgmKeyFor('boss', n)`: stages 6–10 → c2, 11–15 → c3 (Chapter 1 stays on Gates of the Calamity; endgame keeps `bgm_endgame_boss`). Loaded lazily on the boss like `bgm_c11_boss`. Test: new boss-bgm-c23.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

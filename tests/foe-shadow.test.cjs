@@ -14,7 +14,7 @@ console.log('foe shadow ok');
 // v8.1.120 owner: spawn rise (in-view spawns fade in + 0.42s no contact damage), occluding monsters fade, player light, EXP hop.
 assert(method('spawnEnemy').includes('this.spawnRise?.(e,x,y)')&&method('touchEnemy').includes('(e._spawnGrace&&(this.time?.now||0)<e._spawnGrace))return;'),'spawn grace');
 const sr=method('spawnRise');assert(sr.includes('v.contains?.(x,y)')&&sr.includes('e._spawnGrace=now+420')&&sr.includes('e._occ=false'));
-const fs2=method('drawFoeShadows');assert(fs2.includes('e.setAlpha(e.alpha*.5)')&&fs2.includes("e.setAlpha(e._occA??1)")&&fs2.includes('this.drawPlayerLight?.()'),'occlusion fade + light');
+const fs2=method('drawFoeShadows');assert(fs2.includes('e.alpha>=.95){ e._occ=true; e._occA=1; e.setAlpha(.5); }')&&fs2.includes('if(e.alpha<=.55)e.setAlpha(1);')&&fs2.includes('this.drawPlayerLight?.()'),'occlusion fade + light');
 assert(method('drawPlayerLight').includes("L.setDepth?.(-99500)")&&method('dropOrb').includes('o._hop={t:0,x0:x,y0:y'),'light + orb hop');
 { const C2=vm.runInContext('class C2{'+method('drawFoeShadows')+'\n}C2',ctx);const pl={x:0,y:0,depth:0};const e={active:true,visible:true,alpha:1,x:5,y:20,depth:20,displayWidth:60,displayHeight:60,setAlpha(a){this.alpha=a;return this;}};
   const sc2=Object.assign(new C2(),{player:pl,textures:{exists:()=>true},add:{image:img},camWorld:x=>x,enemies:{children:{iterate(f){f(e);}}}});
