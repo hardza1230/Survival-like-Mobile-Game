@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.155**. Next release:8.1.156. Fetch the deploy branch before new work.
+Current release: **8.1.156**. Next release:8.1.157. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.155 — code-drawn hazard telegraph + faded-monster fix (owner)
+# Latest delivery: v8.1.156 — code-drawn effects, CODE_VS_ART round 2 items 2–7 (owner)
+
+Switches in `CODE_VFX` (each can go back to the old art). **2 Taro lightning:** `taroArcBolt`, orb zap and ball zap draw `taroLightningVisual` instead of stretched `bpx_taro_*` sheets (hit art kept); the bolt re-jags once after 70 ms (flicker) and grows a small side fork. **3 Aim lines:** `codeAimLine` for Mint Impaler lance and Momo Sniper — glow band widens with charge, white dashes run forward, arrowhead at the real range, white/gold pulse when full. **4 Cocoa:** `codeShock` (flattened ground ring thick→thin, dust/debris arcs, short cracks for heavy hits, optional double ring) replaces `bpx_cocoa_shockwave / dashring / crack / landing_dust` (in `bpFx` and `cocoaLandingFx`). **5 XP trail:** `xpTrailCode` keeps the last 7 positions per vacuumed orb and draws a tapering tier-coloured streak + sparkles in one shared Graphics cleared every frame (reset on orb reuse). **6 Generic textures:** `codeGenericTex` (checked every 1 s) replaces `vfx_ring`, `vfx_glow`, `vfx_line` with generated 256×256 white canvases (ring with uneven width + sparkle notches, soft glow, tapered streak) so the ~85 tinted uses get true colours and stay sharp. **7 Boss wave (trial, `bossWave:['b01']` = C1-1 Emerald Acid Ant Empress):** nova wave = code ring with a 56 px faint band showing the real ±28 px hit zone + debris; hazard impacts = `codeShock` with cracks and two rings; other bosses unchanged. Test: new code-vfx-round2.
+
+# Previous delivery: v8.1.155 — code-drawn hazard telegraph + faded-monster fix (owner)
 
 **Telegraph (CODE_VS_ART round 2 #1):** `spawnHazard` now draws `codeTelegraph(x,y,r,760,color)` when `CODE_TELEGRAPH` is true: ground fill (depth 2) = faint disc at exactly `r` + an inner disc that grows from the centre to `r` over the 760 ms (ease-out) so the time left is readable; rim (depth 89001) = dark 6 px + colour 3 px at exactly `r`, blinking faster after 55%, plus a white flash ring in the last 18%. Same timing, radius, damage and impact art as before; the old `vfx_bXX_warn` sheet + `makeHazardReadability` rim are skipped (set `CODE_TELEGRAPH=false` to go back). **Faded monsters (owner 🐞):** the v8.1.120 "fade enemies in front of the hero" stored the enemy's current alpha and restored it later — when that happened during the 300 ms spawn fade-in (`spawnRise` 0→1) the enemy stayed see-through for good. Now only fully opaque enemies (α ≥ .95) are faded to .5 and they always come back to 1. Tests: new code-telegraph; foe-shadow updated.
-
-# Previous delivery: v8.1.154 — Clean Air poison fog (owner 🐞 15 Nov)
-
-Owner (C2-2): the Wisp ring should feel like air — poisoned fog outside, clean only where the Wisp leads. New `cleanAirFog(c,o,dt)` (one Graphics, depth 94000, ticked from `tickCleanAir`): 26 soft purple-green puffs (12 at PERF.lvl ≥ 2) drift across the camera view and respawn when they leave it; each fades out within the Wisp ring (×1.05) and along the path to its next stop (`r×0.55` from the segment), so the clean air reads as a clear pocket and lane. Standing outside the ring adds a thicker swirl of fog around the hero. The ring edge is a rotating fluffy white-cyan cloud rim; the old hard stroke (5 px → 3 px α .45) and `vfx_ring` (α .72 → .22–.42, cyan) are softened. Gameplay unchanged (damage outside, bubbles, timing). Cleaned up with the other `_cleanAir*` objects. Test: new cleanair-fog.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
