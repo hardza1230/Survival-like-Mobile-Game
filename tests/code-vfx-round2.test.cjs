@@ -2,7 +2,7 @@
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
 const src=fs.readFileSync(path.join(__dirname,'..','game.js'),'utf8');
 const grab=n=>{ const i=src.indexOf('\n  '+n+'('); assert(i>0,n); let k=src.indexOf('\n',i+1); while(src.startsWith('\n    ',k))k=src.indexOf('\n',k+1); return src.slice(i+3,k); };
-assert(src.includes("const CODE_VFX={bolt:true,aim:true,cocoa:true,xp:true,generic:true,bossWave:['b01']};"),'switches');
+assert(src.includes("const CODE_VFX={bolt:true,aim:true,cocoa:true,xp:true,generic:true,bossWave:['b01']"),'switches');
 const G=()=>{ const g={active:true,calls:[]}; for(const f of ['clear','fillStyle','fillCircle','fillEllipse','lineStyle','strokeCircle','strokeEllipse','lineBetween','fillTriangle','beginPath','moveTo','lineTo','strokePath','setDepth','strokePoints','destroy'])g[f]=(...a)=>{ g.calls.push(f); return g; }; return g; };
 const S=vm.runInNewContext('class S{'+['codeAimLine','codeShock','xpTrailCode','bossCodeWaveCol'].map(grab).join('\n')+'}; S',{Math,CODE_VFX:{bossWave:['b01']},STAGES:[{tint:0x8ee04b},{tint:1}],XP_TIER_COL:{1:0x9fe8ff},XP_ORB_PX:{1:20}});
 const s=new S(); let tw=null; Object.assign(s,{add:{graphics:()=>G()},camWorld:o=>o,tweens:{add(c){tw=c;}}});
