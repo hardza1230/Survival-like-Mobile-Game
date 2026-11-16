@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.160';
+const GAME_VERSION = '8.1.161';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.161',date:'2026-11-16',title:'Clean Air fog fixes + camera a bit farther (owner)',items:['b']},
   {v:'8.1.160',date:'2026-11-16',title:'livelier Taro lightning (owner)',items:['b']},
   {v:'8.1.159',date:'2026-11-16',title:'Clean Air fog of war + glTexture fix + Titan crush art back (owner)',items:['b']},
   {v:'8.1.158',date:'2026-11-16',title:'clear heal visual for Cocoa’s pre-path Unique (owner)',items:['b']},
@@ -11134,7 +11135,7 @@ class Game extends Phaser.Scene {
   }
 
   // zoom กล้องให้ "visible field width" คงที่ทุกเครื่อง (อ้างอิงมือถือ ~430px) — แท็บเล็ตจอกว้าง = zoom เข้ามากขึ้น ตัวละครไม่เล็กจิ๋ว
-  computeViewZoom(){ const REF_W=430, BASE=0.78;   /* v6.95.1 wider view (was .76) · v8.1.118 เจ้าของ: ไกลไป → 0.78 (ใกล้ขึ้น ~11%) */ this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
+  computeViewZoom(){ const REF_W=430, BASE=0.74;   /* v8.1.161 เจ้าของ: ใกล้ไป → 0.74 (ถอยกล้อง ~5%) */   /* v6.95.1 wider view (was .76) · v8.1.118 เจ้าของ: ไกลไป → 0.78 (ใกล้ขึ้น ~11%) */ this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
   // ซูมออกระหว่างบอสด้วย lerp ต่อเฟรม เพื่อให้เห็นสนามกว้างและทำงานสม่ำเสมอทุกอุปกรณ์
   applyMainZoom(){ if(this.cameras&&this.cameras.main)this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
   tickBossZoom(){
@@ -15929,13 +15930,17 @@ class Game extends Phaser.Scene {
     const n=low?8:14; for(let i=0;i<n;i++){ const an=c.ft*.35+i*TAU/n,rr=c.r*(.98+.04*Math.sin(c.ft*2+i)); g.fillStyle(0xe8fbff,.08).fillCircle(c.x+Math.cos(an)*rr,c.y+Math.sin(an)*rr,c.r*.2); g.fillStyle(0xbff6ff,.06).fillCircle(c.x+Math.cos(an+.2)*rr*.92,c.y+Math.sin(an+.2)*rr*.92,c.r*.14); }
     return drawn; }
   /* v8.1.159 เจ้าของ: Clean Air แบบป่า Wildwood (PoE) · ทั้งจอมืดเป็นหมอก · วง Wisp สว่าง · ทางที่ Wisp เดินผ่านเปิดค้างไว้ (จำจุดทุก 34px สูงสุด 320 จุด) · รอบตัวเราสว่างเล็กน้อย · RenderTexture บนกล้อง UI ใต้ HUD */
-  cleanAirFogWar(c,dt,started){ if(typeof CLEANAIR_FOGWAR==='undefined'||!CLEANAIR_FOGWAR||!this.add?.renderTexture||!c)return 0; const W=this.W||390,H=this.H||844,cam=this.cameras?.main; if(!cam)return 0;
-    let rt=this._cleanAirFogRT; if(!rt||!rt.scene){ rt=this._cleanAirFogRT=this.camUI(this.add.renderTexture(0,0,W,H).setOrigin(0)); rt.setDepth?.(-5); }
-    if(!this._fogBrush){ if(!this.textures.exists('fog_brush')&&typeof document!=='undefined'){ const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d'),g=x.createRadialGradient(64,64,8,64,64,64); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.6,'rgba(255,255,255,.9)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas('fog_brush',cv); } this._fogBrush=this.make?.image?.({key:'fog_brush',add:false})?.setOrigin(.5); }
-    const R=c.rev||(c.rev=[]); if(started){ const L=R[R.length-1]; if(!L||Math.hypot(L.x-c.x,L.y-c.y)>34){ R.push({x:c.x,y:c.y,r:c.r*.95}); if(R.length>320)R.shift(); } }
-    const v=cam.worldView,z=cam.zoom||1,B=this._fogBrush; rt.clear(); rt.fill(0x0b0814,.74); let n=0;
-    const hole=(wx,wy,r)=>{ if(!B)return; const sx=(wx-v.x)*z,sy=(wy-v.y)*z,sr=r*z; if(sx<-sr||sy<-sr||sx>W+sr||sy>H+sr)return; B.setPosition(sx,sy).setScale(sr*2/128); rt.erase(B); n++; };
-    for(const q of R)hole(q.x,q.y,q.r); hole(c.x,c.y,c.r*1.15); const P=this.player; if(P)hole(P.x,P.y,95); return n; }
+  cleanAirFogWar(c,dt,started){ if(typeof CLEANAIR_FOGWAR==='undefined'||!CLEANAIR_FOGWAR||!this.add?.renderTexture||!c)return 0; const cam=this.cameras?.main; if(!cam)return 0;
+    /* v8.1.161 เจ้าของ: วงไม่ตรงกับที่สว่าง → หมอกวาดในพิกัดโลก (RenderTexture คลุมพื้นที่ที่กล้องเห็น วางตาม worldView ทุกเฟรม) ไม่ต้องแปลงพิกัด/ซูม · ก่อนเข้าวงยังสว่าง → เข้าวงแล้วมืดลงค่อย ๆ 1.6 วิ */
+    const v=cam.worldView,PAD=60,VW=Math.ceil((v.width||this.W||390)+PAD*2),VH=Math.ceil((v.height||this.H||844)+PAD*2);
+    let rt=this._cleanAirFogRT; if(rt&&rt.scene&&(rt.width<VW||rt.height<VH)){ rt.destroy(); rt=null; }
+    if(!rt||!rt.scene){ rt=this._cleanAirFogRT=this.camWorld(this.add.renderTexture(0,0,VW+80,VH+80).setOrigin(0)); rt.setDepth?.(94500); }
+    if(!this._fogBrush){ if(!this.textures.exists('fog_brush')&&typeof document!=='undefined'){ const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d'),g=x.createRadialGradient(64,64,8,64,64,64); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.62,'rgba(255,255,255,.92)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas('fog_brush',cv); } this._fogBrush=this.make?.image?.({key:'fog_brush',add:false})?.setOrigin(.5); }
+    c.dark=started?Math.min(1,(c.dark||0)+(dt||0)/1.6):0; if(c.dark<=0){ rt.setVisible?.(false); return 0; } rt.setVisible?.(true);
+    const R=c.rev||(c.rev=[]); const L=R[R.length-1]; if(!L||Math.hypot(L.x-c.x,L.y-c.y)>34){ R.push({x:c.x,y:c.y,r:c.r*.95}); if(R.length>320)R.shift(); }
+    const ox=v.x-PAD,oy=v.y-PAD,B=this._fogBrush; rt.setPosition?.(ox,oy); rt.clear(); rt.fill(0x0b0814,.76*c.dark); let n=0;
+    const hole=(wx,wy,r)=>{ if(!B)return; const sx=wx-ox,sy=wy-oy; if(sx<-r||sy<-r||sx>VW+r||sy>VH+r)return; B.setPosition(sx,sy).setScale(r*2/128); rt.erase(B); n++; };
+    for(const q of R)hole(q.x,q.y,q.r); hole(c.x,c.y,c.r*1.12); const P=this.player; if(P)hole(P.x,P.y,90); return n; }
   cleanAirPreview(c,o){ const g=this._cleanAirPath||(this._cleanAirPath=this.camWorld(this.add.graphics().setDepth(2))); if(!g.scene)return; g.clear(); const pts=[[c.x,c.y],[c.tx,c.ty],[c.nx,c.ny]],a=.35+.25*Math.sin((c.t||0)*5);
     for(let k=0;k<2;k++){ const [x0,y0]=pts[k],[x1,y1]=pts[k+1],d=Math.hypot(x1-x0,y1-y0); if(d<20)continue; const n=Math.floor(d/26); for(let i=0;i<n;i+=2){ const t0=i/n,t1=Math.min(1,(i+1)/n); g.lineStyle(5,o.color,a*(k?0.55:1)).lineBetween(x0+(x1-x0)*t0,y0+(y1-y0)*t0,x0+(x1-x0)*t1,y0+(y1-y0)*t1); } }
     g.lineStyle(3,o.color,a*.8).strokeEllipse(c.tx,c.ty,c.r*1.6,c.r*1.1); g.lineStyle(2,o.color,a*.45).strokeEllipse(c.nx,c.ny,c.r*1.2,c.r*.8); }
@@ -16375,7 +16380,7 @@ class Game extends Phaser.Scene {
   missionArmable(o,planned,p){ return !!o&&!planned&&!(p&&p.forceType)&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!['survive','fill','hunt','vaultAltar','ultimatum'].includes(o.type)&&this.usesStoryBudget?.(); }
   /* v8.1.142 owner 🐞: the ✨ start ring → a "Start mission" button like Frozen Pantry's jar (tap anywhere in the stage · still starts by itself after 10 s) */
   missionArm(o,planned,p){ if(!this.missionArmable(o,planned,p)||!this.player)return; const q=this.objectivePosition(0,1,120,170),R=o._rw||(o._rw=this.missionReward?.(o)),objs=[];
-    if(o.type==='cleanAir'&&this._cleanAir){ const c=this._cleanAir,l=this.camWorld(this.add.text(c.x,c.y+c.r+18,'Step into the ring to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#e8fbff',stroke:'#0d0a14',strokeThickness:4}).setOrigin(.5).setDepth(95000)); this.tweens.add({targets:l,alpha:{from:1,to:.45},duration:600,yoyo:true,repeat:-1}); objs.push(l); o._armPad={x:c.x,y:c.y,objs,t:Infinity,ring:true,btn:null,btnR:{w:0,h:0}}; return; }   /* v8.1.159 เจ้าของ: Clean Air เริ่มได้เฉพาะตอนยืนในวง (ไม่มีปุ่ม/ไม่เริ่มเอง) */
+    if(o.type==='cleanAir'&&this._cleanAir){ const c=this._cleanAir,l=this.camWorld(this.add.text(c.x,c.y+c.r+18,'⬇ Step in',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#e8fbff',stroke:'#0d0a14',strokeThickness:4}).setOrigin(.5).setDepth(95000)); this.tweens.add({targets:l,alpha:{from:1,to:.45},duration:600,yoyo:true,repeat:-1}); objs.push(l); o._armPad={x:c.x,y:c.y,objs,t:Infinity,ring:true,btn:null,btnR:{w:0,h:0}}; return; }   /* v8.1.159 เจ้าของ: Clean Air เริ่มได้เฉพาะตอนยืนในวง (ไม่มีปุ่ม/ไม่เริ่มเอง) */
     const W=this.W||390,H=this.H||844,bw=240,bh=58; let btn=null;
     if(this.add.container&&this.camUI){ btn=this.add.container(W/2,H-232).setDepth(9500); const g=this.add.graphics(); g.fillStyle(0x2a1a0e,.94).fillRoundedRect(-bw/2,-bh/2,bw,bh,bh/2); g.lineStyle(3,0xffe08a,1).strokeRoundedRect(-bw/2,-bh/2,bw,bh,bh/2);
       const t=this.add.text(0,R?-9:0,'▶ Start mission',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff3cf',stroke:'#2a1a0e',strokeThickness:4}).setOrigin(.5),c=this.add.text(0,R?13:20,R?'🎁 '+R.txt:'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#9fe8ff',stroke:'#2a1a0e',strokeThickness:3}).setOrigin(.5);
@@ -16413,7 +16418,7 @@ class Game extends Phaser.Scene {
     const P=this.missionPoint?.(o); if(P)this.missionGo(o,P.x,P.y,false);
     this.time?.delayedCall?.(2300,()=>{ if(this._msnCard!==c)return; this.tweens.add({targets:c,y:y-40,alpha:0,duration:380,onComplete:()=>{ if(this._msnCard===c)this.missionCardClear(); }}); });
     return true; }
-  missionArmTick(o,dt){ const A=o._armPad; if(A.ring){ const c=this._cleanAir,P=this.player; if(c){ this.cleanAirFogWar?.(c,dt,false); } if(c&&P&&Math.hypot(P.x-c.x,P.y-c.y)<=c.r){ A.t=0; this.showBanner?.('🌬️ Follow the Wisp','Stay in its clean air — the fog lifts where it walks',1600); } else { this.renderWaveObjectiveHUD?.(); return true; } } A.t-=dt; if(A.btn?._cd?.active&&!A.btn._R)A.btn._cd.setText('Starts by itself in '+Math.ceil(Math.max(0,A.t))+'s');
+  missionArmTick(o,dt){ const A=o._armPad; if(A.ring){ const c=this._cleanAir,P=this.player; if(c&&P&&Math.hypot(P.x-c.x,P.y-c.y)<=c.r){ A.t=0; this.floatText?.(P.x,P.y-70,'🌬️ Follow the Wisp',0xe8fbff); }   /* v8.1.161 เจ้าของ: ป้ายเยอะรก → ไม่มีแบนเนอร์ · ยังสว่างจนกว่าจะเข้าวง */ else { this.renderWaveObjectiveHUD?.(); return true; } } A.t-=dt; if(A.btn?._cd?.active&&!A.btn._R)A.btn._cd.setText('Starts by itself in '+Math.ceil(Math.max(0,A.t))+'s');
     if(A.t<=0){ this.missionArmClear(o); this.vfxHitRing?.(A.x,A.y,0xffe08a,true); if(this.missionGo)this.missionGo(o,A.x,A.y,true); else { Sfx.orderCue?.('wave_start',.4,.3); this.floatText?.(this.player.x,this.player.y-70,'▶ Mission start!',0xffe08a); } return false; } this.renderWaveObjectiveHUD?.(); return true; }
   overchargeOffer(o){ if(!OVERCHARGE_ON)return false; if(o._ocDone||o._oc)return !!o._oc&&!o._ocDone; if(this.state!=='play'||this._inTutorial||this.recipeMode||this.riftMode||this.bossRush||['survive','fill','vaultAltar','ultimatum'].includes(o.type)||!this.usesStoryBudget?.()||!this.player)return false;
     const q=this.objectivePosition(0,1,110,150),pad=this.camWorld(this.add.circle(q.x,q.y,46,0xff7ab8,.18).setStrokeStyle(4,0xff7ab8,.95).setDepth(q.y-2)),t=this.artSpr('msn71_overcharge_pad',q.x,q.y,92,0,{sig:false,depth:q.y-1})||this.camWorld(this.add.text(q.x,q.y,'⚡',{fontSize:'30px'}).setOrigin(.5).setDepth(q.y+4)),l=this.camWorld(this.add.text(q.x,q.y+40,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd0e6',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(q.y+5));
