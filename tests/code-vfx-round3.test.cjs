@@ -2,7 +2,7 @@
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
 const src=fs.readFileSync(path.join(__dirname,'..','game.js'),'utf8');
 const grab=n=>{ const i=src.indexOf('\n  '+n+'('); assert(i>0,n); let k=src.indexOf('\n',i+1); while(src.startsWith('\n    ',k))k=src.indexOf('\n',k+1); return src.slice(i+3,k); };
-assert(/const CODE_VFX=\{[^}]*lane:true,taroBurst:true,bubble:true,sparkle:true,trail:true,dust:true\}/.test(src),'switches');
+assert(/const CODE_VFX=\{[^}]*lane:true,taroBurst:true,bubble:true,sparkle:true,trail:true,dust:true[,}]/.test(src),'switches');
 const G=()=>{ const g={active:true,calls:[]}; for(const f of ['clear','fillStyle','fillCircle','fillEllipse','fillRect','fillTriangle','lineStyle','strokeCircle','strokeEllipse','lineBetween','beginPath','moveTo','lineTo','strokePath','strokePoints','setDepth','setPosition','setRotation','destroy'])g[f]=(...a)=>{ g.calls.push(f); return g; }; return g; };
 const S=vm.runInNewContext('class S{'+['codeLane','codeBurst','taroShockCode'].map(grab).join('\n')+'}; S',{Math,TARO_SHOCK_MAX:5});
 const s=new S(); let tw=null,post=null; Object.assign(s,{add:{graphics:()=>G()},camWorld:o=>o,tweens:{add(c){tw=c;}},time:{now:1000},events:{on(e,f){post=f;},off(){post=null;}}});
@@ -19,3 +19,8 @@ const cs=grab('codeSheets'); for(const k of ['cs_fx_sparkle','vfx_lb_sparkle','l
 assert(cs.includes('for(const q of fr)nt.add(q.f,0,q.x,q.y,q.w,q.h)')&&cs.includes('this.anims.remove(a.key)'),'frames kept, stale anims dropped');
 assert(src.includes("'bpx_cocoa_rage'+Math.min(3")&&src.includes("r>0.02&&!(typeof CODE_VFX!=='undefined'&&CODE_VFX.cocoa)?'bpx_cocoa_rage'"),'Titan rage art aura off with code');
 console.log('Code VFX round 3: lanes, Taro bursts/marks, bubbles, sparkle/trail/dust sheets, Titan aura passed');
+// v8.1.158 heal: green ground ring + rising plus signs while regen lasts (replaces the green growth_unlock "flower")
+{ const S2=vm.runInNewContext('class S{'+grab('healAuraCode')+'}; S',{Math}); const h=new S2(); let post=null; const g=G(); g.setDepth=()=>g; Object.assign(h,{player:{x:0,y:0,active:true,displayHeight:56,depth:5},add:{graphics:()=>g},camWorld:o=>o,time:{now:0},events:{on(e,f){post=f;},off(){post=null;}},tweens:{add(c){c.onComplete&&c.onComplete();}},_cocoaRegenT:5});
+  h.healAuraCode(); assert(post,'follows'); h.time.now=500; post(); assert(g.calls.includes('strokeEllipse')&&g.calls.includes('fillRect'),'ring + plus'); h._cocoaRegenT=0; post(); assert.equal(post,null,'ends with regen'); }
+assert(src.includes("if(typeof CODE_VFX!=='undefined'&&CODE_VFX.heal&&(Save.data.settings?.vfx??2)!==0){ this.healAuraCode(); return; }"),'heal hook');
+console.log('Heal aura code passed');

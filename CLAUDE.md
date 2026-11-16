@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.157**. Next release:8.1.158. Fetch the deploy branch before new work.
+Current release: **8.1.158**. Next release:8.1.159. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.157 — code-drawn effects round 3 (8, 10–14) + calmer Cocoa Titan rage aura (owner)
+# Latest delivery: v8.1.158 — clear heal visual for Cocoa’s pre-path Unique (owner)
+
+Owner: the "flower" was the heal of Cocoa's Bear Grit Slam (Unique before a Build Path, levels 1–5) — `healAura` played `growth_unlock` tinted green. With `CODE_VFX.heal` it now runs `healAuraCode`: a green ground ring that pulses under the hero, a short green light column at the start, and green ＋ signs (dark outline) rising and fading around the hero every 0.32 s, for as long as `_cocoaRegenT` lasts; it follows the hero and fades out when the regen ends. Test: code-vfx-round3 extended.
+
+# Previous delivery: v8.1.157 — code-drawn effects round 3 (8, 10–14) + calmer Cocoa Titan rage aura (owner)
 
 New `CODE_VFX` switches `lane, taroBurst, bubble, sparkle, trail, dust`. **8 Lanes:** `kitLane` → `codeLane` follows the hidden `vfx_line` marker (position, angle, length, tint, fade): translucent band + bright edges blinking faster over time + white ›› chevrons flowing toward the dash; `o.key` lanes (stampede trail, prism beam) keep art. **10 Taro:** `codeBurst` (jagged rays, expanding ring, white core flash, sparks) replaces `bpx_taro_orb_burst / spark_burst / arc_overload_hit` in `taroArt` and `taroFx`; shock stacks are drawn by `taroShockCode` (one Graphics: k sparks orbit above the head, max stacks = flickering electric ellipse) instead of `bpx_taro_shock_marker/aura` sprites (cleared when Taro is off). **11 Bubbles:** generated `code_bubble` texture (clear centre, iridescent rim, highlight) used for Sugar Shell, C1-2 Trapping Bubble, C2-2 air pockets, C2-1 pod shield and Clean Air bubbles, with wobble. **12–14:** `codeSheets` redraws sparkle (7 sheets), trail (5) and dust (2) textures in code with the same size, frame names and rects (callers untouched; stale anims dropped and rebuilt). **Cocoa Titan rage (owner: flower-like aura too busy):** the art wreath `bpx_cocoa_rage1-3` is off; rage now shows small flame tongues at the feet + rising embers that grow with the rage level. Test: new code-vfx-round3; code-vfx-round2 switch check loosened.
-
-# Previous delivery: v8.1.156 — code-drawn effects, CODE_VS_ART round 2 items 2–7 (owner)
-
-Switches in `CODE_VFX` (each can go back to the old art). **2 Taro lightning:** `taroArcBolt`, orb zap and ball zap draw `taroLightningVisual` instead of stretched `bpx_taro_*` sheets (hit art kept); the bolt re-jags once after 70 ms (flicker) and grows a small side fork. **3 Aim lines:** `codeAimLine` for Mint Impaler lance and Momo Sniper — glow band widens with charge, white dashes run forward, arrowhead at the real range, white/gold pulse when full. **4 Cocoa:** `codeShock` (flattened ground ring thick→thin, dust/debris arcs, short cracks for heavy hits, optional double ring) replaces `bpx_cocoa_shockwave / dashring / crack / landing_dust` (in `bpFx` and `cocoaLandingFx`). **5 XP trail:** `xpTrailCode` keeps the last 7 positions per vacuumed orb and draws a tapering tier-coloured streak + sparkles in one shared Graphics cleared every frame (reset on orb reuse). **6 Generic textures:** `codeGenericTex` (checked every 1 s) replaces `vfx_ring`, `vfx_glow`, `vfx_line` with generated 256×256 white canvases (ring with uneven width + sparkle notches, soft glow, tapered streak) so the ~85 tinted uses get true colours and stay sharp. **7 Boss wave (trial, `bossWave:['b01']` = C1-1 Emerald Acid Ant Empress):** nova wave = code ring with a 56 px faint band showing the real ±28 px hit zone + debris; hazard impacts = `codeShock` with cracks and two rings; other bosses unchanged. Test: new code-vfx-round2.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
