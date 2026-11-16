@@ -16,7 +16,7 @@ const s=new S(); let tw=null; Object.assign(s,{add:{graphics:()=>G()},camWorld:o
 { s.stageIndex=0; assert.equal(s.bossCodeWaveCol(),0x8ee04b); s.stageIndex=1; assert.equal(s.bossCodeWaveCol(),null); s.stageIndex=0; s._pinnacleRun=true; assert.equal(s.bossCodeWaveCol(),null); }
 // hooks
 assert(src.includes("if(d>=4&&typeof CODE_VFX!=='undefined'&&CODE_VFX.bolt){ this.taroLightningVisual?.(x1,y1,x2,y2,false,loop);"),'2 arc bolt → code');
-assert(src.includes("this.time.delayedCall(70,()=>{ build(); paint(); });"),'2 flicker re-jag');
+assert(src.includes("this.time.delayedCall(85,()=>{ build(); paint(1,.6); });")&&src.includes("this.time.delayedCall(40,()=>paint(1,1));"),'2 strike-in + flicker re-jag');
 assert(src.includes("this.codeAimLine(g,pl.x,pl.y,s.ang,L,c,s.full,0x9fe8ff,t)")&&src.includes("this.codeAimLine(g,pl.x+ca*30,pl.y+sa*30,s.ang,len-30,"),'3 Mint lance + Momo sniper');
 assert(/bpFx\(key,x,y,size,o=\{\}\)\{ if\(typeof CODE_VFX!=='undefined'&&CODE_VFX\.cocoa&&\/\^bpx_cocoa_/.test(src),'4 bpFx hook');
 assert(src.includes("if(typeof CODE_VFX!=='undefined'&&CODE_VFX.xp)return this.xpTrailCode(o);")&&src.includes("if(this._xpTrG?.active)this._xpTrG.clear();"),'5 hook + per-frame clear');

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.159**. Next release:8.1.160. Fetch the deploy branch before new work.
+Current release: **8.1.160**. Next release:8.1.161. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.159 — Clean Air fog of war (Wildwood-style) + glTexture fix + Titan crush art back (owner)
+# Latest delivery: v8.1.160 — livelier Taro lightning (owner)
+
+Owner: the code lightning still looked plain. `taroLightningVisual` now animates each bolt in one Graphics (same 20-live cap and lifetime): strike-in from the source (45% at once, full at 40 ms), the main bolt (glow / dark outline / colour / white core) plus two thin secondary strands crackling beside it, 1–2 side forks on long links, white sparks popping along the bolt, a white flash + 5–6 spark streaks at the target, a small glowing orb at the source, then two re-jags (85 ms, 140 ms) for flicker with a fading afterglow. Fill calls are optional-guarded for test stubs. Tests: code-vfx-round2 updated.
+
+# Previous delivery: v8.1.159 — Clean Air fog of war (Wildwood-style) + glTexture fix + Titan crush art back (owner)
 
 **Clean Air (`CLEANAIR_FOGWAR`):** `cleanAirFogWar` draws a screen-size RenderTexture on the UI camera (depth −5, under the HUD) filled dark (0x0b0814 α .74) and erases soft holes with a generated `fog_brush`: the Wisp ring (×1.15), a 95 px circle around the hero, and every 34 px of the Wisp's walked path (up to 320 points, culled off-screen) — the map opens behind the Wisp and stays open. The v8.1.154 drifting poison puffs are off while this is on (rim kept). The mission no longer uses the ▶ button or the 10 s auto start: `missionArm` puts "Step into the ring to start" under the ring and `missionArmTick` starts it only when the hero is inside (banner "Follow the Wisp"). Desc: "Follow the Wisp Ns · the fog lifts where it walks". **🐞 glTexture null (hub, v8.1.158):** `codeGenericTex` / `codeSheets` swapped textures that were on screen (Lobby sparkles); swaps now wait until no object uses the texture (`texInUse`). **🐞 Titan crush lost its punch:** `bpx_cocoa_shockwave` / `bpx_cocoa_crack` are art again; code keeps only Dash ring + landing dust. Test: new cleanair-fogwar.
-
-# Previous delivery: v8.1.158 — clear heal visual for Cocoa’s pre-path Unique (owner)
-
-Owner: the "flower" was the heal of Cocoa's Bear Grit Slam (Unique before a Build Path, levels 1–5) — `healAura` played `growth_unlock` tinted green. With `CODE_VFX.heal` it now runs `healAuraCode`: a green ground ring that pulses under the hero, a short green light column at the start, and green ＋ signs (dark outline) rising and fading around the hero every 0.32 s, for as long as `_cocoaRegenT` lasts; it follows the hero and fades out when the regen ends. Test: code-vfx-round3 extended.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

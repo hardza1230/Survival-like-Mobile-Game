@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.159';
+const GAME_VERSION = '8.1.160';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.160',date:'2026-11-16',title:'livelier Taro lightning (owner)',items:['b']},
   {v:'8.1.159',date:'2026-11-16',title:'Clean Air fog of war + glTexture fix + Titan crush art back (owner)',items:['b']},
   {v:'8.1.158',date:'2026-11-16',title:'clear heal visual for Cocoa’s pre-path Unique (owner)',items:['b']},
   {v:'8.1.157',date:'2026-11-16',title:'code-drawn effects round 3 (8, 10–14) + calmer Cocoa Titan rage aura (owner)',items:['b']},
@@ -18964,14 +18965,23 @@ class Game extends Phaser.Scene {
     // v7.8.16 เส้นเดิม 2px/0.14วิ อยู่ depth 7 ใต้สไปรต์ → มองแทบไม่เห็น · วาดเรืองแสง+ขอบเข้ม+แกนขาว บน depth VFX (1 graphics/เส้น เคารพเพดาน 20)
     const t=this._taro,g=this.camWorld(this.add.graphics().setDepth(90400)),smite=t.path==='smite',col=smite?0xffda89:t.path==='tempest'?0xa9e8ee:0xc6a2ed,k=big?1.6:1,points=[];
     g.setAlpha?.(visualAlpha);
-    /* v8.1.156 CODE_VS_ART รอบ 2 ข้อ 2: สายฟ้าโค้ดแทนภาพยืด · หยักใหม่กลางทาง (กะพริบ) + กิ่งแตกเล็ก ๆ 1 กิ่ง */
-    const build=()=>{ points.length=0; if(strike){const top=y2-(smite?150:110);points.push({x:x2,y:top});for(let i=1;i<5;i++)points.push({x:x2+(i%2?-9:8)*k*(.6+Math.random()*.8),y:top+(y2-top)*i/5});points.push({x:x2,y:y2});}
-      else{const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len,n=Math.max(3,Math.min(8,Math.round(len/38)));points.push({x:x1,y:y1});for(let i=1;i<n;i++){const j=(Math.random()*2-1)*Math.min(16,len*.12)*k;points.push({x:x1+dx*i/n+nx*j,y:y1+dy*i/n+ny*j});}points.push({x:x2,y:y2});} };
-    const paint=()=>{ if(!g.active)return; g.clear(); g.lineStyle(16*k,col,.28);g.strokePoints(points);g.lineStyle(7*k,0x302348,.9);g.strokePoints(points);g.lineStyle(3.5*k,col,1);g.strokePoints(points);g.lineStyle(1.5*k,0xffffff,.95);g.strokePoints(points);
-      if(!strike&&points.length>3){ const m=points[Math.floor(points.length/2)],a=Math.atan2(y2-y1,x2-x1)+(Math.random()<.5?-1:1)*(.5+Math.random()*.4),L=Math.min(46,Math.hypot(x2-x1,y2-y1)*.28)*k,b1={x:m.x+Math.cos(a)*L*.5+(Math.random()-.5)*8,y:m.y+Math.sin(a)*L*.5+(Math.random()-.5)*8},b2={x:m.x+Math.cos(a)*L,y:m.y+Math.sin(a)*L};
-        g.lineStyle(6*k,col,.25);g.strokePoints([m,b1,b2]);g.lineStyle(2*k,col,.95);g.strokePoints([m,b1,b2]);g.lineStyle(1*k,0xffffff,.8);g.strokePoints([m,b1,b2]); }
-      g.lineStyle(3*k,col,.9);g.strokeCircle(x2,y2,(strike?20:12)*k);g.lineStyle(2*k,0xffffff,.9);g.strokeCircle(x2,y2,4*k); };
-    build(); paint(); if(this.time?.delayedCall&&(typeof CODE_VFX==='undefined'||CODE_VFX.bolt))this.time.delayedCall(70,()=>{ build(); paint(); });
+    /* v8.1.156 CODE_VS_ART รอบ 2 ข้อ 2 · v8.1.160 เจ้าของ: สายฟ้ายังธรรมดา → ฟาดจากต้นทางวิ่งไปถึงเป้า (40 ms) · เส้นหลัก + เส้นรองบางอีก 2 เส้นแตกเปรี๊ยะคู่กัน · กิ่งแตก 1–2 กิ่ง · ประกายไฟวิ่งตามเส้น · ปลายทางวาบขาว + สะเก็ดไฟกระเด็น · หยักใหม่ 2 ครั้ง (กะพริบ) แล้วเหลือแสงค้างจาง ๆ · ต้นทางมีลูกไฟเล็ก */
+    const RR=Math.random,dX=x2-x1,dY=y2-y1,LEN=Math.hypot(dX,dY)||1,NX=-dY/LEN,NY=dX/LEN,sparks=Array.from({length:strike?6:5},()=>({a:RR()*Math.PI*2,s:.5+RR()*.8}));
+    const jag=(amp,seg)=>{ const P=[]; if(strike){const top=y2-(smite?150:110);P.push({x:x2,y:top});for(let i=1;i<5;i++)P.push({x:x2+(RR()*2-1)*amp*.8,y:top+(y2-top)*i/5});P.push({x:x2,y:y2});return P;} const n=Math.max(3,Math.min(9,Math.round(LEN/seg)));P.push({x:x1,y:y1});for(let i=1;i<n;i++){const j=(RR()*2-1)*Math.min(amp,LEN*.12);P.push({x:x1+dX*i/n+NX*j,y:y1+dY*i/n+NY*j});}P.push({x:x2,y:y2});return P; };
+    const cut=(P,f)=>{ if(f>=1)return P; const out=[P[0]],tot=P.length-1,end=f*tot; for(let i=1;i<=tot;i++){ if(i<=end)out.push(P[i]); else { const a=P[i-1],b=P[i],u=end-(i-1); if(u>0)out.push({x:a.x+(b.x-a.x)*u,y:a.y+(b.y-a.y)*u}); break; } } return out; };
+    let main,sub1,sub2,forks;
+    const build=()=>{ main=jag(16*k,34); sub1=jag(22*k,26); sub2=jag(12*k,30); forks=[]; if(!strike&&main.length>3){ for(let f=0;f<(LEN>140?2:1);f++){ const m=main[1+Math.floor(RR()*(main.length-2))],a=Math.atan2(dY,dX)+(RR()<.5?-1:1)*(.45+RR()*.5),L=Math.min(52,LEN*.3)*k; forks.push([m,{x:m.x+Math.cos(a)*L*.5+(RR()-.5)*10,y:m.y+Math.sin(a)*L*.5+(RR()-.5)*10},{x:m.x+Math.cos(a)*L,y:m.y+Math.sin(a)*L}]); } } };
+    const FC=(c,a,x,y,r)=>{ g.fillStyle?.(c,a); g.fillCircle?.(x,y,r); };
+    const paint=(f=1,flash=0,fade=1)=>{ if(!g.active)return; g.clear?.(); const M=cut(main,f);
+      g.lineStyle(18*k,col,.22*fade);g.strokePoints(M);g.lineStyle(7*k,0x302348,.85*fade);g.strokePoints(M);g.lineStyle(3.5*k,col,fade);g.strokePoints(M);g.lineStyle(1.6*k,0xffffff,.95*fade);g.strokePoints(M);
+      for(const S of [sub1,sub2]){ const T=cut(S,f); g.lineStyle(1.6*k,col,.65*fade);g.strokePoints(T);g.lineStyle(.8*k,0xffffff,.6*fade);g.strokePoints(T); }
+      if(f>=1){ for(const F of forks){ g.lineStyle(6*k,col,.22*fade);g.strokePoints(F);g.lineStyle(2*k,col,.95*fade);g.strokePoints(F);g.lineStyle(1*k,0xffffff,.8*fade);g.strokePoints(F); }
+        for(let i=0;i<3;i++){ const q=main[1+Math.floor(RR()*Math.max(1,main.length-2))]; FC(0xffffff,.9*fade,q.x+(RR()-.5)*8,q.y+(RR()-.5)*8,1.6*k); }
+        const tr=(strike?20:12)*k; g.lineStyle(3*k,col,.9*fade);g.strokeCircle(x2,y2,tr*(1+flash*.5));g.lineStyle(2*k,0xffffff,.9*fade);g.strokeCircle(x2,y2,4*k);
+        if(flash>0){ FC(0xffffff,.75*flash,x2,y2,tr*1.1*flash+3); for(const q of sparks){ const d=tr*(.8+q.s*(1.6-flash)); g.lineStyle(2*k,col,.9*flash); g.lineBetween?.(x2+Math.cos(q.a)*d*.5,y2+Math.sin(q.a)*d*.5,x2+Math.cos(q.a)*d,y2+Math.sin(q.a)*d); } } }
+      if(!strike){ FC(col,.35*fade,x1,y1,7*k); FC(0xffffff,.8*fade,x1,y1,2.5*k); } };
+    build(); paint(.45); const on=this.time?.delayedCall&&(typeof CODE_VFX==='undefined'||CODE_VFX.bolt);
+    if(on){ this.time.delayedCall(40,()=>paint(1,1)); this.time.delayedCall(85,()=>{ build(); paint(1,.6); }); this.time.delayedCall(140,()=>{ build(); paint(1,.25,.75); }); } else paint(1,1);
     return this.taroTrackVisual(g,big?.36:strike?.28:.24);
   }
   taroUpdateVisuals(){const t=this._taro;if(!t?.enabled||this.state!=='play')return;
