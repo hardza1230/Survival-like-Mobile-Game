@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.153';
+const GAME_VERSION = '8.1.154';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.154',date:'2026-11-16',title:'Clean Air poison fog (owner)',items:['b']},
   {v:'8.1.153',date:'2026-11-16',title:'Chapter 2 / 3 boss music from the owner',items:['b']},
   {v:'8.1.152',date:'2026-11-16',title:'Unique wind-up before tap Uniques (owner)',items:['b']},
   {v:'8.1.151',date:'2026-11-15',title:'art order 81 wired — Relic / Modifier / Trade-off icons (owner)',items:['a']},
@@ -15889,14 +15890,28 @@ class Game extends Phaser.Scene {
   spawnCleanAirZone(){
     const o=this.waveObjective;if(!o||o.type!=='cleanAir')return;const pos=this.objectivePosition(0,1,110,220),r=145;
     this._cleanAir={x:pos.x,y:pos.y,tx:pos.x,ty:pos.y,t:0,moveIn:3.5,r,damageIn:0};
-    this._cleanAirZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,0.12).setStrokeStyle(5,o.color,0.88).setDepth(1));this._cleanAirZone.radiusGoal=r;
-    this._cleanAirRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_ring').setTint(o.color).setDisplaySize(r*2.15,r*1.58).setAlpha(.72).setDepth(2));
+    this._cleanAirZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,0.12).setStrokeStyle(3,0xe8fbff,0.45).setDepth(1));this._cleanAirZone.radiusGoal=r;
+    this._cleanAirRing=this.camWorld(this.add.image(pos.x,pos.y,'vfx_ring').setTint(0xbff6ff).setDisplaySize(r*2.15,r*1.58).setAlpha(.4).setDepth(2));
     this._cleanAirWisp=this.camWorld(this.add.image(pos.x,pos.y-22,'ch2_mycelium_enemy_atlas',7).setScale(.24).setDepth(pos.y+3));
-    this.tweens.add({targets:this._cleanAirRing,rotation:TAU,alpha:{from:.48,to:.82},duration:1700,repeat:-1,ease:'Linear'});
+    this.tweens.add({targets:this._cleanAirRing,rotation:TAU,alpha:{from:.22,to:.42},duration:2600,repeat:-1,ease:'Linear'});
   }
   /* v8.1.79 เจ้าของ: ฟองอากาศโบนัสตามเส้นทาง · แตะฟอง = +1.5 วิ */
   cleanAirBubbles(c,o,dt){ const B=c.bub||(c.bub=[]),p=this.player; c.bt=(c.bt||0)-dt; if(c.bt<=0&&B.length<3&&Math.hypot(c.tx-c.x,c.ty-c.y)>90){ c.bt=2.2; const f=.3+Math.random()*.5,x=c.x+(c.tx-c.x)*f+(Math.random()-.5)*60,y=c.y+(c.ty-c.y)*f+(Math.random()-.5)*60,img=this.artSpr('msn71_bubble',x,y,32,0,{sig:false})||this.camWorld(this.add.circle(x,y,13,0xbff6ff,.55).setStrokeStyle(2,0xffffff,.9).setDepth(y+2)); this.tweens.add({targets:img,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); B.push({img,life:8}); }
     for(let i=B.length-1;i>=0;i--){ const b=B[i]; b.life-=dt; const hit=p&&this.dist(p.x,p.y,b.img.x,b.img.y)<34; if(hit||b.life<=0){ if(hit){ o.progress=Math.min(o.target,o.progress+1.5); this.floatText?.(b.img.x,b.img.y-24,'+1.5s',0xbff6ff); this.burst?.(b.img.x,b.img.y,0xbff6ff); Sfx.orderCue?.('pickup_sugar_piece',.25,.05,1.3); } this.tweens.killTweensOf(b.img); b.img.destroy(); B.splice(i,1); } } }
+  /* v8.1.154 เจ้าของ 🐞: Clean Air ต้องดูเป็นอากาศจริง → รอบนอกเป็นหมอกพิษฟุ้ง (ม่วงเขียว) ลอยช้า ๆ · วงของ Wisp กับทางที่จะไปโล่งสะอาด · ขอบวงเป็นปุยเมฆฟ้าขาว · ยืนนอกวง = หมอกรอบตัวหนาขึ้น */
+  cleanAirFog(c,o,dt){ if(!this.add?.graphics)return 0; let g=this._cleanAirFog; if(!g||!g.scene)g=this._cleanAirFog=this.camWorld(this.add.graphics().setDepth(94000));
+    const V=this.cameras?.main?.worldView||{x:c.x-400,y:c.y-500,width:800,height:1000},low=typeof PERF!=='undefined'&&PERF.lvl>=2,N=low?12:26,F=c.fog||(c.fog=[]),R=Math.random,pad=120;
+    const put=q=>{ q.x=V.x-pad+R()*(V.width+pad*2); q.y=V.y-pad+R()*(V.height+pad*2); q.r=55+R()*70; q.ph=R()*TAU; q.vx=(R()-.5)*14; q.vy=-4-R()*8; return q; };
+    while(F.length<N)F.push(put({})); if(F.length>N)F.length=N;
+    const segD=(x,y,x0,y0,x1,y1)=>{ const vx=x1-x0,vy=y1-y0,L=vx*vx+vy*vy||1,t=Math.max(0,Math.min(1,((x-x0)*vx+(y-y0)*vy)/L)); return Math.hypot(x-(x0+vx*t),y-(y0+vy*t)); };
+    const clear=(x,y)=>{ const dz=Math.hypot(x-c.x,y-c.y)-c.r*1.05,dp=segD(x,y,c.x,c.y,c.tx??c.x,c.ty??c.y)-c.r*.55; return Math.max(0,Math.min(1,Math.min(dz,dp)/90)); };
+    g.clear(); c.ft=(c.ft||0)+dt; let drawn=0;
+    for(const q of F){ q.x+=q.vx*dt; q.y+=q.vy*dt; if(q.x<V.x-pad*1.5||q.x>V.x+V.width+pad*1.5||q.y<V.y-pad*1.5||q.y>V.y+V.height+pad*1.5)put(q);
+      const k=clear(q.x,q.y); if(k<=0)continue; const br=1+.08*Math.sin(c.ft*.9+q.ph),a=.075*k;
+      g.fillStyle(0x6b4a86,a).fillCircle(q.x,q.y,q.r*br); g.fillStyle(0x7f9a52,a*.8).fillCircle(q.x+q.r*.25,q.y-q.r*.15,q.r*.7*br); g.fillStyle(0x4a3560,a*.9).fillCircle(q.x-q.r*.2,q.y+q.r*.2,q.r*.45*br); drawn++; }
+    const P=this.player; if(P&&!low&&Math.hypot(P.x-c.x,P.y-c.y)>c.r){ for(let i=0;i<5;i++){ const an=c.ft*.6+i*TAU/5,d=60+12*Math.sin(c.ft*2+i); g.fillStyle(0x6b4a86,.09).fillCircle(P.x+Math.cos(an)*d,P.y+Math.sin(an)*d*.7,48); } }
+    const n=low?8:14; for(let i=0;i<n;i++){ const an=c.ft*.35+i*TAU/n,rr=c.r*(.98+.04*Math.sin(c.ft*2+i)); g.fillStyle(0xe8fbff,.08).fillCircle(c.x+Math.cos(an)*rr,c.y+Math.sin(an)*rr,c.r*.2); g.fillStyle(0xbff6ff,.06).fillCircle(c.x+Math.cos(an+.2)*rr*.92,c.y+Math.sin(an+.2)*rr*.92,c.r*.14); }
+    return drawn; }
   cleanAirPreview(c,o){ const g=this._cleanAirPath||(this._cleanAirPath=this.camWorld(this.add.graphics().setDepth(2))); if(!g.scene)return; g.clear(); const pts=[[c.x,c.y],[c.tx,c.ty],[c.nx,c.ny]],a=.35+.25*Math.sin((c.t||0)*5);
     for(let k=0;k<2;k++){ const [x0,y0]=pts[k],[x1,y1]=pts[k+1],d=Math.hypot(x1-x0,y1-y0); if(d<20)continue; const n=Math.floor(d/26); for(let i=0;i<n;i+=2){ const t0=i/n,t1=Math.min(1,(i+1)/n); g.lineStyle(5,o.color,a*(k?0.55:1)).lineBetween(x0+(x1-x0)*t0,y0+(y1-y0)*t0,x0+(x1-x0)*t1,y0+(y1-y0)*t1); } }
     g.lineStyle(3,o.color,a*.8).strokeEllipse(c.tx,c.ty,c.r*1.6,c.r*1.1); g.lineStyle(2,o.color,a*.45).strokeEllipse(c.nx,c.ny,c.r*1.2,c.r*.8); }
@@ -15906,6 +15921,7 @@ class Game extends Phaser.Scene {
     if(c.moveIn<=0){c.tx=c.nx;c.ty=c.ny;const q=this.objectivePosition(0,1,210,420);c.nx=q.x;c.ny=q.y;c.moveIn=3.5;}
     this.cleanAirPreview?.(c,o);   /* v8.1.77 โชว์ทางที่วงจะไป */
     this.cleanAirBubbles?.(c,o,dt);
+    this.cleanAirFog?.(c,o,dt);   /* v8.1.154 */
     const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy),step=Math.min(d,82*dt);if(d>1){c.x+=dx/d*step;c.y+=dy/d*step;}
     for(const q of [this._cleanAirZone,this._cleanAirRing])if(q&&q.active)q.setPosition(c.x,c.y);if(this._cleanAirWisp&&this._cleanAirWisp.active)this._cleanAirWisp.setPosition(c.x,c.y-22+Math.sin(c.t*4)*5).setDepth(c.y+3);
     const inside=this.dist(this.player.x,this.player.y,c.x,c.y)<=c.r;o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:0),0,o.target);this._cleanAirZone.setFillStyle(o.color,inside?.20:.07);
@@ -17030,7 +17046,7 @@ class Game extends Phaser.Scene {
     for(const s of this._seasonShrines||[]){for(const q of [s.zone,s.ring,s.label])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._seasonShrines=null;
     { const st=this.waveObjective?.storm; if(st){ for(const d of st.drops||[]){ this.tweens.killTweensOf(d.img); d.img?.destroy(); } st.drops=[]; for(const sh of st.shrines||[]){ sh.ring?.destroy(); sh.t?.destroy(); } st.shrines=null; } }
     for(const b of this._cleanAir?.bub||[]){ this.tweens.killTweensOf(b.img); if(b.img.active)b.img.destroy(); }
-    for(const k of ['_captureZone','_captureRing','_captureFill','_captureArc','_captureSec','_cleanAirZone','_cleanAirRing','_cleanAirWisp','_cleanAirPath']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
+    for(const k of ['_captureZone','_captureRing','_captureFill','_captureArc','_captureSec','_cleanAirZone','_cleanAirRing','_cleanAirWisp','_cleanAirPath','_cleanAirFog']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);this.syncSeasonIcons?.(null);

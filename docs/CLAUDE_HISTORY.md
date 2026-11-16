@@ -4019,3 +4019,8 @@ Reports from v8.1.147. **Wardrobe:** its only entry was the Thread tab, hidden s
 
 Delivery `asset-delivery/relics81` merged (52/52 match MANIFEST). `scripts/pack-relics81.py` → `assets/art/relics81/` 49 × 128×128 WebP q80 (265 KB · 64 KB GPU each): `relic_` 8 (heavydough, sugarrush, frostcandy, copperwhisk, longspoon, crowdcrush, twinbake, giantslayer), `mod_<id>` 36 (all heroes' MODIFIERS, id without the `x_` prefix), `trade_` 5. `artClass` → stage for `assets/art/relics81/`; `stageArtKeys` loads the 8 relics + 5 trade-offs + the current hero's 6 modifiers. `modCard` / `tradeCard` use `mod_*` / `trade_*` when loaded, else the old weapon icon. The 3 Yuzu portrait Build Path cards (`pathcard80_*`) stay in incoming only — owner: order-82 landscape cards already cover Yuzu. Test: new relics81-art.
 
+
+# Delivery: v8.1.152 — Unique wind-up before tap Uniques (owner, idea from pixelfx "acting")
+
+`useCharacterSkill(noWind)` now runs `uniqueWindup` first (170 ms): the jelly squash crouches (`_sqX 1.28 / _sqY .78`), 8 dots + a ring in the Unique colour gather into the hero, `shared_unique_charge_start` cue; then the body stretches (`.82 / 1.24`), a light shake (90 ms) and the cast (`useCharacterSkillNow`, the old body). `_uqWind` blocks double taps; leaving play during the wind-up cancels the cast. Skipped for charged releases (Yuzu command `useCharacterSkill(true)`, Mint/Momo charge paths already go through their own hold), Momo Sniper and Sesame runes; dots/ring off when settings vfx = 0. Tests: new unique-windup; cocoa-builds / cocoa-flicker / sesame-runes extract `useCharacterSkillNow`.
+
