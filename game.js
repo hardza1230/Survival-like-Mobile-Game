@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.152';
+const GAME_VERSION = '8.1.153';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.153',date:'2026-11-16',title:'Chapter 2 / 3 boss music from the owner',items:['b']},
   {v:'8.1.152',date:'2026-11-16',title:'Unique wind-up before tap Uniques (owner)',items:['b']},
   {v:'8.1.151',date:'2026-11-15',title:'art order 81 wired — Relic / Modifier / Trade-off icons (owner)',items:['a']},
   {v:'8.1.150',date:'2026-11-14',title:'owner round 5 — short Relic / hero intro text, vault background, Capture the Zone polish',items:['b']},
@@ -4521,6 +4522,8 @@ const ASSET_AUDIO = {
   bgm_s01: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s01.mp3',
   bgm_c11_stage: 'assets/audio/bgm/clockmakers_tea_break.mp3',   // v8.1.142 owner: C1-1 = owner tracks (supplied 2026-09-07) · tutorial keeps bgm_s01
   bgm_c11_boss: 'assets/audio/bgm/gates_of_the_calamity.mp3',
+  bgm_c2_boss: 'assets/audio/bgm/skyfall_sprint.mp3',   // v8.1.153 owner: Skyfall Sprint = Chapter 2 boss theme
+  bgm_c3_boss: 'assets/audio/bgm/skyfire_pursuit.mp3',   // v8.1.153 owner: Skyfire Pursuit = Chapter 3 boss theme
   bgm_s02: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s02.mp3',
   bgm_s03: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s03.mp3',
   bgm_s04: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s04.mp3',
@@ -4704,7 +4707,8 @@ const StoryMusic={serial:0,
 
 function bgmKeyFor(kind,stageNum){
   /* v8.1.142 owner 🐞: C1-1 and the tutorial shared one track → real C1-1 runs use the owner's "Clockmaker's Tea Break" + boss "Gates of the Calamity" */
-  if(kind==='boss'&&stageNum>=2&&stageNum<=5&&BGM_MODE!=='endgame'&&ASSET_AUDIO.bgm_c11_boss)return 'bgm_c11_boss';   /* v8.1.144 owner: Gates of the Calamity = boss theme for all of Chapter 1 (Ch2–3 tracks coming from the owner) */
+  if(kind==='boss'&&stageNum>=2&&stageNum<=5&&BGM_MODE!=='endgame'&&ASSET_AUDIO.bgm_c11_boss)return 'bgm_c11_boss';
+  if(kind==='boss'&&BGM_MODE!=='endgame'){ if(stageNum>=6&&stageNum<=10&&ASSET_AUDIO.bgm_c2_boss)return 'bgm_c2_boss'; if(stageNum>=11&&stageNum<=15&&ASSET_AUDIO.bgm_c3_boss)return 'bgm_c3_boss'; }   /* v8.1.153 owner: Ch2 / Ch3 boss themes */   /* v8.1.144 owner: Gates of the Calamity = boss theme for all of Chapter 1 (Ch2–3 tracks coming from the owner) */
   if(stageNum===1&&BGM_MODE!=='endgame'&&(kind==='stage'||kind==='boss')){ let tut=true; try{ const g=window.__g&&window.__g.scene.getScene('Game'); tut=!(typeof Save!=='undefined'&&Save.data&&Save.data.tutorialDone)||!!(g&&(g._inTutorial||g._forceCoachTutorial)); }catch(e){} const k=kind==='stage'?'bgm_c11_stage':'bgm_c11_boss'; if(!tut&&ASSET_AUDIO[k])return k; }
   if(BGM_MODE==='endgame'){const k='bgm_endgame'+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
   if(kind==='mini'){const k='bgm_m'+String(stageNum).padStart(2,'0');return ASSET_AUDIO[k]?k:null;}
