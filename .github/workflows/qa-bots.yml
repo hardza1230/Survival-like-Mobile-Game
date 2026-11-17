@@ -1,0 +1,79 @@
+# v8.1.165 owner: QA bot suite — many bot personas (heroes × builds, card picks, mission chaser, idle, mortal,
+# tablet/landscape/small screens, Low quality ×3 speed, Delve/Pinnacle, menu monkey) run in parallel shards.
+# Bug finding: errors, stuck runs, missions, FPS/memory. Build table = comparison only (GM ×10 damage, fresh save).
+# Run: Actions → "QA Bots" → Run workflow (or every night at 19:40 UTC = 02:40 Thailand).
+name: QA Bots
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Personas (comma list, empty = all): build,cards,missions,idle,mortal,screens,stress,endgame,menus"
+        required: false
+        default: ""
+      max:
+        description: "Max real seconds per run"
+        required: false
+        default: "240"
+  schedule:
+    - cron: "40 19 * * *"
+concurrency:
+  group: qa-bots
+  cancel-in-progress: true
+jobs:
+  bots:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/assets/incoming/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build www
+        run: node scripts/build-www.mjs
+      - name: Run bots (shard ${{ matrix.shard }}/10)
+        env:
+          QA_BROWSER_CHANNEL: chrome
+          QA_SHOT_DIR: qa-shots
+        run: |
+          npm install --prefix /tmp/qa-browser --no-save playwright@1.51.1
+          mkdir -p qa-shots
+          ONLY="${{ github.event.inputs.only }}"
+          NODE_PATH=/tmp/qa-browser/node_modules node scripts/qa-bots.cjs --shard=${{ matrix.shard }}/10 --par=1 --max=${{ github.event.inputs.max || '240' }} ${ONLY:+--only=$ONLY} --out=qa-bots-${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-bots-${{ matrix.shard }}
+          path: |
+            qa-bots-${{ matrix.shard }}.json
+            qa-shots/
+          if-no-files-found: ignore
+          retention-days: 14
+  report:
+    needs: bots
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts
+      - uses: actions/download-artifact@v4
+        with:
+          path: shards
+      - name: Merge report
+        run: |
+          node scripts/qa-bots-report.cjs shards > qa-bots-report.md
+          cat qa-bots-report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qa-bots-report
+          path: qa-bots-report.md
+          retention-days: 30

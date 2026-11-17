@@ -73,3 +73,9 @@
 - Delve 8 ห้อง (ปกติ / Elite / Treasure Pocket / Shrine / Trial / Siege / บอสชั้น 10 / Candy City ชั้น 15) + Pinnacle ห้องละ ~4 นาที: **error 0 · ค้าง 0**
 - 🐞 แก้แล้ว: Pinnacle → หน้าเลือกดรอป → Back = เสียสิทธิ์ฟรี/กุญแจ 3 ดอก → ตอนนี้คืนให้ (เทส pinnacle-refund)
 - ⚠️ หน่วยความจำภาพ Delve 500–584 MB (Story 420–500) เกินงบเครื่อง 8 GB (520) เล็กน้อย → เจ้าของสังเกตความลื่นใน Delve บนมือถือ
+
+**ชุดบอทหลายบุคลิก · 17 พ.ย. 2026** (`scripts/qa-bots.cjs` + `scripts/qa-bots-report.cjs` + `.github/workflows/qa-bots.yml`)
+- บุคลิก: `build` ฮีโร่ 5 × Build 3 · `cards` เลือกการ์ด first/random/relic/mod · `missions` วิ่งเข้าเป้าทุกภารกิจ · `idle` ยืนนิ่ง · `mortal` ไม่อมตะ หลบมอน/กระสุน · `screens` แท็บเล็ต/แนวนอน/จอเล็ก · `stress` Low + ×3 · `endgame` Delve 8 ห้อง + Pinnacle · `menus` กดทุกหน้าเมนู (รวม 50 งาน)
+- รันบน GitHub: Actions → **QA Bots** → Run workflow (เลือกเฉพาะบุคลิกได้) · รันเองทุกคืน 02:40 น. · 10 เครื่องพร้อมกัน ~20 นาที · ผลอยู่ในหน้า Summary ของรอบนั้น + ไฟล์ `qa-bots-report` + ภาพหน้าจอรอบที่มีปัญหา
+- รันในเครื่อง: `node scripts/build-www.mjs` แล้ว `NODE_PATH=/opt/node22/lib/node_modules node scripts/qa-bots.cjs --only=missions --par=2` · `--list` ดูรายการงาน · `--set=move:kite,dmg:false` ทับค่า
+- บอทใช้เซฟเปล่า + GM ดาเมจ ×10 → ตาราง "Build comparison" ใช้**เทียบ Build กันเอง**เท่านั้น ตัวเลขจริงยังตัดสินบนมือถือ (กฎเจ้าของ)

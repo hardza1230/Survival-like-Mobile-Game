@@ -8,7 +8,7 @@ const SCREENS=['hub','endgame','atlas','dig','upgrade','perks','skills','recipes
 (async()=>{
   const server=http.createServer((q,r)=>{try{const p=path.join(process.cwd(),'www',decodeURIComponent(new URL(q.url,'http://l').pathname));const f=fs.statSync(p).isDirectory()?path.join(p,'index.html'):p;r.end(fs.readFileSync(f));}catch{r.statusCode=404;r.end();}});
   await new Promise(r=>server.listen(0,r));const port=server.address().port;
-  const browser=await chromium.launch();const page=await browser.newPage({viewport:{width:390,height:844}});
+  const browser=await chromium.launch(process.env.QA_BROWSER_CHANNEL?{channel:process.env.QA_BROWSER_CHANNEL}:{});const page=await browser.newPage({viewport:{width:390,height:844}});
   let errs=[];page.on('pageerror',e=>errs.push('page: '+String(e.message).slice(0,300)));
   page.on('console',m=>{if(m.type()==='error'){const t=m.text();if(!/Failed to load resource|404/.test(t))errs.push('console: '+t.slice(0,300));}});
   await page.addInitScript(()=>{try{window.__qaBot=true;if(!sessionStorage.getItem('qa_seeded')){sessionStorage.setItem('qa_seeded','1');localStorage.clear();localStorage.setItem('mochi_gm','1');
