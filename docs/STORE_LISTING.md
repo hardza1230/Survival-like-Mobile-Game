@@ -31,7 +31,7 @@ The world of Mochitopia is losing its flavor — and only a team of brave mochi 
 Mochi Mayhem is a cute survivor-style roguelike. Move with one thumb while your hero attacks automatically. Collect sugar crystals, level up, and pick from three upgrade cards to build a different hero every run.
 
 ★ BUILD YOUR HERO
-• Five mochi heroes, each with three build paths: snipe with Strawberry, freeze with Mint, punch with Cocoa, call lightning with Taro, or lead a citrus crew with Yuzu
+• Six mochi heroes, each with their own build paths: snipe with Strawberry, freeze with Mint, punch with Cocoa, call lightning with Taro, lead a citrus crew with Yuzu, or weave rune spells with Sesame
 • Mix basic attacks, modifiers, relics and evolutions into your own combo
 • Unique skills that charge up for big moments
 
