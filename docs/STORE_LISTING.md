@@ -12,13 +12,71 @@
 - Contact email: heartloveu1825@gmail.com
 - Content rating / Target audience: กรอกตามเนื้อหาจริงและผลแบบสอบถาม ไม่ถือว่าคาดเดาจากภาพการ์ตูนได้
 
-## English short description draft
+## ✅ ฉบับใช้จริง (17 พ.ย. 2026 · v8.1.167) — คัดลอกไปวางใน Play Console → Main store listing
+
+**App name (≤30):**
+```text
+Mochi Mayhem
+```
+
+**Short description (≤80):**
+```text
+Cute mochi survivor roguelike: auto-attack, build your hero, beat giant bosses!
+```
+
+**Full description (≤4000):**
+```text
+The world of Mochitopia is losing its flavor — and only a team of brave mochi heroes can bring it back!
+
+Mochi Mayhem is a cute survivor-style roguelike. Move with one thumb while your hero attacks automatically. Collect sugar crystals, level up, and pick from three upgrade cards to build a different hero every run.
+
+★ BUILD YOUR HERO
+• Five mochi heroes, each with three build paths: snipe with Strawberry, freeze with Mint, punch with Cocoa, call lightning with Taro, or lead a citrus crew with Yuzu
+• Mix basic attacks, modifiers, relics and evolutions into your own combo
+• Unique skills that charge up for big moments
+
+★ SURVIVE THE SWARM
+• Three story chapters and 15 hand-made stages
+• Waves of monsters, elites and minibosses
+• Missions in every stage: escort the Wisp, capture the zone, find the lost Wisps in the dark, shake the hollow trees and many more
+• Giant bosses with their own attacks and story scenes
+
+★ GROW STRONGER
+• Gear with random mods, merging and forging
+• Talents for every build and lasting upgrades in the Temple
+• Daily login gifts, daily goals and achievements
+
+★ ENDLESS CHALLENGE
+• Mochi Delve: go deeper for harder rooms and better rewards
+• Pinnacle bosses for the bravest builds
+• The harder it gets, the better the loot
+
+★ PLAY YOUR WAY
+• Short runs, perfect for a quick break
+• Play as a guest or sign in with Google to keep your save in the cloud
+• Free to play · optional rewarded ads only
+
+Dash, dodge and power up — can you save the flavor of Mochitopia?
+```
+
+**ภาพ (store/):**
+| ช่องใน Play Console | ไฟล์ |
+|---|---|
+| App icon 512×512 | `store/appicon_512.png` |
+| Feature graphic 1024×500 | `store/feature_graphic_1024x500.png` |
+| Phone screenshots (2–8 · 9:16 · 1080×1920) | `store/screenshots_v8_1/01_lobby.png` … `06_heroes.png` (ถ่ายจาก v8.1.167 · 17 พ.ย.) |
+
+ภาพหน้าจอชุดเก่า `store/screenshots/` (1 พ.ย.) เลิกใช้
+
+---
+
+## (เก่า) English short description draft
 
 ```text
 Cute mochi survival action: build your hero, dodge swarms, and defeat bosses.
 ```
 
-## English full description draft
+## (เก่า) English full description draft
 
 ```text
 Mochi Mayhem: FLAVORBOUND brings candy-colored survival action to a world losing its flavor.
