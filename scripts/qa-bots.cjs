@@ -5,7 +5,7 @@
 // Usage:
 //   node scripts/build-www.mjs
 //   NODE_PATH=/opt/node22/lib/node_modules node scripts/qa-bots.cjs [--only=persona,persona] [--shard=1/4] [--par=2] [--max=240] [--out=qa-bots.json] [--list]
-// Personas: build (every hero × build path) · cards (first/random/relic/modifier picks) · missions (walks onto every objective)
+// Personas: unique (every hero/path casts its Unique) · replay (lose → Replay → HUD check) · daily (calendar claim checks) · build (every hero × build path) · cards (first/random/relic/modifier picks) · missions (walks onto every objective)
 //           idle (never moves) · mortal (no god mode, kites and dodges) · screens (tablet / landscape / small phone)
 //           stress (Low quality + ×3 speed) · endgame (Delve rooms + Pinnacle) · menus (taps every menu screen, scripts/qa-menus.cjs)
 const fs=require('fs'),http=require('http'),path=require('path'),{spawnSync}=require('child_process'),{chromium}=require('playwright');
@@ -26,6 +26,10 @@ function jobs(){const J=[],add=(persona,o)=>J.push({id:persona+':'+(o.tag||o.sta
     .forEach(([t,v,s])=>add('screens',{tag:t,view:v,stage:s,hero:'yuzu',card:'random',dmg:true,rotate:t==='rotate'}));   // landscape alone only shows "turn your phone upright" (portrait game) → rotate mid-run and back instead
   [2,9].forEach(s=>add('stress',{tag:'s'+s,stage:s,quality:1,speed:3,hero:'taro',card:'random',dmg:true}));
   ['d:normal','d:elite','d:vault','d:shrine','d:trial','d:siege','d:boss','d:city','pinnacle'].forEach(s=>add('endgame',{tag:s,stage:s,hero:'mint',card:'random',dmg:true,speed:2}));
+  // v8.2.2 (owner D1): bugs the phone found that bots missed
+  for(const [h,paths] of Object.entries(HEROES))for(const p of paths)add('unique',{tag:h+'.'+p,hero:h,card:'path:'+p,stage:h==='momo'||h==='mint'?4:9,move:'kite',unique:true});   // every hero/path casts its Unique (Titan hold+release, charge aims) → Unique must deal damage
+  [[2,'cocoa'],[6,'taro']].forEach(([s,h])=>add('replay',{tag:h+'@'+s,stage:s,hero:h,god:false,move:'idle',card:'random',speed:1,replay:true}));   // lose → Replay → HUD art must come back
+  add('daily',{tag:'calendar',kind:'daily'});   // day change: Login / Daily reset and claim once per day
   add('menus',{tag:'all',kind:'menus'});
   if(A.set)for(const j of J)for(const kv of A.set.split(',')){const [k,v]=kv.split(':');j[k]=v==='true'?true:v==='false'?false:isNaN(+v)?v:+v;}   // e.g. --set=move:chase,dmg:true
   const SKIP=A.skip?A.skip.split(','):[];
@@ -68,6 +72,12 @@ function botTick(cfg){const s=window.__g.scene.getScene('Game'),g=window.__g,P=s
         if(ox!=null){const ex=ox-P.x,ey=oy-P.y,d=Math.hypot(ex,ey)||1;if(d>40){dx+=ex/d*.6;dy+=ey/d*.6;}}else{let n=null,nd=1e9;for(const e of (s.enemies?.getChildren?.()||[])){if(!e.active)continue;const d=Math.hypot(e.x-P.x,e.y-P.y);if(d<nd){nd=d;n=e;}}if(n&&nd>200){dx+=(n.x-P.x)/nd*.5;dy+=(n.y-P.y)/nd*.5;}else{dx+=Math.cos(t*.5)*.3;dy+=Math.sin(t*.6)*.3;}}   // no objective: drift toward the pack so attacks land
       }else{let tx=Math.cos(t*.7)*260,ty=Math.sin(t*.9)*260;if(ox!=null){const r=cfg.move==='chase'?25:60;tx=ox+Math.cos(t)*r;ty=oy+Math.sin(t)*r;}dx=tx-P.x;dy=ty-P.y;if(Math.hypot(dx,dy)<30){dx=0;dy=0;}}
       const d=Math.hypot(dx,dy),j=s.joy;if(j&&(!j.active||j.id===-77)){j.active=d>.05;j.id=d>.05?-77:-1;j.dx=d>.05?dx/d:0;j.dy=d>.05?dy/d:0;}act='move';
+      if(cfg.unique){const now=s.time.now,U=window.__qaUq=window.__qaUq||{tries:0,casts:0};
+        if(s._qaUq){if(now-s._qaUq.t>1600){if(s._titanHold)s.releaseTitanCharge();else if(s._snipe)s.releaseSnipe();s._qaUq=null;U.casts++;act='unique-release';}}
+        else if((s.uniqueCd||0)<=0&&!s._uqWind){U.tries++;
+          if(s.isTitanHold?.()){s._titanHold={id:-88};s._qaUq={t:now};}
+          else if((s.isSniperUnique?.()||s.isBlastUnique?.()||s.mintChargeKind?.()||s.isYuzuCommand?.())&&s.startSnipeCharge){s.startSnipeCharge({x:P.x+60,y:P.y,id:-88});if(s._snipe)s._qaUq={t:now};}
+          else{s.useCharacterSkill();U.casts++;}act='unique';}}
     }
   }catch(e){act='bot-error:'+e.message;}
   const pm=performance.memory;
@@ -82,6 +92,20 @@ function startRun(i){const s=window.__g.scene.getScene('Game');const d=Save.data
   for(let D=1;D<node.d;D++)delveRow(D).forEach(n=>{dv.clears[n.id]=1;});dv.best=Math.max(dv.best||0,i==='pinnacle'?30:node.d-1);
   if(i==='pinnacle'){for(let D=1;D<=30;D++)delveRow(D).forEach(n=>{dv.clears[n.id]=1;});dv.best=30;d.pinnacleFreeUsed=false;s._farmFocusRequested='all';s.startPinnacle();return 'pinnacle';}
   d.mapTable={node:node.id,mods:[]};const rr=mapTableRecipe();s.stageDiff=1;s._recipeRequested=rr;s._domainRequested=false;s._farmFocusRequested='all';s.startRun(rr.theme);return 'delve '+want+' depth '+node.d+' '+node.id;}
+
+// v8.2.2 (owner D1): calendar check without playing — yesterday's claim → ready today; claim once; tomorrow ready again
+async function runDaily(browser,port,job){const ctx=await browser.newContext({viewport:{width:390,height:844}}),page=await ctx.newPage(),errs=[];page.on('pageerror',e=>errs.push(String(e.message).slice(0,300)));
+  await page.addInitScript(()=>{try{window.__qaBot=true;localStorage.clear();localStorage.setItem('mochi_save',JSON.stringify({tutorialDone:true,unlockedStage:6,character:'momo',settings:{music:0,sfx:0}}));}catch(e){}});
+  await page.goto(`http://localhost:${port}/index.html`);const res={id:job.id,persona:'daily',result:'done',errors:errs,consoleErrors:[],stuck:[],sec:0};
+  const ok=await page.waitForFunction(()=>{const s=window.__g?.scene?.getScene('Game');return s&&s.sys.isActive()&&s.state==='menu';},null,{timeout:120000}).then(()=>true,()=>false);
+  if(!ok){res.result='boot-timeout';await ctx.close();return res;}
+  res.version=await page.evaluate(()=>typeof GAME_VERSION!=='undefined'?GAME_VERSION:null);
+  const r=await page.evaluate(()=>{const out=[];const c=LoginCal.data();c.last=localDayKey(-1);const i0=c.i;
+    if(!LoginCal.ready())out.push('Login not ready the day after a claim');const a=LoginCal.claim();if(!a)out.push('Login claim failed');if(LoginCal.ready())out.push('Login ready twice on one day');if(LoginCal.claim())out.push('Login claimed twice on one day');if(LoginCal.data().i!==(i0+1)%LOGIN_DAYS)out.push('Login day index did not advance');
+    const D=Date,now=D.now();window.Date=class extends D{constructor(...a){super(...(a.length?a:[now+86400000]));}static now(){return now+86400000;}};let tomorrow=false;try{tomorrow=LoginCal.ready();}finally{window.Date=D;}if(!tomorrow)out.push('Login not ready tomorrow');
+    try{if(typeof DailyQ!=='undefined'){const q=DailyQ.data();if(!q||!q.quests||!q.quests.length)out.push('Daily quests empty');}}catch(e){out.push('DailyQ error '+e.message);}
+    return out;}).catch(e=>['eval error '+e.message]);
+  for(const m of r)res.stuck.push({bot:m});if(r.length)res.result='calendar-bug';await ctx.close();return res;}
 
 async function runStage(browser,port,job){
   const ctx=await browser.newContext({viewport:{width:job.view.width,height:job.view.height},isMobile:!!job.view.isMobile,hasTouch:!!job.view.hasTouch,deviceScaleFactor:job.view.deviceScaleFactor||1});
@@ -108,13 +132,17 @@ async function runStage(browser,port,job){
     if(same===50&&left){res.stuck.push({atSec:Math.round((Date.now()-start)/1000),state:st.state,elapsed:st.elapsed,act:st.act});
       await page.evaluate(m=>{try{typeof QA!=='undefined'&&QA.report('stuck',m,'bot');}catch(e){}},'bot '+job.id+' stuck '+st.state+' at '+st.elapsed+'s ('+st.act+')').catch(()=>{});}
     if(String(st.act).startsWith('bot-error')&&res.stuck.length<5)res.stuck.push({bot:st.act});
+    if(job.replay&&!res._replayed&&st.state==='play'&&st.elapsed>=25)await page.evaluate(()=>{const s=window.__g.scene.getScene('Game');s.player.hp=0;s.die();}).catch(()=>{});   // lose on purpose
+    if(job.replay&&!res._replayed&&(st.state==='dead'||st.over)){await page.waitForTimeout(1500);const ok=await page.evaluate(()=>{const s=window.__g.scene.getScene("Game");const b=(s._overBtns||[]).find(b=>String(b.fn).includes('__pendingRun'));if(!b)return false;s._endLockAt=0;b.fn();return true;}).catch(e=>{res.replayErr=String(e.message).slice(0,200);return false;});res._replayed=ok?Date.now():-1;left=false;continue;}
+    if(job.replay&&res._replayed>0&&!res._hudChecked&&Date.now()-res._replayed>12000&&st.state==='play'){res._hudChecked=true;const h=await page.evaluate(()=>{const s=window.__g.scene.getScene('Game');return {on:!!s.hudArtOn?.(),n:s.hudArtC?.list?.length||0,btn:s.hudBtnC?.list?.length||0};}).catch(()=>null);res.hudAfterReplay=h;if(h&&h.on&&(!h.n||!h.btn))res.stuck.push({bot:'HUD art missing after Replay ('+h.n+' panels, '+h.btn+' buttons)'});res.result='replayed';break;}
     if(['summary','win','over','dead','rushDone','epilogue'].includes(st.state)||st.over){res.result=st.state;break;}
-    if(st.state!=='menu')left=true;if(st.state==='menu'&&left){res.result='back-to-menu';break;}if(!left&&(Date.now()-start)>90000){res.result='never-started';break;}
+    if(st.state!=='menu')left=true;if(st.state==='menu'&&left){res.result='back-to-menu';break;}if(!left&&(Date.now()-(res._replayed>0?res._replayed:start))>90000){res.result='never-started';break;}
   }
   res.sec=Math.round((Date.now()-start)/1000);if(!res.result)res.result='timeout';
   const tail=await page.evaluate(()=>{const s=window.__g.scene.getScene('Game');let mx=null;try{const m=s.mxSummary?.();if(m)mx={sec:m.sec,dealt:m.dealt,dBoss:m.dBoss,dMini:m.dMini,dMob:m.dMob,taken:m.taken,kills:m.kills,src:(m.src||[]).slice(0,5),bsrc:(m.bsrc||[]).slice(0,5),wv:m.wv,lv:m.lv,end:m.end};}catch(e){mx={err:e.message};}
-    return {mx,missions:window.__qaMis||[],picks:(window.__qaPicks||[]).slice(0,40),path:s.basicAttack?.path||null};}).catch(()=>({}));
+    return {mx,missions:window.__qaMis||[],picks:(window.__qaPicks||[]).slice(0,40),path:s.basicAttack?.path||null,uq:window.__qaUq||null,uqCd:s.uniqueCd,uqT:s._cocoaUniqueT,uqDmg:Math.round(s._mx?.src?.unique?.[0]||0)};}).catch(()=>({}));
   Object.assign(res,{mx:tail.mx||null,missions:tail.missions||[],picks:tail.picks||[],path:tail.path||null});
+  if(job.unique){res.uq=tail.uq;res.uqDmg=tail.uqDmg;if((tail.uq?.casts||0)>=2&&!tail.uqDmg&&!['yuzu','taro'].includes(job.hero))res.stuck.push({bot:'Unique cast '+tail.uq.casts+'× but dealt 0 damage'});}
   if(fps.length){res.fpsMin=Math.round(Math.min(...fps));res.fpsAvg=Math.round(fps.reduce((a,b)=>a+b,0)/fps.length);}res.heapMaxMB=Math.round(heap);res.texMaxMB=Math.round(tex);
   if(process.env.QA_SHOT_DIR&&(errs.length||res.stuck.length||!['summary','win','dead','over','timeout'].includes(res.result)))await page.screenshot({path:path.join(process.env.QA_SHOT_DIR,job.id.replace(/[^a-z0-9.@_-]/gi,'_')+'.png')}).catch(()=>{});
   await ctx.close();return res;}
@@ -132,7 +160,7 @@ function runMenus(job){const out=path.resolve('qa-menus-'+SH_I+'.json');const r=
   const browser=await chromium.launch({...(process.env.QA_BROWSER_CHANNEL?{channel:process.env.QA_BROWSER_CHANNEL}:{}),args:['--enable-precise-memory-info','--autoplay-policy=no-user-gesture-required']});
   const report={date:new Date().toISOString(),shard:SH_I+'/'+SH_N,runs:[]};const save=()=>fs.writeFileSync(OUT,JSON.stringify(report,null,1));
   try{const queue=J.filter(j=>j.kind!=='menus'),menus=J.filter(j=>j.kind==='menus');
-    const worker=async()=>{while(queue.length){const j=queue.shift();let r;try{r=await runStage(browser,port,j);}catch(e){r={id:j.id,persona:j.persona,result:'runner-error',errors:[String(e.message).slice(0,300)],consoleErrors:[],stuck:[]};}
+    const worker=async()=>{while(queue.length){const j=queue.shift();let r;try{r=j.kind==='daily'?await runDaily(browser,port,j):await runStage(browser,port,j);}catch(e){r={id:j.id,persona:j.persona,result:'runner-error',errors:[String(e.message).slice(0,300)],consoleErrors:[],stuck:[]};}
       report.version=report.version||r.version;report.runs.push(r);save();
       console.log(JSON.stringify({id:r.id,result:r.result,sec:r.sec,errors:r.errors.length,console:r.consoleErrors.length,stuck:r.stuck.length,fps:r.fpsAvg,lvl:r.level,missions:(r.missions||[]).map(m=>m.type+(m.end?'✓':'…')).join(' ')}));}};
     await Promise.all(Array.from({length:PAR},worker));

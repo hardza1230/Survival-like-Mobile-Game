@@ -4099,3 +4099,8 @@ Owner: Taro too weak on bosses. Meter data (run_stats): Taro boss DPS in Chapter
 
 Owner: login was only in Settings → `buildTitle` now asks first. Not signed in with Google (cloud available) → two buttons under the logo: **Sign in with Google** (`doGoogleAuth(false)`; on Android the deep link comes back and `Cloud._onLogin` rebuilds the title) and **▶ Play as Guest** (the old tap-to-start flow: book opening / tutorial / Lobby) + a small line "Guest progress stays on this device · sign in later in Settings". Signed in with Google → TAP TO START as before + "☁️ <email>". Cloud SDK missing → TAP TO START as before. The session is restored with `Cloud.ensureClient()` once per title; if the Google state differs the title rebuilds. Settings → Cloud Save Account is unchanged.
 
+
+# Delivery: v8.2.0 — first Closed test build (Google Play)
+
+Owner 17 Nov: the first build for the Google Play Closed test is **8.2.0** (decided 16 Nov). Owner picked **test ads** for the closed test (`ADS_TEST` stays true — Google test ad units, nobody can trip AdMob invalid-traffic rules; switch to false only at the production launch). `BETA_BUILD` stays **true** on purpose: the 🐞 button for every tester and automatic error reports are the point of the closed test (owner rule: 🐞 reports with v ≥ 8.2 come from real testers). Release AAB: `release-aab.yml` strips `server.url` (game bundled in the app), GM is off in packaged apps (hostname gate), versionCode 80200. Play Console app `com.oheart.mochimayhem`: setup complete (content rating 7+/E, target 13+, data safety, store listing with six 1080×1920 screenshots). Next: upload the AAB to Closed testing and invite ≥12 testers for 14 days.
+

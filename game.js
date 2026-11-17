@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.1';
+const GAME_VERSION = '8.2.2';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.2',date:'2026-11-17',title:'Polish from phone testing',items:['Sign in and Play as Guest buttons sit a little higher','Momo’s shots make a clear sound','Escort the Wisp: shadows lunge at you when you leave the ring','The Bazaar keeps one song across Wardrobe and Trade-in','The spore blast in the marsh hits harder and shakes the screen','Wings are back in the Wardrobe']},
   {v:'8.2.1',date:'2026-11-17',title:'Fixes from phone testing',items:['The top bar comes back after you lose and play again','Cocoa Titan’s charged Colossus Fist hits with its full Rage again','A friend’s rescue scene no longer skips when you tap as it opens','The game no longer crashes on extremely tall screens']},
   {v:'8.2.0',date:'2026-11-17',title:'First Closed test build for Google Play',items:['Version 8.2.0 for the Google Play Closed test','Test ads during the closed test; bug button and error reports stay on for testers']},
   {v:'8.1.167',date:'2026-11-17',title:'Sign in with Google or Play as Guest on the title screen',items:['b']},
@@ -1647,7 +1648,7 @@ const Sfx = {
   seq(notes,type='triangle',vol=0.26,step=0.1){ notes.forEach((f,i)=>this.tone(f,step*1.7,type,vol,0,i*step)); },
 
   // --- SFX mix: เสียงถี่เบา/ห่างขึ้น และเสียงสำคัญ duck เพลงชั่วคราว ---
-  strawberryShoot(){if(this._ok('strawberryShoot',0.12)){if(!this.playFile('sfx_strawberry_soft_shot',0.22))this.tone(340,0.065,'sine',0.035,180);}},
+  strawberryShoot(){if(this._ok('strawberryShoot',0.12)){if(!this.playFile('sfx_strawberry_soft_shot',0.34))this.tone(340,0.065,'sine',0.05,180);}},   // v8.2.2 เจ้าของ: ไม่ได้ยินเสียงยิง Momo → ไฟล์ +12 dB (peak −14.5 → ~−2.5 dB) + เสียง .22→.34
   shoot(){if(this._ok('shoot',0.12)){if(!this.playFile('sfx_shoot',0.25))this.tone(920,0.045,'triangle',0.035,1280);}},
   pop(){if(this._ok('pop',0.11)){if(!this.playFile('sfx_hit',0.22))this.tone(430,0.055,'sine',0.045,240);}},
   streak(step){if(this.playFile('sfx_streak_real',0.32,1+Math.min(0.5,(step||0)*0.06)))return;const base=540+step*150;this.tone(base,0.10,'triangle',0.075,base+300);this.tone(base*1.5,0.11,'sine',0.05,base*1.5+240,0.05);},   // เสียงคอมโบ pitch สูงขึ้นตามสเต็ป
@@ -6720,8 +6721,8 @@ const COSMETICS=[
   {id:'pop_star',slot:'pop',name:'Star Pop',price:300,col:0xffe08a,icon:['cos_icons2',11]}];
 const COS_LOBBY_MAX=1.6;   // v8.1.58 เจ้าของ: Lobby ขยายภาพเล็กเกิน ~3 เท่า → แตก · จำกัดไม่เกิน 1.6 เท่าของต้นฉบับ
 /* v8.1.70 เจ้าของ: ปีก/ฮาโล/วงใต้เท้า แปะตัวแล้วดูลอย → เลิกขายแยก (คืนด้ายเต็มราคา) · ขายเป็นสกินเต็มตัวแทน (ใบ 69) */
-const COS_RETIRED=['wings','halo','aura'];
-const COS_SLOTS=[['skin','Skins'],['pet','Pets'],['trail','Trails'],['dash','Dash'],['pop','Pops']];
+const COS_RETIRED=['halo','aura'];   // v8.2.2 เจ้าของ: ปีกกลับมาขายแยกใน Wardrobe (halo/aura ยังเลิกขาย)
+const COS_SLOTS=[['skin','Skins'],['wings','Wings'],['pet','Pets'],['trail','Trails'],['dash','Dash'],['pop','Pops']];
 /* สกินเต็มตัว (ใบ 69): tag = ต่อท้าย key ภาพเดิม เช่น card_momo__sakura / char_momo_run__sakura · ยังไม่มีอาร์ต = ยังไม่ขาย (Soon) */
 const SKIN_PRICE=1200;
 const SKINS=[
@@ -13135,7 +13136,7 @@ class Game extends Phaser.Scene {
       if(isG)this.hubText(w/2,ty+Math.max(26,h*.04),'☁️ '+(C.accountLabel?.()||'Google account'),11,'#bfe8cf',.5);
       this._zone(0,0,w,h,start);
     } else {
-      const bw=Math.min(w*.74,300),bh=46,gap=12,y1=Math.min(ty-6,h-bh*2-gap-70),x0=w/2-bw/2;
+      const bw=Math.min(w*.74,300),bh=46,gap=12,y1=Math.min(ty-6,h-bh*2-gap-70)-Math.round(h*.09),x0=w/2-bw/2;   // v8.2.1+ เจ้าของ: ยกปุ่มขึ้น ~9% ของความสูงจอ
       const btn=(y,label,fill,stroke,col,fn)=>{ const g=this.add.graphics();g.fillStyle(0x140a1e,.55).fillRoundedRect(x0+2,y+4,bw,bh,14);g.fillStyle(fill,1).fillRoundedRect(x0,y,bw,bh,14);g.lineStyle(2,stroke,1).strokeRoundedRect(x0,y,bw,bh,14);
         const t=this.add.text(w/2,y+bh/2,label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'17px',color:col}).setOrigin(.5);this.menu.add([g,t]);this._zone(x0,y,bw,bh,fn); };
       btn(y1,'Sign in with Google',0xfff7ec,0xffe08a,'#3a1830',()=>{ if(this._titleGo)return; this.doGoogleAuth(false); });
@@ -14939,7 +14940,7 @@ class Game extends Phaser.Scene {
   voiceBossSlip(b,st){if(this._voiceSlipSeen||!this.storyVoice?.()||!b?.isBoss||!(b.maxhp>0)||b.hp/b.maxhp>.5||this._bossSayObj?.active||VoiceActing.busy())return false;const key='vo_b'+String((this.stageIndex||0)+1).padStart(2,'0')+'_slip_'+(Math.floor(performance.now()/1000)%2+1),row=A07_CATALOG[key];if(!row)return false;this._voiceSlipSeen=true;this.bossSay(row.text,st?.boss,Math.max(3300,row.duration+250),b);return true;}
   storyMusicPlay(key,valid,volume){return StoryMusic.play(this,key,valid,volume);}
   storyMusicStop(){StoryMusic.stop();}
-  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const a04=s==='title'?'bgm_a04_bgm_title':s==='bazaar'?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&this.menuScreen===s);return;}this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={patrol:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;   // v8.1.109 เจ้าของ: Mochi Patrol ใช้เพลงวิหาร (เดิมของ Flavor Weave) · Weave/Rank Perks กลับไปใช้เพลงหน้าหลักเหมือนหน้าอื่น
+  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const BZ=['bazaar','wardrobe','tradein'],bz=BZ.includes(s),a04=s==='title'?'bgm_a04_bgm_title':bz?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&(bz?BZ.includes(this.menuScreen):this.menuScreen===s));return;}   /* v8.2.2 เจ้าของ: ทุกหน้าใน Bazaar (Wardrobe / Trade-in) ใช้เพลง Bazaar เพลงเดียวต่อเนื่อง */this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={patrol:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;   // v8.1.109 เจ้าของ: Mochi Patrol ใช้เพลงวิหาร (เดิมของ Flavor Weave) · Weave/Rank Perks กลับไปใช้เพลงหน้าหลักเหมือนหน้าอื่น
     if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
     this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({patrol:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
   // v6.92 เพลงที่ถอดรหัสแล้วกินแรม ~20MB/เพลง → ลบเพลงด่าน/บอสของด่านอื่นออกจาก cache (ไฟล์ยังอยู่ในเครื่อง โหลดกลับเร็ว)
@@ -16340,6 +16341,12 @@ class Game extends Phaser.Scene {
     for(let i=0;i<3;i++)this.time.delayedCall(i*90,()=>this.vfxHitRing(x,y,0xfff2b8,false));
     this.destroyWaveObjectiveNode(node);   // นับ progress + เช็คจบ
   }
+  /* v8.2.2 เจ้าของ: ออกนอกวง Wisp ต้องเข้าใจได้ทันทีในฉาก → ทุกครั้งที่เลือดไหล (0.5 วิ) มีเงาดำพุ่งออกจากความมืดมาฟันตัวเรา (ทิศสุ่มฝั่งที่ห่าง Wisp) · ซ้อนมาก = ยาว/หนาขึ้น · ภาพเท่านั้น ดาเมจเท่าเดิม */
+  escortShadowStrike(P,w,stk=1){ if(!P||!this.add?.graphics||!this.tweens||((typeof Save!=='undefined'&&Save.data?.settings?.vfx)??1)===0)return null;
+    const away=Math.atan2(P.y-w.y,P.x-w.x)+(Math.random()-.5)*1.6,d=150+Math.min(10,stk)*8,sx=P.x+Math.cos(away)*d,sy=P.y+Math.sin(away)*d,g=this.camWorld(this.add.graphics().setDepth((P.depth||P.y)+5)),st={k:0},L=26+stk*3;
+    this.tweens.add({targets:st,k:1,duration:170,ease:'Quad.in',onUpdate:()=>{ if(!g.active)return; const x=sx+(P.x-sx)*st.k,y=sy+(P.y-20-sy)*st.k,a=Math.atan2(P.y-20-sy,P.x-sx),tx=x-Math.cos(a)*L,ty=y-Math.sin(a)*L; g.clear(); g.lineStyle(10+stk*.6,0x1a0822,.75).lineBetween(tx,ty,x,y); g.lineStyle(4,0x7a2a9a,.9).lineBetween(tx,ty,x,y); g.fillStyle(0xff3355,.95).fillCircle(x,y,4+stk*.3); g.fillStyle(0xffd6e0,1).fillCircle(x+Math.cos(a+1.4)*6,y+Math.sin(a+1.4)*6,1.8).fillCircle(x+Math.cos(a-1.4)*6,y+Math.sin(a-1.4)*6,1.8); },
+      onComplete:()=>{ if(!g.active)return; g.clear(); const cx=P.x,cy=P.y-20; for(let i=0;i<3;i++){ const a=-.6+i*.6+Math.random()*.2; g.lineStyle(3,0xff3355,.95).lineBetween(cx-Math.cos(a)*16,cy-Math.sin(a)*16+i*4-4,cx+Math.cos(a)*16,cy+Math.sin(a)*16+i*4-4); } this.tweens.add({targets:g,alpha:0,duration:220,onComplete:()=>g.destroy()}); }});
+    return g; }
   tickPurifyWisp(dt){
     const o=this.waveObjective;if(!o||o.done)return;const t=this._wispTuning();
     if(!this._wisp){ this._wispRespawn-=dt; if(this._wispRespawn<=0&&o.progress<o.target)this.spawnPurifyWisp(); this.renderWispHUD(); return; }
@@ -16347,7 +16354,7 @@ class Game extends Phaser.Scene {
     if(!near){w._awayHint=(w._awayHint||0)-dt;if(w._awayHint<=0){w._awayHint=5;this.floatText(w.x,w.y-70,'Stay near the Wisp!',0xffc6a2);}}else w._awayHint=0;
     // v7.9.82 เจ้าของ: ยืนนอกวง Wisp = เลือดไหล ซ้อนแรงขึ้นทุก 1.5 วิ (สูงสุด 10) · กลับเข้าวง = หายเร็ว
     { const P=this.player; if(!near&&!this._inTutorial){ w._out=(w._out||0)+dt; const stk=Math.min(10,1+Math.floor(w._out/1.5));this._heroBleed=w;this._heroBleedAt=this.elapsed||0; if(stk!==w._bleedStk){ w._bleedStk=stk; this.floatText(P.x,P.y-60,'🩸 Bleeding ×'+stk,0xff4a5a); }
-        w._bleedT=(w._bleedT||0)+dt; if(w._bleedT>=.5){ w._bleedT=0; P.hp-=P.maxhp*.004*stk; P.setTint?.(0xff6a6a); this.time.delayedCall(120,()=>{ if(P.active)P.clearTint?.(); }); if(P.hp<=0){ this.die(); return; } } }
+        w._bleedT=(w._bleedT||0)+dt; if(w._bleedT>=.5){ w._bleedT=0; this.escortShadowStrike?.(P,w,stk); P.hp-=P.maxhp*.004*stk; P.setTint?.(0xff6a6a); this.time.delayedCall(120,()=>{ if(P.active)P.clearTint?.(); }); if(P.hp<=0){ this.die(); return; } } }
       else if(w._out){ w._out=Math.max(0,w._out-dt*4); if(!w._out){ w._bleedStk=0; w._bleedT=0; } } }
     // 🕯️ Raiders: ทุก ~7s ส่งมอนแดง 2 ตัวพุ่งเข้าหา Wisp (ต้องคอยสกัด)
     this._raidT=(this._raidT??5)-dt;if(this._raidT<=0){this._raidT=7;if(this.enemies.countActive(true)<this.maxLive){let rx=0,ry=0,rn=0;for(let i=0;i<2;i++){const e=this.spawnEnemy('fast');if(e){e._wispRaider=true;e.tintColor=0xff6a6a;e.setTint(0xff6a6a);rx+=e.x;ry+=e.y;rn++;}}this.floatText(w.x,w.y-60,'⚠ Raiders!',0xff6a6a);if(rn){const a=Math.atan2(ry/rn-w.y,rx/rn-w.x);this.floatText(w.x+Math.cos(a)*120,w.y+Math.sin(a)*120,'⚠',0xff6a6a);}   /* v8.1.79 บอกทิศโจร */}}
@@ -20726,12 +20733,12 @@ class Game extends Phaser.Scene {
   }
   cocoaComboHold(){const b=this.basicAttack;return b?.path==='brawler'?2.5:b?.path==='dashboxer'?3+.4*(b.lv.p_phantom||0):3;}
   clearCocoaCombat(){this.finishCocoaFlicker(true);this._cocoaFlickerBoss=null;this._cocoaEpoch=(this._cocoaEpoch||0)+1;this._cocoaJobs=[];this._cocoaPhantom=null;this._cocoaTrail=null;this._cocoaNextPunch=false;this._cocoaUniqueT=0;this._cc=null;this._ccCdMul=0;this._ccLeech=null;this._cocoaUsedAt=null;this._cocoaMinGap=0;for(const fx of this._cocoaMarks||[]){this.tweens?.killTweensOf(fx);if(fx.active)fx.destroy();}this._cocoaMarks=new Set();this._ccDots?.clear?.();this._titanRage=0;this._rageG?.clear?.();for(const q of this._cocoaPools||[])q.g?.destroy?.();this._cocoaPools=[];}
-  cocoaLater(delay,fn){const jobs=this._cocoaJobs||(this._cocoaJobs=[]);if(jobs.length>=32)return false;jobs.push({t:delay,fn,player:this.player,basic:this.basicAttack,path:this.basicAttack?.path,epoch:this._cocoaEpoch||0});return true;}
+  cocoaLater(delay,fn){const jobs=this._cocoaJobs||(this._cocoaJobs=[]);if(jobs.length>=32)return false;jobs.push({t:delay,fn,player:this.player,basic:this.basicAttack,path:this.basicAttack?.path,epoch:this._cocoaEpoch||0,src:this._mxSrc});return true;}   /* v8.2.2: delayed hits keep their Combat Meter source (Titan fist / aftershocks counted as Unique, not 'other') */
   tickCocoaCombat(dt){
     if(this.character!=='cocoa'){if(this._cocoaJobs?.length||this._cocoaPhantom)this.clearCocoaCombat();return;}if(this.state!=='play'||!this.player?.active)return;
     this._cocoaUniqueT=Math.max(0,(this._cocoaUniqueT||0)-dt);this.tickCocoaPools(dt);if(this._cocoaNextPunch&&!(this._dashBuffT>0))this._cocoaNextPunch=false;
     const jobs=this._cocoaJobs||[];this._cocoaJobs=[];let fired=0;
-    for(const j of jobs){if(j.player!==this.player||j.basic!==this.basicAttack||j.path!==this.basicAttack?.path||j.epoch!==(this._cocoaEpoch||0))continue;j.t-=dt;if(j.t<=0&&fired<4&&this.state==='play'){fired++;j.fn();}else this._cocoaJobs.push(j);}
+    for(const j of jobs){if(j.player!==this.player||j.basic!==this.basicAttack||j.path!==this.basicAttack?.path||j.epoch!==(this._cocoaEpoch||0))continue;j.t-=dt;if(j.t<=0&&fired<4&&this.state==='play'){fired++;const ps=this._mxSrc;this._mxSrc=j.src??ps;try{j.fn();}finally{this._mxSrc=ps;}}else this._cocoaJobs.push(j);}
     const ph=this._cocoaPhantom;if(ph){ph.t-=dt;if(ph.t<=0||this.basicAttack?.path!=='dashboxer'){this._cocoaPhantom=null;this._cocoaTrail=null;}}
     const tr=this._cocoaTrail;if(tr){const p=this.player;this.cocoaTrailHit(tr,p.x,p.y);tr.x=p.x;tr.y=p.y;if(this.dashTime<=0){if(tr.finale){const fr=tr.finaleR||85;this.cocoaHit(p.x,p.y,fr,tr.finale,{push:180});this.cocoaVisual(p.x,p.y,fr,tr.finaleR?'fist':'punch',0xc9a3ff);if(tr.bossT?.active&&this.dist(tr.bossT.x,tr.bossT.y,p.x,p.y)<=fr+(tr.bossT.body?.halfWidth||40))this.damage(tr.bossT,tr.finale*.9,tr.bossT.x,tr.bossT.y);if(tr.finaleR){p.iframe=Math.max(p.iframe||0,.3);this.screenShake?.(110,.005);this.hitStop?.(35);this.cocoaLandingFx(p.x,p.y,fr);if(tr.leap)this.cocoaLeapMutation(p.x,p.y,fr,tr.finale);}Sfx.comboPunch(tr.seen.size,'heavy');}this._cocoaTrail=null;}}
   }
@@ -23570,6 +23577,10 @@ class Game extends Phaser.Scene {
     this.arenaTick(dt=>{ if(!g.active||!b.active){g.destroy?.();HS.forEach(q=>q?.destroy());return false;} t+=dt*1000; cd-=dt; if(t>=0){if((soundTick-=dt)<=0){soundTick=.5;Sfx.orderCue?.('arena_clock_tick',.13,.45);}aL+=sl*dt;aS+=ss*dt;} g.clear();
       for(const [a,l,w,hi] of [[aL,long,14,0],[aS,short,10,1]]){ const hs=HS[hi]; if(hs?.active)hs.setPosition(b.x,b.y).setRotation(a).setDisplaySize(l,w*2.2).setAlpha(t<0?.4:1); else { g.lineStyle(t<0?3:w,color,t<0?.4:.9); g.lineBetween(b.x,b.y,b.x+Math.cos(a)*l,b.y+Math.sin(a)*l); } if(t>=0&&cd<=0&&seg(b.x,b.y,a,l)<w+12){ cd=.8; this.hurtPlayer(dmg,a+Math.PI/2); } }
       if(t>=dur){ g.destroy(); HS.forEach(q=>q?.destroy()); return false; } b.setVelocity?.(0,0); return true; }); b.knock=Math.max(b.knock||0,(warn+dur)/1000); return warn+dur; }
+  /* v8.2.2 เจ้าของ: ระเบิดสปอร์ตอนบอสร่ายจบต้องรู้สึกแรง → คลื่นวงแหวน 3 ชั้นจากตัวบอสกวาดทั้งจอ + ฟองที่ปลอดภัยสั่น (ภาพเท่านั้น · ดาเมจคิดที่ hurtPlayer เดิม) */
+  arenaFogBlastRings(b,color,pocket){ if(!this.add?.graphics||!this.tweens)return; const V=this.arenaView?.()||{w:this.W,h:this.H},R=Math.hypot(V.w||this.W,V.h||this.H);
+    for(let i=0;i<3;i++){ const g=this.camWorld(this.add.graphics().setDepth(8995)); const st={r:30}; this.tweens.add({targets:st,r:R,delay:i*110,duration:520+i*90,ease:'Cubic.out',onUpdate:()=>{ if(!g.active)return; const k=1-st.r/R; g.clear(); g.lineStyle(26*k+4,color,.55*k+.1).strokeCircle(b.x,b.y,st.r); g.lineStyle(4,0xffffff,.8*k).strokeCircle(b.x,b.y,st.r*.97); },onComplete:()=>g.destroy()}); }
+    if(pocket){ const ring=this.camWorld(this.add.circle(pocket.x,pocket.y,(pocket.r||90),0xffffff,0).setStrokeStyle(6,0xeafff2,.9).setDepth(8996)); this.tweens.add({targets:ring,scale:1.18,alpha:0,duration:380,yoyo:false,onComplete:()=>ring.destroy()}); } }
   // Timed shelter: fixed distant air pocket, stationary boss, one clearly warned blast.
   arenaFogPocket(b,r){const p=this.player,V=this.arenaView(),away=Math.atan2(p.y-b.y,p.x-b.x),clear=r+(b.body?.halfWidth||70)+80;let best=null,score=Infinity;
     for(let i=0;i<24;i++)for(const reach of [180,260,clear+12,340]){const a=away+i*TAU/24,pt=inMapPt(p.x+Math.cos(a)*reach,p.y+Math.sin(a)*reach),q={x:pt[0],y:pt[1],r};if(this.dist(q.x,q.y,b.x,b.y)<clear)continue;let blocked=false;this.solidProps?.children.iterate(o=>{if(o?.active&&this.dist(o.x,o.y,q.x,q.y)<135)blocked=true;});if(blocked)continue;const outside=Math.max(0,V.x+24-q.x,q.x-(V.x+V.w-24))+Math.max(0,V.y+24-q.y,q.y-(V.y+V.h-24)),value=this.dist(p.x,p.y,q.x,q.y)+outside*4;if(value<score){score=value;best=q;}}return best;
@@ -23577,7 +23588,7 @@ class Game extends Phaser.Scene {
   holdArenaFogBoss(b){const q=b?._fogCharge;if(!q)return false;if(q!==this._arenaFogCast||q.player!==this.player||q.stage!==this.stageIndex||q.epoch!==(this._artEpoch||0)){this.endArenaFog(q);return false;}b.setVelocity?.(0,0);b.setPosition(q.bx,q.by);if(b.anims?.isPlaying)b.anims.stop();if(!b._bossInk)b.setFrame?.(q.burst?7:6);return true;}
   endArenaFog(q){if(!q)return;if(q.shutdown)this.events?.off('shutdown',q.shutdown);if(q.b?._fogCharge===q){q.b._fogCharge=null;q.b._arenaBusy=false;q.b.atkCd=Math.max(q.b.atkCd||0,1.2);if(q.b.active){if(this.bossInkIdle?.(q.b)){}else if(this.anims?.exists('boss7_mycelium_behemoth_walk'))q.b.play?.('boss7_mycelium_behemoth_walk',true);else q.b.setFrame?.(0);}}for(const o of [q.fog,q.tile,q.bubble,q.label])if(o?.active)o.destroy();if(this._arenaFogCast===q){this._arenaFogCast=null;Sfx.eventLoopStop?.('arena_fog');}}
   arenaFog(b,{dur=4000,r=120,color=0x6a3a8a,dmg}={}){
-    if(this._arenaFogCast)this.endArenaFog(this._arenaFogCast);const pocket=this.arenaFogPocket(b,r);if(!pocket)return 600;const V=this.arenaView(),p=this.player,fog=this.arenaFx(this.camWorld(this.add.graphics().setDepth(8990))),q=this._arenaFogCast={b,player:p,stage:this.stageIndex,epoch:this._artEpoch||0,bx:b.x,by:b.y,pocket,fog,t:0,burst:false};b._fogCharge=q;this.holdArenaFogBoss(b);this.behemothPose?.(b,6,dur+600);dmg=dmg??Math.round(this.arenaDmg(b)*1.6);
+    if(this._arenaFogCast)this.endArenaFog(this._arenaFogCast);const pocket=this.arenaFogPocket(b,r);if(!pocket)return 600;const V=this.arenaView(),p=this.player,fog=this.arenaFx(this.camWorld(this.add.graphics().setDepth(8990))),q=this._arenaFogCast={b,player:p,stage:this.stageIndex,epoch:this._artEpoch||0,bx:b.x,by:b.y,pocket,fog,t:0,burst:false};b._fogCharge=q;this.holdArenaFogBoss(b);this.behemothPose?.(b,6,dur+600);dmg=dmg??Math.round(this.arenaDmg(b)*2.4);   // v8.2.2 เจ้าของ: ระเบิดตอนบอสร่ายจบแรงขึ้น ×1.6→×2.4
     q.shutdown=()=>this.endArenaFog(q);this.events?.once('shutdown',q.shutdown);
     if(this.textures.exists('vfx_b07_fog_tile'))q.tile=this.arenaFx(this.camWorld(this.add.tileSprite(V.x-60,V.y-60,V.w+120,V.h+120,'vfx_b07_fog_tile',0).setOrigin(0,0).setDepth(8990).setAlpha(.3)));
     if(this.codeBubbleOn?.()){q.bubble=this.arenaFx(this.camWorld(this.add.image(pocket.x,pocket.y,'code_bubble').setDepth(8991).setDisplaySize(r*2,r*2).setAlpha(.9)));this.tweens.add({targets:q.bubble,scaleX:q.bubble.scaleX*1.05,scaleY:q.bubble.scaleY*.95,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
@@ -23589,7 +23600,7 @@ class Game extends Phaser.Scene {
       const cx=pocket.x,cy=pocket.y;if(!q.bubble){const q=pocket;fog.fillStyle(0xeafff2,.22);fog.fillCircle(q.x,q.y,q.r);}fog.lineStyle(4,safe?0xeafff2:0x9fffd2,.95).strokeCircle(cx,cy,r);fog.lineStyle(5,0xffd166,.9).beginPath().arc(b.x,b.y,(b.body?.halfWidth||70)+30,-Math.PI/2,-Math.PI/2+TAU*Math.min(1,q.t/dur)).strokePath();
       if(cx<W.x+24||cx>W.x+W.w-24||cy<W.y+24||cy>W.y+W.h-24){const dx=cx-p.x,dy=cy-p.y,len=Math.hypot(dx,dy)||1,edge=Math.min((W.w/2-28)/Math.max(.01,Math.abs(dx/len)),(W.h/2-28)/Math.max(.01,Math.abs(dy/len))),x=W.cx+dx/len*edge,y=W.cy+dy/len*edge;fog.lineStyle(5,0xbfffe0,1).lineBetween(x-dx/len*28,y-dy/len*28,x,y).strokeCircle(x,y,10);}
       q.label.setText(q.burst?(safe?'SAFE!':'SPORE BLAST!'):(safe?'SAFE · ':'HIDE · ')+left.toFixed(1)+'s');
-      if(!q.burst&&q.t>=dur){q.burst=true;this.bossInkPose?.(b,3,600,'strike');Sfx.orderCue?.('arena_warn',.55,.1);this.vfxHitRing?.(b.x,b.y,color,true);this.screenFlash?.(color,.3,240);this.screenShake?.(250,.012);if(!safe)this.hurtPlayer(dmg,.8);if(q!==this._arenaFogCast)return false;}
+      if(!q.burst&&q.t>=dur){q.burst=true;this.bossInkPose?.(b,3,600,'strike');Sfx.orderCue?.('arena_warn',.55,.1);this.vfxHitRing?.(b.x,b.y,color,true);this.screenFlash?.(color,.55,420);this.screenShake?.(420,.02);this.hitStop?.(90);this.arenaFogBlastRings?.(b,color,q.pocket);if(!safe)this.hurtPlayer(dmg,.8);if(q!==this._arenaFogCast)return false;}
       if(q.t>=dur+600){this.endArenaFog(q);return false;}return true;});return dur+600;
   }
   // T4 Pillars + ลมหายใจทั้งจอ: หลบหลังเสา (เสาอยู่ระหว่างบอสกับผู้เล่น) · เสาบังได้ครั้งเดียวแล้วแตก

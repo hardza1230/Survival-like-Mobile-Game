@@ -4,11 +4,11 @@ const a=src.indexOf('const COSMETICS='),b=src.indexOf('function pickWeighted(lis
 const ctx={};ctx.Save={data:{threads:500,cos:{own:{wing_ruby:1,halo_crown:1,pet_bird:1},eq:{wings:'wing_ruby',halo:'halo_crown',pet:'pet_bird'}}},save(){},spendThreads(n){if(this.data.threads<n)return false;this.data.threads-=n;return true;}};
 vm.createContext(ctx);vm.runInContext(src.slice(a,b)+';this.Cos=Cos;this.COSMETICS=COSMETICS;',ctx);
 const {Cos,Save,COSMETICS}=ctx;
-assert.strictEqual(COSMETICS.length,28);vm.runInContext('this.COS_SLOTS=COS_SLOTS;this.COS_DYES=COS_DYES;this.SKINS=SKINS;this.SKIN_PRICE=SKIN_PRICE;this.COS_RETIRED=COS_RETIRED;',ctx);assert.strictEqual(ctx.COS_SLOTS.length,5);assert.strictEqual(ctx.COS_SLOTS[0][0],'skin');
+assert.strictEqual(COSMETICS.length,28);vm.runInContext('this.COS_SLOTS=COS_SLOTS;this.COS_DYES=COS_DYES;this.SKINS=SKINS;this.SKIN_PRICE=SKIN_PRICE;this.COS_RETIRED=COS_RETIRED;',ctx);assert.strictEqual(ctx.COS_SLOTS.length,6);assert.strictEqual(ctx.COS_SLOTS[0][0],'skin');assert.strictEqual(ctx.COS_SLOTS[1][0],'wings','v8.2.2 wings back');
 for(const [sl] of ctx.COS_SLOTS)if(sl!=='skin')assert.ok(Cos.shop(sl).length>=3,sl);
 // v8.1.70 ของติดตัวเลิกขาย: คืนด้ายครั้งเดียว ของที่ไม่ติดตัวยังอยู่
-const refund=COSMETICS.find(c=>c.id==='wing_ruby').price+COSMETICS.find(c=>c.id==='halo_crown').price;Cos.data();assert.strictEqual(Save.data.threads,500+refund);assert.strictEqual(Save.data.cos.refund69,refund);assert.ok(!Cos.owns('wing_ruby')&&Cos.owns('pet_bird'));assert.strictEqual(Cos.equipped('wings'),null);assert.strictEqual(Cos.equipped('pet').id,'pet_bird');Cos.data();assert.strictEqual(Save.data.threads,500+refund,'refund once');
-assert.ok(!Cos.buy('wing_cream'),'retired not for sale');assert.ok(Cos.shop('wings').length===0);
+const refund=COSMETICS.find(c=>c.id==='halo_crown').price;Cos.data();assert.strictEqual(Save.data.threads,500+refund);assert.strictEqual(Save.data.cos.refund69,refund);assert.ok(Cos.owns('wing_ruby')&&!Cos.owns('halo_crown')&&Cos.owns('pet_bird'));assert.strictEqual(Cos.equipped('wings').id,'wing_ruby','v8.2.2 owned wings stay');assert.strictEqual(Cos.equipped('pet').id,'pet_bird');Cos.data();assert.strictEqual(Save.data.threads,500+refund,'refund once');
+assert.ok(!Cos.buy('halo_cloud'),'retired not for sale');assert.ok(Cos.shop('halo').length===0);assert.ok(Cos.shop('wings').length>=5,'v8.2.2 wings for sale');
 Save.data.threads=500;Save.data.cos.own={};Save.data.cos.eq={};
 assert.ok(Cos.buy('pet_mochi'));assert.strictEqual(Save.data.threads,200);assert.strictEqual(Cos.equipped('pet').id,'pet_mochi');
 assert.ok(!Cos.buy('pet_mochi'));assert.ok(!Cos.buy('pet_turtle'));assert.strictEqual(Cos.equipped('trail'),null);
@@ -20,7 +20,7 @@ assert.ok(!Cos.setSkin('mint','momo_sakura'),'skin belongs to its hero');assert.
 for(const m of ['lobbyCosHalo','cosDashFx','lobbyCos','buildWardrobe','wardBar','wardHero','cosAnchor','cosAttach','cosFollow','cosEnsurePrev','wardSkins','wardSkinBar','skinKey','skinLoad','skinSwap','skinFixAnims','cosTap','cosSetup','tickCos'])assert.ok(src.includes('\n  '+m+'('),m);
 assert.ok(src.includes("s==='wardrobe')this.buildWardrobe()")&&src.includes('this.tickCos?.(dt)')&&src.includes('this.cosSetup?.()')&&src.includes('this.skinSwap?.(true)'));
 { const nw=src.match(/const NAV_WRAP=\[([^\]]*)\]/)[1]; for(const m of ['buildWardrobe','buildPatrol','buildRanking','buildGm','buildHeroes'])assert.ok(nw.includes("'"+m+"'"),'nav bar wrap '+m); }
-console.log('Wardrobe: Skins + 4 shop slots, wings/halo/ring refund once, skins need art and belong to one hero, free dyes, Thread purchase, auto-equip, toggle, no-afford guard and hooks passed');
+console.log('Wardrobe: Skins + 4 shop slots, halo/ring refund once, wings back on sale, skins need art and belong to one hero, free dyes, Thread purchase, auto-equip, toggle, no-afford guard and hooks passed');
 { const path=require('path');const m=src.match(/  (cos_[a-z0-9_]+):\{url:'(assets\/art\/cosmetics\/[^']+)',fw:(\d+),fh:(\d+),frames:(\d+)/g)||[];assert.strictEqual(m.length,31,'26 cosmetic FX sheets + 5 HD pets');
   for(const row of m){const [,k,u]=row.match(/(cos_[a-z0-9_]+):\{url:'([^']+)'/);assert.ok(fs.existsSync(path.join(__dirname,'..',u)),u);}
   for(const c of COSMETICS){const k=c.tk||('cos_'+c.id);assert.ok(src.includes('  '+k+':{url:'),k);assert.ok(src.includes('  '+c.icon[0]+':{url:'),c.icon[0]);}
