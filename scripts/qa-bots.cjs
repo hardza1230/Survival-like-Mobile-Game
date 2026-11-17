@@ -28,7 +28,8 @@ function jobs(){const J=[],add=(persona,o)=>J.push({id:persona+':'+(o.tag||o.sta
   ['d:normal','d:elite','d:vault','d:shrine','d:trial','d:siege','d:boss','d:city','pinnacle'].forEach(s=>add('endgame',{tag:s,stage:s,hero:'mint',card:'random',dmg:true,speed:2}));
   add('menus',{tag:'all',kind:'menus'});
   if(A.set)for(const j of J)for(const kv of A.set.split(',')){const [k,v]=kv.split(':');j[k]=v==='true'?true:v==='false'?false:isNaN(+v)?v:+v;}   // e.g. --set=move:chase,dmg:true
-  return J.filter(j=>!ONLY||ONLY.includes(j.persona)).filter((_,i)=>i%SH_N===SH_I-1);}
+  const SKIP=A.skip?A.skip.split(','):[];
+  return J.filter(j=>!ONLY||ONLY.includes(j.persona)).filter(j=>!SKIP.includes(j.persona)).filter((_,i)=>i%SH_N===SH_I-1);}
 
 // ---- in-page bot (runs every tick) ----
 function botTick(cfg){const s=window.__g.scene.getScene('Game'),g=window.__g,P=s.player;let act='';
