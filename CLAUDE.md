@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.167**. Next release:8.1.168. Fetch the deploy branch before new work.
+Current release: **8.2.0**. Next release:8.2.1. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.167 — Sign in with Google / Play as Guest on the title screen (owner)
+# Latest delivery: v8.2.0 — first Closed test build (Google Play)
+
+Owner 17 Nov: the first build for the Google Play Closed test is **8.2.0** (decided 16 Nov). Owner picked **test ads** for the closed test (`ADS_TEST` stays true — Google test ad units, nobody can trip AdMob invalid-traffic rules; switch to false only at the production launch). `BETA_BUILD` stays **true** on purpose: the 🐞 button for every tester and automatic error reports are the point of the closed test (owner rule: 🐞 reports with v ≥ 8.2 come from real testers). Release AAB: `release-aab.yml` strips `server.url` (game bundled in the app), GM is off in packaged apps (hostname gate), versionCode 80200. Play Console app `com.oheart.mochimayhem`: setup complete (content rating 7+/E, target 13+, data safety, store listing with six 1080×1920 screenshots). Next: upload the AAB to Closed testing and invite ≥12 testers for 14 days.
+
+# Previous delivery: v8.1.167 — Sign in with Google / Play as Guest on the title screen (owner)
 
 Owner: login was only in Settings → `buildTitle` now asks first. Not signed in with Google (cloud available) → two buttons under the logo: **Sign in with Google** (`doGoogleAuth(false)`; on Android the deep link comes back and `Cloud._onLogin` rebuilds the title) and **▶ Play as Guest** (the old tap-to-start flow: book opening / tutorial / Lobby) + a small line "Guest progress stays on this device · sign in later in Settings". Signed in with Google → TAP TO START as before + "☁️ <email>". Cloud SDK missing → TAP TO START as before. The session is restored with `Cloud.ensureClient()` once per title; if the Google state differs the title rebuilds. Settings → Cloud Save Account is unchanged.
-
-# Previous delivery: v8.1.166 — Android package name → com.oheart.mochimayhem (Play Console)
-
-`com.mochimayhem.game` is already taken on Google Play, so the owner created the app as **`com.oheart.mochimayhem`** (17 Nov). Changed: `capacitor.config.json` appId; Google login deep link in game.js (`com.oheart.mochimayhem://login-callback`, 2 places); `scripts/set-android-landscape.mjs` now reads the appId from capacitor.config.json for the OAuth intent-filter scheme and the MainActivity package/path; privacy.html and docs/STORE_LISTING.md. **Owner:** add `com.oheart.mochimayhem://login-callback` to Supabase → Authentication → URL Configuration → Redirect URLs. The new APK installs as a separate app from the old debug APK (old local save stays in the old app; cloud save carries over after Google sign-in).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -66,7 +66,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - ยกเลิกแล้ว: ใบ 35 Yuzu Orchard (→ Citrus Companions 55/56) · ใบ 49 กรอบโปรไฟล์
 
 **ก่อนขึ้น Google Play**
-- **เลขเวอร์ชัน (เจ้าของ 16 พ.ย.):** ใช้ 8.1.x ต่อจนถึงแอปตัวแรกที่ส่ง Closed test → ตัวนั้นขึ้น **8.2.0** (พร้อม `ADS_TEST=false`, `BETA_BUILD=false`, ตรวจ `server.url`) · รายงาน 🐞 ที่ v ≥ 8.2 = จากคนทดสอบจริง
+- **เลขเวอร์ชัน:** 8.2.0 = แอปตัวแรกที่ส่ง Closed test (17 พ.ย.) · **เจ้าของเลือก 17 พ.ย.: Closed test ใช้โฆษณาทดสอบ (`ADS_TEST=true`) · `BETA_BUILD=true` (ปุ่ม 🐞 + ส่ง error อัตโนมัติให้ผู้ทดสอบ)** · ตอนขึ้น Production ค่อย `ADS_TEST=false` (+ พิจารณา BETA_BUILD) · release AAB ลบ `server.url` เอง · รายงาน 🐞 ที่ v ≥ 8.2 = จากคนทดสอบจริง (+ เจ้าของเอง)
 - ภาพ/เสียงสำรอง (fallback) เก็บไว้กันพังตอน dev ที่โหลดผ่านเว็บ · เจ้าของ 12 พ.ย.: ไม่ต้องแก้ให้รอโหลด เพราะแอป Play Store แพ็กไฟล์ในเครื่อง (เช่น เรื่องเล่า Ruby ที่สลับเป็นหน้าหนังสือเมื่อการ์ตูนโหลดไม่ทัน)
 - รายได้ช่วงทดสอบ = โฆษณา rewarded อย่างเดียว (เจ้าของ 13 พ.ย. · `docs/LAUNCH_RULES.md` กฎ 4) · v8.1.140 ต่อ AdMob + UMP แล้ว (โฆษณาทดสอบ) · ตอนปล่อย: `ADS_TEST=false`, `BETA_BUILD=false`, ตั้งข้อความ GDPR ใน AdMob
 - GM (รหัส 1234) ปิดเองในแอปที่แพ็กไฟล์ (v8.1.67: เปิดเฉพาะ *.github.io / localhost:port) · **ตรวจว่า release ไม่ใช้ `server.url` ชี้ github.io** · ต้องมีเซิร์ฟเวอร์ตรวจใบเสร็จ/คะแนน
