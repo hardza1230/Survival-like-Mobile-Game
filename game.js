@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.0';
+const GAME_VERSION = '8.2.1';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.1',date:'2026-11-17',title:'Fixes from phone testing',items:['The top bar comes back after you lose and play again','Cocoa Titan’s charged Colossus Fist hits with its full Rage again','A friend’s rescue scene no longer skips when you tap as it opens','The game no longer crashes on extremely tall screens']},
   {v:'8.2.0',date:'2026-11-17',title:'First Closed test build for Google Play',items:['Version 8.2.0 for the Google Play Closed test','Test ads during the closed test; bug button and error reports stay on for testers']},
   {v:'8.1.167',date:'2026-11-17',title:'Sign in with Google or Play as Guest on the title screen',items:['b']},
   {v:'8.1.166',date:'2026-11-17',title:'Android package name com.oheart.mochimayhem for Google Play',items:['b']},
@@ -10734,7 +10735,7 @@ class Game extends Phaser.Scene {
     this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(80); this.camUI(this.pOverG);
     this.pOverLv=this.add.text(0,0,'1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(82); this.camUI(this.pOverLv);
     this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
-    this.hudArtC=this.add.container(0,0).setScrollFactor(1).setDepth(50.5); this.hudBtnC=this.add.container(0,0).setScrollFactor(1).setDepth(58.5);   // v8.0.10 ใบ 47 อาร์ต HUD
+    this.hudArtC=this.add.container(0,0).setScrollFactor(1).setDepth(50.5); this.hudBtnC=this.add.container(0,0).setScrollFactor(1).setDepth(58.5); this._hudL=null; this._hudBtns=null; this._hudArt=false; this._hudArtChk=0;   /* v8.2.1 owner 🐞: these live on the scene object and survived scene.restart → after a lost run the HUD art was drawn into the destroyed containers of the old run (top panel, buttons, icons gone) */   // v8.0.10 ใบ 47 อาร์ต HUD
     this.hudList=[this.hudArtC,this.hudBtnC,this.controlBase,this.uniqueHint,this.flickerBtn,this.flickerTxt,this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.replayProgressFrame,this.replayProgressFill,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp,this.muteBtn,this.muteTxt];
     this.sesRuneCreateControls();
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
@@ -13419,7 +13420,7 @@ class Game extends Phaser.Scene {
     const bt=this.add.text(w/2,bty,hi.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:hi.stroke,strokeThickness:3}).setOrigin(0.5);this.menu.add([btn,bt]);
     this.tweens.add({targets:[btn,bt],alpha:0.75,duration:600,yoyo:true,repeat:-1});
     this.menu.setVisible(true);Sfx.select&&Sfx.select();
-    this._zone(w/2-btw/2,bty-bth/2,btw,bth,()=>{this._mintCoach=hi;this._heroesTab='roster';this.menuScreen='char';this.buildMenuScreen();});
+    const t0=Date.now();this._zone(w/2-btw/2,bty-bth/2,btw,bth,()=>{if(Date.now()-t0<900)return;this._mintCoach=hi;this._heroesTab='roster';this.menuScreen='char';this.buildMenuScreen();});   // v8.2.1 owner 🐞: the tap that closed the rescue scene fell through to this button → straight to Heroes; ignore taps for 0.9 s
     { const ky=Math.min(h-14,bty+bth/2+30),kt=this.add.text(w/2,ky,'Keep my hero ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#d8cde2'}).setOrigin(0.5);this.menu.add(kt);
       this._zone(w/2-110,ky-18,220,36,()=>{ const i=this._mintIntroIdx??hi.idx; this._mintIntroIdx=null; this.startStoryStage(i); }); }
   }
@@ -15553,7 +15554,7 @@ class Game extends Phaser.Scene {
     const prev=this.state,wasPlay=prev==='play',W=this.W,H=this.H,owner=this._bossComicOwner,prevMusic=Sfx._currentBgmKey; const mood=/^(s16|s17)$/.test(id)?'finale':/^(s11|s13|s06|s07|s08|s09)$/.test(id)?'hope':/^(s01|s12|s14|s15|b)/.test(id)?'tension':'calm'; if(wasPlay)this.physics.pause(); this.state='cinematic';
     layer.removeAll(true); layer.setVisible(true);
     const menuHid=!!this.menu?.visible; if(menuHid)this.menu.setVisible(false);   // v8.1.21 ฉากเรื่องทึบเต็มจอ: ไม่ต้องวาดฉากเมนูหลักซ้อนข้างหลัง (GPU)
-    const mc={id,sc,layer,i:-1,objs:[],tw:[],ev:[],done:false,ready:false,shotAt:0,red:!(this.hubMotionAllowed?this.hubMotionAllowed():true)}; this._mc=mc;
+    const mc={id,sc,layer,i:-1,objs:[],tw:[],ev:[],done:false,ready:false,shotAt:0,t0:Date.now(),red:!(this.hubMotionAllowed?this.hubMotionAllowed():true)}; this._mc=mc;
     const veil=this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0),lt=this.add.text(W/2,H/2,'✦ Loading story…\nTap to skip',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd166',align:'center',lineSpacing:6}).setOrigin(.5).setAlpha(0);
     layer.add([veil,lt]); this.tweens.add({targets:lt,alpha:.85,duration:500,delay:700});
     let keys=this.mcKeys(sc);const drop=()=>keys.filter(k=>/^(cs_|cs61_|vfx_cs61_)/.test(k)&&this.textures.exists(k)).forEach(k=>{ if(this.anims.exists(k))this.anims.remove(k); this.textures.remove(k); });
@@ -15565,7 +15566,7 @@ class Game extends Phaser.Scene {
     const go=()=>this.ensureGroup(k=>keys.includes(k),()=>{ if(mc.done){ drop(); return; } if(keys.some(k=>!this.realTex(k))){ if(mc.sc.v61){ const lg=bossMotionScene(Number(String(id).slice(1)),true); if(lg){ drop(); (this._mc61Off||(this._mc61Off={}))[id]=1; mc.sc=lg; keys=this.mcKeys(lg); go(); return; } } finish(false); return; } to.remove(false); mc.ready=true;this.storyMusicPlay?.('bgm_a04_bgm_story_'+mood,()=>this._mc===mc&&!mc.done,.22); this.mcTitle(mc); },{all:true,quiet:true,fx:true});   // v8.0.84 ใบ 61 โหลดไม่ได้ → ฉาก 2 ช็อตเดิม
     go();
   }
-  mcTap(mc,p){ if(mc.done)return; if(!mc.ready){ mc.finish(false); return; } const s=mc.skip;
+  mcTap(mc,p){ if(mc.done)return; if(!mc.ready){ if(Date.now()-(mc.t0||0)<2500)return; mc.finish(false); return; }   /* v8.2.1 owner 🐞: a tap right as the story opened (still loading) skipped the hero rescue scene → loading ignores taps for 2.5 s */ const s=mc.skip;
     if(p&&s&&p.x>=s.x&&p.x<=s.x+s.w&&p.y>=s.y&&p.y<=s.y+s.h){ Sfx.select&&Sfx.select(); mc.finish(true); return; }
     if(mc.typing){ mc.typing(); return; }   // แตะครั้งแรก = พิมพ์ข้อความให้ครบก่อน
     if(Date.now()-mc.shotAt<350)return; this.mcNext(mc); }
@@ -20791,7 +20792,7 @@ class Game extends Phaser.Scene {
   // v6.59.0 Titan Blood Rage: ยืนนิ่งชาร์จ (เสียเลือด) · หมัดที่ 5 ใช้หมด · ยิ่งเสี่ยงยิ่งอลังการ · regen สูงกว่าสายอื่น
   // v6.59.3 Channeling ไม่ถูกขัด: นับว่าเดินเฉพาะเมื่อผู้เล่นโยกจอยเอง (แรงกระแทกไม่นับ) และไม่โดนผลักระหว่างชาร์จ
   isTitanHold(){return this.character==='cocoa'&&this.basicAttack?.path==='titan';}
-  releaseTitanCharge(){const h=this._titanHold;this._titanHold=null;if(!h||this.state!=='play'||this.uniqueCd>0)return;this._titanRelease=Math.min(this.titanMaxLv(),Math.floor(this._titanRage||0));this._titanRage=0;this.useCharacterSkill();this._titanRelease=0;}
+  releaseTitanCharge(){const h=this._titanHold;this._titanHold=null;if(!h||this.state!=='play'||this.uniqueCd>0)return;this._titanRelease=Math.min(this.titanMaxLv(),Math.floor(this._titanRage||0));this._titanRage=0;this.useCharacterSkill(true);this._titanRelease=0;}   /* v8.2.1 owner 🐞: the hold IS the wind-up → release casts at once (noWind). Since v8.1.152 the 0.17 s tap wind-up ran after _titanRelease was reset → every Colossus Fist landed as Rage 0 */
   titanMoving(){return !!(this.joy?.active&&Math.hypot(this.joy.dx||0,this.joy.dy||0)>.15);}
   titanChanneling(){return this.titanRageOn()&&!this.titanMoving()&&(this._titanRage||0)>0;}
   titanRageOn(){return this.character==='cocoa'&&this.basicAttack?.path==='titan'&&this.state==='play'&&this.player?.active;}
@@ -24881,7 +24882,10 @@ const QUALITY_SETTING=(()=>{try{const d=JSON.parse(localStorage.getItem('mochi_s
 const RENDER_BASE_DPR = Math.max(1, Math.min(DEVICE_DPR, _lowMemFlag?1.5:9, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):1.5));   // v7.8.92 Auto = 1.5 (เดิม 2 · GPU ทำงานลด ~44%)
 // v7.0 เล่นบนคอม (ไม่มีจอสัมผัส): บีบเป็นจอแนวตั้งแบบมือถือ 9:16 ตรงกลางจอ แทนการยืดเต็มจอกว้าง
 const DESKTOP_FIT=(()=>{ try{ return !window.Capacitor?.isNativePlatform?.()&&!('ontouchstart' in window)&&!(navigator.maxTouchPoints>0); }catch(e){ return false; } })();
-function viewSize(){ const w=window.innerWidth,h=window.innerHeight; if(!DESKTOP_FIT||w<=h*0.62)return {w,h,fit:false}; return {w:Math.round(h*9/16),h,fit:true}; }
+/* v8.2.1: Google's store crawler opens the web build at 1024×10000 → WebGL framebuffer 'Incomplete Attachment' crash. Cap the backing canvas at 4096 px a side (real phones/tablets are far below this) */
+const MAX_CANVAS_PX=4096;
+function capView(v){ const k=RENDER_BASE_DPR; if(v.h*k>MAX_CANVAS_PX)v.h=Math.floor(MAX_CANVAS_PX/k); if(v.w*k>MAX_CANVAS_PX)v.w=Math.floor(MAX_CANVAS_PX/k); return v; }
+function viewSize(){ const w=window.innerWidth,h=window.innerHeight; if(!DESKTOP_FIT||w<=h*0.62)return capView({w,h,fit:false}); return capView({w:Math.round(h*9/16),h,fit:true}); }
 /* v8.1.164 เจ้าของ (Honor Pad 9): UI เล็กไปบนแท็บเล็ต → ขยาย layout ทั้งเกมตามด้านสั้นของจอ (มือถือ ≤430 = ×1 · 600 = ×1.22 · 800 = ×1.45 สูงสุด) · canvas/GPU เท่าเดิม แค่พิกัด layout เล็กลงแล้วกล้อง zoom ขึ้น · โลกในเกมขนาดเท่าเดิม */
 function uiScaleFor(w,h,fit){ if(fit||DESKTOP_FIT)return 1; const s=Math.min(w,h); return Math.max(1,Math.min(1.45,Math.pow(s/430,.6))); }
 function applyCanvasFit(){ const v=viewSize(); let st=document.getElementById('desk-fit'); if(!st){ st=document.createElement('style'); st.id='desk-fit'; document.head.appendChild(st); }

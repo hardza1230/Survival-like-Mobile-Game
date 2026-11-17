@@ -11,4 +11,8 @@ const mk=()=>{ const s=new S(),q=[]; let casts=0; Object.assign(s,{state:'play',
 { const t=mk(); t.s.character='momo'; t.s.basicAttack.path='sniper'; t.s.useCharacterSkill(); assert.equal(t.n(),1,'sniper hold path untouched'); }
 { const t=mk(); t.s.useCharacterSkill(); t.s.state='levelup'; t.q[0][1](); assert.equal(t.n(),0,'paused mid wind-up: no cast'); assert.equal(t.s._uqWind,false); }
 assert(src.includes("return this.useCharacterSkill(true);}"),'Yuzu command release skips the wind-up');
+// v8.2.1 owner 🐞: Cocoa Titan release must cast at once with its Rage level (the wind-up used to fire after _titanRelease was reset → Rage 0)
+{ const rel=grab('releaseTitanCharge'); assert(/useCharacterSkill\(true\);this\._titanRelease=0;/.test(rel),'Titan release skips wind-up');
+  const T=vm.runInNewContext('class T{'+rel+'}; T',{Math}); const t=new T(); let seen=null; Object.assign(t,{_titanHold:{},state:'play',uniqueCd:0,_titanRage:2.6,titanMaxLv:()=>3,useCharacterSkill(nw){ seen=[nw,this._titanRelease]; }});
+  t.releaseTitanCharge(); assert.deepEqual(seen,[true,2],'cast sees Rage 2'); assert.equal(t._titanRelease,0); }
 console.log('Unique wind-up: crouch + gather 170 ms, one cast, charged/sniper skip, pause cancels passed');

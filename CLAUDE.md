@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.2.0**. Next release:8.2.1. Fetch the deploy branch before new work.
+Current release: **8.2.1**. Next release:8.2.2. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.2.0 — first Closed test build (Google Play)
+# Latest delivery: v8.2.1 — owner 🐞 round A: HUD after a loss, Cocoa Titan fist, rescue scene taps, huge-screen crash
+
+Owner 17 Nov (8.2.0 phone QA, plan item A approved; "no new features" rule lifted, Closed test target 13 Dec, Ruby A15 voice on hold). **A1 HUD gone after a lost run:** `_hudArt / _hudL / _hudBtns / _hudArtChk` live on the scene object and survived `scene.restart`, so the next run drew the HUD art into the destroyed containers of the old run (top panel, pause/speed/mute art, kill/sugar icons missing). Reproduced headless (die in Chili Engine Room → Hub → play again); the HUD build now resets them. **A2 Cocoa Titan Colossus Fist did nothing:** since v8.1.152 the 0.17 s tap wind-up also ran on the hold-release, firing after `_titanRelease` was already reset → every release landed as Rage 0. `releaseTitanCharge` now casts with `useCharacterSkill(true)` (the hold is the wind-up), as the wind-up test always intended. **A4 rescue scene skipped:** story loading ignores taps for 2.5 s (`mc.t0`), and the hero intro button ignores taps for 0.9 s so the tap that closes the scene cannot fall through to Heroes. **A5:** the Play store crawler opened the web build at 1024×10000 → WebGL "Framebuffer Incomplete Attachment"; `viewSize` → `capView` caps the backing canvas at 4096 px a side (phones/tablets unchanged). **A3 (next-day login reward)** not changed: the reports came from a fresh install (Play internal test) that pulled the cloud save where today's reward was already claimed on the APK — one claim per calendar day by design; waiting for the owner. Tests: new owner-round821; unique-windup gains the Titan release check.
+
+# Previous delivery: v8.2.0 — first Closed test build (Google Play)
 
 Owner 17 Nov: the first build for the Google Play Closed test is **8.2.0** (decided 16 Nov). Owner picked **test ads** for the closed test (`ADS_TEST` stays true — Google test ad units, nobody can trip AdMob invalid-traffic rules; switch to false only at the production launch). `BETA_BUILD` stays **true** on purpose: the 🐞 button for every tester and automatic error reports are the point of the closed test (owner rule: 🐞 reports with v ≥ 8.2 come from real testers). Release AAB: `release-aab.yml` strips `server.url` (game bundled in the app), GM is off in packaged apps (hostname gate), versionCode 80200. Play Console app `com.oheart.mochimayhem`: setup complete (content rating 7+/E, target 13+, data safety, store listing with six 1080×1920 screenshots). Next: upload the AAB to Closed testing and invite ≥12 testers for 14 days.
-
-# Previous delivery: v8.1.167 — Sign in with Google / Play as Guest on the title screen (owner)
-
-Owner: login was only in Settings → `buildTitle` now asks first. Not signed in with Google (cloud available) → two buttons under the logo: **Sign in with Google** (`doGoogleAuth(false)`; on Android the deep link comes back and `Cloud._onLogin` rebuilds the title) and **▶ Play as Guest** (the old tap-to-start flow: book opening / tutorial / Lobby) + a small line "Guest progress stays on this device · sign in later in Settings". Signed in with Google → TAP TO START as before + "☁️ <email>". Cloud SDK missing → TAP TO START as before. The session is restored with `Cloud.ensureClient()` once per title; if the Google state differs the title rebuilds. Settings → Cloud Save Account is unchanged.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -16,7 +16,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 ## 2. การตัดสินใจที่ล็อกแล้ว (อย่าเปลี่ยนโดยไม่ถาม)
 - **คุมธีมโดยรักษาเกมเดิม (27 ต.ค.):** เก็บโครงหน้า ตำแหน่งปุ่ม เส้นทาง ระบบ อาร์ตเดิม · ปรับแค่ฟอนต์/สีแผง/ขอบ/สถานะปุ่มให้เข้าชุด · ImageGen เฉพาะชิ้นที่ขาด · ภาพ42มุมใน docs/design/unified_theme เป็นแค่ภาพสำรวจ · เปลี่ยนโครงหน้า/ระบบต้องมีคำขอจากเจ้าของ
 - Phaser 3 เว็บ → Capacitor → APK/AAB → Play Store
-- **ไม่เพิ่มฟีเจอร์หรือด่านใหม่ (เจ้าของ 14 พ.ย.)** · งานที่ทำได้: แก้บั๊ก / ขัดเกลา / บาลานซ์ / ผูกอาร์ต-เสียงที่สั่งแล้ว · **เขียนใบสั่งอาร์ต/เสียงได้** (skill art-order · ใบสั่งเสียง `docs/audio_orders/`) ให้ AI อีกตัวทำ สำหรับของที่มีในเกมแล้วเท่านั้น
+- **เจ้าของ 17 พ.ย.: ยกเลิกกฎ "ไม่เพิ่มฟีเจอร์" (14 พ.ย.) — กลับมาพัฒนาต่อ** · เป้า Closed test จริง **13 ธ.ค.** · ทุกรอบเสนอแผนให้เจ้าของอนุมัติก่อน · เขียนใบสั่งอาร์ต/เสียงได้ (skill art-order · `docs/audio_orders/`) · เสียง Ruby A15 รอไว้ก่อน
 - **กฎเหล็ก: ยิ่งยาก รางวัลยิ่งดี** (Story ระดับเดียว · endgame ยากตามความลึก Delve `delveLoot` · Boss Rush ซ่อน)
 - ผู้เล่นเป้าหมายแบบผสม: ต้นเกมง่ายน่ารัก · ระบบลึกค่อยเปิดหลัง Chapter 2–3 · ห้ามเพิ่มภาระช่วงต้น
 - เสียง: ใช้ ElevenLabs ตามใบสั่งเสียง (v8.0.38–39 เจ้าของสั่ง ห้ามใช้เสียงสร้างด้วยโค้ด/Runway แทน)

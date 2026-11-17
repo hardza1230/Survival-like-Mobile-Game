@@ -4094,3 +4094,8 @@ Owner: Taro too weak on bosses. Meter data (run_stats): Taro boss DPS in Chapter
 
 `com.mochimayhem.game` is already taken on Google Play, so the owner created the app as **`com.oheart.mochimayhem`** (17 Nov). Changed: `capacitor.config.json` appId; Google login deep link in game.js (`com.oheart.mochimayhem://login-callback`, 2 places); `scripts/set-android-landscape.mjs` now reads the appId from capacitor.config.json for the OAuth intent-filter scheme and the MainActivity package/path; privacy.html and docs/STORE_LISTING.md. **Owner:** add `com.oheart.mochimayhem://login-callback` to Supabase → Authentication → URL Configuration → Redirect URLs. The new APK installs as a separate app from the old debug APK (old local save stays in the old app; cloud save carries over after Google sign-in).
 
+
+# Delivery: v8.1.167 — Sign in with Google / Play as Guest on the title screen (owner)
+
+Owner: login was only in Settings → `buildTitle` now asks first. Not signed in with Google (cloud available) → two buttons under the logo: **Sign in with Google** (`doGoogleAuth(false)`; on Android the deep link comes back and `Cloud._onLogin` rebuilds the title) and **▶ Play as Guest** (the old tap-to-start flow: book opening / tutorial / Lobby) + a small line "Guest progress stays on this device · sign in later in Settings". Signed in with Google → TAP TO START as before + "☁️ <email>". Cloud SDK missing → TAP TO START as before. The session is restored with `Cloud.ensureClient()` once per title; if the Google state differs the title rebuilds. Settings → Cloud Save Account is unchanged.
+
