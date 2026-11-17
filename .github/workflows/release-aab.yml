@@ -97,6 +97,19 @@ jobs:
           path: mochi-mayhem-release.aab
           if-no-files-found: error
 
+      # v8.2.0: Run workflow (not a tag) → AAB on a fixed "aab-latest" release so the owner gets a plain download link
+      - name: Attach AAB to aab-latest release
+        if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: aab-latest
+          name: Latest release AAB (Google Play upload)
+          prerelease: true
+          make_latest: false
+          body: Signed AAB for Google Play Console (upload to a testing track). Built from ${{ github.sha }}.
+          files: mochi-mayhem-release.aab
+          overwrite_files: true
+
       - name: Attach AAB to tag release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
