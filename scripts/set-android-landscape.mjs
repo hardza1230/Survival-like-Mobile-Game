@@ -29,6 +29,11 @@ if (/android:screenOrientation=/.test(tag)) {
   tag = tag.replace('<activity', '<activity\n            android:screenOrientation="portrait"');
 }
 xml = xml.replace(activity[0], tag);
+// Play pre-launch check (8.2.0): screenOrientation="portrait" makes Play infer a REQUIRED android.hardware.screen.portrait,
+// which hides the app from devices without that feature (some tablets/desktops). Declare it optional.
+if (!/android\.hardware\.screen\.portrait/.test(xml)) {
+  xml = xml.replace(/<application\b/, '<uses-feature android:name="android.hardware.screen.portrait" android:required="false" />\n    <application');
+}
 
 // Deep-link intent filter สำหรับ Google OAuth callback (<appId>://login-callback · appId จาก capacitor.config.json · v8.1.166 com.oheart.mochimayhem)
 // เพื่อให้หลังล็อกอิน Google ใน Custom Tab เด้งกลับเข้าแอปได้ (Capacitor App plugin จับ appUrlOpen)
