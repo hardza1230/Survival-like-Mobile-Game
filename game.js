@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.4';
+const GAME_VERSION = '8.2.5';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.5',date:'2026-11-17',title:'Missions tab in the Recipe Book',items:['a']},
   {v:'8.2.4',date:'2026-11-17',title:'Hunger Crack',items:['Capture the Zone becomes Hunger Crack: follow a glowing crack across the map while monsters crawl out','Reach the hole at its end to blow it open — no timer numbers, no ring']},
   {v:'8.2.3',date:'2026-11-17',title:'Cocoa Titan hits harder on bosses, epic chest moments',items:['Cocoa Titan: Colossus Fist adds two follow-up fists on the strongest enemy','Cocoa Titan: Ground Pound cracks the ground toward a boss just out of reach','Opening an Epic or Legend chest builds up with light, heartbeats and a flash']},
   {v:'8.2.2',date:'2026-11-17',title:'Polish from phone testing',items:['Sign in and Play as Guest buttons sit a little higher','Momo’s shots make a clear sound','Escort the Wisp: shadows lunge at you when you leave the ring','The Bazaar keeps one song across Wardrobe and Trade-in','The spore blast in the marsh hits harder and shakes the screen','Wings are back in the Wardrobe']},
@@ -9289,7 +9290,16 @@ const ULT_CURSES=[{id:'swarm',em:'🐜',name:'Double Swarm',v:.3},{id:'elite',em
 const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];
 /* v8.1.164 เจ้าของ: ภารกิจกระจุก (เจอแต่ Hunt/Capture/Escort) → ภารกิจประจำด่านที่เคยเจอ (หรือด่านนั้นผ่านแล้ว) เข้า pool กลาง แล้วสุ่มไปแทนช่อง Capture/Escort/Survive ในด่านอื่น 60% · ไม่เอา Seasonal Harvest (ผูกกับฤดูของ C2-4) · บ้านของภารกิจ = ด่านที่โหลดอาร์ตของมัน */
 const MISSION_HOME={hungerHerald:0,hungersMouth:1,grandmasPot:2,frozenPantry:3,grandmasGolem:4,defendNectar:5,cleanAir:6,creepingRoots:7,breakRoots:9,seedRift:10,shakeTrees:11,mirrorPath:12,vaultAltar:13,lastLight:14},MISSION_ROAM_CHANCE=.6;
-const C1_LATER_LEAGUE=['hungersMouth','grandmasPot','grandmasGolem'];   // v8.1.114 ไม่โผล่ใน Chapter 1 รอบแรก
+const C1_LATER_LEAGUE=['hungersMouth','grandmasPot','grandmasGolem'];
+/* v8.2.5 หน้า Missions: เรียงตามด่าน · ภารกิจทั่วไป · Delve */
+function missionStageTag(i){ return 'C'+(Math.floor(i/5)+1)+'-'+(i%5+1); }
+function missionCodexPages(){ const lead=i=>(STAGES[i]&&STAGES[i].lead)||null,ch=c=>{const rows=[];for(let i=c*5;i<c*5+5&&i<STAGES.length;i++){const t=lead(i);if(t&&WAVE_OBJECTIVES[t])rows.push({t,where:missionStageTag(i)});}return rows;};
+  return [{title:'Every stage',rows:['fill','survive','hunt','purge','capture'].map(t=>({t,hint:'Shows up in any stage — keep playing'}))},
+    {title:'Chapter 1',rows:ch(0)},{title:'Chapter 2',rows:ch(1)},{title:'Chapter 3',rows:ch(2)},
+    {title:'Mochi Delve',rows:[{t:'ultimatum',where:'Delve',hint:'Find a Trial room in the Delve'},{t:'hungerSiege',where:'Delve',hint:'Find a Siege room in the Delve'},{t:'hungerDomain',where:'Delve',hint:'Use a Hunger Stone in the Delve'}]}]; }
+function missionSeenMap(){ const d=(typeof Save!=='undefined'&&Save.data)||{},o=Object.assign({},d.seenMissions||{},d.missionLog||{}),ss=d.stageStars||{};
+  if(ss[0]>0){o.fill=1;o.survive=1;o.hunt=1;} if(ss[1]>0)o.purge=1; if(ss[2]>0)o.capture=1;   // ข้อมูลเก่าก่อน v8.2.5: แผนสอน C1-1..C1-3 รับประกันว่าเจอแล้ว
+  return o; }   // v8.1.114 ไม่โผล่ใน Chapter 1 รอบแรก
 /* v8.1.116 เจ้าของ (รีวิวภารกิจ ข้อ 3): รางวัลประจำภารกิจ · แสดงในการ์ดเปิดภารกิจ/แท่นเริ่มก่อนเล่น · ได้เพิ่มตอนสำเร็จ (ช่วง 6+ / 11+ ได้เพิ่ม +1) */
 const MISSION_REWARDS={fill:['berryjam',1],survive:['berryjam',1],hunt:['gear',1],purge:['honeydrop',1],capture:['berryjam',2],cleanAir:['honeydrop',1],defendNectar:['honeydrop',2],seasonCycle:['starsugar',1],breakRoots:['recipeink',1],seedRift:['transmute',3],shakeTrees:['berryjam',2],mirrorPath:['recipeink',1],vaultAltar:['gear',1],lastLight:['honeydrop',2],ultimatum:['starsugar',1],frozenPantry:['berryjam',3],hungersMouth:['starsugar',1],creepingRoots:['honeydrop',2],hungerHerald:['recipeink',1],grandmasPot:['recipeink',2],grandmasGolem:['gear',1],hungerSiege:['starsugar',1],hungerDomain:['starsugar',2]};
 const LEAGUE_MISSIONS=['frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];
@@ -12027,6 +12037,18 @@ class Game extends Phaser.Scene {
     const hint=this.add.text(w/2,py+ph-8,'Tap anywhere to close · ★ biggest source',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8a7f99'}).setOrigin(0.5,1);ov.add(hint);this.menu.add(ov);
     const prev=this.tapZones;this.tapZones=[];this._zone(0,0,w,h,()=>{ov.destroy();this.tapZones=prev;});
   }
+  /* v8.2.5 เจ้าของ: หน้า Missions — ภารกิจที่เคยเจอ ✓ / ยังไม่เจอ ??? + บอกด่านที่เจอ */
+  logMission(type){ if(!type||!WAVE_OBJECTIVES[type]||typeof Save==='undefined'||!Save.data)return; const L=Save.data.missionLog=Save.data.missionLog||{}; L[type]=1; }
+  buildMissionCodex(top){ const w=this.W,h=this.H,portrait=w<=h,pages=missionCodexPages(),seen=missionSeenMap(),n=pages.reduce((a,p)=>a+p.rows.length,0),got=pages.reduce((a,p)=>a+p.rows.filter(r=>seen[r.t]).length,0);
+    this._missionPage=Phaser.Math.Clamp(this._missionPage||0,0,pages.length-1); const pg=pages[this._missionPage];
+    const hd=this.add.text(w/2,top+4,'Missions found: '+got+' / '+n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#b7f08a'}).setOrigin(0.5,0);this.menu.add(hd);
+    const y0=top+hd.height+10,bottom=h-(portrait?54:42),heads=1+pg.rows.filter(r=>r.head).length,cnt=pg.rows.length-heads,rh=Phaser.Math.Clamp(Math.floor((bottom-y0-heads*24)/Math.max(1,cnt))-4,26,48);
+    const rows=[{head:pg.title,hex:'#ffe08a'}];
+    for(const r of pg.rows){ if(r.head){rows.push(r);continue;} const o=WAVE_OBJECTIVES[r.t]||{},on=!!seen[r.t];
+      rows.push(on?{emoji:o.emoji||'✨',title:(r.where?r.where+' · ':'')+o.name+'  ✓',desc:o.desc||'',color:0x8ee04b}:{emoji:'❔',title:(r.where?r.where+' · ':'')+'???',desc:r.hint||('Not found yet'+(r.where?' — try '+r.where:'')),color:0x51445f}); }
+    this._codexRows(y0,rows,rh);
+    if(pages.length>1)this._codexNav(this._missionPage,pages.length,()=>{this._missionPage--;this.buildSkillArchive();},()=>{this._missionPage++;this.buildSkillArchive();},pg.title+' · '+(this._missionPage+1)+' / '+pages.length);
+  }
   // v6.53: Codex ชุดเซ็ท — ชิ้นไหนเข้าชุดไหน · โบนัสสวม 2/3 ชิ้น · เก็บครบ = โบนัสถาวร
   buildSetCodex(top){ const w=this.W,bw=Math.min(w-24,460),bx=(w-bw)/2,cnt=gearSetCounts(); let y=top;
     const col=(Object.keys(GEAR_SETS).length);
@@ -12043,12 +12065,14 @@ class Game extends Phaser.Scene {
   buildSkillArchive(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Recipe Book','screen_codex');
     const w=this.W,h=this.H,portrait=w<=h;let tab=this._skillArchiveTab||'builds';if(tab==='attack'||tab==='passive'||tab==='weapons')tab='builds';   // v8.0.29 Weapons → Heroes & Builds   // v4.62: สกิล/passive เดิมเลิกใช้แล้ว (character-first)
-    const tabY=portrait?82:50,tabH=32,tabGap=6,tabW=Math.min(120,(w-32-tabGap*3)/4),tabX=w/2-(tabW*4+tabGap*3)/2;
-    const drawTab=(x,label,on,fn,color)=>{const g=this.add.graphics();g.fillStyle(on?this._darken(color,.55):0x292032,0.96);g.fillRoundedRect(x,tabY,tabW,tabH,10);g.lineStyle(1.8,on?color:0x51445f,1);g.strokeRoundedRect(x,tabY,tabW,tabH,10);const t=this.add.text(x+tabW/2,tabY+tabH/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:tabW<110?'9px':'10px',color:on?'#ffffff':'#998da7'}).setOrigin(0.5);this.menu.add([g,t]);this._zone(x,tabY,tabW,tabH,fn);};
+    const tabY=portrait?82:50,tabH=32,tabGap=6,tabN=5,tabW=Math.min(120,(w-32-tabGap*(tabN-1))/tabN),tabX=w/2-(tabW*tabN+tabGap*(tabN-1))/2;
+    const drawTab=(x,label,on,fn,color)=>{const g=this.add.graphics();g.fillStyle(on?this._darken(color,.55):0x292032,0.96);g.fillRoundedRect(x,tabY,tabW,tabH,10);g.lineStyle(1.8,on?color:0x51445f,1);g.strokeRoundedRect(x,tabY,tabW,tabH,10);const t=this.add.text(x+tabW/2,tabY+tabH/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:tabW<72?'8px':tabW<110?'9px':'10px',color:on?'#ffffff':'#998da7'}).setOrigin(0.5);this.menu.add([g,t]);this._zone(x,tabY,tabW,tabH,fn);};
     drawTab(tabX,'📖 Builds',tab==='builds',()=>{this._skillArchiveTab='builds';this._skillArchiveSelected=null;this.buildSkillArchive();},0xf0a54a);
     drawTab(tabX+tabW+tabGap,'🔮 Relics '+Object.keys(RELICS).length,tab==='relics',()=>{this._skillArchiveTab='relics';this._codexRelicPage=0;this._skillArchiveSelected=null;this.buildSkillArchive();},0xc07bff);
     drawTab(tabX+(tabW+tabGap)*2,'🎁 Items',tab==='items',()=>{this._skillArchiveTab='items';this._skillArchiveSelected=null;this.buildSkillArchive();},0xc9a3ff);
     drawTab(tabX+(tabW+tabGap)*3,'🧩 Sets',tab==='sets',()=>{this._skillArchiveTab='sets';this._skillArchiveSelected=null;this.buildSkillArchive();},0x7fd4ff);
+    drawTab(tabX+(tabW+tabGap)*4,'🗺️ Missions',tab==='missions',()=>{this._skillArchiveTab='missions';this._missionPage=0;this._skillArchiveSelected=null;this.buildSkillArchive();},0x8ee04b);
+    if(tab==='missions'){this.buildMissionCodex(tabY+tabH+10);this.menu.setVisible(true);return;}
     if(tab==='sets'){this.buildSetCodex(tabY+tabH+10);this.menu.setVisible(true);return;}
     if(tab==='items'){this.buildItemCodex(tabY+tabH+12);this.menu.setVisible(true);return;}
     if(tab==='builds'){this.buildRecipeBook(tabY+tabH+10);this.menu.setVisible(true);return;}
@@ -15920,6 +15944,7 @@ class Game extends Phaser.Scene {
     if(MISSION_HOME[type]!=null&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&typeof Save!=='undefined'&&Save.data){ const sn=Save.data.seenMissions=Save.data.seenMissions||{}; sn[type]=1; }
     if(!(p&&p.forceType)&&!planned&&type==='hunt'&&this._huntUsed){ const st0=STAGES[this.stageIndex]||{},alt=(Array.isArray(st0.objectives)&&st0.objectives.length?st0.objectives:['survive','purge','capture']).filter(t=>t!=='hunt'); if(alt.length)type=alt[Math.floor(Math.random()*alt.length)]; }   /* v8.1.76 เจ้าของ: Hunt ไม่เกินด่านละครั้ง */
     if(type==='hunt'&&!(p&&p.forceType))this._huntUsed=true;
+    this.logMission?.(type);   /* v8.2.5 เจ้าของ: หน้า Missions ใน Recipe Book — จำทุกภารกิจที่เคยเจอ (ทุกโหมด) */
     const def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
     const _pk=planned?Object.keys(CH1_EARLY_WAVE_PLAN[this.stageIndex]).map(Number):[],lesson=planned?((_pk.indexOf(w)+1)+'/'+_pk.length):null;
     Sfx.orderCue?.('wave_start',.35,.6);const o=this.waveObjective={type,emoji:def.emoji,name:def.name,desc:def.desc,lesson,color,progress:0,target:0,done:false};

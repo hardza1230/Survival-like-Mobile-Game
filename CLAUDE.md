@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.2.4**. Next release:8.2.5. Fetch the deploy branch before new work.
+Current release: **8.2.5**. Next release:8.2.6. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.2.4 — 🕳️ Hunger Crack replaces Capture the Zone (PoE Abyss)
+# Latest delivery: v8.2.5 — 🗺️ Missions tab in the Recipe Book
+
+Owner 17 Nov asked why the Herald never showed up and picked option C: a page to check which missions have been met. Recipe Book gets a 5th tab **🗺️ Missions** (`buildMissionCodex`, tabs now `tabN=5`, 8 px labels when tabs are narrow). Five pages: Every stage (Fill, Survive, Hunt, Escort, Hunger Crack) · Chapter 1/2/3 (each stage's own mission with its tag, e.g. "C1-1 · Hunger Herald") · Mochi Delve (Sugar Crown Trial, Siege, Hunger's Domain). Met = icon, name, ✓ and description; not met = ❔ "???" with where to find it. Header shows "Missions found: N / 23". Recording: `setupWaveObjective` now calls `logMission(type)` for every mission in every mode → `Save.data.missionLog`; the page also reads the old `seenMissions` and back-fills Fill/Survive/Hunt (C1-1 cleared), Escort (C1-2) and Hunger Crack (C1-3) for old saves. Roaming (`seenMissions`) is unchanged. Headless check portrait + landscape, all 5 pages, 0 errors. Tests: new mission-codex.
+
+# Previous delivery: v8.2.4 — 🕳️ Hunger Crack replaces Capture the Zone (PoE Abyss)
 
 Owner 17 Nov: Capture the Zone should have no numbers and no circle; from the PoE league list the owner picked idea 2, Abyss. `CAPTURE_CRACK=true` keeps the `capture` mission type (pool, MISSION_HOME, rewards, bots unchanged) but swaps the ring for **Hunger Crack**: `spawnHungerCrack` lays a jagged crack (8 points, ~1000 px, turns ±0.75 rad, kept inside the map) from the old start spot. The glowing tip only grows while the hero stands within `HC_NEAR` 95 px (whole crack ≈ `HC_SEC` 22 s); walking away pauses it (no regress, no bleed). A faint hint shows the next 170 px; the hole at the end is visible from the start and darkens as the crack nears it. Every 2.4 → 1.3 s, 2–4 fast/dasher monsters crawl out of the opened part with a dark puff. Reaching the hole: flash, shake, hit-stop, `captureFinishSweep` around the hole, 4 shock rings, bursts, then the normal mission completion. HUD shows ▰▰▱▱▱▱ instead of seconds; objective arrow and loot point follow the tip. Mission card/Ruby text: "Follow the crack to its end!" — the old recorded "stand in the ring" voice no longer matches, so that tip stays silent until re-recorded. `CAPTURE_CRACK=false` restores the ring. Headless check: setup → following the tip → hole → mission complete, 0 errors. Tests: new hunger-crack; ruby-a09-voice and content validator updated.
-
-# Previous delivery: v8.2.3 — Cocoa Titan hits single targets (fist combo + fault line), Epic/Legend chest cinematic
-
-Owner 17 Nov picked B1 = A + C and C3 = a cool chest cutscene; Capture-the-Zone shape is still being discussed. **Titan A (`titanFistCombo`):** after the Colossus Fist slam, two more fists (0.2 s apart) hit the strongest enemy within 1.5× the slam radius — boss, then miniboss, then most HP — for 60% of the slam each (no extra %HP; Phase Gate respected). **Titan C (`titanFaultLine`):** every Ground Pound sends a jagged crack to the nearest boss/miniboss that is outside the pound but within 200 px of its edge, hitting it 0.12 s later for 60% of the pound ×1.4. Unique text updated. **C3 (`chestCine`):** when the roll is Epic/Legend, the chest gets a 1.4 s (Legend 1.8 s) build-up before the reveal — screen dims, chest zooms in, tier-coloured light leaks out ray by ray, three heartbeats (shake + rising chest sound), "Something legendary stirs…", white flash, then the usual reveal; Rare/Common open exactly as before. Code only, no new art. Headless flow check: legend/epic/rare all reach Collect with no errors. Tests: new owner-round823.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
