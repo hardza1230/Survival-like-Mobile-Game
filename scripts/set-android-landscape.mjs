@@ -30,15 +30,16 @@ if (/android:screenOrientation=/.test(tag)) {
 }
 xml = xml.replace(activity[0], tag);
 
-// Deep-link intent filter สำหรับ Google OAuth callback (com.mochimayhem.game://login-callback)
+// Deep-link intent filter สำหรับ Google OAuth callback (<appId>://login-callback · appId จาก capacitor.config.json · v8.1.166 com.oheart.mochimayhem)
 // เพื่อให้หลังล็อกอิน Google ใน Custom Tab เด้งกลับเข้าแอปได้ (Capacitor App plugin จับ appUrlOpen)
-if (!/android:scheme="com\.mochimayhem\.game"/.test(xml)) {
+const APP_ID = JSON.parse(fs.readFileSync('capacitor.config.json','utf8')).appId;
+if (!xml.includes(`android:scheme="${APP_ID}"`)) {
   const deepLink = `
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="com.mochimayhem.game" />
+                <data android:scheme="${APP_ID}" />
             </intent-filter>
         `;
   xml = xml.replace('</activity>', deepLink + '</activity>');
@@ -56,8 +57,8 @@ if (!/com\.google\.android\.gms\.ads\.APPLICATION_ID/.test(xml)) {
 }
 fs.writeFileSync(manifest, xml);
 
-const activityPath = 'android/app/src/main/java/com/mochimayhem/game/MainActivity.java';
-fs.writeFileSync(activityPath, `package com.mochimayhem.game;
+const activityPath = 'android/app/src/main/java/' + APP_ID.replace(/\./g, '/') + '/MainActivity.java';
+fs.writeFileSync(activityPath, `package ${APP_ID};
 
 import android.graphics.Color;
 import android.content.pm.ActivityInfo;

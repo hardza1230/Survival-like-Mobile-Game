@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.165';
+const GAME_VERSION = '8.1.166';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.166',date:'2026-11-17',title:'Android package name com.oheart.mochimayhem for Google Play',items:['b']},
   {v:'8.1.165',date:'2026-11-17',title:'QA bot suite + no duplicate texture loads when a story comic reopens',items:['b']},
   {v:'8.1.164',date:'2026-11-17',title:'Arc bolt brighter, Capture slower, missions roam to other stages, bigger UI on tablets',items:['b']},
   {v:'8.1.163',date:'2026-11-17',title:'Taro stronger vs bosses: Arc 4 hits, Spark re-hit 0.2s, Sentry orbs linger on bosses',items:['b']},
@@ -8123,7 +8124,7 @@ const Cloud = {
     try{ this.sb=window.supabase.createClient(CLOUD_URL,CLOUD_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce',storageKey:'mochi_sb_auth'}});
       const sess=(await this.sb.auth.getSession()).data.session; if(sess)this.user=sess.user; this.bindDeepLink(); return true;
     }catch(e){ console.warn('[cloud] ensureClient',e); return false; } },
-  // ในแอป: ดักการเด้งกลับจาก Custom Tab (com.mochimayhem.game://login-callback) แล้วแลก code เป็น session
+  // ในแอป: ดักการเด้งกลับจาก Custom Tab (com.oheart.mochimayhem://login-callback) แล้วแลก code เป็น session
   bindDeepLink(){ if(this._deeplinkBound||!this.native())return;
     try{ const App=window.Capacitor.Plugins.App; if(!App)return;
       App.addListener('appUrlOpen', async (ev)=>{ const url=ev&&ev.url; if(!url||url.indexOf('login-callback')<0)return;
@@ -8157,7 +8158,7 @@ const Cloud = {
       // ในแอป Android: เปิด Custom Tab Lockedอิน แล้วเด้งกลับผ่าน deep link (WebView Lockedอิน Google ตรง ๆ ไม่ได้)
       if(this.native()){
         this.bindDeepLink();
-        const {data,error}=await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:'com.mochimayhem.game://login-callback',skipBrowserRedirect:true}});
+        const {data,error}=await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:'com.oheart.mochimayhem://login-callback',skipBrowserRedirect:true}});
         if(error)return {ok:false,msg:error.message};
         if(data&&data.url){ const B=window.Capacitor.Plugins.Browser; if(!B)return {ok:false,msg:'Browser plugin not ready (reinstall the APK)'}; await B.open({url:data.url,presentationStyle:'popover'}); return {ok:true,native:true}; }
         return {ok:false,msg:'Failed to get login URL'};

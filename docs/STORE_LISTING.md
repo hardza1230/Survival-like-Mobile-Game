@@ -6,7 +6,7 @@
 ## ข้อมูลแอป
 
 - App name: Mochi Mayhem
-- Package / App ID: `com.mochimayhem.game`
+- Package / App ID: `com.oheart.mochimayhem` (17 Nov 2026: `com.mochimayhem.game` was already taken on Google Play)
 - Category ที่เสนอ: Games → Action หรือ Arcade
 - Privacy Policy URL: https://hardza1230.github.io/Survival-like-Mobile-Game/privacy.html
 - Contact email: heartloveu1825@gmail.com

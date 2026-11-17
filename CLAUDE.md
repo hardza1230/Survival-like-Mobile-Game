@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.165**. Next release:8.1.166. Fetch the deploy branch before new work.
+Current release: **8.1.166**. Next release:8.1.167. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.165 — QA bot suite (owner) + duplicate texture load fix found by the bots
+# Latest delivery: v8.1.166 — Android package name → com.oheart.mochimayhem (Play Console)
+
+`com.mochimayhem.game` is already taken on Google Play, so the owner created the app as **`com.oheart.mochimayhem`** (17 Nov). Changed: `capacitor.config.json` appId; Google login deep link in game.js (`com.oheart.mochimayhem://login-callback`, 2 places); `scripts/set-android-landscape.mjs` now reads the appId from capacitor.config.json for the OAuth intent-filter scheme and the MainActivity package/path; privacy.html and docs/STORE_LISTING.md. **Owner:** add `com.oheart.mochimayhem://login-callback` to Supabase → Authentication → URL Configuration → Redirect URLs. The new APK installs as a separate app from the old debug APK (old local save stays in the old app; cloud save carries over after Google sign-in).
+
+# Previous delivery: v8.1.165 — QA bot suite (owner) + duplicate texture load fix found by the bots
 
 **QA bots (owner):** `scripts/qa-bots.cjs` personas — build (5 heroes × 3 paths, kiting), cards (first/random/relic/modifier), missions (walk onto every objective), idle, mortal (no god), screens (tablet 800×1280, small 360×640, rotate mid-run), stress (Low + ×3), endgame (8 Delve rooms + Pinnacle), menus (`qa-menus.cjs`, own job). Fresh save + GM ×10 damage; records errors/console/stuck, missions started/ended, FPS/heap/texture MB and the Combat Meter summary. `.github/workflows/qa-bots.yml`: 10 shards + menus job in parallel, nightly 19:40 UTC or Run workflow; `qa-bots-report.cjs` merges a Markdown report (job summary + log + artifact; build table is comparison only). First run (v8.1.164): 50 runs, 0 page errors, 0 stuck. The menu monkey found two things: tapping Sign out reloads by design (now stubbed in the bot; the bot also exits on a crash instead of hanging) and **"Texture key already in use: cs61_…"** after a story comic was skipped and reopened while its art was still loading → `ensureGroup` no longer queues a key that is already in the loader (still waits for it).
-
-# Previous delivery: v8.1.164 — Arc bolt brighter, Capture slower, mission pool across stages, bigger UI on tablets (owner ×4)
-
-**Arc bolt:** `taroLightningVisual` for the Arc path (not Spark/Sentry): lines ×1.3 thicker, brighter colour 0xd9b8ff, outer glow .22 → .34, an extra faded frame at 220 ms and life .24 → .32 s. **Capture the Zone:** monsters rushing in filled the ring too fast → `captureKillBonus` +0.5 → +0.15 s per kill (Elite/mini +2 → +1.5), total kill bonus capped at 25% of the ring. **Mission pool (`MISSION_HOME`):** a stage's own League/signature mission is "seen" once played (`Save.data.seenMissions`) or once its stage is cleared; from then on `missionRoamBag` swaps each Capture/Escort/Survive slot of other stages' bags for a random seen mission (60%, no repeats; Hunt and the stage lead stay) and replay Bounties pick from the same pool (60%). Not in Chapter-1 first plays, Delve, Rift or Boss Rush; Seasonal Harvest stays home (needs C2-4 seasons). The mission's art loads lazily on demand (`missionRoamArt` → `ensureGroup` + `buildDeferredAnims`); headless smoke: all 14 missions forced on C2-1, C2-5 and C3-3 with no errors. **Tablet UI:** `UI_SCALE` = (short side / 430)^0.6, 1–1.45 (phones ×1, 600 px ×1.22, 800 px ×1.45; desktop fit stays ×1). `RENDER_DPR` now = `RENDER_BASE_DPR`×`UI_SCALE` for layout, cameras, pointer and text; the canvas still uses the base DPR, so GPU cost and the world size on screen are unchanged and only menus/HUD get bigger (800×1280 → layout 552×883).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
