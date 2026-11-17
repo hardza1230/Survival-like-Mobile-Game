@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.163';
+const GAME_VERSION = '8.1.164';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.164',date:'2026-11-17',title:'Arc bolt brighter, Capture slower, missions roam to other stages, bigger UI on tablets',items:['b']},
   {v:'8.1.163',date:'2026-11-17',title:'Taro stronger vs bosses: Arc 4 hits, Spark re-hit 0.2s, Sentry orbs linger on bosses',items:['b']},
   {v:'8.1.162',date:'2026-11-16',title:'Clean Air → Lost Wisps (dark forest) + Taro lightning C/B/A (owner)',items:['b']},
   {v:'8.1.161',date:'2026-11-16',title:'Clean Air fog fixes + camera a bit farther (owner)',items:['b']},
@@ -9277,6 +9278,8 @@ const CH1_EARLY_WAVE_PLAN={
 function earlyWaveMission(stage,wave){return CH1_EARLY_WAVE_PLAN[stage]?.[wave]||null;}
 const ULT_CURSES=[{id:'swarm',em:'🐜',name:'Double Swarm',v:.3},{id:'elite',em:'💀',name:'Elite Pack',v:.4},{id:'noheal',em:'🚫',name:'No Hearts',v:.45},{id:'bombs',em:'💣',name:'Ground Bombs',v:.35},{id:'shots',em:'🌀',name:'Bullet Rings',v:.4},{id:'drain',em:'🩸',name:'Sugar Drain',v:.3}],ULT_GOALS=['survive','slay','defend','collect'];
 const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];
+/* v8.1.164 เจ้าของ: ภารกิจกระจุก (เจอแต่ Hunt/Capture/Escort) → ภารกิจประจำด่านที่เคยเจอ (หรือด่านนั้นผ่านแล้ว) เข้า pool กลาง แล้วสุ่มไปแทนช่อง Capture/Escort/Survive ในด่านอื่น 60% · ไม่เอา Seasonal Harvest (ผูกกับฤดูของ C2-4) · บ้านของภารกิจ = ด่านที่โหลดอาร์ตของมัน */
+const MISSION_HOME={hungerHerald:0,hungersMouth:1,grandmasPot:2,frozenPantry:3,grandmasGolem:4,defendNectar:5,cleanAir:6,creepingRoots:7,breakRoots:9,seedRift:10,shakeTrees:11,mirrorPath:12,vaultAltar:13,lastLight:14},MISSION_ROAM_CHANCE=.6;
 const C1_LATER_LEAGUE=['hungersMouth','grandmasPot','grandmasGolem'];   // v8.1.114 ไม่โผล่ใน Chapter 1 รอบแรก
 /* v8.1.116 เจ้าของ (รีวิวภารกิจ ข้อ 3): รางวัลประจำภารกิจ · แสดงในการ์ดเปิดภารกิจ/แท่นเริ่มก่อนเล่น · ได้เพิ่มตอนสำเร็จ (ช่วง 6+ / 11+ ได้เพิ่ม +1) */
 const MISSION_REWARDS={fill:['berryjam',1],survive:['berryjam',1],hunt:['gear',1],purge:['honeydrop',1],capture:['berryjam',2],cleanAir:['honeydrop',1],defendNectar:['honeydrop',2],seasonCycle:['starsugar',1],breakRoots:['recipeink',1],seedRift:['transmute',3],shakeTrees:['berryjam',2],mirrorPath:['recipeink',1],vaultAltar:['gear',1],lastLight:['honeydrop',2],ultimatum:['starsugar',1],frozenPantry:['berryjam',3],hungersMouth:['starsugar',1],creepingRoots:['honeydrop',2],hungerHerald:['recipeink',1],grandmasPot:['recipeink',2],grandmasGolem:['gear',1],hungerSiege:['starsugar',1],hungerDomain:['starsugar',2]};
@@ -15237,7 +15240,7 @@ class Game extends Phaser.Scene {
     if(B){ const o=this.waveObjective; if(!o||o!==B.o){ this._replayMission=null; m.nextBounty=m.time+50+Math.random()*20; return; }
       if(!o.done&&m.time>=B.until){ this.clearWaveObjective(); this._replayMission=null; m.nextBounty=m.time+50+Math.random()*20; this.showBanner?.('⭐ Bounty escaped','Another one will turn up soon',1400); } return; }
     if(this.state!=='play'||this.mode!=='wave'||this.waveObjective||(m.miniTriggered&&!m.miniDone)||m.kills>=m.goal*.94||m.time<(m.nextBounty||22))return;
-    const pool=this.replayBountyPool(); let type=pool[Math.floor(Math.random()*pool.length)]; const stL=(STAGES[this.stageIndex]||{}).lead; if(stL&&!this._bountyLead&&pool.includes(stL)){ type=stL; this._bountyLead=true; } m.bounties++;   /* v8.1.83 ภารกิจ League ของด่านเป็น Bounty แรก */
+    const pool=this.replayBountyPool(); let type=pool[Math.floor(Math.random()*pool.length)]; const stL=(STAGES[this.stageIndex]||{}).lead; if(stL&&!this._bountyLead&&pool.includes(stL)){ type=stL; this._bountyLead=true; } else if(type!=='hunt'&&Math.random()<MISSION_ROAM_CHANCE){ const rp=this.missionRoamPool?.()||[]; if(rp.length){ type=rp[Math.floor(Math.random()*rp.length)]; this.missionRoamArt?.([type]); } } m.bounties++;   /* v8.1.164 Bounty สุ่มจาก pool กลางด้วย */   /* v8.1.83 ภารกิจ League ของด่านเป็น Bounty แรก */
     this.setupWaveObjective(Math.max(1,this.waveIndex||1),{dur:40,forceType:type}); const o=this.waveObjective; if(!o){ m.nextBounty=m.time+30; return; }
     o.name='Bounty · '+o.name; const bt=(typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(type))?70:45; this._replayMission={o,type,until:m.time+bt}; this.renderWaveObjectiveHUD?.(); Sfx.orderCue?.('wave_start',.4,.6); { const d0=o.desc; o.desc=bt+'s · finish it for a loot fountain'; const ok=this.missionIntro?.(o,!!o._armPad); o.desc=d0; if(!ok)this.showBanner?.('⭐ Bounty! '+WAVE_OBJECTIVES[type].emoji+' '+WAVE_OBJECTIVES[type].name,bt+'s · finish it for a loot fountain',2200); } }
   tickReplayProgress(dt){
@@ -15874,7 +15877,9 @@ class Game extends Phaser.Scene {
     this.clearWaveObjective();
     const planned=!this.recipeMode&&!this.riftMode?earlyWaveMission(this.stageIndex,w):null;
     if(!(p&&p.forceType)&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=this.c1FirstPool(Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture']);this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());if(st&&st.lead&&!this._leadUsed){ const b=this._waveObjectiveBag,i=b.indexOf(st.lead); if(i>=0){ b.splice(i,1); b.push(st.lead); this._leadUsed=true; } }}   /* v8.1.82 ภารกิจ League ประจำด่านมาก่อน */
+    if(!(p&&p.forceType)&&!planned&&this._waveObjectiveBag&&!this._waveObjectiveBag._roamed){ this._waveObjectiveBag._roamed=true; this.missionRoamBag?.(this._waveObjectiveBag); }
     let type=p&&p.forceType?p.forceType:planned?planned.type:this._waveObjectiveBag.pop();
+    if(MISSION_HOME[type]!=null&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&typeof Save!=='undefined'&&Save.data){ const sn=Save.data.seenMissions=Save.data.seenMissions||{}; sn[type]=1; }
     if(!(p&&p.forceType)&&!planned&&type==='hunt'&&this._huntUsed){ const st0=STAGES[this.stageIndex]||{},alt=(Array.isArray(st0.objectives)&&st0.objectives.length?st0.objectives:['survive','purge','capture']).filter(t=>t!=='hunt'); if(alt.length)type=alt[Math.floor(Math.random()*alt.length)]; }   /* v8.1.76 เจ้าของ: Hunt ไม่เกินด่านละครั้ง */
     if(type==='hunt'&&!(p&&p.forceType))this._huntUsed=true;
     const def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
@@ -16234,7 +16239,7 @@ class Game extends Phaser.Scene {
     node._waveObjectiveNode=false;node.setActive(false).setVisible(false);if(node.body)node.body.enable=false;this.burst(x,y,this.waveObjective?.color||0xffd166);
     const o=this.waveObjective;if(o&&(o.type==='purge'||o.type==='breakRoots')&&!o.done){o.progress++;this.renderWaveObjectiveHUD();if(o.progress>=o.target)this.completeWaveObjective();}
   }
-  captureKillBonus(e){ const o=this.waveObjective,z=this._captureZone; if(!o||o.done||o.type!=='capture'||!z||!e||e.isBoss)return; if(this.dist(e.x,e.y,z.x,z.y)>z.radiusGoal)return; const add=e.isElite||e.isMini?2:.5; o.progress=Math.min(o.target,o.progress+add); if(Math.random()<.35)this.floatText?.(e.x,e.y-30,'+'+add+'s',0xffd166); }   /* v8.1.77 ฆ่าในวง = หลอดเร็วขึ้น */
+  captureKillBonus(e){ const o=this.waveObjective,z=this._captureZone; if(!o||o.done||o.type!=='capture'||!z||!e||e.isBoss)return; if(this.dist(e.x,e.y,z.x,z.y)>z.radiusGoal)return; const cap=o.target*.25,left=cap-(o._killB||0); if(left<=0)return; const add=Math.min(left,e.isElite||e.isMini?1.5:.15); o._killB=(o._killB||0)+add; o.progress=Math.min(o.target,o.progress+add);   /* v8.1.164 เจ้าของ: มอนกรูเข้าวงเยอะ หลอดเต็มเร็วไป → ฆ่าในวง +0.15 วิ (Elite/มินิ +1.5) · โบนัสรวมไม่เกิน 25% ของหลอด */ if(add>=1||Math.random()<.2)this.floatText?.(e.x,e.y-30,'+'+(Math.round(add*10)/10)+'s',0xffd166); }   /* v8.1.77 ฆ่าในวง = หลอดเร็วขึ้น */
   spawnCaptureZone(){
     const o=this.waveObjective;if(!o||o.type!=='capture')return;const pos=this.objectivePosition(0,1,250,370),r=140;   /* v8.1.77 เจ้าของ: วงใหญ่ขึ้น ขยายมากขึ้น · หลอดไม่ลดเลย */
     this._captureZone=this.camWorld(this.add.circle(pos.x,pos.y,r,o.color,.12).setStrokeStyle(4,o.color,.82).setDepth(pos.y-2));this._captureZone.radiusGoal=r;this._captureZone.r0=r;   // ขยายเขต (112→140) ให้ยืนในวงแล้วนับแน่นอน
@@ -16506,6 +16511,16 @@ class Game extends Phaser.Scene {
      แบบเบา (เล่นครั้งแรกใน Chapter 1–2): ไม่มีเวลาจำกัด ไม่มีนายพล ===== */
   /* v8.1.114 เจ้าของ (วิจารณ์ภารกิจข้อ 2): Chapter 1 เล่นครั้งแรกหนักเกิน (League ทุกด่าน) → ครั้งแรกเหลือแค่ Herald (C1-1) + Frozen Pantry (C1-4)
      Hunger's Mouth / Grandma's Pot / Grandma's Golem โผล่เมื่อเล่นด่านนั้นซ้ำ (ผ่านแล้ว) หรือหลังจบ Chapter 1 · โหมดอื่น (Delve/Replay bounty) ไม่ถูกกรอง */
+  missionRoamPool(){ const d=(typeof Save!=='undefined'&&Save.data)||{},sn=d.seenMissions||{},ss=d.stageStars||{},sm=d.stageMastery||{},st=STAGES[this.stageIndex]||{},own=new Set(Array.isArray(st.objectives)?st.objectives:[]);
+    return Object.keys(MISSION_HOME).filter(t=>WAVE_OBJECTIVES[t]&&!own.has(t)&&MISSION_HOME[t]!==this.stageIndex&&(sn[t]||ss[MISSION_HOME[t]]>0||sm[MISSION_HOME[t]])&&(t!=='grandmasPot'||sm[3])); }
+  missionRoamBag(bag){ if(this.recipeMode||this.riftMode||this.bossRush||this._inTutorial||this._replayMeter||!Array.isArray(bag))return bag; const d=(typeof Save!=='undefined'&&Save.data)||{};
+    if((this.stageIndex||0)<=4&&!(d.stageMastery||{})[this.stageIndex||0]&&!(typeof storyCleared==='function'&&storyCleared()>=5))return bag;   // Chapter 1 รอบแรกยังเป็นแผนสอนเดิม
+    const pool=Phaser.Utils.Array.Shuffle(this.missionRoamPool()),got=[];
+    for(let i=0;i<bag.length&&pool.length;i++){ if(!['capture','purge','survive'].includes(bag[i])||Math.random()>=MISSION_ROAM_CHANCE)continue; const t=pool.pop(); bag[i]=t; got.push(t); }
+    if(got.length){ this._roamMissions=got; this.missionRoamArt(got); }
+    return bag; }
+  missionRoamArt(types){ const ks=new Set(); for(const t of types)for(const k of (this.missionArtKeys?.(MISSION_HOME[t])||[]))ks.add(k);
+    if(ks.size)try{ this.ensureGroup(k=>ks.has(k),()=>{ try{ this.buildDeferredAnims?.(); }catch(e){} },{all:true,fx:true,quiet:true}); }catch(e){} }
   c1FirstPool(pool){ const idx=this.stageIndex||0,d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.stageMastery||{})[3]&&pool.includes('grandmasPot')){ const p2=pool.filter(t=>t!=='grandmasPot'); if(p2.length)pool=p2; }   /* v8.1.115 Pot ปลดหลังเจอคุณยาย (ผ่าน C1-4) แม้เล่นซ้ำ */ if(idx>4||this.recipeMode||this.riftMode||this.bossRush||this._replayMeter||(d.stageMastery||{})[idx]||(typeof storyCleared==='function'&&storyCleared()>=5))return pool;
     const out=pool.filter(t=>!C1_LATER_LEAGUE.includes(t)); return out.length?out:pool; }
   fpFull(){ return !!(this._replayMeter||this.riftMode||(typeof storyCleared==='function'&&storyCleared()>=10)); }
@@ -19025,7 +19040,7 @@ class Game extends Phaser.Scene {
     // Lightning uses only Taro's own 20-live cap: the shared per-frame fxOk (2 in low-perf mode) dropped every link after the first in one chain.
     if(!this.taroVisualBudget(true))return;
     // v7.8.16 เส้นเดิม 2px/0.14วิ อยู่ depth 7 ใต้สไปรต์ → มองแทบไม่เห็น · วาดเรืองแสง+ขอบเข้ม+แกนขาว บน depth VFX (1 graphics/เส้น เคารพเพดาน 20)
-    const t=this._taro,g=this.camWorld(this.add.graphics().setDepth(90400)),smite=t.path==='smite',col=smite?0xffda89:t.path==='tempest'?0xa9e8ee:0xc6a2ed,k=big?1.6:1,points=[];
+    const t=this._taro,g=this.camWorld(this.add.graphics().setDepth(90400)),smite=t.path==='smite',arc=!smite&&t.path!=='tempest',col=smite?0xffda89:t.path==='tempest'?0xa9e8ee:0xd9b8ff,k=(big?1.6:1)*(arc?1.3:1),gw=arc?.34:.22,points=[];   /* v8.1.164 เจ้าของ: เส้น Arc มองไม่ค่อยเห็น → หนาขึ้น ×1.3 · สีสว่างขึ้น · เรืองแสงชัดขึ้น · ค้างนานขึ้น 0.24→0.32 วิ */
     g.setAlpha?.(visualAlpha);
     /* v8.1.156 CODE_VS_ART รอบ 2 ข้อ 2 · v8.1.160 เจ้าของ: สายฟ้ายังธรรมดา → ฟาดจากต้นทางวิ่งไปถึงเป้า (40 ms) · เส้นหลัก + เส้นรองบางอีก 2 เส้นแตกเปรี๊ยะคู่กัน · กิ่งแตก 1–2 กิ่ง · ประกายไฟวิ่งตามเส้น · ปลายทางวาบขาว + สะเก็ดไฟกระเด็น · หยักใหม่ 2 ครั้ง (กะพริบ) แล้วเหลือแสงค้างจาง ๆ · ต้นทางมีลูกไฟเล็ก */
     const RR=Math.random,dX=x2-x1,dY=y2-y1,LEN=Math.hypot(dX,dY)||1,NX=-dY/LEN,NY=dX/LEN,sparks=Array.from({length:strike?6:5},()=>({a:RR()*Math.PI*2,s:.5+RR()*.8}));
@@ -19035,7 +19050,7 @@ class Game extends Phaser.Scene {
     const build=()=>{ main=jag(16*k,34); sub1=jag(22*k,26); sub2=jag(12*k,30); forks=[]; if(!strike&&main.length>3){ for(let f=0;f<(LEN>140?2:1);f++){ const m=main[1+Math.floor(RR()*(main.length-2))],a=Math.atan2(dY,dX)+(RR()<.5?-1:1)*(.45+RR()*.5),L=Math.min(52,LEN*.3)*k; forks.push([m,{x:m.x+Math.cos(a)*L*.5+(RR()-.5)*10,y:m.y+Math.sin(a)*L*.5+(RR()-.5)*10},{x:m.x+Math.cos(a)*L,y:m.y+Math.sin(a)*L}]); } } };
     const FC=(c,a,x,y,r)=>{ g.fillStyle?.(c,a); g.fillCircle?.(x,y,r); };
     const paint=(f=1,flash=0,fade=1)=>{ if(!g.active)return; g.clear?.(); const M=cut(main,f);
-      g.lineStyle(18*k,col,.22*fade);g.strokePoints(M);g.lineStyle(7*k,0x302348,.85*fade);g.strokePoints(M);g.lineStyle(3.5*k,col,fade);g.strokePoints(M);g.lineStyle(1.6*k,0xffffff,.95*fade);g.strokePoints(M);
+      g.lineStyle(18*k,col,gw*fade);g.strokePoints(M);g.lineStyle(7*k,0x302348,.85*fade);g.strokePoints(M);g.lineStyle(3.5*k,col,fade);g.strokePoints(M);g.lineStyle(1.6*k,0xffffff,.95*fade);g.strokePoints(M);
       for(const S of [sub1,sub2]){ const T=cut(S,f); g.lineStyle(1.6*k,col,.65*fade);g.strokePoints(T);g.lineStyle(.8*k,0xffffff,.6*fade);g.strokePoints(T); }
       if(f>=1){ for(const F of forks){ g.lineStyle(6*k,col,.22*fade);g.strokePoints(F);g.lineStyle(2*k,col,.95*fade);g.strokePoints(F);g.lineStyle(1*k,0xffffff,.8*fade);g.strokePoints(F); }
         for(let i=0;i<3;i++){ const q=main[1+Math.floor(RR()*Math.max(1,main.length-2))]; FC(0xffffff,.9*fade,q.x+(RR()-.5)*8,q.y+(RR()-.5)*8,1.6*k); }
@@ -19044,8 +19059,8 @@ class Game extends Phaser.Scene {
       if(!strike){ FC(col,.35*fade,x1,y1,7*k); FC(0xffffff,.8*fade,x1,y1,2.5*k); } };
     if(!strike)this.taroZapAt?.(x2,y2);
     build(); paint(.45); const on=this.time?.delayedCall&&(typeof CODE_VFX==='undefined'||CODE_VFX.bolt);
-    if(on){ this.time.delayedCall(40,()=>paint(1,1)); this.time.delayedCall(85,()=>{ build(); paint(1,.6); }); this.time.delayedCall(140,()=>{ build(); paint(1,.25,.75); }); } else paint(1,1);
-    return this.taroTrackVisual(g,big?.36:strike?.28:.24);
+    if(on){ this.time.delayedCall(40,()=>paint(1,1)); this.time.delayedCall(85,()=>{ build(); paint(1,.6); }); this.time.delayedCall(140,()=>{ build(); paint(1,.25,.75); }); if(arc)this.time.delayedCall(220,()=>paint(1,0,.45)); } else paint(1,1);
+    return this.taroTrackVisual(g,big?.36:strike?.28:arc?.32:.24);
   }
   taroUpdateVisuals(){const t=this._taro;if(!t?.enabled||this.state!=='play')return;
     for(const fx of t.fx){if(fx._taroSuspended){fx._taroSuspended=false;fx.setVisible(true);}if(fx._taroFuse?.active){const left=Math.max(0,Math.min(1,(fx._taroBombAt-t.time)/.45)),g=fx._taroFuse;g.clear();g.lineStyle(4,0x241c38,1);g.strokeCircle(0,0,24);g.lineStyle(2,0xd9bfff,1);g.beginPath();g.arc(0,0,24,-Math.PI/2,-Math.PI/2+Math.PI*2*left);g.strokePath();}}
@@ -24843,15 +24858,19 @@ const DEVICE_DPR = window.devicePixelRatio||1;
 const LOW_MEMORY_DEVICE = Number(navigator.deviceMemory||8)<=4||_lowMemFlag;   // v7.4 + โหมดหน่วยความจำต่ำหลังกราฟิกดับ
 // v5.50: คุณภาพกราฟิก (0 Auto · 1 Low · 2 High) — ความละเอียด render มีผลตอนเปิดเกมใหม่
 const QUALITY_SETTING=(()=>{try{const d=JSON.parse(localStorage.getItem('mochi_save')||'{}');if(!d||!d.settingsAuto74)return 0;const q=d.settings&&d.settings.quality;return q===0||q===1||q===2?q:0;}catch(e){return 0;}})();
-const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, _lowMemFlag?1.5:9, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):1.5));   // v7.8.92 Auto = 1.5 (เดิม 2 · GPU ทำงานลด ~44%)
+const RENDER_BASE_DPR = Math.max(1, Math.min(DEVICE_DPR, _lowMemFlag?1.5:9, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):1.5));   // v7.8.92 Auto = 1.5 (เดิม 2 · GPU ทำงานลด ~44%)
 // v7.0 เล่นบนคอม (ไม่มีจอสัมผัส): บีบเป็นจอแนวตั้งแบบมือถือ 9:16 ตรงกลางจอ แทนการยืดเต็มจอกว้าง
 const DESKTOP_FIT=(()=>{ try{ return !window.Capacitor?.isNativePlatform?.()&&!('ontouchstart' in window)&&!(navigator.maxTouchPoints>0); }catch(e){ return false; } })();
 function viewSize(){ const w=window.innerWidth,h=window.innerHeight; if(!DESKTOP_FIT||w<=h*0.62)return {w,h,fit:false}; return {w:Math.round(h*9/16),h,fit:true}; }
+/* v8.1.164 เจ้าของ (Honor Pad 9): UI เล็กไปบนแท็บเล็ต → ขยาย layout ทั้งเกมตามด้านสั้นของจอ (มือถือ ≤430 = ×1 · 600 = ×1.22 · 800 = ×1.45 สูงสุด) · canvas/GPU เท่าเดิม แค่พิกัด layout เล็กลงแล้วกล้อง zoom ขึ้น · โลกในเกมขนาดเท่าเดิม */
+function uiScaleFor(w,h,fit){ if(fit||DESKTOP_FIT)return 1; const s=Math.min(w,h); return Math.max(1,Math.min(1.45,Math.pow(s/430,.6))); }
 function applyCanvasFit(){ const v=viewSize(); let st=document.getElementById('desk-fit'); if(!st){ st=document.createElement('style'); st.id='desk-fit'; document.head.appendChild(st); }
   st.textContent=v.fit?'canvas{left:calc(50% - '+(v.w/2)+'px)!important;right:auto!important;width:'+v.w+'px!important;box-shadow:0 0 40px rgba(0,0,0,.6);}':''; return v; }
 const _vs0=applyCanvasFit();
-const RENDER_W = Math.max(1,Math.round(_vs0.w*RENDER_DPR));
-const RENDER_H = Math.max(1,Math.round(_vs0.h*RENDER_DPR));
+const UI_SCALE=uiScaleFor(_vs0.w,_vs0.h,_vs0.fit);
+const RENDER_DPR=RENDER_BASE_DPR*UI_SCALE;   // layout px → backing px (รวมตัวขยาย UI)
+const RENDER_W = Math.max(1,Math.round(_vs0.w*RENDER_BASE_DPR));
+const RENDER_H = Math.max(1,Math.round(_vs0.h*RENDER_BASE_DPR));
 // Phaser Text มี CanvasTexture แยกและค่าเริ่มต้น resolution 1 จึงต้องเพิ่มตาม DPR เช่นกัน
 const _textFactory=Phaser.GameObjects.GameObjectFactory.prototype.text;
 Phaser.GameObjects.GameObjectFactory.prototype.text=function(x,y,value,style){
@@ -24884,7 +24903,7 @@ window.__g = new Phaser.Game({
 let _rzT=null;
 function _applyResize(){ const g=window.__g; if(!g||!g.scale)return;
   const v=applyCanvasFit(), w=v.w, h=v.h;
-  g.scale.resize(Math.round(w*RENDER_DPR),Math.round(h*RENDER_DPR)); g.scale.refresh(); }
+  g.scale.resize(Math.round(w*RENDER_BASE_DPR),Math.round(h*RENDER_BASE_DPR)); g.scale.refresh(); }
 function _scheduleResize(){ clearTimeout(_rzT); _rzT=setTimeout(_applyResize,160); _applyResize(); }
 window.addEventListener('resize', _scheduleResize);
 window.addEventListener('orientationchange', ()=>{ setTimeout(_applyResize,60); setTimeout(_applyResize,300); setTimeout(_applyResize,600); });
