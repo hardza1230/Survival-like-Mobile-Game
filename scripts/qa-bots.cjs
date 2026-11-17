@@ -119,7 +119,7 @@ async function runStage(browser,port,job){
   if(process.env.QA_SHOT_DIR&&(errs.length||res.stuck.length||!['summary','win','dead','over','timeout'].includes(res.result)))await page.screenshot({path:path.join(process.env.QA_SHOT_DIR,job.id.replace(/[^a-z0-9.@_-]/gi,'_')+'.png')}).catch(()=>{});
   await ctx.close();return res;}
 
-function runMenus(job){const out=path.resolve('qa-menus-'+SH_I+'.json');const r=spawnSync(process.execPath,[path.join(__dirname,'qa-menus.cjs'),'30',out],{stdio:'inherit',env:process.env,timeout:20*60*1000});
+function runMenus(job){const out=path.resolve('qa-menus-'+SH_I+'.json');const r=spawnSync(process.execPath,[path.join(__dirname,'qa-menus.cjs'),'30',out],{stdio:'inherit',env:process.env,timeout:15*60*1000,killSignal:'SIGKILL'});
   let data=null;try{data=JSON.parse(fs.readFileSync(out,'utf8'));}catch(e){}
   const errs=[],cerr=[];for(const sc of (data&&data.screens)||[])for(const h of (Array.isArray(sc.problems)?sc.problems:[]))for(const e of h.errors||[])errs.push(sc.screen+' ['+(h.tap||'?')+']: '+String(e).slice(0,240));
   return {id:job.id,persona:'menus',result:r.status===0?'done':'exit '+r.status,errors:errs,consoleErrors:cerr,stuck:[],menus:data};}

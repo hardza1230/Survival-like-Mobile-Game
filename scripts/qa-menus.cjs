@@ -22,6 +22,8 @@ const SCREENS=['hub','endgame','atlas','dig','upgrade','perks','skills','recipes
     try{const dv=delveSave();for(let D=1;D<=30;D++)delveRow(D).forEach(n=>{dv.clears[n.id]=1;});dv.best=30;}catch(e){}
     try{const s=window.__g.scene.getScene('Game');for(let i=0;i<12;i++)s.grantGear?.(['common','magic','rare','epic'][i%4]);}catch(e){}
     Save.save();});
+  // v8.1.165: Sign out / reset buttons reload the page by design → stub them so the monkey keeps its rich save and its page
+  await page.evaluate(()=>{const s=window.__g.scene.getScene('Game');s.wipeAndRestart=async function(){window.__qaWiped=(window.__qaWiped||0)+1;};});
   const report={date:new Date().toISOString(),version:await page.evaluate(()=>GAME_VERSION),screens:[]};
   for(const sc of SCREENS){
     errs=[];const hits=[];let taps=0,left=0;
@@ -44,4 +46,4 @@ const SCREENS=['hub','endgame','atlas','dig','upgrade','perks','skills','recipes
     fs.writeFileSync(OUT,JSON.stringify(report,null,1));
   }
   await browser.close();server.close();
-})().catch(e=>{console.error(e);process.exitCode=1;});
+})().catch(e=>{console.error(e);process.exit(1);});   // exit hard: an open server/browser must not keep the job alive

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.164';
+const GAME_VERSION = '8.1.165';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.165',date:'2026-11-17',title:'QA bot suite + no duplicate texture loads when a story comic reopens',items:['b']},
   {v:'8.1.164',date:'2026-11-17',title:'Arc bolt brighter, Capture slower, missions roam to other stages, bigger UI on tablets',items:['b']},
   {v:'8.1.163',date:'2026-11-17',title:'Taro stronger vs bosses: Arc 4 hits, Spark re-hit 0.2s, Sentry orbs linger on bosses',items:['b']},
   {v:'8.1.162',date:'2026-11-16',title:'Clean Air → Lost Wisps (dark forest) + Taro lightning C/B/A (owner)',items:['b']},
@@ -9907,7 +9908,8 @@ class Game extends Phaser.Scene {
   prioritizeLoad(keys){ try{ const L=this.load.list; if(!L||!L.entries||!L.entries.length)return; const ks=new Set(keys),arr=L.entries; const front=arr.filter(f=>ks.has(f.key)); if(!front.length)return; const rest=arr.filter(f=>!ks.has(f.key)); arr.length=0; front.concat(rest).forEach(f=>arr.push(f)); }catch(e){} }
   ensureGroup(re,done,opts={}){ const need=[],hit=typeof re==='function'?re:((k,u)=>re.test(u||''));
     const real=k=>{ if(!this.textures.exists(k))return false; const src=this.textures.get(k).getSourceImage(); return !(src instanceof HTMLCanvasElement); };
-    const add=(k,fn)=>{ if(real(k))return; this.texSafeRemove(k); need.push(k); fn(); };
+    const inQ=k=>{ const L=this.load,E=S=>S?(S.entries||(S.values?[...S.values()]:[])):[]; return [L.list,L.inflight,L.queue].some(S=>E(S).some(f=>f.key===k)); };
+    const add=(k,fn)=>{ if(real(k))return; need.push(k); if(inQ(k))return; this.texSafeRemove(k); fn(); };   /* v8.1.165 QA bot: กำลังโหลดอยู่แล้ว (เช่น คัตซีนถูกข้ามแล้วเปิดใหม่) → ไม่สั่งโหลดซ้ำ (เดิม "Texture key already in use") */
     for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if((opts.all||(!k.startsWith('screen_')&&!deferredImage(k)))&&hit(k,u))add(k,()=>this.load.image(k,verUrl(u))); }
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if((opts.all||!STAGE_SHEET_KEYS.has(k))&&hit(k,sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
     if(opts.fx)for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(hit(k,fx.url))add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh})); }
