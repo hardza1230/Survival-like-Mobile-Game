@@ -9,7 +9,7 @@ vm.runInContext(s.slice(s.indexOf('const A07_CATALOG = '),s.indexOf('const Voice
 const C=vm.runInContext('A07_CATALOG',ctx),B=vm.runInContext('A07_BY_TEXT',ctx),T=vm.runInContext('RUBY_TIPS',ctx);
 for(const r of M){const b=fs.readFileSync('assets/audio/acting/'+r.file);assert.equal(P.sha('assets/audio/acting/'+r.file,b),r.sha256,r.key);assert.equal(C[r.key].text,r.text);assert.equal(C[r.key].role,'ruby');assert(s.includes('"url":"assets/audio/acting/'+r.file+'"'));}
 const lookup=t=>B.get('ruby|'+String(t).replace(/\s+·\s+\d+\/\d+$/,'').replace(/[\[\]]/g,''));
-for(const k in T)if(T[k].short&&k!=='cleanAir'){assert.equal(lookup(T[k].short),'vo_ruby_short_'+k,k);assert.equal(lookup(T[k].short+'  ·  3/10'),'vo_ruby_short_'+k,'progress suffix ignored');}
+for(const k in T)if(T[k].short&&k!=='cleanAir'&&k!=='capture'){assert.equal(lookup(T[k].short),'vo_ruby_short_'+k,k);assert.equal(lookup(T[k].short+'  ·  3/10'),'vo_ruby_short_'+k,'progress suffix ignored');}
 assert(s.includes(".replace(/\\s+·\\s+\\d+\\/\\d+$/,'')"),'runtime lookup strips progress');
 // rubyReact rotation, 8s throttle, clear speaks without bubble
 let now=100000;const said=[],spoke=[];const sc={state:'play',rubyOn:()=>true,rubySay:t=>said.push(t),voiceLine:(r,t)=>spoke.push(t),time:null};
@@ -22,5 +22,5 @@ assert(s.includes('startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._ruby
 console.log('Ruby A09: 28 verified clips, 14 short reminders matched (progress-safe), 7 reactions hooked, rotation/throttle/clear passed');
 // v8.1.108 A13: 31 Ruby clips (core lore + 14 mission tips/shorts) present, hashed, and found by text
 {const M13=JSON.parse(fs.readFileSync('assets/incoming/audio_ruby_a13/MANIFEST.json','utf8'));assert.equal(M13.length,31);for(const r of M13){const b=fs.readFileSync('assets/audio/acting/'+r.file);assert.equal(P.sha('assets/audio/acting/'+r.file,b),r.sha256,r.key);assert.equal(C[r.key].text,r.text);assert.equal(lookup(r.text),r.key,r.key);}
-for(const k in T){if(k==='cleanAir')continue; /* v8.1.162 Lost Wisps: new text, voice re-record pending (docs/audio_orders/A15_RUBY_LOST_WISPS.md) */ assert.equal(lookup(T[k].say),'vo_ruby_tip_'+k,'tip voiced '+k);}
+for(const k in T){if(k==='cleanAir'||k==='capture')continue; /* v8.2.4 Hunger Crack: new text, old ring voice stays silent */ /* v8.1.162 Lost Wisps: new text, voice re-record pending (docs/audio_orders/A15_RUBY_LOST_WISPS.md) */ assert.equal(lookup(T[k].say),'vo_ruby_tip_'+k,'tip voiced '+k);}
 const cl=/const CORE_LORE_LINES=\[(.*?)\];/.exec(s)[1].match(/'((?:[^'\\]|\\.)*)'/g).map(x=>x.slice(1,-1));cl.forEach((t,i)=>assert.equal(lookup(t),'vo_ruby_core_'+(i+1)));console.log('A13 Ruby voice: 31 clips, every mission tip and core-lore page voiced passed');}

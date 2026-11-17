@@ -223,7 +223,7 @@ for(const contract of ["chapter2_cover:'assets/ui/chapter2_cover.webp'","bg6:'as
 }
 if(source.includes("e.setTintFill(crit?0xffe08a:0xffffff)"))throw new Error('Per-hit white fill obscures enemy artwork');
 if(!source.includes("this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit)"))throw new Error('Readable hit feedback contract is missing');
-for(const contract of ["survive:{emoji:'⏳'","hunt:{emoji:'🎯'","capture:{emoji:'🔷'","this.waveNodes=this.physics.add.group","this.setupWaveObjective(w,p)","this.tickWaveObjective(dt)","this.completeWaveObjective()"]){
+for(const contract of ["survive:{emoji:'⏳'","hunt:{emoji:'🎯'","capture:{emoji:'🕳️'","this.waveNodes=this.physics.add.group","this.setupWaveObjective(w,p)","this.tickWaveObjective(dt)","this.completeWaveObjective()"]){
   if(!source.includes(contract))throw new Error(`Missing wave mission contract: ${contract}`);
 }
 if(source.includes("if(this.stageIndex>4)return"))throw new Error('Chapter 2 objectives must not be disabled by a hard-coded stage boundary');
