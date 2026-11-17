@@ -115,7 +115,7 @@ async function runStage(browser,port,job){
     return {mx,missions:window.__qaMis||[],picks:(window.__qaPicks||[]).slice(0,40),path:s.basicAttack?.path||null};}).catch(()=>({}));
   Object.assign(res,{mx:tail.mx||null,missions:tail.missions||[],picks:tail.picks||[],path:tail.path||null});
   if(fps.length){res.fpsMin=Math.round(Math.min(...fps));res.fpsAvg=Math.round(fps.reduce((a,b)=>a+b,0)/fps.length);}res.heapMaxMB=Math.round(heap);res.texMaxMB=Math.round(tex);
-  if(process.env.QA_SHOT_DIR&&(errs.length||res.stuck.length||!['summary','win','dead','over'].includes(res.result)))await page.screenshot({path:path.join(process.env.QA_SHOT_DIR,job.id.replace(/[^a-z0-9.@_-]/gi,'_')+'.png')}).catch(()=>{});
+  if(process.env.QA_SHOT_DIR&&(errs.length||res.stuck.length||!['summary','win','dead','over','timeout'].includes(res.result)))await page.screenshot({path:path.join(process.env.QA_SHOT_DIR,job.id.replace(/[^a-z0-9.@_-]/gi,'_')+'.png')}).catch(()=>{});
   await ctx.close();return res;}
 
 function runMenus(job){const out=path.resolve('qa-menus-'+SH_I+'.json');const r=spawnSync(process.execPath,[path.join(__dirname,'qa-menus.cjs'),'30',out],{stdio:'inherit',env:process.env,timeout:20*60*1000});
