@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.166**. Next release:8.1.167. Fetch the deploy branch before new work.
+Current release: **8.1.167**. Next release:8.1.168. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.166 — Android package name → com.oheart.mochimayhem (Play Console)
+# Latest delivery: v8.1.167 — Sign in with Google / Play as Guest on the title screen (owner)
+
+Owner: login was only in Settings → `buildTitle` now asks first. Not signed in with Google (cloud available) → two buttons under the logo: **Sign in with Google** (`doGoogleAuth(false)`; on Android the deep link comes back and `Cloud._onLogin` rebuilds the title) and **▶ Play as Guest** (the old tap-to-start flow: book opening / tutorial / Lobby) + a small line "Guest progress stays on this device · sign in later in Settings". Signed in with Google → TAP TO START as before + "☁️ <email>". Cloud SDK missing → TAP TO START as before. The session is restored with `Cloud.ensureClient()` once per title; if the Google state differs the title rebuilds. Settings → Cloud Save Account is unchanged.
+
+# Previous delivery: v8.1.166 — Android package name → com.oheart.mochimayhem (Play Console)
 
 `com.mochimayhem.game` is already taken on Google Play, so the owner created the app as **`com.oheart.mochimayhem`** (17 Nov). Changed: `capacitor.config.json` appId; Google login deep link in game.js (`com.oheart.mochimayhem://login-callback`, 2 places); `scripts/set-android-landscape.mjs` now reads the appId from capacitor.config.json for the OAuth intent-filter scheme and the MainActivity package/path; privacy.html and docs/STORE_LISTING.md. **Owner:** add `com.oheart.mochimayhem://login-callback` to Supabase → Authentication → URL Configuration → Redirect URLs. The new APK installs as a separate app from the old debug APK (old local save stays in the old app; cloud save carries over after Google sign-in).
-
-# Previous delivery: v8.1.165 — QA bot suite (owner) + duplicate texture load fix found by the bots
-
-**QA bots (owner):** `scripts/qa-bots.cjs` personas — build (5 heroes × 3 paths, kiting), cards (first/random/relic/modifier), missions (walk onto every objective), idle, mortal (no god), screens (tablet 800×1280, small 360×640, rotate mid-run), stress (Low + ×3), endgame (8 Delve rooms + Pinnacle), menus (`qa-menus.cjs`, own job). Fresh save + GM ×10 damage; records errors/console/stuck, missions started/ended, FPS/heap/texture MB and the Combat Meter summary. `.github/workflows/qa-bots.yml`: 10 shards + menus job in parallel, nightly 19:40 UTC or Run workflow; `qa-bots-report.cjs` merges a Markdown report (job summary + log + artifact; build table is comparison only). First run (v8.1.164): 50 runs, 0 page errors, 0 stuck. The menu monkey found two things: tapping Sign out reloads by design (now stubbed in the bot; the bot also exits on a crash instead of hanging) and **"Texture key already in use: cs61_…"** after a story comic was skipped and reopened while its art was still loading → `ensureGroup` no longer queues a key that is already in the loader (still waits for it).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

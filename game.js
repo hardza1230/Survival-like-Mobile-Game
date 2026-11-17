@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.166';
+const GAME_VERSION = '8.1.167';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.167',date:'2026-11-17',title:'Sign in with Google or Play as Guest on the title screen',items:['b']},
   {v:'8.1.166',date:'2026-11-17',title:'Android package name com.oheart.mochimayhem for Google Play',items:['b']},
   {v:'8.1.165',date:'2026-11-17',title:'QA bot suite + no duplicate texture loads when a story comic reopens',items:['b']},
   {v:'8.1.164',date:'2026-11-17',title:'Arc bolt brighter, Capture slower, missions roam to other stages, bigger UI on tablets',items:['b']},
@@ -9666,7 +9667,7 @@ class Game extends Phaser.Scene {
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
     if(!Save._cloudReady&&Save.syncCloud){ Save.syncCloud().then(()=>{ if(Save._cloudConflict&&this.state==='menu'){ this.buildMenuScreen(); return; } if(Save._cloudAdopted&&this.state==='menu'){ this.buildMenuScreen&&this.buildMenuScreen(); if(this.showBanner)this.showBanner('☁️ Cloud sync','Loaded your latest progress from the cloud',1600); } }); }   // ซิงค์เซฟกับ Supabase (กันเซฟหาย)
     // ในแอป: หลังLockedอิน Google เด้งกลับผ่าน deep link → ซิงค์ + Updatesหน้าSettings + แจ้งผล
-    if(typeof Cloud!=='undefined'){ Cloud._onLogin=()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud().then(()=>{ if((Save._cloudConflict||Save._cloudAdopted)&&this.state==='menu')this.buildMenuScreen(); }); this._acctChecked=false; if(this.menuToast)this.menuToast('✅ Signed in with Google','#8bd3a0'); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); }; if(Cloud.bindDeepLink)Cloud.ensureClient&&Cloud.ensureClient(); }
+    if(typeof Cloud!=='undefined'){ Cloud._onLogin=()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud().then(()=>{ if((Save._cloudConflict||Save._cloudAdopted)&&this.state==='menu')this.buildMenuScreen(); }); this._acctChecked=false; if(this.menuToast)this.menuToast('✅ Signed in with Google','#8bd3a0'); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); if(this.state==='menu'&&this.menuScreen==='title'&&!this._titleGo)this.buildTitle(); }; if(Cloud.bindDeepLink)Cloud.ensureClient&&Cloud.ensureClient(); }
 
     this.cameras.main.removeBounds();   // v7.6.1 กล้องอยู่กลางตัวละครเสมอ (เดิมชนขอบโลก → ขอบล่าง/ชาร์จสไนเปอร์ซูมออก ตัวละครหลุดไปล่างจอ วงเล็งไม่ตรง) · พื้นวาดตามมุมกล้องอยู่แล้ว
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
@@ -13116,14 +13117,29 @@ class Game extends Phaser.Scene {
     const logoW=Math.min(w*.86,460),logoH=logoW*310/1200,logoY=h*.62;this.startHubAmbience(h*.5);this.loadBook?.();this.loadBookPlus?.();if(!Save.data.tutorialDone)this.loadTutArt?.();
     if(this.textures.exists('hub_ui_logo')){ const logo=this.hubArt('logo',w/2,logoY,logoW,logoH);this.hubTween({targets:logo,y:logoY+3,duration:2600,yoyo:true,repeat:-1,ease:'Sine.inOut'});this.hubEvery?.(5000,1500,()=>this.hubFlash('vfx_hub_logo_shine',w/2,logoY,logoW,logoH)); }
     else this.menu.add(this.add.text(w/2,logoY,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(40,w*.1))+'px',color:'#fff0df',stroke:'#5a2440',strokeThickness:6}).setOrigin(.5));
-    const ty=Math.min(h*.82,logoY+logoH/2+h*.12),tap=this.add.text(w/2,ty,'TAP TO START',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(24,w*.062))+'px',color:'#ffe08a',stroke:'#3a1830',strokeThickness:5}).setOrigin(.5);this.menu.add(tap);
-    tap._noEnter=true;this.hubTween({targets:tap,alpha:{from:1,to:.35},scale:{from:1,to:.94},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const ty=Math.min(h*.82,logoY+logoH/2+h*.12);
     this.hubText(w/2,h-Math.max(18,h*.03),'v'+GAME_VERSION,11,'#d9cce6',.5);
-    this._zone(0,0,w,h,()=>{ if(this._titleGo)return; this._titleGo=true; Sfx.ui?.();
+    /* v8.1.167 เจ้าของ: เลือก Sign in with Google หรือ Play as Guest ตั้งแต่หน้าเปิดเกม (เดิมอยู่แค่ใน Settings) · ล็อกอินแล้ว = TAP TO START + บอกบัญชี */
+    const C=typeof Cloud!=='undefined'?Cloud:null,cloudOn=!!(C&&C.enabled&&C.enabled()),isG=!!(C&&C.isGoogle&&C.isGoogle());
+    if(cloudOn&&!this._titleAuthChecked&&C.ensureClient){ this._titleAuthChecked=true; C.ensureClient().then(()=>{ if(this.state==='menu'&&this.menuScreen==='title'&&!this._titleGo&&!!C.isGoogle()!==isG)this.buildTitle(); }).catch(()=>{}); }
+    const start=()=>{ if(this._titleGo)return; this._titleGo=true; Sfx.ui?.();
       if(Save.data.tutorialDone&&this.bookReady()&&this.hubMotionAllowed()&&this.bookOpening){ const tut=!Save.data.tutorialDone; this.bookOpening(()=>{ this._titleGo=false; if(this.state!=='menu')return; this.menuScreen='hub'; if(tut){ this.startChapterTutorial(); return; } this.buildMenuScreen(); },!tut); return; }   // v7.9.68 เปิดหนังสือช้า ๆ ก่อนเข้า Lobby / บทสอน
       if(!Save.data.tutorialDone){ this._titleGo=false; this.menuScreen='hub'; if(this.mcGateList?.(['s00','s01'],()=>this.startChapterTutorial()))return; this.startChapterTutorial(); return; }   // v7.9.66 ผู้เล่นใหม่: แตะ → เข้าบทสอนเลย
       this.menuScreen='hub'; this.buildMenuScreen(); this._titleGo=false;
-      });
+      };
+    if(!cloudOn||isG){
+      const tap=this.add.text(w/2,ty,'TAP TO START',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(24,w*.062))+'px',color:'#ffe08a',stroke:'#3a1830',strokeThickness:5}).setOrigin(.5);this.menu.add(tap);
+      tap._noEnter=true;this.hubTween({targets:tap,alpha:{from:1,to:.35},scale:{from:1,to:.94},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+      if(isG)this.hubText(w/2,ty+Math.max(26,h*.04),'☁️ '+(C.accountLabel?.()||'Google account'),11,'#bfe8cf',.5);
+      this._zone(0,0,w,h,start);
+    } else {
+      const bw=Math.min(w*.74,300),bh=46,gap=12,y1=Math.min(ty-6,h-bh*2-gap-70),x0=w/2-bw/2;
+      const btn=(y,label,fill,stroke,col,fn)=>{ const g=this.add.graphics();g.fillStyle(0x140a1e,.55).fillRoundedRect(x0+2,y+4,bw,bh,14);g.fillStyle(fill,1).fillRoundedRect(x0,y,bw,bh,14);g.lineStyle(2,stroke,1).strokeRoundedRect(x0,y,bw,bh,14);
+        const t=this.add.text(w/2,y+bh/2,label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'17px',color:col}).setOrigin(.5);this.menu.add([g,t]);this._zone(x0,y,bw,bh,fn); };
+      btn(y1,'Sign in with Google',0xfff7ec,0xffe08a,'#3a1830',()=>{ if(this._titleGo)return; this.doGoogleAuth(false); });
+      btn(y1+bh+gap,'▶  Play as Guest',0x3a2450,0xb58ad9,'#ffe08a',start);
+      this.hubText(w/2,y1+bh*2+gap+22,'Guest progress stays on this device · sign in later in Settings',10,'#d9cce6',.5);
+    }
     const z=this.tapZones[this.tapZones.length-1]; z.tag='title_start'; z.noBounce=true; }
   buildHub(){
     if(this._navOn&&this.W<this.H)return this.buildLobby();
