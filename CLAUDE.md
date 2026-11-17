@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.162**. Next release:8.1.163. Fetch the deploy branch before new work.
+Current release: **8.1.163**. Next release:8.1.164. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.162 — Clean Air → "Lost Wisps" (dark forest) + Taro lightning C/B/A (owner)
+# Latest delivery: v8.1.163 — Taro stronger vs bosses (owner picked A+B+C)
+
+Owner: Taro too weak on bosses. Meter data (run_stats): Taro boss DPS in Chapter 1 ~450–520/s (Spark/Sentry) vs Yuzu ~660, Mint ~560; Sentry died on the C1-4 boss. Only boss/mini damage changes, mobs unchanged. **A Arc:** new `TARO_ARC_BOSS_HITS` 4 — boss focus per root = 1 full + 3 loop-backs at 60% (was 1 + 2, v8.0.82) ≈ +25% boss damage; normal loop-back onto a last mob still `TARO_ARC_LOOP_MAX` 2. **B Spark:** `TARO_SPARK_BOSS_GAP` .3 → .2 (one Spark re-hits a boss/mini every 0.2 s). **C Sentry:** in `tickTaroDeployables` Sentry/Beacon orbs move at ×`TARO_ORB_LINGER` (0.3) while within 0.7·radius of a boss/mini (no steering), so they stay zapping longer. Tests: taro-feedback normalizer follows the new boss-hit constant (T5 hash unchanged).
+
+# Previous delivery: v8.1.162 — Clean Air → "Lost Wisps" (dark forest) + Taro lightning C/B/A (owner)
 
 **Lost Wisps (`CLEANAIR_V2`):** lure — one glowing Wisp (no labels, map bright); touching it starts `close`: an iris of darkness closes on the hero over 1 s, full black 0.3 s, then a white burst from the hero and the Wisp splits into 4 (5 from C3) that fly out across the map. `dark`: world-space fog (`cleanAirV2Fog`, RT at depth 94500) with a lantern around the hero (130 → 85 px, dims 2.2 px/s, refills on each free), permanent light (r 260) where Wisps were freed; Wisps pulse every 3 s above the fog and the objective arrow points to the nearest one; every 2.4 s 2–3 monsters emerge from the dark ahead of the hero's movement (glowing eyes for 0.6 s, then `spawnEnemy` + `spawnRise`). Standing within 85 px charges 1.5 s (arc ring; leaving pauses, never resets; `event_wisp_purify_charge`), then a light burst (code shock, normal enemies −60% max HP + knockback, elites −15%), Sugar 4+1.2×stage. All freed → Wisps fly to the hero, flash, fog lifts in 1 s, `completeWaveObjective`; done within 45 s of darkness = ×3 Sugar bonus. No ▶/auto start (not armable). HUD "n / N 🌟". Ruby tip text updated; the old voice lines talk about the ring, so they stay silent until audio order **A15** (2 lines) arrives. **Taro:** C — Unique chain hops 45 ms apart (bolt, ring and damage together); B — `taroZapReact` jolts the hit enemy's angle for 0.12 s + a pale flash (≤ once / 0.15 s; hooked on bolt ends via `taroZapAt` because the T5 damage resolvers are hash-locked); A — `taroChainStop` 30 ms hit-stop at most every 0.7 s. Tests: new cleanair-v2; ruby-a09-voice skips cleanAir until A15.
-
-# Previous delivery: v8.1.161 — Clean Air fog fixes + camera a bit farther (owner 🐞 ×3, v8.1.160)
-
-**Clean Air:** the lit area did not line up with the ring → `cleanAirFogWar` now draws in world space (a RenderTexture covering the camera's `worldView` + 60 px pad, moved there every frame, depth 94500) so holes use world coordinates directly (no zoom/scroll conversion). Before the hero steps in the map stays bright (no fog while armed); after the start the darkness falls over 1.6 s (`c.dark`), then the walked trail / ring (×1.12) / hero (90 px) stay open. Clutter: the "Follow the Wisp" banner is gone (small float text instead) and the ring label is "⬇ Step in". **Camera:** base zoom 0.78 → 0.74 (~5% farther, `computeViewZoom`). Tests: cleanair-fogwar and foe-shadow updated.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

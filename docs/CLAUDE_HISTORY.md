@@ -4064,3 +4064,8 @@ Owner: the "flower" was the heal of Cocoa's Bear Grit Slam (Unique before a Buil
 
 Owner: the code lightning still looked plain. `taroLightningVisual` now animates each bolt in one Graphics (same 20-live cap and lifetime): strike-in from the source (45% at once, full at 40 ms), the main bolt (glow / dark outline / colour / white core) plus two thin secondary strands crackling beside it, 1–2 side forks on long links, white sparks popping along the bolt, a white flash + 5–6 spark streaks at the target, a small glowing orb at the source, then two re-jags (85 ms, 140 ms) for flicker with a fading afterglow. Fill calls are optional-guarded for test stubs. Tests: code-vfx-round2 updated.
 
+
+# Delivery: v8.1.161 — Clean Air fog fixes + camera a bit farther (owner 🐞 ×3, v8.1.160)
+
+**Clean Air:** the lit area did not line up with the ring → `cleanAirFogWar` now draws in world space (a RenderTexture covering the camera's `worldView` + 60 px pad, moved there every frame, depth 94500) so holes use world coordinates directly (no zoom/scroll conversion). Before the hero steps in the map stays bright (no fog while armed); after the start the darkness falls over 1.6 s (`c.dark`), then the walked trail / ring (×1.12) / hero (90 px) stay open. Clutter: the "Follow the Wisp" banner is gone (small float text instead) and the ring label is "⬇ Step in". **Camera:** base zoom 0.78 → 0.74 (~5% farther, `computeViewZoom`). Tests: cleanair-fogwar and foe-shadow updated.
+
