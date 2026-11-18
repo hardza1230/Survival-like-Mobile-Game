@@ -1,0 +1,339 @@
+[
+  {
+    "key": "char_yuzu",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Remove top stray pixels in frame 7 (KO); tuck frame 8 citrus/light FX inside cell. Keep Yuzu body height, outfit and pose unchanged. Never shrink the hero body to fix hair/weapon/effect overflow. Re-curve the same hair tips or turn the same weapon inward only, with face, torso, limbs and gesture matching the original.   Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/characters/yuzu_sheet.webp"
+    ],
+    "source": "exec-e57ff9a1-0311-47fc-9d97-dc1e5f946f8b.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_yuzu_attack",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Frames 3-6 citrus fruit and glow are clipped at edges. Reposition/reduce only the effects into the cells, preserve Yuzu body size and pose. Never shrink the hero body to fix hair/weapon/effect overflow. Re-curve the same hair tips or turn the same weapon inward only, with face, torso, limbs and gesture matching the original.   Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/characters/yuzu_attack_sheet.webp"
+    ],
+    "source": "exec-2b724fde-a5db-4836-9ddb-b8cd6c04e879.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_mint_run",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 3 rows, 12 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Re-angle or shorten the spear and tuck ponytail tips so they no longer touch cell edges, preserving the body size and exact running pose per frame. Align feet to a common floor at y118. Never shrink the hero body to fix hair/weapon/effect overflow. Re-curve the same hair tips or turn the same weapon inward only, with face, torso, limbs and gesture matching the original.   Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/char_mint_frostleaf_run_sheet.webp"
+    ],
+    "source": "exec-f9f7af13-5ede-4372-93aa-3d35150b8b57.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_mint_attack",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Body is 19% too small. Enlarge Mint body to match her run reference, keep original attack poses and clothes. Tuck/re-angle spear/hair without shrinking body. Align feet at y118. Never shrink the hero body to fix hair/weapon/effect overflow. Re-curve the same hair tips or turn the same weapon inward only, with face, torso, limbs and gesture matching the original.   Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/char_mint_attack_sheet.webp"
+    ],
+    "source": "exec-5a7bac38-0ca6-40d4-8ec0-d575563fd36b.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_cocoa_run",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 3 rows, 12 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: All frames have ponytail clipped on left. Curve ponytail inward or shorten ONLY its sweep, preserving body scale and running poses. Never shrink the hero body to fix hair/weapon/effect overflow. Re-curve the same hair tips or turn the same weapon inward only, with face, torso, limbs and gesture matching the original.   Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/char_cocoa_run_sheet.webp"
+    ],
+    "source": "exec-f291d78c-c687-43a5-9c89-a87fc6eeb8be.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_mint_attack__snow",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Body is only 74% of run reference. Enlarge body to match skin run sheet within 5%, same attack pose and costume, tuck hair and weapon within margins.  Image 2 is a size reference ONLY, the same costume's run sheet. Body head-to-feet must be 95–100% of the run height, matching 104 pixels per 128px cell. Preserve the action from image 1, do not substitute the running pose. Keep effects smaller and closer to the body so they do not force a smaller hero.  Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/skins69/mint/char_mint_attack__snow.webp",
+      "assets/art/skins69/mint/char_mint_run__snow.webp"
+    ],
+    "source": "exec-5d80987d-bff6-4748-87e7-4398476daf04.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_mint_gale__snow",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Body is only 84% of run reference. Match body height to skin run reference within 5%. Preserve original gale attack poses and FX, arrange FX within margins.  Image 2 is a size reference ONLY, the same costume's run sheet. Body head-to-feet must be 95–100% of the run height, matching 104 pixels per 128px cell. Preserve the action from image 1, do not substitute the running pose. Keep effects smaller and closer to the body so they do not force a smaller hero.  Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/skins69/mint/char_mint_gale__snow.webp",
+      "assets/art/skins69/mint/char_mint_run__snow.webp"
+    ],
+    "source": "exec-1834fdb0-af2b-4886-b0da-0e856d0e7992.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_mint_lance_charged__snow",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Body is only 71% of run reference. Match body height to skin run reference within 5%. Keep charged-lance poses, costume and weapon, tuck effects within margins.  Image 2 is a size reference ONLY, the same costume's run sheet. Body head-to-feet must be 95–100% of the run height, matching 104 pixels per 128px cell. Preserve the action from image 1, do not substitute the running pose. Keep effects smaller and closer to the body so they do not force a smaller hero.  Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/skins69/mint/char_mint_lance_charged__snow.webp",
+      "assets/art/skins69/mint/char_mint_run__snow.webp"
+    ],
+    "source": "exec-cb3170a4-ddbb-403d-8f2d-e5147f7149d6.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_yuzu_attack__summer",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Body is only 86% of skin run reference. Match body height within 5%, same summer costume and attack poses; effects stay inside frame.  Image 2 is a size reference ONLY, the same costume's run sheet. Body head-to-feet must be 95–100% of the run height, matching 119 pixels per 128px cell. Preserve the action from image 1, do not substitute the running pose. Keep effects smaller and closer to the body so they do not force a smaller hero.  Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/skins69/yuzu/char_yuzu_attack__summer.webp",
+      "assets/art/skins69/yuzu/char_yuzu_run__summer.webp"
+    ],
+    "source": "exec-9e9e202f-edd8-42f1-9995-d853be34f8e0.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_yuzu_combo_motion823__summer",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Body is only 87% of skin run reference. Match body height within 5%, preserve combo sequence and summer costume, keep all effects inside.  Image 2 is a size reference ONLY, the same costume's run sheet. Body head-to-feet must be 95–100% of the run height, matching 119 pixels per 128px cell. Preserve the action from image 1, do not substitute the running pose. Keep effects smaller and closer to the body so they do not force a smaller hero.  Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/skins69/yuzu/char_yuzu_combo_motion823__summer.webp",
+      "assets/art/skins69/yuzu/char_yuzu_run__summer.webp"
+    ],
+    "source": "exec-9a279f62-57cd-4dd4-be0c-6f6d3c497857.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_sesame_attack__moon",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Body is only 80% of skin run reference. Enlarge body to match Moon skin run within 5%, same attack poses and costume; keep ornaments within margins.  Image 2 is a size reference ONLY, the same costume's run sheet. Body head-to-feet must be 95–100% of the run height, matching 119.5 pixels per 128px cell. Preserve the action from image 1, do not substitute the running pose. Keep effects smaller and closer to the body so they do not force a smaller hero.  Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/skins69/sesame/char_sesame_attack__moon.webp",
+      "assets/art/skins69/sesame/char_sesame_run__moon.webp"
+    ],
+    "source": "exec-dec53cf4-ea52-44a0-b59c-d44f845ea8e3.png",
+    "selectedImageGenOutput": true,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "char_cocoa_phantom__chef",
+    "tool": "ImageGen",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Body is 23% too large versus Chef skin run. Reduce body height to match run reference within 5%, keeping the exact phantom poses and costume.  Image 2 is a size reference ONLY, the same costume's run sheet. Body head-to-feet must be 95–100% of the run height, matching 115 pixels per 128px cell. Preserve the action from image 1, do not substitute the running pose. Keep effects smaller and closer to the body so they do not force a smaller hero.  Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/skins69/cocoa/char_cocoa_phantom__chef.webp",
+      "assets/art/skins69/cocoa/char_cocoa_run__chef.webp"
+    ],
+    "source": "exec-15bde1f2-5fb4-40a7-8f78-0c6fef551168.png",
+    "selectedImageGenOutput": true,
+    "edits": [
+      {
+        "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-15bde1f2-5fb4-40a7-8f78-0c6fef551168.png",
+        "prompt": "Repair this EXACT 4x2 eight-frame Chef Cocoa phantom-dash sprite sheet. Same hero face, brown hair, chef cap, chef outfit, boxing gauntlets, exact eight body/limb poses and same purple afterimage design. Keep each original pose unchanged. Enlarge the solid brown-costumed Cocoa silhouette relative to the trailing purple ghost so the physical hero nearly fills each square cell height. Shorten the purple trailing afterimages drastically, tuck them behind and immediately beside the ponytail and back, within the hero's own overall width. Make the total width of hero+ghost no more than the height of that complete sprite. The purple ghost must never stretch out as a long horizontal tail. Do not stretch the hero or change the torso/leg poses. Keep transparent 5% margins inside every equal square cell. All eight frames stay in the same 4x2 order. Clean actual alpha zero backing. No stray pixels, ground, shadow, background, text or frame lines.",
+        "base": "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-c8c3dc7a-8faf-4d50-b271-558040bf4cdb.png"
+      }
+    ],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "c3_mini2_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/ch3_bosses/c3_mini2_sheet.webp"
+    ],
+    "source": "assets/art/ch3_bosses/c3_mini2_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "c3_boss2_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/ch3_bosses/c3_boss2_sheet.webp"
+    ],
+    "source": "assets/art/ch3_bosses/c3_boss2_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "e_royal_oven_sentinel_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/e_royal_oven_sentinel_sheet.webp"
+    ],
+    "source": "assets/e_royal_oven_sentinel_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "mb7_fungal_juggernaut_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 1 rows, 4 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/mb7_fungal_juggernaut_sheet.webp"
+    ],
+    "source": "assets/mb7_fungal_juggernaut_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "c3_mini4_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/ch3_bosses/c3_mini4_sheet.webp"
+    ],
+    "source": "assets/art/ch3_bosses/c3_mini4_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "mb6_sporewarden_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/mb6_sporewarden_sheet.webp"
+    ],
+    "source": "assets/mb6_sporewarden_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "boss6_rootmother_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/boss6_rootmother_sheet.webp"
+    ],
+    "source": "assets/boss6_rootmother_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "mb5_banquet_executioner_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/mb5_banquet_executioner_sheet.webp"
+    ],
+    "source": "assets/mb5_banquet_executioner_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "c3_boss1_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/ch3_bosses/c3_boss1_sheet.webp"
+    ],
+    "source": "assets/art/ch3_bosses/c3_boss1_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "c3_boss3_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/ch3_bosses/c3_boss3_sheet.webp"
+    ],
+    "source": "assets/art/ch3_bosses/c3_boss3_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "c3_boss5_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/ch3_bosses/c3_boss5_sheet.webp"
+    ],
+    "source": "assets/art/ch3_bosses/c3_boss5_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "c3_mini3_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/ch3_bosses/c3_mini3_sheet.webp"
+    ],
+    "source": "assets/art/ch3_bosses/c3_mini3_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "c3_mini5_sheet",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 4 columns x 2 rows, 8 frames; do not merge, duplicate, reorder or omit frames. Every cell square. Actual transparent alpha backing, alpha zero between and around sprites. Strip any stray grey backing speckles, white haze or halos. Specific repair: Shrink the complete original art in EACH cell uniformly to 90% about its ground anchor; maintain the same body, design, face, pose, palette and effects. Tuck clipped aura/root/slash ends into the available margin, remove only stray pixels. Align the virtual ground near 92% height.   Uniformly reduce the ENTIRE original figure and effects by about 10% within each existing cell. All root and sword tips, leaf edges and aura glows must have a complete clean silhouette rather than a straight clipped end. Keep same pose per cell. All sprites use one fixed ground anchor around 92% cell height. Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/ch3_bosses/c3_mini5_sheet.webp"
+    ],
+    "source": "assets/art/ch3_bosses/c3_mini5_sheet.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "vfx_b14_vault_ring",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 1 columns x 4 rows, 4 frames; do not merge, duplicate, reorder or omit frames. Each cell is 128:64 wide. Pure flat BLACK #000 backing, not transparent. Specific repair: Shrink the existing ring in each frame to 90%, centered in the same frame. Preserve ring shape, colors, exact sequence; pure solid black #000 background, empty 4% margin.    Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/boss_vfx/vfx_b14_vault_ring.webp"
+    ],
+    "source": "assets/art/boss_vfx/vfx_b14_vault_ring.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  },
+  {
+    "key": "vfx_bpin_jaw_ring",
+    "tool": "Deterministic transform of original pixels",
+    "prompt": "Precise repair of the existing sprite atlas in image 1. Use its pixels and design as the base, preserve all faces, colors, costumes, materials, weapons, the exact body pose and action in EVERY frame. No new designs. Working grid is 1 columns x 4 rows, 4 frames; do not merge, duplicate, reorder or omit frames. Each cell is 128:64 wide. Pure flat BLACK #000 backing, not transparent. Specific repair: Shrink the existing ring in each frame to 90%, centered in the same frame. Preserve ring shape, colors, exact sequence; pure solid black #000 background, empty 4% margin.    Every frame needs an EMPTY border of at least 4% on all four sides, including glows, stray particles and weapons. Do not change the atlas framing/camera direction. No underfoot shadow, text, numbers, cell labels, separators, new ornaments, checkerboard, watermark, red damage tint or background. Preserve the existing illustration style exactly; this is restoration, not a stylistic redraw.",
+    "references": [
+      "assets/art/boss_vfx/vfx_bpin_jaw_ring.webp"
+    ],
+    "source": "assets/art/boss_vfx/vfx_bpin_jaw_ring.webp",
+    "selectedImageGenOutput": false,
+    "edits": [],
+    "packing": "Equal-grid extraction, alpha speckle cleanup, body-height/anchor alignment and inward outer-tip placement for A/B; original C pixels at 230/256 scale around y236 with only below-floor FX tucked above y246; original D ring at 90% on #000."
+  }
+]

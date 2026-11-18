@@ -16,7 +16,7 @@
 | 7 | `docs/art_orders/82_BUILD_PATH_UNIQUE_ART.md` | ภาพ Build Path เต็มการ์ดแนวนอน 1024×424 เน้น Unique · 6 ฮีโร่ × 3 | 18 | ImageGen | `assets/incoming/pathuq82/` | 🟢 ผูกแล้ว v8.1.146 (15/18 · งาดำไม่ใช้) |
 | 8 | `docs/audio_orders/A14_CHEST_OPENING.md` | เสียงลุ้นเปิดกล่อง + ระเบิด 4 ระดับ + ประกาย/ไอเทมลง/ของซ้ำ | 8 | ElevenLabs Sound Effects | `assets/incoming/audio_chest_a14/` | 🟢 ผูกแล้ว v8.1.147 · รอเจ้าของฟังบนมือถือ |
 | 9 | `docs/art_orders/83_HERO_HURT_VICTORY.md` | **ท่าโดนตี 4 + ท่าชนะ 5 ฮีโร่ + ชุดสกิน Festival** (เฟรม 256 · ตัวสูงเท่าชีตวิ่ง) | 18 | ImageGen | `assets/incoming/hero_poses83/` | 🟡 รออาร์ต |
-| 11 | `docs/art_orders/84_ART_FIXES.md` | **แก้ภาพที่มีปัญหา** ตัดขอบ · ตัวหด · เศษภาพ (ใช้ภาพเดิมเป็นต้นแบบ) | 27 | ImageGen (แก้ภาพเดิม) | `assets/incoming/art_fixes84/` | 🟡 รออาร์ต |
+| 11 | `docs/art_orders/84_ART_FIXES.md` | **แก้ภาพที่มีปัญหา** ตัดขอบ · ตัวหด · เศษภาพ (ใช้ภาพเดิมเป็นต้นแบบ) | 27 | ImageGen (แก้ภาพเดิม) | `assets/incoming/art_fixes84/` | 📦 ส่งแล้ว รอผูก · 27/27 |
 | 10 | `docs/audio_orders/A15_RUBY_LOST_WISPS.md` | **Ruby พากย์** ภารกิจที่เปลี่ยนใหม่ 4 อย่าง (tip + short) | 8 | ElevenLabs TTS (เสียง Ruby เดิม) | `assets/incoming/audio_ruby_a15/` | 🟡 รอเสียง |
 | — | `docs/audio_orders/A04_STORY_MUSIC_STINGERS.md` | เพลงเรื่อง/Lobby | 6 | ElevenLabs Music | `assets/incoming/audio_story_music/` | 🟢 ส่งและผูกครบ · เจ้าของฟังแล้วโอเค 8 พ.ย. 2026 |
 

@@ -37,7 +37,7 @@
 | 81 | `81_RELICS_SPECIAL_ICONS.md` | ไอคอน Relic ที่ขาด 8 · ไอคอน Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3 · (ไม่บังคับ) แก้การ์ด Cocoa Titan/Dash Boxer 2 | 54 | 🟠 | ✅ ผูกแล้ว v8.1.151 (ไอคอน 49 · การ์ด Yuzu 3 ไม่ใช้ — เจ้าของ: ใบ 82 มีแล้ว) |
 | 82 | `82_BUILD_PATH_UNIQUE_ART.md` | ภาพการ์ด Build Path เต็มการ์ดแนวนอน 1024×424 เน้น Unique Skill ของแต่ละ Build · 6 ฮีโร่ × 3 | 18 | สูง (เลือก Build ทุกด่าน) | 📦 ส่งแล้ว รอผูก · 18/18 |
 | 83 | `83_HERO_HURT_VICTORY.md` | ท่าโดนตี 4 ฮีโร่ (Yuzu/Mint/Taro/Sesame) + ท่าชนะ 5 ฮีโร่ (Momo/Yuzu/Mint/Taro/Sesame) · ชุดสกิน Festival +9 | 18 | ต่ำ (รอไว้ก่อน) | 🟡 รออาร์ต |
-| 84 | `84_ART_FIXES.md` | แก้ภาพ: ฮีโร่โดนขอบตัด/เท้าเลื่อน (Yuzu/Mint/Cocoa) · สกินตัวหดตอนโจมตี 7 · มอน/บอสโดนขอบตัด 13 · VFX 2 | 27 | กลาง | 🟡 รออาร์ต |
+| 84 | `84_ART_FIXES.md` | แก้ภาพ: ฮีโร่โดนขอบตัด/เท้าเลื่อน (Yuzu/Mint/Cocoa) · สกินตัวหดตอนโจมตี 7 · มอน/บอสโดนขอบตัด 13 · VFX 2 | 27 | กลาง | 📦 ส่งแล้ว รอผูก · 27/27 |
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 58 | `58_POWER_FAMILY_EXTRA.md` | ภาพประกอบการ์ดสรุป Weave/Equipment/Merge/Forge + ภาพหน้าว่าง 3 แบบ | 7 | เล็ก | 🟢 ผูกแล้ว v8.0.79 |
