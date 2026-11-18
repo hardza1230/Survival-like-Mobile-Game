@@ -13,7 +13,7 @@ s.player.body.velocity.x=0;s.updatePose(.05);assert.equal(s.player.texture.key,'
 s.player.body.velocity.x=100;s.updatePose(.05);s.animatePlayer(0);assert.equal(s.player.texture.key,'char_mint_run');assert.equal(+s.player.scaleX.toFixed(4),+(.5*1.08).toFixed(4),'v8.2.9 short squash on sheet switch');s._sqX=1;s._sqY=1;
 s.poseAttack(520,'char_mint_gale');s.updatePose(.05);assert.equal(s.player.texture.key,'char_mint_run');
 s.dashTime=.1;s.updatePose(.01);assert.equal(s.player.texture.key,'char_mint');assert.equal(s.player.frame,3);s.dashTime=0;
-s.poseFlash(5,160);s.updatePose(.01);assert.equal(s.player.frame,5);assert.equal(s._attackPoseTime,0);
+{const ex=s.textures.exists;s.textures.exists=k=>!/_hurt$/.test(k);s.poseFlash(5,160);s.updatePose(.01);assert.equal(s.player.frame,5,'no hurt sheet: CF.hurt fallback');assert.equal(s._attackPoseTime,0);s.textures.exists=ex;s._poseHold=0;s.poseFlash(5,160);assert.equal(s.player.texture.key,'char_mint_hurt','v8.2.12 hurt sheet (order 83)');s._poseHold=0;s.player.setTexture('char_mint');}
 s._sqX=.6;s._sqY=1.5;s.animatePlayer(0);assert.equal(+s.player.scaleX.toFixed(4),.425);assert.equal(+s.player.scaleY.toFixed(4),.575);   /* v8.2.9 clamp ±15% */
 for(const ch of ['momo','mint','cocoa','taro','yuzu','sesame','berry']){
  const c=scene(ch);c.updatePose(.1);const t=c._charRunT;
@@ -21,7 +21,7 @@ for(const ch of ['momo','mint','cocoa','taro','yuzu','sesame','berry']){
  assert(Math.abs(c._charRunT-t-.4)<1e-9,ch+' gait continuity');
  c.player.body.velocity.x=0;c.updatePose(.05);assert.equal(c.player.texture.key,'char_'+ch+(ch==='cocoa'?'':'_attack'),ch+' stationary cast');
  c.animatePlayer(.016);assert(Number.isFinite(c.player.scaleX)&&Number.isFinite(c.player.rotation),ch);
- c.poseFlash(5,160);c.updatePose(.01);assert.equal(c.player.frame,ch==='momo'?0:5,ch+' hurt priority');
+ c.poseFlash(5,160);c.updatePose(.01);assert.equal(c.player.frame,ch==='cocoa'?5:0,ch+' hurt priority (v8.2.12: hurt sheets for momo/yuzu/mint/taro/sesame)');
  c.player.body.velocity.x=100;c._poseHold=0;c.dashTime=.1;c.poseAttack(280);c.updatePose(.01);
  assert.equal(c.player.texture.key,ch==='momo'?'char_momo_dash':'char_'+ch+(ch==='cocoa'?'_run':''),ch+' dash priority');
  c.dashTime=0;c._attackPoseTime=0;c.textures.exists=k=>!k.endsWith('_attack');c.poseAttack(280);c.updatePose(.05);

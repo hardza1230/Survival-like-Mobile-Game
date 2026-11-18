@@ -1,6 +1,6 @@
 # 83 — ท่าโดนตี + ท่าชนะของฮีโร่ · ใบสั่งงานอาร์ต
 
-สถานะ: 📦 ส่งแล้ว รอผูก · 18/18
+สถานะ: 🟢 ผูกแล้ว v8.2.12 · รอ QA มือถือ · 18/18 · pack `scripts/pack-hero-poses83.py` → `assets/art/hero_poses83/` (เฟรม 128 · 654 KB) · hero-lazy · โดนตี = ทุกฮีโร่ (ยกเว้น Cocoa ใช้ชีตเดิม) · ท่าชนะ = จบเวฟ + เหรียญหน้าสรุป (เฟรม 8)
 ส่งไฟล์ที่ `assets/incoming/hero_poses83/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 

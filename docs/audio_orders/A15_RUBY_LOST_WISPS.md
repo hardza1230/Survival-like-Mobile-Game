@@ -1,6 +1,6 @@
 # A15 — Ruby เสียงพากย์ภารกิจที่เปลี่ยนใหม่ (Hunger Crack · Clear the Fog · Lure the Crown Root · Seed Rift) · ใบสั่งเสียง
 
-สถานะ: 📦 ส่งแล้ว รอผูก · 8/8
+สถานะ: 🟢 ผูกแล้ว v8.2.12 · 8/8 · pack `scripts/pack-audio-a15.py` (56k mono เขียนทับ `assets/audio/acting/`) · `A07_CATALOG` ข้อความ/เวลาใหม่ · เทส ruby-a09-voice ตรวจครบทุกภารกิจอีกครั้ง
 ส่งที่ `assets/incoming/audio_ruby_a15/` พร้อม `MANIFEST.json` (key, file, text, bytes, sha256, duration_ms)
 เครื่องมือ: **ElevenLabs TTS** ใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามสร้างเสียงใหม่ · ห้ามใช้เสียงสร้างด้วยโค้ด
 

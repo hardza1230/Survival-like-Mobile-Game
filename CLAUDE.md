@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.2.11**. Next release:8.2.12. Fetch the deploy branch before new work.
+Current release: **8.2.12**. Next release:8.2.13. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.2.11 — 🔮 Relic vault text centred · art order 83 + voice order A15 written
+# Latest delivery: v8.2.12 — 🧍 Hero hurt + victory poses (order 83, 18/18) · 🔊 Ruby voices for the reworked missions (A15, 8/8)
+
+**Order 83** (branch `asset-delivery/hero_poses83`, merged): 4 hurt sheets (Yuzu/Mint/Taro/Sesame, 4 frames) + 5 victory sheets (Momo/Yuzu/Mint/Taro/Sesame, 8 frames) + the same 9 in each hero's Festival skin. Checked: MANIFEST sha/bytes, own measurement of body height vs each run sheet 0.96–0.99, feet on one line, no frame touching the edge, on-model by eye (victory poses move little — mostly expression; the result-screen hop from 8.2.9 stays). `scripts/pack-hero-poses83.py` → `assets/art/hero_poses83/` (256 → 128 px frames, 654 KB, 0.25/0.5 MiB decoded per sheet); 18 `ASSET_SHEETS` keys, hero-lazy (`lazyArt` folder list), skins swap in by the existing `__tag` rename. Hooks: `poseFlash(CF.hurt)` uses `char_<hero>_hurt` for every hero that has one (Momo's old sheet included, Cocoa keeps its own path) and steps through its frames over ≥0.26 s, else the old `CF.hurt` frame; `poseFlash(CF.cheer)` (end of each wave) plays `char_<hero>_victory` via `bpPose` for 1 s; the Stage Clear medallion shows victory frame 8 for every hero with a sheet, else the old cheer frame. **A15** (branch `asset-delivery/audio_ruby_a15`, merged): 8 Ruby lines (tip + short for Hunger Crack, Clear the Fog, Lure the Crown Root, Seed Rift), same ElevenLabs Ruby voice, text matches `RUBY_TIPS` exactly. `scripts/pack-audio-a15.py` → 56 kbps mono over the old files in `assets/audio/acting/`; `A07_CATALOG` text/duration updated, so these four missions speak again. Headless: Yuzu/Taro/Momo/Cocoa hurt frames advance and victory frames play, 0 errors. Tests: new hero-poses83-art; ruby-a09-voice now checks every mission again plus A15; voice-acting-integration, mint-motion, mint-impaler-pose updated for the new sheets/lines.
+
+# Previous delivery: v8.2.11 — 🔮 Relic vault text centred · art order 83 + voice order A15 written
 
 Owner 18 Nov (8.2.4 report "text not centred in the frame" = the Relic pick): the vault's info panel anchored its title/description to the top, so short text sat high with an empty bottom. `drawRelicVault` now centres both lines vertically inside the panel (`centre()`), on open and every time a treasure is tapped. Headless at 390×844 and 360×640: text block centred, 0 errors. Owner confirmed A3 (next-day login reward) works. Docs only for the rest, held until the owner says go: **art order 83** `docs/art_orders/83_HERO_HURT_VICTORY.md` — 4 hurt sheets (Yuzu/Mint/Taro/Sesame, 4 frames) + 5 victory sheets (Momo/Yuzu/Mint/Taro/Sesame, 8 frames), 256 px frames packed to 128, same body height as the run sheet, optional Festival-skin set (+9); monster walk sheets are not needed (all 78 normal monster sheets already animate their walk). **Voice order A15** rewritten to 8 Ruby lines (tip + short for Hunger Crack, Clear the Fog, Lure the Crown Root, Seed Rift). Tests: new relic-vault-centre.
-
-# Previous delivery: v8.2.10 — 👾 Monster and loot animation (death pop, crit flash, step bob, loot hop)
-
-Owner 18 Nov approved part 2 of the animation review (code only). **Death:** `killEnemy` now calls `enemyDeathPop` for normal monsters (not boss/mini/dummy): a white copy of the sprite squashes (×1.35 wide, ×0.55 tall) and fades in 140 ms, capped at 14 at once (`_deathGhosts`), on top of the old ring + smoke. **Hits:** normal hits still do not flash (kept on purpose — multi-hit skills made art unreadable); crits flash white for 50 ms, at most once per 220 ms per monster, never on bosses. Hit squash range was widened in 8.2.9. **Walking:** monsters without a walk sheet get a step bob (up to 7% squash in time with `stepT`) on top of the old sway. **Loot:** gear and currency drops (`spawnLoot`, `spawnCurrencyDrop`) pop in via `lootPopIn` — start 34 px up at 20% size, Back.out to full size, Bounce.out to the ground, then the usual float. **Buttons:** menu taps already flash + ripple (`_tapFeedback`), so nothing added; page transitions and cutscene effects stay off as the owner asked. Headless: Momo and Taro in C1-4 for 25 s, 0 errors. Tests: new monster-anim-8210; monster-animation and taro-feedback updated for the bob and the crit-flash line.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -16,7 +16,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 ## 2. การตัดสินใจที่ล็อกแล้ว (อย่าเปลี่ยนโดยไม่ถาม)
 - **คุมธีมโดยรักษาเกมเดิม (27 ต.ค.):** เก็บโครงหน้า ตำแหน่งปุ่ม เส้นทาง ระบบ อาร์ตเดิม · ปรับแค่ฟอนต์/สีแผง/ขอบ/สถานะปุ่มให้เข้าชุด · ImageGen เฉพาะชิ้นที่ขาด · ภาพ42มุมใน docs/design/unified_theme เป็นแค่ภาพสำรวจ · เปลี่ยนโครงหน้า/ระบบต้องมีคำขอจากเจ้าของ
 - Phaser 3 เว็บ → Capacitor → APK/AAB → Play Store
-- **เจ้าของ 17 พ.ย.: ยกเลิกกฎ "ไม่เพิ่มฟีเจอร์" (14 พ.ย.) — กลับมาพัฒนาต่อ** · เป้า Closed test จริง **13 ธ.ค.** · ทุกรอบเสนอแผนให้เจ้าของอนุมัติก่อน · เขียนใบสั่งอาร์ต/เสียงได้ (skill art-order · `docs/audio_orders/`) · เสียง Ruby A15 รอไว้ก่อน
+- **เจ้าของ 17 พ.ย.: ยกเลิกกฎ "ไม่เพิ่มฟีเจอร์" (14 พ.ย.) — กลับมาพัฒนาต่อ** · เป้า Closed test จริง **13 ธ.ค.** · ทุกรอบเสนอแผนให้เจ้าของอนุมัติก่อน · เขียนใบสั่งอาร์ต/เสียงได้ (skill art-order · `docs/audio_orders/`) · เสียง Ruby A15 ผูกแล้ว v8.2.12
 - **กฎเหล็ก: ยิ่งยาก รางวัลยิ่งดี** (Story ระดับเดียว · endgame ยากตามความลึก Delve `delveLoot` · Boss Rush ซ่อน)
 - ผู้เล่นเป้าหมายแบบผสม: ต้นเกมง่ายน่ารัก · ระบบลึกค่อยเปิดหลัง Chapter 2–3 · ห้ามเพิ่มภาระช่วงต้น
 - เสียง: ใช้ ElevenLabs ตามใบสั่งเสียง (v8.0.38–39 เจ้าของสั่ง ห้ามใช้เสียงสร้างด้วยโค้ด/Runway แทน)
@@ -52,9 +52,9 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
 - A14 เสียงเปิดกล่อง 8 ผูกแล้ว v8.1.147 (`openChest` · fallback เสียงเดิม) · รอฟังบนมือถือ
 - (A04 ส่งครบแล้ว · หัวไฟล์ A01–A05 อัปเดตเป็น ✅ 14 พ.ย.)
-- **ใบ 83 ท่าโดนตี 4 + ท่าชนะ 5 ฮีโร่ + ชุดสกิน Festival (รวม 18)** (`docs/art_orders/83_HERO_HURT_VICTORY.md`) เขียนรอไว้ 18 พ.ย. · ยังไม่สั่ง · ท่าเดินมอนไม่ต้องสั่ง (ชีตมอน 78 ชุดมีท่าเดินครบ)
+- **ใบ 83 ท่าโดนตี/ท่าชนะ + สกิน 18/18** ผูกแล้ว v8.2.12 · รอ QA มือถือ
 - **ใบ 84 แก้ภาพ 27 ไฟล์** (`docs/art_orders/84_ART_FIXES.md` · ตรวจทั้งเกม 18 พ.ย.): ฮีโร่โดนขอบตัด/เท้าเลื่อน · สกินตัวหดตอนโจมตี · มอน/บอสโดนขอบตัด · รออาร์ต
-- **A15 เสียง Ruby 8 ไฟล์** (Hunger Crack · Clear the Fog · Lure the Crown Root · Seed Rift) เขียนรอไว้ 18 พ.ย. · ตอนนี้ 4 ภารกิจนี้ Ruby เงียบ
+- **A15 เสียง Ruby 8/8** (Hunger Crack · Clear the Fog · Lure the Crown Root · Seed Rift) ผูกแล้ว v8.2.12 · รอฟังบนมือถือ
 
 **รอ QA บนมือถือของเจ้าของ**
 - ล่าสุด: v8.1.101 loot มินิบอส/บอส · v8.1.100 ป้ายคำพูด/การ์ดเลเวลอัป/หัวหน้าจบด่าน · v8.1.99 Mint bloom/หนังสือเปิด

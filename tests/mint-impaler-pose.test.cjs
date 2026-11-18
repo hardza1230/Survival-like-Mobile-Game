@@ -18,7 +18,7 @@ for(const fps of [30,60,120]){
 }
 for(const moving of [false,true]){const s=scene(true);s.player.body.velocity.x=moving?160:0;for(let i=0;i<10;i++){s.time.now=i*50;s.updatePose(.05);s.animatePlayer(.05);assert.equal(s.player.frame,5);assert.equal(s.player.rotation,0);}}
 for(const change of [s=>s.player.active=false,s=>s.player.hp=0,s=>s._impalerCharge.player={},s=>s._impalerCharge.basic={},s=>s.basicAttack.path='barrage',s=>s._artEpoch++,s=>s._poseHold=.1,s=>s.dashTime=.1,s=>s.character='taro',s=>s.state='dead']){const s=scene();change(s);assert.equal(s.mintImpalerPose(.1,false),false);}
-{const s=scene();s.releaseImpalerCharge=()=>s._impalerCharge=null;s.poseFlash(5,160);s.updatePose(.01);assert.equal(s.player.frame,5);assert.notEqual(s.player.texture.key,'char_mint_impaler_charge');}
+{const s=scene();s.textures.exists=k=>!/_hurt$/.test(k);s.releaseImpalerCharge=()=>s._impalerCharge=null;s.poseFlash(5,160);s.updatePose(.01);assert.equal(s.player.frame,5);assert.notEqual(s.player.texture.key,'char_mint_impaler_charge');}
 {const s=scene();s.dashTime=.1;s.updatePose(.01);assert.equal(s.player.texture.key,'char_mint');assert.equal(s.player.frame,3);}
 {const s=scene();s.textures.exists=k=>!k.startsWith('char_mint_impaler_');s.time.now=400;s.updatePose(.1);assert.equal(s.player.texture.key,'char_mint_attack');assert.equal(s.player.frame,1);}
 const {scene:castScene}=require('./mint-impaler.test.cjs');
