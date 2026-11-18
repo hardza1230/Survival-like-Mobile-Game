@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.6';
+const GAME_VERSION = '8.2.7';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.7',date:'2026-11-18',title:'Abyss Hunger Crack, Cocoa pose size, boss card',items:['a']},
   {v:'8.2.6',date:'2026-11-18',title:'Mission deck and card deal',items:['a']},
   {v:'8.2.5',date:'2026-11-17',title:'Missions tab in the Recipe Book',items:['a']},
   {v:'8.2.4',date:'2026-11-17',title:'Hunger Crack',items:['Capture the Zone becomes Hunger Crack: follow a glowing crack across the map while monsters crawl out','Reach the hole at its end to blow it open — no timer numbers, no ring']},
@@ -3480,7 +3481,8 @@ const ASSET_SHEETS = {
    เฟรมไม่จำเป็นต้องจตุรัส (fw×fh) · แต่ละไฟล์เป็น sprite strip พื้นดำ → เล่นด้วย additive blend
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 // v6.60.3 build-path pose sheets are packed at half size; scale them back to the run sheet's on-screen size
-const BP_POSE_SCALE={char_cocoa_titan_slam:1/.74,char_cocoa_titan_hop:1/.76,char_cocoa_titan_charge:1/.8,char_cocoa_titan_walk:1/.88,char_cocoa_titan_colossus:1/.8,char_cocoa_fire_jab:1/.76,char_cocoa_fire_fin:1/.72,char_cocoa_rocket:1/.7,char_cocoa_dash_leap:1/.78,char_cocoa_dash_jab:1/.8,char_cocoa_phantom:1/.62,char_cocoa_hurt:1/.92,char_cocoa_victory:1/.82,char_mint_lance_charged:1/.66};
+/* v8.2.7 เจ้าของ: Cocoa ตัวเล็กลงตอนโจมตี → วัดขนาดตัวทุกชีตเทียบท่าวิ่ง แล้วปรับตัวคูณให้เท่ากัน (ต่อยปกติ 1.14→1.45 · motion823 เดิมไม่มีตัวคูณ) */
+const BP_POSE_SCALE={char_cocoa_attack:1.45,char_cocoa_titan_slam:1.45,char_cocoa_titan_hop:1.38,char_cocoa_titan_charge:1.3,char_cocoa_titan_walk:1/.88,char_cocoa_titan_colossus:1.42,char_cocoa_fire_jab:1.4,char_cocoa_fire_fin:1.48,char_cocoa_rocket:1.52,char_cocoa_rocket_motion823:1.33,char_cocoa_titan_motion823:1.42,char_cocoa_dash_leap:1.4,char_cocoa_dash_jab:1.4,char_cocoa_phantom:1/.62,char_cocoa_hurt:1.15,char_cocoa_victory:1.38,char_mint_lance_charged:1/.66};
 const BATTLE_OUTLINE810_MAP={"bpx_cocoa_titan_slam":"bpx_cocoa810_slam","bpx_cocoa_crush":"bpx_cocoa810_slam","bpx_cocoa_crack":"bpx_cocoa810_shockwave","bpx_cocoa_shockwave":"bpx_cocoa810_shockwave","bpx_cocoa_landing_dust":"bpx_cocoa810_shockwave","bpx_cocoa_dashring":"bpx_cocoa810_dashring","bpx_cocoa_crater":"bpx_cocoa810_crater","bpx_cocoa_rage1":"bpx_cocoa810_rage","bpx_cocoa_rage2":"bpx_cocoa810_rage","bpx_cocoa_rage3":"bpx_cocoa810_rage","bpx_cocoa_fist":"bpx_cocoa810_fist","bpx_cocoa_fireball":"bpx_cocoa810_fireball","bpx_cocoa_gauntlet":"bpx_cocoa810_gauntlet","bpx_cocoa_explode":"bpx_cocoa810_explosion","bpx_cocoa_stick":"bpx_cocoa810_explosion","bpx_cocoa_shadowfist":"bpx_cocoa810_shadowfist","bpx_cocoa_dash_trail":"bpx_cocoa810_dashtrail","fx_cocoa_punch":"bpx_cocoa810_punch","bpx_taro_arc_bolt":"bpx_taro810_bolt","bpx_taro_arc_loop":"bpx_taro810_bolt","bpx_taro_ball_zap":"bpx_taro810_bolt","bpx_taro_tesla":"bpx_taro810_bolt","bpx_taro_sentry_bolt":"bpx_taro810_bolt","bpx_taro_arc_hit":"bpx_taro810_hit","bpx_taro_spark_hit":"bpx_taro810_hit","bpx_taro_spark_split":"bpx_taro810_hit","bpx_taro_spark_bounce":"bpx_taro810_hit","bpx_taro_ball_zap_hit":"bpx_taro810_hit","bpx_taro_plasma_hit":"bpx_taro810_hit","bpx_taro_spark":"bpx_taro810_spark","bpx_taro_spark_burst":"bpx_taro810_burst","bpx_taro_orb_burst":"bpx_taro810_burst","bpx_taro_ball_fade":"bpx_taro810_burst","bpx_taro_sentry_detonate":"bpx_taro810_burst","bpx_taro_sentry_overload":"bpx_taro810_burst","bpx_taro_sentry_expire":"bpx_taro810_burst","bpx_taro_arc_overload_hit":"bpx_taro810_burst","bpx_taro_plasma_cast":"bpx_taro810_burst","bpx_taro_ball_core":"bpx_taro810_core","bpx_taro_ball_gold":"bpx_taro810_core","bpx_taro_ball_field":"bpx_taro810_field","bpx_taro_plasma_ring":"bpx_taro810_plasma","bpx_taro_shock_aura":"bpx_taro810_plasma","bpx_taro_beacon_strike":"bpx_taro810_strike","bpx_momo_sniperhit":"bpx_momo810_sniperhit","bpx_momo_pellethit":"bpx_momo810_pellethit","bpx_momo_seed_pop":"bpx_momo810_seedpop","bpx_momo_pinball":"bpx_momo810_pinball","bpx_momo_dash":"bpx_momo810_dash","bpx_momo_bounce":"bpx_momo810_bounce","bpx_momo_link":"bpx_momo810_link"};
 const BOSS_OUTLINE813_MAP={"vfx_b01_impact":"vfx813_b01_impact","vfx_b01_wave":"vfx813_b01_wave","vfx_b01_lane":"vfx813_b01_lane","vfx_b01_nest_collapse":"vfx813_b01_nest_collapse","vfx_b02_impact":"vfx813_b02_impact","vfx_b02_wave":"vfx813_b02_wave","vfx_b02_lane":"vfx813_b02_lane","vfx_b02_suction":"vfx813_b02_suction","vfx_b03_impact":"vfx813_b03_impact","vfx_b03_wave":"vfx813_b03_wave","vfx_b03_lane":"vfx813_b03_lane","vfx_b03_grinder_blade":"vfx813_b03_grinder_blade","vfx_b04_impact":"vfx813_b04_impact","vfx_b04_wave":"vfx813_b04_wave","vfx_b04_lane":"vfx813_b04_lane","vfx_b04_blizzard":"vfx813_b04_blizzard","vfx_b05_impact":"vfx813_b05_impact","vfx_b05_wave":"vfx813_b05_wave","vfx_b05_lane":"vfx813_b05_lane","vfx_b05_void_maw":"vfx813_b05_void_maw","vfx_b02_bubble_cage":"vfx813_b02_bubble_cage","vfx_b03_fire_cross":"vfx813_b03_fire_cross","vfx_b04_ice_bars":"vfx813_b04_ice_bars","vfx_b05_crown_blade":"vfx813_b05_crown_blade","vfx_b05_eclipse":"vfx813_b05_eclipse","vfx_b01_burrow_burst":"vfx813_b01_burrow_burst","vfx_b04_frost_breath":"vfx813_b04_frost_breath","vfx_b02_sludge_band":"vfx813_b02_sludge_band","vfx_body_shockwave":"vfx813_body_shockwave","vfx_body_skydrop":"vfx813_body_skydrop","vfx_body_sweep":"vfx813_body_sweep","vfx_body_charge":"vfx813_body_charge"};
 const BOSS_OUTLINE814_MAP={"vfx_b06_impact":"vfx814_b06_impact","vfx_b06_wave":"vfx814_b06_wave","vfx_b06_lane":"vfx814_b06_lane","vfx_b06_root_breach":"vfx814_b06_root_breach","vfx_b07_impact":"vfx814_b07_impact","vfx_b07_wave":"vfx814_b07_wave","vfx_b07_lane":"vfx814_b07_lane","vfx_b07_spore_mortar":"vfx814_b07_spore_mortar","vfx_b08_impact":"vfx814_b08_impact","vfx_b08_wave":"vfx814_b08_wave","vfx_b08_lane":"vfx814_b08_lane","vfx_b08_honey_wall":"vfx814_b08_honey_wall","vfx_b09_impact":"vfx814_b09_impact","vfx_b09_wave":"vfx814_b09_wave","vfx_b09_lane":"vfx814_b09_lane","vfx_b09_clock_hand_long":"vfx814_b09_clock_hand_long","vfx_b10_impact":"vfx814_b10_impact","vfx_b10_wave":"vfx814_b10_wave","vfx_b10_lane":"vfx814_b10_lane","vfx_b10_crown_cage":"vfx814_b10_crown_cage","vfx_b06_full_bloom":"vfx814_b06_full_bloom","vfx_b07_heartstorm":"vfx814_b07_heartstorm","vfx_b08_dive_trail":"vfx814_b08_dive_trail","vfx_b09_clock_hand_short":"vfx814_b09_clock_hand_short","vfx_b10_choir_note":"vfx814_b10_choir_note","vfx_b10_memory_eclipse":"vfx814_b10_memory_eclipse","vfx_b06_pod_shield":"vfx814_b06_pod_shield","vfx_b10_root_band":"vfx814_b10_root_band"};
@@ -4841,7 +4843,7 @@ Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[
 /* v7.9.58 ใบสั่งอาร์ต 34: ฮีโร่ขยับในหน้า Lobby (แพ็ก 75% = 384×480/เฟรม, เท้า y450) · โหลดเฉพาะฮีโร่ที่เลือก ไม่โหลดตอนบูต · Sesame ผูกด้วย (เจ้าของ 22 ต.ค.) */
 const LH_SHEETS={lh_momo_idle:'assets/art/lobby_hero/momo/lh_momo_idle.webp',lh_momo_greet:'assets/art/lobby_hero/momo/lh_momo_greet.webp',lh_momo_act1:'assets/art/lobby_hero/momo/lh_momo_act1.webp',lh_momo_act2:'assets/art/lobby_hero/momo/lh_momo_act2.webp',lh_momo_act3:'assets/art/lobby_hero/momo/lh_momo_act3.webp',lh_momo_act4:'assets/art/lobby_hero/momo/lh_momo_act4.webp',lh_momo_tap:'assets/art/lobby_hero/momo/lh_momo_tap.webp',lh_momo_poke:'assets/art/lobby_hero/momo/lh_momo_poke.webp',lh_yuzu_idle:'assets/art/lobby_hero/yuzu/lh_yuzu_idle.webp',lh_yuzu_greet:'assets/art/lobby_hero/yuzu/lh_yuzu_greet.webp',lh_yuzu_act1:'assets/art/lobby_hero/yuzu/lh_yuzu_act1.webp',lh_yuzu_act2:'assets/art/lobby_hero/yuzu/lh_yuzu_act2.webp',lh_yuzu_act3:'assets/art/lobby_hero/yuzu/lh_yuzu_act3.webp',lh_yuzu_act4:'assets/art/lobby_hero/yuzu/lh_yuzu_act4.webp',lh_yuzu_tap:'assets/art/lobby_hero/yuzu/lh_yuzu_tap.webp',lh_yuzu_poke:'assets/art/lobby_hero/yuzu/lh_yuzu_poke.webp',lh_mint_idle:'assets/art/lobby_hero/mint/lh_mint_idle.webp',lh_mint_greet:'assets/art/lobby_hero/mint/lh_mint_greet.webp',lh_mint_act1:'assets/art/lobby_hero/mint/lh_mint_act1.webp',lh_mint_act2:'assets/art/lobby_hero/mint/lh_mint_act2.webp',lh_mint_act3:'assets/art/lobby_hero/mint/lh_mint_act3.webp',lh_mint_act4:'assets/art/lobby_hero/mint/lh_mint_act4.webp',lh_mint_tap:'assets/art/lobby_hero/mint/lh_mint_tap.webp',lh_mint_poke:'assets/art/lobby_hero/mint/lh_mint_poke.webp',lh_cocoa_idle:'assets/art/lobby_hero/cocoa/lh_cocoa_idle.webp',lh_cocoa_greet:'assets/art/lobby_hero/cocoa/lh_cocoa_greet.webp',lh_cocoa_act1:'assets/art/lobby_hero/cocoa/lh_cocoa_act1.webp',lh_cocoa_act2:'assets/art/lobby_hero/cocoa/lh_cocoa_act2.webp',lh_cocoa_act3:'assets/art/lobby_hero/cocoa/lh_cocoa_act3.webp',lh_cocoa_act4:'assets/art/lobby_hero/cocoa/lh_cocoa_act4.webp',lh_cocoa_tap:'assets/art/lobby_hero/cocoa/lh_cocoa_tap.webp',lh_cocoa_poke:'assets/art/lobby_hero/cocoa/lh_cocoa_poke.webp',lh_taro_idle:'assets/art/lobby_hero/taro/lh_taro_idle.webp',lh_taro_greet:'assets/art/lobby_hero/taro/lh_taro_greet.webp',lh_taro_act1:'assets/art/lobby_hero/taro/lh_taro_act1.webp',lh_taro_act2:'assets/art/lobby_hero/taro/lh_taro_act2.webp',lh_taro_act3:'assets/art/lobby_hero/taro/lh_taro_act3.webp',lh_taro_act4:'assets/art/lobby_hero/taro/lh_taro_act4.webp',lh_taro_tap:'assets/art/lobby_hero/taro/lh_taro_tap.webp',lh_taro_poke:'assets/art/lobby_hero/taro/lh_taro_poke.webp',lh_sesame_idle:'assets/art/lobby_hero/sesame/lh_sesame_idle.webp',lh_sesame_greet:'assets/art/lobby_hero/sesame/lh_sesame_greet.webp',lh_sesame_act1:'assets/art/lobby_hero/sesame/lh_sesame_act1.webp',lh_sesame_act2:'assets/art/lobby_hero/sesame/lh_sesame_act2.webp',lh_sesame_act3:'assets/art/lobby_hero/sesame/lh_sesame_act3.webp',lh_sesame_act4:'assets/art/lobby_hero/sesame/lh_sesame_act4.webp',lh_sesame_tap:'assets/art/lobby_hero/sesame/lh_sesame_tap.webp',lh_sesame_poke:'assets/art/lobby_hero/sesame/lh_sesame_poke.webp'};
 const CODE_TELEGRAPH=true;
-const CAPTURE_CRACK=true,HC_NEAR=95,HC_SEC=22;   /* v8.2.4 เจ้าของ: Capture the Zone (วงกลม+ตัวเลข) → 🕳️ Hunger Crack (แนว PoE Abyss) · รอยแยกงอกคดเคี้ยวไปทั่วแมพ เดินตามปลายรอยแยกให้มันงอกต่อ มอนคลานออกมาตลอดทาง ปลายทางคือหลุม → ปิดหลุม = รางวัลระเบิด · ไม่มีตัวเลข ไม่มีวง · false = วงเดิม */
+const CAPTURE_CRACK=true,HC_NEAR=95,HC_SEC=22,HC_TOUCH=70,HC_SPEED=460,HC_HOLES=[.3,.55,.8,1];   /* v8.2.7 เจ้าของ: แบบ Abyss จริง — แตะรอยแยก → วิ่งเองเร็วไปหลุมถัดไป · หลุมแตก = มอน + ของ · หลุมสุดท้ายมอนเยอะ ฆ่าหมด = จบ */   /* v8.2.4 เจ้าของ: Capture the Zone (วงกลม+ตัวเลข) → 🕳️ Hunger Crack (แนว PoE Abyss) · รอยแยกงอกคดเคี้ยวไปทั่วแมพ เดินตามปลายรอยแยกให้มันงอกต่อ มอนคลานออกมาตลอดทาง ปลายทางคือหลุม → ปิดหลุม = รางวัลระเบิด · ไม่มีตัวเลข ไม่มีวง · false = วงเดิม */
 const CLEANAIR_V2=true;   /* v8.1.162 เจ้าของ: Clean Air ใหม่ = ป่ามืด (Viridian/Wildwood) · เดินหา Wisp ที่กระจายทั่วแมพ · ชาร์จ 1.5 วิ แล้วระเบิดแสง · false = แบบวงเดินตาม (v8.1.161) */
 const CLEANAIR_FOGWAR=true;   /* v8.1.159 เจ้าของ: Clean Air หมอกมืดทั้งจอ เปิดตามทาง Wisp (false = หมอกพิษลอยแบบ v8.1.154) */
 const CODE_VFX={bolt:true,aim:true,cocoa:true,xp:true,generic:true,bossWave:['b01'],lane:true,taroBurst:true,bubble:true,sparkle:true,trail:true,dust:true,heal:true};   /* v8.1.156 เจ้าของ: CODE_VS_ART รอบ 2 ข้อ 2–7 · ปิดทีละข้อได้ (false / [] = กลับเป็นภาพเดิม) */   /* v8.1.155 เจ้าของ: วงเตือนท่าบอส/hazard วาดด้วยโค้ด · false = ภาพ vfx_bXX_warn เดิม */
@@ -9014,7 +9016,7 @@ const RUBY_TIPS={
   hunt:{say:'Beat the leader with the [mark] fast — its [poison] grows!',short:'Chase the [marked Elite]!'},
   huntClear:{say:'Clear the crowd, then beat the [marked] leader!',short:'Clear the crowd, then the [marked Elite]!'},
   purge:{say:'Keep the [Wisp] safe. Outside, you [bleed]!',short:'Keep the [Wisp] safe from [red raiders]!'},
-  capture:{say:'Follow the [crack] to its end!',short:'Stay on the [crack] tip!'},
+  capture:{say:'Touch the [crack] — it races to the next hole!',short:'Touch the [crack], clear the holes!'},
   defendNectar:{say:'Protect the [flower]! Stay close.',short:'Protect the [flower]!' },
   seasonCycle:{say:'Grab [petals] for all [4 seasons]!',short:'Gather [petals] for all [four seasons]!'},
   breakRoots:{say:'Stand next to each [root anchor] to snap it!',short:'Snap every [root anchor]!'},
@@ -9256,7 +9258,7 @@ const WAVE_OBJECTIVES = {
   fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},
   hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite — it blinks away when you get close and leaves a trap'},
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
-  capture:{emoji:'🕳️',name:'Hunger Crack',desc:'Walk on the glowing tip to tear the crack open. Monsters crawl out — reach the hole at the end!'},
+  capture:{emoji:'🕳️',name:'Hunger Crack',desc:'Touch the glowing crack — it races to the next hole. Each hole bursts with monsters and loot; clear the last hole!'},
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect one nectar flower. Losing it costs 1/3 max HP; a fresh flower blooms elsewhere'},
   seasonCycle:{emoji:'🌦️',name:'Seasonal Harvest',desc:'Pick up petals from defeated monsters · step on a shrine to call its season · fill all four'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Stand next to every corrupted root anchor to sever it before the throne pulse closes in'},
@@ -15971,7 +15973,7 @@ class Game extends Phaser.Scene {
     }else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))){
       this.sigSetup(o,type,p||{});
     }else{
-      o.target=25;o.desc='Purify the ring for '+o.target+'s — it grows as you purify, enemies swarm to stop you';if(CAPTURE_CRACK){o.desc='Follow the Hunger Crack to its end — stand at its glowing tip to tear it open';this.spawnHungerCrack();}else this.spawnCaptureZone();
+      o.target=25;o.desc='Purify the ring for '+o.target+'s — it grows as you purify, enemies swarm to stop you';if(CAPTURE_CRACK){o.desc='Touch the glowing crack — it races to the next hole. Each hole bursts with monsters and loot; clear the last one!';this.spawnHungerCrack();}else this.spawnCaptureZone();
     }
     if(planned)o.desc=planned.tip;
     this.objBonusInit?.(o,!!planned);
@@ -16315,27 +16317,40 @@ class Game extends Phaser.Scene {
     for(let i=0;i<7;i++){ a+=Phaser.Math.FloatBetween(-.75,.75); const L=Phaser.Math.Between(120,170),q=pts[pts.length-1],[nx,ny]=inMapPt(q.x+Math.cos(a)*L,q.y+Math.sin(a)*L,160); if(Math.hypot(nx-q.x,ny-q.y)<60){a+=Math.PI*.6;i--;if(pts.length>40)break;continue;} pts.push({x:nx,y:ny}); }
     const cum=[0]; for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y));
     const jag=[]; for(let i=0;i<pts.length-1;i++){ const A=pts[i],B=pts[i+1],n=4,ang=Math.atan2(B.y-A.y,B.x-A.x); for(let k=0;k<n;k++){ const t=k/n,j=k?Phaser.Math.FloatBetween(-14,14):0; jag.push({x:A.x+(B.x-A.x)*t-Math.sin(ang)*j,y:A.y+(B.y-A.y)*t+Math.cos(ang)*j,d:cum[i]+(cum[i+1]-cum[i])*t}); } } jag.push({...pts[pts.length-1],d:cum[cum.length-1]});
-    const end=pts[pts.length-1]; this._crack={pts,cum,jag,L:cum[cum.length-1],head:24,tip:{x:start.x,y:start.y},spawnT:2,g:this.camWorld(this.add.graphics().setDepth(4)),hole:this.camWorld(this.add.graphics().setDepth(3)),end};
-    this.tickHungerCrack(0,o); this.floatText?.(start.x,start.y-50,'🕳️ The ground is tearing open!',0xc58bff); }
-  hungerCrackAt(d){ const c=this._crack,P=c.pts,C=c.cum; d=Phaser.Math.Clamp(d,0,c.L); for(let i=1;i<P.length;i++)if(d<=C[i]){ const t=(d-C[i-1])/Math.max(1,C[i]-C[i-1]); return {x:P[i-1].x+(P[i].x-P[i-1].x)*t,y:P[i-1].y+(P[i].y-P[i-1].y)*t}; } return {...P[P.length-1]}; }
-  hungerCrackGlyph(f){ const n=6,k=Math.round(Phaser.Math.Clamp(f,0,1)*n); return '▰'.repeat(k)+'▱'.repeat(n-k); }
-  tickHungerCrack(dt,o){ const c=this._crack;if(!c)return; const P=this.player,near=!!P&&this.dist(P.x,P.y,c.tip.x,c.tip.y)<=HC_NEAR,play=this.state==='play'&&!o.done;
-    if(near&&play){ c.head=Math.min(c.L,c.head+dt*c.L/HC_SEC); Sfx.eventLoopStart?.('event_capture_charge',.14+.18*c.head/c.L,.7+.5*c.head/c.L); } else Sfx.eventLoopStop?.('event_capture_charge');
-    const tp=this.hungerCrackAt(c.head); c.tip.x=tp.x; c.tip.y=tp.y; o.progress=Math.min(o.target,o.target*c.head/c.L);
-    if(play&&dt>0){ c.spawnT-=dt; if(c.spawnT<=0){ c.spawnT=Math.max(1.3,2.4-1.1*c.head/c.L); this.hungerCrackCrawl(c); } }
-    this.drawHungerCrack(c,near);
-    if(c.head>=c.L&&play){ this.hungerCrackDone(c); this.completeWaveObjective(); } }
-  hungerCrackCrawl(c){ if(!this.enemies||this.enemies.countActive(true)>=(this.maxLive||60))return 0; const P=this.player; let n=0; const k=2+Math.round(2*c.head/c.L);
-    for(let i=0;i<k;i++){ const q=this.hungerCrackAt(Math.max(0,c.head-40-Math.random()*Math.min(c.head,420))),pa=Math.atan2(q.y-P.y,q.x-P.x),pd=Math.max(60,this.dist(P.x,P.y,q.x,q.y)); const e=this.spawnEnemy(i%3===2?'dasher':'fast',pa,pd); if(!e)continue; n++; e.setAlpha?.(0); this.tweens?.add({targets:e,alpha:1,duration:260});
+    const end=pts[pts.length-1],L=cum[cum.length-1],holes=HC_HOLES.map(f=>{ const d=Math.max(80,L*f),q=this.hungerCrackAt0(pts,cum,d); return {d,x:q.x,y:q.y,open:false}; });
+    this._crack={pts,cum,jag,L,head:0,tip:{x:start.x,y:start.y},holes,hi:0,st:'wait',tag:'hc'+Date.now()+Math.random(),pack:null,packT:0,g:this.camWorld(this.add.graphics().setDepth(4)),hole:this.camWorld(this.add.graphics().setDepth(3)),end};
+    this.tickHungerCrack(0,o); this.floatText?.(start.x,start.y-50,'🕳️ Touch the crack!',0xc58bff); }
+  hungerCrackAt0(P,C,d){ for(let i=1;i<P.length;i++)if(d<=C[i]){ const t=(d-C[i-1])/Math.max(1,C[i]-C[i-1]); return {x:P[i-1].x+(P[i].x-P[i-1].x)*t,y:P[i-1].y+(P[i].y-P[i-1].y)*t}; } return {...P[P.length-1]}; }
+  hungerCrackAt(d){ const c=this._crack; return this.hungerCrackAt0(c.pts,c.cum,Phaser.Math.Clamp(d,0,c.L)); }
+  hungerCrackGlyph(f){ const c=this._crack,n=c?c.holes.length:HC_HOLES.length,k=c?c.holes.filter(h=>h.open).length:Math.round(Phaser.Math.Clamp(f,0,1)*n); return '▰'.repeat(k)+'▱'.repeat(Math.max(0,n-k)); }
+  /* v8.2.7 สถานะ: wait (รอแตะปลาย) → run (วิ่งเอง HC_SPEED px/วิ) → ถึงหลุม: แตก (มอน + ของ) → wait … หลุมสุดท้าย: final (มอนกลุ่มใหญ่ + Elite · ฆ่าหมดหรือ 35 วิ = จบ) */
+  tickHungerCrack(dt,o){ const c=this._crack;if(!c)return; const P=this.player,play=this.state==='play'&&!o.done,touch=!!P&&this.dist(P.x,P.y,c.tip.x,c.tip.y)<=HC_TOUCH;
+    if(play&&c.st==='wait'&&touch){ c.st='run'; Sfx.orderCue?.('wave_start',.3,1.3); this.screenShake?.(120,.004); }
+    if(play&&c.st==='run'&&dt>0){ const H=c.holes[c.hi]; c.head=Math.min(H.d,c.head+dt*HC_SPEED); Sfx.eventLoopStart?.('event_capture_charge',.25,1.1);
+      if(c.head>=H.d){ Sfx.eventLoopStop?.('event_capture_charge'); this.hungerCrackErupt(c,c.hi); c.hi++; c.st=c.hi>=c.holes.length?'final':'wait'; } }
+    else Sfx.eventLoopStop?.('event_capture_charge');
+    const tp=this.hungerCrackAt(c.head); c.tip.x=tp.x; c.tip.y=tp.y;
+    const opened=c.holes.filter(h=>h.open).length; o.progress=Math.min(o.target*.95,o.target*(opened/c.holes.length)*.9);
+    if(c.st==='final'&&play){ c.packT+=dt; const left=(c.pack||[]).filter(e=>e&&e.active&&e._hcTag===c.tag).length; o._hcLeft=left; if(left===0||c.packT>=35){ this.drawHungerCrack(c); this.hungerCrackDone(c); this.completeWaveObjective(); return; } }
+    this.drawHungerCrack(c); }
+  hungerCrackErupt(c,i){ const H=c.holes[i],last=i===c.holes.length-1; H.open=true; const col=0xc58bff;
+    this.screenShake?.(last?320:180,last?.012:.006); this.hitStop?.(last?60:30); this.screenFlash?.(0xb06bff,last?.45:.22,last?380:220); Sfx.rewardCue?.('sfx_event_capture_complete',last?.5:.3);
+    if(this.add?.circle)for(let k=0;k<(last?3:2);k++)this.time.delayedCall(k*90,()=>{ const r=this.camWorld(this.add.circle(H.x,H.y,40,col,0).setStrokeStyle(8-k*2,0xffe0ff,1).setDepth(90000)); this.tweens.add({targets:r,scale:(last?6:3.5)+k,alpha:0,duration:620,ease:'Cubic.out',onComplete:()=>r.destroy()}); });
+    this.burst?.(H.x,H.y,col); this.floatText?.(H.x,H.y-46,last?'🕳️ The Hunger pours out!':'🕳️ Something crawls out!',col);
+    const n=last?12:3+i,pack=this.hungerCrackCrawl(c,H,n,last); if(last){ c.pack=pack; try{ const e=this.spawnElite(true,true); if(e){ e.setPosition?.(H.x+20,H.y); e._hcTag=c.tag; pack.push(e); } }catch(err){} c.packT=0; }
+    try{ const v=Math.round((last?14:5)+(this.stageIndex||0)*(last?2:.8)); this.sugarStage=(this.sugarStage||0)+v; this.sugarRun=(this.sugarRun||0)+v; this.missionLootBurst?.({noCur:!last,noHold:false},v); }catch(err){} }   /* missionLootBurst หักก่อนแล้วคืนตอนเก็บ → เติมก่อน */
+  hungerCrackCrawl(c,H,k,last){ const out=[]; if(!this.enemies||!this.player)return out; const P=this.player,cap=(this.maxLive||60)+(last?12:0);
+    for(let i=0;i<k;i++){ if(this.enemies.countActive(true)>=cap)break; const a=Math.random()*Math.PI*2,q={x:H.x+Math.cos(a)*30,y:H.y+Math.sin(a)*20},pa=Math.atan2(q.y-P.y,q.x-P.x),pd=Math.max(60,this.dist(P.x,P.y,q.x,q.y)); const e=this.spawnEnemy(i%3===2?'dasher':i%3===1?'fast':'normal',pa,pd)||this.spawnEnemy('fast',pa,pd); if(!e)continue; e._hcTag=c.tag; out.push(e); e.setAlpha?.(0); this.tweens?.add({targets:e,alpha:1,duration:260,delay:i*40});
       if(this.add?.circle&&this.fxOk?.()){ const puff=this.camWorld(this.add.circle(q.x,q.y,10,0x2a0a3a,.8).setDepth(5)); this.tweens.add({targets:puff,scale:3,alpha:0,duration:380,onComplete:()=>puff.destroy()}); } }
-    return n; }
-  drawHungerCrack(c,near){ const g=c.g,h=c.hole; if(!g?.active)return; const t=(this.time?.now||0)/1000,J=c.jag,head=c.head; g.clear();
+    return out; }
+  drawHungerCrack(c){ const g=c.g,h=c.hole; if(!g?.active)return; const t=(this.time?.now||0)/1000,J=c.jag,head=c.head,run=c.st==='run'; g.clear();
     const seg=(w,col,a,from,to)=>{ g.lineStyle(w,col,a).beginPath(); let on=false; for(let i=0;i<J.length;i++){ const d=J[i].d; if(d<from)continue; if(d>to){ const q=this.hungerCrackAt(to); on?g.lineTo(q.x,q.y):g.moveTo(q.x,q.y); break; } on?g.lineTo(J[i].x,J[i].y):g.moveTo(J[i].x,J[i].y); on=true; } g.strokePath(); };
-    seg(2,0x8a5cff,.22+.12*Math.sin(t*3),head,Math.min(c.L,head+170));   // hint of where it goes next
-    seg(14,0x12051c,.85,0,head); seg(7,0x7a2ad0,.9,0,head); seg(2.5,0xffb0ff,.6+.3*Math.sin(t*9),Math.max(0,head-260),head);
-    const T=c.tip,pr=1+.18*Math.sin(t*(near?14:6)); g.fillStyle(0xc58bff,.25).fillCircle(T.x,T.y,34*pr); g.fillStyle(0xffd6ff,.95).fillCircle(T.x,T.y,9*pr); g.lineStyle(3,0xffffff,near?.9:.5).strokeCircle(T.x,T.y,HC_NEAR*(near?1:.92));
-    if(h?.active){ const E=c.end,k=head/c.L; h.clear(); h.fillStyle(0x07020c,.35+.5*k).fillEllipse(E.x,E.y,90+40*k,46+20*k); h.lineStyle(3,0xb06bff,.25+.6*k+.1*Math.sin(t*5)).strokeEllipse(E.x,E.y,96+40*k,52+20*k); } }
-  hungerCrackDone(c){ Sfx.eventLoopStop?.('event_capture_charge'); Sfx.rewardCue?.('sfx_event_capture_complete',.65); const E=c.end;
+    const nx=c.holes[c.hi]; if(nx)seg(2,0x8a5cff,.18+.12*Math.sin(t*3),head,nx.d);   // เส้นจาง ๆ ไปหลุมถัดไป
+    seg(14,0x12051c,.85,0,head); seg(7,0x7a2ad0,.9,0,head); seg(2.5,0xffb0ff,.6+.3*Math.sin(t*9),Math.max(0,head-(run?420:200)),head);
+    if(c.st!=='final'){ const T=c.tip,pr=1+.22*Math.sin(t*(run?18:7)); g.fillStyle(0xc58bff,run?.4:.28).fillCircle(T.x,T.y,(run?40:30)*pr); g.fillStyle(0xffd6ff,.95).fillCircle(T.x,T.y,(run?12:9)*pr); }
+    if(h?.active){ h.clear(); c.holes.forEach((H,i)=>{ const big=i===c.holes.length-1,s=big?1.4:1,nextOne=i===c.hi&&c.st!=='final'; if(H.open){ h.fillStyle(0x07020c,.9).fillEllipse(H.x,H.y,84*s,42*s); h.lineStyle(4,0xb06bff,.7+.2*Math.sin(t*5+i)).strokeEllipse(H.x,H.y,92*s,48*s); h.fillStyle(0x7a2ad0,.35+.15*Math.sin(t*4+i)).fillEllipse(H.x,H.y,46*s,20*s); }
+      else { h.fillStyle(0x07020c,.25+(nextOne?.2:0)).fillEllipse(H.x,H.y,64*s,32*s); h.lineStyle(2,0xb06bff,(nextOne?.45:.2)+.1*Math.sin(t*5)).strokeEllipse(H.x,H.y,70*s,36*s); } }); } }
+  hungerCrackDone(c){ Sfx.eventLoopStop?.('event_capture_charge'); Sfx.rewardCue?.('sfx_event_capture_complete',.65); const E=c.holes[c.holes.length-1]||c.end;
     this.screenFlash?.(0xd9a8ff,.85,520); this.screenShake?.(460,.014); this.hitStop?.(70); this.captureFinishSweep?.(E.x,E.y,200);
     if(this.add?.circle)for(let i=0;i<4;i++)this.time.delayedCall(i*110,()=>{ const r=this.camWorld(this.add.circle(E.x,E.y,60,0xb06bff,0).setStrokeStyle(10-i*2,0xffe0ff,1).setDepth(90000)); this.tweens.add({targets:r,scale:8+i*2,alpha:0,duration:820,ease:'Cubic.out',onComplete:()=>r.destroy()}); });
     for(let i=0;i<3;i++)this.burst?.(E.x+Phaser.Math.Between(-40,40),E.y+Phaser.Math.Between(-30,30),i%2?0xffe08a:0xc58bff); this.clearHungerCrack(true); }
@@ -16478,7 +16493,7 @@ class Game extends Phaser.Scene {
   questFocusTargets(type){ const o=this.waveObjective,out=[],pt=(q,r,l)=>{ if(q&&(q.active!==false))out.push({x:q.x,y:q.y,r,l}); };
     if(type==='hunt'){ this.enemies.children.iterate(e=>{ if(e?.active&&e._waveObjectiveTarget)pt(e,95,'🎯 Marked Elite'); }); }
     else if(type==='purge'){ pt(this._wisp,80,'🕯️ The Wisp'); this.waveNodes?.children.iterate(n=>{ if(n?.active&&n._waveObjectiveNode&&out.length<3)pt(n,90,'Cursed core'); }); }
-    else if(type==='capture'&&this._crack)pt(this._crack.tip,60,'🕳️ Follow the crack');
+    else if(type==='capture'&&this._crack)pt(this._crack.st==='final'?(this._crack.holes[this._crack.holes.length-1]):this._crack.tip,60,this._crack.st==='final'?'🕳️ Clear the last hole':'🕳️ Touch the crack');
     else if(type==='capture')pt(this._captureZone,(this._captureZone?.radius||130)+20,'🔷 Stand in the ring');
     else if(type==='cleanAir')pt(this._cleanAirZone,(this._cleanAirZone?.radius||145)+20,'🫧 Clean-air ring');
     else if(type==='defendNectar')(this._nectarFlowers||[]).slice(0,1).forEach(f=>pt(f,90,'🌺 Protect the flower'));
@@ -16647,7 +16662,7 @@ class Game extends Phaser.Scene {
     const roam=Object.values(waves).filter(t=>MISSION_HOME[t]!=null&&MISSION_HOME[t]!==idx); if(roam.length){ this._roamMissions=roam; this.missionRoamArt?.(roam); }
     return {waves,slots,lead,plan:false}; }
   /* v8.2.6 แจกไพ่ก่อนเริ่มด่าน: สับ → แจก 1 ใบต่อเวฟ (มินิบอส = 💀) → พลิกเปิด · ใบประจำด่านขอบทอง · NEW = ยังไม่เคยเจอ · แตะเพื่อข้าม */
-  missionDealShow(deal,done){ const st=STAGES[this.stageIndex]||{},W=this.W,H=this.H,n=st.waves||5; if(!deal||!this.add?.container||!W){ done(); return; }
+  missionDealShow(deal,done){ const st=STAGES[this.stageIndex]||{},W=this.W,H=this.H,n=(st.waves||5)+1;   /* v8.2.7 เจ้าของ: 6 ใบ = เวฟ 1–5 + บอสใบสุดท้าย (จั่วจริงแค่ 4) */ if(!deal||!this.add?.container||!W){ done(); return; }
     const d=(typeof Save!=='undefined'&&Save.data)||{},log=Object.assign({},d.seenMissions||{},d.missionLog||{});
     const L=this.camUI(this.add.container(0,0).setDepth(119)); L.setScrollFactor?.(1); this._dealL=L; this.physics.pause(); const prevState=this.state; this.state='cinematic';
     const dim=this.add.rectangle(0,0,W,H,0x0b0612,.55).setOrigin(0); L.add(dim);
@@ -16655,15 +16670,15 @@ class Game extends Phaser.Scene {
     const cap=this.add.text(W/2,cy-chh/2-26,'Missions in this stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a',stroke:'#24172c',strokeThickness:4}).setOrigin(.5).setAlpha(0); L.add(cap);
     const mk=(i)=>{ const c=this.add.container(W/2,cy),g=this.add.graphics(); g.fillStyle(0x2b1d3d,1).fillRoundedRect(-cw/2,-chh/2,cw,chh,8); g.lineStyle(2,0xc9a3ff,.9).strokeRoundedRect(-cw/2,-chh/2,cw,chh,8); g.lineStyle(1,0xc9a3ff,.35).strokeRoundedRect(-cw/2+5,-chh/2+5,cw-10,chh-10,5);
       const bk=this.add.text(0,0,'🍡',{fontSize:Math.round(cw*.42)+'px'}).setOrigin(.5); c.add([g,bk]); c._back=[g,bk]; L.add(c); return c; };
-    const face=(c,i)=>{ const w=i,isMini=w===st.miniAt,t=deal.waves[w],o=t&&WAVE_OBJECTIVES[t]||{},sig=!isMini&&t&&t===deal.lead,col=isMini?0xff5c8a:sig?0xffd166:0x8fd9ff,g=this.add.graphics();
-      g.fillStyle(isMini?0x3a1424:0x241a33,1).fillRoundedRect(-cw/2,-chh/2,cw,chh,8); g.fillStyle(col,.16).fillRoundedRect(-cw/2+3,-chh/2+3,cw-6,chh-6,6); g.lineStyle(sig?3:2,col,1).strokeRoundedRect(-cw/2,-chh/2,cw,chh,8);
+    const face=(c,i)=>{ const w=i,isBoss=w===n-1,isMini=w===st.miniAt||isBoss,t=isBoss?null:deal.waves[w],o=t&&WAVE_OBJECTIVES[t]||{},sig=!isMini&&t&&t===deal.lead,col=isBoss?0xff3b3b:isMini?0xff5c8a:sig?0xffd166:0x8fd9ff,g=this.add.graphics();
+      g.fillStyle(isBoss?0x420d12:isMini?0x3a1424:0x241a33,1).fillRoundedRect(-cw/2,-chh/2,cw,chh,8); g.fillStyle(col,.16).fillRoundedRect(-cw/2+3,-chh/2+3,cw-6,chh-6,6); g.lineStyle(sig?3:2,col,1).strokeRoundedRect(-cw/2,-chh/2,cw,chh,8);
       const num=this.add.text(-cw/2+5,-chh/2+3,String(w+1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#d8cce0'}).setOrigin(0,0);
-      const em=this.add.text(0,-chh*.1,isMini?'💀':(o.emoji||'✨'),{fontSize:Math.round(cw*.42)+'px'}).setOrigin(.5);
-      const nm=this.add.text(0,chh*.2,isMini?'Miniboss':(o.name||''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(cw<56?7:8)+'px',color:'#ffffff',align:'center',wordWrap:{width:cw-6},lineSpacing:-2}).setOrigin(.5,0);
+      const em=this.add.text(0,-chh*.1,isBoss?'👑':isMini?'💀':(o.emoji||'✨'),{fontSize:Math.round(cw*.42)+'px'}).setOrigin(.5);
+      const nm=this.add.text(0,chh*.2,isBoss?'Boss':isMini?'Miniboss':(o.name||''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(cw<56?7:8)+'px',color:'#ffffff',align:'center',wordWrap:{width:cw-6},lineSpacing:-2}).setOrigin(.5,0);
       const parts=[g,num,em,nm]; if(sig){ const r=this.add.text(0,-chh/2-1,'STAGE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#24172c',backgroundColor:'#ffd166',padding:{x:3,y:1}}).setOrigin(.5); parts.push(r); }
       if(!isMini&&t&&!log[t]){ const nw=this.add.text(cw/2-2,-chh/2+2,'NEW',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ffffff',backgroundColor:'#ff4d8f',padding:{x:2,y:1}}).setOrigin(1,0); parts.push(nw); }
       parts.forEach(q=>q.setVisible(false)); c.add(parts); c._face=parts; c._sig=sig; };
-    const cards=[]; for(let i=0;i<n;i++){ const c=mk(i); c.x=W/2+(i-2)*1.5; c.y=cy-i*1.5; face(c,i); cards.push(c); }
+    const cards=[]; for(let i=0;i<n;i++){ const c=mk(i); c.x=W/2+(i-n/2)*1.5; c.y=cy-i*1.5; face(c,i); cards.push(c); }
     let fin=false; const tw=(o)=>this.tweens.add(o),T=(ms,f)=>this.time.delayedCall(ms,()=>{ if(!fin)f(); });
     const finish=()=>{ if(fin)return; fin=true; this._finishDeal=null; this.input?.off?.('pointerdown',onTap); const tx=this.waveObjTxt?this.waveObjTxt.x:W/2,ty=this.waveObjTxt?this.waveObjTxt.y:40;
       tw({targets:cards,x:tx,y:ty,scale:.2,alpha:0,duration:320,ease:'Cubic.easeIn',delay:(t,k,v,i)=>i*30}); tw({targets:[dim,cap],alpha:0,duration:300,onComplete:()=>{ L.destroy(); if(this._dealL===L)this._dealL=null; }});
@@ -24509,7 +24524,7 @@ class Game extends Phaser.Scene {
     this._hasFrames = this.textures.exists(key) && this.textures.get(key).frameTotal>1;
     if(this._hasFrames){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2,4); this._poseHold=0; }
     const r=24, off=Math.max(0,(src-2*r)/2);
-    if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);
+    if(this.player&&this.player.body)this.player.body.setCircle(r,off,off);this._bodyMul=1;
     this.resetCharacterRenderer();
   }
   resetCharacterRenderer(){
@@ -24708,6 +24723,7 @@ class Game extends Phaser.Scene {
     const sqX=Phaser.Math.Clamp(this._sqX,0.94,1.06);
     const sqY=Phaser.Math.Clamp(this._sqY,0.94,1.06);
     p.setScale(base*sqX*(1-breathe), base*sqY*(1+breathe));
+    if(this._bodyMul!==actMul&&p.body?.setCircle){ this._bodyMul=actMul; const fw=p.frame?.realWidth||p.frame?.width||128,r=24/actMul; p.body.setCircle(r,Math.max(0,fw/2-r),Math.max(0,fw/2-r)); }   /* v8.2.7 ท่าที่ขยายภาพ (BP_POSE_SCALE) ไม่ทำให้ฮิตบ็อกซ์โตตาม */
     const motion=this.hubMotionAllowed?.()!==false;if(!motion)p.setScale(base,base);this.tickActorWeight?.(dt);
     // ปล่อยฝุ่นละอองน้ำตาลใต้เท้าขณะวิ่ง
     if(moving&&motion){
@@ -24815,7 +24831,7 @@ class Game extends Phaser.Scene {
     this.enemies.children.iterate(e=>{if(seen||!e||!e.active||e.isDummy||!(e.hp>0))return;if(wv.contains(e.x,e.y)){seen=true;return;}const d=Math.hypot(e.x-p.x,e.y-p.y);if(e.isMini&&d<md){md=d;mini=e;}if(d<ad){ad=d;any=e;}});return seen?null:(mini||any);}
   _nearestEnemy(){ let best=null,bd=Infinity; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<bd){bd=d;best=e;} }); return best; }
   _nearestWaveObjective(){
-    const o=this.waveObjective;if(!o)return null;if(o.type==='capture'&&this._crack){const T=this._crack.tip;return this.dist(this.player.x,this.player.y,T.x,T.y)<=HC_NEAR?null:T;}if(o.type==='capture'&&this._captureZone)return this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal?null:this._captureZone;
+    const o=this.waveObjective;if(!o)return null;if(o.type==='capture'&&this._crack){const T=this._crack.st==='final'?this._crack.holes[this._crack.holes.length-1]:this._crack.tip;return this.dist(this.player.x,this.player.y,T.x,T.y)<=HC_TOUCH?null:T;}if(o.type==='capture'&&this._captureZone)return this.dist(this.player.x,this.player.y,this._captureZone.x,this._captureZone.y)<=this._captureZone.radiusGoal?null:this._captureZone;
     if(o.type==='cleanAir'&&this._cleanAir?.v2){ const c=this._cleanAir,P=this.player; if(c.phase==='lure')return this.dist(P.x,P.y,c.x,c.y)<70?null:c; let b=null,bd=Infinity; for(const w of c.wisps||[]){ if(w.freed)continue; const d=this.dist(P.x,P.y,w.x,w.y); if(d<bd){bd=d;b=w;} } return b&&bd>85?b:null; }
     if(o.type==='cleanAir'&&this._cleanAir)return this.dist(this.player.x,this.player.y,this._cleanAir.x,this._cleanAir.y)<=this._cleanAir.r?null:this._cleanAir;
     let best=null,bd=Infinity;
