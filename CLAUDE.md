@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.2.10**. Next release:8.2.11. Fetch the deploy branch before new work.
+Current release: **8.2.11**. Next release:8.2.12. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.2.10 — 👾 Monster and loot animation (death pop, crit flash, step bob, loot hop)
+# Latest delivery: v8.2.11 — 🔮 Relic vault text centred · art order 83 + voice order A15 written
+
+Owner 18 Nov (8.2.4 report "text not centred in the frame" = the Relic pick): the vault's info panel anchored its title/description to the top, so short text sat high with an empty bottom. `drawRelicVault` now centres both lines vertically inside the panel (`centre()`), on open and every time a treasure is tapped. Headless at 390×844 and 360×640: text block centred, 0 errors. Owner confirmed A3 (next-day login reward) works. Docs only for the rest, held until the owner says go: **art order 83** `docs/art_orders/83_HERO_HURT_VICTORY.md` — 4 hurt sheets (Yuzu/Mint/Taro/Sesame, 4 frames) + 5 victory sheets (Momo/Yuzu/Mint/Taro/Sesame, 8 frames), 256 px frames packed to 128, same body height as the run sheet, optional Festival-skin set (+9); monster walk sheets are not needed (all 78 normal monster sheets already animate their walk). **Voice order A15** rewritten to 8 Ruby lines (tip + short for Hunger Crack, Clear the Fog, Lure the Crown Root, Seed Rift). Tests: new relic-vault-centre.
+
+# Previous delivery: v8.2.10 — 👾 Monster and loot animation (death pop, crit flash, step bob, loot hop)
 
 Owner 18 Nov approved part 2 of the animation review (code only). **Death:** `killEnemy` now calls `enemyDeathPop` for normal monsters (not boss/mini/dummy): a white copy of the sprite squashes (×1.35 wide, ×0.55 tall) and fades in 140 ms, capped at 14 at once (`_deathGhosts`), on top of the old ring + smoke. **Hits:** normal hits still do not flash (kept on purpose — multi-hit skills made art unreadable); crits flash white for 50 ms, at most once per 220 ms per monster, never on bosses. Hit squash range was widened in 8.2.9. **Walking:** monsters without a walk sheet get a step bob (up to 7% squash in time with `stepT`) on top of the old sway. **Loot:** gear and currency drops (`spawnLoot`, `spawnCurrencyDrop`) pop in via `lootPopIn` — start 34 px up at 20% size, Back.out to full size, Bounce.out to the ground, then the usual float. **Buttons:** menu taps already flash + ripple (`_tapFeedback`), so nothing added; page transitions and cutscene effects stay off as the owner asked. Headless: Momo and Taro in C1-4 for 25 s, 0 errors. Tests: new monster-anim-8210; monster-animation and taro-feedback updated for the bob and the crit-flash line.
-
-# Previous delivery: v8.2.9 — 🧍 Hero animation polish (pose size, sheet-switch squash, visible squash & stretch, full Cocoa punch, victory hop)
-
-Owner 18 Nov approved the hero part of the animation review (code only, no new art). **Pose size:** measured every hero sheet against its run sheet; Momo's attack (-17%), dash (-15%) and Sniper charge (-19%) and Sesame's idle (-12%) were smaller — `BP_POSE_SCALE` now has `char_momo_attack` 1.2, `char_momo_dash` 1.18, `char_momo_sniper_charge_motion823` 1.23, `char_sesame` 1.12 (Yuzu/Mint/Taro were already within ±12%; Cocoa fixed in 8.2.7). The hit circle keeps dividing by the multiplier. **Sheet switches:** when the player's texture changes between two sheets that are not just idle↔run, a short 8% squash (`_lastPoseTex`) hides the jump. **Squash & stretch:** the render clamp was ±6%, which flattened the dash (35%), hurt (30%) and Unique charge (28%) jelly; it is now ±15%. Enemy hit squash limit 3%/8% → 7%/12%. **Cocoa punch:** the flicker strike used frames 0–3 of the 8-frame sheet in ~0.1 s; wind-up now plays frames 0–2 and the hit frames 3–7 at 50 ms each. **Victory:** the result-screen hero does three happy hops instead of a slow 4 px bob. Headless: Momo, Cocoa and Sesame in C1-4 for 25 s — pose scales as expected, 0 errors. Tests: new hero-anim-829; mint-motion updated for the new clamp and switch squash.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -52,6 +52,8 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
 - A14 เสียงเปิดกล่อง 8 ผูกแล้ว v8.1.147 (`openChest` · fallback เสียงเดิม) · รอฟังบนมือถือ
 - (A04 ส่งครบแล้ว · หัวไฟล์ A01–A05 อัปเดตเป็น ✅ 14 พ.ย.)
+- **ใบ 83 ท่าโดนตี 4 + ท่าชนะ 5 ฮีโร่** (`docs/art_orders/83_HERO_HURT_VICTORY.md`) เขียนรอไว้ 18 พ.ย. · ยังไม่สั่ง · ท่าเดินมอนไม่ต้องสั่ง (ชีตมอน 78 ชุดมีท่าเดินครบ)
+- **A15 เสียง Ruby 8 ไฟล์** (Hunger Crack · Clear the Fog · Lure the Crown Root · Seed Rift) เขียนรอไว้ 18 พ.ย. · ตอนนี้ 4 ภารกิจนี้ Ruby เงียบ
 
 **รอ QA บนมือถือของเจ้าของ**
 - ล่าสุด: v8.1.101 loot มินิบอส/บอส · v8.1.100 ป้ายคำพูด/การ์ดเลเวลอัป/หัวหน้าจบด่าน · v8.1.99 Mint bloom/หนังสือเปิด

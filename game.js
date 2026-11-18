@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.10';
+const GAME_VERSION = '8.2.11';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.11',date:'2026-11-18',title:'Relic vault text centred, art and voice orders',items:['a']},
   {v:'8.2.10',date:'2026-11-18',title:'Monster and loot animation',items:['a']},
   {v:'8.2.9',date:'2026-11-18',title:'Hero animation polish',items:['a']},
   {v:'8.2.8',date:'2026-11-18',title:'Lure the Crown Root, new Seed Rift, Clear the Fog',items:['a']},
@@ -18821,6 +18822,7 @@ class Game extends Phaser.Scene {
     const info=this.add.container(0,0); const iy=midY+110,ih=Math.max(110,Math.min(190,bot-iy)),ig=this.add.graphics(); ig.fillStyle(0x140c1e,.92); ig.fillRoundedRect(14,iy,W-28,ih,16); ig.lineStyle(2,0xc07bff,.8); ig.strokeRoundedRect(14,iy,W-28,ih,16);
     const it=this.add.text(W/2,iy+14,'Tap a treasure to look closer',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a',align:'center',stroke:'#1a1224',strokeThickness:3,wordWrap:{width:W-60}}).setOrigin(.5,0),
       id=this.add.text(W/2,iy+48,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff',align:'center',wordWrap:{width:W-60},lineSpacing:6}).setOrigin(.5,0); info.add([ig,it,id]); G.add(info);
+    const centre=()=>{ const gap=id.text?10:0,tot=it.height+gap+(id.text?id.height:0),y0=iy+Math.max(10,(ih-tot)/2); it.setY(y0); id.setY(y0+it.height+gap); };   /* v8.2.11 เจ้าของ: ข้อความไม่อยู่กลางกรอบ → จัดกึ่งกลางแนวตั้งทุกครั้งที่เปลี่ยนข้อความ */ centre();
     const items=[];
     opts.forEach((o,i)=>{ const cx=W/2+(i-(n-1)/2)*cw,col=o.color||0xc07bff,base=midY+50;
       const beam=this.add.graphics(); beam.fillStyle(0xfff4d6,.10); beam.fillTriangle(cx-14,top-6,cx+14,top-6,cx+cw*.42,base); beam.fillTriangle(cx-14,top-6,cx-cw*.42,base,cx+cw*.42,base);
@@ -18831,7 +18833,7 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:ic,y:midY-7,duration:1100+i*90,yoyo:true,repeat:-1,ease:'Sine.inOut'}); this.tweens.add({targets:glow,alpha:{from:.14,to:.34},scale:{from:.92,to:1.1},duration:900,yoyo:true,repeat:-1});
       const card={left:cx-cw/2,right:cx+cw/2,top:midY-cw*.5,bottom:base+80,apply:o.apply,title:o.title,opt:o};
       card.onFocus=()=>{ for(const q of items){ const on=q.card===card; this.tweens.killTweensOf(q.ic); q.ic.setScale(q.s0*(on?1.35:1)); this.tweens.add({targets:q.ic,y:midY-7,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'}); for(const z of [q.ic,q.ped,q.lab])z.setAlpha?.(on?1:.4); q.glow.setVisible(on); }
-        it.setText((o.emoji?o.emoji+' ':'')+(o.title||'')); id.setText([o.kind&&o.kind!=='Relic'?'['+o.kind+']':'',o.short||String(o.desc||'').split(/(?<=[.!])\s/)[0],o.note||''].filter(Boolean).join('\n'));   /* v8.1.150 เจ้าของ: ข้อความ Relic ยาวไป → ประโยคสั้นเดียว + คอมโบ (ถ้ามี) */ hint?.setText('Tap again to take “'+(o.title||'')+'”'); };
+        it.setText((o.emoji?o.emoji+' ':'')+(o.title||'')); id.setText([o.kind&&o.kind!=='Relic'?'['+o.kind+']':'',o.short||String(o.desc||'').split(/(?<=[.!])\s/)[0],o.note||''].filter(Boolean).join('\n')); centre();   /* v8.1.150 เจ้าของ: ข้อความ Relic ยาวไป → ประโยคสั้นเดียว + คอมโบ (ถ้ามี) */ hint?.setText('Tap again to take “'+(o.title||'')+'”'); };
       items.push({card,ic,ped,lab,glow,s0}); this.lvlCards.push(card); });
     return true; }
   /* ===== v8.1.122 เตาหลอม Evolution: อาวุธลอยเหนือทั่ง + ประกายไฟ · แตะ = ไฟลุก · แตะซ้ำ = หลอม ===== */
