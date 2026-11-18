@@ -1,0 +1,10 @@
+[
+  {"key": "vo_ruby_tip_cleanAir", "result": "pass", "voice_id": "GVG9R2Ywg9D3iQVsW8Z6", "max_duration_ms": 3000, "duration_ms": 2461, "peak_dbtp": -3.5, "leading_silence_ms": 0.0},
+  {"key": "vo_ruby_short_cleanAir", "result": "pass", "voice_id": "GVG9R2Ywg9D3iQVsW8Z6", "max_duration_ms": 1500, "duration_ms": 1344, "peak_dbtp": -3.5, "leading_silence_ms": 12.0},
+  {"key": "vo_ruby_tip_capture", "result": "pass", "voice_id": "GVG9R2Ywg9D3iQVsW8Z6", "max_duration_ms": 2800, "duration_ms": 2623, "peak_dbtp": -3.2, "leading_silence_ms": 12.0},
+  {"key": "vo_ruby_short_capture", "result": "pass", "voice_id": "GVG9R2Ywg9D3iQVsW8Z6", "max_duration_ms": 1800, "duration_ms": 1775, "peak_dbtp": -3.5, "leading_silence_ms": 12.0},
+  {"key": "vo_ruby_tip_breakRoots", "result": "pass", "voice_id": "GVG9R2Ywg9D3iQVsW8Z6", "max_duration_ms": 2400, "duration_ms": 2136, "peak_dbtp": -3.4, "leading_silence_ms": 0.0},
+  {"key": "vo_ruby_short_breakRoots", "result": "pass", "voice_id": "GVG9R2Ywg9D3iQVsW8Z6", "max_duration_ms": 1700, "duration_ms": 1636, "peak_dbtp": -3.4, "leading_silence_ms": 12.0},
+  {"key": "vo_ruby_tip_seedRift", "result": "pass", "voice_id": "GVG9R2Ywg9D3iQVsW8Z6", "max_duration_ms": 2800, "duration_ms": 2723, "peak_dbtp": -3.4, "leading_silence_ms": 12.0},
+  {"key": "vo_ruby_short_seedRift", "result": "pass", "voice_id": "GVG9R2Ywg9D3iQVsW8Z6", "max_duration_ms": 1500, "duration_ms": 1396, "peak_dbtp": -3.4, "leading_silence_ms": 12.0}
+]
