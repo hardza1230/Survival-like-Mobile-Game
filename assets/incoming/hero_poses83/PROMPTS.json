@@ -1,0 +1,416 @@
+[
+  {
+    "key": "char_momo_victory",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for momo; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Momo raises her seed-shooter with a broad happy smile. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/momo-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-927fdc90-8355-4a63-83e4-4dc1cef27d63.png",
+    "runReference": "assets/characters/momo_v2/momo_run_12f.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_yuzu_hurt",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly FOUR frames, FOUR columns x ONE row. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for yuzu; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 sudden flinch eyes squeezed tightly, 2 lean back with slight body squash, 3 rebound, 4 almost neutral standing with eyes reopening. Feet anchored, distinct recoil silhouette. Head leaves flick backward. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/yuzu-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-d1b8b862-2cd2-420a-8452-3431f0fb29c5.png",
+    "runReference": "assets/characters/yuzu_run_sheet.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_yuzu_victory",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for yuzu; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Yuzu raises a hand, two tiny citrus seedlings bounce near her boots. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/yuzu-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-5ac6f824-36d5-43d6-a5c2-b97efe70fafe.png",
+    "runReference": "assets/characters/yuzu_run_sheet.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_mint_hurt",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly FOUR frames, FOUR columns x ONE row. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for mint; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 sudden flinch eyes squeezed tightly, 2 lean back with slight body squash, 3 rebound, 4 almost neutral standing with eyes reopening. Feet anchored, distinct recoil silhouette. Scarf and leaves flick, two tiny ice flecks. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/mint-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-ebcacf34-c53e-4a36-bb19-687350ee7b4c.png",
+    "runReference": "assets/char_mint_frostleaf_run_sheet.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_mint_victory",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for mint; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Mint winks, raising her ice spear diagonally, keep spear close. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/mint-run.png"
+        ],
+        "transparent_background": true
+      },
+      {
+        "operation": "generate",
+        "prompt": "Mochi Mayhem production transparent sprite sheet. Eight full-body Mint victory poses, exact 4 columns by 2 rows of equal SQUARE cells, no spacing. Reference is canonical Mint run pose. Match her exact face, mint hair, white flower, white-mint combat outfit, slim ice spear and chibi proportions. Rows read 1-4 then 5-8. Frames 1 standing, 2 tiny anticipatory crouch, 3 low hop, 4 apex low hop, 5 soft landing, 6 smile celebrating, 7 wink and diagonally raised ice spear held close to head, 8 same wink-and-spear pose with just one tiny hair strand shift. Fixed 3/4 top-down camera, consistent head and body size, character fills about 86% of each cell height, feet resting at 92% height, always centered. Hands and spear stay within cell. Genuine alpha with ZERO alpha in empty background, no snowy haze, no white rectangle, no matte. No background, ground, shadow under feet, text, numbers, symbols, glyphs or red tint. Soft dark contours and candy pastel shading as reference.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/mint-run.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-81e04f97-0293-47f3-aa50-a60da25c4cce.png"
+      },
+      {
+        "operation": "edit",
+        "prompt": "Background extraction only. Remove ALL white background and underfoot haze from this existing 4-column 2-row eight-pose sprite atlas. Every pixel outside the eight characters must be fully alpha 0, actual transparent cutout PNG. Preserve each character pixel, face, pose, placement, dimensions, colors and outfit. Preserve white parts of clothes, highlights and the ice weapon. Do not redraw the artwork or change the grid. No background or shadow. Keep all eight characters complete. Transparent means real zero alpha, never a white or grey matte.",
+        "referenced_image_paths": [
+          "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-81e04f97-0293-47f3-aa50-a60da25c4cce.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-4154a69d-0b70-4453-a6e5-15830ca25d59.png"
+      }
+    ],
+    "source": "exec-4154a69d-0b70-4453-a6e5-15830ca25d59.png",
+    "runReference": "assets/char_mint_frostleaf_run_sheet.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_taro_hurt",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly FOUR frames, FOUR columns x ONE row. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for taro; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 sudden flinch eyes squeezed tightly, 2 lean back with slight body squash, 3 rebound, 4 almost neutral standing with eyes reopening. Feet anchored, distinct recoil silhouette. A couple tiny sparks beside cloak. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/taro-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-f7aac043-e612-4a0f-bd36-b175a6d72129.png",
+    "runReference": "assets/characters/taro_run_sheet.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_taro_victory",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for taro; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Taro raises a finger beside her head with a tiny electric spark. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/taro-run.png"
+        ],
+        "transparent_background": true
+      },
+      {
+        "operation": "edit",
+        "prompt": "Remove the white background from this exact sprite atlas. Return all eight original Taro sprites unchanged, in the identical 4-column 2-row grid. Empty pixels must have alpha ZERO, true transparent PNG cutout. Keep white clothing details and small lightning sparks. Preserve all character poses, colors, dimensions and crisp edges. Remove background haze and any underfoot shadow only. Do not add or redraw anything.",
+        "referenced_image_paths": [
+          "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-a9ece7e6-ab53-4678-96fb-1c5c3da41d7f.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-e74a6ad3-e6de-42cc-9447-44d4f1e727fa.png"
+      }
+    ],
+    "source": "exec-e74a6ad3-e6de-42cc-9447-44d4f1e727fa.png",
+    "runReference": "assets/characters/taro_run_sheet.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_sesame_hurt",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly FOUR frames, FOUR columns x ONE row. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for sesame; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 sudden flinch eyes squeezed tightly, 2 lean back with slight body squash, 3 rebound, 4 almost neutral standing with eyes reopening. Feet anchored, distinct recoil silhouette. Floating geometric ornaments briefly dim. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/sesame-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-6a1f0547-dcc1-4c31-b210-45abcc780e56.png",
+    "runReference": "assets/characters/sesame_run_sheet.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_sesame_victory",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for sesame; preserve exact face, hair, silhouette, outfit, weapon and proportions. Default costume. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Sesame raises her staff/book, abstract geometric lights rotate beside her hair. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/sesame-run.png"
+        ],
+        "transparent_background": true
+      },
+      {
+        "operation": "edit",
+        "prompt": "Background extraction only. Preserve every character in this sprite atlas exactly, with identical pose sequence, colors, costume and equal frame grid. Remove the complete white-grey haze, underfoot shadows, backdrop residue and stray background pixels. The empty areas around and between the characters must be FULLY transparent alpha zero. Preserve opaque white clothes, gold ornaments, small magic lights and tiny stars. Do not draw a new character, alter a pose, add a matte or change the layout. Output a clean transparent sprite atlas.",
+        "referenced_image_paths": [
+          "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-e4c8f72f-669d-44b5-87f8-fec0be678348.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-4f880ea4-0473-4dd9-b489-d467a3d25d89.png"
+      },
+      {
+        "operation": "edit",
+        "prompt": "Refine this same eight-frame Sesame victory sprite sheet, preserving the character identity, exact costume, palette, body proportions and 4 columns x 2 rows layout. Frames read left to right top to bottom. Keep frames 1-5's existing poses. In frames 6-8 only, show a clearly joyful gentle smile and have the near hand hold up a small ivory-and-charcoal spellbook with plain gold geometric cover decoration, beside the face. A tiny gold geometric ring of light floats just above that book, within character's hair height. Frames 7 and 8 must have the identical proud book-holding pose, only a minuscule hair movement. No letters, writing or legible runes anywhere. Preserve the Festival hood and moon motifs if present. Keep body scale identical to the other frames. Strip all white-grey backing and red/yellow speckled background residue. Every background pixel must have alpha zero; clean transparent sprites, no shadows or underfoot haze. Do not add a frame or move a character between cells.",
+        "referenced_image_paths": [
+          "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-4f880ea4-0473-4dd9-b489-d467a3d25d89.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-817edc45-0a8b-49af-a0bc-1608ebd2e705.png"
+      }
+    ],
+    "source": "exec-817edc45-0a8b-49af-a0bc-1608ebd2e705.png",
+    "runReference": "assets/characters/sesame_run_sheet.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_momo_victory__sakura",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for momo__sakura; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival sakura costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Momo raises her seed-shooter with a broad happy smile. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/momo__sakura-run.png"
+        ],
+        "transparent_background": true
+      },
+      {
+        "operation": "edit",
+        "prompt": "Background extraction only. Remove ALL white background and underfoot haze from this existing 4-column 2-row eight-pose sprite atlas. Every pixel outside the eight characters must be fully alpha 0, actual transparent cutout PNG. Preserve each character pixel, face, pose, placement, dimensions, colors and outfit. Preserve white parts of clothes, highlights and the ice weapon. Do not redraw the artwork or change the grid. No background or shadow. Keep all eight characters complete. Transparent means real zero alpha, never a white or grey matte.",
+        "referenced_image_paths": [
+          "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-8930c22f-49d7-46a4-af46-80d45c1d78e2.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-5045b348-749a-4f04-99a7-8dbe2f1d1657.png"
+      }
+    ],
+    "source": "exec-5045b348-749a-4f04-99a7-8dbe2f1d1657.png",
+    "runReference": "assets/art/skins69/momo/char_momo_run__sakura.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_yuzu_hurt__summer",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly FOUR frames, FOUR columns x ONE row. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for yuzu__summer; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival summer costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 sudden flinch eyes squeezed tightly, 2 lean back with slight body squash, 3 rebound, 4 almost neutral standing with eyes reopening. Feet anchored, distinct recoil silhouette. Head leaves flick backward. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/yuzu__summer-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-f1cf2dfe-abcc-4299-88ff-8db2873fdd89.png",
+    "runReference": "assets/art/skins69/yuzu/char_yuzu_run__summer.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_yuzu_victory__summer",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for yuzu__summer; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival summer costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Yuzu raises a hand, two tiny citrus seedlings bounce near her boots. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/yuzu__summer-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-996fd00a-87ed-4395-9f37-2e3ca4442eb2.png",
+    "runReference": "assets/art/skins69/yuzu/char_yuzu_run__summer.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_mint_hurt__snow",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly FOUR frames, FOUR columns x ONE row. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for mint__snow; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival snow costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 sudden flinch eyes squeezed tightly, 2 lean back with slight body squash, 3 rebound, 4 almost neutral standing with eyes reopening. Feet anchored, distinct recoil silhouette. Scarf and leaves flick, two tiny ice flecks. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/mint__snow-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-f5dc56cb-2bfb-44c8-a3f2-62761bb88c9c.png",
+    "runReference": "assets/art/skins69/mint/char_mint_run__snow.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_mint_victory__snow",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for mint__snow; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival snow costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Mint winks, raising her ice spear diagonally, keep spear close. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/mint__snow-run.png"
+        ],
+        "transparent_background": true
+      },
+      {
+        "operation": "edit",
+        "prompt": "Extract this exact eight-frame Snowflake Princess Mint sprite sheet onto REAL FULLY TRANSPARENT alpha. Keep all original character pixels, colors, costume, spear, shield, poses and 4x2 grid. Remove all whitish background haze between characters and at image edges; background alpha must be zero. Remove only background and underfoot shadows. Keep each sprite strictly inside its equal-sized cell, preserve all hair tips. Do not add art or labels.",
+        "referenced_image_paths": [
+          "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-7e373e12-443b-4c07-bcba-b117e3499463.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-9e9802ba-6aaa-4c13-93f0-40dad503970e.png"
+      }
+    ],
+    "source": "exec-9e9802ba-6aaa-4c13-93f0-40dad503970e.png",
+    "runReference": "assets/art/skins69/mint/char_mint_run__snow.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_taro_hurt__star",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly FOUR frames, FOUR columns x ONE row. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for taro__star; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival star costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 sudden flinch eyes squeezed tightly, 2 lean back with slight body squash, 3 rebound, 4 almost neutral standing with eyes reopening. Feet anchored, distinct recoil silhouette. A couple tiny sparks beside cloak. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/taro__star-run.png"
+        ],
+        "transparent_background": true
+      },
+      {
+        "operation": "edit",
+        "prompt": "Background extraction only. Preserve every character in this sprite atlas exactly, with identical pose sequence, colors, costume and equal frame grid. Remove the complete white-grey haze, underfoot shadows, backdrop residue and stray background pixels. The empty areas around and between the characters must be FULLY transparent alpha zero. Preserve opaque white clothes, gold ornaments, small magic lights and tiny stars. Do not draw a new character, alter a pose, add a matte or change the layout. Output a clean transparent sprite atlas.",
+        "referenced_image_paths": [
+          "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-d258e1c7-bdca-41dd-bb80-40510c131791.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-09e77b7a-6c8c-4501-8bf0-3e92e6585341.png"
+      }
+    ],
+    "source": "exec-09e77b7a-6c8c-4501-8bf0-3e92e6585341.png",
+    "runReference": "assets/art/skins69/taro/char_taro_run__star.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_taro_victory__star",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for taro__star; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival star costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Taro raises a finger beside her head with a tiny electric spark. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/taro__star-run.png"
+        ],
+        "transparent_background": true
+      }
+    ],
+    "source": "exec-5cba9122-8e93-4866-841b-3ce12b8a8383.png",
+    "runReference": "assets/art/skins69/taro/char_taro_run__star.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_sesame_hurt__moon",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly FOUR frames, FOUR columns x ONE row. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for sesame__moon; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival moon costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 sudden flinch eyes squeezed tightly, 2 lean back with slight body squash, 3 rebound, 4 almost neutral standing with eyes reopening. Feet anchored, distinct recoil silhouette. Floating geometric ornaments briefly dim. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/sesame__moon-run.png"
+        ],
+        "transparent_background": true
+      },
+      {
+        "operation": "edit",
+        "prompt": "Background extraction only for this 4-column 1-row Moon Festival Sesame hurt sprite atlas. Preserve the FOUR original full characters exactly, with the same poses, clothing, dark hair, ivory hood and moon ornaments. Remove ALL grey haze, red/yellow speckle pixels, underfoot smudges and background residue from between and outside the characters, including top and outer edges. Empty space alpha must be exactly zero. Keep all character white details opaque. No redraw, no extra details, no text, no shadow, no background.",
+        "referenced_image_paths": [
+          "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-82111a80-7817-4939-886c-8b561e1ca0ca.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-c05accf4-53d1-4850-8921-3494fe7847ce.png"
+      }
+    ],
+    "source": "exec-c05accf4-53d1-4850-8921-3494fe7847ce.png",
+    "runReference": "assets/art/skins69/sesame/char_sesame_run__moon.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  },
+  {
+    "key": "char_sesame_victory__moon",
+    "tool": "ImageGen",
+    "requests": [
+      {
+        "operation": "generate",
+        "prompt": "Production animation sprite sheet for Mochi Mayhem. Exactly EIGHT frames, FOUR columns x TWO rows, read left to right top to bottom. Each cell square, no gaps or separator lines, TRUE alpha transparent backing. Reference is canonical run-frame for sesame__moon; preserve exact face, hair, silhouette, outfit, weapon and proportions. Festival moon costume, never revert to default. Same 3/4 top-down direction as reference. Soft dark outlines, glossy candy highlights, clean pastel shading, readable mobile sprites. Stable head and clothing volume; main shapes identical each frame, only pose changes. Same ground anchor, horizontal center and scale in every cell. Virtual floor at 92% cell height, head-to-feet 83–89% cell height, at least 3% top clearance. Keep all props inside cell. Frames: 1 standing, 2 small anticipatory crouch, 3 low hop arms raised, 4 cheerful hop apex only a few pixels above ground, 5 soft crouched landing, 6 joyful celebration pose, 7 and 8 same held joyful pose, identical silhouette and minute hair/cloth motion, seamless two-frame hold. Sesame raises her staff/book, abstract geometric lights rotate beside her hair. Arms beside head, never far overhead, no big changes in body height. No underfoot shadow or ellipse, ground, background, text, numbers, labels, legible glyphs, border, red damage tint or watermark. One complete character per cell.",
+        "referenced_image_paths": [
+          "E:/Heart/TT/survival-mobile/.git/hero83-refs/sesame__moon-run.png"
+        ],
+        "transparent_background": true
+      },
+      {
+        "operation": "edit",
+        "prompt": "Refine this same eight-frame Sesame victory sprite sheet, preserving the character identity, exact costume, palette, body proportions and 4 columns x 2 rows layout. Frames read left to right top to bottom. Keep frames 1-5's existing poses. In frames 6-8 only, show a clearly joyful gentle smile and have the near hand hold up a small ivory-and-charcoal spellbook with plain gold geometric cover decoration, beside the face. A tiny gold geometric ring of light floats just above that book, within character's hair height. Frames 7 and 8 must have the identical proud book-holding pose, only a minuscule hair movement. No letters, writing or legible runes anywhere. Preserve the Festival hood and moon motifs if present. Keep body scale identical to the other frames. Strip all white-grey backing and red/yellow speckled background residue. Every background pixel must have alpha zero; clean transparent sprites, no shadows or underfoot haze. Do not add a frame or move a character between cells.",
+        "referenced_image_paths": [
+          "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-76f9e66b-34f4-4d9b-8aa0-78fa6ab46a70.png"
+        ],
+        "transparent_background": true,
+        "output": "exec-ff01bc99-698b-4b56-8b28-6a8827d5e65f.png"
+      }
+    ],
+    "source": "exec-ff01bc99-698b-4b56-8b28-6a8827d5e65f.png",
+    "runReference": "assets/art/skins69/sesame/char_sesame_run__moon.webp",
+    "measurement": "Main connected character silhouette at alpha>=96, matching the median run-frame measurement.",
+    "postprocess": "Equal-grid extraction, uniform pose scaling, horizontal centering and shared floor y=236 (234-235 for hop apex). Low-alpha speckle threshold and margin trim."
+  }
+]
