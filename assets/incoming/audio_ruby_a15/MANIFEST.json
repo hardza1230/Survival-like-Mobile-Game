@@ -1,0 +1,66 @@
+[
+  {
+    "key": "vo_ruby_tip_cleanAir",
+    "file": "vo_ruby_tip_cleanAir.mp3",
+    "text": "Grab the fresh air and free everyone in the poison fog!",
+    "bytes": 40585,
+    "sha256": "e42b4f1e28323c7fbb1cfea687912a7ed7bb6ccba1f5325f0f725aa16b3d6392",
+    "duration_ms": 2461
+  },
+  {
+    "key": "vo_ruby_short_cleanAir",
+    "file": "vo_ruby_short_cleanAir.mp3",
+    "text": "Free them from the fog!",
+    "bytes": 22612,
+    "sha256": "0e8539dae0442d79bc2a5304ddb369281e3597243f1bea60c5ea609f734ba298",
+    "duration_ms": 1344
+  },
+  {
+    "key": "vo_ruby_tip_capture",
+    "file": "vo_ruby_tip_capture.mp3",
+    "text": "Touch the crack — it races to the next hole!",
+    "bytes": 43092,
+    "sha256": "25d06845f6b5fe161e60eca086074be64f3275f70d74cc1d027b8295004d6573",
+    "duration_ms": 2623
+  },
+  {
+    "key": "vo_ruby_short_capture",
+    "file": "vo_ruby_short_capture.mp3",
+    "text": "Touch the crack, clear the holes!",
+    "bytes": 29300,
+    "sha256": "998f810213eb675f2b1508a1093aa5b755c6111e46dca006b7340b6445ce0682",
+    "duration_ms": 1775
+  },
+  {
+    "key": "vo_ruby_tip_breakRoots",
+    "file": "vo_ruby_tip_breakRoots.mp3",
+    "text": "Lure the root into the anchor stones!",
+    "bytes": 35151,
+    "sha256": "12db58064a7cbb43ad879c922e127ec3920089fef940e80be7f1ebd1fb8dfe5e",
+    "duration_ms": 2136
+  },
+  {
+    "key": "vo_ruby_short_breakRoots",
+    "file": "vo_ruby_short_breakRoots.mp3",
+    "text": "Make the root hit the stones!",
+    "bytes": 27210,
+    "sha256": "16ff79fb82c1bb95496d6fc1d12cea42ee3e33439e989297bf39b49096bd91d3",
+    "duration_ms": 1636
+  },
+  {
+    "key": "vo_ruby_tip_seedRift",
+    "file": "vo_ruby_tip_seedRift.mp3",
+    "text": "Catch the seed carriers before they feed the rift!",
+    "bytes": 44764,
+    "sha256": "c2d40bfc5ea530da7e3c1d9b1a168396d8aa0774ceb24de4ddf0d00d533c3fa7",
+    "duration_ms": 2723
+  },
+  {
+    "key": "vo_ruby_short_seedRift",
+    "file": "vo_ruby_short_seedRift.mp3",
+    "text": "Catch the seed carriers!",
+    "bytes": 23448,
+    "sha256": "767c9c2360dc87d5bc8431186a8735f1bd796aec91288b58d844bbcd2fdeeb3d",
+    "duration_ms": 1396
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "key": "vo_ruby_tip_cleanAir",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตื่นเต้น เร่งนิด ๆ เหมือนกลั้นหายใจ",
+    "requests": [
+      {
+        "text": "Grab the fresh air and free everyone in the poison fog!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.44,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.16,
+          "use_speaker_boost": true
+        },
+        "seed": 831501,
+        "apply_text_normalization": "off"
+      }
+    ],
+    "selected_take": 1,
+    "donor": "vo_ruby_tip_cleanAir.1.mp3",
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trim leading/trailing silence, bounded tempo fit without cutting words, mono conversion and true-peak normalization."
+  },
+  {
+    "key": "vo_ruby_short_cleanAir",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "สั้น กระฉับกระเฉง",
+    "requests": [
+      {
+        "text": "Free them from the fog!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.49,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.16,
+          "use_speaker_boost": true
+        },
+        "seed": 831511,
+        "apply_text_normalization": "off"
+      }
+    ],
+    "selected_take": 1,
+    "donor": "vo_ruby_short_cleanAir.1.mp3",
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trim leading/trailing silence, bounded tempo fit without cutting words, mono conversion and true-peak normalization."
+  },
+  {
+    "key": "vo_ruby_tip_capture",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตื่นเต้น มีลุ้น (เว้นจังหวะตรง —)",
+    "requests": [
+      {
+        "text": "Touch the crack — it races to the next hole!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.44,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.16,
+          "use_speaker_boost": true
+        },
+        "seed": 831521,
+        "apply_text_normalization": "off"
+      }
+    ],
+    "selected_take": 1,
+    "donor": "vo_ruby_tip_capture.1.mp3",
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trim leading/trailing silence, bounded tempo fit without cutting words, mono conversion and true-peak normalization."
+  },
+  {
+    "key": "vo_ruby_short_capture",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เร็ว ชัด",
+    "requests": [
+      {
+        "text": "Touch the crack, clear the holes!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.49,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.16,
+          "use_speaker_boost": true
+        },
+        "seed": 831531,
+        "apply_text_normalization": "off"
+      }
+    ],
+    "selected_take": 1,
+    "donor": "vo_ruby_short_capture.1.mp3",
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trim leading/trailing silence, bounded tempo fit without cutting words, mono conversion and true-peak normalization."
+  },
+  {
+    "key": "vo_ruby_tip_breakRoots",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เจ้าเล่ห์ ขี้เล่น เหมือนวางแผนแกล้ง",
+    "requests": [
+      {
+        "text": "Lure the root into the anchor stones!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.44,
+          "similarity_boost": 0.8,
+          "style": 0.4,
+          "speed": 1.16,
+          "use_speaker_boost": true
+        },
+        "seed": 831541,
+        "apply_text_normalization": "off"
+      }
+    ],
+    "selected_take": 1,
+    "donor": "vo_ruby_tip_breakRoots.1.mp3",
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trim leading/trailing silence, bounded tempo fit without cutting words, mono conversion and true-peak normalization."
+  },
+  {
+    "key": "vo_ruby_short_breakRoots",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "สั้น ให้กำลังใจ",
+    "requests": [
+      {
+        "text": "Make the root hit the stones!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.49,
+          "similarity_boost": 0.8,
+          "style": 0.4,
+          "speed": 1.16,
+          "use_speaker_boost": true
+        },
+        "seed": 831551,
+        "apply_text_normalization": "off"
+      }
+    ],
+    "selected_take": 1,
+    "donor": "vo_ruby_short_breakRoots.1.mp3",
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trim leading/trailing silence, bounded tempo fit without cutting words, mono conversion and true-peak normalization."
+  },
+  {
+    "key": "vo_ruby_tip_seedRift",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เร่งด่วน กังวลนิด ๆ",
+    "requests": [
+      {
+        "text": "Catch the seed carriers before they feed the rift!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.44,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.16,
+          "use_speaker_boost": true
+        },
+        "seed": 831561,
+        "apply_text_normalization": "off"
+      }
+    ],
+    "selected_take": 1,
+    "donor": "vo_ruby_tip_seedRift.1.mp3",
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trim leading/trailing silence, bounded tempo fit without cutting words, mono conversion and true-peak normalization."
+  },
+  {
+    "key": "vo_ruby_short_seedRift",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "สั้น เร็ว",
+    "requests": [
+      {
+        "text": "Catch the seed carriers!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.49,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.16,
+          "use_speaker_boost": true
+        },
+        "seed": 831571,
+        "apply_text_normalization": "off"
+      }
+    ],
+    "selected_take": 1,
+    "donor": "vo_ruby_short_seedRift.1.mp3",
+    "output_format": "mp3_44100_128",
+    "postprocess": "Trim leading/trailing silence, bounded tempo fit without cutting words, mono conversion and true-peak normalization."
+  }
+]

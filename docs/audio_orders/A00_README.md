@@ -18,7 +18,7 @@
 | `A13_RUBY_LORE_MISSION_VOICE.md` | Ruby พากย์: เรื่อง Flavor Cores 3 + อธิบายภารกิจประจำด่าน/League 14 + เตือนสั้น 14 · ฝั่งเสียงส่งไฟล์ · Claude ผูก | 31 | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 28 | 🟢 ผูกแล้ว v8.0.91 |
 | `A14_CHEST_OPENING.md` | เสียงเปิดกล่อง: ลุ้นก่อนเปิด 1 + ระเบิดตามระดับ 4 + ประกาย/ไอเทมลง/ของซ้ำ 3 · ElevenLabs | 8 | 🟢 ผูกแล้ว v8.1.147 · รอเจ้าของฟังบนมือถือ |
-| `A15_RUBY_LOST_WISPS.md` | Ruby 2 บรรทัดสำหรับภารกิจ Lost Wisps (Clean Air ใหม่ v8.1.162) | 2 | 🟡 รอเสียง |
+| `A15_RUBY_LOST_WISPS.md` | Ruby ภารกิจ Hunger Crack / Clear the Fog / Lure the Crown Root / Seed Rift (tip + short) | 8 | 📦 ส่งแล้ว รอผูก |
 
 ## กติการ่วม (ทุกใบ)
 - ทำด้วย **AI สร้างเสียง (เช่น ElevenLabs SFX/Music แบบ instrumental)** หรือ **สคริปต์สร้างเสียงด้วยโค้ด** (`scripts/gen_*_sfx.py`, jsfxr) — เลือกตามความเหมาะสมของแต่ละเสียง · **ห้ามเลียนแบบเพลง/ศิลปิน/เกมที่มีอยู่จริง** · ห้ามเสียงพูดเป็นคำ (ยกเว้นระบุ)
