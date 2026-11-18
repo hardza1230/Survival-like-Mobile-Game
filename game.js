@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.14';
+const GAME_VERSION = '8.2.15';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.15',date:'2026-11-18',title:'Yuzu unlock fix and real update notes',items:['Yuzu now unlocks after you pass C2-1, even if you went through the story gate before the boss','Older saves unlock every hero you have already passed','The News screen now explains what each recent update changed']},
   {v:'8.2.14',date:'2026-11-18',title:'Mission arrows fixed, Fill 35, pool bots',items:['Mission arrows now point at the right thing: the next unshaken tree, the next uncharged mirror, the lantern closest to going out, and the seed in Vault Altar collect rounds','Fill the Meter: step 1 now asks for up to 35 defeats and says “Defeat” instead of “Clear”']},
   {v:'8.2.13',date:'2026-11-18',title:'Art fixes: clipped hero sheets, skin pose sizes',items:['Fixed art that was cut off at the edge: Yuzu, Mint’s lance and hair, Cocoa’s ponytail','Mint’s attack pose is the same size as her run','Festival skins (Mint snow, Yuzu summer, Cocoa chef) keep the right size when attacking']},
   {v:'8.2.12',date:'2026-11-18',title:'Hero hurt and victory poses, Ruby mission voices',items:['Every hero now has a hurt pose and a victory pose, Festival skins included','Victory pose plays at the end of each wave and on the Stage Clear medal','Ruby speaks again in Hunger Crack, Clear the Fog, Lure the Crown Root and Seal the Seed Rift']},
