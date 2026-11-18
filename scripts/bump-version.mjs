@@ -11,6 +11,8 @@ const block = fs.readFileSync(0, 'utf8').trim();
 if (!/^# Latest delivery: /.test(block)) { console.error('stdin must start with "# Latest delivery: "'); process.exit(1); }
 const esc = s => s.replace(/\\/g, '\\\\').replace(/'/g, '’');
 if (/[฀-๿]/.test(title + items)) { console.error('changelog text must be English'); process.exit(1); }
+// v8.2.15 owner: News showed "a" for ten updates — items must be real player-facing sentences
+if (items.split('|').some(s => s.trim().length < 12)) { console.error('each changelog item must be a real sentence (≥ 12 chars) — the News screen shows them to players'); process.exit(1); }
 let g = fs.readFileSync('game.js', 'utf8');
 const cur = g.match(/const GAME_VERSION = '(\d+)\.(\d+)\.(\d+)';/); if (!cur) throw Error('GAME_VERSION not found');
 const next = `${cur[1]}.${cur[2]}.${+cur[3] + 1}`, after = `${cur[1]}.${cur[2]}.${+cur[3] + 2}`;
