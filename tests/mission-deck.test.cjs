@@ -25,7 +25,7 @@ D.missionDeck=null;D.missionLog={};for(const t of pool)D.missionLog[t]=1;delete 
 assert.strictEqual(pool.filter(t=>['fill','survive','hunt','purge','capture'].includes(t)).length,5);assert(pool.length>=15);
 // wiring
 assert(/this\._missionDeal=MISSION_DECK&&!this\.riftMode/.test(src)&&/missionDealShow\(this\._missionDeal/.test(src),'stage start deals cards');
-assert(/this\.stageIndex=idx; this\._missionDeal=null;/.test(src),'deal reset on every stage start');
+assert(/this\.stageIndex=idx; this\._skinTagFor=null; this\._missionDeal=null;/.test(src),'deal reset on every stage start');
 assert(/dealT\?dealT:planned/.test(src),'waves use the dealt cards');
 assert(/missionDeckDraw\(1,new Set\(\['survive','fill',stL\]\)\)/.test(src),'replay bounties draw from the deck');
 console.log('mission-deck ok');

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.2.12**. Next release:8.2.13. Fetch the deploy branch before new work.
+Current release: **8.2.13**. Next release:8.2.14. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.2.12 — 🧍 Hero hurt + victory poses (order 83, 18/18) · 🔊 Ruby voices for the reworked missions (A15, 8/8)
+# Latest delivery: v8.2.13 — 🧹 Art fixes (order 84, 27/27): no clipped hero sheets, skin poses at the right size
+
+Branch `asset-delivery/art_fixes84` merged. Checked: MANIFEST sha/bytes, same size/grid as every original, re-ran the clipping scan (all 27 clear; vault ring margin 2%). `scripts/pack-art-fixes84.py` overwrites the shipped files at each `replaces` path (WebP q80; black-bg rings get luminance alpha), so keys stay the same (2.3 MB). **Heroes (shown on screen):** Yuzu idle (stray bits gone, glow inside the frame) and attack, Mint run (lance/hair inside, feet on one line), Mint attack (now drawn at run height → `BP_POSE_SCALE.char_mint_attack` .91, was 1.23 by code), Cocoa run (ponytail inside). **Skins:** the fixed skin poses needed different multipliers from the base outfit, so `BP_POSE_SCALE_SKIN` (key`__`tag, looked up first via the equipped skin tag `_skinTag`, reset each stage start) holds Mint snow attack 1.03 / gale 1.11 / lance 1.01, Yuzu summer combo 1.13 and Cocoa chef Phantom .89 (that sheet came back bigger, 1.81×, and is scaled down in code). **Monsters/bosses (group C):** in the game, minibosses and bosses are drawn with the outlined `boss_ink816_*` sheets, which were never clipped — the order was written from the base sheets only. The new base sheets are kept as fallbacks with no rescale (a rescale was tried and removed because it would have enlarged the ink sheets). `e_royal_oven_sentinel` likewise shows its `_animated` sheet in play. VFX rings: real fix. Headless: Chapter 3 / C2-2 minibosses spawn with the ink sheets at the old size, 0 errors. Tests: new art-fixes84; mission-deck updated for the stage-start reset line.
+
+# Previous delivery: v8.2.12 — 🧍 Hero hurt + victory poses (order 83, 18/18) · 🔊 Ruby voices for the reworked missions (A15, 8/8)
 
 **Order 83** (branch `asset-delivery/hero_poses83`, merged): 4 hurt sheets (Yuzu/Mint/Taro/Sesame, 4 frames) + 5 victory sheets (Momo/Yuzu/Mint/Taro/Sesame, 8 frames) + the same 9 in each hero's Festival skin. Checked: MANIFEST sha/bytes, own measurement of body height vs each run sheet 0.96–0.99, feet on one line, no frame touching the edge, on-model by eye (victory poses move little — mostly expression; the result-screen hop from 8.2.9 stays). `scripts/pack-hero-poses83.py` → `assets/art/hero_poses83/` (256 → 128 px frames, 654 KB, 0.25/0.5 MiB decoded per sheet); 18 `ASSET_SHEETS` keys, hero-lazy (`lazyArt` folder list), skins swap in by the existing `__tag` rename. Hooks: `poseFlash(CF.hurt)` uses `char_<hero>_hurt` for every hero that has one (Momo's old sheet included, Cocoa keeps its own path) and steps through its frames over ≥0.26 s, else the old `CF.hurt` frame; `poseFlash(CF.cheer)` (end of each wave) plays `char_<hero>_victory` via `bpPose` for 1 s; the Stage Clear medallion shows victory frame 8 for every hero with a sheet, else the old cheer frame. **A15** (branch `asset-delivery/audio_ruby_a15`, merged): 8 Ruby lines (tip + short for Hunger Crack, Clear the Fog, Lure the Crown Root, Seed Rift), same ElevenLabs Ruby voice, text matches `RUBY_TIPS` exactly. `scripts/pack-audio-a15.py` → 56 kbps mono over the old files in `assets/audio/acting/`; `A07_CATALOG` text/duration updated, so these four missions speak again. Headless: Yuzu/Taro/Momo/Cocoa hurt frames advance and victory frames play, 0 errors. Tests: new hero-poses83-art; ruby-a09-voice now checks every mission again plus A15; voice-acting-integration, mint-motion, mint-impaler-pose updated for the new sheets/lines.
-
-# Previous delivery: v8.2.11 — 🔮 Relic vault text centred · art order 83 + voice order A15 written
-
-Owner 18 Nov (8.2.4 report "text not centred in the frame" = the Relic pick): the vault's info panel anchored its title/description to the top, so short text sat high with an empty bottom. `drawRelicVault` now centres both lines vertically inside the panel (`centre()`), on open and every time a treasure is tapped. Headless at 390×844 and 360×640: text block centred, 0 errors. Owner confirmed A3 (next-day login reward) works. Docs only for the rest, held until the owner says go: **art order 83** `docs/art_orders/83_HERO_HURT_VICTORY.md` — 4 hurt sheets (Yuzu/Mint/Taro/Sesame, 4 frames) + 5 victory sheets (Momo/Yuzu/Mint/Taro/Sesame, 8 frames), 256 px frames packed to 128, same body height as the run sheet, optional Festival-skin set (+9); monster walk sheets are not needed (all 78 normal monster sheets already animate their walk). **Voice order A15** rewritten to 8 Ruby lines (tip + short for Hunger Crack, Clear the Fog, Lure the Crown Root, Seed Rift). Tests: new relic-vault-centre.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -53,7 +53,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - A14 เสียงเปิดกล่อง 8 ผูกแล้ว v8.1.147 (`openChest` · fallback เสียงเดิม) · รอฟังบนมือถือ
 - (A04 ส่งครบแล้ว · หัวไฟล์ A01–A05 อัปเดตเป็น ✅ 14 พ.ย.)
 - **ใบ 83 ท่าโดนตี/ท่าชนะ + สกิน 18/18** ผูกแล้ว v8.2.12 · รอ QA มือถือ
-- **ใบ 84 แก้ภาพ 27 ไฟล์** (`docs/art_orders/84_ART_FIXES.md` · ตรวจทั้งเกม 18 พ.ย.): ฮีโร่โดนขอบตัด/เท้าเลื่อน · สกินตัวหดตอนโจมตี · มอน/บอสโดนขอบตัด · รออาร์ต
+- **ใบ 84 แก้ภาพ 27/27** ผูกแล้ว v8.2.13 · รอ QA มือถือ (มอน/บอสในเกมใช้ชีต ink816 ที่ไม่โดนตัด → ชีตใหม่เป็น fallback)
 - **A15 เสียง Ruby 8/8** (Hunger Crack · Clear the Fog · Lure the Crown Root · Seed Rift) ผูกแล้ว v8.2.12 · รอฟังบนมือถือ
 
 **รอ QA บนมือถือของเจ้าของ**
