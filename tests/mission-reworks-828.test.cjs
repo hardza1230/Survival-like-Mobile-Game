@@ -20,7 +20,7 @@ assert(/else if\(o\.type==='breakRoots'&&this\._lure\)\{ this\.tickCrownRoot\(dt
 assert(/o\.target=8; o\.desc='The rift pulls you in/.test(src));
 assert(/e\._seedCarrier=S\.tag; e\._goTo=\{x:S\.x,y:S\.y\}/.test(src),'carriers walk to the rift');
 assert(/S\.seeds\+\+; S\.pull=Math\.min\(170,S\.pull\+20\)/.test(src),'fed seeds pull harder');
-assert(/if\(e\._seedCarrier!==S\.tag\)return;[^}]*o\.progress=Math\.min\(o\.target,o\.progress\+1\)/.test(src),'only carriers count');
+assert(/if\(e\._seedCarrier!==S\.tag\)return;[^}]*o\.progress=Math\.min\(o\.target,o\.progress\+w\)/.test(src),'only carriers count (armored = 2, v8.2.18)');
 assert(/for\(const e of S\.carriers\|\|\[\]\)if\(e&&e\._seedCarrier===S\.tag\)\{ e\._seedCarrier=null; e\._goTo=null;/.test(src),'carriers released on clear');
 // Clear the Fog
 assert(/cleanAir:\{emoji:'🫧',name:'Clear the Fog'/.test(src)&&/rt\.fill\(0x1b2410/.test(src)&&/'msn71_bubble',0\)/.test(src));

@@ -1,5 +1,5 @@
 // v8.1.78 เจ้าของ: ภารกิจประจำด่าน Chapter 3 (รอบ 2)
-const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');const K8217=src.match(/const ST_TREES=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
+const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');const K8217=src.match(/const GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
 assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];"));
@@ -94,7 +94,8 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
     sc.stTreeSurprise(Object.assign({kind:'mimic'},t),3);const mm=en.find(e=>e._stMimic);assert.ok(mm,'mimic tree becomes a monster');sc.drops=[];sc.stMimicDown(mm);assert.deepStrictEqual(sc.drops,['gearbox'],'mimic drops gear');
     assert.ok(/kinds=ST_KINDS\.slice\(0,n\)/.test(src)&&src.includes('if(e&&e._stMimic){ e._stMimic=false; this.stMimicDown(e); return; }'),'trees deal shuffled kinds + mimic kill hook'); }
   { const [sc,en]=mk();const o={progress:0},S={};sc.crSetup(o,S);assert.strictEqual(S.lanes.length,2);assert.ok(S.lanes.every(L=>L.grow===0),'roots start inside the flower');assert.strictEqual(sc.crGrowPts(S.lanes[0]).length,1);sc.crTick(.1,o,S);assert.strictEqual(en.length,0,'no walkers while roots grow');{const L=S.lanes[0],q=sc.crGrowPts(L);assert.deepStrictEqual(q[0],L.pts[4],'roots grow out of the centre');}for(let k=0;k<40;k++)sc.crTick(.1,o,S);assert.ok(en.length>0&&en[0]._goTo,'walkers get a waypoint');
-    for(const L of S.lanes){ sc.player={x:L.pts[0].x,y:L.pts[0].y}; for(let k=0;k<25;k++)sc.crTick(.1,o,S); } assert.ok(S.lanes.every(L=>!L.open),'all cut');assert.ok(sc.done,'all cut ends early');assert.ok(sc.sugarRun>0); }
+    for(const L of S.lanes){ sc.player={x:L.pts[0].x,y:L.pts[0].y}; for(let k=0;k<40;k++)sc.crTick(.1,o,S); } assert.ok(S.lanes.every(L=>!L.open),'all cut (thick roots take 3.2s)');
+    assert.ok(S.lanes.every(L=>L.K&&L.kind)&&new Set(S.lanes.map(L=>L.kind)).size===S.lanes.length,'v8.2.18 root mothers of different kinds');assert.ok(sc.done,'all cut ends early');assert.ok(sc.sugarRun>0); }
   console.log('League phase 2: Hunger’s Mouth PoE breach (hand, expand, kill-extend, splinters, chests, collapse) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
 
 { // v8.1.83 League phase 3: Hunger Herald + Grandma's Pot
@@ -132,7 +133,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console,
     GOLEM_PARTS:[{k:'head',em:'🍰',name:'Cake Head',skill:'a'},{k:'arms',em:'🥨',name:'Arms',skill:'b'},{k:'legs',em:'🥖',name:'Legs',skill:'c'},{k:'tail',em:'🍭',name:'Tail',skill:'d'},{k:'heart',em:'💗',name:'Heart',skill:'e'}]};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['fpFull','ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown','ggGoldLoot','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   for(const full of [false,true]){ const sc=new ctx.K();const en=[];Object.assign(sc,{_replayMeter:full?{}:null,stageIndex:4,player:{x:0,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj()},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},
     sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){},clearTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});

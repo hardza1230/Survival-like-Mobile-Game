@@ -15,7 +15,7 @@ const ctx={navigator:{},localStorage:{getItem:()=>null},console,location:{search
   Phaser:{Math:{Clamp:(x,l,h)=>Math.max(l,Math.min(h,x))}},Save:{data:{}},TAU:2*Math.PI,WORLD:4000};
 ctx.window=ctx;
 vm.createContext(ctx);
-vm.runInContext(source.match(/const ST_TREES=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var '),ctx);   // v8.2.17 mission constants used by extracted methods
+vm.runInContext(source.match(/const GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var '),ctx);   // v8.2.17 mission constants used by extracted methods
 vm.runInContext(source.slice(a,b)+'\n'+source.slice(source.indexOf('const ASSET_IMAGES ='),source.indexOf('class Boot extends'))+
   ';this.assets={ASSET_FX,artClass,lazyArt,bootKeep};',ctx);
 
