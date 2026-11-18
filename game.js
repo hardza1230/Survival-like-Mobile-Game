@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.9';
+const GAME_VERSION = '8.2.10';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.10',date:'2026-11-18',title:'Monster and loot animation',items:['a']},
   {v:'8.2.9',date:'2026-11-18',title:'Hero animation polish',items:['a']},
   {v:'8.2.8',date:'2026-11-18',title:'Lure the Crown Root, new Seed Rift, Clear the Fog',items:['a']},
   {v:'8.2.7',date:'2026-11-18',title:'Abyss Hunger Crack, Cocoa pose size, boss card',items:['a']},
@@ -20508,7 +20509,7 @@ class Game extends Phaser.Scene {
     e._sqY=(e._sqY??1)+(1-(e._sqY??1))*Math.min(1,dt*14);
     const perspective=this._chapter25D?Math.max(0.94,Math.min(1.07,1+(e.y-this.player.y)*0.00010)):1,sc=(e.baseScale||1)*perspective;
     // Keep authored silhouettes stable; retain only a small, brief hit reaction.
-    const limit=hasWalk?0.07:0.12;   /* v8.2.9 เดิม 3%/8% → โดนตีเห็นยุบ */e.setScale(sc*Math.max(1-limit,Math.min(1+limit,e._sqX)),sc*Math.max(1-limit,Math.min(1+limit,e._sqY)));
+    const limit=hasWalk?0.07:0.12,bob=!hasWalk&&state==='walk'?Math.abs(Math.sin(e.stepT))*.07:0;   /* v8.2.9 เดิม 3%/8% → โดนตีเห็นยุบ · v8.2.10 มอนไม่มีท่าเดิน: เด้งกระดึ๊บตามก้าว */e.setScale(sc*Math.max(1-limit,Math.min(1+limit,e._sqX))*(1+bob*.5),sc*Math.max(1-limit,Math.min(1+limit,e._sqY))*(1-bob));
     this.tickEnemyWeight?.(e,dt,state,speed);
   }
   playEnemyDeath(e){
@@ -22440,13 +22441,13 @@ class Game extends Phaser.Scene {
     this.enemyWeightHit?.(e,amount,x,crit);
     this.warnAntBomber(e);
     e._sqX = 1.35; e._sqY = 0.70;   // Effectยุบตัวเมื่อโดนตี (Hit squash)
-    if(crit){ this.hitStop(35); this.screenShake(90, 0.005); this.fireRecipes('crit'); }
+    if(crit){ this.hitStop(35); this.screenShake(90, 0.005); this.fireRecipes('crit'); const nowT=this.time?.now||0; if(!e.isBoss&&e.setTintFill&&nowT-(e._critFlashAt||0)>220){ e._critFlashAt=nowT; e.setTintFill(0xffffff); this.time.delayedCall(50,()=>{ if(!e.active)return; if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); }); } }   /* v8.2.10 คริ = วาบขาว 50 ms (เฉพาะคริ กันกระพริบทั้งจอ) */
     // อย่าฟอก sprite ด้วย setTintFill ตอนโดนตี: skillsหลาย hit ทำให้ art กระพริบขาวจนอ่าน silhouette ไม่ออก
     // ใช้ ring + spark + damage number + squash เป็น hit feedback แทน จึงเห็นสีและ animation เดิมตลอดเวลา
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     if(this._sgHit)this.popDmg(Math.round(amount),x+Phaser.Math.Between(-16,16),y+Phaser.Math.Between(-12,8),crit,true);   // v6.50.1 เจ้าของ: เม็ด shotgun แสดงดาเมจทุกเม็ด (ไม่ติด throttle)
     else this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0&&(!taroDirect||(e.active&&e._taroSpawnId===taroDirect.token.id))) this.killEnemy(e); }
-  killEnemy(e){ const victory=!!(e.active&&e.isBoss&&!e.isDummy&&this.storyVoice?.()),victoryPose=victory?{key:e.texture.key,frame:e.frame?.name??0,sx:e.scaleX,sy:e.scaleY,ox:e.originX,oy:e.originY,flip:e.flipX}:null; if(e.active&&(e.isBoss||e.isMini)&&!e.isDummy&&!victory)this.killSlowmo?.(e.isBoss?1:.6); if(e.active)this.mxKill?.(e); if(e.active&&!victory&&e._bossInk&&(e.isBoss||e.isMini))this.bossInkGhost?.(e);if(e.active&&!victory&&!e._bossInk&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
+  killEnemy(e){ if(e&&e.active&&!e.isBoss&&!e.isMini&&!e.isDummy)this.enemyDeathPop?.(e); const victory=!!(e.active&&e.isBoss&&!e.isDummy&&this.storyVoice?.()),victoryPose=victory?{key:e.texture.key,frame:e.frame?.name??0,sx:e.scaleX,sy:e.scaleY,ox:e.originX,oy:e.originY,flip:e.flipX}:null; if(e.active&&(e.isBoss||e.isMini)&&!e.isDummy&&!victory)this.killSlowmo?.(e.isBoss?1:.6); if(e.active)this.mxKill?.(e); if(e.active&&!victory&&e._bossInk&&(e.isBoss||e.isMini))this.bossInkGhost?.(e);if(e.active&&!victory&&!e._bossInk&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
       const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
       this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});
     } if(e._bloat){ e._bloat=false; this.bloatBurst(e.x,e.y); } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;
@@ -22705,14 +22706,18 @@ class Game extends Phaser.Scene {
     if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); } if(g){ g._mag=false; g._holdUntil=0; g._vac=false; }
     if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost+(this.endgameDropActive()?1:0));if(this._lootMinRare&&g.lootTier==='common')g.lootTier='rare';const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
     g.forgeExtra=Math.random()<forgeLootValue(this,119);g.body.setAllowGravity(false);g.clearTint();g.setAlpha(1);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
-    this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); return g; }
+    this.lootPopIn?.(g,y); return g; }
   // 🧪 Currency ดรอปเป็นชิ้นในสนาม (เก็บ = สะสมเข้า _runCurrency + Save · โชว์ในสรุปด่าน)
   spawnCurrencyDrop(x,y,key){ let g=this.loots.getFirstDead(false);
     if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
     if(!g)return;g._mag=false;g._holdUntil=0;g._vac=false;g.dropType='currency';g.curKey=key;g.forgeExtra=false;g.forgeQuantity=1+(Math.random()<forgeLootValue(this,120)?1:0);g.lootTier=null;const col=0x9fe8ff,d=currencyDef(key);
     g.setTexture(d.asset&&this.textures.exists(d.asset)?d.asset:'prize_currency').clearTint().setAlpha(1); if(d.tint&&!(d.asset&&this.textures.exists(d.asset)))g.setTint(d.tint);
     g.body.setAllowGravity(false);this.camWorld(g);this.showPickupCue(g,col,1.0);this.spawnDropBeam(g,col); if(this.iso)g.setDepth(Math.max(80000,g.y));
-    this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); return g; }
+    this.lootPopIn?.(g,y); return g; }
+  /* v8.2.10 เจ้าของ (วิจารณ์แอนิเมชัน): ของดรอปเด้งออกมาเป็นวิถีโค้ง กระดอนพื้น แล้วค่อยลอยขึ้นลงเหมือนเดิม */
+  lootPopIn(g,y){ if(!g||!this.tweens)return; const sx=g.scaleX||1,sy=g.scaleY||1; this.tweens.killTweensOf(g); g.y=y-34; g.setScale(sx*.2,sy*.2);
+    this.tweens.add({targets:g,scaleX:sx,scaleY:sy,duration:240,ease:'Back.out'});
+    this.tweens.add({targets:g,y,duration:420,ease:'Bounce.out',onComplete:()=>{ if(g.active)this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }}); }
   collectLoot(player,g){ if(!g.active||(g._holdUntil&&(this.time?.now||0)<g._holdUntil))return; g._vac=false; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false; g.clearTint();
     if(g.dropType==='sugar'){ const v=g.sugarVal||0; this.sugarStage+=v; this.sugarRun+=v; (Sfx.orderCue?.('pickup_sugar_piece',.3,.06,.9+Math.random()*.25)||Sfx.ev?.('pickup_currency',.4,.08)||Sfx.select()); this.burst(g.x,g.y,0xffc6df); return; }
     if(g.dropType==='currency'&&g.curKey){ const k=g.curKey,n=g.forgeQuantity||1; Save.addCurrency(k,n); if(!this._runCurrency)this._runCurrency={}; this._runCurrency[k]=(this._runCurrency[k]||0)+n;
@@ -24475,6 +24480,9 @@ class Game extends Phaser.Scene {
     this._emit(this.pSpark,x,y,color,big?7:3);
   }
   // --- VFX: death poof (smoke cloud) ---
+  /* v8.2.10 มอนตาย: ร่างขาววาบ บีบแบนแล้วพองหาย ~140 ms (สำเนาภาพ · ไม่เกิน 14 ชิ้นพร้อมกัน) */
+  enemyDeathPop(e){ if(!this.add?.image||(this._deathGhosts||0)>=14||!e.texture?.key||!e.visible)return; try{ const g=this.camWorld(this.add.image(e.x,e.y,e.texture.key,e.frame?.name).setOrigin(e.originX,e.originY).setScale(e.scaleX,e.scaleY).setFlipX(!!e.flipX).setRotation(e.rotation||0).setDepth((e.depth||0)+1)); g.setTintFill?.(0xffffff); this._deathGhosts=(this._deathGhosts||0)+1;
+    this.tweens.add({targets:g,scaleX:e.scaleX*1.35,scaleY:e.scaleY*.55,alpha:0,duration:140,ease:'Quad.out',onComplete:()=>{ g.destroy(); this._deathGhosts=Math.max(0,(this._deathGhosts||1)-1); }}); }catch(err){} }
   vfxDeathPoof(x,y,color,big){
     const sc=big?2.2:1.0;
     const halo=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(0xffffff).setDepth(6).setScale(0.035*sc,0.03*sc).setAlpha(0.6));

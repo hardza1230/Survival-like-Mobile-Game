@@ -7,7 +7,7 @@ assert(/const sqX=Phaser\.Math\.Clamp\(this\._sqX,0\.85,1\.15\);/.test(src),'pla
 assert(/if\(texture!==this\._lastPoseTex\)\{[^}]*this\._sqX=1\.08; this\._sqY=\.92;/.test(src),'pose switch squash');
 assert(src.includes("const calm=k=>k===idleK||k===runKey||k===idleK+'_idle'; if(a&&!(calm(a)&&calm(texture))){"),'no pop between idle and run');
 assert(/Math\.min\(7,3\+Math\.floor\(\(pose\.t-pose\.wind\)\/\.05\)\)/.test(src),'Cocoa punch plays frames 3–7');
-assert(/const limit=hasWalk\?0\.07:0\.12;/.test(src),'enemy hit squash visible');
+assert(src.includes('const limit=hasWalk?0.07:0.12'),'enemy hit squash visible');
 assert(/targets:im,y:y0-18,duration:240,yoyo:true,repeat:2/.test(src),'victory hop');
 // hit circle compensation still divides by the pose multiplier
 assert(/r=24\/actMul; p\.body\.setCircle/.test(src));
