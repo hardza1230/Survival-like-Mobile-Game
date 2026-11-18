@@ -1,6 +1,6 @@
 # 83 — ท่าโดนตี + ท่าชนะของฮีโร่ · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต (เจ้าของ 18 พ.ย.: เขียนรอไว้ ยังไม่รีบ) · เขียน 18 พ.ย. 2026 · ยังไม่มีโค้ดผูก (ตอนนี้ใช้ภาพแทน: หน้าเจ็บในชีตยืน + บีบตัว / หน้าดีใจ + กระโดด v8.2.9)
+สถานะ: 🟡 รออาร์ต (เจ้าของ 18 พ.ย.: เขียนรอไว้ ยังไม่รีบ · **สั่งชุดสกินด้วย = 18 ไฟล์**) · เขียน 18 พ.ย. 2026 · ยังไม่มีโค้ดผูก (ตอนนี้ใช้ภาพแทน: หน้าเจ็บในชีตยืน + บีบตัว / หน้าดีใจ + กระโดด v8.2.9)
 ส่งไฟล์ที่ `assets/incoming/hero_poses83/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -31,10 +31,10 @@
 | `char_taro_victory.png` | Taro ชูนิ้วขึ้นฟ้า สายฟ้าเล็ก ๆ เต้นบนนิ้ว |
 | `char_sesame_victory.png` | Sesame ชูคทา/หนังสือรูน รูนวงเล็กหมุนเหนือหัว |
 
-**รวม 9 ไฟล์** (A 4 · B 5)
+**ชุดปกติ 9 ไฟล์** (A 4 · B 5)
 
-### C. (ไม่บังคับ · ให้เจ้าของเลือก) ชุดสกิน Festival
-ถ้าผู้เล่นใส่สกิน แล้วท่าใหม่ไม่มีเวอร์ชันสกิน เกมจะ**ไม่ใช้ท่าใหม่** (ใช้ท่าแทนแบบเดิมต่อ) เพื่อไม่ให้ชุดเปลี่ยนกลางเกม · ถ้าต้องการให้ครบ ทำซ้ำ 9 ไฟล์ด้านบนในชุดสกินของฮีโร่ตัวนั้น ตั้งชื่อ `<key>__<tag>.png`: Momo `__sakura` · Yuzu `__summer` · Mint `__snow` · Taro `__star` · Sesame `__moon` (ดูหน้าตาจาก `assets/art/skins69/<hero>/char_<hero>__<tag>.webp`) → **+9 ไฟล์**
+### C. ชุดสกิน Festival (เจ้าของ 18 พ.ย.: สั่งด้วย)
+ถ้าผู้เล่นใส่สกิน แล้วท่าใหม่ไม่มีเวอร์ชันสกิน เกมจะ**ไม่ใช้ท่าใหม่** (ใช้ท่าแทนแบบเดิมต่อ) เพื่อไม่ให้ชุดเปลี่ยนกลางเกม · ถ้าต้องการให้ครบ ทำซ้ำ 9 ไฟล์ด้านบนในชุดสกินของฮีโร่ตัวนั้น ตั้งชื่อ `<key>__<tag>.png`: Momo `__sakura` · Yuzu `__summer` · Mint `__snow` · Taro `__star` · Sesame `__moon` (ดูหน้าตาจาก `assets/art/skins69/<hero>/char_<hero>__<tag>.webp`) → **+9 ไฟล์ · รวมทั้งใบ 18 ไฟล์**
 
 ## อ้างอิงหน้าตา (on-model)
 - ชีตยืน/วิ่งปัจจุบัน: `assets/characters/yuzu_sheet.webp`, `assets/characters/yuzu_run_sheet.webp` · `assets/char_mint_frostleaf_run_sheet.webp` · `assets/characters/taro_run_sheet.webp` · `assets/char_sesame_awakened_sheet.webp`, `assets/characters/sesame_run_sheet.webp` · Momo `assets/characters/momo_v2/momo_run_12f.webp`
