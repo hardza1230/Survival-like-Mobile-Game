@@ -25,6 +25,6 @@ const mk=()=>{ const t=new T(),spawned=[],ev={done:0,completed:0,loot:[]}; const
 { const {t,ev}=mk(),o={progress:0,target:25,done:false},c=t._crack; c.st='final'; c.pack=[{active:true,_hcTag:'T'}]; t.tickHungerCrack(36,o); assert.equal(ev.completed,1,'35 s fallback'); }
 { const t=new T(); t._crack={holes:[{open:true},{open:true},{open:false},{open:false}]}; assert.equal(t.hungerCrackGlyph(0),'▰▰▱▱'); assert(!/\d/.test(t.hungerCrackGlyph(.3)),'no numbers'); }
 assert(/if\(CAPTURE_CRACK\)\{o\.desc='[^']+';this\.spawnHungerCrack\(\);\}else this\.spawnCaptureZone\(\);/.test(src));
-assert(/else if\(o\.type==='capture'&&this\._crack\)\{this\.tickHungerCrack\(dt,o\);/.test(src)); assert(/this\.clearHungerCrack\?\.\(\);for\(const k of \['_captureZone'/.test(src));
+assert(/else if\(o\.type==='capture'&&this\._crack\)\{this\.tickHungerCrack\(dt,o\);/.test(src)); assert(/this\.clearHungerCrack\?\.\(\);this\.clearCrownRoot\?\.\(\);for\(const k of \['_captureZone'/.test(src));
 assert(/capture:\{emoji:'🕳️',name:'Hunger Crack'/.test(src));
 console.log('Hunger Crack (Abyss): touch → runs to holes, holes burst with monsters + loot, last pack completes, glyph HUD passed');

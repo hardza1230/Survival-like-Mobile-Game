@@ -299,7 +299,7 @@ if(!fs.existsSync(new URL('../assets/bg9.webp',import.meta.url)))throw new Error
 for(const contract of [
   "chapterStage:5, ready:true",
   "c2Root:{ hp:1.16, dmg:1.12, speed:1.08, maxLive:88 }",
-  "breakRoots:{emoji:'🌳'",
+  "breakRoots:{emoji:'🐛'",
   "spawnRootAnchors(n=4)",
   "tickRootThrone(dt)",
   "rootRole==='barkGuard'",
