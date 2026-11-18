@@ -5,7 +5,7 @@
 // Usage:
 //   node scripts/build-www.mjs
 //   NODE_PATH=/opt/node22/lib/node_modules node scripts/qa-bots.cjs [--only=persona,persona] [--shard=1/4] [--par=2] [--max=240] [--out=qa-bots.json] [--list]
-// Personas: unique (every hero/path casts its Unique) · replay (lose → Replay → HUD check) · daily (calendar claim checks) · build (every hero × build path) · cards (first/random/relic/modifier picks) · missions (walks onto every objective)
+// Personas: unique (every hero/path casts its Unique) · replay (lose → Replay → HUD check) · daily (calendar claim checks) · build (every hero × build path) · cards (first/random/relic/modifier picks) · missions (walks onto every objective) · pool (v8.2.14: forces every mission of the deck pool off its home stage and plays it to the end — follows questFocusTargets, presses Frozen Pantry's jar, walks Vault Altar pads)
 //           idle (never moves) · mortal (no god mode, kites and dodges) · screens (tablet / landscape / small phone)
 //           stress (Low quality + ×3 speed) · endgame (Delve rooms + Pinnacle) · menus (taps every menu screen, scripts/qa-menus.cjs)
 const fs=require('fs'),http=require('http'),path=require('path'),{spawnSync}=require('child_process'),{chromium}=require('playwright');
@@ -29,11 +29,13 @@ function jobs(){const J=[],add=(persona,o)=>J.push({id:persona+':'+(o.tag||o.sta
   // v8.2.2 (owner D1): bugs the phone found that bots missed
   for(const [h,paths] of Object.entries(HEROES))for(const p of paths)add('unique',{tag:h+'.'+p,hero:h,card:'path:'+p,stage:h==='momo'||h==='mint'?4:9,move:'kite',unique:true});   // every hero/path casts its Unique (Titan hold+release, charge aims) → Unique must deal damage
   [[2,'cocoa'],[6,'taro']].forEach(([s,h])=>add('replay',{tag:h+'@'+s,stage:s,hero:h,god:false,move:'idle',card:'random',speed:1,replay:true}));   // lose → Replay → HUD art must come back
+  ['fill','survive','hunt','purge','capture','hungerHerald','hungersMouth','grandmasPot','frozenPantry','grandmasGolem','defendNectar','cleanAir','creepingRoots','breakRoots','seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'].forEach(t=>add('pool',{tag:t,kind:'pool',type:t,stage:t==='grandmasPot'?3:2}));   // v8.2.14 every deck mission must finish outside its home stage
   add('daily',{tag:'calendar',kind:'daily'});   // day change: Login / Daily reset and claim once per day
   add('menus',{tag:'all',kind:'menus'});
   if(A.set)for(const j of J)for(const kv of A.set.split(',')){const [k,v]=kv.split(':');j[k]=v==='true'?true:v==='false'?false:isNaN(+v)?v:+v;}   // e.g. --set=move:chase,dmg:true
   const SKIP=A.skip?A.skip.split(','):[];
-  return J.filter(j=>!ONLY||ONLY.includes(j.persona)).filter(j=>!SKIP.includes(j.persona)).filter((_,i)=>i%SH_N===SH_I-1);}
+  const IDS=A.ids?A.ids.split(','):null;   // e.g. --ids=pool:mirrorPath,pool:vaultAltar
+  return J.filter(j=>!IDS||IDS.includes(j.id)).filter(j=>!ONLY||ONLY.includes(j.persona)).filter(j=>!SKIP.includes(j.persona)).filter((_,i)=>i%SH_N===SH_I-1);}
 
 // ---- in-page bot (runs every tick) ----
 function botTick(cfg){const s=window.__g.scene.getScene('Game'),g=window.__g,P=s.player;let act='';
@@ -107,6 +109,35 @@ async function runDaily(browser,port,job){const ctx=await browser.newContext({vi
     return out;}).catch(e=>['eval error '+e.message]);
   for(const m of r)res.stuck.push({bot:m});if(r.length)res.result='calendar-bug';await ctx.close();return res;}
 
+async function runPool(browser,port,job){const ctx=await browser.newContext({viewport:{width:390,height:844}}),page=await ctx.newPage(),errs=[];page.on('pageerror',e=>errs.push(String(e.message).slice(0,300)));
+  await page.addInitScript(()=>{try{window.__qaBot=true;localStorage.clear();localStorage.setItem('mochi_gm','1');const sm={};for(let i=0;i<15;i++)sm[i]=1;localStorage.setItem('mochi_save',JSON.stringify({tutorialDone:true,unlockedStage:14,stageMastery:sm,character:'momo',chars:['momo'],gmOpt:{god:true,dmg:true},gmUsed:true,settings:{music:0,sfx:0}}));}catch(e){}});
+  await page.goto(`http://localhost:${port}/index.html`);const res={id:job.id,persona:'pool',result:null,errors:errs,consoleErrors:[],stuck:[],sec:0};const t0=Date.now();
+  const ok=await page.waitForFunction(()=>{const s=window.__g?.scene?.getScene('Game');return s&&s.sys.isActive()&&s.state==='menu';},null,{timeout:120000}).then(()=>true,()=>false);
+  if(!ok){res.result='boot-timeout';await ctx.close();return res;}
+  res.version=await page.evaluate(()=>typeof GAME_VERSION!=='undefined'?GAME_VERSION:null);
+  await page.evaluate(i=>{const s=window.__g.scene.getScene('Game');s.usesReplaySurvival=()=>false;s.startRun(i);},job.stage);
+  const play=await page.waitForFunction(()=>window.__g.scene.getScene('Game').state==='play',null,{timeout:90000}).then(()=>true,()=>false);
+  if(!play){res.result='stage-timeout';await ctx.close();return res;}
+  await page.waitForTimeout(3000);
+  await page.evaluate(async t=>{const s=window.__g.scene.getScene('Game');s._finishDeal?.();await new Promise(r=>setTimeout(r,1500));s._finishDeal?.();s._finishStoryCutscene?.();s.missionRoamArt?.([t]);await new Promise(r=>setTimeout(r,1500));
+    s.player.dmgMul=(s.player.dmgMul||1)*6;s.endHuntCurse?.();s.clearWaveObjective?.();s._huntUsed=false;s.setupWaveObjective(1,{forceType:t});if(t!=='survive')s.waveTimer=200;},job.type).catch(e=>errs.push('setup '+e.message));
+  let last=null,best=0;
+  for(let i=0;i<170;i++){await page.waitForTimeout(450);last=await page.evaluate(()=>{const s=window.__g.scene.getScene('Game');
+    if(s.state==='levelup'&&s.lvlCards?.[0]){const c=s.lvlCards[0];s.pickCardAt((c.left+c.right)/2,(c.top+c.bottom)/2);s.pickCardAt((c.left+c.right)/2,(c.top+c.bottom)/2);}if(s._pathTeach&&s.state==='levelup')s._pathTeach.next();
+    if(s.state==='cinematic'){s._finishDeal?.();s._finishStoryCutscene?.();}
+    const o=s.waveObjective;if(!o)return {gone:true};if(o.type!=='survive')s.waveTimer=Math.max(s.waveTimer,60);const S=s._sig;let tg=null;
+    if(o.type==='frozenPantry'&&S&&S.phase==='seek'&&s.dist(s.player.x,s.player.y,S.x,S.y)<120)s.fpOpen?.(o,S);   // press the jar button
+    if((o.type==='vaultAltar'||o.type==='ultimatum')&&S&&S.pads&&(S.phase==='pick'||S.phase==='decide'))tg=S.phase==='decide'?(S.pads.find(p=>p.act==='take')||S.pads[0]):S.pads[0];
+    if(!tg){try{let bd=1e9;for(const q of (s.questFocusTargets?.(o.type)||[])){const d=Math.hypot(q.x-s.player.x,q.y-s.player.y);if(d<bd){bd=d;tg=q;}}}catch(e){}}
+    if(!tg){try{tg=s._nearestWaveObjective?.();}catch(e){}}
+    if(!tg){let bd=1e9;s.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=Math.hypot(e.x-s.player.x,e.y-s.player.y);if(d<bd){bd=d;tg=e;}});}
+    s.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&(e._waveObjectiveTarget||e._seedCarrier||e._herald||e._ggPart||e._golem||e._hcTag||e._fpTok))e.hp=Math.min(e.hp,5);});
+    if(tg&&tg.x!=null){const dx=tg.x-s.player.x,dy=tg.y-s.player.y,d=Math.hypot(dx,dy);if(d>30){const st=Math.min(d-20,120);s.player.x+=dx/d*st;s.player.y+=dy/d*st;}}
+    return {type:o.type,prog:+(o.progress||0).toFixed(1),target:o.target,state:s.state};}).catch(e=>({err:e.message}));
+    if(last.gone||(last.type&&last.type!==job.type)){res.result='done';break;} if(last.target)best=Math.max(best,last.prog/last.target);}
+  if(!res.result){res.result='mission-stuck';res.stuck.push({bot:job.type+' did not finish in 76 s',best:Math.round(best*100)+'%',last});}
+  res.sec=Math.round((Date.now()-t0)/1000);res.missions=[{type:job.type,end:res.result==='done'}];await ctx.close();return res;}
+
 async function runStage(browser,port,job){
   const ctx=await browser.newContext({viewport:{width:job.view.width,height:job.view.height},isMobile:!!job.view.isMobile,hasTouch:!!job.view.hasTouch,deviceScaleFactor:job.view.deviceScaleFactor||1});
   const page=await ctx.newPage(),errs=[],cerr=[];
@@ -160,7 +191,7 @@ function runMenus(job){const out=path.resolve('qa-menus-'+SH_I+'.json');const r=
   const browser=await chromium.launch({...(process.env.QA_BROWSER_CHANNEL?{channel:process.env.QA_BROWSER_CHANNEL}:{}),args:['--enable-precise-memory-info','--autoplay-policy=no-user-gesture-required']});
   const report={date:new Date().toISOString(),shard:SH_I+'/'+SH_N,runs:[]};const save=()=>fs.writeFileSync(OUT,JSON.stringify(report,null,1));
   try{const queue=J.filter(j=>j.kind!=='menus'),menus=J.filter(j=>j.kind==='menus');
-    const worker=async()=>{while(queue.length){const j=queue.shift();let r;try{r=j.kind==='daily'?await runDaily(browser,port,j):await runStage(browser,port,j);}catch(e){r={id:j.id,persona:j.persona,result:'runner-error',errors:[String(e.message).slice(0,300)],consoleErrors:[],stuck:[]};}
+    const worker=async()=>{while(queue.length){const j=queue.shift();let r;try{r=j.kind==='daily'?await runDaily(browser,port,j):j.kind==='pool'?await runPool(browser,port,j):await runStage(browser,port,j);}catch(e){r={id:j.id,persona:j.persona,result:'runner-error',errors:[String(e.message).slice(0,300)],consoleErrors:[],stuck:[]};}
       report.version=report.version||r.version;report.runs.push(r);save();
       console.log(JSON.stringify({id:r.id,result:r.result,sec:r.sec,errors:r.errors.length,console:r.consoleErrors.length,stuck:r.stuck.length,fps:r.fpsAvg,lvl:r.level,missions:(r.missions||[]).map(m=>m.type+(m.end?'✓':'…')).join(' ')}));}};
     await Promise.all(Array.from({length:PAR},worker));
