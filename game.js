@@ -3334,6 +3334,25 @@ const ASSET_SHEETS = {
   char_cocoa_dash_jab:{ url:'assets/art/bp_fx/cocoa_dash_jab_sheet.webp', frame:128 },
   char_cocoa_phantom:{ url:'assets/art/bp_fx/cocoa_phantom_rush_sheet.webp', frame:128 },
   char_cocoa_hurt:{ url:'assets/art/bp_fx/cocoa_hurt_sheet.webp', frame:128 },
+  /* v8.2.12 ใบ 83: ท่าโดนตี 4 เฟรม + ท่าชนะ 8 เฟรม (+ สกิน Festival) · hero-lazy */
+  char_momo_victory:{url:'assets/art/hero_poses83/char_momo_victory.webp',frame:128},
+  char_yuzu_hurt:{url:'assets/art/hero_poses83/char_yuzu_hurt.webp',frame:128},
+  char_yuzu_victory:{url:'assets/art/hero_poses83/char_yuzu_victory.webp',frame:128},
+  char_mint_hurt:{url:'assets/art/hero_poses83/char_mint_hurt.webp',frame:128},
+  char_mint_victory:{url:'assets/art/hero_poses83/char_mint_victory.webp',frame:128},
+  char_taro_hurt:{url:'assets/art/hero_poses83/char_taro_hurt.webp',frame:128},
+  char_taro_victory:{url:'assets/art/hero_poses83/char_taro_victory.webp',frame:128},
+  char_sesame_hurt:{url:'assets/art/hero_poses83/char_sesame_hurt.webp',frame:128},
+  char_sesame_victory:{url:'assets/art/hero_poses83/char_sesame_victory.webp',frame:128},
+  char_momo_victory__sakura:{url:'assets/art/hero_poses83/char_momo_victory__sakura.webp',frame:128},
+  char_yuzu_hurt__summer:{url:'assets/art/hero_poses83/char_yuzu_hurt__summer.webp',frame:128},
+  char_yuzu_victory__summer:{url:'assets/art/hero_poses83/char_yuzu_victory__summer.webp',frame:128},
+  char_mint_hurt__snow:{url:'assets/art/hero_poses83/char_mint_hurt__snow.webp',frame:128},
+  char_mint_victory__snow:{url:'assets/art/hero_poses83/char_mint_victory__snow.webp',frame:128},
+  char_taro_hurt__star:{url:'assets/art/hero_poses83/char_taro_hurt__star.webp',frame:128},
+  char_taro_victory__star:{url:'assets/art/hero_poses83/char_taro_victory__star.webp',frame:128},
+  char_sesame_hurt__moon:{url:'assets/art/hero_poses83/char_sesame_hurt__moon.webp',frame:128},
+  char_sesame_victory__moon:{url:'assets/art/hero_poses83/char_sesame_victory__moon.webp',frame:128},
   char_cocoa_victory:{ url:'assets/art/bp_fx/cocoa_victory_sheet.webp', frame:128 },
   char_mint_lance_charged:{ url:'assets/art/bp_fx/mint_lance_throw_charged_sheet.webp', frame:128 },
   char_mint_impaler_charge:{url:'assets/art/mint55/char_mint_impaler_charge.webp',frame:128},
@@ -4917,7 +4936,7 @@ function pathCardKey(id){ return PATHCARD_ART[id]||'pathcard80_'+id; }
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(/^(?:vault80|forge80|book80|pathcard80|pathuq82)_/.test(k))return 'stage'; if(/assets\/art\/relics81\//.test(u))return 'stage'; if(/^(?:fp|hm|hh|gp|gg|hs|ult|msn71|brm)_|^cr_root_/.test(k)||/assets\/art\/vfx78\//.test(u))return 'stage'; if(/assets\/art\/(?:menu74|patrol70)\//.test(u))return 'menu';   /* v8.1.93 อาร์ตภารกิจ = stage · ไอคอน/Patrol = menu */ if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('core79_'))return 'menu'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('sc79_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_motion823|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_poses83|hero_motion823|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 try{ if(!localStorage.getItem('mochi_lowmem_reset122')){ localStorage.setItem('mochi_lowmem_reset122','1'); localStorage.removeItem('mochi_lowmem'); _lowMemFlag=false; } }catch(e){}   /* v8.1.122 เจ้าของ: ติดโหมดหน่วยความจำต่ำถาวรจนเกมวนโหลด → ล้างครั้งเดียว */
 const MENU_TEX_SOFT_MB=300;
@@ -18134,10 +18153,10 @@ class Game extends Phaser.Scene {
     if(!this._summaryPresentationShown&&!this._quitSummary&&typeof Sfx!=='undefined')Sfx.orderCue?.(((this.stageIndex||0)+1)%5===0?'chapter_clear':'stage_victory',.5,2);
     this.over.removeAll(true);const box=[],w=this.W,h=this.H,L=this._summaryLayout=stageSummaryLayout(w,h),motion=this.hubMotionAllowed?this.hubMotionAllowed():true,animate=motion&&!this._summaryPresentationShown;
     const bg=this.resultBackdrop(this._quitSummary?'result_defeat':'result_victory');box.push(bg,this.add.rectangle(0,0,w,h,0x100d1b,this._quitSummary?.64:.12).setOrigin(0));
-    const st=STAGES[this.stageIndex],H=L.header,heroKey=this.character==='cocoa'&&this.textures.exists('char_cocoa_victory')?'char_cocoa_victory':'char_'+this.character;
+    const st=STAGES[this.stageIndex],H=L.header,heroKey=this.textures.exists('char_'+this.character+'_victory')?'char_'+this.character+'_victory':'char_'+this.character;   /* v8.2.12 ใบ 83: ทุกฮีโร่ที่มีชีตท่าชนะ */
     const artSize=Math.min(H.h-16,H.w*.32,132),hx=H.x+10+artSize*.5,hy=H.y+H.h*.5;
     this.summaryHeaderDeco(box,H,hx,hy,artSize,animate);   /* v8.1.100 เจ้าของ: หัวหน้าจบด่านดูไม่เสร็จ → แผงหัว + เหรียญฮีโร่ + แสงหมุน */
-    if(this.textures.exists(heroKey)){const im=this.add.image(hx,hy+artSize*.06,heroKey,heroKey==='char_cocoa_victory'?7:CF.cheer).setDisplaySize(artSize*1.08,artSize*1.08);box.push(im);const mk=this.make?.graphics?.({add:false});if(mk&&im.setMask){mk.fillCircle(hx,hy,artSize*.5-3);im.setMask(mk.createGeometryMask());}if(this.realTex?.('sc79_medallion'))box.push(this.add.image(hx,hy,'sc79_medallion').setDisplaySize(artSize*1.12,artSize*1.12));if(animate){const y0=im.y,tw=this.tweens.add({targets:im,y:y0-18,duration:240,yoyo:true,repeat:2,ease:'Quad.out',repeatDelay:120});   /* v8.2.9 ท่าชนะ: กระโดดดีใจ 3 ครั้ง (ฮีโร่ที่ไม่มีชีตท่าชนะ) */(this._summaryTweens||(this._summaryTweens=[])).push(tw);}}
+    if(this.textures.exists(heroKey)){const im=this.add.image(hx,hy+artSize*.06,heroKey,/_victory$/.test(heroKey)?7:CF.cheer).setDisplaySize(artSize*1.08,artSize*1.08);box.push(im);const mk=this.make?.graphics?.({add:false});if(mk&&im.setMask){mk.fillCircle(hx,hy,artSize*.5-3);im.setMask(mk.createGeometryMask());}if(this.realTex?.('sc79_medallion'))box.push(this.add.image(hx,hy,'sc79_medallion').setDisplaySize(artSize*1.12,artSize*1.12));if(animate){const y0=im.y,tw=this.tweens.add({targets:im,y:y0-18,duration:240,yoyo:true,repeat:2,ease:'Quad.out',repeatDelay:120});   /* v8.2.9 ท่าชนะ: กระโดดดีใจ 3 ครั้ง (ฮีโร่ที่ไม่มีชีตท่าชนะ) */(this._summaryTweens||(this._summaryTweens=[])).push(tw);}}
     const tx=H.x+artSize+24,tw=H.x+H.w-tx-12;
     this.summaryText(box,tx,H.y+H.h*.24,this._quitSummary?'RUN ENDED':'STAGE CLEAR',Math.min(28,Math.max(19,tw*.13)),this._quitSummary?'#dac7e2':'#ffe4aa',tw);
     const title=this.summaryText(box,tx,H.y+H.h*.53,st.name,15,'#fff4e1',tw);while(title.height>H.h*.36&&parseInt(title.style.fontSize)>11)title.setFontSize(parseInt(title.style.fontSize)-1);
@@ -24655,8 +24674,8 @@ class Game extends Phaser.Scene {
     }
     if(this._poseHold>0){
       this._poseHold=Math.max(0,this._poseHold-dt);
-      if(this.character==='momo'&&this.player.texture.key==='char_momo_hurt')
-        this.player.setFrame(Math.min(7,Math.floor((1-this._poseHold/this._poseDuration)*8)));
+      if(this.player.texture.key==='char_'+this.character+'_hurt'){ const n=Math.max(1,(this.textures.get?.(this.player.texture.key)?.frameTotal||9)-1);
+        this.player.setFrame(Math.min(n-1,Math.floor((1-this._poseHold/this._poseDuration)*n))); }
       if(this._poseHold>0)return;
     }
     const baseCharKey='char_'+this.character;
@@ -24699,11 +24718,11 @@ class Game extends Phaser.Scene {
       if(this._blinkT<-0.13){ this.player.setFrame(CF.idle); this._blinkT=Phaser.Math.FloatBetween(2.2,4.5); } }
     else this.player.setFrame(CF.idle);
   }
-  poseFlash(frame,ms){ if(this.bpPose&&this.character==='cocoa'&&!this._titanHold&&(frame===CF.hurt||frame===CF.cheer)&&this.textures?.exists?.(frame===CF.hurt?'char_cocoa_hurt':'char_cocoa_victory')){if(frame===CF.hurt&&this._cocoaFlicker)this.finishCocoaFlicker(true);this.bpPose(frame===CF.hurt?'char_cocoa_hurt':'char_cocoa_victory',frame===CF.hurt?.3:1);return;}
+  poseFlash(frame,ms){ if(this.bpPose&&this.character!=='cocoa'&&frame===CF.cheer&&!this._uqWind&&this.textures?.exists?.('char_'+this.character+'_victory')){ this.bpPose('char_'+this.character+'_victory',1); return; }   /* v8.2.12 ใบ 83 ท่าชนะ */
+    if(this.bpPose&&this.character==='cocoa'&&!this._titanHold&&(frame===CF.hurt||frame===CF.cheer)&&this.textures?.exists?.(frame===CF.hurt?'char_cocoa_hurt':'char_cocoa_victory')){if(frame===CF.hurt&&this._cocoaFlicker)this.finishCocoaFlicker(true);this.bpPose(frame===CF.hurt?'char_cocoa_hurt':'char_cocoa_victory',frame===CF.hurt?.3:1);return;}
     if(frame===CF.hurt&&this._cocoaFlicker)this.finishCocoaFlicker(true);if(frame===CF.hurt&&this._impalerCharge)this.releaseImpalerCharge(false);if(frame===CF.hurt&&this._berryCharge)this.releaseBerryCharge(false);if(!this._hasFrames)return; this._attackPoseTime=0;this._attackTextureKey=null;
-    if(this.character==='momo'&&frame===CF.hurt&&this.textures.exists('char_momo_hurt')){
-      this._poseDuration=(ms||160)/1000;this._poseHold=this._poseDuration;this.player.setTexture('char_momo_hurt').setFrame(0);return;
-    }
+    { const hk='char_'+this.character+'_hurt'; if(frame===CF.hurt&&this.character!=='cocoa'&&this.textures.exists(hk)){   /* v8.2.12 ใบ 83: ทุกฮีโร่ที่มีชีตโดนตี (Momo เดิม + Yuzu/Mint/Taro/Sesame) */
+      this._poseDuration=Math.max(.26,(ms||160)/1000);this._poseHold=this._poseDuration;this.player.setTexture(hk).setFrame(0);return; } }
     const baseCharKey='char_'+this.character; if(this.textures.exists(baseCharKey)&&this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey); this.player.setFrame(frame); this._poseHold=(ms||160)/1000; }
   poseAttack(ms,textureKey){
     const key=textureKey&&this.textures?.exists?.(textureKey)?textureKey:'char_'+this.character+'_attack';
