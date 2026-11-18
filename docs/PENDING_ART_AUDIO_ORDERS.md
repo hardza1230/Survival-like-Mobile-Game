@@ -1,4 +1,4 @@
-# งานอาร์ต/เสียงที่ค้าง · สำหรับ AI ฝั่งอาร์ต/เสียง (อัปเดต 13 พ.ย. 2026 · ตรวจบนเกม v8.1.136)
+# งานอาร์ต/เสียงที่ค้าง · สำหรับ AI ฝั่งอาร์ต/เสียง (อัปเดต 18 พ.ย. 2026 · ตรวจบนเกม v8.1.136)
 
 **กติกาใหม่ (เจ้าของ 12 พ.ย.): AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ แล้วส่งที่โฟลเดอร์ส่งมอบของแต่ละใบ — ไม่ต้องแก้โค้ด ไม่ต้องเขียนเทส ไม่ต้องปล่อยเวอร์ชัน · Claude ฝั่งโค้ดเป็นคนผูกเข้าเกม**
 หัวข้อ "ผูกเข้าเกม" ในแต่ละใบเป็นโน้ตของฝั่งโค้ด ข้ามได้ · ส่งงานพร้อม `MANIFEST.json` (ฟิลด์ตามใบ) + `PROMPTS.json` + `QA_REPORT.json` ตรวจไฟล์ด้วยสคริปต์ (ขนาด/กริด/พื้นหลัง/ความยาว/peak) ไม่ต้องเปิดดูทีละไฟล์
@@ -15,6 +15,8 @@
 | 6 | `docs/art_orders/81_RELICS_SPECIAL_ICONS.md` | **ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3** (+ แก้การ์ด Cocoa 2 ไม่บังคับ) | 54 | ImageGen | `assets/incoming/relics81/` | ✅ ผูกแล้ว v8.1.151 (ไอคอน 49 · การ์ด Yuzu 3 ไม่ใช้ — เจ้าของ: ใบ 82 มีแล้ว) |
 | 7 | `docs/art_orders/82_BUILD_PATH_UNIQUE_ART.md` | ภาพ Build Path เต็มการ์ดแนวนอน 1024×424 เน้น Unique · 6 ฮีโร่ × 3 | 18 | ImageGen | `assets/incoming/pathuq82/` | 🟢 ผูกแล้ว v8.1.146 (15/18 · งาดำไม่ใช้) |
 | 8 | `docs/audio_orders/A14_CHEST_OPENING.md` | เสียงลุ้นเปิดกล่อง + ระเบิด 4 ระดับ + ประกาย/ไอเทมลง/ของซ้ำ | 8 | ElevenLabs Sound Effects | `assets/incoming/audio_chest_a14/` | 🟢 ผูกแล้ว v8.1.147 · รอเจ้าของฟังบนมือถือ |
+| 9 | `docs/art_orders/83_HERO_HURT_VICTORY.md` | **ท่าโดนตี 4 + ท่าชนะ 5 ฮีโร่ + ชุดสกิน Festival** (เฟรม 256 · ตัวสูงเท่าชีตวิ่ง) | 18 | ImageGen | `assets/incoming/hero_poses83/` | 🟡 รออาร์ต |
+| 10 | `docs/audio_orders/A15_RUBY_LOST_WISPS.md` | **Ruby พากย์** ภารกิจที่เปลี่ยนใหม่ 4 อย่าง (tip + short) | 8 | ElevenLabs TTS (เสียง Ruby เดิม) | `assets/incoming/audio_ruby_a15/` | 🟡 รอเสียง |
 | — | `docs/audio_orders/A04_STORY_MUSIC_STINGERS.md` | เพลงเรื่อง/Lobby | 6 | ElevenLabs Music | `assets/incoming/audio_story_music/` | 🟢 ส่งและผูกครบ · เจ้าของฟังแล้วโอเค 8 พ.ย. 2026 |
 
 ## หมายเหตุ
