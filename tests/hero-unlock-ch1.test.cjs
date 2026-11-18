@@ -30,4 +30,5 @@ assert(src.includes("const FIGHTER_PLAYTEST_ALL=false"),'other heroes retain pro
 console.log('Sesame unlock: C1-5 clear, old-save repair, no purchase, repeat safety and preserved talent points passed');
 
 u.data={chars:['momo'],unlockedStage:4};u.unlockCoreCharacters(false);assert(!u.data.chars.includes('sesame'));
-u.data={chars:['momo'],unlockedStage:5};assert(u.unlockCoreCharacters(false));assert(u.data.chars.includes('sesame'),'legacy Chapter2 progress repairs missing mastery');assert.deepEqual(Array.from(u.data.chars),['momo','sesame'],'legacy fallback does not open other heroes');
+u.data={chars:['momo'],unlockedStage:5};assert(u.unlockCoreCharacters(false));assert(u.data.chars.includes('sesame'),'legacy Chapter2 progress repairs missing mastery');assert.deepEqual(Array.from(u.data.chars).sort(),['cocoa','mint','momo','sesame','taro','yuzu'],'v8.2.15 owner: a stage passed (unlockedStage beyond it, e.g. via the story gate key) unlocks its hero even without a mastery record');
+u.data={chars:['momo'],unlockedStage:3};u.unlockCoreCharacters(false);assert.deepEqual(Array.from(u.data.chars).sort(),['cocoa','mint','momo','taro'],'C1-4 open but not passed: no Yuzu yet');

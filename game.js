@@ -7747,7 +7747,7 @@ const Save = {
     return this.data; },
   save(){ this.data.sugar=clampSugar(this.data.sugar);this.data.rev=(this.data.rev||0)+1;this.data.savedAt=Date.now();try{this.data.lastDev=Tele.id();}catch(e){} try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
   unlockCoreCharacters(notify=true){let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
-    for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(((this.data.stageMastery&&this.data.stageMastery[stage])||(id==='sesame'&&(this.data.unlockedStage||0)>=5))&&!this.data.chars.includes(id)){this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
+    for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(((this.data.stageMastery&&this.data.stageMastery[stage])||(this.data.unlockedStage||0)>stage)&&!this.data.chars.includes(id))   /* v8.2.15 เจ้าของ: ถึง C2-1 แล้วยังไม่ได้ Yuzu — เซฟเก่า/เซฟคลาวด์มี unlockedStage แต่ไม่มี stageMastery ของด่านนั้น → ผ่านด่านไปแล้ว (unlockedStage > ด่าน) ก็ปลดฮีโร่ (เดิมมีแค่ Sesame) */{this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
     return changed;},
   // ---- Cloud sync (Supabase) ----
   async syncCloud(){ if(typeof Cloud==='undefined'||(typeof GM!=='undefined'&&GM.testing()))return; const ok=await Cloud.init(); if(!ok)return;
@@ -17747,7 +17747,7 @@ class Game extends Phaser.Scene {
   collectStoryGateKey(next=this.storyGateKeyTarget()){
     if(!this.storyVoice?.()||next!==this.stageIndex+1||next<=0||next>=STAGES.length)return false;
     const keys=Save.data.storyGateKeys||(Save.data.storyGateKeys={});if(keys[next])return false;
-    keys[next]=1;Save.data.unlockedStage=Math.max(Save.data.unlockedStage||0,next);this._storyKeyJustCollected=next;Save.save();return true;
+    keys[next]=1;Save.data.unlockedStage=Math.max(Save.data.unlockedStage||0,next);Save.unlockCoreCharacters?.();this._storyKeyJustCollected=next;Save.save();return true;   /* v8.2.15 กุญแจเปิดด่านถัดไป = ปลดฮีโร่ของด่านนี้ด้วย */
   }
 
   bossVictoryValid(v){return this._bossVictory===v&&this.player===v.player&&v.player?.active!==false&&this.stageIndex===v.stage&&(this._artEpoch||0)===v.epoch&&this.state!=='menu'&&this.state!=='dead'&&(!v.started||(this.state==='cinematic'&&this.mode==='bossVictory'));}
@@ -17898,7 +17898,7 @@ class Game extends Phaser.Scene {
     if(this.recipeMode)this.finishRecipeBoss();
     if(this.riftMode&&!this.recipeMode){ const t=this._riftTier||1,keys=1+(t>=5?1:0)+(t>=10?1:0); Save.data.riftKeys=(Save.data.riftKeys||0)+keys; Save.data.riftBest=Math.max(Save.data.riftBest||1,t+1); Save.save(); this.showBanner('🌀 Rift Tier '+t+' cleared!','+'+keys+' 🗝️ Rift Key · Tier '+(t+1)+' unlocked',2600); }
     const next=this.stageIndex+1,progressUnlock=next<STAGES.length&&(Save.data.unlockedStage||0)<next&&(!this.storyVoice?.()||!!Save.data.storyGateKeys?.[next]),canUnlock=(progressUnlock||this._storyKeyJustCollected===next)&&isStageReady(next);
-    if(progressUnlock){Save.data.unlockedStage=next;Save.save();}
+    if(progressUnlock){Save.data.unlockedStage=next;Save.unlockCoreCharacters?.();Save.save();}
    // v7.8.93 diffBest ไม่บันทึกแล้ว (Story ระดับเดียว)
     this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest();
     const _note=canUnlock?((this._storyKeyJustCollected===next?'🗝 Wayseed Key · ':'🔓 Unlocked ')+STAGES[next].name):(progressUnlock?'🛠️ The next Chapter 2 stage is still in production':null);
