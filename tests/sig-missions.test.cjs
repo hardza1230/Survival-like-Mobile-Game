@@ -1,5 +1,5 @@
 // v8.1.78 เจ้าของ: ภารกิจประจำด่าน Chapter 3 (รอบ 2)
-const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
+const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');const K8217=src.match(/const ST_TREES=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
 assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];"));
@@ -35,7 +35,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(src.includes("else if(type==='frozenPantry'){ this.fpSetup(o,S); }")&&src.includes("else if(o.type==='frozenPantry'){ this.fpTick(dt,o,S); }")&&src.includes('if(e&&e._fpTok&&this.fpOnKill(e,o,S))return;'),'hooks');
   assert.ok(src.includes('if(this.fpBtnHit?.(p))return;')&&m('joyBlocked').includes('this.fpBtnOver?.(p)'),'jar button tap, joystick ignores it');
   assert.ok(/storyCleared\(\)>=10/.test(m('fpFull'))&&/_replayMeter/.test(m('fpFull')),'light first play, full on replay/after Ch2');
-  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
+  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   vm.runInContext(src.match(/const FP_ARMY=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var '),ctx);
   const obj=()=>{const o={x:0,y:0,active:true,visible:true,scaleX:1,scaleY:1,setTint(){return o},setAlpha(){return o},setScale(){return o},setVisible(v){o.visible=v;return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setPosition(x,y){o.x=x;o.y=y;return o},clearTint(){return o}};return o;};
   vm.runInContext('class S{'+['fpFull','fpSetup','fpBtnOver','fpBtnHit','fpOpen','fpCrate','fpCrateOpen','fpArmyBonus','fpBlob','fpTimeStop','fpThaw','fpWake','fpResolve','fpVanish','fpTick','fpOnKill','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
@@ -65,17 +65,17 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   console.log('Frozen Pantry (Legion): v8.2.16 army 30/45 in squads with Captains + General + frozen crates + army bonus, jar button, time-stop dome, frozen army in groups, rainbow paint trail, all thaw at once, unpainted shatter, full timer, completes passed'); }
 
 { // v8.1.82 League phase 2: Hunger's Mouth + Creeping Roots
-  for(const n of ['hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crGrowPts','crGrowTick','crDraw','crSetup','crTick'])m(n);
+  for(const n of ['hmSetup','hmOpen','hmTick','hmOnKill','hmLordHoard','hmChest','hmSplinters','hmBurst','crLane','crGrowPts','crGrowTick','crDraw','crSetup','crTick'])m(n);
   assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
   assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
   assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
-  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.carriers\|\|S\.chests\|\|S\.domain\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
+  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.guards\|\|S\.carriers\|\|S\.chests\|\|S\.domain\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
   assert.ok(/this\._sigForce&&this\.enemies\.countActive\(true\)<\(this\.maxLive\|\|100\)\)return true/.test(m('storyCanSpawn'))&&/finally\{ this\._sigForce=false; \}/.test(m('sigSpawnAt')),'league spawns bypass story budget');
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
-  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
+  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   vm.runInContext(src.match(/const FP_ARMY=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var '),ctx);
   const obj=()=>{const o={x:0,y:0,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},clear(){},lineStyle(){},beginPath(){},moveTo(){},lineTo(){},strokePath(){},fillStyle(){},fillCircle(){},fillRoundedRect(){return o},setPosition(){return o}};return o;};
-  ctx.Save={data:{}};vm.runInContext('class S{'+['fpFull','hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crGrowPts','crGrowTick','crDraw','crSetup','crTick','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  ctx.Save={data:{}};vm.runInContext('class S{'+['fpFull','hmSetup','hmOpen','hmTick','hmOnKill','hmLordHoard','hmChest','hmSplinters','hmBurst','stTreeSurprise','stMimicDown','crLane','crGrowPts','crGrowTick','crDraw','crSetup','crTick','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:1,player:{x:300,y:0},sugarStage:0,sugarRun:0,objNodeG:null,tweens:{add(){}},add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj(),graphics:()=>obj(),image:()=>obj()},textures:{exists:()=>false},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{children:{iterate:f=>en.forEach(f)}},
     spawnCurrencyDrop(x,y,k){(this.drops||(this.drops=[])).push(k);return {};},spawnLoot(){(this.drops||(this.drops=[])).push('gearbox');return {};},missionLootBurst(){(this.drops||(this.drops=[])).push('sugar');},
@@ -87,22 +87,32 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
     const c=S.chests[0];c.t=c.t||{setText(){},setVisible(){}};sc.player={x:c.x,y:c.y};sc.hmTick(.1,o,S);assert.ok(c.open,'chest opens by walking');
     ctx.Save.data.splinters=98;sc.hmSplinters(5);assert.strictEqual(ctx.Save.data.hungerStones,1,'100 splinters = 1 Hunger Stone');assert.strictEqual(ctx.Save.data.splinters,3);
     let k=0;while(!sc.done&&k++<3000)sc.hmTick(.1,o,S);assert.ok(sc.done,'breach collapses and completes');assert.ok(sc.sugarRun>0); }
+  { const [sc,en]=mk();const o={},S={};sc.hmSetup(o,S);assert.strictEqual(S.lord,22,'v8.2.17 Hand of the Hunger on first play too');sc.hmTick(.1,o,S);S.kills=22;sc.hmTick(.1,o,S);const L=en.find(e=>e._hmLord);assert.ok(L&&L.elite,'lord spawns');for(let k=0;k<60;k++)sc.hmTick(.1,o,S);
+    assert.ok(en.some(e=>e.type&&e.type!=='basic'),'mixed breach monsters');const before=(sc.drops||[]).length;sc.hmOnKill(Object.assign(L,{_hmLord:true,_breach:true}),o,S);assert.ok((sc.drops||[]).length>before,'lord hoard'); }
+  { const [sc,en]=mk();const t={x:0,y:0,t:{setVisible(){}}};sc.stTreeSurprise(Object.assign({kind:'hive'},t),3);assert.strictEqual(en.filter(e=>e.type==='fast').length,5,'hive = bee swarm');assert.ok(sc.drops.includes('honeydrop'));
+    sc.drops=[];sc.stTreeSurprise(Object.assign({kind:'golden'},t),3);assert.strictEqual(sc.drops.filter(d=>d==='berryjam').length,2,'golden tree');
+    sc.stTreeSurprise(Object.assign({kind:'mimic'},t),3);const mm=en.find(e=>e._stMimic);assert.ok(mm,'mimic tree becomes a monster');sc.drops=[];sc.stMimicDown(mm);assert.deepStrictEqual(sc.drops,['gearbox'],'mimic drops gear');
+    assert.ok(/kinds=ST_KINDS\.slice\(0,n\)/.test(src)&&src.includes('if(e&&e._stMimic){ e._stMimic=false; this.stMimicDown(e); return; }'),'trees deal shuffled kinds + mimic kill hook'); }
   { const [sc,en]=mk();const o={progress:0},S={};sc.crSetup(o,S);assert.strictEqual(S.lanes.length,2);assert.ok(S.lanes.every(L=>L.grow===0),'roots start inside the flower');assert.strictEqual(sc.crGrowPts(S.lanes[0]).length,1);sc.crTick(.1,o,S);assert.strictEqual(en.length,0,'no walkers while roots grow');{const L=S.lanes[0],q=sc.crGrowPts(L);assert.deepStrictEqual(q[0],L.pts[4],'roots grow out of the centre');}for(let k=0;k<40;k++)sc.crTick(.1,o,S);assert.ok(en.length>0&&en[0]._goTo,'walkers get a waypoint');
     for(const L of S.lanes){ sc.player={x:L.pts[0].x,y:L.pts[0].y}; for(let k=0;k<25;k++)sc.crTick(.1,o,S); } assert.ok(S.lanes.every(L=>!L.open),'all cut');assert.ok(sc.done,'all cut ends early');assert.ok(sc.sugarRun>0); }
   console.log('League phase 2: Hunger’s Mouth PoE breach (hand, expand, kill-extend, splinters, chests, collapse) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
 
 { // v8.1.83 League phase 3: Hunger Herald + Grandma's Pot
-  for(const n of ['hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe'])m(n);
+  for(const n of ['hhSetup','hhSpawn','hhTick','hhPack','hhSeal','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe'])m(n);
   assert.ok(src.includes("objectives:['hungerHerald','hunt','capture','purge'],lead:'hungerHerald',")&&src.includes("objectives:['grandmasPot','hunt','capture','purge'],lead:'grandmasPot',"),'C1-1 Herald, C1-3 Pot');
   assert.ok(/if\(stL&&!this\._bountyLead&&pool\.includes\(stL\)\)/.test(m('replayBountyTick'))&&/LEAGUE_MISSIONS\.includes\(type\)\)\?70:45/.test(m('replayBountyTick')),'league bounty first + 70s');
-  const vm=require('vm');const SD={};const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))},Utils:{Array:{Shuffle:a=>a}}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console,Save:{data:SD,save(){},addCurrency(k,n){SD['c_'+k]=(SD['c_'+k]||0)+n;}}};vm.createContext(ctx);
+  const vm=require('vm');const SD={};const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))},Utils:{Array:{Shuffle:a=>a}}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console,Save:{data:SD,save(){},addCurrency(k,n){SD['c_'+k]=(SD['c_'+k]||0)+n;}}};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   const obj=()=>{const o={x:0,y:0,visible:true,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(v){o.visible=v;return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},setRotation(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhPack','hhSeal','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const mk=()=>{for(const k in SD)delete SD[k];const sc=new ctx.K();const en=[];Object.assign(sc,{SD,stageIndex:2,player:{x:0,y:0},sugarStage:0,sugarRun:0,tweens:{add(){}},add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj()},
     objectivePosition:(i)=>({x:300+i*50,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{countActive:()=>en.filter(e=>e.active).length},
-    sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
+    sigSpawnAt:(x,y,el,type)=>{const e={x,y,type,active:true,isElite:!!el,setTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
   { const [sc,en]=mk();const o={},S={};sc.hhSetup(o,S);assert.strictEqual(S.gates.length,2);assert.ok(S.herald&&S.herald._herald);sc.hhTick(.1,o,S);assert.ok(S.herald._goTo,'herald wanders');
     for(let k=0;k<40;k++)sc.hhTick(.1,o,S);assert.ok(en.length>3,'gates spawn packs');sc.hhDown(S.herald,o,S);assert.ok(sc.done&&o.progress===1&&S.gates.length===0); }
+  { const [sc,en]=mk();const o={},S={};sc.hhSetup(o,S);assert.ok(S.gates.every(G=>ctx.HH_GATES.includes(G.kind))&&new Set(S.gates.map(G=>G.kind)).size===2,'v8.2.17 gates of different kinds');assert.strictEqual(S.guards.length,2,'Herald guards');assert.ok(S.guards.every(g=>g.type==='tank'&&g._hhGuard));
+    const G=S.gates[1];G.x=900;sc.player={x:G.x,y:G.y};for(let k=0;k<25;k++)sc.hhTick(.1,o,S);assert.ok(G.shut&&!S.gates[0].shut,'standing on a gate seals it');const n=en.length;for(let k=0;k<50;k++)sc.hhTick(.1,o,S);
+    sc.player={x:-2000,y:0};const h=S.herald;h.maxhp=10;h.hp=4;h.x=-1000;h.y=0;sc.hhTick(.1,o,S);assert.ok(S.fled&&S.fleeG&&!S.fleeG.shut,'Herald flees to an open gate');h.x=S.fleeG.x;h.y=S.fleeG.y;const n2=en.length;sc.hhTick(.1,o,S);assert.ok(en.length>n2,'reinforcements at the gate');
+    sc.hhDown(h,o,S);assert.ok(S.guards.every(g=>!g._hhGuard),'guards released'); }
   { const [sc,en]=mk();sc.fpFull=()=>false;sc.hurtPlayer=()=>{sc.hurt=(sc.hurt||0)+1;};const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,2);assert.strictEqual(S.phase,'wait');sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'wait','far away: ritual waits');   // v8.1.106 Ritual-style pot
     sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'ritual');assert.strictEqual(S.round,1);assert.ok(S.foes.length>=7,'course spawns hungry mochi');
     const n1=S.foes.length;S.foes.forEach(e=>{e.x=S.x;e.y=S.y;sc.gpOnKill(e,o,S);e.active=false;});assert.strictEqual(S.flavor,n1,'kills inside the light feed the pot');sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'rest');assert.strictEqual(o.progress,1);
@@ -113,14 +123,14 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
     assert.strictEqual(sc.SD.potFlavor,8,'half the leftover flavor is saved'); }
   { const [sc]=mk();sc.fpFull=()=>false;const o={},S={};sc.gpSetup(o,S);sc.SD.potDeferred='ink';S.flavor=3;sc.gpTable(o,S);assert.strictEqual(S.plates[0].id,'ink','deferred dish comes back first');const top=S.plates.filter(P=>!P.done).sort((a,b)=>b.cost-a.cost)[0].id;sc.gpFinish(o,S);assert.strictEqual(sc.SD.potDeferred,top,'priciest dish you could not afford is saved for next time'); }
   { const [sc]=mk();sc.fpFull=()=>true;const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,3,'full = 3 courses');sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);sc.gpTick(.1,o,S);assert.ok(S.spices.length>=0); }
-  console.log('League phase 3: Hunger Herald (wander, gates, shut on kill) + Grandma’s Pot (ritual ring, courses, kills in the light, spice hazard, Grandma’s table: buy dishes with flavor, Done, save leftovers, defer) passed'); }
+  console.log('League phase 3: Hunger Herald (v8.2.17 gate kinds, guards, seal by standing, flee; wander, gates, shut on kill) + Grandma’s Pot (ritual ring, courses, kills in the light, spice hazard, Grandma’s table: buy dishes with flavor, Done, save leftovers, defer) passed'); }
 
 { // v8.1.85 League phase 6: Grandma's Golem (Metamorph)
   for(const n of ['ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown'])m(n);
   assert.ok(src.includes("objectives:['grandmasGolem','hunt','capture','purge'],lead:'grandmasGolem',"),'C1-5 Golem first');
   assert.ok(src.includes("if(e&&(e._ggPart||e._golem)){"),'kill hook');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console,
-    GOLEM_PARTS:[{k:'head',em:'🍰',name:'Cake Head',skill:'a'},{k:'arms',em:'🥨',name:'Arms',skill:'b'},{k:'legs',em:'🥖',name:'Legs',skill:'c'},{k:'tail',em:'🍭',name:'Tail',skill:'d'},{k:'heart',em:'💗',name:'Heart',skill:'e'}]};vm.createContext(ctx);
+    GOLEM_PARTS:[{k:'head',em:'🍰',name:'Cake Head',skill:'a'},{k:'arms',em:'🥨',name:'Arms',skill:'b'},{k:'legs',em:'🥖',name:'Legs',skill:'c'},{k:'tail',em:'🍭',name:'Tail',skill:'d'},{k:'heart',em:'💗',name:'Heart',skill:'e'}]};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
   vm.runInContext('class S{'+['fpFull','ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   for(const full of [false,true]){ const sc=new ctx.K();const en=[];Object.assign(sc,{_replayMeter:full?{}:null,stageIndex:4,player:{x:0,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj()},
@@ -136,7 +146,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
 { // v8.1.86 League phase 4: Siege of the Hunger (Legion 5 Way, Delve room)
   for(const n of ['hsSetup','hsTick','hsOnKill','hsBurst'])m(n);
   assert.ok(src.includes("(d>=3&&n.r<0.205)?'siege':'normal'")&&src.includes("if(n.type==='siege')return 'hungerSiege';")&&/siege:\{emoji:'🏰'/.test(src),'Delve siege room');
-  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,console};vm.createContext(ctx);
+  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,console};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setRotation(){return o}};return o;};
   vm.runInContext('class S{'+['hsSetup','hsTick','hsOnKill','hsBurst','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const sc=new ctx.K();const en=[];Object.assign(sc,{_amapNode:{d:6},stageIndex:5,player:{x:300,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj()},objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,
@@ -151,7 +161,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(/this\._domainRun=!!this\._domainRequested;/.test(src)&&/Save\.data\.hungerStones--/.test(src),'stone is spent when the domain starts');
   assert.ok(src.includes("const ms=this._domainRun?'hungerDomain':nd&&nd.mission;"),'domain replaces the room mission');
   assert.ok(/'Domain ×'\+stones/.test(src),'Delve panel shows the Domain button');
-  const vm=require('vm');const ctx={Math,TAU:Math.PI*2,console,Save:{data:{}}};vm.createContext(ctx);
+  const vm=require('vm');const ctx={Math,TAU:Math.PI*2,console,Save:{data:{}}};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(){return o},setVisible(){return o},setOrigin(){return o},setPosition(){return o}};return o;};
   vm.runInContext('class S{'+['hdSetup','hdTick','hdLord','hdDown','hmSplinters','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const sc=new ctx.K();const en=[];Object.assign(sc,{_amapNode:{d:8},stageIndex:5,player:{x:0,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj()},sigAdd:o=>o,
