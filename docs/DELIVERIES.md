@@ -1,6 +1,19 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.32 — ⚔️ Temple Expedition: a tap-RPG idle mode replaces Temple Depths (Dig) and Mochi Patrol
+# Latest delivery: v8.2.33 — 🎨 Temple Expedition art (order 91) + sound order A19
+
+- **Packed:** `scripts/pack-expedition91.py` → 13 WebP, 677 KB, 18 MiB decoded. Menu-lazy: the art loads only with the Expedition (`dig`) screen through `menuGroupRe`.
+- **Deep backgrounds:** `ex91_bg_c1..3` follow the Chapter cycle (every 25 stages). Fallback: the Patrol scene.
+- **Titans:** front-facing `ex91_titans` (4 per Chapter). Bosses use `ex91_bosses`.
+- **Hit flash:** the hit flash is now a white tint fill, so art keeps its colours.
+- **Main hero:** back-view `ex91_back_<hero>`, with feet on the scene floor. Each tap plays attack frames 1→2→3→0.
+- **Helpers:** small back sprites. Ruby keeps the emoji badge.
+- **Tap FX:** `ex91_hit` plays at a random spot on the titan, tinted with the hero colour.
+- **Crumbs icon:** shown on the stats line.
+- **Audio order A19:** 17 SFX (3 soft tap variants, crit, pop, boss appear/tick/down/fail, hire, milestone, chest, supply, welcome back), 2 loops (expedition / boss) and 4 Ruby lines.
+- Test: `tests/expedition91-art.test.cjs`. Headless: all art loads on the screen and the titan, back-view hero and hit FX are used.
+
+# Previous delivery: v8.2.32 — ⚔️ Temple Expedition: a tap-RPG idle mode replaces Temple Depths (Dig) and Mochi Patrol
 
 - **Where:** Weave → Expedition (the old Depths tile and badge, unlocked after Chapter 1). The Patrol row is removed from Activities.
 - **Tap to fight:** tap the scene to hit the foe in the middle. Crits are 5% for ×3; damage numbers and squash on each hit.
@@ -19,22 +32,3 @@
 - **Art:** placeholders for now (Patrol scene + scaled Patrol foes + hero sprite). Art order 91 covers back-view heroes, front-facing titans, bosses, deep backgrounds, hit FX and icons.
 - **Later (after the Closed test):** active skills, Prestige and Temple Relics.
 - Test: `tests/expedition-8232.test.cjs`. Headless: offline crumbs, taps clear stage 4 → boss 5 → stage 6, daily chest, upgrades, supplies, and the mode stops when leaving the screen.
-
-# Previous delivery: v8.2.31 — 🎨 Art and voice for Pact Relics, Mission Atlas and the new mission events (orders 88/89/90 + A18)
-
-- **Packed:** `scripts/pack-orders88-90.py` → 20 WebP, 310 KB, 5.4 MiB decoded. `scripts/pack-audio-a18.py` → 8 Ruby lines (56k mono) + 10 SFX (96k). App size 185.9 MB.
-- **88 Pact Relic icons:** `relic_<key>` in `assets/art/relics88/`, stage-lazy like relics81. Cards pick them up automatically; the emoji stays as fallback.
-- **89 Mission Atlas (menu-lazy `atlas89`, loaded by `maArtLoad`):**
-  - Node icons go on the tree and list rows.
-  - The 3-state nine-slice node frames show only on WebGL.
-  - The emblem sits in the header, and the Atlas button is drawn with art.
-- **90 mission events (stage-lazy `ev90_`):**
-  - Image arrows replace the gold/blue ➤ text (`arrowArt`, which follows the text's position and angle).
-  - Gold shimmer follows golden monsters (`goldShimAdd` / `goldShimTick`: every other monster, 16 max, the monster stays visible).
-  - Gold burst at the start of a golden wave. Double Clear burst.
-  - Red boss-mission chip. Reroll icon (free / ad). Cursed Crown curse icon pops above the hero.
-- **A18 audio:**
-  - Ruby voice: golden, double, bossmission, newmission, reroll, curse and jackpot reacts, plus the Atlas tip on first open.
-  - SFX: reroll, golden wave, double clear, boss mission, mission impact, curse, Atlas star / pick / remove, jackpot.
-  - Missing files fall back to the old sounds.
-- Test: `tests/orders88-90-a18.test.cjs`. Headless: Atlas renders with art (6 nine-slices), golden shimmer follows 2 of 4 gold monsters, both image arrows show, no errors.
