@@ -1,6 +1,6 @@
 # 58 — Power family extra (หัวหน้า + หน้าว่าง) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 1 พ.ย. 2026 · ต่อจากใบ 57 · ดีไซน์ `docs/design/power_family/README.md`
+สถานะ: 🟢 ผูกแล้ว v8.0.79 · เขียน 1 พ.ย. 2026 · ต่อจากใบ 57 · ดีไซน์ `docs/design/power_family/README.md`
 ส่งไฟล์ที่ `assets/incoming/power58/` พร้อม `MANIFEST.json` (key, file, bytes, sha256, size), `PROMPTS.json`, `QA_REPORT.json`, พรีวิวบนพื้น `#261e30`
 สไตล์เหมือนใบ 56/57 (ภาพอ้างอิง `ref/57_power_page_ref.webp`, `ref/57_power56_icon_style_ref.webp`) · PNG32 พื้นโปร่งใส · ไม่มีตัวหนังสือ/ตัวเลข/กรอบ
 

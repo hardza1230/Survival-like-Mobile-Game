@@ -1,6 +1,6 @@
 # 59 — Menu icons (หน้าที่ยังใช้อีโมจิ) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 1 พ.ย. 2026
+สถานะ: 🟢 ผูกครบแล้ว v8.1.28 · เขียน 1 พ.ย. 2026
 ส่งไฟล์ที่ `assets/incoming/menu59/` พร้อม `MANIFEST.json` (เหมือนใบ 57: key, file, bytes, sha256, cell, cols, rows, icons[index,key]), `PROMPTS.json`, `QA_REPORT.json`, พรีวิว 40/96px บน `#261e30`
 สไตล์เหมือนใบ 56/57 (ภาพอ้างอิง `ref/57_power_page_ref.webp`, `ref/57_power56_icon_style_ref.webp`) · PNG32 พื้นโปร่งใส · ไม่มีตัวหนังสือ/ตัวเลข/กรอบ · อ่านออกที่ 28–40px
 

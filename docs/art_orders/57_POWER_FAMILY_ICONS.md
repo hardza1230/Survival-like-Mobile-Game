@@ -1,6 +1,6 @@
 # 57 — Power family icons (Weave · Equipment · Merge · Forge) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 1 พ.ย. 2026 · ดีไซน์หน้า: `docs/design/power_family/README.md`
+สถานะ: 🟢 ผูกแล้ว v8.0.77 (ตาราง README) · เขียน 1 พ.ย. 2026 · ดีไซน์หน้า: `docs/design/power_family/README.md`
 ส่งไฟล์ที่ `assets/incoming/power57/` พร้อม `MANIFEST.json` (key, file, bytes, sha256, cell, cols, rows), `PROMPTS.json`, `QA_REPORT.json`
 
 ## สไตล์ (สำคัญที่สุด)
