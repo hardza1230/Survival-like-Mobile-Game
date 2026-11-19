@@ -3,7 +3,7 @@
 // Blocks (exit 2, reason on stderr → shown to Claude) when the push changes game files and
 //   1) GAME_VERSION is the same as on the deploy branch (forgot scripts/bump-version.mjs), or
 //   2) `bash scripts/ci-checks.sh` has not passed in this checkout within the last 3 hours.
-// Docs-only pushes (docs/, CLAUDE.md, .claude/, scripts/hooks/) pass. Any git error → allow (never block by accident).
+// Pushes that don't change what players get (docs, tests, scripts, .claude/) pass. Any git error → allow (never block by accident).
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 const DEPLOY = 'claude/vampire-survival-mobile-game-yo9e8w', MAX_AGE_H = 3;
@@ -16,7 +16,7 @@ const sh = c => execSync(c, { encoding: 'utf8', maxBuffer: 64 << 20, stdio: ['ig
 try {
   const base = `origin/${DEPLOY}`;
   const files = sh(`git diff --name-only ${base}...HEAD`).split('\n').filter(Boolean);
-  if (!files.length || files.every(f => /^(docs\/|CLAUDE\.md$|\.claude\/|scripts\/hooks\/)/.test(f))) process.exit(0);
+  if (!files.some(f => /^(game\.js|index\.html|download\.html|manifest\.webmanifest|phaser\.min\.js|sw\.js|assets\/)/.test(f))) process.exit(0);   // only what players get needs a new version
   const ver = s => (s.match(/const GAME_VERSION = '([\d.]+)'/) || [])[1];
   const here = ver(sh('git show HEAD:game.js')), there = ver(sh(`git show ${base}:game.js`));
   const why = [];
