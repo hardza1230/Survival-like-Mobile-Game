@@ -1,0 +1,457 @@
+[
+  {
+    "key": "vo_ruby_tip_hungerHerald",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตกใจแล้วตั้งสติ ให้คำแนะนำ",
+    "requests": [
+      {
+        "text": "The Herald can’t be hurt — beat the monsters it powers up!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861601,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_short_hungerHerald",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "สั้น เร่ง",
+    "requests": [
+      {
+        "text": "Beat the powered-up ones!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861611,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_tip_hunt",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ระวังตัว จริงจังนิด ๆ",
+    "requests": [
+      {
+        "text": "Dodge its poison bottles and beat the marked Elite!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861621,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_short_hunt",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "สั้น ตะโกนเตือน",
+    "requests": [
+      {
+        "text": "Dodge the bottles!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861631,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_tip_frozenPantry",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตื่นเต้น",
+    "requests": [
+      {
+        "text": "Open the sugar jar, then walk through the frozen army and crates!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861641,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_short_frozenPantry",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "สั้น",
+    "requests": [
+      {
+        "text": "Walk through the frozen army!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861651,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_captain",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ดีใจ เชียร์",
+    "requests": [
+      {
+        "text": "Their Captain is down — the squad is weaker now!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861661,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_side",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตื่นเต้น ท้าทาย",
+    "requests": [
+      {
+        "text": "A side mission! Let’s try to do both!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861671,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      },
+      {
+        "text": "A side mission! Let’s try to do both!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861672,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.2,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 2,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_hurry",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เร่ง กังวลนิด ๆ",
+    "requests": [
+      {
+        "text": "Hurry, the wave is almost over!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861681,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_half",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ปลอบใจ อบอุ่น",
+    "requests": [
+      {
+        "text": "We got halfway — that still counts!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861691,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.53,
+          "similarity_boost": 0.8,
+          "style": 0.19,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_early",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "โล่งใจ ภูมิใจ",
+    "requests": [
+      {
+        "text": "Done early! Let’s catch our breath.",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861701,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.53,
+          "similarity_boost": 0.8,
+          "style": 0.19,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_empowered",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เตือน",
+    "requests": [
+      {
+        "text": "Watch out, that one got stronger!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 861711,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_bottle_throw",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "An immediate short soft whoosh of a tiny corked glass bottle spinning through air, with a small liquid slosh inside. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.66,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_bottle_shatter",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Immediate tiny glass vial crack and scattering sweet brittle shards, followed by a compact sticky fizzy poison hiss. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.76,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_herald_beam",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A short rising magical crystalline hum charges immediately and releases a clean soft resonant pong into a target, with a small airy tail. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.9600000000000001,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_empower",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A soft quick purple magical whoomp flows inward into a creature, with a low warm resonant pitch swelling upward. Gentle and compact. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.76,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_heal_pulse",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A soft warm glass-bell healing pulse spreading outward, rounded clear attack and a delicate comforting chime tail. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.86,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_crate_shatter",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Immediate crisp ice crack mixed with a little wooden crate snapping, then tiny ice and wrapped candy pieces scattering. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.9600000000000001,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_side_mission",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Exactly two quick bright clear glass-bell notes as a friendly bonus mission announcement. Cheerful short sweet reward cue. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.86,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_time_up",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A tiny hourglass turns with a soft wooden clink and sandy swish, finishing with a quiet kind single bell ding. Relaxed, never alarming. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 1.06,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_moth_steal",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Soft little moth wing flutters immediately followed by a tiny airy magical sip as light is gently sucked away. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.76,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a16_sapper_boom",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A small candy bomb pops with a soft round pok, followed by a compact puffy sugar-dust burst and a few little sprinkles. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.86,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      {
+        "text": "A small candy bomb pops with a soft round pok, followed by a compact puffy sugar-dust burst and a few little sprinkles. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music, machinery or background.",
+        "duration_seconds": 0.86,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 2,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  }
+]

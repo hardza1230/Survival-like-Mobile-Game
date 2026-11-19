@@ -1,6 +1,6 @@
 # 86 — ภาพหน้าการ์ดภารกิจ (แจกการ์ดก่อนเริ่มด่าน + หน้า Missions ใน Recipe Book) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 19 พ.ย. 2026 · โค้ดพร้อมแล้ว (v8.2.6 แจกการ์ด · v8.2.22 ยกการ์ดขึ้นมาโชว์กลางจอ ×2.3) ตอนนี้หน้าการ์ดเป็นอีโมจิบนพื้นสีเข้ม
+สถานะ: 📦 ส่งแล้ว รอผูก · 19 พ.ย. 2026
 ส่งไฟล์ที่ `assets/incoming/mission_cards86/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -32,4 +32,7 @@
 - โหลด: stage-lazy ตอนเริ่มด่าน (ก่อนแจก) + menu-lazy ตอนเปิด Recipe Book · WebP q80 ~ 120–180 KB · decoded ~6.3 MiB → ปลดหลังแจกเสร็จถ้างบหน่วยความจำตึง
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกเมื่อส่ง)
+- Date: 2026-11-19. Delivered 1 files (25 frames) to `assets/incoming/mission_cards86/`.
+- Included `MANIFEST.json`, `PROMPTS.json`, and compact per-file `QA_REPORT.json`.
+- Mechanical QA passed for every file; missing files: none.
+- Source branch: `asset-delivery/missions86-87-a16`. Source assets only; runtime integration and owner phone review pending.

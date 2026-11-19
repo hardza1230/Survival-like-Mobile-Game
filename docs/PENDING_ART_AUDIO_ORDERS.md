@@ -29,4 +29,10 @@
 
 **ใหม่ 14 พ.ย.:** ใบ 82 (ผูกแล้ว v8.1.146) · A14 เสียงเปิดกล่อง (ผูกแล้ว v8.1.147)
 
-**ใหม่ 19 พ.ย. (รอทำ):** ใบ 86 `docs/art_orders/86_MISSION_CARDS.md` (หน้าการ์ดภารกิจ 25 เฟรม) · ใบ 87 `docs/art_orders/87_MISSION_MONSTERS_2.md` (มอน/ของภารกิจรอบ 2 · 12 ชีต) · A16 `docs/audio_orders/A16_RUBY_MISSIONS_SFX.md` (Ruby 12 บท + SFX 10)
+**ส่งมอบ 19 พ.ย.:** ใบ 86 / 87 และ A16 ส่ง source ครบใน `asset-delivery/missions86-87-a16`.
+
+| ใบ | จำนวน | ส่งที่ | สถานะ |
+|---|---|---|---|
+| `docs/art_orders/86_MISSION_CARDS.md` | 1 atlas / 25 frames | `assets/incoming/mission_cards86/` | 📦 ส่งแล้ว รอผูก |
+| `docs/art_orders/87_MISSION_MONSTERS_2.md` | 12 sheets | `assets/incoming/mission87/` | 📦 ส่งแล้ว รอผูก |
+| `docs/audio_orders/A16_RUBY_MISSIONS_SFX.md` | 22 MP3 / 12 Ruby + 10 SFX | `assets/incoming/audio_a16/` | 📦 ส่งแล้ว รอผูก |

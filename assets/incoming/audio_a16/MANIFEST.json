@@ -1,0 +1,168 @@
+[
+  {
+    "key": "vo_ruby_tip_hungerHerald",
+    "file": "vo_ruby_tip_hungerHerald.mp3",
+    "bytes": 51452,
+    "sha256": "31a5178ffebc1dea853e0def6af988c58eed7e861b5311a794fa44f1690f7e1b",
+    "duration_ms": 3136,
+    "text": "The Herald can’t be hurt — beat the monsters it powers up!"
+  },
+  {
+    "key": "vo_ruby_short_hungerHerald",
+    "file": "vo_ruby_short_hungerHerald.mp3",
+    "bytes": 26374,
+    "sha256": "cef90a8530ba04df7cf82e72366ddb55e08c262b34857e6a3be99240f71e851c",
+    "duration_ms": 1580,
+    "text": "Beat the powered-up ones!"
+  },
+  {
+    "key": "vo_ruby_tip_hunt",
+    "file": "vo_ruby_tip_hunt.mp3",
+    "bytes": 48526,
+    "sha256": "7a23e22f5c339d69fd34e02ea6e3350e1d5b83d67e85c7142ba8d795c8394d51",
+    "duration_ms": 2972,
+    "text": "Dodge its poison bottles and beat the marked Elite!"
+  },
+  {
+    "key": "vo_ruby_short_hunt",
+    "file": "vo_ruby_short_hunt.mp3",
+    "bytes": 17179,
+    "sha256": "f4dc95016e43ae2b31b4e7818db2db1c6e20d86c9b6e84bf0f384dba2671a1b5",
+    "duration_ms": 1004,
+    "text": "Dodge the bottles!"
+  },
+  {
+    "key": "vo_ruby_tip_frozenPantry",
+    "file": "vo_ruby_tip_frozenPantry.mp3",
+    "bytes": 58557,
+    "sha256": "c13b1c3a7c22a780af9bb1d466f9a7fa62a523b266ef43a143f9d8b84f63d2cd",
+    "duration_ms": 3580,
+    "text": "Open the sugar jar, then walk through the frozen army and crates!"
+  },
+  {
+    "key": "vo_ruby_short_frozenPantry",
+    "file": "vo_ruby_short_frozenPantry.mp3",
+    "bytes": 25120,
+    "sha256": "5c1dd94336254ad948166712d1eb3cad54a3ee3a9a17818f965987e5ed4b5671",
+    "duration_ms": 1504,
+    "text": "Walk through the frozen army!"
+  },
+  {
+    "key": "vo_ruby_react_captain",
+    "file": "vo_ruby_react_captain.mp3",
+    "bytes": 41838,
+    "sha256": "7184ae5659c67dca2119b291bd64c222eafe04338667e1b2bec72323dac75f2f",
+    "duration_ms": 2552,
+    "text": "Their Captain is down — the squad is weaker now!"
+  },
+  {
+    "key": "vo_ruby_react_side",
+    "file": "vo_ruby_react_side.mp3",
+    "bytes": 35987,
+    "sha256": "f9b9a0f9b48dc4e3cb45fbfa6094637eed8b561ed5b961880f6e398586e8fdf8",
+    "duration_ms": 2178,
+    "text": "A side mission! Let’s try to do both!"
+  },
+  {
+    "key": "vo_ruby_react_hurry",
+    "file": "vo_ruby_react_hurry.mp3",
+    "bytes": 26792,
+    "sha256": "ecb285fc9091fa25e502f891a61bb5d97785e3e7ded60bf804b4783f61490bcf",
+    "duration_ms": 1596,
+    "text": "Hurry, the wave is almost over!"
+  },
+  {
+    "key": "vo_ruby_react_half",
+    "file": "vo_ruby_react_half.mp3",
+    "bytes": 32643,
+    "sha256": "f29f4549e3efde88f1b472f1b1d4afe9073a11a8116bc5755723447736f7850a",
+    "duration_ms": 1985,
+    "text": "We got halfway — that still counts!"
+  },
+  {
+    "key": "vo_ruby_react_early",
+    "file": "vo_ruby_react_early.mp3",
+    "bytes": 29300,
+    "sha256": "00f11c7597f28534cf119fad38f1fcb2be68d8df12bb22d5a1afb240755c53e1",
+    "duration_ms": 1757,
+    "text": "Done early! Let’s catch our breath."
+  },
+  {
+    "key": "vo_ruby_react_empowered",
+    "file": "vo_ruby_react_empowered.mp3",
+    "bytes": 23030,
+    "sha256": "35152bf0a90cdf2ad2b52b079fe59a9c95c1b7af2fa0635c42469ddffe5f316a",
+    "duration_ms": 1374,
+    "text": "Watch out, that one got stronger!"
+  },
+  {
+    "key": "sfx_a16_bottle_throw",
+    "file": "sfx_a16_bottle_throw.mp3",
+    "bytes": 9238,
+    "sha256": "86aa2350a54157466cadb96e3c4771ba4b298eab3926d5d5f079a41a86d0695c",
+    "duration_ms": 500
+  },
+  {
+    "key": "sfx_a16_bottle_shatter",
+    "file": "sfx_a16_bottle_shatter.mp3",
+    "bytes": 10492,
+    "sha256": "5764dd0637422fc01b316d444b89541b3107b95da3c260763dbcc1c14ae1fa6b",
+    "duration_ms": 600
+  },
+  {
+    "key": "sfx_a16_herald_beam",
+    "file": "sfx_a16_herald_beam.mp3",
+    "bytes": 13835,
+    "sha256": "62f542bf8f1de979ba9730ed4d22599b28bead573ef0bdc29bd5aafe77358a9d",
+    "duration_ms": 800
+  },
+  {
+    "key": "sfx_a16_empower",
+    "file": "sfx_a16_empower.mp3",
+    "bytes": 10492,
+    "sha256": "a7edc5c4c5cb4928de093c0689a807d66b5b83dc4fe5249fe7d5f576390c80b4",
+    "duration_ms": 600
+  },
+  {
+    "key": "sfx_a16_heal_pulse",
+    "file": "sfx_a16_heal_pulse.mp3",
+    "bytes": 12163,
+    "sha256": "dde4a51c70848b8f2f6421f5f222d74c9765e326184b0283d0b7246b461c0624",
+    "duration_ms": 700
+  },
+  {
+    "key": "sfx_a16_crate_shatter",
+    "file": "sfx_a16_crate_shatter.mp3",
+    "bytes": 13835,
+    "sha256": "96cd1bd96ae19a64277a11dc9a1c3d35771a57f5985b40547c58a01df277d9c5",
+    "duration_ms": 800
+  },
+  {
+    "key": "sfx_a16_side_mission",
+    "file": "sfx_a16_side_mission.mp3",
+    "bytes": 12163,
+    "sha256": "1a1328a3ed43f5552000306f1f20b364e9a6038dbb25e36967818a43ff860565",
+    "duration_ms": 700
+  },
+  {
+    "key": "sfx_a16_time_up",
+    "file": "sfx_a16_time_up.mp3",
+    "bytes": 15507,
+    "sha256": "360e2be53c7e1e2320857dff414a27a8de260b320a1636c112670147afc3a8bd",
+    "duration_ms": 900
+  },
+  {
+    "key": "sfx_a16_moth_steal",
+    "file": "sfx_a16_moth_steal.mp3",
+    "bytes": 10492,
+    "sha256": "17b99c48866e75df894f0ae69a2b7cc9f167aee1cb63adf4f4597119bd89320d",
+    "duration_ms": 600
+  },
+  {
+    "key": "sfx_a16_sapper_boom",
+    "file": "sfx_a16_sapper_boom.mp3",
+    "bytes": 12163,
+    "sha256": "08df83591718246c759f43c6924adf2c7745b5cb8b1ad6ad4b2331ced8a7d024",
+    "duration_ms": 700
+  }
+]
