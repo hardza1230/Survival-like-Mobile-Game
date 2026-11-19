@@ -1,6 +1,6 @@
 # 87 — มอน/ของในภารกิจ รอบ 2 (ที่ยังเป็นมอนย้อมสีหรืออีโมจิ) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 19 พ.ย. 2026 · โค้ดพร้อมแล้ว (v8.2.17–8.2.22) ตอนนี้ใช้มอนธรรมดาย้อมสี / อีโมจิ / ต้นไม้ย้อมสี
+สถานะ: 📦 ส่งแล้ว รอผูก · 19 พ.ย. 2026
 ส่งไฟล์ที่ `assets/incoming/mission87/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ** · มอนห้ามสว่าง/อิ่มสีกว่าตัวผู้เล่น
 
@@ -64,4 +64,7 @@
 - `ui87_side_chip` → `stackStart` พื้นหลังข้อความ `K.txt`
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกเมื่อส่ง)
+- Date: 2026-11-19. Delivered 12 files (12 sheets) to `assets/incoming/mission87/`.
+- Included `MANIFEST.json`, `PROMPTS.json`, and compact per-file `QA_REPORT.json`.
+- Mechanical QA passed for every file; missing files: none.
+- Source branch: `asset-delivery/missions86-87-a16`. Source assets only; runtime integration and owner phone review pending.

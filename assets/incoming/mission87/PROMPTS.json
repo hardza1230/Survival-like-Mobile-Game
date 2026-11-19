@@ -1,0 +1,138 @@
+[
+  {
+    "key": "hn87_poison_bottle",
+    "tool": "ImageGen",
+    "prompt": "Four rotation frames in a 2x2 working atlas. Same small round glass bottle with cork and purple-green bubbly poison, orientations upright, clockwise right, upside-down, clockwise left. Same bottle shape and apparent size, rotate as a rigid object at the center. Soft small glow only. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [],
+    "source": "exec-a2b4a56c-e6e4-4d6f-b58c-7d56ca1a9719.png",
+    "sourceColumns": 2,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hn87_poison_splash",
+    "tool": "ImageGen",
+    "prompt": "Six frames in 3x2 working atlas on solid pure BLACK #000. Poison bottle impact sequence: compact purple-green contact spark; glass bursts out; sticky purple-green liquid spreads; vapor curls up; droplets fade; sparse final drifting vapor. One-shot progression, no bottle reappearing, no background. No blood. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing and all cell edges must be pure solid #000 black.",
+    "reference": [],
+    "source": "exec-9966dbff-88b8-43fa-8931-7855f076275c.png",
+    "sourceColumns": 3,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hh87_healer",
+    "tool": "ImageGen",
+    "prompt": "Four-frame walk loop in a 2x2 working atlas. One soft mint-green mochi medic in a small nurse cap, carries a heart-tipped wand. Identical head, volume, costume, wand and face each frame; only tiny alternating foot steps and arm bob. Muted mint, modest brightness. Floor at 92%. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [],
+    "source": "exec-aac6071d-c4a3-4cb0-ad0f-03a5cef382e0.png",
+    "sourceColumns": 2,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hh87_booster",
+    "tool": "ImageGen",
+    "prompt": "Four-frame rhythmic dance/walk loop in a 2x2 working atlas. One buttery yellow mochi carrying a little gold horn. Same body, eyes, mouth, horn, proportions in every frame. Rock side-to-side with tiny foot changes, do not redraw the body shape. Muted yellow, floor at 92%. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [],
+    "source": "exec-ccb6eb67-d0f9-49bc-8fe3-5d69879e340b.png",
+    "sourceColumns": 2,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hh87_possessor",
+    "tool": "ImageGen",
+    "prompt": "Four-frame gentle float loop in 2x2 working atlas. Same semitransparent white mochi ghost with violet eyes and soft smoke tail, fixed head/body silhouette, sway only small tail tips and bob slightly. Cute and subdued, no luminous white flood or cast shadow. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [],
+    "source": "exec-31ee9a12-7f9e-4d5f-96e3-0f7b74a24cbc.png",
+    "sourceColumns": 2,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hh87_heal_pulse",
+    "tool": "ImageGen",
+    "prompt": "Six-frame one-shot in a 3x2 working atlas on pure solid BLACK #000. A soft green healing ring expands from tiny to large while a few little glowing plus-shaped pictograms float upward. Ring is low elliptical perspective on the ground, broad gentle light, final frame nearly faded. Plus pictograms allowed; no words or numbers. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing and all cell edges must be pure solid #000 black.",
+    "reference": [],
+    "source": "exec-de87f63b-e501-44d8-af0a-5d590101c319.png",
+    "sourceColumns": 3,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "st87_trees",
+    "tool": "ImageGen",
+    "prompt": "A 2-column by 3-row atlas of SIX trees in 4:5 portrait cells. Image reference is the exact original tree model: match its 3/4 camera, thick curving candy-wood trunk, rounded leafy crown, cream frosting flowers and base proportions. Match the original apparent tree width and height within each cell; tree base at 94% height and ample upper margin as in reference. Row1 beehive tree with a big hanging honey hive; row2 golden tree with warm gold foliage; row3 mimic tree with eyes and a mouth subtly hidden in bark. First two rows have plain normal bark without a large open mouth. Column1 normal upright; column2 same tree after shaking with fallen leaves and a lowered/fallen hive or fruit at the base. All six keep the same trunk angle and scale. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [
+      "assets/art/missions71/msn71_tree.webp"
+    ],
+    "source": "exec-e1bb82c0-b08a-4f5d-a858-43e087159ce7.png",
+    "sourceColumns": 2,
+    "sourceRows": 3,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "st87_bee",
+    "tool": "ImageGen",
+    "prompt": "Four-frame wing-flap loop in 2x2 working atlas. One round yellow-and-black mochi bee, translucent wings and a slightly annoyed cute face. Central body remains identical and centered; wings open, half, closed, half-open. All tips stay inside each cell. No underbody shadow. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [],
+    "source": "exec-b01c7baf-da5c-4de4-a953-27e2b7635a6f.png",
+    "sourceColumns": 2,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "cr87_root_mothers",
+    "tool": "ImageGen",
+    "prompt": "A 2-column by 3-row atlas of SIX Creeping Root Mothers, following the reference's EXACT low round mochi root base, giant candy-flower crown, expressive eyes and 3/4 view. Same angle and apparent object scale as reference. Row1 fast root: slender fresh-green root body, sharp little thorns; row2 thick root: chunky brown bark shell and thick woody roots; row3 splitting root: violet body with several tiny new buds around it. Column1 intact lively mother; column2 the SAME variant cut and withered, flower droops and roots slump, no gore. Keep base at 92% and the same baseline in all cells. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [
+      "assets/art/league72/cr_root_mother.webp"
+    ],
+    "source": "exec-1c3e8619-2538-4fcc-9500-973ec208eba9.png",
+    "sourceColumns": 2,
+    "sourceRows": 3,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "sr87_carriers",
+    "tool": "ImageGen",
+    "prompt": "Exactly 4 columns by 3 rows of square cells. Each ROW is a separate FOUR-frame running loop of the same mochi carrier with a luminous green seed sack on its back. Row1 fast thin carrier with long legs; row2 armored carrier with a hard bean shell and larger green seed; row3 splitting carrier with a seam dividing its body into two halves. Hold head size, shape and seed sack stable across each row, change only four alternating run-foot poses and slight bob. Muted colors, restrained green glow, same ground baseline at 92%. No explosions or extra characters. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [],
+    "source": "exec-5cbee63e-2ca8-4175-8fc0-bf322fc82b9f.png",
+    "sourceColumns": 4,
+    "sourceRows": 3,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "gg87_gold_glint",
+    "tool": "ImageGen",
+    "prompt": "Six-frame loop in 3x2 working atlas on PURE BLACK #000. Four-point golden star glints rotate gently around a thin gold light ring, EMPTY black center suitable for placing an object underneath. Main ring geometry fixed, glints advance evenly in six equal phases, seamless last-to-first. Clear black border, no object or scene. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing and all cell edges must be pure solid #000 black.",
+    "reference": [],
+    "source": "exec-a8ef6abf-8c7b-49b2-9d29-ff842c5f7668.png",
+    "sourceColumns": 3,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "ui87_side_chip",
+    "tool": "ImageGen",
+    "prompt": "Single exact 5:1 wide low horizontal HUD strip. Rounded capsule of translucent icy sky-blue glass with a thin warm ivory edge. A small inset circle at the LEFT contains one simple plus-shaped pictogram, the remaining long bar completely blank and flat for live text. Keep corner decoration inside 24px horizontal and 16px vertical insets at a 240x48 final size; middle stretch section has uniform fill, no nonuniform art. Transparent outside the capsule, no shadow, text, numbers, word labels or extra symbols. Mochi Mayhem original confectionery fantasy game asset, 3/4 top-down view, soft dark colored outlines and glossy pastel candy shading. Clean strong silhouettes readable on mobile. True alpha-zero transparent backing unless explicitly black. No text, numbers, letter glyphs, logos or watermark. No underfoot shadow for creatures. Keep each complete sprite inside its own equal cell with 7% clear border; no grid lines. Empty backing must have actual alpha zero, never white/grey/pastel haze.",
+    "reference": [],
+    "source": "exec-60ff1211-ceed-4ac3-bd28-a9ab1ddee381.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  }
+]

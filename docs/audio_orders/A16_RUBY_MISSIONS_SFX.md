@@ -1,6 +1,6 @@
 # A16 — Ruby เสียงพากย์ภารกิจที่เปลี่ยน (v8.2.16–8.2.22) + เสียงประกอบใหม่ · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 19 พ.ย. 2026
+สถานะ: 📦 ส่งแล้ว รอผูก · 19 พ.ย. 2026
 ส่งที่ `assets/incoming/audio_a16/` พร้อม `MANIFEST.json` (key, file, text (เฉพาะเสียงพูด), bytes, sha256, duration_ms)
 เครื่องมือ: **ElevenLabs** · เสียงพูดใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · SFX ใช้ ElevenLabs Sound Effects · ห้ามใช้เสียงสร้างด้วยโค้ด/Runway
 
@@ -51,4 +51,8 @@
 - SFX: throw → `huntThrowAI` · shatter → `hitByFoe` `_huntCurse` · beam → `hhTick` ตอนเริ่มลำแสง · empower → `hhEmpower` · heal → ลูกน้อง heal · crate → `fpCrateOpen` · side → `stackStart` · time_up → `expireWaveObjective` · moth → `llExtrasTick` ตอนขโมยแสง · sapper → `hsExtrasTick` ตอนระเบิด · ไม่มีไฟล์ = เสียงเดิม (fallback)
 
 ## ส่งมอบ
-(ฝั่งเสียงกรอกเมื่อส่ง)
+- Date: 2026-11-19. Delivered 22 files (12 Ruby voice lines + 10 ElevenLabs SFX) to `assets/incoming/audio_a16/`.
+- Included `MANIFEST.json`, `PROMPTS.json`, and compact per-file `QA_REPORT.json`.
+- Mechanical QA passed for every file; missing files: none.
+- Source branch: `asset-delivery/missions86-87-a16`. Source assets only; runtime integration and owner phone review pending.
+- All speech uses the existing A07 Ruby voice ID. All 12 manifest scripts match the order exactly, including curly apostrophes and em dashes. All 22 MP3 files are mono 44.1 kHz / 128 kbps; decoded durations, true peaks, onset silence, hashes and byte counts verified.
