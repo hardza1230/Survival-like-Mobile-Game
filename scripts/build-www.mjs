@@ -61,7 +61,9 @@ const loaderCssPath = 'assets/art/entry/kitchen_loader.css';
 const loaderCss = readFileSync(join(root, loaderCssPath), 'utf8');
 const cssRefs = [...loaderCss.matchAll(/url\(['"]?([^)'"?#]+)['"]?\)/g)]
   .map(m=>normalize(join(dirname(loaderCssPath),m[1])));
-const uniqueAssets = [...new Set([...assetRefs,...cssRefs,loaderCssPath])].sort();
+// v8.2.35 เจ้าของ: ไม่ใส่ไฟล์ที่โค้ดปิดใช้ไว้ลงในแอป · ภาพ Lobby ฮีโร่ขยับ (ใบ 34) ปิดตั้งแต่ v7.9.61 (LH_USE_SHEETS=false) · ~14 MB
+const NOT_SHIPPED=[...(/const LH_USE_SHEETS\s*=\s*false/.test(gjs)?[/^assets\/art\/lobby_hero\//]:[])];
+const uniqueAssets = [...new Set([...assetRefs,...cssRefs,loaderCssPath])].filter(rel=>!NOT_SHIPPED.some(re=>re.test(rel))).sort();
 const assetHashes=Object.fromEntries(uniqueAssets.map(rel=>[rel,createHash('sha256').update(readFileSync(join(root,rel))).digest('hex').slice(0,12)]));
 const assetSizes=Object.fromEntries(uniqueAssets.map(rel=>[rel,statSync(join(root,rel)).size]));
 gjs=gjs.replace('let ASSET_FILE_SIZES = null;', 'let ASSET_FILE_SIZES = '+JSON.stringify(assetSizes)+';');

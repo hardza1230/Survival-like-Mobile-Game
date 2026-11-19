@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.34';
+const GAME_VERSION = '8.2.35';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.35',date:'2026-11-19',title:'Smaller app and a voice tip fix',items:['The app is about 14 MB smaller because unused Lobby animation sheets and old Dig art are no longer packed','Fixed an error when Ruby’s first-time tip for the Atlas or Expedition finished loading']},
   {v:'8.2.34',date:'2026-11-19',title:'Temple Expedition gets its own sound',items:['Temple Expedition has soft tap sounds, titan pops, a ticking boss clock and its own music','Ruby calls out bosses, cheers you up after a timeout and welcomes you back','Hiring helpers, upgrades, supplies and the daily chest all have new sound effects']},
   {v:'8.2.33',date:'2026-11-19',title:'Temple Expedition gets its real art',items:['Temple Expedition now has deep temple backgrounds and front-facing titans and bosses','Your hero is seen from behind and swings at every tap, with helpers fighting at your side','Every tap bursts with a hit flash in your hero’s colour']},
   {v:'8.2.32',date:'2026-11-19',title:'Temple Expedition: tap, fight and idle',items:['Temple Depths and Mochi Patrol are now Temple Expedition: tap to fight titans and beat a timed boss every five stages','Hire Ruby and your heroes as helpers who keep fighting even while the game is closed','Earn Crumbs to buy Supplies that help your next real stage, plus Sugar, Thread and Recipe Parts from bosses and a daily chest']},
@@ -2777,23 +2778,7 @@ const ASSET_IMAGES = {
   fr_m_sour:'assets/art/kitchen/fr_m_sour.webp',
   fr_m_twin:'assets/art/kitchen/fr_m_twin.webp',
   dig_bg:'assets/art/dig/dig_bg.webp',
-  dig_chest:'assets/art/dig/dig_chest.webp',
-  dig_chest_open:'assets/art/dig/dig_chest_open.webp',
-  dig_crack:'assets/art/dig/dig_crack.webp',
-  dig_gem:'assets/art/dig/dig_gem.webp',
-  dig_gift:'assets/art/dig/dig_gift.webp',
-  dig_ore:'assets/art/dig/dig_ore.webp',
-  dig_part:'assets/art/dig/dig_part.webp',
-  dig_scroll:'assets/art/dig/dig_scroll.webp',
   dig_shovel:'assets/art/dig/dig_shovel.webp',
-  dig_stair:'assets/art/dig/dig_stair.webp',
-  dig_stone_def:'assets/art/dig/dig_stone_def.webp',
-  dig_stone_dmg:'assets/art/dig/dig_stone_dmg.webp',
-  dig_stone_hp:'assets/art/dig/dig_stone_hp.webp',
-  dig_thread:'assets/art/dig/dig_thread.webp',
-  dig_tile_rock:'assets/art/dig/dig_tile_rock.webp',
-  dig_tile_soil:'assets/art/dig/dig_tile_soil.webp',
-  dig_trap:'assets/art/dig/dig_trap.webp',
   perk_ancientGuard:'assets/art/icons/perk_ancientGuard.webp',
   perk_banish:'assets/art/icons/perk_banish.webp',
   perk_boxLuck:'assets/art/icons/perk_boxLuck.webp',
@@ -4632,7 +4617,6 @@ const ASSET_AUDIO = {
   bgm_a04_bgm_story_hope:'assets/audio/story_music/bgm_story_hope.mp3',
   bgm_a04_bgm_story_finale:'assets/audio/story_music/bgm_story_finale.mp3',
   bgm_a04_bgm_bazaar:'assets/audio/story_music/bgm_bazaar.mp3',
-  bgm_menu_temple:  'assets/audio/bgm/menu/tea_for_two_temple.mp3',   // v5.40 วิหาร · v8.1.109 Mochi Patrol + Depths (Weave ใช้เพลงหน้าหลัก)
   bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
   bgm_menu_kitchen: 'assets/audio/bgm/menu/bgm_menu_kitchen.mp3',  // ครัวสูตร
   /* v8.1.139 ขนาดแอป: ลบเพลงสำรองยุคเก่า bgm/min + bgm_ch2/ch3 (สร้างด้วยโค้ด) 11 MB · ทุกด่านมีเพลง ElevenLabs bgm_sNN/bgm_bNN ครบ 15 ด่าน */
@@ -12217,7 +12201,7 @@ class Game extends Phaser.Scene {
   }
   /* v8.2.5 เจ้าของ: หน้า Missions — ภารกิจที่เคยเจอ ✓ / ยังไม่เจอ ??? + บอกด่านที่เจอ */
   logMission(type){ if(!type||!WAVE_OBJECTIVES[type]||typeof Save==='undefined'||!Save.data)return; const L=Save.data.missionLog=Save.data.missionLog||{}; L[type]=1; }
-  buildMissionCodex(top){ if(this._missionAtlas&&typeof maUnlocked==='function'&&maUnlocked())return this.buildMissionAtlas(top); if(typeof maUnlocked==='function'&&maUnlocked()){ this.maArtLoad?.(); const m=maData(),bw=118,bx=this.W-bw-10,go=()=>{ const first=!m.seen; this._missionAtlas=true; this._maSel=null; m.seen=1; try{Save.save();}catch(e){} this.buildSkillArchive(); if(first)try{ VoiceActing?.play?.(this,'vo_ruby_tip_atlas'); }catch(e){} };
+  buildMissionCodex(top){ if(this._missionAtlas&&typeof maUnlocked==='function'&&maUnlocked())return this.buildMissionAtlas(top); if(typeof maUnlocked==='function'&&maUnlocked()){ this.maArtLoad?.(); const m=maData(),bw=118,bx=this.W-bw-10,go=()=>{ const first=!m.seen; this._missionAtlas=true; this._maSel=null; m.seen=1; try{Save.save();}catch(e){} this.buildSkillArchive(); if(first)try{ VoiceActing?.play?.(this,'vo_ruby_tip_atlas',()=>this.state==='menu'&&!!this._missionAtlas); }catch(e){} };
       if(this.realTex?.('ma89_button')&&this.add.nineslice&&this.game?.renderer?.type===Phaser.WEBGL){ const by=top+8; this.menu.add(this.add.nineslice(bx+bw/2,by,'ma89_button',0,bw,28,32,32,8,8)); if(this.realTex('ma89_emblem'))this.menu.add(this.add.image(bx+16,by,'ma89_emblem').setDisplaySize(22,22)); this.menu.add(this.add.text(bx+bw/2+10,by,'Atlas'+(m.seen?'':' NEW'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff1e7'}).setOrigin(.5)); this._zone(bx,by-14,bw,28,go); }
       else this.uiPillBtn(this.menu,bx+bw/2,top+8,bw,28,0x6b4fa8,'🗺️','Atlas'+(m.seen?'':' NEW'),go); top+=22; }
     const w=this.W,h=this.H,portrait=w<=h,pages=missionCodexPages(),seen=missionSeenMap(),n=pages.reduce((a,p)=>a+p.rows.length,0),got=pages.reduce((a,p)=>a+p.rows.filter(r=>seen[r.t]).length,0);
@@ -13985,7 +13969,7 @@ class Game extends Phaser.Scene {
       const hs=this.expHelpers(),maxRows=Math.max(1,Math.floor((h-y-14)/(rh+5)));
       hs.slice(0,maxRows).forEach(hh=>{ const lv=e.help[hh.id]|0,c=expHelpCost(hh,lv),nx=25*(Math.floor(lv/25)+1); row(hh.em,hh.name+' · Lv '+lv,(lv?expFmt(expHelpDps(hh,lv))+'/s':'Hire to fight for you')+' · ×2 at Lv '+nx,'🍪 '+expFmt(c),e.crumbs>=c,()=>{ if(this.expBuy('help',hh.id))this.buildMenuScreen(); },'exp_help_'+hh.id); }); }
     if(!this._ex||this._ex.hp<=0)this.expFoeNew(); else this.expFoeDraw(); this.expHud();
-    if(!e.tip){ e.tip=1; try{ VoiceActing?.play?.(this,'vo_ruby_tip_expedition'); }catch(err){} }
+    if(!e.tip){ e.tip=1; try{ VoiceActing?.play?.(this,'vo_ruby_tip_expedition',()=>this.state==='menu'&&this.menuScreen==='dig'); }catch(err){} }
     if(off)this.time.delayedCall(250,()=>{ this.exSfx('welcome_back',.45); this.rubyVoiceReact?.('exwelcome',200); const hm=Math.floor(off.sec/3600)+'h '+Math.floor(off.sec%3600/60)+'m'; this.menuToast?.('💤 While you were away ('+hm+'): helpers beat '+expFmt(off.kills)+' foes · 🍪 +'+expFmt(off.cr),'#c7a6ff'); });
     if(!this._exOn){ this._exOn=true; this._exAt=Date.now(); } this._exEv?.remove?.(false); this._exEv=this.time.addEvent({delay:100,loop:true,callback:()=>this.expTick()}); this.menu.setVisible(true); }
   /* Supplies: ใช้ตอนเริ่มด่านจริง (Story/Delve) · 1 ชิ้นต่อด่าน แล้วหายไป */
@@ -15271,7 +15255,7 @@ class Game extends Phaser.Scene {
   voiceBossSlip(b,st){if(this._voiceSlipSeen||!this.storyVoice?.()||!b?.isBoss||!(b.maxhp>0)||b.hp/b.maxhp>.5||this._bossSayObj?.active||VoiceActing.busy())return false;const key='vo_b'+String((this.stageIndex||0)+1).padStart(2,'0')+'_slip_'+(Math.floor(performance.now()/1000)%2+1),row=A07_CATALOG[key];if(!row)return false;this._voiceSlipSeen=true;this.bossSay(row.text,st?.boss,Math.max(3300,row.duration+250),b);return true;}
   storyMusicPlay(key,valid,volume){return StoryMusic.play(this,key,valid,volume);}
   storyMusicStop(){StoryMusic.stop();}
-  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const BZ=['bazaar','wardrobe','tradein'],bz=BZ.includes(s),a04=s==='title'?'bgm_a04_bgm_title':bz?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&(bz?BZ.includes(this.menuScreen):this.menuScreen===s));return;}   /* v8.2.2 เจ้าของ: ทุกหน้าใน Bazaar (Wardrobe / Trade-in) ใช้เพลง Bazaar เพลงเดียวต่อเนื่อง */this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={patrol:'bgm_menu_temple',kitchen:'bgm_menu_kitchen',dig:(typeof EXP_ON!=='undefined'&&EXP_ON)?(this._ex?.boss?'bgm_ex_boss':'bgm_ex_expedition'):null}[s]||null;   /* v8.2.34 A19 */   // v8.1.109 เจ้าของ: Mochi Patrol ใช้เพลงวิหาร (เดิมของ Flavor Weave) · Weave/Rank Perks กลับไปใช้เพลงหน้าหลักเหมือนหน้าอื่น
+  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const BZ=['bazaar','wardrobe','tradein'],bz=BZ.includes(s),a04=s==='title'?'bgm_a04_bgm_title':bz?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&(bz?BZ.includes(this.menuScreen):this.menuScreen===s));return;}   /* v8.2.2 เจ้าของ: ทุกหน้าใน Bazaar (Wardrobe / Trade-in) ใช้เพลง Bazaar เพลงเดียวต่อเนื่อง */this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={patrol:null,kitchen:'bgm_menu_kitchen',dig:(typeof EXP_ON!=='undefined'&&EXP_ON)?(this._ex?.boss?'bgm_ex_boss':'bgm_ex_expedition'):null}[s]||null;   /* v8.2.34 A19 */   // v8.1.109 เจ้าของ: Mochi Patrol ใช้เพลงวิหาร (เดิมของ Flavor Weave) · Weave/Rank Perks กลับไปใช้เพลงหน้าหลักเหมือนหน้าอื่น
     if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
     this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({patrol:1,kitchen:1,dig:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
   // v6.92 เพลงที่ถอดรหัสแล้วกินแรม ~20MB/เพลง → ลบเพลงด่าน/บอสของด่านอื่นออกจาก cache (ไฟล์ยังอยู่ในเครื่อง โหลดกลับเร็ว)

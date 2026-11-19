@@ -4319,3 +4319,16 @@ Owner 19 Nov approved items 1 + 4 of the size plan. The shipped app (www/ withou
 - **Art:** placeholders for now (Patrol scene + scaled Patrol foes + hero sprite). Art order 91 covers back-view heroes, front-facing titans, bosses, deep backgrounds, hit FX and icons.
 - **Later (after the Closed test):** active skills, Prestige and Temple Relics.
 - Test: `tests/expedition-8232.test.cjs`. Headless: offline crumbs, taps clear stage 4 → boss 5 → stage 6, daily chest, upgrades, supplies, and the mode stops when leaving the screen.
+
+# Delivery: v8.2.33 — 🎨 Temple Expedition art (order 91) + sound order A19
+
+- **Packed:** `scripts/pack-expedition91.py` → 13 WebP, 677 KB, 18 MiB decoded. Menu-lazy: the art loads only with the Expedition (`dig`) screen through `menuGroupRe`.
+- **Deep backgrounds:** `ex91_bg_c1..3` follow the Chapter cycle (every 25 stages). Fallback: the Patrol scene.
+- **Titans:** front-facing `ex91_titans` (4 per Chapter). Bosses use `ex91_bosses`.
+- **Hit flash:** the hit flash is now a white tint fill, so art keeps its colours.
+- **Main hero:** back-view `ex91_back_<hero>`, with feet on the scene floor. Each tap plays attack frames 1→2→3→0.
+- **Helpers:** small back sprites. Ruby keeps the emoji badge.
+- **Tap FX:** `ex91_hit` plays at a random spot on the titan, tinted with the hero colour.
+- **Crumbs icon:** shown on the stats line.
+- **Audio order A19:** 17 SFX (3 soft tap variants, crit, pop, boss appear/tick/down/fail, hire, milestone, chest, supply, welcome back), 2 loops (expedition / boss) and 4 Ruby lines.
+- Test: `tests/expedition91-art.test.cjs`. Headless: all art loads on the screen and the titan, back-view hero and hit FX are used.

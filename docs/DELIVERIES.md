@@ -1,6 +1,14 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.34 — 🔊 Temple Expedition sound (A19): taps, titans, boss timer, helpers, music, Ruby
+# Latest delivery: v8.2.35 — 📦 App size 187.7 → 173.3 MB (unused files out of the build) + Ruby tip crash fix
+
+- **Lobby hero motion sheets (order 34), ~14 MB:** off since v7.9.61 (`LH_USE_SHEETS=false`) but still shipped. `scripts/build-www.mjs` now has a `NOT_SHIPPED` list, so these files stay out of the build while the flag is false. The source files stay in the repo.
+- **Old Patrol track `tea_for_two_temple`, ~1 MB:** removed from `ASSET_AUDIO`. The `patrol` music entry now plays the main menu music.
+- **Old Dig board art (16 files in `assets/art/dig/`):** no longer registered. `dig_bg` and `dig_shovel` stay, and so does the `menu_orders` dig art, which is part of a tracked set.
+- **Fix:** the Ruby first-time tips for Atlas and Expedition called `VoiceActing.play` without its `valid` callback, which threw "valid is not a function" when the voice finished loading. Both calls now pass a screen check.
+- **Check:** a headless boot through hub, Loadout, Weave, Activities and Expedition shows no 404s and no page errors. App size is 173.3 MB (limit 190).
+
+# Previous delivery: v8.2.34 — 🔊 Temple Expedition sound (A19): taps, titans, boss timer, helpers, music, Ruby
 
 - **Packed:** `scripts/pack-audio-a19.py` → 17 SFX (96k mono, `assets/audio/sfx/a19/`), 2 loops (80k stereo, `assets/audio/bgm/expedition_a19/`), 4 Ruby lines (56k mono).
 - **Loading:** `exAudioLoad` loads the Expedition SFX and Ruby lines when the screen opens, because menu screens don't preload SFX. The music loads on demand through `menuMusic('dig')`.
@@ -13,16 +21,3 @@
   - Welcome back: sound + Ruby line. The Ruby tip plays the first time the screen opens.
 - **Fallback:** missing files fall back to the old dig/chest sounds or stay silent.
 - Test: `tests/audio-a19.test.cjs`. Headless: all Expedition audio is in the cache after opening the screen and `bgm_ex_expedition` plays.
-
-# Previous delivery: v8.2.33 — 🎨 Temple Expedition art (order 91) + sound order A19
-
-- **Packed:** `scripts/pack-expedition91.py` → 13 WebP, 677 KB, 18 MiB decoded. Menu-lazy: the art loads only with the Expedition (`dig`) screen through `menuGroupRe`.
-- **Deep backgrounds:** `ex91_bg_c1..3` follow the Chapter cycle (every 25 stages). Fallback: the Patrol scene.
-- **Titans:** front-facing `ex91_titans` (4 per Chapter). Bosses use `ex91_bosses`.
-- **Hit flash:** the hit flash is now a white tint fill, so art keeps its colours.
-- **Main hero:** back-view `ex91_back_<hero>`, with feet on the scene floor. Each tap plays attack frames 1→2→3→0.
-- **Helpers:** small back sprites. Ruby keeps the emoji badge.
-- **Tap FX:** `ex91_hit` plays at a random spot on the titan, tinted with the hero colour.
-- **Crumbs icon:** shown on the stats line.
-- **Audio order A19:** 17 SFX (3 soft tap variants, crit, pop, boss appear/tick/down/fail, hire, milestone, chest, supply, welcome back), 2 loops (expedition / boss) and 4 Ruby lines.
-- Test: `tests/expedition91-art.test.cjs`. Headless: all art loads on the screen and the titan, back-view hero and hit FX are used.
