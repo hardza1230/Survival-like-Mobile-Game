@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.28**. Next release:8.2.29. Fetch the deploy branch before new work.
+Current release: **8.2.29**. Next release:8.2.30. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.28 — ✨ SCAMPER round 2: golden waves, first-time missions, boss missions** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.29 — ⚖️ Pact Relics: the drawback goes to the stage, the reward gets better** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

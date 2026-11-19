@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 function method(n){const a=src.indexOf('  '+n+'(',src.indexOf('class Game extends')),m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(a+1));assert(a>=0&&m,n);return src.slice(a,a+1+m.index);}
 const ctx={};vm.createContext(ctx);vm.runInContext(src.slice(src.indexOf('const RELICS = {'),src.indexOf('/* ---- CHARACTER COMBAT PROFILES'))+';this.R=RELICS;this.S=RELIC_SYNERGIES;',ctx);
 const NEW=['heavydough','sugarrush','frostcandy','copperwhisk','longspoon','crowdcrush','twinbake','giantslayer'];
-assert.equal(Object.keys(ctx.R).length,22);const pathIds=new Set([...src.matchAll(/\{id:'([a-z]+)',iconKey:'ic_path_/g)].map(m=>m[1]));
+assert.equal(Object.keys(ctx.R).length,30);/* v8.2.29 +8 Pact Relics */const pathIds=new Set([...src.matchAll(/\{id:'([a-z]+)',iconKey:'ic_path_/g)].map(m=>m[1]));
 for(const k of NEW){const r=ctx.R[k];assert(r&&r.name&&r.desc&&r.headline&&r.for,k);assert(r.paths.length>=2&&r.paths.every(p=>pathIds.has(p)),k+' paths '+r.paths);assert(!/[฀-๿]/.test(r.desc+r.name+r.for));}
 for(const s of ctx.S)assert(ctx.R[s.a]&&ctx.R[s.b],s.name);assert(['Deadeye','Frenzy','Deep Freeze'].every(n=>ctx.S.some(s=>s.name===n)));
 const S=vm.runInContext('(class{'+['relicSyn','relicDmg89'].map(method).join('\n')+'})',Object.assign(ctx,{TARO_SHOCK_LIFE:3}));
