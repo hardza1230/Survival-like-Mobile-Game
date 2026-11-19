@@ -55,4 +55,4 @@ Source branch: `asset-delivery/audio-a17`. All ElevenLabs Music; independent tec
 | 16 | `docs/audio_orders/A18_RUBY_EVENTS_ATLAS_SFX.md` | Ruby พากย์ 8 + SFX 10 | 18 | ElevenLabs | `assets/incoming/audio_a18/` | 📦 ส่งแล้ว รอผูก |
 
 Source delivery: `asset-delivery/orders88-90-a18` —20 ImageGen PNGs (51 frames) and18 ElevenLabs MP3s, complete metadata and mechanical QA. No runtime wiring.
-| 17 | `docs/art_orders/91_EXPEDITION_SCENE.md` | Temple Expedition ฉากมุมข้ามไหล่ (ฮีโร่หันหลัง · ไททันหน้าตรง) | 13 | ImageGen | `assets/incoming/expedition91/` | 🟡 |
+| 17 | `docs/art_orders/91_EXPEDITION_SCENE.md` | Temple Expedition ฉากมุมข้ามไหล่ (ฮีโร่หันหลัง · ไททันหน้าตรง) | 13 | ImageGen | `assets/incoming/expedition91/` | 📦 ส่งแล้ว รอผูก |

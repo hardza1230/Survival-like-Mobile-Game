@@ -1,0 +1,229 @@
+[
+  {
+    "key": "ex91_back_momo",
+    "file": "ex91_back_momo.png",
+    "bytes": 256576,
+    "sha256": "af2c92be98968aac48299e87bb17b0b049df744b30fc39848332ff329cb4dc88",
+    "width": 1024,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 4,
+    "loop": true,
+    "anchor": "feet",
+    "background": "transparent",
+    "anchorPixels": [
+      128,
+      240
+    ]
+  },
+  {
+    "key": "ex91_back_mint",
+    "file": "ex91_back_mint.png",
+    "bytes": 299152,
+    "sha256": "581e53221ac66d3fba771c0078ccd93f5c28de2303fb2fc22cbba851b49d2525",
+    "width": 1024,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 4,
+    "loop": true,
+    "anchor": "feet",
+    "background": "transparent",
+    "anchorPixels": [
+      128,
+      240
+    ]
+  },
+  {
+    "key": "ex91_back_cocoa",
+    "file": "ex91_back_cocoa.png",
+    "bytes": 318325,
+    "sha256": "b66c8399eb163e6723080804cec98f550e6ac2a70b949ae5adc86b37feacbc24",
+    "width": 1024,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 4,
+    "loop": true,
+    "anchor": "feet",
+    "background": "transparent",
+    "anchorPixels": [
+      128,
+      240
+    ]
+  },
+  {
+    "key": "ex91_back_taro",
+    "file": "ex91_back_taro.png",
+    "bytes": 217016,
+    "sha256": "fe3ada31e528a27db809a3c813908ac251b6fe7668c55df02e1422ca85ace374",
+    "width": 1024,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 4,
+    "loop": true,
+    "anchor": "feet",
+    "background": "transparent",
+    "anchorPixels": [
+      128,
+      240
+    ]
+  },
+  {
+    "key": "ex91_back_yuzu",
+    "file": "ex91_back_yuzu.png",
+    "bytes": 277363,
+    "sha256": "4db005f0a027ddd1216f79af676db6f5f5a3a9515f862a4a949542eafd470f49",
+    "width": 1024,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 4,
+    "loop": true,
+    "anchor": "feet",
+    "background": "transparent",
+    "anchorPixels": [
+      128,
+      240
+    ]
+  },
+  {
+    "key": "ex91_back_sesame",
+    "file": "ex91_back_sesame.png",
+    "bytes": 330983,
+    "sha256": "285e4c09fd36aaad36446b3a71adbe2bf6b2391ba063c57c539e849926bb2b7c",
+    "width": 1024,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 4,
+    "loop": true,
+    "anchor": "feet",
+    "background": "transparent",
+    "anchorPixels": [
+      128,
+      240
+    ]
+  },
+  {
+    "key": "ex91_titans",
+    "file": "ex91_titans.png",
+    "bytes": 1716327,
+    "sha256": "0c45337422ad2d3904b6b0f798e55cb64d7210b389b1ec447f568421cc7c5ab9",
+    "width": 1536,
+    "height": 1152,
+    "frameWidth": 384,
+    "frameHeight": 384,
+    "frameCount": 12,
+    "columns": 4,
+    "loop": false,
+    "anchor": "feet",
+    "background": "transparent",
+    "anchorPixels": [
+      192,
+      353
+    ]
+  },
+  {
+    "key": "ex91_bosses",
+    "file": "ex91_bosses.png",
+    "bytes": 767869,
+    "sha256": "dda1359eef59a410caf37a0c327a4e0223eff2a312d302afb4ef7b4eb8923f6c",
+    "width": 1536,
+    "height": 512,
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 3,
+    "columns": 3,
+    "loop": false,
+    "anchor": "feet",
+    "background": "transparent",
+    "anchorPixels": [
+      256,
+      471
+    ]
+  },
+  {
+    "key": "ex91_bg_c1",
+    "file": "ex91_bg_c1.png",
+    "bytes": 1036126,
+    "sha256": "d72f4040bacd663ee1f58f55d5becf31bd16d8083010931857f676c86d61fb09",
+    "width": 768,
+    "height": 800,
+    "frameWidth": 768,
+    "frameHeight": 800,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "opaque"
+  },
+  {
+    "key": "ex91_bg_c2",
+    "file": "ex91_bg_c2.png",
+    "bytes": 988505,
+    "sha256": "38c0a27fba28957d7620ee0ebfdf295418615e870142d79181ead5ff50300306",
+    "width": 768,
+    "height": 800,
+    "frameWidth": 768,
+    "frameHeight": 800,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "opaque"
+  },
+  {
+    "key": "ex91_bg_c3",
+    "file": "ex91_bg_c3.png",
+    "bytes": 987126,
+    "sha256": "3842df7e08723bfc72c86dc0867777f72c0734952cf7a1ed5f303b8524eaf02b",
+    "width": 768,
+    "height": 800,
+    "frameWidth": 768,
+    "frameHeight": 800,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "opaque"
+  },
+  {
+    "key": "ex91_hit",
+    "file": "ex91_hit.png",
+    "bytes": 78778,
+    "sha256": "0832ddbeb76b29eebdba1b81513873c3358076778b8ebdd3e938f04128961f32",
+    "width": 1152,
+    "height": 192,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": "center",
+    "background": "black"
+  },
+  {
+    "key": "ex91_icons",
+    "file": "ex91_icons.png",
+    "bytes": 68613,
+    "sha256": "aa10ca94cd38277c749ddedb5c2b065fb43690f31a65d66026c2d48d73aa201c",
+    "width": 576,
+    "height": 96,
+    "frameWidth": 96,
+    "frameHeight": 96,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  }
+]

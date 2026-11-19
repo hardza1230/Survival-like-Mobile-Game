@@ -44,7 +44,7 @@
 | 88 | `88_PACT_RELIC_ICONS.md` | ไอคอน Pact Relic ใหม่ 8 ชิ้น (ออร่าม่วง+แดง · โซ่ทอง) | 8 | สูง | ✅ ผูกแล้ว v8.2.31 |
 | 89 | `89_MISSION_ATLAS_UI.md` | Mission Atlas: ไอคอนโหนด 6 · กล่องโหนด 3 สถานะ · ตรา · ดาว · ปุ่ม | 5 (13 เฟรม) | กลาง | ✅ ผูกแล้ว v8.2.31 |
 | 90 | `90_MISSION_EVENTS_FX.md` | ลูกศรเหลือง/ฟ้า · ประกายมอนทอง · แสงเวฟทอง · Double Clear · แถบภารกิจบอส · ไอคอน Reroll · ไอคอนคำสาป 3 | 7 (30 เฟรม) | สูง | ✅ ผูกแล้ว v8.2.31 |
-| 91 | `91_EXPEDITION_SCENE.md` | Temple Expedition: ฮีโร่มุมหลัง 6 · ไททันหน้าตรง 12 · บอส 3 · ฉากลึก 3 · เอฟเฟกต์แตะ · ไอคอน 6 | 13 | สูง | 🟡 รออาร์ต (โค้ด v8.2.32) |
+| 91 | `91_EXPEDITION_SCENE.md` | Temple Expedition: ฮีโร่มุมหลัง 6 · ไททันหน้าตรง 12 · บอส 3 · ฉากลึก 3 · เอฟเฟกต์แตะ · ไอคอน 6 | 13 | สูง | 📦 ส่งแล้ว รอผูก (โค้ด v8.2.32) |
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 58 | `58_POWER_FAMILY_EXTRA.md` | ภาพประกอบการ์ดสรุป Weave/Equipment/Merge/Forge + ภาพหน้าว่าง 3 แบบ | 7 | เล็ก | 🟢 ผูกแล้ว v8.0.79 |

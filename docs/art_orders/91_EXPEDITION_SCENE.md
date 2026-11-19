@@ -1,6 +1,6 @@
 # 91 — Temple Expedition: ฮีโร่มุมหลัง · ไททันหน้าตรง · ฉากลึก · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.32 (ตอนนี้ใช้มอน Patrol ขยาย + สไปรต์ฮีโร่มุมเดิม)
+สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.32 (ตอนนี้ใช้มอน Patrol ขยาย + สไปรต์ฮีโร่มุมเดิม)
 ส่งไฟล์ที่ `assets/incoming/expedition91/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -42,4 +42,12 @@ hero = momo, mint, cocoa, taro, yuzu, sesame · ต้องตรงกับ�
 - งบ: ~1.5 MB WebP · decoded ≲ 20 MiB (โหลดเฉพาะ Chapter ที่อยู่)
 
 ## ส่งมอบ
-- (ฝั่งอาร์ตกรอก)
+- Date: 2026-11-19. All13 requested PNG32 files delivered to `assets/incoming/expedition91/` (54 total frames). Missing: none.
+- A: `ex91_back_momo.png`, `ex91_back_mint.png`, `ex91_back_cocoa.png`, `ex91_back_taro.png`, `ex91_back_yuzu.png`, `ex91_back_sesame.png` —6 rear-facing hero attack cycles,4x256px each, feet at y240. Existing character bible and six current lobby sprite references were read/viewed before generation.
+- B: `ex91_titans.png` —12 full-body front-facing titans,4x3 grid384px, kitchen/garden/glasshouse rows.
+- C: `ex91_bosses.png` —3 full-body front-facing bosses,3x1 grid512px: giant cooking pot, mother tree, glass guardian.
+- D: `ex91_bg_c1.png`, `ex91_bg_c2.png`, `ex91_bg_c3.png` —3 opaque768x800 deep encounter scenes with clear central floor.
+- E: `ex91_hit.png` —6x192px one-shot impact on pure#000, warm ivory for code-side hero tinting.
+- F: `ex91_icons.png` —6x96px icons in the exact table order.
+- Included `MANIFEST.json`, actual `PROMPTS.json`, and compact per-file `QA_REPORT.json`. Exact dimensions/grids, real alpha or opaque/#000 backgrounds, all54 nonempty frames, safe margins, ground lines, hashes and bytes independently verified. Hero frame1/4 silhouette IoU: 95.0%–97.4%, height ratios within5%.
+- ImageGen source art only. Source branch: `asset-delivery/expedition91`. No game.js, runtime, tests or release changes. Owner phone review and code-side packing/wiring pending.
