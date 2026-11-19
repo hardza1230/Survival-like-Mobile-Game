@@ -1,6 +1,6 @@
 # A19 — Temple Expedition: เสียงแตะตี · ไททัน · บอสจับเวลา · ผู้ช่วย · เพลงประจำหน้า · Ruby · ใบสั่งเสียง
 
-สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.32–33 (ตอนนี้ใช้เสียงขุด/เสียงเดิม)
+สถานะ: ✅ ผูกแล้ว v8.2.34 · รอ QA มือถือ
 ส่งที่ `assets/incoming/audio_a19/` พร้อม `MANIFEST.json` (key, file, text (เฉพาะเสียงพูด), bytes, sha256, duration_ms, loop_start_ms/loop_end_ms (เพลง)), `PROMPTS.json`, `QA_REPORT.json`
 เครื่องมือ: **ElevenLabs** · SFX = Sound Effects · เพลง = ElevenLabs Music · เสียงพูดใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามเสียงสร้างด้วยโค้ด/Runway · กติการ่วมดู `A00_README.md`
 

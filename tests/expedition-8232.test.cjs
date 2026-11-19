@@ -8,7 +8,7 @@ const ctx={Math,Date,localDayKey:()=>'2026-11-19',Phaser:{Math:{Between:(x,y)=>x
 vm.runInContext(src.slice(a,b)+';this.F={expHp,expCrumb,expIsBoss,expTapDmg,expTapCost,expHelpDps,expHelpCost,expFmt,expSupplyCost};this.H=EXP_HELPERS;this.SU=EXP_SUPPLIES;'+
  'var Save={data:{chars:["mint"],character:"momo",dig:{shovels:5}},save(){},sug:0,th:0,addSugar(n){this.sug+=n},addThreads(n){this.th+=n},frAddPart(){this.part=(this.part||0)+1},addCurrency(){},'+saveM+'};this.Save=Save;'+
  'function frRollPart(){return "x"} function frPart(){return {emoji:"🧩",name:"P"}} function rollWeightedCurrency(){return null}'+
- 'class K{'+['expHelpers','expDps','expOffline','expFoeNew','expHit','expKill','expBossFail','expBossReward','expDaily','expBuy','expSupplyApply'].map(meth).join('\n')+'\n};this.K=K;',ctx);
+ 'class K{'+['exSfx','expHelpers','expDps','expOffline','expFoeNew','expHit','expKill','expBossFail','expBossReward','expDaily','expBuy','expSupplyApply'].map(meth).join('\n')+'\n};this.K=K;',ctx);
 const F=ctx.F,S=ctx.Save;
 assert(F.expIsBoss(5)&&!F.expIsBoss(4));assert(F.expHp(2)>F.expHp(1));assert(F.expCrumb(10)>=1);assert.strictEqual(F.expFmt(1500),'1.50K');assert.strictEqual(F.expFmt(999),'999');
 // migration: shovels → crumbs

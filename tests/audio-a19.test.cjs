@@ -1,0 +1,9 @@
+// v8.2.34 wire A19 (Temple Expedition SFX 17 · loops 2 · Ruby 4) with fallbacks
+const fs=require('fs'),path=require('path'),crypto=require('crypto'),assert=require('assert');const root=path.join(__dirname,'..');
+const src=fs.readFileSync(path.join(root,'game.js'),'utf8');const M=JSON.parse(fs.readFileSync(path.join(root,'assets/incoming/audio_a19/MANIFEST.json')));assert.equal(M.length,23);
+for(const r of M){assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'assets/incoming/audio_a19',r.file))).digest('hex'),r.sha256,r.key);
+  const vo=r.key.startsWith('vo_'),bg=r.key.startsWith('bgm_'),dst=path.join(root,vo?'assets/audio/acting':bg?'assets/audio/bgm/expedition_a19':'assets/audio/sfx/a19',r.key+'.mp3');assert(fs.existsSync(dst),dst);
+  if(vo){const ck=r.key.startsWith('vo_ruby_react_')?r.key+'_1':r.key;assert(src.includes('"'+ck+'":{"url":"assets/audio/acting/'+r.key+'.mp3","text":'+JSON.stringify(r.text)),ck);}
+  else assert(src.includes(r.key+": 'assets/audio/"+(bg?'bgm/expedition_a19/':'sfx/a19/')+r.key+".mp3'"),r.key);}
+for(const h of ["exSfx(k,vol=.4,gap=.05){ return typeof Sfx!=='undefined'&&Sfx.playFile?.('sfx_ex_'+k,vol); }","nw-(this._exTapSnd||0)>=70","'tap_'+(1+Math.floor(Math.random()*3))","Sfx.digHit?.()","this.exSfx('foe_pop'","this.exSfx('stage_up'","this.exSfx('boss_appear'","rubyVoiceReact?.('exboss'","this.exSfx('boss_tick'","this.exSfx('boss_down',.5)||Sfx.digRare?.()","this.exSfx('boss_fail'","rubyVoiceReact?.('exfail'","'milestone':'hire'","this.exSfx('daily_chest',.5)||Sfx.chestWin?.()","this.exSfx('welcome_back'","rubyVoiceReact?.('exwelcome'","VoiceActing?.play?.(this,'vo_ruby_tip_expedition')","this._ex?.boss?'bgm_ex_boss':'bgm_ex_expedition'"])assert(src.includes(h),h);
+console.log('A19 Expedition audio: 23 files, catalog, hooks, throttled taps, music map with fallbacks passed');
