@@ -121,6 +121,7 @@ that the live game shows the new version (or what is still pending).
   special-picks). A failing test may be protecting an owner decision — ask before changing it.
 - **Bots on 3 parallel browsers are slow** for timed missions (Creeping Roots, Grandma's Pot);
   re-run the job alone (`--ids=pool:<type> --par=1`) before calling it a bug.
+- **QA bots load the built `www/`, not the repo root** — run `node scripts/build-www.mjs` (or ci-checks) before `qa-bots.cjs`, or the bots test the previous build (v8.2.23 Herald "stuck" was a stale build).
 - **github.io can't be fetched from the container** (proxy 403) — rely on the deploy job's own
   live-version step and tell the owner to check the version number on the phone.
 

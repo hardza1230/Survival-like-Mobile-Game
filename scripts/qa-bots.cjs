@@ -122,9 +122,11 @@ async function runPool(browser,port,job){const ctx=await browser.newContext({vie
   await page.evaluate(async t=>{const s=window.__g.scene.getScene('Game');s._finishDeal?.();await new Promise(r=>setTimeout(r,1500));s._finishDeal?.();s._finishStoryCutscene?.();s.missionRoamArt?.([t]);await new Promise(r=>setTimeout(r,1500));
     s.player.dmgMul=(s.player.dmgMul||1)*6;s.endHuntCurse?.();s.clearWaveObjective?.();s._huntUsed=false;s.setupWaveObjective(1,{forceType:t});if(t!=='survive')s.waveTimer=200;},job.type).catch(e=>errs.push('setup '+e.message));
   let last=null,best=0;
-  for(let i=0;i<170;i++){await page.waitForTimeout(450);last=await page.evaluate(()=>{const s=window.__g.scene.getScene('Game');
+  for(let i=0;i<210;i++){await page.waitForTimeout(450);last=await page.evaluate(()=>{const s=window.__g.scene.getScene('Game');   // v8.2.23 Herald lasts a full 60 s → 95 s window
+
     if(s.state==='levelup'&&s.lvlCards?.[0]){const c=s.lvlCards[0];s.pickCardAt((c.left+c.right)/2,(c.top+c.bottom)/2);s.pickCardAt((c.left+c.right)/2,(c.top+c.bottom)/2);}if(s._pathTeach&&s.state==='levelup')s._pathTeach.next();
     if(s.state==='cinematic'){s._finishDeal?.();s._finishStoryCutscene?.();}
+    if(s.state==='rolling'&&s._rollBtns&&s._rollBtns.length)s._rollBtns[0].fn();   // v8.2.23 bonus roll (jackpot/mystery) pauses the run → tap through
     const o=s.waveObjective;if(!o)return {gone:true};if(o.type!=='survive')s.waveTimer=Math.max(s.waveTimer,60);const S=s._sig;let tg=null;
     if(o.type==='frozenPantry'&&S&&S.phase==='seek'&&s.dist(s.player.x,s.player.y,S.x,S.y)<120)s.fpOpen?.(o,S);   // press the jar button
     if((o.type==='vaultAltar'||o.type==='ultimatum')&&S&&S.pads&&(S.phase==='pick'||S.phase==='decide'))tg=S.phase==='decide'?(S.pads.find(p=>p.act==='take')||S.pads[0]):S.pads[0];
@@ -133,9 +135,9 @@ async function runPool(browser,port,job){const ctx=await browser.newContext({vie
     if(!tg){let bd=1e9;s.enemies.children.iterate(e=>{if(!e||!e.active)return;const d=Math.hypot(e.x-s.player.x,e.y-s.player.y);if(d<bd){bd=d;tg=e;}});}
     s.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&(e._waveObjectiveTarget||e._seedCarrier||e._herald||e._ggPart||e._golem||e._hcTag||e._fpTok))e.hp=Math.min(e.hp,5);});
     if(tg&&tg.x!=null){const dx=tg.x-s.player.x,dy=tg.y-s.player.y,d=Math.hypot(dx,dy);if(d>30){const st=Math.min(d-20,120);s.player.x+=dx/d*st;s.player.y+=dy/d*st;}}
-    return {type:o.type,prog:+(o.progress||0).toFixed(1),target:o.target,state:s.state};}).catch(e=>({err:e.message}));
+    return {type:o.type,prog:+(o.progress||0).toFixed(1),target:o.target,state:s.state,done:!!o.done,fin:!!(S&&S.fin),mode:s.mode,sig:S&&S.type};}).catch(e=>({err:e.message}));
     if(last.gone||(last.type&&last.type!==job.type)){res.result='done';break;} if(last.target)best=Math.max(best,last.prog/last.target);}
-  if(!res.result){res.result='mission-stuck';res.stuck.push({bot:job.type+' did not finish in 76 s',best:Math.round(best*100)+'%',last});}
+  if(!res.result){res.result='mission-stuck';res.stuck.push({bot:job.type+' did not finish in 95 s',best:Math.round(best*100)+'%',last});}
   res.sec=Math.round((Date.now()-t0)/1000);res.missions=[{type:job.type,end:res.result==='done'}];await ctx.close();return res;}
 
 async function runStage(browser,port,job){
