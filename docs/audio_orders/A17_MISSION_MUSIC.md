@@ -1,6 +1,6 @@
 # A17 — เพลงประจำภารกิจใหญ่ · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 19 พ.ย. 2026
+สถานะ: 📦 ส่งแล้ว รอผูก · 19 พ.ย. 2026
 ส่งที่ `assets/incoming/audio_a17/` พร้อม `MANIFEST.json` (key, file, bytes, sha256, duration_ms, bpm, loop_start_ms, loop_end_ms)
 เครื่องมือ: **ElevenLabs Music** (เหมือนเพลงด่านชุด `bgm/elevenlabs_campaign/`) · ห้ามใช้เสียงสร้างด้วยโค้ด/Runway · กติการ่วมดู `A00_README.md`
 
@@ -43,4 +43,9 @@ MP3 stereo 44.1 kHz ≥ 192 kbps (ฝั่งโค้ดแพ็กเป็�
 - งบขนาด: 8 เพลง × ~50 วิ ที่ 80k ≈ 4 MB รวมในแอป
 
 ## ส่งมอบ
-(ฝั่งเสียงกรอกเมื่อส่ง)
+- Date: 2026-11-19. Delivered all 11 files: 8 mission loops + 3 one-shot stingers, in `assets/incoming/audio_a17/`. Missing: none.
+- Generated entirely with ElevenLabs Music, using the established campaign/story Music API route. Actual requests and song IDs are recorded in `PROMPTS.json`; local originals are cached under `.git/a17-raw/`.
+- Included `MANIFEST.json` (exact keys, bytes, SHA-256, decoded duration, BPM target and loop bounds), `PROMPTS.json`, and compact per-file `QA_REPORT.json`.
+- Independent readback passed 11/11: MP3 stereo 44.1 kHz / 192 kbps, exact decoded durations, -18.7 to -18.2 LUFS, true peak <= -1 dBTP, immediate stinger onsets, and non-silent loop endpoints. Music loops use approximately one-bar raised-cosine overlaps; Breach additionally has a 3 ms boundary de-click.
+- BPM values are composition targets close to the order; approximate onset-envelope estimates are recorded separately in QA and are not a verified musical tempo. Musical continuity, timbre and final phone listening remain owner review.
+- Source branch: `asset-delivery/audio-a17`. Source delivery only; no game.js, runtime code, tests or release changes. Code-side packing/wiring pending.

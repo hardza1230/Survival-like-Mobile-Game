@@ -1,0 +1,219 @@
+[
+  {
+    "key": "bgm_m_frozen_still",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "Time has stopped inside an icy candy pantry. Delicate sparse crystalline music-box melody, warm glass bells, slow stretched shimmering notes, tiny sparkling ice textures and still air. Magical, suspended, gentle wonder; no battle drums, no horror. Strict steady 70 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 22429,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "jeuzjfMl4Oa8iOjYA18H",
+    "source_bytes": 537957,
+    "sha256": "d1289f341a43b96f061bf45870150317839776fba086055fe2cf6aae259634af",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 23.95,
+      "crossfade_ms": 3429,
+      "bpm_estimate": 69.75
+    }
+  },
+  {
+    "key": "bgm_m_frozen_fight",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "The frozen candy army springs into motion. Fast brisk marching drums, agile pizzicato strings, crisp rhythmic ice clacks, playful heroic woodwinds and crystal accents. Exciting determined action, not a victory fanfare. Strict steady 130 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 50846,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "OIr7ZdlPfYrjLUAWV93H",
+    "source_bytes": 1221320,
+    "sha256": "3ff63f602c99c7b6de6bde91a374c01cf838b24739dfe71e45f42965f69cb5a8",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 23.95,
+      "crossfade_ms": 1846,
+      "bpm_estimate": 133.5
+    }
+  },
+  {
+    "key": "bgm_m_breach",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "A mysterious purple hunger rift opens and enemies pour out. Low pulsing violet synth heartbeat, weighty rounded drums, slightly dissonant glass-bell notes over a strong rhythmic ostinato. Eerie magical tension and excitement, still colorful cartoon fantasy, never horror. Strict steady 120 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 51000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "h3dD5optBX3MVXZt00BU",
+    "source_bytes": 1224455,
+    "sha256": "4c41ceebcb31bfcd1faaab1c5d0263f246dde927ad09e3be76ae465345ebcfa4",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 23.95,
+      "crossfade_ms": 2000,
+      "bpm_estimate": 120.0,
+      "boundary_declick_ms": 3
+    }
+  },
+  {
+    "key": "bgm_m_ritual",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "Grandmother performs a powerful warm kitchen ritual inside a circle of light. Layered hand drums, woody marimba, gentle resonant pads suggesting a comforting wordless choir. Spirited circular repeating rhythms, mystical warmth and growing energy. Instruments only, no human voices. Strict steady 100 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 51400,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "oJDGXUW978Q1ikcfBPYD",
+    "source_bytes": 1234486,
+    "sha256": "c141c35533faf90f5693f9807fb39f2ff54dd5c56119167505d107a713e82b2b",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 19.95,
+      "crossfade_ms": 2400,
+      "bpm_estimate": 100.0
+    }
+  },
+  {
+    "key": "bgm_m_trial",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "Risking another round in a cursed sugar-crown trial. Ticking clock percussion as part of the beat, tense low cello, precise pizzicato strings, little glass chimes. Suspenseful restrained rhythmic pulse, an intriguing dangerous wager, cute fantasy rather than horror. Strict steady 110 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 51182,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "XJ0XD6OttjfUojNLmLPS",
+    "source_bytes": 1229470,
+    "sha256": "53717002cc1117347e2c0e2f0800fbbd7bd8cd9024af16483c4add5124e72e85",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 11.97,
+      "crossfade_ms": 2182,
+      "bpm_estimate": 88.25
+    }
+  },
+  {
+    "key": "bgm_m_siege",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "Defend a magical circle during a confectionery siege. Driving battle drums, warm low brass calls, deep string ostinato and broad pads suggesting a wordless choir. Resolute heroic defense with urgency and weight, no triumphant ending. Instruments only, no human voices. Strict steady 125 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 50920,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "FCqX0m4Iy5drixXhMeW6",
+    "source_bytes": 1222574,
+    "sha256": "5b0093e93a8719dcd40dbacdda20ee2fd946e7a247f16ff483d7c07f4f8da40f",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 31.93,
+      "crossfade_ms": 1920,
+      "bpm_estimate": 125.0
+    }
+  },
+  {
+    "key": "bgm_m_herald",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "The elusive Hunger Herald announces a magical chase. A solitary mysterious low trumpet call above flashing blue-violet synth arpeggios and a pulsing warm bass line, nimble drums. Unsettling playful pursuit, energetic and alert, no horror. Strict steady 115 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 51087,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "iiO6P4g6Fo3TqT2A5h2y",
+    "source_bytes": 1226963,
+    "sha256": "5392fd0a75d2303ce4a4bb883ed7d0398706239b865b40587a42d0cdc73ad8cb",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 23.95,
+      "crossfade_ms": 2087,
+      "bpm_estimate": 115.25
+    }
+  },
+  {
+    "key": "bgm_m_domain",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "An entire candy cavern floods with a magical violet rift and a huge Breachlord arrives. The most powerful grand cartoon fantasy battle cue: massive rounded orchestral drums, deep violet synth pulses, emphatic low strings and layered organ-like wordless-choir pads. Epic larger-than-life urgent action, heavier than a normal boss cue but still a colorful child-friendly game. Instruments only, no human voices. Strict steady 140 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 62714,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "2F0J3IAGwbaL0WYo8uyW",
+    "source_bytes": 1504697,
+    "sha256": "15b72331d1e4a0d3659e791f202d217f4b0f8fca2c7f01d46272e2a8c1e43818",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 427.03,
+      "crossfade_ms": 1714,
+      "bpm_estimate": 139.5
+    }
+  },
+  {
+    "key": "sfx_m_mission_start",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "A single tiny game-event opening musical stinger, total audible phrase only 1.3 seconds: immediate soft cymbal swish and exactly three quick ascending bright rounded marimba-and-bell notes, announcing an exciting new event. Start on the very first instant, resolve completely by 1.3 seconds, then silence for the remaining time. No repeated phrase or beat bed. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "tBlop5XQxQQrsvuZyZyF",
+    "source_bytes": 146120,
+    "sha256": "2d327c918893e4db952f89305f6c966ead4d716b458c83e7f994b22c8d414dbe",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "tempo_fit": 1.503976,
+      "source_trim_start_ms": 103.76
+    }
+  },
+  {
+    "key": "sfx_m_thaw_hit",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "A single cartoon fantasy musical thaw-impact stinger, total audible phrase only 1.8 seconds. Immediate crystalline glissando like an entire ice dome cracking, a rounded low orchestral boom and one tight rhythmic drum pickup that leads into an energetic battle cue. Clear opening transient immediately, natural short decay resolved by 1.8 seconds, then silence. Not an ongoing song, no repeated impacts. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "MilNa1QY3pDjoJHvUikW",
+    "source_bytes": 73395,
+    "sha256": "6fccfc4531b122060dc64f82474675fa8328b0b58e3a3f9dedc9ea265b911c90",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "tempo_fit": 1.048163,
+      "source_trim_start_ms": 35.92
+    }
+  },
+  {
+    "key": "sfx_m_mission_clear",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "A single short warm triumphant mission-complete musical fanfare, total audible phrase only 1.8 seconds. Immediate joyful rounded brass and woodwind rising figure, little sparkling glass bells, satisfying major-key final chord with a short gentle decay resolved by 1.8 seconds, then silence. No ongoing background music or repeated phrase. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "RecyeCoICP0vCurjE0dm",
+    "source_bytes": 73395,
+    "sha256": "5564566ce56c766ed98bea40985a3caba6ad5f0ac3641ed0ee137bbb5060a128",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 59.86
+    }
+  }
+]
