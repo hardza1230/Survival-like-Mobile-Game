@@ -14,6 +14,8 @@
 - **ใบ 84 แก้ภาพ 27/27** ผูกแล้ว v8.2.13 · รอ QA มือถือ (มอน/บอสในเกมใช้ชีต ink816 ที่ไม่โดนตัด → ชีตใหม่เป็น fallback)
 - **A15 เสียง Ruby 8/8** (Hunger Crack · Clear the Fog · Lure the Crown Root · Seed Rift) ผูกแล้ว v8.2.12 · รอฟังบนมือถือ
 
+- **ใบ 85 ของชั่วคราวในภารกิจ 13 ชีต** (Frozen Pantry/Mirror/Last Light/Trial/Siege/Herald) · 🟡 รออาร์ต · โค้ดพร้อม v8.2.16–21
+
 **รอ QA บนมือถือของเจ้าของ**
 - ล่าสุด: v8.1.101 loot มินิบอส/บอส · v8.1.100 ป้ายคำพูด/การ์ดเลเวลอัป/หัวหน้าจบด่าน · v8.1.99 Mint bloom/หนังสือเปิด
 - League missions ครบ 7 phase v8.1.81–87 (`docs/design/OWNER_NOTES_POE_LEAGUES.md`) · Breach จำกัดเปิดรวม 20 วิ (เจ้าของสั่งเอง)
