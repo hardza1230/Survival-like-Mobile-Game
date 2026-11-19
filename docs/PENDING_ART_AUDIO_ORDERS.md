@@ -18,6 +18,7 @@
 | 9 | `docs/art_orders/83_HERO_HURT_VICTORY.md` | **ท่าโดนตี 4 + ท่าชนะ 5 ฮีโร่ + ชุดสกิน Festival** (เฟรม 256 · ตัวสูงเท่าชีตวิ่ง) | 18 | ImageGen | `assets/incoming/hero_poses83/` | 🟢 ผูกแล้ว v8.2.12 |
 | 11 | `docs/art_orders/84_ART_FIXES.md` | **แก้ภาพที่มีปัญหา** ตัดขอบ · ตัวหด · เศษภาพ (ใช้ภาพเดิมเป็นต้นแบบ) | 27 | ImageGen (แก้ภาพเดิม) | `assets/incoming/art_fixes84/` | 🟢 ผูกแล้ว v8.2.13 |
 | 10 | `docs/audio_orders/A15_RUBY_LOST_WISPS.md` | **Ruby พากย์** ภารกิจที่เปลี่ยนใหม่ 4 อย่าง (tip + short) | 8 | ElevenLabs TTS (เสียง Ruby เดิม) | `assets/incoming/audio_ruby_a15/` | 🟢 ผูกแล้ว v8.2.12 |
+| 12 | `docs/art_orders/85_MISSION_PLACEHOLDERS.md` | Frozen Pantry / Mirror Path / Last Light / Trial / Siege / Herald mission art | 12 | ImageGen | `assets/incoming/mission85/` | 📦 ส่งแล้ว รอผูก · 12/12 |
 | — | `docs/audio_orders/A04_STORY_MUSIC_STINGERS.md` | เพลงเรื่อง/Lobby | 6 | ElevenLabs Music | `assets/incoming/audio_story_music/` | 🟢 ส่งและผูกครบ · เจ้าของฟังแล้วโอเค 8 พ.ย. 2026 |
 
 ## หมายเหตุ

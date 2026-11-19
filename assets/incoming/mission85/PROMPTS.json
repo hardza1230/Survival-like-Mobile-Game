@@ -1,0 +1,154 @@
+[
+  {
+    "key": "fp85_crates",
+    "tool": "ImageGen",
+    "prompt": "A 3-column by 5-row atlas of tiny wooden supply crates encased in transparent ice. The ROWS specify payload: row1 single wrapped blue sugar candy with blue trim; row2 small gold gift box with gold trim; row3 squat honey jar with amber orange trim; row4 rolled blank recipe scroll with purple trim; row5 luminous yellow star-shaped sugar with yellow trim. The COLUMNS specify state for each exact same crate and payload: col1 frozen clear pale blue-grey ice, col2 same ice overpainted with flowing pastel pink frosting and mild glow, col3 same crate opened with ice fragments and payload floating a little upward. Always visibly include the crate and readable large payload. Match crate size and bottom baseline in all 15 cells. No written markings on the scroll. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [],
+    "source": "exec-879faa85-54da-4b3d-a048-fd896931fdcb.png",
+    "sourceColumns": 3,
+    "sourceRows": 5,
+    "edits": [
+      {
+        "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-879faa85-54da-4b3d-a048-fd896931fdcb.png",
+        "prompt": "Precisely edit this SAME 3-column by 5-row crate atlas. Preserve all fifteen crates, payloads, ice shapes, pink-painted state, opened state, order and layout. Change the narrow horizontal trim bands and tiny front emblem center on each crate to clearly identify the ROW: row 1 SKY BLUE, row 2 WARM GOLD, row 3 HONEY ORANGE, row 4 PURPLE, row 5 LEMON YELLOW. Apply each row color to all three columns. Keep natural wood brown and pale ice blue, and keep the middle column's pink coating. Strengthen the row-color bands enough to distinguish at 60px. Completely REMOVE the pastel blue/pink foggy background, all square matte patches and cast shadows under crates. Genuine clean alpha-zero empty space around every object, no white or colored haze. The tiny ice chips and glow closely attached to crates may remain. Do not change anything else, no text or labels.",
+        "base": "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-3bebb73b-ed4e-4f93-9e36-3a4cf553b198.png"
+      }
+    ],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "fp85_captain_statue",
+    "tool": "ImageGen",
+    "prompt": "One frozen mochi captain statue. Reference is existing ice mochi statue style only, create a new captain: larger round mochi, small crown and short cape, one arm confidently pointing to command troops. Entire material near-white and very pale blue ice, minimal saturation, compatible with game tinting gold or pink. Clear low centered base at 92% height. Cute simple face; no weapon glow. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [
+      "assets/art/league72/fp_statues.webp"
+    ],
+    "source": "exec-f04bb5c5-3e3e-4733-83f0-e5870f912112.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "fp85_general_statue",
+    "tool": "ImageGen",
+    "prompt": "One Frost General frozen mochi statue in the existing reference's pale ice style. Giant chunky mochi, crisp sugar-armor plates, ice spikes on shoulders, holding an ice-cream scepter. Entire material near-white and very pale blue, restrained luminance, low saturation so gold and pink code tinting will work. Commanding but cute, visibly different from a simple round mochi. Feet/base at 92% height, full crown/scepter inside frame. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [
+      "assets/art/league72/fp_statues.webp"
+    ],
+    "source": "exec-5c0b91a1-478f-43aa-a3e6-91538e9346d7.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "mp85_shade",
+    "tool": "ImageGen",
+    "prompt": "Six-frame loop, working atlas 3 columns by 2 rows, read left to right then bottom row. A Mirror Shade, a low-floating opaque mochi body made of dark black-purple smoke, pale violet glowing eyes, thick solid center that visibly blocks light and smoky edges. Main shape, size and face remain identical in all six frames; only smoke-tips sway and the body bobs 1-2 pixels. Cycle up, neutral, down, down, neutral, up to join smoothly. Low contrast, no bright aura. Same ground baseline. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [],
+    "source": "exec-1d6690bf-0d5d-4726-825b-84b75ce8df71.png",
+    "sourceColumns": 3,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "ll85_moth",
+    "tool": "ImageGen",
+    "prompt": "Four frame wing-flap cycle in a single row. One fluffy pale lavender nocturnal moth with small eye-spot patterns on both wings and subtly amber-glowing abdomen after stealing lamp light. Exactly same central torso, head and antennae each frame. Wings open, half-fold, closed, half-open, returning to open seamlessly. Top-down three-quarter view, silhouette readable at 56px, soft and cute. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [],
+    "source": "exec-fa59df44-d5d6-40ae-8242-b1daf37fc53a.png",
+    "sourceColumns": 2,
+    "sourceRows": 2,
+    "edits": [
+      {
+        "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-fa59df44-d5d6-40ae-8242-b1daf37fc53a.png",
+        "prompt": "Re-layout this SAME four-pose moth animation into a perfectly equal TWO COLUMNS by TWO ROWS square atlas. Preserve the exact moth design, lavender fluffy body, eye-spotted wings and amber abdomen. Top-left wings fully open; top-right wings half folded; bottom-left wings closed; bottom-right wings half open. Each moth and ALL wing tips must be completely contained within the middle 80% of its own square cell, never crossing a grid boundary. Match body size, head location and antenna shape across frames, only wings move. No fragments of one moth in a neighboring cell. Fully transparent alpha zero backing, no shadows, text, numbers, separators or outlines around cells.",
+        "base": "C:/Users/Norrasates/.codex/generated_images/01a16858-7b05-7f10-b25f-a1e32fb79025/exec-df92af56-0903-4788-b41f-3321b70c76de.png",
+        "workCols": 2,
+        "workRows": 2
+      }
+    ],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "ll85_light_wisp",
+    "tool": "ImageGen",
+    "prompt": "Six frames in a 3-column 2-row working atlas. A warm golden-white magical flame wisp with a faint tiny friendly face and a small orbiting sparkling tail. Preserve the same flame silhouette and face in all frames, gently pulse light and orbit only the small tail in six equal phases for a smooth loop. Every cell rests on pure solid black #000 with absolutely no landscape, cast shadow or colored backing. Keep glow fully inside the clear black margins. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Every unused pixel must be pure black #000. No transparent or grey background.",
+    "reference": [],
+    "source": "exec-c788820b-1e62-4d9b-8d90-5962005ae11a.png",
+    "sourceColumns": 3,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "ult85_curse_pads",
+    "tool": "ImageGen",
+    "prompt": "Two separate circular floor curse stones, 2 columns 1 row. Match the reference's rose-purple carved stone medallion frame, bevel and subtle pink rim lighting exactly. Each has a large raised center emblem. Left: a hungry mochi ghost with wide open mouth. Right: a bold straight earthquake fissure filled with glowing orange lava. Same circle size and perspective. No glyphs or engraved lettering. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [
+      "assets/art/trial74/ult_curse_pads.webp"
+    ],
+    "source": "exec-29be9179-8a50-4b10-9d59-5f510cab37c6.png",
+    "sourceColumns": 2,
+    "sourceRows": 1,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hs85_sapper",
+    "tool": "ImageGen",
+    "prompt": "Four frame hurried running cycle in a single row. Small soft orange mochi sapper carrying an unmistakable round wrapped candy bomb on its head, short lit fuse with one tiny spark. Feet alternate run-contact, passing, opposite contact, passing, returning seamlessly. Same mochi face, volume and bomb silhouette every frame; slight fuse flicker only, no explosion. Muted orange, not overly bright relative to player. Ground baseline at 92% cell height. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [],
+    "source": "exec-e24d4ca8-f27f-4d3c-9eee-315140da7884.png",
+    "sourceColumns": 4,
+    "sourceRows": 1,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hs85_supply_crate",
+    "tool": "ImageGen",
+    "prompt": "Two frames in one row of the same small wooden supply crate. Left: the crate is hanging by thin ropes from a cupcake-shaped parachute, complete parachute and crate visible. Right: same crate on the ground with lid slightly open, one red heart and one wrapped candy peeking out. Matching wood, trim and crate design between frames. Transparent gaps between parachute ropes. Same bottom anchor, airborne crate smaller because parachute must fit. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [],
+    "source": "exec-8b090e4d-5e2f-434b-b913-0594898284f9.png",
+    "sourceColumns": 2,
+    "sourceRows": 1,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hh85_beam",
+    "tool": "ImageGen",
+    "prompt": "Four rows of a single horizontal left-to-right magic beam, exactly 1 column by 4 rows; each cell is EIGHT times wider than tall, whole atlas aspect 2:1 landscape. One white-core line with saturated cyan edge on left smoothly blending to purple edge on right. Same line center, thickness and shape in every frame, tiny bright sparks slide along it in four equally spaced phases to loop. Both ends fade into PURE BLACK #000 before the cell edge, upper/lower margins also pure black. No branching, ring, text, emitter or projectile. Centered beam suitable for stretching and rotation in game. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Every unused pixel must be pure black #000. No transparent or grey background.",
+    "reference": [],
+    "source": "exec-7c061b2e-b66f-44ce-a4e4-7dd9929d207b.png",
+    "sourceColumns": 1,
+    "sourceRows": 4,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hh85_empower_aura",
+    "tool": "ImageGen",
+    "prompt": "Six-frame additive magic aura loop, 3 columns by 2 rows working atlas. Same low oval purple ground-energy ring in every cell, sparse violet flames rising around its outer rim. Center must remain empty pure black so the monster can show through. Identical overall size and ring geometry, move only tiny flame tips and traveling highlights cyclically through six phases. PURE BLACK #000 backing, clear black margins on every edge. No subject, monster, symbols, grey haze, shadow or scenery. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Every unused pixel must be pure black #000. No transparent or grey background.",
+    "reference": [],
+    "source": "exec-bc29e2ff-57c7-4097-8e6b-d07f11da35e8.png",
+    "sourceColumns": 3,
+    "sourceRows": 2,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  },
+  {
+    "key": "hh85_minion_icons",
+    "tool": "ImageGen",
+    "prompt": "Three tiny hovering minion role icons in a single row of three cells. Strong simple silhouettes readable at 26px. Left: green heart with a bold pale medical cross on it. Center: warm gold horn with a couple small musical notes. Right: soft white semitransparent mochi ghost with violet eyes. Keep each role's main symbol large, same apparent icon size, no outer badge or square background. Cross and musical notes are permitted pictograms; absolutely no letters or words. Original Mochi Mayhem confectionery fantasy mobile-game art. Three-quarter top-down view, soft dark colored outlines, glossy candy highlights, clean simple silhouettes, pastel painterly forms, restrained contrast. No text, letters, numbers, labels, logos or watermark. Keep each complete sprite isolated inside its own equal cell with a 7% clear border. No cell separators. No underfoot shadows on characters. Background must be genuine alpha transparency, fully alpha zero between sprites.",
+    "reference": [],
+    "source": "exec-9e55e65f-2cc9-4648-a83b-590cf3ac4a8b.png",
+    "sourceColumns": 3,
+    "sourceRows": 1,
+    "edits": [],
+    "postprocess": "Equal-grid extraction; shared animation scale, optical centering and requested anchoring; alpha speckle/black-floor cleanup and exact output frame layout."
+  }
+]
