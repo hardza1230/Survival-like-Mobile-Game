@@ -8,7 +8,7 @@ for(const r of rows){ const b=fs.readFileSync(path.join(root,'assets/incoming/re
   if(r.key.startsWith('pathcard80_')){ assert(!fs.existsSync(path.join(root,url)),'Yuzu portrait cards not packed'); assert(!src.includes(url)); continue; }
   const w=fs.readFileSync(path.join(root,url)); assert.equal(w.slice(0,4).toString(),'RIFF'); assert.equal(w.slice(8,12).toString(),'WEBP'); assert(src.includes(r.key+":'"+url+"'"),'registered '+r.key); icons++; }
 assert.equal(icons,49);
-assert(src.includes("if(/assets\\/art\\/relics81\\//.test(u))return 'stage';"),'stage class, not boot');
+assert(src.includes("if(/assets\\/art\\/relics8[18]\\//.test(u))return 'stage';"),'stage class, not boot');
 assert(src.includes("map(m=>'mod_'+m.id.slice(2))"),'stage loads the current hero modifiers');
 assert(src.includes("iconKey:this.textures?.exists?.('mod_'+m.id.slice(2))?'mod_'+m.id.slice(2):SKILL_ICON["),'modCard icon with fallback');
 assert(src.includes("iconKey:this.textures?.exists?.('trade_'+t.id.slice(2))?'trade_'+t.id.slice(2):SKILL_ICON["),'tradeCard icon with fallback');

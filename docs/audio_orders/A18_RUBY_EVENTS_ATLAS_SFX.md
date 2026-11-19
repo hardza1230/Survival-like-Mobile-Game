@@ -1,6 +1,6 @@
 # A18 — Ruby พากย์เหตุการณ์ใหม่ v8.2.27–30 + SFX (Reroll / เวฟทอง / Double Clear / ภารกิจบอส / Pact / Atlas) · ใบสั่งเสียง
 
-สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.27–30 (ตอนนี้ใช้เสียงเดิม/ไม่มีเสียง)
+สถานะ: ✅ ผูกแล้ว v8.2.31 · รอ QA มือถือ
 ส่งที่ `assets/incoming/audio_a18/` พร้อม `MANIFEST.json` (key, file, text (เฉพาะเสียงพูด), bytes, sha256, duration_ms), `PROMPTS.json`, `QA_REPORT.json`
 เครื่องมือ: **ElevenLabs** · เสียงพูดใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · SFX ใช้ ElevenLabs Sound Effects · ห้ามใช้เสียงสร้างด้วยโค้ด/Runway · กติการ่วมดู `A00_README.md`
 
