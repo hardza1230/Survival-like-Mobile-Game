@@ -28,3 +28,5 @@
 - ใบ 72 `gp_ingredients` / `gp_recipe_card` ไม่ใช้แล้ว (Grandma's Pot เปลี่ยนเป็นแบบ Ritual v8.1.106) — ไม่ต้องทำเพิ่ม
 
 **ใหม่ 14 พ.ย.:** ใบ 82 (ผูกแล้ว v8.1.146) · A14 เสียงเปิดกล่อง (ผูกแล้ว v8.1.147)
+
+**ใหม่ 19 พ.ย. (รอทำ):** ใบ 86 `docs/art_orders/86_MISSION_CARDS.md` (หน้าการ์ดภารกิจ 25 เฟรม) · ใบ 87 `docs/art_orders/87_MISSION_MONSTERS_2.md` (มอน/ของภารกิจรอบ 2 · 12 ชีต) · A16 `docs/audio_orders/A16_RUBY_MISSIONS_SFX.md` (Ruby 12 บท + SFX 10)
