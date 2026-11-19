@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.26**. Next release:8.2.27. Fetch the deploy branch before new work.
+Current release: **8.2.27**. Next release:8.2.28. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.26 — 📦 App size 194.6 → 185.4 MB: unused boss tracks removed, WAV → OGG/MP3, size gate in CI** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.27 — 🃏 SCAMPER round 1: side arrow, reroll, reward on cards, Double Clear, mission juice** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

@@ -4,9 +4,9 @@ const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const grab=re=>{const m=src.match(re);assert(m,'missing '+re);return m[0];};
 const meth=n=>{const at=src.indexOf('\n  '+n+'(');assert(at>=0,n);const nx=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(at+2));return src.slice(at+1,at+2+nx.index);};
 const ctx={Save:{data:{}},storyCleared:()=>0,Math};vm.createContext(ctx);
-vm.runInContext(grab(/const WAVE_OBJECTIVES = \{[\s\S]*?\n\};/)+grab(/const CH1_EARLY_WAVE_PLAN=\{[\s\S]*?\n\};/)+grab(/function earlyWaveMission[^\n]*\n/)+grab(/const MISSION_HOME=[^\n]*\n/)+grab(/const C1_LATER_LEAGUE=[^\n]*\n/)+grab(/const MISSION_DECK=[^\n]*\n/)+
+vm.runInContext(grab(/const WAVE_OBJECTIVES = \{[\s\S]*?\n\};/)+grab(/const CH1_EARLY_WAVE_PLAN=\{[\s\S]*?\n\};/)+grab(/function earlyWaveMission[^\n]*\n/)+grab(/const MISSION_HOME=[^\n]*\n/)+grab(/const C1_LATER_LEAGUE=[^\n]*\n/)+grab(/const MISSION_DECK=[^\n]*\n/)+grab(/const MISSION_TIER=[^\n]*\n/)+
  'this.STAGES=Array.from({length:15},(_,i)=>({waves:5,miniAt:2,lead:["hungerHerald","hungersMouth","grandmasPot","frozenPantry","grandmasGolem","defendNectar","cleanAir","creepingRoots","seasonCycle","breakRoots","seedRift","shakeTrees","mirrorPath","vaultAltar","lastLight"][i]}));'+
- 'class K{'+['missionDeckPool','missionDeckDraw','missionDeckDeal','c1FirstPool'].map(meth).join('\n')+' missionRoamArt(){}};this.K=K;this.WO=WAVE_OBJECTIVES;',ctx);
+ 'class K{'+['missionDeckPool','missionDeckDraw','missionDeckDeal','missionDeckSort','missionDealReroll','c1FirstPool'].map(meth).join('\n')+' missionRoamArt(){}};this.K=K;this.WO=WAVE_OBJECTIVES;',ctx);
 const s=new ctx.K(),D=ctx.Save.data;
 // C1-1 first play: lesson plan with the Herald
 s.stageIndex=0;let d=s.missionDeckDeal();assert(d.plan);assert.strictEqual(JSON.stringify(d.waves),JSON.stringify({0:'fill',1:'survive',3:'hungerHerald',4:'hunt'}));
