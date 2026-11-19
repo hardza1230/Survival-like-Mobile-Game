@@ -34,7 +34,7 @@ to the deploy branch at the same time — always fetch and merge first, never fo
 
 ## 2. Bump the version (one command)
 
-Write the CLAUDE.md delivery block to a scratch file (starts with `# Latest delivery: `, one
+Write the delivery block to a scratch file (starts with `# Latest delivery: `, one
 dense paragraph: what/where in code, numbers, tests touched), then:
 
 ```bash
@@ -42,8 +42,9 @@ node scripts/bump-version.mjs "Short player-facing title" "What changed 1|What c
 ```
 
 It bumps `GAME_VERSION` (patch +1), adds the CHANGELOG entry (English, 1–4 items, no code
-names), updates the CLAUDE.md version line, puts the new Latest block in, renames the old
-one to Previous and moves the oldest block to `docs/CLAUDE_HISTORY.md`, and adds the
+names), updates the CLAUDE.md version + one-line "Latest delivery" line, puts the new Latest
+block in `docs/DELIVERIES.md`, renames the old one to Previous and moves the oldest block to
+`docs/CLAUDE_HISTORY.md`, and adds the
 "รอ QA" line to `docs/LAUNCH_RULES.md`. Minor/major bumps: edit by hand.
 - If the release changes "สถานะปัจจุบัน"/"ถัดไป" facts, update those sections too.
 
@@ -101,6 +102,27 @@ a failing check.
 
 Version number, what changed for the player (1–3 lines), what to test on the phone, and
 that the live game shows the new version (or what is still pending).
+
+## Gotchas (things that went wrong before — check these)
+
+- **The 2nd argument of bump-version is what players read in News.** Write real player
+  sentences separated by `|` (8.1.148–8.2.14 shipped "a"/"b" because the args were used as
+  placeholders). The script now refuses items under 12 characters.
+- **Approval first.** The owner approves every round's plan before code ships; a scheduled
+  check-in or your own earlier message is not approval. Commit WIP to the session branch only.
+- **A hook guards the deploy push** (`scripts/hooks/guard-deploy-push.mjs`): it blocks a game
+  push when `GAME_VERSION` was not bumped or `bash scripts/ci-checks.sh` has not passed in this
+  checkout in the last 3 h (stamp `.git/ci-checks-pass`, written only by a full PASS). Fix the
+  cause; don't work around it.
+- **New constants break vm tests.** Methods extracted into a vm context can't see new top-level
+  `const`s — inject the constant line into the test context (see `K8217` in
+  tests/sig-missions.test.cjs) and add new method names to the extract lists.
+- **Owner-locked numbers have tests** (e.g. Frozen Pantry paint time `T:full?10:12`,
+  special-picks). A failing test may be protecting an owner decision — ask before changing it.
+- **Bots on 3 parallel browsers are slow** for timed missions (Creeping Roots, Grandma's Pot);
+  re-run the job alone (`--ids=pool:<type> --par=1`) before calling it a bug.
+- **github.io can't be fetched from the container** (proxy 403) — rely on the deploy job's own
+  live-version step and tell the owner to check the version number on the phone.
 
 ## Docs-only
 

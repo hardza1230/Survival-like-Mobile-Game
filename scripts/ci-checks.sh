@@ -21,4 +21,5 @@ case "$mode" in
   visual) build; visual ;;
   *)      npm run check; build; visual ;;
 esac
+[ "$mode" = all ] && date +%s > "$(git rev-parse --git-dir 2>/dev/null || echo .)/ci-checks-pass"   # v8.2.19 stamp read by scripts/hooks/guard-deploy-push.mjs
 echo "ci-checks $mode: PASS"

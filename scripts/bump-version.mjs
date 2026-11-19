@@ -2,7 +2,7 @@
 // v8.1.142 ECRS "combine": one command does every version-bump edit of the release skill.
 // Usage: node scripts/bump-version.mjs "<changelog title>" "<item 1>|<item 2>" "<Thai QA line>" < delivery-block.md
 //   stdin = the new CLAUDE.md "# Latest delivery: …" block (markdown, starts with "# Latest delivery").
-// Does: GAME_VERSION patch+1 · CHANGELOG entry (today) · CLAUDE.md version line · new Latest block,
+// Does: GAME_VERSION patch+1 · CHANGELOG entry (today) · CLAUDE.md version + Latest line · docs/DELIVERIES.md new Latest block,
 //       old Latest → Previous, old Previous → docs/CLAUDE_HISTORY.md · "รอ QA" line in docs/LAUNCH_RULES.md
 import fs from 'node:fs';
 const [title, items, qa] = process.argv.slice(2);
@@ -22,15 +22,21 @@ const list = items.split('|').map(s => `'${esc(s.trim())}'`).join(',');
 if (!g.includes('const CHANGELOG = [\n')) throw Error('CHANGELOG not found');
 g = g.replace('const CHANGELOG = [\n', `const CHANGELOG = [\n  {v:'${next}',date:'${date}',title:'${esc(title)}',items:[${list}]},\n`);
 fs.writeFileSync('game.js', g);
+// v8.2.19: full release notes live in docs/DELIVERIES.md (Latest + Previous); CLAUDE.md keeps one short line (shorter context every session)
 let c = fs.readFileSync('CLAUDE.md', 'utf8');
 c = c.replace(/Current release: \*\*[\d.]+\*\*\. Next release:\s*[\d.]+\./, `Current release: **${next}**. Next release:${after}.`);
-const pi = c.indexOf('# Previous delivery'), body = c.indexOf('## 1. ');
-if (pi < 0 || body < 0) throw Error('delivery blocks not found');
-const oldPrev = c.slice(pi, body);
-c = c.slice(0, pi) + c.slice(body);
-c = c.replace('# Latest delivery', '# Previous delivery');
-c = c.replace('# Previous delivery', block.replace(/^# Latest delivery: (v[\d.]+ — )?/, `# Latest delivery: v${next} — `) + '\n\n# Previous delivery');
+const nb = block.replace(/^# Latest delivery: (v[\d.]+ — )?/, `# Latest delivery: v${next} — `), head = nb.slice('# Latest delivery: '.length, (nb + '\n').indexOf('\n'));
+if (!/Latest delivery: \*\*[^\n]*?\*\*/.test(c)) throw Error('CLAUDE.md "Latest delivery: **…**" line not found');
+c = c.replace(/Latest delivery: \*\*[^\n]*?\*\*/, () => `Latest delivery: **${head}**`);
 fs.writeFileSync('CLAUDE.md', c);
+let d = fs.readFileSync('docs/DELIVERIES.md', 'utf8');
+const pi = d.indexOf('# Previous delivery'), li = d.indexOf('# Latest delivery');
+if (pi < 0 || li < 0) throw Error('delivery blocks not found in docs/DELIVERIES.md');
+const oldPrev = d.slice(pi).trimEnd() + '\n';
+d = d.slice(0, pi).trimEnd() + '\n';
+d = d.replace('# Latest delivery', '# Previous delivery');
+d = d.replace('# Previous delivery', nb + '\n\n# Previous delivery');
+fs.writeFileSync('docs/DELIVERIES.md', d);
 fs.appendFileSync('docs/CLAUDE_HISTORY.md', '\n' + oldPrev.replace('# Previous delivery', '# Delivery'));
 if (qa) { const p = 'docs/LAUNCH_RULES.md', h = '## รอ QA (AI เพิ่ม · เจ้าของเทสแล้วลบ)\n'; let l = fs.readFileSync(p, 'utf8');
   if (l.includes(h)) { l = l.replace(h, h + `- v${next} ${qa}\n`); fs.writeFileSync(p, l); } }

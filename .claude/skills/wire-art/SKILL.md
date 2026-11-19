@@ -116,6 +116,22 @@ pattern of `tests/winter-art.test.cjs` / `tests/ruby-comic.test.cjs`:
 - CLAUDE.md "ถัดไป" line for that order → "ผูกแล้ว vX · รอ QA มือถือ".
 - Delivery block in the release (what was packed, bytes, loading class, hooks, fallbacks).
 
+## Gotchas (things that went wrong before — check these)
+
+- **Check what the game actually draws before ordering or rescaling.** Minibosses/bosses are
+  drawn with the outlined `boss_ink816_*` sheets and the Elite oven sentinel with its
+  `_animated` sheet — order 84 was written from the base sheets, and a rescale added for them
+  had to be removed. grep the texture key used at spawn time, not only `ASSET_SHEETS`.
+- **Pose scale lives in two tables:** `BP_POSE_SCALE` (base outfit) and `BP_POSE_SCALE_SKIN`
+  (`key__skinTag`, looked up first). A fixed skin sheet can need a different multiplier from
+  the base outfit; `_skinTag` resets at stage start.
+- **Same key, same path:** fix batches (`replaces`) overwrite the shipped file at the old path,
+  so keys stay stable — compare size/grid against the original before packing.
+- **Black-background rings/VFX** need luminance alpha, or they ship with a black square.
+- **Lazy regexes** (`lazyArt`, `LAZY_MENU_ART_RE`, hero-lazy) must match the new folder, or the
+  art silently never loads and the fallback shows — the art test should assert the class.
+- **Fallback stays.** Keep the old visual when `realTex(k)` is false; dev builds load over the web.
+
 ## 8. Release
 
 Use the `release` skill (version bump, CHANGELOG, CI checks, deploy). In the Thai report tell

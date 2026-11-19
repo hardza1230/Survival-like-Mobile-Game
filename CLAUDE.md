@@ -2,13 +2,7 @@
 
 Current release: **8.2.18**. Next release:8.2.19. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.2.18 — 🗿🌱🌀 Mission polish round 3: Golem golden parts, root mother kinds, seed carrier kinds
-
-Owner 18 Nov "ต่อเลย". **Grandma's Golem:** each part carrier has a `GG_GOLD` 30% chance to be ✨ golden (gold tint, HP ×1.6, bigger, "Golden part carrier!"); every carrier comes with `GG_ESCORT` 2 basic guards. Golden parts show ✨ in the part list and on the drop; the golem uses each golden part's skill 30% more often and gets +0.4 HP multiplier per golden part; on defeat `ggGoldLoot` drops 1 Recipe Ink per golden part, and 2+ golden parts add a Gear box. **Creeping Roots:** root mothers come in 3 kinds (`CR_KINDS`, shuffled per run, label + ring + tint): 🌱 Quick (fast monsters, spawns ×.65 interval), 🪵 Thick (tanks, ×1.5 interval, cut 3.2 s instead of 2.2), 🌿 Splitting (`_crSplit`: on death splits into 2 small fast monsters that keep walking the root, `crSplit`). First play now also branches a new root at `CR_BRANCH_LIGHT` 24 s (replay 18 s). **Seal the Seed Rift:** carriers are drawn from `SR_KINDS` (basic 40% / quick 25% / armored 20% = Tank, counts 2 catches / splitting 15% = splits into 2 small carriers that still run to the rift; `srPick`/`srCarrier`/`srSplit`), coloured marker per kind (bigger for armored). Codex text updated; voice lines unchanged. Bots: `pool:grandmasGolem`, `seedRift` done; `creepingRoots` done when run alone (timed mission was slow with 3 browsers on one CPU — same known bot limit). Tests: new mission-polish-8218; sig-missions / mission-reworks-828 / breach76-art updated.
-
-# Previous delivery: v8.2.17 — 🌳🖐️📯 Mission polish round 2: Shake the Trees, Hunger's Mouth, Hunger Herald
-
-Owner 18 Nov approved ("ทำเลย") the next mission-detail round. **Shake the Hollow Trees:** 4 trees (replay 5, `ST_TREES`), each a hidden kind dealt from `ST_KINDS` (shuffled): Fruit (Sugar), 🐝 Beehive (`ST_HIVE` 5 fast yellow bees + Honey Drop), ✨ Golden tree (gold tint + twinkle you can spot; Sugar ×2.5 + Berry Jam ×2), 🌳 Tree mimic (turns into a green Tank — Elite from C2-1 — HP ×1.5; `stMimicDown` drops a Gear box; kill hook `_stMimic` in `sigOnKill`). Replaces the old random 34% ambush. **Hunger's Mouth:** Hand of the Hunger now comes on first play too (22 kills `HM_LORD_LIGHT`, HP ×2.5; replay 40 kills ×4); the hand grows with kills (up to +`HM_HAND_GROW` 80%); breach packs mix basic/fast/shooter/tank (`HM_MIX`, tanks once the ring passes 500) and every 6th pack has an Elite leader (Tank before C1-3); beating the Hand drops a hoard (`hmLordHoard`: Sugar burst, + Gear box on replay). **Hunger Herald:** gates have kinds (`HH_GATES` Swarm 🐜 fast / Brute 🛡️ tanks / Archer 🏹 shooters, label + ring colour, `hhPack`); the Herald has 2 Tank guards (3 on replay, `_hhGuard`, they stay by it and turn to fight when you come close); below 50% HP it flees to the open gate farthest from you and calls a double pack there; stand on a gate for `HH_SEAL` 2 s to seal it early (`hhSeal`, small Sugar). Codex text updated (voice lines unchanged). Bots `pool:shakeTrees`/`hungersMouth`/`hungerHerald` done, 0 errors. Tests: sig-missions extended, breach76-art loads the new constants.
+Latest delivery: **v8.2.18 — 🗿🌱🌀 Mission polish round 3: Golem golden parts, root mother kinds, seed carrier kinds** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -44,24 +38,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-**รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
-- ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) ผูกแล้ว v8.1.137 · v8.1.138 สลับภาพ Glacier/Barrage (`PATHCARD_ART`) · รอ QA มือถือ
-- ใบ 82 ภาพการ์ด Build Path เต็มการ์ด ผูกแล้ว v8.1.146 (15 ภาพ · งาดำไม่ใช้) · รอ QA มือถือ
-- ใบ 81 ไอคอน Relic 8 · Modifier 36 · Trade-off 5 ผูกแล้ว v8.1.151 · การ์ด Yuzu แนวตั้ง 3 ไม่ใช้ (เจ้าของ) · รอ QA มือถือ
-- รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
-- ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
-- A14 เสียงเปิดกล่อง 8 ผูกแล้ว v8.1.147 (`openChest` · fallback เสียงเดิม) · รอฟังบนมือถือ
-- (A04 ส่งครบแล้ว · หัวไฟล์ A01–A05 อัปเดตเป็น ✅ 14 พ.ย.)
-- **ใบ 83 ท่าโดนตี/ท่าชนะ + สกิน 18/18** ผูกแล้ว v8.2.12 · รอ QA มือถือ
-- **ใบ 84 แก้ภาพ 27/27** ผูกแล้ว v8.2.13 · รอ QA มือถือ (มอน/บอสในเกมใช้ชีต ink816 ที่ไม่โดนตัด → ชีตใหม่เป็น fallback)
-- **A15 เสียง Ruby 8/8** (Hunger Crack · Clear the Fog · Lure the Crown Root · Seed Rift) ผูกแล้ว v8.2.12 · รอฟังบนมือถือ
-
-**รอ QA บนมือถือของเจ้าของ**
-- ล่าสุด: v8.1.101 loot มินิบอส/บอส · v8.1.100 ป้ายคำพูด/การ์ดเลเวลอัป/หัวหน้าจบด่าน · v8.1.99 Mint bloom/หนังสือเปิด
-- League missions ครบ 7 phase v8.1.81–87 (`docs/design/OWNER_NOTES_POE_LEAGUES.md`) · Breach จำกัดเปิดรวม 20 วิ (เจ้าของสั่งเอง)
-- อาร์ตผูกแล้ว: 70 Patrol + 71–74 v8.1.93 · 75 v8.1.94 · 78 v8.1.95 · 76 v8.1.96 · 77 v8.1.97 · 65 Daily Login 30 วัน + A09 v8.1.43 · 63 v8.0.95 + A06 v8.0.91 · 62 v8.0.85 · 61 v8.0.84 · 50–54 เมนู v8.0.34 · 36 Ruby v7.9.87
-- Simple Forge v8.0.83 (ราคา/ความรู้สึก 3 การ์ด) · บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub · FPS ทุกชุดอาร์ต
-- Sesame Rune Invoker (เจ้าของอนุมัติ 2 พ.ย., `docs/design/SESAME_RUNE_INVOKER.md`) v8.1.1 รอมือถือ
+**รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 
 **รอเจ้าของตัดสินใจ / ทำต่อ**
 - ความถี่แท่นเริ่มภารกิจหลังเล่นจริง · Overcharge ปิดไว้ v8.1.103 (`OVERCHARGE_ON`)
@@ -84,6 +61,6 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **บอท QA หลายบุคลิก** `scripts/qa-bots.cjs` (GitHub Actions "QA Bots" รันทุกคืน 10 เครื่องพร้อมกัน · วิธีใช้ใน `docs/QA_CHECKLIST.md` ท้ายไฟล์) · `bash scripts/ci-checks.sh` (= ทุกอย่างที่ CI ตรวจ · ~3 นาที) ก่อน publish เสมอ · CI: job `deploy` (เทส+build ~1.5 นาที) ขึ้นเว็บเลย + job `visual` (ตรวจหน้าจอ 11 ชุด) รันคู่กันไม่บล็อก · push สาขา deploy กับ session พร้อมกันได้ · ลำดับปล่อยเวอร์ชันอยู่ใน skill release · เทสในเครื่อง `npx serve .` · เจ้าของทดสอบ flow/บาลานซ์/FPS บนมือถือเอง
 
 ## 8. คอนเวนชัน
-- ทุกเวอร์ชัน: bump `GAME_VERSION` + CHANGELOG + บล็อก Latest delivery (ย้ายบล็อกเก่าสุดไป CLAUDE_HISTORY ให้เหลือ 2 บล็อก)
+- ทุกเวอร์ชัน: `scripts/bump-version.mjs` (bump `GAME_VERSION` + CHANGELOG + บล็อก Latest ใน `docs/DELIVERIES.md` + บรรทัด Latest ใน CLAUDE.md · บล็อกเก่าสุดไป CLAUDE_HISTORY)
 - commit ภาษาอังกฤษ ไม่ใส่ชื่อรุ่นโมเดล · คุยกับเจ้าของภาษาไทย
 - ข้อความในเกมเป็นภาษาอังกฤษล้วน (comment ไทยได้) · ใช้ `’` ใน single-quoted literal · ห้ามอักษรไทยใน string
