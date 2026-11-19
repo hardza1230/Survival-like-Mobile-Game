@@ -19,6 +19,7 @@
 | `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 28 | 🟢 ผูกแล้ว v8.0.91 |
 | `A14_CHEST_OPENING.md` | เสียงเปิดกล่อง: ลุ้นก่อนเปิด 1 + ระเบิดตามระดับ 4 + ประกาย/ไอเทมลง/ของซ้ำ 3 · ElevenLabs | 8 | 🟢 ผูกแล้ว v8.1.147 · รอเจ้าของฟังบนมือถือ |
 | `A15_RUBY_LOST_WISPS.md` | Ruby ภารกิจ Hunger Crack / Clear the Fog / Lure the Crown Root / Seed Rift (tip + short) | 8 | 📦 ส่งแล้ว รอผูก |
+| `A17_MISSION_MUSIC.md` | Mission music: 8 loops + 3 one-shot stingers, ElevenLabs Music | 11 | 📦 ส่งแล้ว รอผูก |
 
 ## กติการ่วม (ทุกใบ)
 - ทำด้วย **AI สร้างเสียง (เช่น ElevenLabs SFX/Music แบบ instrumental)** หรือ **สคริปต์สร้างเสียงด้วยโค้ด** (`scripts/gen_*_sfx.py`, jsfxr) — เลือกตามความเหมาะสมของแต่ละเสียง · **ห้ามเลียนแบบเพลง/ศิลปิน/เกมที่มีอยู่จริง** · ห้ามเสียงพูดเป็นคำ (ยกเว้นระบุ)

@@ -29,4 +29,11 @@
 
 **ใหม่ 14 พ.ย.:** ใบ 82 (ผูกแล้ว v8.1.146) · A14 เสียงเปิดกล่อง (ผูกแล้ว v8.1.147)
 
-**ใหม่ 19 พ.ย. (รอทำ):** ใบ 86 `docs/art_orders/86_MISSION_CARDS.md` (หน้าการ์ดภารกิจ 25 เฟรม) · ใบ 87 `docs/art_orders/87_MISSION_MONSTERS_2.md` (มอน/ของภารกิจรอบ 2 · 12 ชีต) · A16 `docs/audio_orders/A16_RUBY_MISSIONS_SFX.md` (Ruby 12 บท + SFX 10) · A17 `docs/audio_orders/A17_MISSION_MUSIC.md` (เพลงภารกิจใหญ่ 8 + สติงเกอร์ 3)
+**ใหม่ 19 พ.ย. (รอทำ):** ใบ 86 `docs/art_orders/86_MISSION_CARDS.md` (หน้าการ์ดภารกิจ 25 เฟรม) · ใบ 87 `docs/art_orders/87_MISSION_MONSTERS_2.md` (มอน/ของภารกิจรอบ 2 · 12 ชีต) · A16 `docs/audio_orders/A16_RUBY_MISSIONS_SFX.md` (Ruby 12 บท + SFX 10)
+
+## A17 delivery — 19 Nov 2026
+| ใบ | จำนวน | ส่งที่ | สถานะ |
+|---|---|---|---|
+| `docs/audio_orders/A17_MISSION_MUSIC.md` | 11 (8 music loops + 3 stingers) | `assets/incoming/audio_a17/` | 📦 ส่งแล้ว รอผูก |
+
+Source branch: `asset-delivery/audio-a17`. All ElevenLabs Music; independent technical QA passed 11/11. Musical/phone listening and code-side wiring pending.
