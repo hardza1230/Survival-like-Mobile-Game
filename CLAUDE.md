@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.21**. Next release:8.2.22. Fetch the deploy branch before new work.
+Current release: **8.2.22**. Next release:8.2.23. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.21 — ➕ Side missions stack on the main mission (phase B)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.22 — 🧪 Hunt elite throws poison bottles, slower mission card deal** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
