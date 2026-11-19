@@ -1,5 +1,5 @@
 // v8.1.78 เจ้าของ: ภารกิจประจำด่าน Chapter 3 (รอบ 2)
-const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');const K8217=src.match(/const GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
+const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');const K8217=src.match(/const [A-Z][A-Z_]*=[^\n]*?GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
 assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];"));
@@ -69,7 +69,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
   assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
   assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
-  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.guards\|\|S\.carriers\|\|S\.chests\|\|S\.domain\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
+  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.guards\|\|S\.carriers\|\|S\.chests\|\|S\.domain\|\|S\.shades\|\|S\.moths\|\|S\.saps\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
   assert.ok(/this\._sigForce&&this\.enemies\.countActive\(true\)<\(this\.maxLive\|\|100\)\)return true/.test(m('storyCanSpawn'))&&/finally\{ this\._sigForce=false; \}/.test(m('sigSpawnAt')),'league spawns bypass story budget');
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);vm.runInContext(K8217,ctx);
@@ -149,9 +149,9 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(src.includes("(d>=3&&n.r<0.205)?'siege':'normal'")&&src.includes("if(n.type==='siege')return 'hungerSiege';")&&/siege:\{emoji:'🏰'/.test(src),'Delve siege room');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,console};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setRotation(){return o}};return o;};
-  vm.runInContext('class S{'+['hsSetup','hsTick','hsOnKill','hsBurst','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
-  const sc=new ctx.K();const en=[];Object.assign(sc,{_amapNode:{d:6},stageIndex:5,player:{x:300,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj()},objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,
-    sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});
+  vm.runInContext('class S{'+['hsSetup','hsTick','hsExtrasTick','hsOnKill','hsBurst','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  const sc=new ctx.K();const en=[];Object.assign(sc,{_amapNode:{d:6},stageIndex:5,player:{x:300,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj()},objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),
+    sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},sigSpawnAt:(x,y,el,type)=>{const e={x,y,type,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){},setActive(v){e.active=v;},setVisible(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});
   const o={progress:0},S={};sc.hsSetup(o,S);assert.strictEqual(S.gates.length,5);for(let k=0;k<50;k++)sc.hsTick(.1,o,S);assert.ok(en.length>=4,'gates send waves');
   for(let i=0;i<6;i++)sc.hsOnKill({x:0,y:0},o,S);assert.strictEqual(S.pot,6);sc.player={x:2000,y:0};const p0=o.progress;for(let k=0;k<25;k++)sc.hsTick(.1,o,S);assert.strictEqual(o.progress,p0,'timer pauses outside');assert.ok(S.pot<6,'pot leaks outside');
   sc.player={x:300,y:0};for(let k=0;k<500&&!sc.done;k++)sc.hsTick(.1,o,S);assert.ok(sc.done&&sc.sugarRun>0,'siege ends with a burst');
