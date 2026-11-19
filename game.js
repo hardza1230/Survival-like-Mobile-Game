@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.23';
+const GAME_VERSION = '8.2.24';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.24',date:'2026-11-19',title:'Mission card art, new mission monsters, new Ruby lines and sounds',items:['Mission cards before each stage now show a painted picture of each mission','The Hunt elite’s poison bottles, Herald minions, special trees, bees, root mothers and seed carriers have their own art','Ruby has new lines for the Herald, Hunt, Frozen Pantry, side missions and the wave timer','New sounds for poison bottles, the Herald beam, frozen crates, side missions and more']},
   {v:'8.2.23',date:'2026-11-19',title:'New art for mission props and monsters',items:['Frozen Pantry has real frozen crates and new Captain and Frost General statues','Shades, moths, sappers, light wisps and supply crates now have their own art','The Herald’s beam, the empowered aura and the minion icons are drawn as art','The two new trial curse stones have their own art']},
   {v:'8.2.22',date:'2026-11-19',title:'Hunt elite throws poison, mission cards shown one by one',items:['The Hunt elite now walks up, throws a poison bottle and runs away; poison only stacks when a bottle hits you','Defeating the elite still cures all poison','Before a stage, each mission card is lifted up, flipped and explained one at a time']},
   {v:'8.2.21',date:'2026-11-19',title:'Side missions can stack',items:['From Chapter 2, a side mission can join the main mission during a wave','Side missions show under the main mission and give their full reward without ending the wave','A side mission never repeats the main mission’s kind, and big map-wide missions stay on their own']},
