@@ -4236,3 +4236,12 @@ Owner 19 Nov approved items 1 + 4 of the size plan. The shipped app (www/ withou
 - **Double Clear:** main + side mission done in the same wave → a Gear box + extra Sugar + banner (`doubleClearMark`).
 - **Shorter big missions:** Trial 200→150 s, Golem/Pot 120→100 s, Vault Altar 150→120 s.
 - Test: `tests/scamper-8227.test.cjs`.
+
+# Delivery: v8.2.28 — ✨ SCAMPER round 2: golden waves, first-time missions, boss missions
+
+- **Golden wave** (`goldWaveRoll`, 5 %): Story waves only, not the first C1-1 run, replay meter, Delve or tutorial. Normal monsters turn gold (`GOLD_TINT`) and mission rewards are doubled: Sugar, the mission currency drop and gear boxes, plus the half reward when time runs out. A "✨ GOLDEN WAVE!" banner shows at the start.
+- **First time a mission appears** (`missionLog` not set): the wave gets +20 % time (`FIRST_TIME_MUL`) and a "🆕 New mission" banner shows its steps. The spotlight focus on the target is forced (`missionIntroExtra`).
+- **Boss missions** (`BOSS_MISSION`, stages 5–14 only, so nothing new in Chapter 1): at 60 % boss HP the boss calls a mission that fits it. The mission uses the side-mission system for 45 s, and finishing it pays the side-mission reward.
+  - Missions: Rootmother's Bud and True Rootmother and First Planter → Creeping Roots; Mycelium Behemoth and Harvest Colossus → Seed Rift; Hornet Queen and Seedwarden → Shake the Trees; Chronobloom and Hollow Bloom → Last Light; Glass Gardener → Mirror Path.
+  - The mission ends when the boss dies. Boss music still has priority.
+- Test: `tests/scamper-8228.test.cjs` + headless boss check (stages 6, 7, 10, 12: mission starts at 60 % and clears on boss death).

@@ -1,0 +1,174 @@
+{
+ "date": "2026-11-19T11:27:00.111Z",
+ "version": "8.2.29",
+ "screens": [
+  {
+   "screen": "hub",
+   "opened": "hub",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "endgame",
+   "opened": "endgame",
+   "taps": 30,
+   "leftToRun": 1,
+   "problems": []
+  },
+  {
+   "screen": "atlas",
+   "opened": "atlas",
+   "taps": 30,
+   "leftToRun": 1,
+   "problems": []
+  },
+  {
+   "screen": "dig",
+   "opened": "dig",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "upgrade",
+   "opened": "upgrade",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "perks",
+   "opened": "perks",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "skills",
+   "opened": "skills",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "recipes",
+   "opened": "atlas",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "craft",
+   "opened": "craft",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "merge",
+   "opened": "merge",
+   "taps": 30,
+   "leftToRun": 2,
+   "problems": []
+  },
+  {
+   "screen": "gear",
+   "opened": "gear",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "gLoadout",
+   "opened": "gLoadout",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "gMore",
+   "opened": "gMore",
+   "taps": 30,
+   "leftToRun": 2,
+   "problems": []
+  },
+  {
+   "screen": "gearInbox",
+   "opened": "gearInbox",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "tradein",
+   "opened": "tradein",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "bazaar",
+   "opened": "bazaar",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "wardrobe",
+   "opened": "wardrobe",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "char",
+   "opened": "char",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "story",
+   "opened": "story",
+   "taps": 30,
+   "leftToRun": 1,
+   "problems": []
+  },
+  {
+   "screen": "chapter",
+   "opened": "chapter",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "stage",
+   "opened": "stage",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "bestiary",
+   "opened": "bestiary",
+   "taps": 30,
+   "leftToRun": 2,
+   "problems": []
+  },
+  {
+   "screen": "news",
+   "opened": "news",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  },
+  {
+   "screen": "playstats",
+   "opened": "playstats",
+   "taps": 30,
+   "leftToRun": 0,
+   "problems": []
+  }
+ ]
+}

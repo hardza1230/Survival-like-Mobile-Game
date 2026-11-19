@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.29';
+const GAME_VERSION = '8.2.30';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.30',date:'2026-11-19',title:'Mission Atlas: master the missions you like',items:['Earn Atlas stars from missions after Chapter 2 and spend them on upgrade trees for every mission','Each mission tree has three tiers where you pick one of two upgrades, and a star cap makes you choose','Focus your favourite missions so they show up twice as often in the deal']},
   {v:'8.2.29',date:'2026-11-19',title:'Pact Relics: the stage gets harder, rewards get better',items:['Heavy Armor, Sugar Rush and Cracked Crystal now make the stage harder instead of weakening your hero','Eight new Pact Relics from Chapter 2 trade a stage drawback for better rewards','Relic cards show a red Stage line and a reward line so you know the deal']},
   {v:'8.2.28',date:'2026-11-19',title:'SCAMPER round 2: golden waves, new-mission help, boss missions',items:['A rare Golden Wave turns monsters gold and doubles mission rewards','The first time you meet a mission you get extra time and a clear guide','Chapter 2 and 3 bosses call a fitting mission at 60 percent HP for a bonus reward']},
   {v:'8.2.27',date:'2026-11-19',title:'SCAMPER round 1: side arrow, reroll, rewards on cards',items:['A blue arrow now points at the side mission target','Mission cards show their reward and can be rerolled once free and once with an ad','Curse stones show the Sugar you win, and floating text no longer piles up','Missions finish with a short freeze and the loot flies to you; main plus side in one wave gives a Double Clear box','Easier missions come first, and the Trial, Golem, Pot and Vault are shorter']},
@@ -9387,6 +9388,25 @@ const MISSION_REWARDS={fill:['berryjam',1],survive:['berryjam',1],hunt:['gear',1
 /* v8.2.27 ความยากของภารกิจไว้เรียงเวฟ ง่าย→ยาก (1 ทั่วไป · 2 ภารกิจประจำด่าน · 3 ภารกิจใหญ่) */
 /* v8.2.28 SCAMPER รอบ 2 */
 const GOLD_WAVE_CHANCE=.05,GOLD_WAVE_MUL=2,GOLD_TINT=0xffd76a,FIRST_TIME_MUL=1.2,BOSS_MISSION_ON=true,BOSS_MISSION_AT=.6,BOSS_MISSION_DUR=45,BOSS_MISSION={5:'creepingRoots',6:'seedRift',7:'shakeTrees',8:'lastLight',9:'creepingRoots',10:'seedRift',11:'lastLight',12:'mirrorPath',13:'shakeTrees',14:'creepingRoots'};
+/* v8.2.30 เจ้าของ (SCAMPER รอบ 3B): Mission Atlas · แต้ม ⭐ กองเดียว · ทุกภารกิจมีต้นไม้ 3 ขั้น × เลือก 1 ใน 2 · เพดาน (cap) บังคับให้เลือก · Focus ภารกิจโปรด ×2 · เปิดหลังจบ Chapter 2 */
+const MA_COST=[1,2,3],MA_CAP0=15,MA_CAP_CH3=15,MA_CAP_DELVE=2,MA_CAP_MAX=90,MA_FOCUS_AT=[20,50,90],
+  MA_TREE=[[{id:'a',em:'⏳',name:'Steady Hands',desc:'+15% mission time',fx:{time:1.15}},{id:'b',em:'💠',name:'Deep Pockets',desc:'+1 mission currency',fx:{cur:1}}],
+    [{id:'a',em:'🔥',name:'Hard Mode',desc:'25% harder · rewards ×1.35',fx:{hard:1.25,rw:1.35}},{id:'b',em:'🎁',name:'Gear Hunt',desc:'35% chance of a Gear box',fx:{box:.35}}],
+    [{id:'a',em:'🎰',name:'Jackpot',desc:'12% chance: rewards ×3',fx:{jackpot:.12}},{id:'b',em:'👑',name:'Champion',desc:'40% harder · rewards ×1.6 · +1 Star Sugar',fx:{hard:1.4,rw:1.6,star:1}}]];
+function maTypes(){ return (typeof MC86_ORDER!=='undefined'?MC86_ORDER:[]).filter(t=>t!=='miniboss'&&t!=='boss'&&typeof WAVE_OBJECTIVES!=='undefined'&&WAVE_OBJECTIVES[t]); }
+function maData(){ const d=(typeof Save!=='undefined'&&Save.data)||{}; const m=d.matlas&&typeof d.matlas==='object'?d.matlas:(d.matlas={pts:0,nodes:{},focus:[]}); if(!m.nodes)m.nodes={}; if(!Array.isArray(m.focus))m.focus=[]; m.pts=m.pts|0; return m; }
+function maUnlocked(){ return typeof storyCleared==='function'&&storyCleared()>=10; }
+function maCap(){ if(!maUnlocked())return 0; let c=MA_CAP0+(storyCleared()>=15?MA_CAP_CH3:0); try{ const best=(Save.data.delve&&Save.data.delve.best)|0; c+=MA_CAP_DELVE*Math.floor(best/5); }catch(e){} return Math.min(MA_CAP_MAX,c); }
+function maSpent(){ const m=maData(); let n=0; for(const t in m.nodes){ const a=m.nodes[t]||[]; for(let i=0;i<3;i++)if(a[i])n+=MA_COST[i]; } return n; }
+function maFree(){ const m=maData(); return Math.max(0,Math.min(m.pts,maCap())-maSpent()); }
+function maFocusSlots(){ const p=maData().pts; return MA_FOCUS_AT.filter(v=>p>=v).length; }
+function maFx(type){ const out={time:1,cur:0,hard:1,rw:1,box:0,jackpot:0,star:0}; if(!maUnlocked())return out; const a=(maData().nodes[type])||[];
+  for(let i=0;i<3;i++){ const c=a[i]; if(!c)continue; const n=MA_TREE[i][c-1]; if(!n)continue; for(const k in n.fx){ if(k==='time'||k==='hard'||k==='rw')out[k]*=n.fx[k]; else out[k]+=n.fx[k]; } } return out; }
+/* เลือกโหนด: ต้องเลือกขั้นก่อนหน้าแล้ว · แต้มพอ · เลือกซ้ำ = ถอด (ถอดขั้นที่สูงกว่าด้วย) · คืน true เมื่อเปลี่ยน */
+function maPick(type,tier,choice){ const m=maData(),a=(m.nodes[type]=(m.nodes[type]||[0,0,0]).slice(0,3)); while(a.length<3)a.push(0);
+  if(a[tier]===choice){ for(let i=tier;i<3;i++)a[i]=0; return true; } if(tier>0&&!a[tier-1])return false; const need=a[tier]?0:MA_COST[tier]; if(need>maFree())return false; a[tier]=choice; return true; }
+function maReset(){ const m=maData(); m.nodes={}; }
+function maToggleFocus(type){ const m=maData(),i=m.focus.indexOf(type); if(i>=0){ m.focus.splice(i,1); return true; } if(m.focus.length>=maFocusSlots())return false; m.focus.push(type); return true; }
 const FLOAT_MAX=5,MISSION_JUICE_STOP=90,MISSION_PULL_MS=600;
 const MISSION_TIER={survive:1,fill:1,hunt:1,purge:1,capture:1,cleanAir:1,defendNectar:1,breakRoots:2,seasonCycle:2,seedRift:2,shakeTrees:2,mirrorPath:2,lastLight:2,vaultAltar:3,ultimatum:3,frozenPantry:3,hungersMouth:3,creepingRoots:3,hungerHerald:3,grandmasPot:3,grandmasGolem:3,hungerSiege:3,hungerDomain:3};
 const LEAGUE_MISSIONS=['frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];
@@ -12127,7 +12147,8 @@ class Game extends Phaser.Scene {
   }
   /* v8.2.5 เจ้าของ: หน้า Missions — ภารกิจที่เคยเจอ ✓ / ยังไม่เจอ ??? + บอกด่านที่เจอ */
   logMission(type){ if(!type||!WAVE_OBJECTIVES[type]||typeof Save==='undefined'||!Save.data)return; const L=Save.data.missionLog=Save.data.missionLog||{}; L[type]=1; }
-  buildMissionCodex(top){ const w=this.W,h=this.H,portrait=w<=h,pages=missionCodexPages(),seen=missionSeenMap(),n=pages.reduce((a,p)=>a+p.rows.length,0),got=pages.reduce((a,p)=>a+p.rows.filter(r=>seen[r.t]).length,0);
+  buildMissionCodex(top){ if(this._missionAtlas&&typeof maUnlocked==='function'&&maUnlocked())return this.buildMissionAtlas(top); if(typeof maUnlocked==='function'&&maUnlocked()){ const m=maData(),bw=118,bx=this.W-bw-10; this.uiPillBtn(this.menu,bx+bw/2,top+8,bw,28,0x6b4fa8,'🗺️','Atlas'+(m.seen?'':' NEW'),()=>{ this._missionAtlas=true; this._maSel=null; m.seen=1; try{Save.save();}catch(e){} this.buildSkillArchive(); }); top+=22; }
+    const w=this.W,h=this.H,portrait=w<=h,pages=missionCodexPages(),seen=missionSeenMap(),n=pages.reduce((a,p)=>a+p.rows.length,0),got=pages.reduce((a,p)=>a+p.rows.filter(r=>seen[r.t]).length,0);
     this._missionPage=Phaser.Math.Clamp(this._missionPage||0,0,pages.length-1); const pg=pages[this._missionPage];
     const hd=this.add.text(w/2,top+4,'Missions found: '+got+' / '+n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#b7f08a'}).setOrigin(0.5,0);this.menu.add(hd);
     const y0=top+hd.height+10,bottom=h-(portrait?54:42),heads=1+pg.rows.filter(r=>r.head).length,cnt=pg.rows.length-heads,rh=Phaser.Math.Clamp(Math.floor((bottom-y0-heads*24)/Math.max(1,cnt))-4,26,48);
@@ -12137,6 +12158,29 @@ class Game extends Phaser.Scene {
     this._codexRows(y0,rows,rh);
     if(pages.length>1)this._codexNav(this._missionPage,pages.length,()=>{this._missionPage--;this.buildSkillArchive();},()=>{this._missionPage++;this.buildSkillArchive();},pg.title+' · '+(this._missionPage+1)+' / '+pages.length);
   }
+  /* v8.2.30 Mission Atlas หน้าจอ: รายการ 23 ภารกิจ (หน้าละ 8) → แตะ = ต้นไม้ 3 ขั้น × 2 ทาง · ⭐ ว่าง/เพดาน · Focus · Reset */
+  buildMissionAtlas(top){ const w=this.W,h=this.H,m=maData(),types=maTypes(),cap=maCap(),used=maSpent(),free=maFree(),fs=maFocusSlots(),T=(x,y,t,sz,c,b,o)=>{ const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:b?'bold':'normal',fontSize:sz+'px',color:c||'#ffffff',align:'center',wordWrap:{width:w-40}}).setOrigin(o??.5,0); this.menu.add(q); return q; },rebuild=()=>{ try{Save.save();}catch(e){} this.buildSkillArchive(); };
+    T(w/2,top,'🗺️ Mission Atlas  ·  ⭐ '+free+' free  ·  used '+used+' / '+cap,12,'#ffe08a',true); T(w/2,top+18,'Earned '+m.pts+' · Focus '+m.focus.length+'/'+fs+(fs<3?' (next at '+MA_FOCUS_AT[fs]+')':''),10,'#c8bcd8');
+    const back=this._maSel?'‹ Missions':'‹ Found list'; this.uiPillBtn(this.menu,70,top+48,120,28,0x4a3a60,'↩',back.replace('‹ ',''),()=>{ if(this._maSel)this._maSel=null; else this._missionAtlas=false; rebuild(); });
+    if(!this._maSel){ this.uiPillBtn(this.menu,w-70,top+48,120,28,0x7a3a4a,'♻️','Reset',()=>{ maReset(); rebuild(); });
+      const per=8,pages=Math.ceil(types.length/per); this._maPage=Phaser.Math.Clamp(this._maPage||0,0,pages-1); const y0=top+72,rh=Math.max(34,Math.min(52,Math.floor((h-y0-70)/per)-4)),bw=Math.min(w-24,460),bx=(w-bw)/2;
+      types.slice(this._maPage*per,this._maPage*per+per).forEach((t,i)=>{ const o=WAVE_OBJECTIVES[t],a=m.nodes[t]||[],y=y0+i*(rh+4),g=this.add.graphics(),fo=m.focus.includes(t);
+        g.fillStyle(0x241a30,.96).fillRoundedRect(bx,y,bw,rh,10); g.lineStyle(1.6,fo?0xffd166:a.some(Boolean)?0xc9a3ff:0x51445f,1).strokeRoundedRect(bx,y,bw,rh,10); this.menu.add(g);
+        const fi=MC86_ORDER.indexOf(t); if(fi>=0&&this.realTex?.('mc86_faces'))this.menu.add(this.add.image(bx+rh/2+2,y+rh/2,'mc86_faces',fi).setDisplaySize(rh-6,rh-6)); else T(bx+rh/2+2,y+rh/2-10,o.emoji||'✨',16);
+        T(bx+rh+8,y+rh/2-8,(fo?'⭐ ':'')+o.name,12,'#ffffff',true,0); T(bx+bw-10,y+rh/2-7,[0,1,2].map(k=>a[k]?MA_TREE[k][a[k]-1].em:'▫️').join(' '),12,'#ffffff',false,1);
+        this._zone(bx,y,bw,rh,()=>{ this._maSel=t; rebuild(); }); });
+      if(pages>1)this._codexNav(this._maPage,pages,()=>{this._maPage--;rebuild();},()=>{this._maPage++;rebuild();},'Atlas · '+(this._maPage+1)+' / '+pages); return; }
+    const t=this._maSel,o=WAVE_OBJECTIVES[t]||{},a=m.nodes[t]||[0,0,0],fo=m.focus.includes(t);
+    this.uiPillBtn(this.menu,w-70,top+48,120,28,fo?0x8a6a1a:0x4a3a60,'⭐',fo?'Focused':'Focus',()=>{ if(!maToggleFocus(t))this.menuToast?.(fs?'All Focus slots are used':'Focus unlocks at '+MA_FOCUS_AT[0]+' earned','#ffb4b4'); rebuild(); });
+    T(w/2,top+72,(o.emoji||'')+' '+(o.name||t),15,'#ffffff',true); T(w/2,top+92,'Pick 1 of 2 on each tier · tiers unlock in order · tap again to remove',9.5,'#b7abc9');
+    const bw=Math.min(w-24,460),bx=(w-bw)/2,cw=(bw-10)/2,ch=Math.max(70,Math.min(96,(h-top-190)/3-10)); let y=top+112;
+    for(let k=0;k<3;k++){ T(bx,y,'Tier '+(k+1)+' · ⭐ '+MA_COST[k],11,'#ffe08a',true,0); y+=16;
+      for(let c=0;c<2;c++){ const n=MA_TREE[k][c],x=bx+c*(cw+10),on=a[k]===c+1,lock=k>0&&!a[k-1],g=this.add.graphics();
+        g.fillStyle(on?0x3b2f5a:0x221a2c,.97).fillRoundedRect(x,y,cw,ch,10); g.lineStyle(on?3:1.6,on?0xffd166:lock?0x3a3048:0x7a6a95,1).strokeRoundedRect(x,y,cw,ch,10); this.menu.add(g);
+        T(x+cw/2,y+8,n.em+' '+n.name,12,lock?'#6f6680':'#ffffff',true); const d=T(x+cw/2,y+28,n.desc,10,lock?'#5f5670':'#d8cde2'); d.setWordWrapWidth?.(cw-14);
+        if(on)T(x+cw/2,y+ch-18,'✓ Chosen',10,'#8ff0b0',true);
+        this._zone(x,y,cw,ch,()=>{ if(!maPick(t,k,c+1))this.menuToast?.(lock?'Choose tier '+k+' first':'Not enough ⭐ (free '+maFree()+')','#ffb4b4'); rebuild(); }); }
+      y+=ch+10; } }
   // v6.53: Codex ชุดเซ็ท — ชิ้นไหนเข้าชุดไหน · โบนัสสวม 2/3 ชิ้น · เก็บครบ = โบนัสถาวร
   buildSetCodex(top){ const w=this.W,bw=Math.min(w-24,460),bx=(w-bw)/2,cnt=gearSetCounts(); let y=top;
     const col=(Object.keys(GEAR_SETS).length);
@@ -15913,6 +15957,14 @@ class Game extends Phaser.Scene {
   stackRun(fn){ const K=this._stack; if(!K)return; const o0=this.waveObjective,s0=this._sig,g0=this.objNodeG; this._stackSwap=true; this.waveObjective=K.o; this._sig=K.S; this.objNodeG=K.g;
     try{ return fn(); }finally{ K.S=this._sig||K.S; this.waveObjective=o0; this._sig=s0; this.objNodeG=g0; this._stackSwap=false; } }
   /* v8.2.28 เจ้าของ (SCAMPER รอบ 2): เวฟทอง 5% · มอนสีทอง · รางวัลภารกิจ ×2 · เฉพาะ Story หลังผ่าน C1-1 (ไม่ใช่บทสอน/เล่นซ้ำ/Delve) */
+  /* v8.2.30 Mission Atlas ในด่าน */
+  maActive(){ return typeof maUnlocked==='function'&&maUnlocked()&&!this._inTutorial; }
+  maSetup(o){ if(!o||!this.maActive())return; const f=maFx(o.type); o._maFx=f; if(f.hard>1){ if(!o._timedGoal&&(o.target||0)>=3)o.target=Math.ceil(o.target*f.hard); else o._maTime=1/f.hard; } if(f.time!==1)o._maTime=(o._maTime||1)*f.time; }
+  maPay(o){ if(!o||o._maPaid||!this.maActive())return 1; o._maPaid=true; const f=o._maFx||maFx(o.type),jack=f.jackpot>0&&Math.random()<f.jackpot; o._maRw=f.rw*(jack?3:1); o._maCur=f.cur|0;
+    if(jack)this.time?.delayedCall?.(700,()=>{ if(this.state!=='menu'){ this.showBanner?.('🎰 ATLAS JACKPOT!','Mission rewards ×3',1800); this.screenFlash?.(0xffd166,.25,260); } });
+    if(f.box>0&&Math.random()<f.box&&this.player){ this._lootMinRare=true; try{ const g=this.spawnLoot?.(this.player.x-50,this.player.y-40,(this.stageIndex>=10||this.endgameDropActive?.())?2:1); if(g)this.lootHold?.(g,1600); }finally{ this._lootMinRare=false; } }
+    if(f.star>0&&typeof Save!=='undefined')try{ Save.addCurrency('starsugar',f.star); }catch(e){} return o._maRw; }
+  maEarn(n){ if(!this.maActive()||!(n>0)||this.recipeMode&&!this._recipeMission)return; const m=maData(); m.pts+=n; if(this.player)this.floatText?.(this.player.x,this.player.y-110,'⭐ +'+n+' Atlas',0xffe08a); }
   goldWaveRoll(w){ if(this.recipeMode||this.riftMode||this.bossRush||this._replayMeter||this._inTutorial||!this.usesStoryBudget?.())return false; const d=(typeof Save!=='undefined'&&Save.data)||{}; if((this.stageIndex||0)===0&&!(d.stageMastery||{})[0])return false;
     const r=Math.random()<Math.max(typeof GOLD_WAVE_CHANCE!=='undefined'?GOLD_WAVE_CHANCE:.05,this.rpAdd?.('gold')||0); if(r)this.time?.delayedCall?.(900,()=>{ if(this.state!=='play'||!this._goldWave)return; this.showBanner?.('✨ GOLDEN WAVE!','Golden monsters · mission rewards ×2',2200); this.screenFlash?.(0xffd76a,.22,320); Sfx.orderCue?.('mission_bonus_get',.5,.3); }); return r; }
   /* v8.2.28 เจ้าของ: ภารกิจที่เจอครั้งแรก = เวลา +20% · ชี้เป้า (questFocus) แน่นอน · ป้าย NEW บอกขั้นตอน */
@@ -15923,7 +15975,7 @@ class Game extends Phaser.Scene {
   stackPick(primary){ const pc=STACK_CAT[primary?.type]; if(pc==='global')return null; const ok=STACK_POOL.filter(t=>t!==primary?.type&&STACK_CAT[t]!==pc&&WAVE_OBJECTIVES[t]); return ok.length?ok[Math.floor(Math.random()*ok.length)]:null; }
   stackStart(type,opt){ if(this._stack||!type)return null; const boss=!!(opt&&opt.boss); const def=WAVE_OBJECTIVES[type],color=0xb8f0ff,o={type,emoji:def.emoji,name:def.name,desc:def.desc,color,progress:0,target:0,done:false,_stack:true},g=this.add.graphics().setScrollFactor(1).setDepth(90041); this.camWorld?.(g);
     const T=boss?(typeof BOSS_MISSION_DUR!=='undefined'?BOSS_MISSION_DUR:45):Math.max(30,Math.min(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._,(this.waveTimer||60)-4)); this._stack={o,S:null,g,T,T0:T,type,txt:null,boss}; this.logMission?.(type);
-    this.stackRun(()=>{ this._sig=null; this.sigSetup(o,type,{dur:T}); this.rpMissionSetup?.(o); }); if(o._timedGoal)o.target=Math.max(1,Math.floor(T)-1);
+    this.stackRun(()=>{ this._sig=null; this.sigSetup(o,type,{dur:T}); this.rpMissionSetup?.(o); this.maSetup?.(o); }); if(o._timedGoal)o.target=Math.max(1,Math.floor(T)-1);
     if(this.add?.text&&this.camUI){ const y=(this.waveObjTxt?.y||40)+(this.waveObjTxt?.height||18)+14,t=this.add.text(this.W/2,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#b8f0ff',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5,0).setScrollFactor(1).setDepth(54); this.camUI(t); this._stack.txt=t; if(this.realTex?.('ui87_side_chip')){ const ch=this.add.image(this.W/2,y+9,'ui87_side_chip').setScrollFactor(1).setDepth(53).setDisplaySize(230,24); this.camUI(ch); this._stack.chip=ch; } }   /* v8.2.24 ใบ 87 แถบภารกิจเสริม */
     this.showBanner?.((boss?'👑 Boss mission: ':'➕ Side mission: ')+def.emoji+' '+def.name,boss?'The boss calls on the stage — finish it for a Gear box':def.desc,2200); this.a12?.('a16_side_mission',.45,.5)||Sfx.card?.(); this.rubyVoiceReact?.('side',600); return this._stack; }
   stackTick(dt){ const K=this._stack;
@@ -15932,7 +15984,7 @@ class Game extends Phaser.Scene {
     K.T-=dt; this.stackRun(()=>{ this.sigTick(dt,K.o); if(K.o._timedGoal&&K.S&&(K.S.t||0)>=K.o.target&&!K.o.done)this.hhFinish?.(K.o,K.S); if(!K.o.done&&K.o.target>0&&K.o.progress>=K.o.target)this.stackComplete(); });
     if(!K.o.done&&K.T<=0){ if(K.o._timedGoal)this.stackRun(()=>this.hhFinish?.(K.o,K.S)); else this.stackEnd(true); return; }
     const o=K.o,v=o._timedGoal?Math.ceil(Math.max(0,K.T))+'s':Math.floor(o.progress)+'/'+(o.target||1); K.txt?.setText('➕ '+o.emoji+' '+o.name+' · '+v+(o._timedGoal?'':' · '+Math.ceil(Math.max(0,K.T))+'s')).setVisible(true); if(K.chip&&K.txt)K.chip.setDisplaySize(Math.max(160,K.txt.width+40),24); }
-  stackComplete(){ const K=this._stack; if(!K||K.o.done)return; const o=K.o; o.done=true; const bonus=Math.round(6+(this.stageIndex+1)*2+this.waveIndex*2); this.sugarStage+=bonus; this.sugarRun+=bonus;   // ภารกิจเสริมจบ: รางวัลเต็มเหมือนภารกิจหลัก แต่ไม่ปิดเวฟ
+  stackComplete(){ const K=this._stack; if(!K||K.o.done)return; const o=K.o; o.done=true; const bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(this.maPay?.(o)||1)); this.maEarn?.(1); this.sugarStage+=bonus; this.sugarRun+=bonus;   // ภารกิจเสริมจบ: รางวัลเต็มเหมือนภารกิจหลัก แต่ไม่ปิดเวฟ
     const sw=this._stackSwap; const give=()=>{ this.missionLootBurst?.(o,bonus); this.missionRewardGive?.(o); if(typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(o.type))this.leagueCurrencyDrop?.(o); }; if(sw)give(); else this.stackRun(give);
     this.missionJuice?.(o); this.doubleClearMark?.('side');
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); this.showBanner?.('✅ Side mission complete','Sugar +'+bonus,1400); Sfx.orderCue?.('mission_tube_pop',.4,.5); this.time?.delayedCall?.(0,()=>this.stackEnd(false)); }
@@ -15942,7 +15994,7 @@ class Game extends Phaser.Scene {
   missionMusic(key,sting){ if(this._stackSwap||this.boss?.active||this.mini?.active||this.mode==='boss'||this.mode==='mini'||typeof Sfx==='undefined')return false; if(!this._missionBgm&&sting!==false)Sfx.orderCue?.('m_mission_start',.45,1); if(sting==='thaw')Sfx.orderCue?.('m_thaw_hit',.5,1); this._missionBgm=key; return Sfx.playMissionBgm?.(key); }
   missionMusicEnd(ok){ if(!this._missionBgm)return; this._missionBgm=null; if(typeof Sfx==='undefined')return; if(ok)Sfx.orderCue?.('m_mission_clear',.45,1); if(this.state!=='menu'&&!this.boss?.active&&!this.mini?.active&&this.mode!=='boss'&&this.mode!=='mini')Sfx.playStageBgm?.((this.stageIndex||0)+1); }
   waveTimedSetup(o){ this._waveTimed=false; this._hurrySaid=false; if(!WAVE_TIMED||!o||o.done||o.type==='survive'||this._replayMeter||!this.usesStoryBudget?.())return false;
-    const d=Math.round(Math.max(MISSION_WAVE_DUR[o.type]||MISSION_WAVE_DUR._,MISSION_TIMED_GOAL.includes(o.type)?(o.target||0)+25:0)*(o._first?(typeof FIRST_TIME_MUL!=='undefined'?FIRST_TIME_MUL:1.2):1)*(this.rpMul?.('msnTime')||1));   /* v8.2.28 เจอครั้งแรก +20% */ this.waveDur=this.waveTimer=Math.max(this.waveDur||0,d); this._waveTimed=true;
+    const d=Math.round(Math.max(MISSION_WAVE_DUR[o.type]||MISSION_WAVE_DUR._,MISSION_TIMED_GOAL.includes(o.type)?(o.target||0)+25:0)*(o._first?(typeof FIRST_TIME_MUL!=='undefined'?FIRST_TIME_MUL:1.2):1)*(this.rpMul?.('msnTime')||1)*(o._maTime||1));   /* v8.2.28 เจอครั้งแรก +20% */ this.waveDur=this.waveTimer=Math.max(this.waveDur||0,d); this._waveTimed=true;
     if(o._timedGoal){ o.target=Math.max(1,Math.floor(this.waveDur)-1); o.desc=o.desc.replace(/last \d+s/,'last '+o.target+'s'); } return true; }
   expireWaveObjective(){ const o=this.waveObjective; if(!o||o.done)return; this.missionMusicEnd?.(false); const f=Math.max(0,Math.min(1,(o.progress||0)/Math.max(1,o.target||1))),half=f>=MISSION_HALF_AT; o.done=true; let su=0;
     if(half){ su=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*.5*(o._gold?GOLD_WAVE_MUL:1)); this.sugarStage+=su; this.sugarRun+=su; if(!this._inTutorial)this.missionLootBurst?.({...o,noCur:true},su); if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); }
@@ -16106,7 +16158,7 @@ class Game extends Phaser.Scene {
       o.target=25;o.desc='Purify the ring for '+o.target+'s — it grows as you purify, enemies swarm to stop you';if(CAPTURE_CRACK){o.desc='Touch the glowing crack — it races to the next hole. Each hole bursts with monsters and loot; clear the last one!';this.spawnHungerCrack();}else this.spawnCaptureZone();
     }
     if(planned)o.desc=planned.tip;
-    this.rpMissionSetup?.(o);   /* v8.2.29 Pact Relics */
+    this.rpMissionSetup?.(o);   /* v8.2.29 Pact Relics */ this.maSetup?.(o);   /* v8.2.30 Mission Atlas */
     this.objBonusInit?.(o,!!planned);
     if(o._huntPhase)o.desc='Clear foes to reveal each marked Elite, then defeat it';
     this.renderWaveObjectiveHUD();
@@ -16733,7 +16785,7 @@ class Game extends Phaser.Scene {
     const n=r[1]+(si>=5?1:0)+(si>=10?1:0),d=typeof currencyDef==='function'?currencyDef(k):null; return {k,n,txt:(d&&d.emoji||'💠')+' '+(d&&d.name||k)+' ×'+n}; }
   missionRewardGive(o){ const R=o&&(o._rw||this.missionReward(o)); if(!R||o._rwGiven||!this.player)return null; o._rwGiven=true; const P=this.missionPoint?.(o)||this.player,rep=o._gold?(typeof GOLD_WAVE_MUL!=='undefined'?GOLD_WAVE_MUL:2):1;   /* v8.2.28 เวฟทอง = รางวัล ×2 */
     if(R.k==='gear'){ this._lootMinRare=true; try{ for(let j=0;j<rep;j++){ const g=this.spawnLoot?.(P.x+50-j*90,P.y-36,R.tier); if(g)this.lootHold?.(g,1900); } }finally{ this._lootMinRare=false; } return R; }
-    const _n=Math.ceil(R.n*rep*(this.rpMsnRw?.(o.type)||1))+(this.rpCurPlus?.(o.type)||0);   /* v8.2.29 Pact Relics */
+    const _n=Math.ceil(R.n*rep*(this.rpMsnRw?.(o.type)||1)*(o._maRw||1))+(this.rpCurPlus?.(o.type)||0)+(o._maCur||0);   /* v8.2.29 Pact Relics · v8.2.30 Atlas */
     for(let i=0;i<_n;i++){ const a=i*2.4+.6,g=this.spawnCurrencyDrop?.(P.x+Math.cos(a)*64,P.y+Math.sin(a)*48,R.k); if(g&&typeof g==='object'){ g.forgeQuantity=1; this.lootHold?.(g,1900); } } return R; }
   missionCardClear(){ const c=this._msnCard; this._msnCard=null; if(c){ this.tweens?.killTweensOf?.(c); if(c.active!==false)c.destroy?.(); } }
   missionPanel(lines,col,minW){ const W=this.W,pw=Math.min(Math.max(minW||0,300),W-28),items=[]; let y=0;
@@ -16826,7 +16878,7 @@ class Game extends Phaser.Scene {
   missionDeckDraw(n,exclude){ const d=(typeof Save!=='undefined'&&Save.data)||{},D=d.missionDeck=d.missionDeck&&Array.isArray(d.missionDeck.used)?d.missionDeck:{used:[],recent:[]},log=Object.assign({},d.seenMissions||{},d.missionLog||{}),ex=new Set(exclude||[]),out=[],elig=this.missionDeckPool();
     for(let i=0;i<n;i++){ let cand=elig.filter(t=>!ex.has(t)&&!D.used.includes(t));
       if(!cand.length){ D.used=[]; cand=elig.filter(t=>!ex.has(t)); const fresh=cand.filter(t=>!(D.recent||[]).includes(t)); if(fresh.length)cand=fresh; }
-      if(!cand.length)break; const un=cand.filter(t=>!log[t]),pick=(un.length?un:cand)[Math.floor(Math.random()*(un.length?un:cand).length)];
+      if(!cand.length)break; const un=cand.filter(t=>!log[t]),base=un.length?un:cand,fo=(typeof maData==='function'&&typeof maUnlocked==='function'&&maUnlocked())?maData().focus:[],bag=base.concat(base.filter(t=>fo.includes(t))),pick=bag[Math.floor(Math.random()*bag.length)];   /* v8.2.30 Atlas Focus ×2 */
       out.push(pick); ex.add(pick); D.used.push(pick); D.recent=(D.recent||[]).concat(pick).slice(-4); }
     return out; }
   missionDeckDeal(){ if(this.recipeMode||this.riftMode||this.bossRush||this._replayMeter||this._inTutorial)return null; const idx=this.stageIndex||0,st=STAGES[idx]; if(!st)return null; const d=(typeof Save!=='undefined'&&Save.data)||{},sm=d.stageMastery||{};
@@ -17563,7 +17615,7 @@ class Game extends Phaser.Scene {
   /* v8.2.27 เจ้าของ (SCAMPER): จบภารกิจให้สะใจ = จอหยุดชั่วครู่ + แสงทอง + วงแหวน · ของรางวัลพุ่งเข้าตัวเอง (missionLootBurst) · Ruby/แฟนแฟร์ใช้ของเดิม */
   missionJuice(o){ if(!this.player||this.state==='menu')return; try{ this.hitStop?.(typeof MISSION_JUICE_STOP!=='undefined'?MISSION_JUICE_STOP:90); }catch(e){} this.screenFlash?.(0xffe08a,.16,200); this.screenShake?.(140,.004); const P=this.missionPoint?.(o)||this.player; this.vfxHitRing?.(P.x,P.y,0xffd166,true); }
   /* v8.2.27 Double Clear: ภารกิจหลัก + ภารกิจเสริมสำเร็จในเวฟเดียวกัน → กล่องของ 1 ชิ้น + Sugar เพิ่ม */
-  doubleClearMark(kind){ const w=this.waveIndex||0,si=this.stageIndex||0; let D=this._dblClear; if(!D||D.w!==w||D.si!==si)D=this._dblClear={w,si,main:false,side:false,paid:false}; D[kind]=true; if(!D.main||!D.side||D.paid||!this.player)return false; D.paid=true;
+  doubleClearMark(kind){ const w=this.waveIndex||0,si=this.stageIndex||0; let D=this._dblClear; if(!D||D.w!==w||D.si!==si)D=this._dblClear={w,si,main:false,side:false,paid:false}; D[kind]=true; if(!D.main||!D.side||D.paid||!this.player)return false; D.paid=true; this.maEarn?.(1);
     const P=this.player,su=Math.round(8+(si+1)*2+w*2); this.sugarStage+=su; this.sugarRun+=su; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     this._lootMinRare=true; try{ const g=this.spawnLoot?.(P.x+40,P.y-50,(si>=10||this.endgameDropActive?.())?2:1); if(g)this.lootHold?.(g,1400); }finally{ this._lootMinRare=false; }
     this.time?.delayedCall?.(900,()=>{ if(this.state==='menu')return; this.showBanner?.('✨ DOUBLE CLEAR!','Main + side mission in one wave · Gear box · Sugar +'+su,1900); Sfx.orderCue?.('mission_bonus_get',.5,.3); this.screenFlash?.(0x9fe8ff,.18,220); }); return true; }
@@ -17586,8 +17638,8 @@ class Game extends Phaser.Scene {
     if(this.recipeMode&&this._recipeMission){ o.done=true; const bn=Math.round((20+((this._amapNode&&this._amapNode.d)||1)*4)*this.diffMul().reward); this.sugarStage+=bn; this.sugarRun+=bn; this.clearWaveObjective(); this._recipeMission.done=true; this._hunger+=this.recipeHungerGoal()*MISSION_HUNGER; this.showBanner('✅ Mission complete · Sugar +'+bn+' · Hunger +'+Math.round(MISSION_HUNGER*100)+'%',this._hunger>=this.recipeHungerGoal()?'The boss is coming':'Fill the Hunger Meter to call the boss',2000); if(!['capture','hunt','purge'].includes(o.type))Sfx.clear(); return; }
     if(this._replayMeter&&this._replayMission&&this._replayMission.o===o){ o.done=true; const m=this._replayMeter,bn=Math.round((10+this.stageIndex*3)*(this.diffMul?.().reward||1)); this.sugarStage+=bn; this.sugarRun+=bn; const _rb=this.objBonusPay?.(o,bn)||0; this.missionLootBurst?.(o,bn+_rb); const _rw=this.missionRewardGive?.(o); m.kills=Math.min(m.goal,m.kills+m.goal*.08); this.clearWaveObjective(); this._replayMission=null; m.nextBounty=m.time+50+Math.random()*20; if(!this.missionStamp?.(o,'⭐ BOUNTY COMPLETE','Sugar +'+(bn+_rb)+' · Stage progress +8%',_rw&&_rw.txt))this.showBanner('⭐ Bounty complete · Sugar +'+(bn+_rb),'Stage progress +8%',1800); if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); return; }   /* v8.1.75 Bounty ตอนเล่นซ้ำ */
     if(this.overchargeOffer?.(o))return;   /* v8.1.79 Overcharge */
-    o.done=true;const zoneObj=['purge','capture','cleanAir','breakRoots','defendNectar',...(typeof SIG_MISSIONS!=='undefined'?SIG_MISSIONS:[])].includes(o.type),bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(zoneObj?1.5:1)*(o._altarMul||1)*(o._ocMul||1)*(o._gold?GOLD_WAVE_MUL:1)*(this.rpMsnRw?.(o.type)||1));this.sugarStage+=bonus;this.sugarRun+=bonus;const _ob=this.objBonusPay?.(o,bonus)||0;if(_ob)Sfx.orderCue?.('mission_bonus_get',.5,.3);if(!this._inTutorial)this.missionLootBurst?.(o,bonus+_ob);if(!this._inTutorial&&typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(o.type))this.leagueCurrencyDrop?.(o);   /* v8.0.18 เจ้าของ: ภารกิจคุ้มกัน/ยืนในวงได้ Sugar ×1.5 + ฟื้น HP 20% */ if(zoneObj&&this.player){const P=this.player,h=Math.round(P.maxhp*.2);P.hp=Math.min(P.maxhp,P.hp+h);this.floatText?.(P.x,P.y-70,'+'+h+' ❤️',0x6dffb4);}if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
-    if(!this._inTutorial){ this.missionJuice?.(o); this.doubleClearMark?.('main'); }
+    o.done=true;const zoneObj=['purge','capture','cleanAir','breakRoots','defendNectar',...(typeof SIG_MISSIONS!=='undefined'?SIG_MISSIONS:[])].includes(o.type),bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(zoneObj?1.5:1)*(o._altarMul||1)*(o._ocMul||1)*(o._gold?GOLD_WAVE_MUL:1)*(this.rpMsnRw?.(o.type)||1)*(this.maPay?.(o)||1));this.sugarStage+=bonus;this.sugarRun+=bonus;const _ob=this.objBonusPay?.(o,bonus)||0;if(_ob)Sfx.orderCue?.('mission_bonus_get',.5,.3);if(!this._inTutorial)this.missionLootBurst?.(o,bonus+_ob);if(!this._inTutorial&&typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(o.type))this.leagueCurrencyDrop?.(o);   /* v8.0.18 เจ้าของ: ภารกิจคุ้มกัน/ยืนในวงได้ Sugar ×1.5 + ฟื้น HP 20% */ if(zoneObj&&this.player){const P=this.player,h=Math.round(P.maxhp*.2);P.hp=Math.min(P.maxhp,P.hp+h);this.floatText?.(P.x,P.y-70,'+'+h+' ❤️',0x6dffb4);}if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
+    if(!this._inTutorial){ this.missionJuice?.(o); this.doubleClearMark?.('main'); this.maEarn?.((1+(_ob?1:0))*(o._gold?2:1)); }
     const _rw=this._inTutorial?null:this.missionRewardGive?.(o),title=(_ob?'⭐ Bonus! · ':'✅ Objective Complete · ')+'Sugar +'+(bonus+_ob)+(zoneObj?' · ❤️ +20%':'');this.clearWaveObjective();const _wrap=!!this._waveTimed&&this.waveTimer>WAVE_WRAP;this._waveTimed=false;if(_wrap){this.rubyVoiceReact?.('early',900);const _sk=this._stack,_left=this.waveTimer;this.waveTimer=WAVE_WRAP;if(_sk&&!_sk.o.done)this.waveTimer=Math.max(WAVE_WRAP,Math.min(_sk.T,_left));}   /* v8.2.21 ภารกิจเสริมยังทำอยู่ → เวฟรอจนภารกิจเสริมหมดเวลา */else{this.mode='waveclear';this.waveTimer=0;if(this.usesStoryBudget?.()){this.clearFoes();this.clearEnemies();this.settleStoryBudget(true);}}{ const sub=_wrap?'Done early! The wave ends in '+WAVE_WRAP+'s':this.usesStoryBudget?.()?'Earned EXP collected + objective reward — choose upgrades':'Clear the remaining enemies to advance'; if(!this.missionStamp?.(o,_ob?'⭐ BONUS CLEAR!':'✅ MISSION COMPLETE','Sugar +'+(bonus+_ob)+(zoneObj?' · ❤️ +20%':'')+'\n'+sub,_rw&&_rw.txt))this.showBanner(title,sub,1500); }if(!['capture','hunt','purge'].includes(o.type))Sfx.clear();
   }
   clearWaveObjective(){if(!this._stackSwap)this.missionMusicEnd?.(false);this.artFollowClear?.();this.sigClear?.();{ const o=this.waveObjective; if(o){ this.missionArmClear?.(o); if(o._oc){ for(const q of o._oc.objs||[]){ this.tweens?.killTweensOf?.(q); q.destroy?.(); } o._oc=null; } } }Sfx.eventLoopStop?.('event_capture_charge');if(this._wispSnd){this._wispSnd=false;Sfx.eventLoopStop?.('event_wisp_purify_charge');}this._pbTarget=null;this._pbShow=0;if(this.pbFx&&this.pbFx.scene)this.pbFx.clear();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(false);if(this.replayProgressFill)this.replayProgressFill.setVisible(false); if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
