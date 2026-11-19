@@ -1,0 +1,7 @@
+[
+  {"key": "ma89_nodes", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [26, 15, 26, 16], "nonempty": true}, {"index": 1, "marginPx": [16, 12, 17, 12], "nonempty": true}, {"index": 2, "marginPx": [18, 14, 19, 14], "nonempty": true}, {"index": 3, "marginPx": [19, 11, 20, 11], "nonempty": true}, {"index": 4, "marginPx": [19, 10, 20, 10], "nonempty": true}, {"index": 5, "marginPx": [15, 12, 16, 12], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "ma89_node_frame", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [2, 2, 2, 2], "nonempty": true, "nineSliceCornersNonempty": true}, {"index": 1, "marginPx": [2, 2, 2, 2], "nonempty": true, "nineSliceCornersNonempty": true}, {"index": 2, "marginPx": [2, 2, 2, 2], "nonempty": true, "nineSliceCornersNonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "ma89_emblem", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [20, 32, 21, 32], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "ma89_star", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [5, 6, 5, 6], "nonempty": true}, {"index": 1, "marginPx": [5, 6, 5, 6], "nonempty": true, "centerTransparent": 1.0}], "loopSeamMeanDelta": null},
+  {"key": "ma89_button", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [2, 2, 2, 2], "nonempty": true, "nineSliceCornersNonempty": true}], "loopSeamMeanDelta": null}
+]

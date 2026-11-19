@@ -1,0 +1,52 @@
+[
+  {
+    "key": "ma89_nodes",
+    "tool": "ImageGen",
+    "prompt": "Exactly SIX separate icons in a 3-column 2-row equal square-cell working atlas, strict row-major order: 1 pale cyan candy hourglass; 2 blue cloth pouch overflowing with cyan gemstones; 3 little sword inside one bright red-orange flame; 4 gift box bursting open with warm orange-red light; 5 miniature golden gacha capsule dispenser ejecting gold stars, blank casing without text or numerals; 6 golden crown paired with a prominent gold star. First pair cool blue, second pair orange-red, last pair gold. Every icon centered, isolated, bold and readable at28px. No cards or frames. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-86f2f64a-d483-4031-be2d-03368e06b16b.png",
+    "sourceColumns": 3,
+    "sourceRows": 2,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ma89_node_frame",
+    "tool": "ImageGen",
+    "prompt": "Exactly THREE horizontal rectangular node panels, arranged as ONE column and THREE rows in a portrait working image. Each equal cell has width:height 2:1. Same rounded rectangle silhouette and same corner radius in all three panels. Row1 dark plum fill with thin soft lavender rim; row2 same dark plum fill with softly glowing gold rim; row3 desaturated grey-purple fill and rim, with ONE tiny closed padlock pictogram in top-right corner. Everything inside the panel otherwise blank. Nine-slice art at final240x120: all corner details confined to24px from each corner; tiny lock fits in right-top24x24 protected cap; uniform center fill, straight uniform edge strips, no central gradients or ornaments that distort when stretched. Leave 2px transparent outside the whole rectangle at final size. No extra icons. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-894b7fc4-b4ae-4898-8a51-11c0077b744e.png",
+    "sourceColumns": 1,
+    "sourceRows": 3,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ma89_emblem",
+    "tool": "ImageGen",
+    "prompt": "One half-unrolled candy-parchment map, three gold stars joined by a winding dotted route, a little candy compass at its lower side. Warm parchment, plum edges, glossy gold highlights. A compact singular emblem readable at56px. No letter glyphs or numbers. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-fc86b2ae-e4cf-4ff9-b0c6-508debd5944d.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ma89_star",
+    "tool": "ImageGen",
+    "prompt": "Exactly TWO equal square cells in one horizontal row. Left: solid full warm golden five-point star, candy bevel and thin dark gold outline. Right: matching gold star outline with a truly transparent empty center; hollow center not dark-filled. Same size, shape and optical center. Bold readable at18px. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-fa929eb5-250a-40d8-91c5-9c90675d266d.png",
+    "sourceColumns": 2,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ma89_button",
+    "tool": "ImageGen",
+    "prompt": "One wide horizontal rounded capsule button, indigo-violet confectionery UI, warm soft edge. Completely blank interior except one EMPTY circular icon socket at the far left. NO icon inside the socket. At final240x64, socket is only24px diameter, centered at x18,y32, wholly contained in the left32px protected cap. Nine-slice32px left/right16px top/bottom. Uniform blank middle fill, uniform straight edge strips; no middle texture, central glare, text or ornaments. 2px transparent margin outside silhouette. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-2eeb56d2-6621-4478-b858-132a4b39868c.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  }
+]

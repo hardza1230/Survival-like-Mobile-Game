@@ -1,6 +1,6 @@
 # 88 — ไอคอน Pact Relic ใหม่ 8 ชิ้น · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.29 (ตอนนี้ใช้อีโมจิแทน)
+สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.29 (ตอนนี้ใช้อีโมจิแทน)
 ส่งไฟล์ที่ `assets/incoming/relics88/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ ตัวเลข หรือสัญลักษณ์อ่านได้ในภาพ**
 
@@ -34,4 +34,6 @@ Pact Relic (v8.2.29) = Relic ที่ให้พลังกับฮีโร
 - งบ: 8 × ~12 KB
 
 ## ส่งมอบ
-- (ฝั่งอาร์ตกรอก)
+- Date: 2026-11-19. Delivered all 8 files (8 Pact Relic icons / 8 frames) to `assets/incoming/relics88/`. Missing: none.
+- Included `MANIFEST.json`, exact `PROMPTS.json`, and compact per-file `QA_REPORT.json`. All files passed mechanical QA and independent readback.
+- Source branch: `asset-delivery/orders88-90-a18`. Source assets only; no game.js, runtime, tests or release changes. Code-side wiring and owner phone review pending.

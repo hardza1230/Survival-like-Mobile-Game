@@ -1,6 +1,6 @@
 # 89 — Mission Atlas (หน้าอัปเกรดภารกิจ) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.30 (ตอนนี้ใช้อีโมจิ + กล่องวาดด้วยโค้ด)
+สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.30 (ตอนนี้ใช้อีโมจิ + กล่องวาดด้วยโค้ด)
 ส่งไฟล์ที่ `assets/incoming/atlas89/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -28,7 +28,7 @@ Recipe Book → Missions → ปุ่ม **🗺️ Atlas** (เปิดหล�
 ### E. ป้าย NEW / ปุ่ม Atlas · `ma89_button.png` · 240×64 · โปร่งใส · 9-slice [32,16,32,16] · แสดงจริง ~118×28
 ปุ่มมุมมนสีม่วงคราม มีช่องไอคอนวงกลมด้านซ้าย (ว่าง — โค้ดวางตรา C ตัวเล็กเอง)
 
-**รวม 5 ไฟล์ (17 เฟรม)**
+**รวม 5 ไฟล์ (13 เฟรม)**
 
 ## ข้อห้าม
 - ห้ามตัวหนังสือ/ตัวเลข · กล่อง B ต้องยืดได้ (ห้ามลวดลายตรงกลางที่ยืดแล้วเพี้ยน)
@@ -40,4 +40,7 @@ Recipe Book → Missions → ปุ่ม **🗺️ Atlas** (เปิดหล�
 - งบ: รวม < 200 KB WebP
 
 ## ส่งมอบ
-- (ฝั่งอาร์ตกรอก)
+- Date: 2026-11-19. Delivered all 5 files (5 UI atlases / 13 frames) to `assets/incoming/atlas89/`. Missing: none.
+- Included `MANIFEST.json`, exact `PROMPTS.json`, and compact per-file `QA_REPORT.json`. All files passed mechanical QA and independent readback.
+- Source branch: `asset-delivery/orders88-90-a18`. Source assets only; no game.js, runtime, tests or release changes. Code-side wiring and owner phone review pending.
+- Corrected the printed total from17 to13 frames: the exact table has6 nodes +3 panel states +1 emblem +2 stars +1 button. All five requested files retain the specified grids and sizes.

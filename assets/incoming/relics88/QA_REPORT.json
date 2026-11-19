@@ -1,0 +1,10 @@
+[
+  {"key": "relic_stormlantern", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [25, 20, 26, 20], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "relic_goldenappetite", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [35, 20, 35, 20], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "relic_elitebait", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [42, 20, 43, 20], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "relic_cursedcrown", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [22, 20, 23, 20], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "relic_frostdebt", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [27, 20, 28, 20], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "relic_rootpact", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [54, 20, 54, 20], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "relic_hastyclock", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [35, 20, 36, 20], "nonempty": true}], "loopSeamMeanDelta": null},
+  {"key": "relic_glassgarden", "result": "pass", "size": true, "background": true, "frames": [{"index": 0, "marginPx": [35, 20, 36, 20], "nonempty": true}], "loopSeamMeanDelta": null}
+]

@@ -1,6 +1,6 @@
 # 90 — เหตุการณ์ภารกิจใหม่ v8.2.27–28 (ลูกศร · เวฟทอง · Double Clear · ภารกิจบอส · Reroll) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.27–28 (ตอนนี้เป็นตัวอักษร ➤ / ย้อมสี / ป้ายข้อความ)
+สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.27–28 (ตอนนี้เป็นตัวอักษร ➤ / ย้อมสี / ป้ายข้อความ)
 ส่งไฟล์ที่ `assets/incoming/events90/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -45,4 +45,6 @@
 - ไม่มีภาพ = ของเดิม · งบ: C/D ใหญ่สุด ~2 × 120 KB
 
 ## ส่งมอบ
-- (ฝั่งอาร์ตกรอก)
+- Date: 2026-11-19. Delivered all 7 files (7 event atlases / 30 frames) to `assets/incoming/events90/`. Missing: none.
+- Included `MANIFEST.json`, exact `PROMPTS.json`, and compact per-file `QA_REPORT.json`. All files passed mechanical QA and independent readback.
+- Source branch: `asset-delivery/orders88-90-a18`. Source assets only; no game.js, runtime, tests or release changes. Code-side wiring and owner phone review pending.

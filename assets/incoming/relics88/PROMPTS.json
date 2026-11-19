@@ -1,0 +1,98 @@
+[
+  {
+    "key": "relic_stormlantern",
+    "tool": "ImageGen",
+    "prompt": "A cute faceted candy-paper lantern, tiny vivid cyan and yellow lightning swirling inside its translucent shade, no writing on the lantern. A thin gold chain wraps exactly once around the central object as a pact. A faint two-tone halo: soft violet #c07bff above, delicate pink-red #ff5c7a below. One dominant large object, about 80% of the cell, 20px clear margin on final256px icon. Match reference relic shading and outline, but use the new two-color aura and fine gold chain. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\relics81\\relic_frostcandy.png"
+    ],
+    "source": "exec-3eb87e48-5a89-41a2-908a-35f7c00561b7.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "relic_goldenappetite",
+    "tool": "ImageGen",
+    "prompt": "One open golden honey jar overflowing with thick amber honey, a wooden spoon planted in it. A thin gold chain wraps exactly once around the central object as a pact. A faint two-tone halo: soft violet #c07bff above, delicate pink-red #ff5c7a below. One dominant large object, about 80% of the cell, 20px clear margin on final256px icon. Match reference relic shading and outline, but use the new two-color aura and fine gold chain. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\relics81\\relic_frostcandy.png"
+    ],
+    "source": "exec-c181e704-6957-4058-8dc0-f4df460eb442.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "relic_elitebait",
+    "tool": "ImageGen",
+    "prompt": "One large elegant fishhook holding a small skull-shaped mochi sweet as bait, skull cute and candy-like rather than realistic. A thin gold chain wraps exactly once around the central object as a pact. A faint two-tone halo: soft violet #c07bff above, delicate pink-red #ff5c7a below. One dominant large object, about 80% of the cell, 20px clear margin on final256px icon. Match reference relic shading and outline, but use the new two-color aura and fine gold chain. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\relics81\\relic_frostcandy.png"
+    ],
+    "source": "exec-f9ba6b33-4144-4e5a-8571-5749b51f2b7a.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "relic_cursedcrown",
+    "tool": "ImageGen",
+    "prompt": "One cracked golden sugar crown with a small violet smoke wisp curling out of the central crack. A thin gold chain wraps exactly once around the central object as a pact. A faint two-tone halo: soft violet #c07bff above, delicate pink-red #ff5c7a below. One dominant large object, about 80% of the cell, 20px clear margin on final256px icon. Match reference relic shading and outline, but use the new two-color aura and fine gold chain. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\relics81\\relic_frostcandy.png"
+    ],
+    "source": "exec-20842fec-67ad-483d-8715-525decfc1a69.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "relic_frostdebt",
+    "tool": "ImageGen",
+    "prompt": "One large blue ice-candy block wrapped in an icy chain, with a distinct little snowflake detail. A thin gold chain wraps exactly once around the central object as a pact. A faint two-tone halo: soft violet #c07bff above, delicate pink-red #ff5c7a below. One dominant large object, about 80% of the cell, 20px clear margin on final256px icon. Match reference relic shading and outline, but use the new two-color aura and fine gold chain. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\relics81\\relic_frostcandy.png"
+    ],
+    "source": "exec-74f9d7ec-233c-4c03-8eb4-6cfc07b1522b.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "relic_rootpact",
+    "tool": "ImageGen",
+    "prompt": "One green seedling growing from a tiny biscuit pot, dark purple roots curling out from the bottom. A thin gold chain wraps exactly once around the central object as a pact. A faint two-tone halo: soft violet #c07bff above, delicate pink-red #ff5c7a below. One dominant large object, about 80% of the cell, 20px clear margin on final256px icon. Match reference relic shading and outline, but use the new two-color aura and fine gold chain. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\relics81\\relic_frostcandy.png"
+    ],
+    "source": "exec-2109dcc4-0db9-44e3-9856-70dacf248469.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "relic_hastyclock",
+    "tool": "ImageGen",
+    "prompt": "One candy hourglass with fast-flowing sugar sand and a pair of small wings, no numerals or lettering. A thin gold chain wraps exactly once around the central object as a pact. A faint two-tone halo: soft violet #c07bff above, delicate pink-red #ff5c7a below. One dominant large object, about 80% of the cell, 20px clear margin on final256px icon. Match reference relic shading and outline, but use the new two-color aura and fine gold chain. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\relics81\\relic_frostcandy.png"
+    ],
+    "source": "exec-f4b97fd0-338c-454e-a320-df2161ad24a2.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "relic_glassgarden",
+    "tool": "ImageGen",
+    "prompt": "One miniature glass greenhouse dome containing prominent crystalline flowers. A thin gold chain wraps exactly once around the central object as a pact. A faint two-tone halo: soft violet #c07bff above, delicate pink-red #ff5c7a below. One dominant large object, about 80% of the cell, 20px clear margin on final256px icon. Match reference relic shading and outline, but use the new two-color aura and fine gold chain. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\relics81\\relic_frostcandy.png"
+    ],
+    "source": "exec-1d3a56d0-b495-496e-9ee2-e9c7953d02a0.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  }
+]

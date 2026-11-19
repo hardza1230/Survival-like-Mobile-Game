@@ -1,0 +1,372 @@
+[
+  {
+    "key": "vo_ruby_react_golden",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตื่นเต้นมาก",
+    "requests": [
+      {
+        "text": "A golden wave! Everything’s worth double!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881801,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      },
+      {
+        "text": "A golden wave! Everything’s worth double!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881802,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.2,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 2,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Golden take2 also trims286ms from an internal quiet pause before bounded tempo fitting."
+  },
+  {
+    "key": "vo_ruby_react_double",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ภูมิใจ เชียร์",
+    "requests": [
+      {
+        "text": "Double clear! Both missions in one wave!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881811,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_bossmission",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตกใจแล้วฮึกเหิม",
+    "requests": [
+      {
+        "text": "The boss is calling the stage — finish that mission too!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881821,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_newmission",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "อยากรู้ ใจดี",
+    "requests": [
+      {
+        "text": "Something new! Let me show you how this works.",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881831,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.53,
+          "similarity_boost": 0.8,
+          "style": 0.19,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_reroll",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "สนุก",
+    "requests": [
+      {
+        "text": "New cards, new luck!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881841,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_curse",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ระวัง แต่ยิ้ม",
+    "requests": [
+      {
+        "text": "A curse on this wave — but the rewards are bigger!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881851,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_react_jackpot",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตะโกนดีใจ",
+    "requests": [
+      {
+        "text": "Jackpot! Triple rewards!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881861,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "vo_ruby_tip_atlas",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "อธิบายใจดี",
+    "requests": [
+      {
+        "text": "Spend Atlas stars to upgrade the missions you love. You can’t have them all, so choose!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881871,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.53,
+          "similarity_boost": 0.8,
+          "style": 0.19,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      },
+      {
+        "text": "Spend Atlas stars to upgrade the missions you love. You can’t have them all, so choose!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 881872,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.53,
+          "similarity_boost": 0.8,
+          "style": 0.19,
+          "speed": 1.2,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 2,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_reroll",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Two quick dry shuffling-card flicks followed by one clear soft candy-glass ping. Immediate crisp onset. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.0,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_golden_wave",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Immediate warm golden bell strike followed by a little shower of small shiny sugar coins clinking down. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.5999999999999999,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_double_clear",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Two short ascending layers of clear glass chime tones, one warm golden and one icy bright, ending in a delicate sparkling tinkle. One compact reward sound, no melody or music bed. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.4,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_boss_mission",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "One immediate low short friendly fantasy horn blast with exactly one tight little drum roll. A compact cartoon warning cue, never threatening. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_mission_impact",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Immediate rounded heavy but soft low thump, with one short clear glass ping simultaneously. Strong compact satisfying hit, soft treble. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.7,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_curse",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Immediate quick airy purple-smoke whoosh and one quiet slightly dissonant bell tink. Playful magical curse, never horror. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.1,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_atlas_star",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "One tiny very gentle glass-star ting. Immediate delicate dry attack, very short soft tail. Extremely quiet frequent pickup, no piercing treble. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_atlas_pick",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Immediate soft stamp landing on parchment paper, then a tiny sparkling magical tinkle. Warm compact confirmation sound. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.7,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_atlas_remove",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Immediate little parchment sheet folding back with a quick soft papery fwoop. Dry compact cancellation sound. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.6000000000000001,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  },
+  {
+    "key": "sfx_a18_jackpot",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Immediate small mechanical candy-capsule dispenser whir and rattle, then a rapid joyful flutter of rounded gold bell strikes. One small game reward burst. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.7,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade."
+  }
+]

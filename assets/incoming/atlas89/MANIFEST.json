@@ -1,0 +1,89 @@
+[
+  {
+    "key": "ma89_nodes",
+    "file": "ma89_nodes.png",
+    "bytes": 122705,
+    "sha256": "4305bfa98ecb861faf34864db22d9c651c27082ddfc3c71f0fa1f2ab59187b3b",
+    "width": 768,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  },
+  {
+    "key": "ma89_node_frame",
+    "file": "ma89_node_frame.png",
+    "bytes": 84772,
+    "sha256": "4aa67f80bb3ea82f67cd372ea743918149c45d60b7794f3231f74b76c2527b0f",
+    "width": 720,
+    "height": 120,
+    "frameWidth": 240,
+    "frameHeight": 120,
+    "frameCount": 3,
+    "columns": 3,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent",
+    "nineSlice": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "key": "ma89_emblem",
+    "file": "ma89_emblem.png",
+    "bytes": 81708,
+    "sha256": "856d0e500de210d7cbb05828a631a179a53fd5187c6fa53a2ae02c713a35b52e",
+    "width": 256,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  },
+  {
+    "key": "ma89_star",
+    "file": "ma89_star.png",
+    "bytes": 10454,
+    "sha256": "578c83f09f10f49ad845c06ba94ba2077700e9b4f6be196be884b95a9cf92308",
+    "width": 128,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 2,
+    "columns": 2,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  },
+  {
+    "key": "ma89_button",
+    "file": "ma89_button.png",
+    "bytes": 20254,
+    "sha256": "ffa49285e4af82f42c9209d005178c51cd766bd3cc298a522c21bf60e1bc1b3d",
+    "width": 240,
+    "height": 64,
+    "frameWidth": 240,
+    "frameHeight": 64,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent",
+    "nineSlice": [
+      32,
+      16,
+      32,
+      16
+    ]
+  }
+]

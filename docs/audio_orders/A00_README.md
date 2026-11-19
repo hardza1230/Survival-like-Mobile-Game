@@ -22,6 +22,7 @@
 | `A17_MISSION_MUSIC.md` | Mission music: 8 loops + 3 one-shot stingers, ElevenLabs Music | 11 | 📦 ส่งแล้ว รอผูก |
 
 | `A16_RUBY_MISSIONS_SFX.md` | Ruby changed mission tips and reactions 12 + mission SFX 10 | 22 | 📦 ส่งแล้ว รอผูก |
+| `A18_RUBY_EVENTS_ATLAS_SFX.md` | Ruby new events8 + reroll/golden/Double Clear/boss/Pact/Atlas SFX10 | 18 | 📦 ส่งแล้ว รอผูก |
 
 ## กติการ่วม (ทุกใบ)
 - ทำด้วย **AI สร้างเสียง (เช่น ElevenLabs SFX/Music แบบ instrumental)** หรือ **สคริปต์สร้างเสียงด้วยโค้ด** (`scripts/gen_*_sfx.py`, jsfxr) — เลือกตามความเหมาะสมของแต่ละเสียง · **ห้ามเลียนแบบเพลง/ศิลปิน/เกมที่มีอยู่จริง** · ห้ามเสียงพูดเป็นคำ (ยกเว้นระบุ)

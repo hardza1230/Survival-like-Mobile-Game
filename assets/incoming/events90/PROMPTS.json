@@ -1,0 +1,74 @@
+[
+  {
+    "key": "ev90_arrows",
+    "tool": "ImageGen",
+    "prompt": "Exactly TWO separate identical rightward-pointing candy arrows in a horizontal row of equal square cells. Both point RIGHT at0 degrees with clearly sharp triangular arrowheads and short tails. Left arrow yellow gold with dark plum outline. Right arrow cyan #7fd8ff with dark blue outline. Same size and optical center, single bold silhouette readable at20px. No orbit rings. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-48589780-1881-46e5-b81f-4028acfc5257.png",
+    "sourceColumns": 2,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ev90_gold_shimmer",
+    "tool": "ImageGen",
+    "prompt": "Exactly SIX animation frames in a 3-column2-row equal-square-cell grid on SOLID PURE BLACK #000. A sparse diagonal golden glint moving upper-left to lower-right through a tiny thin peripheral arc, with just2or3 small four-point gold stars twinkling. MAIN SHAPE identical across frames, only glint offset and small star brightness vary. Quiet seamless loop, last matches first motion. Center region mostly EMPTY BLACK so a monster face is never covered; all bright streak segments stay around the periphery. Very delicate, no filled aura disk or large explosion. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-33599856-0627-4d1a-b6f6-fc3059c9b01d.png",
+    "sourceColumns": 3,
+    "sourceRows": 2,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ev90_gold_burst",
+    "tool": "ImageGen",
+    "prompt": "Exactly EIGHT animation frames in a4-column2-row equal-square-cell grid, SOLID PURE BLACK #000. One golden wave opening burst: initial small warm gold ring expands outward across frames, tiny sugar-coin disks scatter outward in a few bold arcs, broad ring becomes thin and fades into small glints. One-shot progression from small gathering light to maximum expanding ring to fading particles. No text, numbers or marks on the tiny coins, no full-screen opaque flash. Everything stays inside its cell with7% empty black border. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-8ef76dcf-f994-45ce-8b4b-67a03f9bb5d1.png",
+    "sourceColumns": 4,
+    "sourceRows": 2,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ev90_double_clear",
+    "tool": "ImageGen",
+    "prompt": "Exactly EIGHT animation frames in a4-column2-row equal-square-cell grid, SOLID PURE BLACK #000. One-shot dual-mission celebration: a warm gold ring from left and an icy cyan ring from right move together, collide at center, briefly form two interlocking rings, then burst into gold-and-cyan sparkling shards and fade. Strict chronological8frames, restrained central flare, clearly visible TWO colored rings, no numbers, words or emblems.7% empty black margin per cell. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-cb76553e-2d61-414f-820e-cbdc788323c8.png",
+    "sourceColumns": 4,
+    "sourceRows": 2,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ev90_boss_chip",
+    "tool": "ImageGen",
+    "prompt": "One very wide low horizontal mission notification capsule, matching reference blue UI strip style but RED-PINK translucent fill and a thin warm GOLD rim. One tiny painted golden crown in a little circular socket at far left, remaining long body blank for code-rendered text. At final240x48, crown socket is only18px diameter centered x13,y24 and wholly contained in the left24px nine-slice cap. Nine-slice24px left/right,16px top/bottom: uniform middle fill, no central texture/glare or ornaments. Keep2px alpha margin around panel. No words, letters or numbers. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [
+      "E:\\Heart\\TT\\survival-mobile\\assets\\incoming\\mission87\\ui87_side_chip.png"
+    ],
+    "source": "exec-59fc8fbb-b6f4-4429-8193-5e5e3a9d9967.png",
+    "sourceColumns": 1,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ev90_reroll",
+    "tool": "ImageGen",
+    "prompt": "Exactly TWO distinct icons, equal square cells in ONE horizontal row. Both: two rounded looping arrows circle a single tiny blank parchment card. Left is plain FREE-reroll icon, without word or currency mark. Right is identical plus one little television screen pictogram at lower-right, screen blank and no play text. Bold cyan-gold palette with dark plum outline; clear at22px. No writing. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-eaf42502-ee9d-48f0-ab59-82fda29e4019.png",
+    "sourceColumns": 2,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  },
+  {
+    "key": "ev90_curses",
+    "tool": "ImageGen",
+    "prompt": "Exactly THREE separate icons in one horizontal row of equal square cells, strict order: 1 swarm of THREE cute mochi ants clustered tightly as one icon; 2 cute horned mochi skull representing an elite pack; 3 one frowning mochi monster leaning forward with a few strong trailing speed lines. Dark candy outlines, compact readable at24px, violet/pink curse accents. No aura that obscures silhouettes, no text or numbers. Use case: stylized-concept. Original Mochi Mayhem mobile-game asset, cute pastel confectionery fantasy, soft DARK COLORED outlines, softly raised painted shading, 2-3 clear candy-highlight levels. Match a cohesive established purple-and-warm-gold game UI. Clean bold silhouettes at mobile scale. No text, numbers, readable glyphs, logos, signature, watermark, checkerboard, white backing or grey haze. True alpha-zero background EXCEPT when explicitly solid black. No grid lines, gaps or dividers between exact equal working cells. Keep complete content inside each cell with a safe empty margin.",
+    "reference": [],
+    "source": "exec-c1805ed8-25e3-43b2-8326-1068d7308125.png",
+    "sourceColumns": 3,
+    "sourceRows": 1,
+    "postprocess": "Equal-cell extraction, shared animation/icon scale, centering, exact frame layout; low-alpha speckle and black-floor cleanup. UI cell bounds normalized to 2px outer inset; no painted replacement graphics."
+  }
+]

@@ -1,6 +1,6 @@
 # A18 — Ruby พากย์เหตุการณ์ใหม่ v8.2.27–30 + SFX (Reroll / เวฟทอง / Double Clear / ภารกิจบอส / Pact / Atlas) · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.27–30 (ตอนนี้ใช้เสียงเดิม/ไม่มีเสียง)
+สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.27–30 (ตอนนี้ใช้เสียงเดิม/ไม่มีเสียง)
 ส่งที่ `assets/incoming/audio_a18/` พร้อม `MANIFEST.json` (key, file, text (เฉพาะเสียงพูด), bytes, sha256, duration_ms), `PROMPTS.json`, `QA_REPORT.json`
 เครื่องมือ: **ElevenLabs** · เสียงพูดใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · SFX ใช้ ElevenLabs Sound Effects · ห้ามใช้เสียงสร้างด้วยโค้ด/Runway · กติการ่วมดู `A00_README.md`
 
@@ -46,4 +46,7 @@ v8.2.27–30 เพิ่มเหตุการณ์ใหม่ที่ย�
 - งบขนาด: ~0.5 MB รวม
 
 ## ส่งมอบ
-- (ฝั่งเสียงกรอก)
+- Date: 2026-11-19. Delivered all 18 files (8 Ruby voice lines + 10 SFX) to `assets/incoming/audio_a18/`. Missing: none.
+- Included `MANIFEST.json`, exact `PROMPTS.json`, and compact per-file `QA_REPORT.json`. All files passed mechanical QA and independent readback.
+- Source branch: `asset-delivery/orders88-90-a18`. Source assets only; no game.js, runtime, tests or release changes. Code-side wiring and owner phone review pending.
+- ElevenLabs only: A07 saved Ruby voice for all8 exact scripts, Sound Effects for all10 SFX. MP3 mono44.1kHz128kbps, maximum spoken lengths and exact SFX lengths verified; peak<=-1dBTP, speech onset<=60ms and SFX onset<=5ms. Atlas star is deliberately quiet (-16.5dBTP). Golden voice uses existing take2 with286ms of internal silence removed before bounded tempo fitting; no words changed.

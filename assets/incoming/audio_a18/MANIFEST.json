@@ -1,0 +1,136 @@
+[
+  {
+    "key": "vo_ruby_react_golden",
+    "file": "vo_ruby_react_golden.mp3",
+    "bytes": 35987,
+    "sha256": "55f646641bbb27ae5ab8ead523dbeceb38fbbcc482cf227a5efa508d1fea30c2",
+    "duration_ms": 2170,
+    "text": "A golden wave! Everything’s worth double!"
+  },
+  {
+    "key": "vo_ruby_react_double",
+    "file": "vo_ruby_react_double.mp3",
+    "bytes": 35987,
+    "sha256": "d6fc1ef237c252cc4e5ab70538e12664ce1581110ba3b6a9a00d6624932814ae",
+    "duration_ms": 2183,
+    "text": "Double clear! Both missions in one wave!"
+  },
+  {
+    "key": "vo_ruby_react_bossmission",
+    "file": "vo_ruby_react_bossmission.mp3",
+    "bytes": 48944,
+    "sha256": "1d9890cdef6308d3d59d4ae9bf972d018a22ce4de354d34bb5e766dec2cfe528",
+    "duration_ms": 2986,
+    "text": "The boss is calling the stage — finish that mission too!"
+  },
+  {
+    "key": "vo_ruby_react_newmission",
+    "file": "vo_ruby_react_newmission.mp3",
+    "bytes": 42256,
+    "sha256": "d04a6ccc2d1da3059c3d01354e0f08eeea2c85226b6e937dfa026e3409d437c9",
+    "duration_ms": 2584,
+    "text": "Something new! Let me show you how this works."
+  },
+  {
+    "key": "vo_ruby_react_reroll",
+    "file": "vo_ruby_react_reroll.mp3",
+    "bytes": 20523,
+    "sha256": "f4ce4d37f2d9cc9d0e96c18ef32aac6878e98136530ab917e2c62741c4d33663",
+    "duration_ms": 1207,
+    "text": "New cards, new luck!"
+  },
+  {
+    "key": "vo_ruby_react_curse",
+    "file": "vo_ruby_react_curse.mp3",
+    "bytes": 42256,
+    "sha256": "d542f7440b3beb3399b2e6b0140fc9747c82014d99512346ac90cc942987e15a",
+    "duration_ms": 2579,
+    "text": "A curse on this wave — but the rewards are bigger!"
+  },
+  {
+    "key": "vo_ruby_react_jackpot",
+    "file": "vo_ruby_react_jackpot.mp3",
+    "bytes": 26374,
+    "sha256": "c562a2367d581dc9e0ac8afbc0bc2ae76552b1cdabdd73f95aea3f84143dfe12",
+    "duration_ms": 1581,
+    "text": "Jackpot! Triple rewards!"
+  },
+  {
+    "key": "vo_ruby_tip_atlas",
+    "file": "vo_ruby_tip_atlas.mp3",
+    "bytes": 74439,
+    "sha256": "5dfc78f82c63aea7f183f23d86e8e6616a39331d26b366d3474b68f1258c4746",
+    "duration_ms": 4583,
+    "text": "Spend Atlas stars to upgrade the missions you love. You can’t have them all, so choose!"
+  },
+  {
+    "key": "sfx_a18_reroll",
+    "file": "sfx_a18_reroll.mp3",
+    "bytes": 13835,
+    "sha256": "37c77910a6a27ab9950524c09256d483a9df64366fcca19874e5647877a7f332",
+    "duration_ms": 800
+  },
+  {
+    "key": "sfx_a18_golden_wave",
+    "file": "sfx_a18_golden_wave.mp3",
+    "bytes": 23448,
+    "sha256": "927e00c547564a8e5396b68c3c1310a03d04b7b02567af0c0be778ff08d5d10f",
+    "duration_ms": 1400
+  },
+  {
+    "key": "sfx_a18_double_clear",
+    "file": "sfx_a18_double_clear.mp3",
+    "bytes": 20105,
+    "sha256": "99cfac925fd383ec312f33d9c0feeb7df5969dbbac2af2b8444236abf53915c3",
+    "duration_ms": 1200
+  },
+  {
+    "key": "sfx_a18_boss_mission",
+    "file": "sfx_a18_boss_mission.mp3",
+    "bytes": 17179,
+    "sha256": "3c8f4a7fd0219e9ad0351cde7f27957adfd35d8c4ba31a6a72e7d8003f477f81",
+    "duration_ms": 1000
+  },
+  {
+    "key": "sfx_a18_mission_impact",
+    "file": "sfx_a18_mission_impact.mp3",
+    "bytes": 9238,
+    "sha256": "6bd6c2b5036c589444e7d8d61d3ddf9cbd319902cf38c6cb600851d65bc3ad65",
+    "duration_ms": 500
+  },
+  {
+    "key": "sfx_a18_curse",
+    "file": "sfx_a18_curse.mp3",
+    "bytes": 15507,
+    "sha256": "d46bd8b40cef6f134daf04221d915a609c619145ce4a5ee25d46576dfdbcbfbe",
+    "duration_ms": 900
+  },
+  {
+    "key": "sfx_a18_atlas_star",
+    "file": "sfx_a18_atlas_star.mp3",
+    "bytes": 5894,
+    "sha256": "2e107552a3bbb1e066533b46b653fecadd729a0aa2252007d3fe43fb41bced50",
+    "duration_ms": 300
+  },
+  {
+    "key": "sfx_a18_atlas_pick",
+    "file": "sfx_a18_atlas_pick.mp3",
+    "bytes": 9238,
+    "sha256": "bf1e4c4f6b6d89292047002b05c2982f5976f52b36f56ed9c344f9f753746f79",
+    "duration_ms": 500
+  },
+  {
+    "key": "sfx_a18_atlas_remove",
+    "file": "sfx_a18_atlas_remove.mp3",
+    "bytes": 7566,
+    "sha256": "430873f96b75d5c9e173fb89186427f8b15e57a8a72f19df25ea6f3c880d1488",
+    "duration_ms": 400
+  },
+  {
+    "key": "sfx_a18_jackpot",
+    "file": "sfx_a18_jackpot.mp3",
+    "bytes": 25120,
+    "sha256": "708da002395333af6eee860cf9e7039bed27139fdc55f64eab765c963be3ff36",
+    "duration_ms": 1500
+  }
+]
