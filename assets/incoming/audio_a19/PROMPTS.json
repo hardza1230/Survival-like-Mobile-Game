@@ -1,0 +1,420 @@
+[
+  {
+    "key": "sfx_ex_tap_1",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A single TINY soft dry pat against a fluffy mochi sweet. Gentle unpitched low-mid puff, immediate rounded attack, completely decayed within90ms. No metallic click, sparkle, high ping, vocal syllable or hard snap. Comfortable when repeated10times per second. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_tap_2",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A single TINY soft dry pat against fluffy mochi dough, slightly airier and lighter in tone. Immediate rounded low-mid attack, fully decayed by90ms. No metallic click, high ping, vocal syllable or hard snap. Comfortable at10repeats per second. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_tap_3",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A single TINY soft dry pat into a squishy mochi sweet, slightly deeper and rounder. Immediate soft low-mid attack, fully decayed by90ms. No metallic click, sparkle, vocal syllable or hard snap. Comfortable at10repeats per second. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      {
+        "text": "A single TINY soft dry pat into a squishy mochi sweet, slightly deeper and rounder. Immediate soft low-mid attack, fully decayed by90ms. No metallic click, sparkle, vocal syllable or hard snap. Comfortable at10repeats per second. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 2,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_crit",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "One immediate strong rounded candy impact pang with a very brief delicate glass-sugar sparkle. Compact soft treble and no sharp piercing crash. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_foe_pop",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "One large soft cartoon mochi titan puff popping into candy, followed by a brief scattering of small sugar crumbs. Rounded, playful and nonviolent. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_crumbs",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A small quiet tumble of three or four dry cookie crumbs with very soft light candy clinks. Immediate, restrained frequent pickup cue. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.6000000000000001,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      {
+        "text": "A small quiet tumble of three or four dry cookie crumbs with very soft light candy clinks. Immediate, restrained frequent pickup cue. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.6000000000000001,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 2,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_stage_up",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Exactly three quick ascending clear soft glass-bell notes as a small stage-complete cue. Immediate first note, delicate rounded highs, short tail, no sustained melody. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_boss_appear",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Exactly two rounded low drum hits and a short cute grumpy cartoon mochi roar. Immediate, friendly fantasy weight, no words or real animal recording feel. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.5999999999999999,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_boss_tick",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "Exactly one short dry tense clock tick-tock with a soft woody body. Immediate, not loud or shrill. Comfortable when replayed once per second. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_boss_down",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "One big soft confectionery boss burst, followed by a tiny bright reward-fanfare flourish of rounded bell and horn-like tones. Immediate impact, compact satisfying finish, no music bed. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.8,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_boss_fail",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A small hourglass turning with a sandy soft swish, followed by a short gentle airy cartoon sigh without words. Kind and encouraging, never a harsh failure buzzer. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_hire",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "An immediate friendly little recruitment bell and one soft bouncing mochi pong. Bright warm compact welcome cue, no words. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_milestone",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "An immediate rising magical sparkle swell ending in a tiny soft cymbal tish. A small celebratory helper milestone cue, rounded treble. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_upgrade",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "One short immediate bright rounded candy pop. Crisp but soft, compact positive upgrade cue, no harsh click. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_daily_chest",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "An immediate small wooden candy chest opening with a light latch clack, followed by a compact shower of little sugar coins. Warm and rewarding. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.5,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_supply",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "A little canvas backpack zipper pulling open immediately, followed by one soft clear tiny ding. Dry close compact inventory pickup sound. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "sfx_ex_welcome_back",
+    "provider": "ElevenLabs Sound Effects",
+    "voice_id": null,
+    "mood": null,
+    "requests": [
+      {
+        "text": "One gentle welcoming bell immediately followed by a little soft tumble of sugar coins. Warm short returning-player reward cue, no speech. Original cute confectionery fantasy mobile game one-shot. Dry immediate attack, soft treble, clean isolated sound, no speech, music bed or background.",
+        "duration_seconds": 1.4,
+        "prompt_influence": 0.62,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "bgm_ex_expedition",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "A relaxed joyful exploration of a confectionery temple. Warm wooden marimba, softly plucked strings, light brushed hand drums and a gentle curious flute response. An unobtrusive memorable tiny repeating motif, pleasant for long idle play, medium-light energy, no huge peaks or shrill bells. 28-bar cyclic main theme at112BPM with no closing cadence. Strict steady 112 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 63143,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "eIVTG5rKUJ96UuetvurO",
+    "source_bytes": 1515355,
+    "sha256": "6e912836ef045f180ebfd55ba37ca61efc31d05b46fab8ade6f2be34e8da16d1",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 23.95,
+      "crossfade_ms": 2143,
+      "bpm_estimate": 111.1,
+      "boundary_declick_ms": 3
+    }
+  },
+  {
+    "key": "bgm_ex_boss",
+    "provider": "ElevenLabs Music",
+    "endpoint": "/v1/music",
+    "parameters": {
+      "prompt": "A cute exciting timed boss encounter inside a candy temple. Quick light orchestral strings and rounded small battle drums, playful low brass accents, a clear soft ticking clock woven into the beat, urgent and bouncy rather than frightening. About140BPM, use142.5BPM for a19-bar32-second cyclic cue. No huge cymbal blasts, harsh tick, terror or sudden loud stabs. Strict steady 142.5 BPM in 4/4. Seamless repeating gameplay loop, already fully active on the first downbeat, stable texture and tempo throughout, no introductory build, no final cadence, fade-out or silence; carry the same repeating motif through the end. Entirely original music for Mochi Mayhem, a cute confectionery fantasy survival adventure. Premium playful orchestral game music with rounded warm sound, clear midrange on mobile speakers, gentle treble, no harsh shrill transients, no existing melodies, no artist or game imitation. No lyrics, speech or intelligible words.",
+      "music_length_ms": 34684,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "song_id": "3D8Yro5Vwq5KbzWb1gh9",
+    "source_bytes": 832618,
+    "sha256": "1f486108122114f9dc6797af5e01bf49b36a8f6c50a4f928b2ee6e13862953d7",
+    "postprocess": {
+      "method": "Mechanical trimming, constant-gain normalization and 192 kbps stereo export; no generated/synthesized replacement audio.",
+      "source_trim_start_ms": 11.97,
+      "crossfade_ms": 1684,
+      "bpm_estimate": 142.75,
+      "boundary_declick_ms": 3
+    }
+  },
+  {
+    "key": "vo_ruby_react_exboss",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตื่นเต้น เร่ง",
+    "requests": [
+      {
+        "text": "A boss! Tap as fast as you can!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 892071,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.8,
+          "style": 0.32,
+          "speed": 1.2,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "vo_ruby_react_exfail",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ปลอบใจ",
+    "requests": [
+      {
+        "text": "So close! Let’s get a bit stronger first.",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 892081,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.53,
+          "similarity_boost": 0.8,
+          "style": 0.19,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "vo_ruby_react_exwelcome",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ดีใจ",
+    "requests": [
+      {
+        "text": "Welcome back! Our helpers kept fighting!",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 892091,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.53,
+          "similarity_boost": 0.8,
+          "style": 0.19,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  },
+  {
+    "key": "vo_ruby_tip_expedition",
+    "provider": "ElevenLabs TTS",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "อธิบายใจดี",
+    "requests": [
+      {
+        "text": "Tap to fight! Hire helpers — they keep going even when you’re away.",
+        "model_id": "eleven_multilingual_v2",
+        "seed": 892101,
+        "apply_text_normalization": "off",
+        "voice_settings": {
+          "stability": 0.53,
+          "similarity_boost": 0.8,
+          "style": 0.19,
+          "speed": 1.15,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "selected_take": 1,
+    "postprocess": "Onset/tail trim, mono44.1kHz128kbps export, bounded tempo fit for speech, gain normalization and short SFX boundary fade. Taps use gentle4200Hz low-pass and approximately-18dBTP; frequent pickups and clock ticks also kept quiet."
+  }
+]

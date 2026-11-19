@@ -1,6 +1,6 @@
 # A19 — Temple Expedition: เสียงแตะตี · ไททัน · บอสจับเวลา · ผู้ช่วย · เพลงประจำหน้า · Ruby · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.32–33 (ตอนนี้ใช้เสียงขุด/เสียงเดิม)
+สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 19 พ.ย. 2026 · โค้ดพร้อม v8.2.32–33 (ตอนนี้ใช้เสียงขุด/เสียงเดิม)
 ส่งที่ `assets/incoming/audio_a19/` พร้อม `MANIFEST.json` (key, file, text (เฉพาะเสียงพูด), bytes, sha256, duration_ms, loop_start_ms/loop_end_ms (เพลง)), `PROMPTS.json`, `QA_REPORT.json`
 เครื่องมือ: **ElevenLabs** · SFX = Sound Effects · เพลง = ElevenLabs Music · เสียงพูดใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามเสียงสร้างด้วยโค้ด/Runway · กติการ่วมดู `A00_README.md`
 
@@ -55,4 +55,10 @@
 - งบขนาด: ~1.5 MB
 
 ## ส่งมอบ
-- (ฝั่งเสียงกรอก)
+- Date: 2026-11-19. All23 requested MP3 files delivered to `assets/incoming/audio_a19/`: all17 SFX table rows, both music loops, and all4 Ruby lines. Missing: none.
+- Generated exclusively with ElevenLabs: Sound Effects for17 SFX, Music for2 loops, TTS with saved A07 Ruby voice ID for4 exact scripts. Curly apostrophes and em dash preserved; no new voice created.
+- Included `MANIFEST.json` (bytes, SHA-256, decoded duration, exact speech text, music loop bounds), actual `PROMPTS.json` and compact per-file `QA_REPORT.json`.
+- Independent technical readback passed23/23: correct MP3 codec/sample rate/channel count/bitrate, exact SFX/music durations and maximum speech lengths, speech onset<=60ms, SFX onset<=5ms, peak<=-1dBTP, hashes and byte counts.
+- Tap variants are exactly120ms, with a gentle4200Hz low-pass and actual peak-18.4/-19.0/-18.2dBTP. Twenty identical hits at10Hz were layered for each variant as a scratch QA playback test, without synthesis: peak-18.1/-19.0/-18.2dBTP, no level buildup. QA records measured high-frequency energy; final comfort remains phone listening.
+- Both music files are stereo44.1kHz192kbps at-18.3LUFS. Seam preparation uses approximately one-bar raised-cosine tail/head overlap plus3ms boundary de-click; decoded endpoints are non-silent and discontinuities are below0.0003 full-scale. Main loop60000ms; boss loop32000ms. Musical seam/timbre and BPM remain owner listening; prompt targets112/142.5BPM, approximate estimates111.1/142.75.
+- Source branch: `asset-delivery/audio-a19`. Source delivery only; no game.js, runtime code, tests or release changes. Code-side packing/wiring pending.
