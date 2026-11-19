@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.25';
+const GAME_VERSION = '8.2.26';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.26',date:'2026-11-19',title:'Smaller download',items:['The game download is about 9 MB smaller: unused old boss music was removed and a few sound files were compressed']},
   {v:'8.2.25',date:'2026-11-19',title:'Big missions get their own music',items:['Frozen Pantry, Hunger’s Mouth, Grandma’s Pot, trials, Siege, Herald and Hunger’s Domain now play their own music','Short fanfares mark the start and end of a big mission, and the frozen army thaws with a crash']},
   {v:'8.2.24',date:'2026-11-19',title:'Mission card art, new mission monsters, new Ruby lines and sounds',items:['Mission cards before each stage now show a painted picture of each mission','The Hunt elite’s poison bottles, Herald minions, special trees, bees, root mothers and seed carriers have their own art','Ruby has new lines for the Herald, Hunt, Frozen Pantry, side missions and the wave timer','New sounds for poison bottles, the Herald beam, frozen crates, side missions and more']},
   {v:'8.2.23',date:'2026-11-19',title:'New art for mission props and monsters',items:['Frozen Pantry has real frozen crates and new Captain and Frost General statues','Shades, moths, sappers, light wisps and supply crates now have their own art','The Herald’s beam, the empowered aura and the minion icons are drawn as art','The two new trial curse stones have their own art']},
@@ -4512,7 +4513,7 @@ const ASSET_AUDIO = {
   sfx_dash:       'assets/audio/sfx/event_refresh/dash.mp3',
   sfx_levelup:    'assets/audio/sfx/playtest_revision/levelup.mp3',   // v5.19.1 เสียงเดียว (เดิม fanfare ฟังซ้อน)
   sfx_chest:      'assets/audio/sfx/event_refresh/chest.mp3',
-  sfx_btn:        'assets/audio/sfx/sfx_btn_click.wav',
+  sfx_btn:        'assets/audio/sfx/sfx_btn_click.mp3',
   sfx_craft_result_open:'assets/audio/sfx/event_refresh/craft_result_open.mp3',
   sfx_craft_result_count:'assets/audio/sfx/event_refresh/craft_result_count.mp3',
   sfx_craft_result_reveal:'assets/audio/sfx/event_refresh/craft_result_reveal.mp3',
@@ -4566,7 +4567,7 @@ const ASSET_AUDIO = {
   sfx_thunder: 'assets/audio/sfx/event_refresh/thunder.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_punch: 'assets/audio/sfx/event_refresh/punch.mp3',
   sfx_shotgun: 'assets/audio/sfx/event_refresh/shotgun.mp3',
-  sfx_beat_tick:'assets/audio/sfx/gen/sfx_beat_tick.wav', sfx_beat_loop:'assets/audio/sfx/gen/sfx_beat_loop.wav', sfx_beat_hold:'assets/audio/sfx/gen/sfx_beat_hold.wav', sfx_beat_rush:'assets/audio/sfx/gen/sfx_beat_rush.wav', sfx_beat_gun:'assets/audio/sfx/gen/sfx_beat_gun.wav', sfx_beat_cyclone:'assets/audio/sfx/gen/sfx_beat_cyclone.wav', sfx_beat_titan:'assets/audio/sfx/gen/sfx_beat_titan.wav', sfx_beat_juggle:'assets/audio/sfx/gen/sfx_beat_juggle.wav', sfx_beat_rainbow:'assets/audio/sfx/gen/sfx_beat_rainbow.wav', sfx_beat_fever:'assets/audio/sfx/gen/sfx_beat_fever.wav', sfx_beat_cue:'assets/audio/sfx/gen/sfx_beat_cue.wav', sfx_beat_start:'assets/audio/sfx/gen/sfx_beat_start.wav', sfx_beat_perfect:'assets/audio/sfx/gen/sfx_beat_perfect.wav', sfx_beat_good:'assets/audio/sfx/gen/sfx_beat_good.wav', sfx_beat_miss:'assets/audio/sfx/gen/sfx_beat_miss.wav',
+  sfx_beat_tick:'assets/audio/sfx/gen/sfx_beat_tick.ogg', sfx_beat_loop:'assets/audio/sfx/gen/sfx_beat_loop.ogg', sfx_beat_hold:'assets/audio/sfx/gen/sfx_beat_hold.ogg', sfx_beat_rush:'assets/audio/sfx/gen/sfx_beat_rush.ogg', sfx_beat_gun:'assets/audio/sfx/gen/sfx_beat_gun.ogg', sfx_beat_cyclone:'assets/audio/sfx/gen/sfx_beat_cyclone.ogg', sfx_beat_titan:'assets/audio/sfx/gen/sfx_beat_titan.ogg', sfx_beat_juggle:'assets/audio/sfx/gen/sfx_beat_juggle.ogg', sfx_beat_rainbow:'assets/audio/sfx/gen/sfx_beat_rainbow.ogg', sfx_beat_fever:'assets/audio/sfx/gen/sfx_beat_fever.ogg', sfx_beat_cue:'assets/audio/sfx/gen/sfx_beat_cue.ogg', sfx_beat_start:'assets/audio/sfx/gen/sfx_beat_start.ogg', sfx_beat_perfect:'assets/audio/sfx/gen/sfx_beat_perfect.ogg', sfx_beat_good:'assets/audio/sfx/gen/sfx_beat_good.ogg', sfx_beat_miss:'assets/audio/sfx/gen/sfx_beat_miss.ogg',
   sfx_punch_jab:'assets/audio/sfx/event_refresh/punch_jab.mp3', sfx_punch_heavy:'assets/audio/sfx/event_refresh/punch_heavy.mp3', sfx_punch_frenzy:'assets/audio/sfx/event_refresh/punch_frenzy.mp3',   // v5.53 คอมโบโกโก้   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_beam: 'assets/audio/sfx/event_refresh/beam.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
   sfx_burn: 'assets/audio/sfx/event_refresh/burn.mp3',   // v4.99 สร้างด้วย jsfxr (public domain)
@@ -4649,20 +4650,6 @@ const ASSET_AUDIO = {
   bgm_m15: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_m15.mp3',
   // v6.81 บอสรายด่าน (ElevenLabs campaign)
   bgm_b01: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b01.mp3',
-  bgm_b02: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b02.mp3',
-  bgm_b03: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b03.mp3',
-  bgm_b04: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b04.mp3',
-  bgm_b05: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_b05.mp3',
-  bgm_b06: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b06.mp3',
-  bgm_b07: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b07.mp3',
-  bgm_b08: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b08.mp3',
-  bgm_b09: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b09.mp3',
-  bgm_b10: 'assets/audio/bgm/elevenlabs_campaign/c2/bgm_b10.mp3',
-  bgm_b11: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b11.mp3',
-  bgm_b12: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b12.mp3',
-  bgm_b13: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b13.mp3',
-  bgm_b14: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b14.mp3',
-  bgm_b15: 'assets/audio/bgm/elevenlabs_campaign/c3/bgm_b15.mp3',
   bgm_endgame:      'assets/audio/bgm/bgm_endgame.mp3',        // v5.3 Recipe Maps (แจ๊ซ+ชิปทูน กลางดึก)
   bgm_endgame_boss: 'assets/audio/bgm/bgm_endgame_boss.mp3',   // v5.3 บอส Recipe + Pinnacle
   // v7.1 event SFX refresh (assets/audio/sfx/event_refresh, new event identities)
