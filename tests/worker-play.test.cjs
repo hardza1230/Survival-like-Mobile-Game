@@ -12,6 +12,6 @@ assert.strictEqual(ctx.sweepLeft(),5);d.sweep={day:'2026-11-10',n:5};assert.stri
 ctx.sweepRecord(4,800);assert.strictEqual(ctx.patrolStage(),4);const pr=ctx.patrolRate();assert.ok(pr.sugar*8<800*0.5,'patrol per run-length < sweep < play');
 assert.strictEqual(ctx.PATROL_DAY_MIN,240);
 for(const m of ['sweepBtn','sweepRun','menuGiveExp','patrolData','patrolTick','patrolCollect','patrolFps','patrolStop','buildPatrol','patrolHud','patrolDimOn'])assert.ok(src.includes('\n  '+m+'('),m);
-assert.ok(src.includes("sweepRecord(this.stageIndex,")&&src.includes("else if(s==='patrol')this.buildPatrol();")&&src.includes("if(this._patrolOn&&this.menuScreen!=='patrol')this.patrolStop();")&&src.includes("['patrol','🌙','Mochi Patrol'"));
+assert.ok(src.includes("sweepRecord(this.stageIndex,")&&src.includes("else if(s==='patrol')this.buildPatrol();")&&src.includes("if(this._patrolOn&&this.menuScreen!=='patrol')this.patrolStop();"));
 assert.ok(/patrolTick\(\)\{[^\n]*Math\.min\(2000/.test(src),'hidden time does not count');
 console.log('Worker play: Sweep needs 3 stars, pays 50% of best real run, 5/day reset; Patrol 40%/min, 240 min/day, visible-only, hooks passed');

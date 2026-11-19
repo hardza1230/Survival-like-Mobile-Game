@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.31**. Next release:8.2.32. Fetch the deploy branch before new work.
+Current release: **8.2.32**. Next release:8.2.33. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.31 — 🎨 Art and voice for Pact Relics, Mission Atlas and the new mission events (orders 88/89/90 + A18)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.32 — ⚔️ Temple Expedition: a tap-RPG idle mode replaces Temple Depths (Dig) and Mochi Patrol** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -39,6 +39,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 5. ถัดไป
 **ใบ 88/89/90 + A18:** ผูกแล้ว v8.2.31 · รอ QA มือถือ
+**Temple Expedition (v8.2.32):** แทน Dig + Patrol · ขั้น 1–2 เสร็จ (แตะ/ด่าน/บอส/ผู้ช่วย/ออฟไลน์/Supplies) · ขั้น 3–4 (สกิล/Prestige/Relic) หลัง Closed test · รออาร์ตใบ 91
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 
 **รอเจ้าของตัดสินใจ / ทำต่อ**

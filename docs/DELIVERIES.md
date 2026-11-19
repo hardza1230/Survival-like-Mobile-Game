@@ -1,6 +1,26 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.31 — 🎨 Art and voice for Pact Relics, Mission Atlas and the new mission events (orders 88/89/90 + A18)
+# Latest delivery: v8.2.32 — ⚔️ Temple Expedition: a tap-RPG idle mode replaces Temple Depths (Dig) and Mochi Patrol
+
+- **Where:** Weave → Expedition (the old Depths tile and badge, unlocked after Chapter 1). The Patrol row is removed from Activities.
+- **Tap to fight:** tap the scene to hit the foe in the middle. Crits are 5% for ×3; damage numbers and squash on each hit.
+- **Stages:** 10 foes per stage. Foe HP grows ×1.25 per stage, and each kill gives 🍪 Crumbs.
+- **Bosses:** every 5 stages. A boss has ×6 HP and a 30 s timer. If time runs out, you farm the previous stage until you tap ⚔️ Fight Boss.
+- **Upgrades:** Tap Power, plus helpers (Ruby + each owned hero) who deal DPS on their own. Helper DPS doubles every 25 levels.
+- **Offline:** helpers keep fighting at 50% for up to 8 h. On return a "While you were away" toast shows the result.
+- **Main-game rewards** (these replace what Dig used to give):
+  - First clear of each boss: 🍬 Sugar and 🧶 Thread, plus a Recipe Part every 10 stages and currency every 25.
+  - Daily chest: Sugar, Thread and a Recipe Part, scaled by the best stage reached.
+- **Crumbs help real stages (Supplies):** pack 1 supply for your next Story or Delve stage. It is used up when that stage starts. Options: 🫧 start with a shield, ⭐ +25% EXP, 🍬 +20% Sugar, ❤️ +15% max HP.
+- **Migration:**
+  - Shovels convert to Crumbs (×40). Shovel drops (minibosses, Treasure Sense, rewards) now give Crumbs.
+  - Threads waiting with the Miners and pending Patrol loot are collected automatically.
+  - The Daily quest "Dig 5 tiles" becomes "Defeat 30 Expedition foes".
+- **Art:** placeholders for now (Patrol scene + scaled Patrol foes + hero sprite). Art order 91 covers back-view heroes, front-facing titans, bosses, deep backgrounds, hit FX and icons.
+- **Later (after the Closed test):** active skills, Prestige and Temple Relics.
+- Test: `tests/expedition-8232.test.cjs`. Headless: offline crumbs, taps clear stage 4 → boss 5 → stage 6, daily chest, upgrades, supplies, and the mode stops when leaving the screen.
+
+# Previous delivery: v8.2.31 — 🎨 Art and voice for Pact Relics, Mission Atlas and the new mission events (orders 88/89/90 + A18)
 
 - **Packed:** `scripts/pack-orders88-90.py` → 20 WebP, 310 KB, 5.4 MiB decoded. `scripts/pack-audio-a18.py` → 8 Ruby lines (56k mono) + 10 SFX (96k). App size 185.9 MB.
 - **88 Pact Relic icons:** `relic_<key>` in `assets/art/relics88/`, stage-lazy like relics81. Cards pick them up automatically; the emoji stays as fallback.
@@ -18,18 +38,3 @@
   - SFX: reroll, golden wave, double clear, boss mission, mission impact, curse, Atlas star / pick / remove, jackpot.
   - Missing files fall back to the old sounds.
 - Test: `tests/orders88-90-a18.test.cjs`. Headless: Atlas renders with art (6 nine-slices), golden shimmer follows 2 of 4 gold monsters, both image arrows show, no errors.
-
-# Previous delivery: v8.2.30 — 🗺️ Mission Atlas: one ⭐ pool, a tree for every mission, choose what to master
-
-- **Unlock:** after Chapter 2 (`maUnlocked`: storyCleared ≥ 10).
-- **Points (`maEarn`, saved in `Save.data.matlas`):** +1 per mission, +1 more for a bonus clear, ×2 in a Golden Wave. A side mission gives +1. A Double Clear gives +1.
-- **Cap (`maCap`):** 15 at the start, +15 after Chapter 3, +2 every 5 Delve depths, 90 max. Filling every tree costs 138, so players must choose.
-- **Tree (`MA_TREE`):** all 23 missions have 3 tiers; on each tier the player picks 1 of 2.
-  - Tier 1 (1 ⭐): ⏳ +15% time or 💠 +1 currency.
-  - Tier 2 (2 ⭐): 🔥 25% harder, rewards ×1.35; or 🎁 35% chance of a Gear box.
-  - Tier 3 (3 ⭐): 🎰 12% chance of ×3 rewards; or 👑 40% harder, rewards ×1.6 and +1 Star Sugar.
-  - Tiers unlock in order. Tapping a chosen node again removes it and every tier above it. Reset is free.
-  - "Harder" raises the goal count. For small or timed goals it shortens the time instead.
-- **Focus (`maToggleFocus`):** a starred mission has ×2 weight in the deck. Slots unlock at 20, 50 and 90 earned points.
-- **Screen:** Recipe Book → Missions → **🗺️ Atlas** (NEW badge). It shows a list of 23 missions, 8 per page, each with its card face and tier icons. Tap a mission to open its tree. The header shows free / used / cap.
-- Test: `tests/mission-atlas-8230.test.cjs`. Headless: the Atlas list, mission select and node picks work.

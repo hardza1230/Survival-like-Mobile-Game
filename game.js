@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.31';
+const GAME_VERSION = '8.2.32';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.32',date:'2026-11-19',title:'Temple Expedition: tap, fight and idle',items:['Temple Depths and Mochi Patrol are now Temple Expedition: tap to fight titans and beat a timed boss every five stages','Hire Ruby and your heroes as helpers who keep fighting even while the game is closed','Earn Crumbs to buy Supplies that help your next real stage, plus Sugar, Thread and Recipe Parts from bosses and a daily chest']},
   {v:'8.2.31',date:'2026-11-19',title:'New art and voice for Pact Relics, Atlas and mission events',items:['Pact Relics have their own painted icons','The Mission Atlas screen now has painted node icons, frames and an emblem','Objective arrows, golden monsters, Double Clear, boss missions and the reroll button have new art','Ruby cheers for golden waves, double clears, boss missions, rerolls, curses and jackpots, with new sound effects']},
   {v:'8.2.30',date:'2026-11-19',title:'Mission Atlas: master the missions you like',items:['Earn Atlas stars from missions after Chapter 2 and spend them on upgrade trees for every mission','Each mission tree has three tiers where you pick one of two upgrades, and a star cap makes you choose','Focus your favourite missions so they show up twice as often in the deal']},
   {v:'8.2.29',date:'2026-11-19',title:'Pact Relics: the stage gets harder, rewards get better',items:['Heavy Armor, Sugar Rush and Cracked Crystal now make the stage harder instead of weakening your hero','Eight new Pact Relics from Chapter 2 trade a stage drawback for better rewards','Relic cards show a red Stage line and a reward line so you know the deal']},
@@ -4961,7 +4962,7 @@ const MENU_GROUPS=[
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
 const UI_ART_RE=/assets\/(?:art\/menu_(?:screens|stage_cards)\/|ui\/|art\/(?:menu_orders|ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|mobile_ui_789|forge_ui|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
-function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')),base0=g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/,base=new RegExp(base0.source+'|assets/art/menu74/(?!vfx78_)'+(s==='craft'?'|assets/art/menu74/vfx78_ink_move':s==='bestiary'?'|assets/art/menu74/vfx78_codex_up':'')+(/^(patrol|gActivity|hub)$/.test(s||'')?'|assets/art/patrol70/':''));   /* v8.1.93 ไอคอนใหม่โหลดทุกหน้าเมนู (เล็ก) · Patrol โหลดหน้า Patrol/Activities */
+function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')),base0=g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/,base=new RegExp(base0.source+'|assets/art/menu74/(?!vfx78_)'+(s==='craft'?'|assets/art/menu74/vfx78_ink_move':s==='bestiary'?'|assets/art/menu74/vfx78_codex_up':'')+(/^(patrol|gActivity|hub|dig)$/.test(s||'')?'|assets/art/patrol70/':''));   /* v8.1.93 ไอคอนใหม่โหลดทุกหน้าเมนู (เล็ก) · Patrol โหลดหน้า Patrol/Activities */
   const extra=/^(gear|craft|merge|gLoadout)$/.test(s)?'rar_|merge_|ic_merge|ic_forge_|ic_star_up|ic_mod_remove|vfx_merge_|vfx_rarity_|vfx_star_up|vfx_forge_':s==='daily'?'login_|day_reward|dq_|ic_reroll':s==='achievements'?'aw_|vfx_aw_':/^(skills|bestiary)$/.test(s)?'bs_|rb_':/^(dig|perks|upgrade)$/.test(s)?'dig_|vfx_dig_|rank_reward_icons':s==='hub'?'dig_miner':null;
   return extra?new RegExp(base.source+'|assets/art/menu_orders/(?:'+extra+')'):base; }
 // v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
@@ -6618,6 +6619,20 @@ const RANK_PERKS = [
 ];
 const PERK_TIER_REQ = { 2:2, 3:5 };   // v7.8.88 Vigor/Might/Iron Will ตัด (สเตตัสถาวรเหลือ Weave + Talent ฮีโร่)   // แต้มที่ต้องลงในชั้นก่อนหน้าเพื่อปลดชั้นนี้
 /* ---- v5.27 ⛏️ Temple Depths: มินิเกมขุดใต้วิหาร (ดู docs/TEMPLE_DIG_DESIGN.md) ---- */
+/* v8.2.32 เจ้าของ 19 พ.ย.: Temple Expedition (แทน Temple Depths/Dig + Mochi Patrol) · แตะตีไททันแบบเกม tap-RPG · ผู้ช่วยตีเอง (idle) · ปิดแอปก็ยังได้ 🍪 Crumbs (50% · ≤8 ชม.)
+   ทุก 5 ด่าน = บอสจับเวลา 30 วิ (แพ้ = วนฟาร์มด่านก่อน กด Fight Boss เมื่อพร้อม) · Crumbs ช่วยเกมหลักผ่าน Supplies (ของติดตัว 1 ชิ้นต่อด่าน) · บอสครั้งแรก/กล่องรายวัน = Sugar/ด้าย/Recipe Part เข้าเกมหลัก */
+const EXP_ON=true,EXP_KILLS=10,EXP_BOSS_EVERY=5,EXP_BOSS_T=30,EXP_OFF_MAX_H=8,EXP_OFF_RATE=.5,EXP_CRIT=.05,EXP_CRIT_MUL=3,EXP_HP_G=1.25,EXP_BOSS_HP=6,EXP_BOSS_CR=4,SHOVEL_CRUMBS=40,
+  EXP_HELPERS=[{id:'ruby',em:'🎀',name:'Ruby',base:1,cost:15},{id:'momo',em:'🍑',name:'Momo',base:5,cost:80},{id:'mint',em:'🌿',name:'Mint',base:22,cost:450},{id:'cocoa',em:'🍫',name:'Cocoa',base:100,cost:2600},{id:'taro',em:'💜',name:'Taro',base:480,cost:15000},{id:'yuzu',em:'🍋',name:'Yuzu',base:2300,cost:90000},{id:'sesame',em:'🖤',name:'Sesame',base:11000,cost:540000}],
+  EXP_SUPPLIES=[{id:'shield',em:'🫧',name:'Bubble Start',desc:'Start your next stage with a shield'},{id:'xp',em:'⭐',name:'Study Snack',desc:'+25% EXP in your next stage'},{id:'sugar',em:'🍬',name:'Sweet Tooth',desc:'+20% Sugar in your next stage'},{id:'hp',em:'❤️',name:'Hearty Meal',desc:'+15% max HP in your next stage'}];
+function expHp(s){ return Math.max(1,Math.round(10*Math.pow(EXP_HP_G,Math.max(0,s-1)))); }
+function expCrumb(s){ return Math.max(1,Math.ceil(expHp(s)*.12)); }
+function expIsBoss(s){ return s%EXP_BOSS_EVERY===0; }
+function expTapDmg(lv){ return Math.max(1,Math.round(lv*Math.pow(1.04,lv-1))); }
+function expTapCost(lv){ return Math.round(10*Math.pow(1.074,lv)); }
+function expHelpDps(h,lv){ return lv>0?h.base*lv*Math.pow(2,Math.floor(lv/25)):0; }
+function expHelpCost(h,lv){ return Math.round(h.cost*Math.pow(1.075,lv)); }
+function expFmt(n){ n=Math.floor(n||0); if(n<1000)return String(n); const u=['K','M','B','T','aa','ab','ac','ad','ae']; let i=-1; while(n>=1000&&i<u.length-1){ n/=1000; i++; } return (n>=100?Math.floor(n):n.toFixed(n>=10?1:2))+u[i]; }
+function expSupplyCost(best){ return Math.max(60,Math.round(expHp(Math.max(1,best))*3)); }
 const DIG_START_SHOVELS=0;
 const DIG_SHOP_COST=120, DIG_SHOP_SHOVELS=5, DIG_SHOP_DAILY_LIMIT=1;   // v8.0.27 เจ้าของ: ลดการซื้อพลั่วด้วย Sugar (3→1/วัน) · ได้จาก Daily/Awards/บอสมากขึ้น
 // v6.15 (Idle): Mochi Miners ขุดด้ายให้ตอนออฟไลน์ · [rate/ชม., เก็บได้กี่ชม., ราคาอัปไปเลเวลนี้]
@@ -6642,7 +6657,7 @@ const SCROLL_THREADS=15, ANCIENT_THREAD_COST=60;   // v7.8.88 Scroll รวม�
 /* ---- v5.30 Ancient Perks: Perk ลับจากใต้วิหาร (ปลดด้วยคัมภีร์ · RP ใช้ไม่ได้) ---- */
 const ANCIENT_PERKS=[
   { id:'echoDash',      emoji:'🌀', name:'Echo Dash',      desc:'3 dashes within 2.5s release a shockwave' },
-  { id:'treasureSense', emoji:'⛏️', name:'Treasure Sense', desc:'Kills can drop shovels (max 3 per stage)' },
+  { id:'treasureSense', emoji:'⛏️', name:'Treasure Sense', desc:'Kills can drop Expedition Crumbs (max 3 per stage)' },
   { id:'secondWeave',   emoji:'🃏', name:'Second Weave',   desc:'Your first level-up each stage gives an extra card pick' },
   { id:'ancientGuard',  emoji:'🗿', name:'Ancient Guard',  desc:'Survive your first lethal hit each stage at 1 HP (3s immune)' },
   { id:'sugarVein',     emoji:'🍬', name:'Sugar Vein',     desc:'+20% Sugar from kills' },
@@ -6898,7 +6913,7 @@ const HUB_GROUPS = {
   gActivity:{ title:'🎉 Activities', rows:[
     ['rewards','🎁','Rewards','Login gift, Daily Quests and Awards'],   // v8.0.75 เจ้าของ: แทน Daily + Achievements (ซ้ำกับปุ่ม Rewards)
     ['kitchen','🍳','Kitchen','Recipes that power every run'],
-    ['patrol','🌙','Mochi Patrol','Leave the game open · your hero keeps fighting'],   // v8.1.70 เจ้าของ: คนทำงาน (AFK)
+    /* v8.2.32 Mochi Patrol → รวมเข้า Temple Expedition (Weave → Expedition) */
     /* v6.80 E2: Endgame (Endless/Ascension) entry removed */
     /* v7.8.89 เจ้าของ: Boss Rush เอาออกไปก่อน (โค้ดยังอยู่ · ใส่แถวนี้กลับเพื่อเปิด) */
     ['recipes','📜','Recipe Maps','Endgame maps · Atlas · Uniques · Pinnacle Boss'] ] },
@@ -7628,7 +7643,7 @@ const Store = {
 function localDayKey(offset=0){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,'')),max=Math.max(0,Math.min(STAGES.length-1,Save.data.unlockedStage||0));
   const ready=STAGES.map((_,i)=>i).filter(i=>i<=max&&isStageReady(i)),stage=ready[seed%ready.length]||0;
-  const kind=['clear','kills',featureOpen('dig')?'dig':'kills'][seed%3],diff=max<3?1:2+(seed%2),target=kind==='kills'?60:kind==='dig'?5:1;
+  const kind=['clear','kills',featureOpen('dig')?'dig':'kills'][seed%3],diff=max<3?1:2+(seed%2),target=kind==='kills'?60:kind==='dig'?30:1;
   return{key,kind,stage,diff,target}; }
 // v7.5 Daily Quests (เจ้าของ: แบบเกมทั่วไป) — ภารกิจ 5 ข้อ/วัน ข้อละ 20 แต้ม · แต้มสะสมเปิดกล่อง 40 / 70 / 100 (ครบทุกข้อ = กล่องใหญ่)
 // v8.0.20 เจ้าของ: Daily ใหม่ — 10 ข้อ/วัน (ง่าย 4 · กลาง 4 · ท้าทาย 2) · กล่อง 3/6/8 ข้อ · เปลี่ยนภารกิจฟรีวันละ 1 · Weekly 7 ช่อง (วันที่ทำครบ 8) → หีบทอง
@@ -7649,7 +7664,7 @@ const DQ_POOL=[
   {id:'m_clear',k:'clear',b:1,emoji:'🏁',name:'Clear 2 stages',target:2,go:'stage'},
   {id:'m_obj',k:'objective',b:1,emoji:'🎯',name:'Finish 5 wave missions',target:5,go:'stage'},
   {id:'m_salv',k:'shards',b:1,emoji:'♻️',name:'Salvage gear for 20 Thread',target:20,go:'gear',req:0},
-  {id:'m_dig',k:'dig',b:1,emoji:'⛏️',name:'Dig 5 Temple Depths tiles',target:5,go:'dig',req:4},   // v8.0.86 Depths เปิดหลังจบบท 1
+  {id:'m_dig',k:'dig',b:1,emoji:'⚔️',name:'Defeat 30 Expedition foes',target:30,go:'dig',req:4},   // v8.0.86 Depths เปิดหลังจบบท 1
   {id:'h_star',k:'star3',b:2,emoji:'🌟',name:'Get all 3 stars in a stage',target:1,go:'stage'},
   {id:'h_boss',k:'boss',b:2,emoji:'👑',name:'Defeat 3 stage bosses',target:3,go:'stage'},
   {id:'h_kills',k:'kills',b:2,emoji:'⚔️',name:'Defeat 900 enemies',target:900,go:'stage'},
@@ -8051,7 +8066,12 @@ const Save = {
   digBuyShovels(){ const d=this.dig(),day=new Date().toISOString().slice(0,10);if(d.shopDay!==day){d.shopDay=day;d.shopN=0;}
     if(d.shopN>=DIG_SHOP_DAILY_LIMIT||!this.spend(DIG_SHOP_COST))return false;
     d.shopN++;d.shovels+=DIG_SHOP_SHOVELS;this.save();return true; },
-  addShovels(n){ const d=this.dig(); d.shovels=(d.shovels||0)+n; this.save(); },
+  addShovels(n){ if(typeof EXP_ON!=='undefined'&&EXP_ON){ this.addCrumbs((n||0)*SHOVEL_CRUMBS); return; } const d=this.dig(); d.shovels=(d.shovels||0)+n; this.save(); },   /* v8.2.32 Dig เลิกใช้: พลั่ว → Crumbs */
+  exp(){ const d=this.data; if(!d.exp||typeof d.exp!=='object')d.exp={s:1,k:0,best:1,crumbs:0,tap:1,help:{},at:Date.now(),farm:false,supply:null,daily:'',boss:{}}; const e=d.exp; if(!e.help)e.help={}; if(!e.boss)e.boss={};
+    if(!e.mig){ e.mig=1; const dg=d.dig; if(dg&&dg.shovels>0){ e.crumbs+=dg.shovels*SHOVEL_CRUMBS; dg.shovels=0; } try{ if(this.minersCollect)this.minersCollect(); }catch(err){} }   /* ย้ายของเดิม: พลั่ว → Crumbs · ด้ายที่คนงานเก็บไว้ → รับเลย */
+    return e; },
+  addCrumbs(n){ const e=this.exp(); e.crumbs=(e.crumbs||0)+Math.max(0,n||0); this.save(); },
+  expDailyReady(){ const e=this.exp(); return e.daily!==localDayKey(); },
   endgameUnlocked(){ return (this.data.ascension||0)>0||storyComplete(); },
   // Zone Modifiers ปลดล็อกเมื่อผ่านบอสจบ Chapter 1 (ด่าน 5 · index 4) = ผู้เล่นเรียนรู้เกมแล้ว
   zoneModsUnlocked(){ return false; },   // v6.80 E2: Zone Modifiers removed
@@ -12864,7 +12884,7 @@ class Game extends Phaser.Scene {
     if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew)||!!this._gearBetter?.();   // v7.9.56 +ของในกระเป๋าที่ดีกว่าที่สวม
     if(target==='kitchen')return kitchenOpen()&&Save.frRecipes().slice(0,Save.frSlots()).some(r=>['t','e'].some(k=>!(r&&r[k])&&Object.entries(Save.frParts()).some(([pk,n])=>n>0&&pk[0]===k&&!(frPart(pk)||{}).cut)));   // v7.9.56 ช่องสูตรว่าง + มีชิ้นส่วนวางได้
     if(target==='perks')return Save.rankUnpicked()>0;   // v8.0.22 ยศใหม่ยังไม่เลือกรางวัล
-    if(target==='dig')return featureOpen('dig')&&(Save.digFreeReady()||!!(Save.minersReady&&Save.minersReady()));
+    if(target==='dig')return featureOpen('dig')&&Save.expDailyReady();
     if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig')||this.hasTargetBadge('weave')||this.hasTargetBadge('specialCores');
     if(target==='news')return this.hasNewsBadge();
     return false;}catch(e){return false;}}
@@ -13375,7 +13395,7 @@ class Game extends Phaser.Scene {
     if(Save.gearInboxItems().length>0)return {hub:2,group:'gLoadout',target:'gearInbox',tag:'Claim gear'};
     if(this.hasClaimableTarget('daily')||this.hasClaimableTarget('achievements'))return {hub:3,group:'gActivity',target:null,tag:'Rewards ready'};
     if(Save.rankPointsFree()>0)return {hub:2,group:'gLoadout',target:'upgrade',tag:'Spend Rank Points'};
-    if(this.hasClaimableTarget('dig'))return {hub:2,group:'gLoadout',target:'upgrade',tag:'Free shovels'};
+    if(this.hasClaimableTarget('dig'))return {hub:2,group:'gLoadout',target:'upgrade',tag:'Daily chest'};
     const adv=this.powerAdvice(Math.min(us,STAGES.length-1));
     if(adv.screen==='upgrade')return {hub:2,group:'gLoadout',target:'upgrade',tag:'Upgrade Weave'};
     return {hub:0,group:null,target:null,tag:'Next stage'}; }
@@ -13675,12 +13695,12 @@ class Game extends Phaser.Scene {
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
     const rpFree=Save.rankUnpicked(), rkW=portrait?Math.min(150,(w-40)/2):124,rkH=30,rkX=portrait?w/2-rkW-3:w-14-rkW,rkY=portrait?ry+32:44;   // v8.0.22 แท็บเหลือ 2 (Rank Rewards · Depths)
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
-    if(featureOpen('dig')){ const dg=Save.dig(),dx=portrait?w/2+3:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Depths · '+dg.shovels,'tile_dig','#fff1d6');
+    if(featureOpen('dig')){ const ex=Save.exp(),dx=portrait?w/2+3:rkX-rkW-8,glow=Save.expDailyReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Expedition · '+ex.best,'tile_dig','#fff1d6');
       if(art)this.menu.add(art); else { const g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
-      const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⛏️ Depths · '+dg.shovels,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
+      const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⚔️ Expedition · '+ex.best,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
       this.menu.add([g2,t2]); this._smallBtnIcon(t2,'tile_dig'); }
       this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
-      if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
+      if(Save.expDailyReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
     // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
     // v8.0.22 แท็บ Special Cores ถูกรวมเข้า Rank Rewards
     { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Rank Rewards · '+rpFree+' new'):'Rank Rewards','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
@@ -13789,10 +13809,10 @@ class Game extends Phaser.Scene {
       if(allMax)pill(x+bw-110,y+rh2/2-17,98,34,'Weave',true,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion'); if(this.tuSparkle)this.tuSparkle(x+bw-61,y+rh2/2,72); if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5'); this.buildMenuScreen(); });
       y+=rh2+28; }
     this.pwSection('MORE',x+2,y-12);
-    { const tw=(bw-gap)/2,th=60,rpFree=Save.rankUnpicked(),dg=Save.dig(),tiles=[['perks','Rank Rewards',rpFree>0?rpFree+' new':'Rank perks','tile_perks','🏅',rpFree>0],featureOpen('dig')?['dig','Depths','⛏️ '+dg.shovels+' shovels','tile_dig','⛏️',Save.digFreeReady()]:['dig','Depths','🔒 After Chapter 1','tile_dig','⛏️',false]];
+    { const tw=(bw-gap)/2,th=60,rpFree=Save.rankUnpicked(),dg=Save.dig(),tiles=[['perks','Rank Rewards',rpFree>0?rpFree+' new':'Rank perks','tile_perks','🏅',rpFree>0],featureOpen('dig')?['dig','Expedition','Best stage '+Save.exp().best,'tile_dig','⚔️',Save.expDailyReady()]:['dig','Expedition','🔒 After Chapter 1','tile_dig','⚔️',false]];
       tiles.forEach(([to,name,sub,ik,em,dot],i)=>{ const tx=x+i*(tw+gap); this.pwCard(tx,y,tw,th,false); if(this.textures.exists(ik))this.menu.add(this.add.image(tx+28,y+th/2,ik).setDisplaySize(38,38)); else T(tx+28,y+th/2,em,22,'#fff',false,.5);
         const nt=T(tx+54,y+22,name,13,'#fff1e7',true),st=T(tx+54,y+41,sub,11,'#cfc1d4',false); for(const o of [nt,st])if(o.width>tw-74)o.setScale((tw-74)/o.width); T(tx+tw-12,y+th/2,'›',18,'#cfc1d4',true,1);
-        if(dot&&this.drawBadgeDot)this.drawBadgeDot(this.menu,tx+tw-8,y+8); this._zone(tx,y,tw,th,()=>{ if(to==='dig'&&!featureOpen('dig')){ Sfx.error?.(); this.menuToast?.('🔒 Depths opens after you clear Chapter 1','#ffd166'); return; } this.menuScreen=to; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='weave_'+to; }); }
+        if(dot&&this.drawBadgeDot)this.drawBadgeDot(this.menu,tx+tw-8,y+8); this._zone(tx,y,tw,th,()=>{ if(to==='dig'&&!featureOpen('dig')){ Sfx.error?.(); this.menuToast?.('🔒 Expedition opens after you clear Chapter 1','#ffd166'); return; } this.menuScreen=to; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='weave_'+to; }); }
     if(this._coachSpot){ const sp=this._coachSpot; this._coachSpot=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); this._weaveSpotAt=Date.now(); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,this._weaveTour?'Step 3/5 · Tap a core to spend your Sugar':'Tap to upgrade this core!'); }
     this.menu.setVisible(true); return true; }
   // v8.0.22 buildSpecialCores ถูกรวมเข้า Rank Rewards (buildRankPerks)
@@ -13838,7 +13858,7 @@ class Game extends Phaser.Scene {
     const reset=this.add.text(w/2,h-20,this._kResetConfirm?'⚠ Confirm Kitchen reset · 🧶'+Save.kitchenResetCost():'♻ Reset Kitchen · 🧶'+Save.kitchenResetCost(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#f0a0b0'}).setOrigin(0.5);this.menu.add(reset);
     this._zone(w/2-135,h-34,270,29,()=>{if(this._kResetConfirm){if(Save.frResetRecipes()){Sfx.clear();this._kSel={slot:0,k:'t'};}else this.menuToast('Need recipes and 🧶'+Save.kitchenResetCost()+' Weave Thread','#ff9bb5');this._kResetConfirm=false;}else{this._kResetConfirm=true;Sfx.select();}this.buildKitchen();});
   }
-  stopDigPresentation(){
+  stopDigPresentation(){ if(this._exOn&&this.menuScreen!=='dig')this.expStop?.();
     this._digToken=(this._digToken||0)+1;
     (this._digTimers||[]).forEach(t=>t.remove(false));this._digTimers=[];
     (this._digTweens||[]).forEach(t=>t.stop());this._digTweens=[];this._digBusy=false;
@@ -13853,7 +13873,76 @@ class Game extends Phaser.Scene {
     (this._digTweens||(this._digTweens=[])).push(tween);return tween;
   }
   digDestroy(obj){if(obj&&obj.scene){this.tweens.killTweensOf(obj);obj.destroy();}}
-  buildDig(){
+  /* ===== v8.2.32 Temple Expedition (หน้าเดียวแทน Dig + Patrol) ===== */
+  expHelpers(){ const own=new Set((Save.data.chars||[]).concat(Save.data.character||'momo')); return EXP_HELPERS.filter(h=>h.id==='ruby'||own.has(h.id)); }
+  expDps(){ const e=Save.exp(); let d=0; for(const h of EXP_HELPERS)d+=expHelpDps(h,e.help[h.id]|0); return d; }
+  expOffline(){ const e=Save.exp(),now=Date.now(),dt=Math.min(EXP_OFF_MAX_H*3600,Math.max(0,(now-(e.at||now))/1000)); e.at=now; const dps=this.expDps(); if(dt<60||dps<=0)return null;
+    const s=expIsBoss(e.s)?Math.max(1,e.s-1):e.s,kills=Math.floor(dt*dps*EXP_OFF_RATE/expHp(s)),cr=kills*expCrumb(s); if(kills<1)return null; e.crumbs+=cr; Save.save(); return {sec:dt,kills,cr}; }
+  expFoeNew(){ const e=Save.exp(),boss=expIsBoss(e.s)&&!e.farm,hp=expHp(e.s)*(boss?EXP_BOSS_HP:1); this._ex={hp,max:hp,boss,t:boss?EXP_BOSS_T:0}; this.expFoeDraw?.(); }
+  expHit(dmg,crit,tap){ const X=this._ex; if(!X||X.hp<=0)return; X.hp=Math.max(0,X.hp-dmg); const V=this._exV;
+    if(tap&&V){ if(V.foe?.active){ this.tweens.killTweensOf(V.foe); V.foe.setScale(V.fs*1.06,V.fs*.94); this.tweens.add({targets:V.foe,scaleX:V.fs,scaleY:V.fs,duration:120}); V.foe.setTint?.(0xffffff); this.time.delayedCall(60,()=>{ if(V.foe?.active){ if(X.boss)V.foe.setTint(0xff9a9a); else V.foe.clearTint(); } }); }
+      if(V.hero?.active){ this.tweens.killTweensOf(V.hero); V.hero.y=V.hy; this.tweens.add({targets:V.hero,y:V.hy-14,duration:60,yoyo:true}); }
+      const t=this.add.text(V.fx+Phaser.Math.Between(-50,50),V.fy-V.fh*.3,(crit?'💥':'')+expFmt(dmg),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:crit?'22px':'16px',color:crit?'#ffd166':'#ffffff',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5); this.menu.add(t); this.tweens.add({targets:t,y:t.y-50,alpha:0,duration:650,onComplete:()=>t.destroy()}); }
+    if(X.hp<=0)this.expKill(); else this.expHud(); }
+  expKill(){ const e=Save.exp(),X=this._ex,cr=expCrumb(e.s)*(X.boss?EXP_BOSS_CR:1); e.crumbs+=cr; this.advanceDaily?.('dig'); const V=this._exV;
+    if(V){ this.patrolPop?.(V.fx,V.fy-V.fh*.25,X.boss?0xffd166:0xffb6d9); const t=this.add.text(V.fx,V.fy-V.fh*.5,'🍪 +'+expFmt(cr),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5); this.menu.add(t); this.tweens.add({targets:t,y:t.y-40,alpha:0,duration:900,onComplete:()=>t.destroy()}); }
+    if(X.boss){ const s=e.s; e.s++; e.k=0; e.best=Math.max(e.best,e.s); Sfx.digRare?.(); if(!e.boss[s]){ e.boss[s]=1; this.expBossReward(s); } }
+    else { e.k++; if(e.k>=EXP_KILLS){ e.k=0; if(!e.farm){ e.s++; e.best=Math.max(e.best,e.s); } } }
+    Save.save(); this.expFoeNew(); this.expHud(); }
+  expBossFail(){ const e=Save.exp(); e.farm=true; e.s=Math.max(1,e.s-1); e.k=0; this.menuToast?.('⏱ Out of time! Farm a little, then tap Fight Boss','#ffb4b4'); Save.save(); this.expFoeNew(); this.buildMenuScreen(); }
+  /* บอสครั้งแรก = รางวัลเข้าเกมหลัก (แทนของที่เคยขุดได้) · ทุก 10 ด่าน + Recipe Part · ทุก 25 ด่าน + Currency */
+  expBossReward(s){ const got=[],su=15+3*s,th=3+Math.floor(s/5); Save.addSugar(su); got.push('🍬 +'+su); Save.addThreads(th); got.push('🧶 +'+th);
+    if(s%10===0&&typeof frRollPart==='function'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); got.push(pt.emoji+' '+pt.name); }
+    if(s%25===0&&typeof rollWeightedCurrency==='function'){ const k=rollWeightedCurrency(s>=75?'legend':s>=40?'epic':'rare'),n=2+Math.floor(s/25); if(k){ Save.addCurrency(k,n); got.push(currencyDef(k).emoji+'×'+n); } }
+    this.menuToast?.('👑 Boss '+s+' first clear! '+got.join('  '),'#ffd166'); }
+  expDaily(){ const e=Save.exp(); if(!Save.expDailyReady())return false; e.daily=localDayKey(); const b=e.best,su=40+b*3,th=25+b,got=['🍬 +'+su,'🧶 +'+th]; Save.addSugar(su); Save.addThreads(th);
+    if(typeof frRollPart==='function'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); got.push(pt.emoji+' '+pt.name); } Save.save(); Sfx.chestWin?.(); this.menuToast?.('🎁 Daily Expedition chest: '+got.join('  '),'#a8ffb0'); return true; }
+  expBuy(kind,id){ const e=Save.exp(); if(kind==='tap'){ const c=expTapCost(e.tap); if(e.crumbs<c)return false; e.crumbs-=c; e.tap++; }
+    else if(kind==='help'){ const h=EXP_HELPERS.find(x=>x.id===id),lv=e.help[id]|0,c=h?expHelpCost(h,lv):Infinity; if(e.crumbs<c)return false; e.crumbs-=c; e.help[id]=lv+1; }
+    else if(kind==='supply'){ const c=expSupplyCost(e.best); if(e.supply||e.crumbs<c)return false; e.crumbs-=c; e.supply=id; }
+    Save.save(); Sfx.select?.(); return true; }
+  expStop(){ this._exEv?.remove?.(false); this._exEv=null; this._exOn=false; this._exV=null; try{ Save.exp().at=Date.now(); Save.save(); }catch(e){} }
+  expTick(){ if(!this._exOn)return; if(this.state!=='menu'||this.menuScreen!=='dig'){ this.expStop(); return; } const now=Date.now(),dt=Math.min(.5,Math.max(0,(now-(this._exAt||now))/1000)); this._exAt=now; Save.exp().at=now;
+    const X=this._ex; if(!X)return; const d=this.expDps()*dt; if(d>0)this.expHit(d,false,false); if(X.boss&&this._ex===X&&X.hp>0){ X.t-=dt; if(X.t<=0){ this.expBossFail(); return; } } this.expHud(); if((this._exSave=(this._exSave||0)+1)%50===0)Save.save(); }
+  expHud(){ const V=this._exV,X=this._ex,e=Save.exp(); if(!V||!X||!V.bar?.active)return; const f=X.max>0?X.hp/X.max:0; V.bar.clear(); V.bar.fillStyle(0x1a0f1e,.85).fillRoundedRect(V.bx,V.by,V.bw,12,6).fillStyle(X.boss?0xff5a6e:0x7be08a,1).fillRoundedRect(V.bx+2,V.by+2,Math.max(0,(V.bw-4)*f),8,4);
+    V.hpT?.setText(expFmt(X.hp)+' / '+expFmt(X.max)); V.stT?.setText(X.boss?'👑 BOSS · Stage '+e.s+' · ⏱ '+Math.ceil(X.t)+'s':(e.farm?'🔁 Farming · ':'')+'Stage '+e.s+' · '+(e.k+1)+'/'+EXP_KILLS); V.crT?.setText('🍪 '+expFmt(e.crumbs)+'   ⚔️ '+expFmt(expTapDmg(e.tap))+'/tap   🤝 '+expFmt(this.expDps())+'/s'); }
+  expFoeDraw(){ const V=this._exV,X=this._ex; if(!V)return; V.foe?.destroy?.(); const e=Save.exp(),ch=Math.floor((e.s-1)/25)%3; let f=null;
+    if(this.textures.exists('pt_foes')){ const row=ch*2+((e.s+e.k)%2),key='pt_foe_r'+row; if(!this.anims.exists(key))this.anims.create({key,frames:this.anims.generateFrameNumbers('pt_foes',{start:row*6,end:row*6+5}),frameRate:8,repeat:-1}); f=this.add.sprite(V.fx,V.fy,'pt_foes',row*6).setOrigin(.5,.9); f.play(key); V.fs=(V.fh*(X.boss?.62:.46))/128; f.setScale(V.fs); if(X.boss)f.setTint(0xff9a9a); }
+    else { f=this.add.ellipse(V.fx,V.fy-V.fh*.15,V.fh*(X.boss?.5:.36),V.fh*(X.boss?.42:.3),X.boss?0xff7a8a:0xffb6d9,1).setStrokeStyle(4,0xffffff,.8); V.fs=1; }
+    this.menu.addAt?.(f,V.foeAt||0) ?? this.menu.add(f); V.foe=f; if(V.crown){ V.crown.setVisible(!!X.boss); } }
+  buildExpedition(){ this.stopDigPresentation?.(); this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⚔️ Temple Expedition','dig_bg','upgrade'); const w=this.W,h=this.H,top=70+this._hdrShift(),e=Save.exp();
+    if(this._patrolOn)this.patrolStop?.(); try{ const a=Save.data.afk; if(a&&a.pend&&(a.pend.sugar>=1||a.pend.exp>=1))this.patrolCollect?.(true); }catch(err){}   /* ของค้างจาก Patrol เดิม → รับเลย */
+    const off=this.expOffline(); const T=(x,y,str,fs,col,ox=.5)=>{ const o=this.add.text(x,y,str,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:col,stroke:'#1a0f1e',strokeThickness:3,align:'center',wordWrap:{width:w-36}}).setOrigin(ox,.5); this.menu.add(o); return o; };
+    const fh=Math.round(Math.max(260,Math.min(380,h*.44))),fx=10,fw=w-20,gy=top+fh-24,ch=Math.floor((e.s-1)/25)%3; if(!this.patrolScene?.(ch,fx,top,fw,fh,gy)){ const g=this.add.graphics(); g.fillStyle(0x1d2a3a,.95).fillRoundedRect(fx,top,fw,fh,20).fillStyle(0x2c3f2c,1).fillRoundedRect(fx,top+fh*.62,fw,fh*.38,{tl:0,tr:0,bl:20,br:20}); this.menu.add(g); }
+    const V=this._exV={fx:w/2,fy:top+fh*.6,fh,bx:w/2-110,by:top+44,bw:220,foeAt:this.menu.list.length};
+    V.bar=this.add.graphics(); this.menu.add(V.bar); V.stT=T(w/2,top+20,'',13,'#fff0b8'); V.hpT=T(w/2,top+66,'',10,'#ffffff'); V.crown=T(w/2,top+fh*.18,'👑',26,'#ffd166'); V.crown.setVisible(false);
+    // ฮีโร่หลัก (หลังหันหาไททัน · อาร์ตมุมหลังรอใบสั่ง) + ผู้ช่วย
+    const hc=Save.data.character||'momo',hk='char_'+hc; V.hy=top+fh+8; if(this.textures.exists(hk)){ V.hero=this.add.sprite(w/2,V.hy,hk,0).setOrigin(.5,1).setScale(Math.min(1.25,fh*.36/128)); this.menu.add(V.hero); } else V.hero=T(w/2,V.hy-30,'🍡',40,'#fff');
+    this.expHelpers().filter(x=>(e.help[x.id]|0)>0).slice(0,6).forEach((hh,i)=>{ const side=i%2?1:-1,col=Math.floor(i/2),x=w/2+side*(64+col*44),y=V.hy-18-col*10; const c=this.add.circle(x,y,15,0x2a1f3a,.92).setStrokeStyle(2,0xffd166,.9); this.menu.add(c); T(x,y,hh.em,15,'#fff'); T(x,y+20,'Lv'+e.help[hh.id],8,'#ffe08a'); });
+    this._zone(fx,top,fw,fh+10,()=>{ const crit=Math.random()<EXP_CRIT,d=expTapDmg(Save.exp().tap)*(crit?EXP_CRIT_MUL:1); this.expHit(d,crit,true); Sfx.digHit?.(); },null); this.tapZones[this.tapZones.length-1].tag='exp_tap';
+    // แถบข้อมูล + ปุ่ม
+    let y=top+fh+18; V.crT=T(w/2,y,'',12,'#ffe0f0'); y+=20;
+    const bh=34,btn=(x,bw,label,fill,on,fn,tag)=>{ const b=this.add.graphics(); b.fillStyle(on?fill:0x2c2338,1).fillRoundedRect(x,y,bw,bh,11).lineStyle(1.5,on?0xffe08a:0x4a4059,1).strokeRoundedRect(x,y,bw,bh,11); this.menu.add(b); T(x+bw/2,y+bh/2,label,11,on?'#ffffff':'#7a7088'); if(on){ this._zone(x,y,bw,bh,fn); this.tapZones[this.tapZones.length-1].tag=tag; } };
+    const dr=Save.expDailyReady(),bw3=(w-40)/3; btn(14,bw3,dr?'🎁 Daily chest':'✓ Chest tomorrow',0x3a5a3a,dr,()=>{ if(this.expDaily())this.buildMenuScreen(); },'exp_daily');
+    btn(20+bw3,bw3,e.farm?'⚔️ Fight Boss':'Stage best '+e.best,0x8a3a4a,!!e.farm,()=>{ const E=Save.exp(); E.farm=false; E.s=Math.ceil(E.s/EXP_BOSS_EVERY)*EXP_BOSS_EVERY; if(!expIsBoss(E.s))E.s++; E.k=0; Save.save(); this.expFoeNew(); this.buildMenuScreen(); },'exp_boss');
+    btn(26+bw3*2,bw3,e.supply?'🎒 '+(EXP_SUPPLIES.find(q=>q.id===e.supply)?.em||'')+' packed':'🎒 Supplies',0x4a3a8a,true,()=>{ this._exTab=this._exTab==='supply'?'tap':'supply'; this.buildMenuScreen(); },'exp_supply_tab');
+    y+=bh+10;
+    // แท็บ: อัปแตะ + ผู้ช่วย · หรือ Supplies
+    const rw=w-28,rx=14,rh=40,row=(em,name,sub,cost,can,fn,tag)=>{ const g=this.add.graphics(); g.fillStyle(0x221a2c,.95).fillRoundedRect(rx,y,rw,rh,10).lineStyle(1.2,0x5a4b75,1).strokeRoundedRect(rx,y,rw,rh,10); this.menu.add(g); T(rx+22,y+rh/2,em,18,'#fff'); T(rx+44,y+13,name,12,'#ffffff',0); T(rx+44,y+29,sub,9.5,'#cfc1d4',0);
+      const b=this.add.graphics(),bx=rx+rw-96; b.fillStyle(can?0x2f9a66:0x3a3045,1).fillRoundedRect(bx,y+6,88,rh-12,9); this.menu.add(b); T(bx+44,y+rh/2,cost,11,can?'#ffffff':'#8a8098'); if(can){ this._zone(bx,y+6,88,rh-12,fn); this.tapZones[this.tapZones.length-1].tag=tag; } y+=rh+5; };
+    if(this._exTab==='supply'){ T(w/2,y+6,'Pack 1 supply for your next real stage · used up when the stage starts',10,'#b7abc9'); y+=20; const c=expSupplyCost(e.best);
+      for(const q of EXP_SUPPLIES)row(q.em,q.name+(e.supply===q.id?'  ✓ packed':''),q.desc,e.supply?(e.supply===q.id?'Packed':'—'):'🍪 '+expFmt(c),!e.supply&&e.crumbs>=c,()=>{ if(this.expBuy('supply',q.id)){ this.menuToast?.(q.em+' '+q.name+' packed for your next stage','#a8ffb0'); this.buildMenuScreen(); } },'exp_supply_'+q.id); }
+    else { const tc=expTapCost(e.tap); row('👆','Tap Power · Lv '+e.tap,expFmt(expTapDmg(e.tap))+' → '+expFmt(expTapDmg(e.tap+1))+' per tap','🍪 '+expFmt(tc),e.crumbs>=tc,()=>{ if(this.expBuy('tap'))this.buildMenuScreen(); },'exp_tap_up');
+      const hs=this.expHelpers(),maxRows=Math.max(1,Math.floor((h-y-14)/(rh+5)));
+      hs.slice(0,maxRows).forEach(hh=>{ const lv=e.help[hh.id]|0,c=expHelpCost(hh,lv),nx=25*(Math.floor(lv/25)+1); row(hh.em,hh.name+' · Lv '+lv,(lv?expFmt(expHelpDps(hh,lv))+'/s':'Hire to fight for you')+' · ×2 at Lv '+nx,'🍪 '+expFmt(c),e.crumbs>=c,()=>{ if(this.expBuy('help',hh.id))this.buildMenuScreen(); },'exp_help_'+hh.id); }); }
+    if(!this._ex||this._ex.hp<=0)this.expFoeNew(); else this.expFoeDraw(); this.expHud();
+    if(off)this.time.delayedCall(250,()=>{ const hm=Math.floor(off.sec/3600)+'h '+Math.floor(off.sec%3600/60)+'m'; this.menuToast?.('💤 While you were away ('+hm+'): helpers beat '+expFmt(off.kills)+' foes · 🍪 +'+expFmt(off.cr),'#c7a6ff'); });
+    if(!this._exOn){ this._exOn=true; this._exAt=Date.now(); } this._exEv?.remove?.(false); this._exEv=this.time.addEvent({delay:100,loop:true,callback:()=>this.expTick()}); this.menu.setVisible(true); }
+  /* Supplies: ใช้ตอนเริ่มด่านจริง (Story/Delve) · 1 ชิ้นต่อด่าน แล้วหายไป */
+  expSupplyApply(){ if(typeof EXP_ON==='undefined'||!EXP_ON||this._inTutorial)return null; const e=Save.exp(),id=e.supply,p=this.player; if(!id||!p)return null; e.supply=null; Save.save();
+    if(id==='shield')this._shield=Math.max(this._shield||0,1); else if(id==='xp')p.xpMul=(p.xpMul||1)*1.25; else if(id==='sugar')p.sugarFindMul=(p.sugarFindMul||1)*1.2; else if(id==='hp'){ p.maxhp=Math.round(p.maxhp*1.15); p.hp=p.maxhp; }
+    const q=EXP_SUPPLIES.find(x=>x.id===id); if(q)this.time?.delayedCall?.(1600,()=>this.showBanner?.('🎒 Supply: '+q.em+' '+q.name,q.desc.replace('in your next stage','this stage').replace('your next stage','this stage'),1600)); return id; }
+  buildDig(){ if(typeof EXP_ON!=='undefined'&&EXP_ON)return this.buildExpedition();
     this.stopDigPresentation();
     if(this.events&&!this._digShutdownHook){this._digShutdownHook=true;this.events.once('shutdown',()=>{this.stopDigPresentation();this._digShutdownHook=false;});}
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⛏️ Temple Depths','dig_bg','upgrade');
@@ -15409,6 +15498,7 @@ class Game extends Phaser.Scene {
     const stageNo=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):(i+1),_d=this.diffMul();this._stageTxtAt=this.elapsed||0;this.stageTxt.setText(`Stage ${stageNo} · ${st.name} · ${_d.emoji}${_d.name} · Zone ${this.zoneLevel()}`);
     this.showBanner(`${st.emoji} Stage ${stageNo}: ${st.name}`, st.lore+' · ⚡ '+pg.rating+'/'+pg.recommended+' '+pg.label, 3000);
     this.updateWaveText();
+    this.expSupplyApply?.();   /* v8.2.32 Expedition Supplies */
     if(this.bossRush){ this._finalStoryShown=true; this.stageTxt.setText(this._pinnacleRun?'✦ Pinnacle · The Hunger Beneath':'👑 Boss Rush '+(this._rushPos+1)+'/'+this._rushList.length+' · '+st.name);
       if(this._rushPos===0){ this._rushT0=this.elapsed||0; this.pendingLvl=(this.pendingLvl||0)+6; }
       if(this.pendingLvl>0)this.time.delayedCall(600,()=>{ if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); });
@@ -20484,7 +20574,7 @@ class Game extends Phaser.Scene {
     const ring=this.camWorld(this.add.circle(p.x,p.y,R,0xc7a6ff,0.18).setStrokeStyle(5,0xe0c8ff,0.9).setDepth(90000).setScale(0.3)); this.tweens.add({targets:ring,scale:1,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
     this.enemies.getChildren().forEach(e=>{ if(e.active&&this.dist(e.x,e.y,p.x,p.y)<=R)this.damage(e,dmg); }); }
   // v5.30 ⛏️ Treasure Sense: ฆ่ามอนมีโอกาสได้พลั่ว (สูงสุด 3/ด่าน)
-  ancientTreasure(e){ if(!Save.ancientHas('treasureSense')||(this._shovelFind||0)>=3||Math.random()>0.005)return; this._shovelFind=(this._shovelFind||0)+1; Save.addShovels(1); this.floatText(e.x,e.y-24,'+1 ⛏️',0xffd9a8); }
+  ancientTreasure(e){ if(!Save.ancientHas('treasureSense')||(this._shovelFind||0)>=3||Math.random()>0.005)return; this._shovelFind=(this._shovelFind||0)+1; Save.addShovels(1); this.floatText(e.x,e.y-24,'+'+(typeof SHOVEL_CRUMBS!=='undefined'?SHOVEL_CRUMBS+' 🍪':'1 ⛏️'),0xffd9a8); }
   relicDmg(mul){ return (10+(this.level||1)*1.5)*(this.player.dmgMul||1)*(1+(this.stageIndex||0)*0.35)*mul; }
   /* v8.2.29 Pact Relics: รวมผลกับด่านจาก Relic + Trade-off ที่ถือ + คำสาป Cursed Crown ของเวฟนี้ */
   rpIds(){ const out=Object.keys(this._rel||{}).filter(k=>this._rel[k]); for(const t of (this.basicAttack?.trades||[]))out.push(t); return out; }
@@ -22869,7 +22959,7 @@ class Game extends Phaser.Scene {
       if(victory){this.queueBossVictory(victoryPose,bx,by);return;}
       this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
-    if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+1 ⛏️',0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
+    if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+'+(typeof SHOVEL_CRUMBS!=='undefined'?SHOVEL_CRUMBS+' 🍪':'1 ⛏️'),0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
     if(isMini){ const mt=this.miniChestTier(),mx=e.x,my=e.y,ms=this._lootTok||0; if(!this._inTutorial&&!this.bossRush)this._levelHoldUntil=(this.time?.now||0)+2900;   /* v8.1.144 owner 🐞: loot → EXP/level-up → chest, one after another (level-up and the Spin wheel used to cover the loot) */
       let tries=0; const drop=()=>{ if(this.state==='menu'||this.state==='summary'||ms!==(this._lootTok||0))return; if((this.state!=='play'||(this.pendingLvl||0)>0)&&tries++<40){ this.time.delayedCall(400,drop); return; } this._nextChestTier=mt; this.spawnChest(mx,my,'mini'); }; this.time.delayedCall(this._inTutorial||this.bossRush?0:3600,drop);this.onWaveCleared(false,true); return; }   /* v8.1.101 เจ้าของ: วงล้อ (Spin) เปิดทับ loot bomb → กล่องมินิบอสหล่นหลังของระเบิดออกและดูดเข้าตัวแล้ว (~2.3 วิ) */   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }
