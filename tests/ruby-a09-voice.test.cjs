@@ -7,7 +7,7 @@ const M=JSON.parse(fs.readFileSync('assets/incoming/audio_ruby_a09/MANIFEST.json
 const ctx={performance:{now:()=>0},Save:{data:{settings:{}}},Sfx:{},window:{},StoryMusic:{}};vm.createContext(ctx);
 vm.runInContext(s.slice(s.indexOf('const A07_CATALOG = '),s.indexOf('const VoiceActing=')),ctx);const i=s.indexOf('const RUBY_TIPS={');vm.runInContext(s.slice(i,s.indexOf('\n};',i)+3),ctx);
 const C=vm.runInContext('A07_CATALOG',ctx),B=vm.runInContext('A07_BY_TEXT',ctx),T=vm.runInContext('RUBY_TIPS',ctx);
-const A15=new Set(JSON.parse(fs.readFileSync('assets/incoming/audio_ruby_a15/MANIFEST.json','utf8')).map(r=>r.key));   /* v8.2.12 A15 replaced these 8 lines */
+const A15=new Set([...JSON.parse(fs.readFileSync('assets/incoming/audio_ruby_a15/MANIFEST.json','utf8')).map(r=>r.key),...JSON.parse(fs.readFileSync('assets/incoming/audio_a16/MANIFEST.json','utf8')).map(r=>r.key)]);   /* v8.2.12 A15 replaced 8 lines · v8.2.24 A16 replaced Herald/Hunt/Frozen Pantry tips (checked in tests/a16-audio.test.cjs) */
 for(const r of M){if(A15.has(r.key))continue;const b=fs.readFileSync('assets/audio/acting/'+r.file);assert.equal(P.sha('assets/audio/acting/'+r.file,b),r.sha256,r.key);assert.equal(C[r.key].text,r.text);assert.equal(C[r.key].role,'ruby');assert(s.includes('"url":"assets/audio/acting/'+r.file+'"'));}
 const lookup=t=>B.get('ruby|'+String(t).replace(/\s+·\s+\d+\/\d+$/,'').replace(/[\[\]]/g,''));
 for(const k in T)if(T[k].short&&true){assert.equal(lookup(T[k].short),'vo_ruby_short_'+k,k);assert.equal(lookup(T[k].short+'  ·  3/10'),'vo_ruby_short_'+k,'progress suffix ignored');}

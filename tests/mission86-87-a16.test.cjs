@@ -1,0 +1,22 @@
+// v8.2.24 ใบ 86 หน้าการ์ดภารกิจ · ใบ 87 มอน/ของภารกิจรอบ 2 · A16 เสียง Ruby + SFX ภารกิจ
+const fs=require('fs'),crypto=require('crypto'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
+const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
+const rows=d=>{const j=JSON.parse(fs.readFileSync('assets/incoming/'+d+'/MANIFEST.json','utf8'));return Array.isArray(j)?j:(j.assets||j.files);};
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+for(const [d,n] of [['mission_cards86',1],['mission87',12],['audio_a16',22]]){ const R=rows(d);assert.strictEqual(R.length,n,d);for(const r of R){ const b=fs.readFileSync('assets/incoming/'+d+'/'+r.file);assert.ok(b.length===r.bytes&&sha(b)===r.sha256,r.key);} }
+const keys=['mc86_faces','hn87_poison_bottle','hn87_poison_splash','hh87_healer','hh87_booster','hh87_possessor','hh87_heal_pulse','st87_tree_hive','st87_tree_golden','st87_tree_mimic','st87_bee','cr87_root_fast','cr87_root_thick','cr87_root_split','sr87_carrier_fast','sr87_carrier_armored','sr87_carrier_split','gg87_gold_glint','ui87_side_chip'];
+for(const k of keys){ const dir=k.startsWith('mc86')?'mission86':'mission87',w=fs.readFileSync('assets/art/'+dir+'/'+k+'.webp');assert.ok(w.slice(8,12).toString()==='WEBP',k);assert.ok(src.includes(k+":{url:'assets/art/"+dir+"/"+k+".webp'"),'registered '+k); }
+assert.ok(/\|mc86\|hn87\|hh87\|st87\|cr87\|sr87\|gg87\|ui87\)_/.test(src),'stage-lazy');const MK=m('missionArtKeys');assert.ok(MK.includes("k.push(...pre('mc86_'),...pre('hn87_'))")&&MK.includes("11:['st87_']")&&MK.includes("7:['cr87_']")&&MK.includes("10:['sr87_']")&&MK.includes("4:['gg87_']"),'load classes');
+assert.ok(m('missionDealShow').includes("this.add.image(0,-chh*.1,'mc86_faces',fi)")&&src.includes("MC86_ORDER=['survive'"),'card faces');
+assert.ok(m('huntThrowAI').includes("b.setTexture('hn87_poison_bottle',0)")&&m('hitByFoe').includes("this.artFx?.('hn87_poison_splash'"),'bottle + splash');
+const H=m('hhTick');assert.ok(H.includes('this.artFollow?.(m,HH87_ART[k],64)')&&H.includes("this.artFx?.('hh87_heal_pulse'"),'Herald minions + heal pulse');
+assert.ok(src.includes("tk87={hive:'st87_tree_hive',golden:'st87_tree_golden',mimic:'st87_tree_mimic'}[kinds[i]]")&&m('stTreeSurprise').includes("this.artFollow?.(m,'st87_bee',44)"),'trees + bees');
+assert.ok(m('crLane').includes("rk87='cr87_root_'+(kind||'fast')")&&m('srCarrier').includes("this.artFollow?.(e,'sr87_carrier_'"),'root mothers + carriers');
+assert.ok(m('ggCarrier').includes("'gg87_gold_glint'")&&m('ggDropPart').includes("'gg87_gold_glint'")&&m('stackStart').includes("'ui87_side_chip'"),'golden glint + side chip');
+// A16 audio
+for(const r of rows('audio_a16')){ const vo=r.key.startsWith('vo_'),p=(vo?'assets/audio/acting/':'assets/audio/sfx/a16/')+r.key+'.mp3';assert.ok(fs.existsSync(p),p);
+  if(vo){ const ck=r.key.startsWith('vo_ruby_react_')?r.key+'_1':r.key;assert.ok(src.includes('"'+ck+'":{"url":"assets/audio/acting/'+r.key+'.mp3","text":"'+r.text+'"'),'catalog '+ck); } else assert.ok(src.includes(r.key+": 'assets/audio/sfx/a16/"+r.key+".mp3'"),'sfx '+r.key); }
+for(const [t,say] of [['hungerHerald','The [Herald] can’t be hurt — beat the monsters it powers up!'],['hunt','Dodge its [poison bottles] and beat the marked Elite!'],['frozenPantry','Open the [sugar jar], then walk through the frozen army and crates!']])assert.ok(src.includes(t+":{say:'"+say+"'"),'tip '+t);
+for(const [fn,ev] of [['fpOnKill','captain'],['stackStart','side'],['expireWaveObjective','half'],['completeWaveObjective','early'],['hhEmpower','empowered'],['tickStage','hurry']])assert.ok(m(fn).includes("this.rubyVoiceReact?.('"+ev+"'"),'react '+ev);
+for(const [fn,k] of [['huntThrowAI','a16_bottle_throw'],['hitByFoe','a16_bottle_shatter'],['hhTick','a16_herald_beam'],['hhEmpower','a16_empower'],['hhTick','a16_heal_pulse'],['fpCrateOpen','a16_crate_shatter'],['stackStart','a16_side_mission'],['expireWaveObjective','a16_time_up'],['llExtrasTick','a16_moth_steal'],['hsExtrasTick','a16_sapper_boom']])assert.ok(m(fn).includes("this.a12?.('"+k+"'"),'sfx hook '+k);
+console.log('Orders 86/87 + A16: 19 art keys stage-lazy with fallbacks, 12 Ruby lines (6 tips + 6 reacts), 10 SFX hooked passed');

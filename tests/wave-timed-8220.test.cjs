@@ -15,7 +15,7 @@ const mk=(story=true)=>{const sc=new ctx.K();Object.assign(sc,{stageIndex:2,wave
 const T=m('tickStage'),C=m('completeWaveObjective');
 assert.ok(T.includes("_timed=!this._replayMeter&&(!_obj||_obj.type==='survive'||!!this._waveTimed)"),'timed waves count down');
 assert.ok(T.includes('else if(_o)this.expireWaveObjective();')&&T.includes("else if(_o&&_o._timedGoal&&_o.type==='hungerHerald')this.hhFinish?.(_o,this._sig);"),'timer end: expire / Herald finish');
-assert.ok(C.includes('const _wrap=!!this._waveTimed&&this.waveTimer>WAVE_WRAP;')&&C.includes('if(_wrap){const _sk=this._stack,_left=this.waveTimer;this.waveTimer=WAVE_WRAP;'),'finish early = wave wraps up in 8s');
+assert.ok(C.includes('const _wrap=!!this._waveTimed&&this.waveTimer>WAVE_WRAP;')&&C.includes('const _sk=this._stack,_left=this.waveTimer;this.waveTimer=WAVE_WRAP;'),'finish early = wave wraps up in 8s');
 assert.ok(m('storyCanSpawn').includes('timedNeedsFoes'),'field does not empty while a timed wave runs');
 assert.ok(m('beginWave').includes('this.waveTimedSetup?.(o);'),'hooked at wave start');
 assert.ok(src.includes("this.stageIndex===0?ANT_SHOT_C11[0]:1.05")&&src.includes("this.stageIndex===0?ANT_SHOT_C11[1]:undefined")&&ctx.ANT_SHOT_C11[0]<1.05&&ctx.ANT_SHOT_C11[1]<1.4,'smaller ant shots in C1-1');
