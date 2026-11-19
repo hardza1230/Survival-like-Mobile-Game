@@ -45,3 +45,11 @@ Source branch: `asset-delivery/audio-a17`. All ElevenLabs Music; independent tec
 | `docs/art_orders/87_MISSION_MONSTERS_2.md` | 12 sheets | `assets/incoming/mission87/` | 📦 ส่งแล้ว รอผูก |
 | `docs/audio_orders/A16_RUBY_MISSIONS_SFX.md` | 22 MP3 / 12 Ruby + 10 SFX | `assets/incoming/audio_a16/` | 📦 ส่งแล้ว รอผูก |
 **ใหม่ 19 พ.ย. (รอทำ):** ใบ 86 `docs/art_orders/86_MISSION_CARDS.md` (หน้าการ์ดภารกิจ 25 เฟรม) · ใบ 87 `docs/art_orders/87_MISSION_MONSTERS_2.md` (มอน/ของภารกิจรอบ 2 · 12 ชีต) · A16 `docs/audio_orders/A16_RUBY_MISSIONS_SFX.md` (Ruby 12 บท + SFX 10) · A17 `docs/audio_orders/A17_MISSION_MUSIC.md` (เพลงภารกิจใหญ่ 8 + สติงเกอร์ 3)
+
+## ใหม่ 19 พ.ย. (รอทำ · โค้ดพร้อมแล้ว ใช้ของชั่วคราว)
+| # | ใบ | งาน | จำนวน | เครื่องมือ | ส่งที่ | สถานะ |
+|---|---|---|---|---|---|---|
+| 13 | `docs/art_orders/88_PACT_RELIC_ICONS.md` | ไอคอน Pact Relic 8 | 8 | ImageGen | `assets/incoming/relics88/` | 🟡 |
+| 14 | `docs/art_orders/89_MISSION_ATLAS_UI.md` | หน้า Mission Atlas | 5 (17 เฟรม) | ImageGen | `assets/incoming/atlas89/` | 🟡 |
+| 15 | `docs/art_orders/90_MISSION_EVENTS_FX.md` | ลูกศร / เวฟทอง / Double Clear / ภารกิจบอส / Reroll / คำสาป | 7 (30 เฟรม) | ImageGen | `assets/incoming/events90/` | 🟡 |
+| 16 | `docs/audio_orders/A18_RUBY_EVENTS_ATLAS_SFX.md` | Ruby พากย์ 8 + SFX 10 | 18 | ElevenLabs | `assets/incoming/audio_a18/` | 🟡 |

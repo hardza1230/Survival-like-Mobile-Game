@@ -38,6 +38,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
+**ใบสั่งใหม่ 19 พ.ย. (รอทำ):** 88 Pact Relic icons · 89 Mission Atlas UI · 90 mission events FX · A18 Ruby + SFX — โค้ดพร้อม v8.2.27–30
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 
 **รอเจ้าของตัดสินใจ / ทำต่อ**
