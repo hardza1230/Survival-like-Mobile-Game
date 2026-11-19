@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.18';
+const GAME_VERSION = '8.2.19';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.19',date:'2026-11-19',title:'Shades, moths, new trial curses, sappers and a 3-phase Breachlord',items:['Mirror Path: shades try to block the light beams, and the beams burn anything in their way','Last Light: moths fly in to steal lantern light, and glowing wisps refill a lantern','Vault Altar and Trials: two new curses, plus a clear reward ladder showing what risking it pays','Siege: sappers run to blow up the pot, and supply crates drop inside the circle','Hunger’s Domain: the Breachlord now fights in three phases']},
   {v:'8.2.18',date:'2026-11-18',title:'Golden golem parts, new root kinds, new seed carriers',items:['Grandma’s Golem: rare golden parts make a stronger golem and drop Recipe Ink, and part carriers now have guards','Creeping Roots: quick, thick and splitting root mothers, and a new root can split off on first play too','Seed Rift: quick, armored and splitting seed carriers; armored ones count twice']},
   {v:'8.2.17',date:'2026-11-18',title:'Trees, Breach and Herald get more surprises',items:['Shake the Trees: trees can hide fruit, a beehive, a golden tree or a tree mimic','Hunger’s Mouth: the Hand of the Hunger now appears on first play too, and the hand grows as you fight','Breach monsters come in more kinds, with an elite leading some packs','Hunger Herald: gates send swarms, brutes or archers, and the Herald has guards','Stand on a Herald gate to seal it early; a hurt Herald runs to a gate for help']},
   {v:'8.2.16',date:'2026-11-18',title:'Frozen Pantry: a real frozen army',items:['Frozen Pantry is bigger: a frozen army of 30 in squads with tanks and shooters','Every squad has a Captain; beat it first to weaken its squad','The Frost General now appears every time, with its own big crate','Walk over frozen crates to free them; they burst into loot when time resumes','Defeat most of the army for a bonus Honey Drop or Gear box']},

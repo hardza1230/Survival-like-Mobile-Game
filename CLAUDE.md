@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.18**. Next release:8.2.19. Fetch the deploy branch before new work.
+Current release: **8.2.19**. Next release:8.2.20. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.18 — 🗿🌱🌀 Mission polish round 3: Golem golden parts, root mother kinds, seed carrier kinds** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.19 — 🔮🏮⚖️🏰🪨 Mission polish round 4: mirror shades, moths, trial curses + reward ladder, siege sappers, Breachlord phases** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

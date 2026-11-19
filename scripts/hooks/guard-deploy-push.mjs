@@ -18,7 +18,10 @@ try {
   const files = sh(`git diff --name-only ${base}...HEAD`).split('\n').filter(Boolean);
   if (!files.some(f => /^(game\.js|index\.html|download\.html|manifest\.webmanifest|phaser\.min\.js|sw\.js|assets\/)/.test(f))) process.exit(0);   // only what players get needs a new version
   const ver = s => (s.match(/const GAME_VERSION = '([\d.]+)'/) || [])[1];
-  const here = ver(sh('git show HEAD:game.js')), there = ver(sh(`git show ${base}:game.js`));
+  // the hook runs before the command, so a `git commit && git push` line still sees the old HEAD → also read the working tree
+  const cmp = v => (v || '0').split('.').map(Number).reduce((a, n) => a * 1000 + n, 0);
+  let here = ver(sh('git show HEAD:game.js')); try { const w = ver(fs.readFileSync('game.js', 'utf8')); if (cmp(w) > cmp(here)) here = w; } catch {}
+  const there = ver(sh(`git show ${base}:game.js`));
   const why = [];
   if (here && there && here === there) why.push(`GAME_VERSION is still ${here} (same as the deploy branch) — run scripts/bump-version.mjs (release skill §2) before pushing game changes`);
   const stamp = `${sh('git rev-parse --git-dir')}/ci-checks-pass`;
