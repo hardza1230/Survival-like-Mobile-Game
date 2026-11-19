@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.20';
+const GAME_VERSION = '8.2.21';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.21',date:'2026-11-19',title:'Side missions can stack',items:['From Chapter 2, a side mission can join the main mission during a wave','Side missions show under the main mission and give their full reward without ending the wave','A side mission never repeats the main mission’s kind, and big map-wide missions stay on their own']},
   {v:'8.2.20',date:'2026-11-19',title:'Waves end by time, and a new Hunger Herald',items:['Mission waves now have a timer: finish early for the full reward, or get half if you were at least halfway','The Hunger Herald can no longer be hit: it floats near you and beams power into monsters while its gates stay open','New Herald minions: healers, boosters and possessors','Momo’s shots are louder, and the ant shots in C1-1 are smaller']},
   {v:'8.2.19',date:'2026-11-19',title:'Shades, moths, new trial curses, sappers and a 3-phase Breachlord',items:['Mirror Path: shades try to block the light beams, and the beams burn anything in their way','Last Light: moths fly in to steal lantern light, and glowing wisps refill a lantern','Vault Altar and Trials: two new curses, plus a clear reward ladder showing what risking it pays','Siege: sappers run to blow up the pot, and supply crates drop inside the circle','Hunger’s Domain: the Breachlord now fights in three phases']},
   {v:'8.2.18',date:'2026-11-18',title:'Golden golem parts, new root kinds, new seed carriers',items:['Grandma’s Golem: rare golden parts make a stronger golem and drop Recipe Ink, and part carriers now have guards','Creeping Roots: quick, thick and splitting root mothers, and a new root can split off on first play too','Seed Rift: quick, armored and splitting seed carriers; armored ones count twice']},
