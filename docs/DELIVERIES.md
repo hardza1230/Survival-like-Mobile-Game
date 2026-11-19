@@ -1,6 +1,15 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.27 — 🃏 SCAMPER round 1: side arrow, reroll, reward on cards, Double Clear, mission juice
+# Latest delivery: v8.2.28 — ✨ SCAMPER round 2: golden waves, first-time missions, boss missions
+
+- **Golden wave** (`goldWaveRoll`, 5 %): Story waves only, not the first C1-1 run, replay meter, Delve or tutorial. Normal monsters turn gold (`GOLD_TINT`) and mission rewards are doubled: Sugar, the mission currency drop and gear boxes, plus the half reward when time runs out. A "✨ GOLDEN WAVE!" banner shows at the start.
+- **First time a mission appears** (`missionLog` not set): the wave gets +20 % time (`FIRST_TIME_MUL`) and a "🆕 New mission" banner shows its steps. The spotlight focus on the target is forced (`missionIntroExtra`).
+- **Boss missions** (`BOSS_MISSION`, stages 5–14 only, so nothing new in Chapter 1): at 60 % boss HP the boss calls a mission that fits it. The mission uses the side-mission system for 45 s, and finishing it pays the side-mission reward.
+  - Missions: Rootmother's Bud and True Rootmother and First Planter → Creeping Roots; Mycelium Behemoth and Harvest Colossus → Seed Rift; Hornet Queen and Seedwarden → Shake the Trees; Chronobloom and Hollow Bloom → Last Light; Glass Gardener → Mirror Path.
+  - The mission ends when the boss dies. Boss music still has priority.
+- Test: `tests/scamper-8228.test.cjs` + headless boss check (stages 6, 7, 10, 12: mission starts at 60 % and clears on boss death).
+
+# Previous delivery: v8.2.27 — 🃏 SCAMPER round 1: side arrow, reroll, reward on cards, Double Clear, mission juice
 
 - **Side-mission arrow:** a blue arrow (outer ring) points at the side mission's next target, using `questFocusTargets` inside `stackRun` (refreshed every 0.25 s). Main arrow unchanged.
 - **Deal cards:** the lifted card now shows its reward line (`🎁 <mission reward> · 🍬 Sugar`). **Reroll** button under the row: 1 free per deal, then 1 more by rewarded ad (`showRewardedAd`). Rerolls the whole set except the stage card; the lesson plan (C1-1 first run) cannot reroll.
@@ -11,7 +20,3 @@
 - **Double Clear:** main + side mission done in the same wave → a Gear box + extra Sugar + banner (`doubleClearMark`).
 - **Shorter big missions:** Trial 200→150 s, Golem/Pot 120→100 s, Vault Altar 150→120 s.
 - Test: `tests/scamper-8227.test.cjs`.
-
-# Previous delivery: v8.2.26 — 📦 App size 194.6 → 185.4 MB: unused boss tracks removed, WAV → OGG/MP3, size gate in CI
-
-Owner 19 Nov approved items 1 + 4 of the size plan. The shipped app (www/ without `*-review.*`) was 194.6 MB, over the 190 MB house limit. (1) Removed `bgm_b02`–`bgm_b15` from `ASSET_AUDIO` and deleted the files (−8.4 MB): boss music has come from the owner's chapter themes since v8.1.144/153 (`bgm_c11_boss` / `bgm_c2_boss` / `bgm_c3_boss` in `bgmKeyFor`), so those keys were never reached; `bgm_b01` stays for the tutorial boss. (4) The last 16 WAV SFX: `sfx_btn` → MP3 96k mono, the 15 rhythm `sfx_beat_*` → OGG Vorbis q4 (no MP3 encoder delay, gapless `sfx_beat_loop`) (−1.1 MB). New `scripts/check-app-size.mjs` runs in `ci-checks.sh` after build-www: prints the shipped size, lists the largest files above 185 MB, fails above 190 MB. Now 185.4 MB. Tests: all pass.
