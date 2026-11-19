@@ -43,7 +43,8 @@ function method(name){
   return source.slice(start,start+end).trimEnd();
 }
 const m=vm.runInContext('({'+['artFollow','artFollowAct','artFollowDeath','artFollowTick','artFollowClear','missionArtKeys'].map(method).join(',')+'})',ctx);
-for(const name of ['hhTick','ggTick','hdTick'])assert(method(name).includes('this.artFollowAct?.('));
+for(const name of ['ggTick','hdTick'])   // v8.2.20 Herald ตีไม่ได้ = ไม่ใช่มอน (ไม่ใช้ artFollow)
+assert(method(name).includes('this.artFollowAct?.('));
 assert(method('sigOnKill').includes('this.artFollowDeath?.(e)'));
 assert(method('artFollowTick').includes('this.artFollowDeath?.(e,s)'));
 for(const [stage,base] of [[0,'hh_herald'],[1,'hm_hand_lord'],[1,'hm_breachlord'],[4,'gg_golem'],[14,'msn71_stalker_captain']]){

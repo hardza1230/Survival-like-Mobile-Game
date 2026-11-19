@@ -1,7 +1,7 @@
 // v8.2.19 เจ้าของ "ทำต่อ": Mirror Path เงาบังแสง+ลำแสงเผา · Last Light ผีเสื้อขโมยแสง+วิญญาณแสง · Vault/Trial คำสาปใหม่+แถบขั้นรางวัล · Siege Sapper+ลังเสบียง · Domain บอส 3 เฟส
 const fs=require('fs'),assert=require('assert'),vm=require('vm');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
-const K=src.match(/const [A-Z][A-Z_]*=[^\n]*?GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
+const K=src.match(/const [A-Z][A-Z0-9_]*=[^\n]*?GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
 const ctx={Math,console,TAU:Math.PI*2,WORLD:4000};vm.createContext(ctx);vm.runInContext(K,ctx);vm.runInContext(src.match(/const ULT_CURSES=[^\n]*?;/)[0].replace(/^const /,'var '),ctx);
 vm.runInContext('class S{'+['segD','mpShadeTick','llExtrasTick','ultLadder','hsExtrasTick','hsOnKill','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
 const obj=()=>{const o={visible:true,setTint(){return o},setVisible(v){o.visible=v;return o},setText(t){o.text=t;return o},setStrokeStyle(){return o},setFrame(){return o},setOrigin(){return o},setDepth(){return o}};return o;};

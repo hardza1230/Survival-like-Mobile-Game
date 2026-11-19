@@ -15,7 +15,7 @@ const sizes = {breach_open:[512,8],splinter_pick:[128,6],breach_chest:[256,8],
 const menu = {ink_move:'craft',codex_up:'bestiary'};
 const methods = {
   breach_open:['hmOpen','hdSetup'],splinter_pick:['hmTick'],breach_chest:['hmChest'],
-  stone_fuse:['hmSplinters'],statue_paint:['fpTick'],gates_shut:['hhDown'],
+  stone_fuse:['hmSplinters'],statue_paint:['fpTick'],gates_shut:['hhFinish'],
   dish_served:['gpServe'],golem_bake:['ggBake'],root_cut:['crTick'],siege_break:['hsBurst'],
   trial_curse:['ultStartFight'],trial_take:['ultTick'],trial_risk:['ultTick'],
   ink_move:['forgeMove'],codex_up:['codexUpgrade']

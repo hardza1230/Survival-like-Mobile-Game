@@ -13,7 +13,7 @@ const sc=si=>Object.assign(new C(),{stageIndex:si,player:{x:0,y:0},drops:[],spaw
  const b=sc(2);b.missionRewardGive({type:'hunt'});assert.equal(b.gear,1);assert.equal(b._lootMinRare,false);
  const t=sc(0);t._inTutorial=true;assert.equal(t.missionReward({type:'capture'}),null);}
 const cw=method('completeWaveObjective');assert(cw.includes('this.missionRewardGive?.(o)')&&cw.includes("this.missionStamp?.(o,_ob?'⭐ BONUS CLEAR!':'✅ MISSION COMPLETE'")&&cw.includes('this.showBanner(title,sub,1500)'),'end = stamp + reward, banner fallback');
-assert(cw.indexOf('missionRewardGive')<cw.indexOf('this.clearWaveObjective();this.mode='),'reward drops at the mission point before cleanup');
+assert(cw.indexOf('missionRewardGive')<cw.indexOf('this.clearWaveObjective();const _wrap='),'reward drops at the mission point before cleanup');
 const bw=method('beginWave');assert(bw.includes('this.missionIntro?.(o,!!o._armPad)')&&bw.includes('if(!_card)this.showSpeechBubble'),'intro card replaces banner + duplicate bubble');
 assert(method('missionArm').includes("'🎁 '+R.txt"),'reward floats above the start pad');assert(method('missionArmTick').includes('this.missionGo(o,A.x,A.y,true)'));
 assert(method('setupWaveObjective').includes('this.missionGo?.(o,null,null,false)'));

@@ -1,7 +1,7 @@
 // v8.2.18 เจ้าของ "ต่อเลย": Golem ชิ้นทอง + ลูกน้องคุ้มกัน · Creeping Roots รากแม่ 3 แบบ + แตกตัว + แตกกิ่งในแบบเบา · Seed Rift ตัวขนเมล็ดหลายแบบ
 const fs=require('fs'),assert=require('assert'),vm=require('vm');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
-const K=src.match(/const [A-Z][A-Z_]*=[^\n]*?GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
+const K=src.match(/const [A-Z][A-Z0-9_]*=[^\n]*?GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
 const ctx={Math,console,TAU:Math.PI*2,WORLD:4000,GOLEM_PARTS:null,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}}};vm.createContext(ctx);vm.runInContext(K,ctx);
 vm.runInContext(src.match(/const GOLEM_PARTS=[^\n]*;/)[0].replace(/^const /,'var '),ctx);
 vm.runInContext('class S{'+['ggCarrier','ggDropPart','ggGoldLoot','ggList','crSplit','srPick','srCarrier','srSplit','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);

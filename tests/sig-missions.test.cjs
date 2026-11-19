@@ -1,5 +1,5 @@
 // v8.1.78 เจ้าของ: ภารกิจประจำด่าน Chapter 3 (รอบ 2)
-const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');const K8217=src.match(/const [A-Z][A-Z_]*=[^\n]*?GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
+const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');const K8217=src.match(/const [A-Z][A-Z0-9_]*=[^\n]*?GG_GOLD=[^\n]*?;(?=   \/\/)/)[0].replace(/^const /,'var ');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
 assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];"));
@@ -69,7 +69,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
   assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
   assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
-  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.guards\|\|S\.carriers\|\|S\.chests\|\|S\.domain\|\|S\.shades\|\|S\.moths\|\|S\.saps\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
+  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.guards\|\|S\.minions\|\|S\.carriers\|\|S\.chests\|\|S\.domain\|\|S\.shades\|\|S\.moths\|\|S\.saps\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
   assert.ok(/this\._sigForce&&this\.enemies\.countActive\(true\)<\(this\.maxLive\|\|100\)\)return true/.test(m('storyCanSpawn'))&&/finally\{ this\._sigForce=false; \}/.test(m('sigSpawnAt')),'league spawns bypass story budget');
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);vm.runInContext(K8217,ctx);
@@ -99,21 +99,21 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   console.log('League phase 2: Hunger’s Mouth PoE breach (hand, expand, kill-extend, splinters, chests, collapse) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
 
 { // v8.1.83 League phase 3: Hunger Herald + Grandma's Pot
-  for(const n of ['hhSetup','hhSpawn','hhTick','hhPack','hhSeal','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe'])m(n);
+  for(const n of ['hhSetup','hhEmpower','hhTick','hhFinish','hhPack','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe'])m(n);
   assert.ok(src.includes("objectives:['hungerHerald','hunt','capture','purge'],lead:'hungerHerald',")&&src.includes("objectives:['grandmasPot','hunt','capture','purge'],lead:'grandmasPot',"),'C1-1 Herald, C1-3 Pot');
   assert.ok(/if\(stL&&!this\._bountyLead&&pool\.includes\(stL\)\)/.test(m('replayBountyTick'))&&/LEAGUE_MISSIONS\.includes\(type\)\)\?70:45/.test(m('replayBountyTick')),'league bounty first + 70s');
   const vm=require('vm');const SD={};const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))},Utils:{Array:{Shuffle:a=>a}}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console,Save:{data:SD,save(){},addCurrency(k,n){SD['c_'+k]=(SD['c_'+k]||0)+n;}}};vm.createContext(ctx);vm.runInContext(K8217,ctx);
   const obj=()=>{const o={x:0,y:0,visible:true,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(v){o.visible=v;return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},setRotation(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhPack','hhSeal','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['fpFull','hhSetup','hhEmpower','hhTick','hhFinish','hhPack','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const mk=()=>{for(const k in SD)delete SD[k];const sc=new ctx.K();const en=[];Object.assign(sc,{SD,stageIndex:2,player:{x:0,y:0},sugarStage:0,sugarRun:0,tweens:{add(){}},add:{circle:()=>obj(),rectangle:()=>obj(),text:()=>obj()},
     objectivePosition:(i)=>({x:300+i*50,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{countActive:()=>en.filter(e=>e.active).length},
-    sigSpawnAt:(x,y,el,type)=>{const e={x,y,type,active:true,isElite:!!el,setTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
-  { const [sc,en]=mk();const o={},S={};sc.hhSetup(o,S);assert.strictEqual(S.gates.length,2);assert.ok(S.herald&&S.herald._herald);sc.hhTick(.1,o,S);assert.ok(S.herald._goTo,'herald wanders');
-    for(let k=0;k<40;k++)sc.hhTick(.1,o,S);assert.ok(en.length>3,'gates spawn packs');sc.hhDown(S.herald,o,S);assert.ok(sc.done&&o.progress===1&&S.gates.length===0); }
-  { const [sc,en]=mk();const o={},S={};sc.hhSetup(o,S);assert.ok(S.gates.every(G=>ctx.HH_GATES.includes(G.kind))&&new Set(S.gates.map(G=>G.kind)).size===2,'v8.2.17 gates of different kinds');assert.strictEqual(S.guards.length,2,'Herald guards');assert.ok(S.guards.every(g=>g.type==='tank'&&g._hhGuard));
-    const G=S.gates[1];G.x=900;sc.player={x:G.x,y:G.y};for(let k=0;k<25;k++)sc.hhTick(.1,o,S);assert.ok(G.shut&&!S.gates[0].shut,'standing on a gate seals it');const n=en.length;for(let k=0;k<50;k++)sc.hhTick(.1,o,S);
-    sc.player={x:-2000,y:0};const h=S.herald;h.maxhp=10;h.hp=4;h.x=-1000;h.y=0;sc.hhTick(.1,o,S);assert.ok(S.fled&&S.fleeG&&!S.fleeG.shut,'Herald flees to an open gate');h.x=S.fleeG.x;h.y=S.fleeG.y;const n2=en.length;sc.hhTick(.1,o,S);assert.ok(en.length>n2,'reinforcements at the gate');
-    sc.hhDown(h,o,S);assert.ok(S.guards.every(g=>!g._hhGuard),'guards released'); }
+    sigSpawnAt:(x,y,el,type)=>{const e={x,y,type,active:true,isElite:!!el,maxhp:50,hp:50,spd:60,dmg:10,scaleX:1,setTint(){},setScale(){},setAlpha(){},setActive(v){e.active=v;},setVisible(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
+  { const [sc,en]=mk();sc.enemies.children={iterate:f=>en.forEach(f)};sc.add.graphics=()=>Object.assign(obj(),{clear(){},lineStyle(){},lineBetween(){},strokeCircle(){},fillStyle(){},fillCircle(){}});sc.artIsSpr=()=>false;
+    const o={},S={};sc.hhSetup(o,S);assert.strictEqual(S.gates.length,2);assert.ok(S.h&&!en.length,'v8.2.20 Herald is not a monster (cannot be hit)');assert.ok(o._timedGoal&&o.target===ctx.HH_DUR);
+    assert.ok(Math.hypot(S.h.x-sc.player.x,S.h.y-sc.player.y)<=ctx.HH_ORBIT+1,'Herald appears near the player');
+    for(let k=0;k<80;k++)sc.hhTick(.1,o,S);assert.ok(en.length>3,'gates keep pouring packs');assert.ok(en.some(e=>e._hhPow),'the beam empowers a monster');assert.ok(en.some(e=>e._hhMin)||S.minions.length||en.some(e=>!e.active),'special minions come out');
+    sc.player={x:3000,y:0};for(let k=0;k<30;k++)sc.hhTick(.1,o,S);assert.ok(Math.hypot(S.h.x-3000,S.h.y)<700,'Herald follows the player');
+    S.powKills=9;for(let k=0;k<700&&!sc.done;k++)sc.hhTick(.1,o,S);assert.ok(sc.done&&S.gates.length===0,'ends when time runs out');assert.ok(sc.sugarRun>0); }
   { const [sc,en]=mk();sc.fpFull=()=>false;sc.hurtPlayer=()=>{sc.hurt=(sc.hurt||0)+1;};const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,2);assert.strictEqual(S.phase,'wait');sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'wait','far away: ritual waits');   // v8.1.106 Ritual-style pot
     sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'ritual');assert.strictEqual(S.round,1);assert.ok(S.foes.length>=7,'course spawns hungry mochi');
     const n1=S.foes.length;S.foes.forEach(e=>{e.x=S.x;e.y=S.y;sc.gpOnKill(e,o,S);e.active=false;});assert.strictEqual(S.flavor,n1,'kills inside the light feed the pot');sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'rest');assert.strictEqual(o.progress,1);
@@ -124,7 +124,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
     assert.strictEqual(sc.SD.potFlavor,8,'half the leftover flavor is saved'); }
   { const [sc]=mk();sc.fpFull=()=>false;const o={},S={};sc.gpSetup(o,S);sc.SD.potDeferred='ink';S.flavor=3;sc.gpTable(o,S);assert.strictEqual(S.plates[0].id,'ink','deferred dish comes back first');const top=S.plates.filter(P=>!P.done).sort((a,b)=>b.cost-a.cost)[0].id;sc.gpFinish(o,S);assert.strictEqual(sc.SD.potDeferred,top,'priciest dish you could not afford is saved for next time'); }
   { const [sc]=mk();sc.fpFull=()=>true;const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,3,'full = 3 courses');sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);sc.gpTick(.1,o,S);assert.ok(S.spices.length>=0); }
-  console.log('League phase 3: Hunger Herald (v8.2.17 gate kinds, guards, seal by standing, flee; wander, gates, shut on kill) + Grandma’s Pot (ritual ring, courses, kills in the light, spice hazard, Grandma’s table: buy dishes with flavor, Done, save leftovers, defer) passed'); }
+  console.log('League phase 3: Hunger Herald (v8.2.20 untouchable, beams power, special minions, gates stay open, timed) + Grandma’s Pot (ritual ring, courses, kills in the light, spice hazard, Grandma’s table: buy dishes with flavor, Done, save leftovers, defer) passed'); }
 
 { // v8.1.85 League phase 6: Grandma's Golem (Metamorph)
   for(const n of ['ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown'])m(n);

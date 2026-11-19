@@ -5,7 +5,7 @@ const grab=n=>{ const i=src.indexOf('\n  '+n+'('); assert(i>0,n); let k=src.inde
 // C1 title login buttons raised
 assert(/y1=Math\.min\(ty-6,h-bh\*2-gap-70\)-Math\.round\(h\*\.09\)/.test(src),'title buttons raised ~9%');
 // C2 Momo shot audible
-assert(/playFile\('sfx_strawberry_soft_shot',0\.34\)/.test(src),'Momo shot volume');
+assert(/playFile\('sfx_strawberry_soft_shot',0\.62\)/.test(src),'Momo shot volume (v8.2.20 .62)');
 // C5 Bazaar group keeps one track
 { const m=grab('menuMusic'); assert(/const BZ=\['bazaar','wardrobe','tradein'\]/.test(m)); assert(/const key=\{patrol:/.test(m),'rest of menuMusic still runs (no inline // swallowing code)');
   const calls=[]; const T=vm.runInNewContext('class T{'+m+'}; T',{window:{},Sfx:{playMainBgm(){}}}); const t=new T(); Object.assign(t,{state:'menu',menuScreen:'wardrobe',storyMusicPlay:(k,v)=>calls.push([k,v()]),storyMusicStop(){}});
