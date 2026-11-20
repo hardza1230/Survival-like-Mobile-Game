@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.38';
+const GAME_VERSION = '8.2.39';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.39',date:'2026-11-20',title:'Stage start no longer freezes',items:['Picking a newly unlocked hero no longer freezes the Heroes screen','A loading screen now stays up while a stage gets ready','If loading takes too long, the stage starts anyway']},
   {v:'8.2.38',date:'2026-11-20',title:'Stronger Shotgun',items:['Momo Shotgun pellets deal 25% more damage','Shotgun Build should now hold up better against bosses']},
   {v:'8.2.37',date:'2026-11-20',title:'Kitchen: pick a signature move',items:['Kitchen now offers 4 ready-made signature moves — pick one, swap for free','Sugar Rush Slam, Double Helping, Brain Freeze and Candy Armor fire in every run','Recipes no longer lower your Max HP or Attack Power','Expedition boss every 10 stages now gives Weave Thread instead of a Recipe Part']},
   {v:'8.2.36',date:'2026-11-20',title:'Cleanup: retired systems removed',items:['Removed old code for the retired Dig board, the Patrol screen, Overcharge and the unused Lobby animation so the game is lighter and safer to change','Old Patrol and Depths shortcuts now open Temple Expedition']},
@@ -7544,6 +7545,7 @@ function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 const ATK_PCT=0.05;
 /* v8.2.38 เจ้าของ (feedback: Shotgun สู้บอสยาก): เม็ด Shotgun แรงขึ้น 25% (เดิม ×0.45 ต่อเม็ด) */
 const SG_PELLET_MUL=0.45*1.25;
+const RUN_WAIT_MAX=45000;   // v8.2.39 เข้าด่าน: รอโหลดแต่ละขั้นได้นานสุด 45 วิ (ensureGroup เองตัดที่ 20 วิ/กลุ่ม)
 const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1.0}, FLAT_EFF_PATH={sniper:2.5,shotgun:0.6,ricochet:0.8};
 // v6.41 (เจ้าของ: อาวุธแรงจนการต่อสู้ไม่มีความหมาย) เดิม 1.03/lv ถึง 60 แล้ว 1.015 → iLv89 = ×8.8 · ใหม่ iLv60 ×4.3 · iLv89 ×5.0 · iLv100 ×5.2
 function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.025,l-1):Math.pow(1.025,59)*Math.pow(1.005,l-60); }
@@ -15093,6 +15095,12 @@ class Game extends Phaser.Scene {
     if(d){ this._activeZoneMods.push(d.id); this._zoneMul=this.zoneModMul(); this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});
       this.showBanner('☠ Curse: '+d.name,d.desc+' · rewards ×'+d.reward.toFixed(2),2200); Sfx.bossWarn&&Sfx.bossWarn(); this.screenFlash&&this.screenFlash(0x6b2bd9,0.25); }
     if(onResume)onResume(); }
+  /* v8.2.39 กันค้างตอนเข้าด่าน: ถ้ารอโหลดภาพเกิน RUN_WAIT_MAX ms → ปลดล็อกแล้วเข้าด่านด้วยภาพสำรอง (เดิม callback ไม่มา = หน้าเมนูไม่มีปุ่ม ค้างถาวร) */
+  runWatch(idx){ const t=this._runWatchN=(this._runWatchN||0)+1,t0=Date.now(),MAX=typeof RUN_WAIT_MAX!=='undefined'?RUN_WAIT_MAX:45000;
+    const showL=()=>{ try{ const L=window.GameLoader,r=document.getElementById('game-loader'); if(L&&r&&(r.style.display!=='flex'||r.style.opacity==='0'))L.show('Getting the stage ready…',0.1); }catch(e){} };   /* ช่วงรอที่ไม่มีหน้าโหลด = ดูเหมือนเกมค้าง */
+    showL(); const tick=()=>{ if(t!==this._runWatchN||!this._enteringStageArt||this.state!=='menu')return;
+      if(Date.now()-t0>=MAX){ this._enteringStageArt=false; this._runForce=idx; try{ window.GameLoader?.hide?.(); }catch(e){} try{ Tele.ev('run_wait_timeout',{s:idx}); }catch(e){} this.startRun(idx); return; }
+      showL(); setTimeout(tick,1000); }; setTimeout(tick,1000); }
   startRun(idx){ try{ window.__mochiTitleMusic=false;window.LoaderMusic&&window.LoaderMusic.stop(); }catch(e){} if(this.state==='menu'){this._cocoaFlickerOn=false;this.finishCocoaFlicker(true);this.refreshFlickerUI();}  this._dmgBy={}; this._lastHitSrc=null; this._charExpGain=null;
     if(this.state!=='menu')return;
     this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;
@@ -15101,20 +15109,22 @@ class Game extends Phaser.Scene {
     this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
-    if(!this._allLoaded){ if(this._enteringStageArt)return;this._enteringStageArt=true; this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
+    const force=this._runForce===idx;   /* v8.2.39 เจ้าของ 🐞: ได้ Mint แล้วกดเลือกค้าง — รอโหลดนานเกิน/โหลดไม่ตอบ → เข้าด่านด้วยภาพสำรอง */
+    if(!this._allLoaded&&!force){ if(this._enteringStageArt)return;this._enteringStageArt=true;this.runWatch(idx); this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
     // v7.4 ภาพฮีโร่ที่เลือก (+ endgame) ไม่ได้ถอดรหัสตอนบูต → โหลดก่อนเข้าด่าน (ลองครั้งเดียวต่อ 25 วิ กันวน)
-    if(Date.now()-(this._runArtTry||0)>25000){ const miss=this.runArtKeys().filter(k=>!this.realTex(k));
-      if(miss.length){ if(this._enteringStageArt)return; this._enteringStageArt=true; this._runArtTry=Date.now(); const ks=new Set(miss);
+    if(!force&&Date.now()-(this._runArtTry||0)>25000){ const miss=this.runArtKeys().filter(k=>!this.realTex(k));
+      if(miss.length){ if(this._enteringStageArt)return; this._enteringStageArt=true;this.runWatch(idx); this._runArtTry=Date.now(); const ks=new Set(miss);
         if(window.GameLoader)window.GameLoader.show('Loading hero artwork...',0.1);
         this.ensureGroup(k=>ks.has(k),()=>{ this._enteringStageArt=false; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu')this.startRun(idx); },{all:true,fx:true,label:'Loading hero artwork…'}); return; } }
-    if(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx)){
-      if(this._enteringStageArt)return;this._enteringStageArt=true;
+    if(!force&&(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx))){
+      if(this._enteringStageArt)return;this._enteringStageArt=true;this.runWatch(idx);
       if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
       this.ensureStageArt(idx,()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);});return;
     }
     // v6.51.1: วาด texture ของด่านล่วงหน้าหลังหน้าโหลด (decode/อัป GPU ครั้งแรก) → ไม่กระตุกตอนมอนชุดแรกโผล่
     if(!this._warmed)this._warmed={}; const wk=idx+'|'+(this.character||Save.data.character);
-    if(!this._warmed[wk]){ this._warmed[wk]=true; this.warmStageTextures(idx,()=>{ if(this.state==='menu')this.startRun(idx); }); return; }
+    if(force)this._runForce=null;
+    if(!this._warmed[wk]&&!force){ if(this._enteringStageArt)return; this._warmed[wk]=true; this._enteringStageArt=true;this.runWatch(idx); this.warmStageTextures(idx,()=>{ this._enteringStageArt=false; if(this.state==='menu')this.startRun(idx); }); return; }
     this.freeOtherStageArt?.(idx);   // v6.91 ปล่อยภาพด่านอื่นออกจาก GPU
     const challenge=null;this._challengeRequested=null; // Story never inherits old curse tickets.
     const ticket=challenge?challenge.length*150:0;
