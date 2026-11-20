@@ -8,10 +8,10 @@ const H={lg_breach_open:'hmOpen',lg_breach_collapse:'hmTick',lg_splinter_pick:'h
  lg_jar_open:'fpOpen',lg_statue_wake:'fpThaw',lg_statue_refreeze:'fpVanish',lg_gates_shut:'hhFinish',lg_pot_ritual:'gpRound',lg_pot_flavor:'gpOnKill',lg_dish_served:'gpServe',
  lg_golem_part:'ggTick',lg_golem_bake:'ggBake',lg_golem_slam:'ggTick',lg_golem_crumble:'ggDown',lg_root_cut:'crTick',lg_siege_gate:'hsTick',lg_siege_break:'hsBurst',
  tr_curse_pick:'ultStartFight',tr_round_won:'ultRoundWon',tr_take:'ultTick',tr_risk:'ultTick',tr_fail:'ultFinish',ui_forge_row_up:'forgeUpgrade',ui_forge_ink_move:'forgeMove',ui_codex_up:'codexUpgrade',
- pt_pop:'patrolPop',pt_loot:'buildPatrol',pt_ambient_loop:'buildPatrol'};
+ pt_pop:'patrolPop'};   /* v8.2.36 E1: Patrol screen removed (pt_loot/pt_ambient_loop retired) */
 /* v8.1.144 owner: lg_herald_horn retired (sounded like a car horn) — hhTick now uses lg_breach_open */ assert(method('hhTick').includes("'lg_breach_open'"),'herald gates use the rift sound');
 for(const [k,fn] of Object.entries(H))assert(method(fn).includes("'"+k+"'"),k+' in '+fn);
 assert(s.includes("this.a12?.('ui_domain_button'")&&s.includes("Sfx.menuCue?.('ui_memory_gain'"),'domain button + memory gain');
-assert(method('patrolStop').includes("eventLoopStop?.('pt_ambient_loop')"),'ambient stops when leaving Patrol');
+
 assert(method('gpRound').includes("this.a12?.('lg_pot_ritual',.5,.5)||Sfx.bossWarn?.()"),'old cue kept as fallback');assert(method('a12').includes('menuCue')&&method('a12').includes('orderCue'));
 console.log('A12 audio: 36 verified SFX installed, registered and hooked (League, Trial, Forge, Memory, Patrol) passed');

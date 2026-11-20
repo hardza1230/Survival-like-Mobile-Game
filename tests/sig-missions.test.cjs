@@ -12,12 +12,11 @@ assert.ok(/!\(typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS\.includes\(o\.type
 assert.ok(src.includes("dropHeal(x,y,source='crate'){ if(this._sig?.noHeal)return null;")&&/\*\(o\._altarMul\|\|1\)/.test(src),'altar curse + reward multiplier');
 console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, setup/tick/kill/clear hooks, altar pacts passed');
 { // v8.1.79 รอบ 3
-  for(const n of ['cleanAirBubbles','seasonDropPetal','seasonPetalTick','seasonShrineTick','missionArmable','missionArm','missionArmClear','missionArmTick','overchargeOffer','overchargeTick','overchargeEnd'])m(n);
+  for(const n of ['cleanAirBubbles','seasonDropPetal','seasonPetalTick','seasonShrineTick','missionArmable','missionArm','missionArmClear','missionArmTick'])m(n);   /* v8.2.36 E1: Overcharge removed */
   assert.ok(/close\?1\.25:1/.test(src)&&/t\.away/.test(src),'escort: faster near (v8.1.144 ×1.25), slow drift when away');assert.ok(/pulse\?1\.3:2\.6/.test(src)&&/Root guardians/.test(src),'roots pulse + guardians');
   assert.ok(/if\(forceIdx==null&&o\.storm&&o\.storm\.harvest\)return this\.seasonDropPetal\(o,e\)/.test(src),'petals are pickups');
   const ar=m('missionArmable');for(const t of ['survive','fill','hunt'])assert.ok(ar.includes("'"+t+"'"),'no arm for '+t);assert.ok(/!\(p&&p\.forceType\)/.test(ar),'bounties not armed');
-  assert.ok(src.includes('if(o0&&!o0.done&&o0._armPad&&this.missionArmTick?.(o0,dt))return; if(o0&&o0._oc&&!o0.done){ this.overchargeTick?.(o0,dt); return; }'),'arm/overcharge gate ticks');
-  assert.ok(src.includes('if(this.overchargeOffer?.(o))return;')&&/\*\(o\._ocMul\|\|1\)/.test(src)&&/o\._ocMul=2/.test(m('overchargeEnd')),'overcharge doubles reward');
+  assert.ok(src.includes('if(o0&&!o0.done&&o0._armPad&&this.missionArmTick?.(o0,dt))return; }'),'arm gate ticks');
   console.log('Missions round 3: escort speed, clean-air bubbles, season petals/shrines, root pulse/guardians, opt-in start, Overcharge passed'); }
 { // v8.1.80 Ultimatum
   for(const n of ['ultPad','ultPadsClear','ultSetup','ultNextPick','ultStartFight','ultSeed','ultCurseTick','ultTick','ultRoundWon','ultFinish'])m(n);
