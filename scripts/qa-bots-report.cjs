@@ -5,7 +5,7 @@ const files=process.argv.slice(2).flatMap(p=>fs.statSync(p).isDirectory()?fs.rea
 const runs=[];let version=null;
 for(const f of files){try{const r=JSON.parse(fs.readFileSync(f,'utf8'));version=version||r.version;runs.push(...(r.runs||[]));}catch(e){console.error('skip',f,e.message);}}
 runs.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
-const slow=r=>r.persona!=='menus'&&r.sec>=60&&(r.elapsed||0)<r.sec*.25;   // headless too slow to really test this run (FPS collapse)
+const slow=r=>r.persona!=='menus'&&r.elapsed!=null&&r.sec>=60&&(r.elapsed||0)<r.sec*.25;   // headless too slow to really test this run (FPS collapse)
 const bad=r=>slow(r)||(r.errors||[]).length||(r.consoleErrors||[]).length||(r.stuck||[]).length||['boot-timeout','never-started','runner-error','back-to-menu'].includes(r.result)||/^exit/.test(r.result||'');
 const L=[];const P=s=>L.push(s);
 P(`# QA bots — v${version||'?'} · ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC`);

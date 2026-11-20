@@ -138,7 +138,7 @@ async function runPool(browser,port,job){const ctx=await browser.newContext({vie
     return {type:o.type,prog:+(o.progress||0).toFixed(1),target:o.target,state:s.state,done:!!o.done,fin:!!(S&&S.fin),mode:s.mode,sig:S&&S.type};}).catch(e=>({err:e.message}));
     if(last.gone||(last.type&&last.type!==job.type)){res.result='done';break;} if(last.target)best=Math.max(best,last.prog/last.target);}
   if(!res.result){res.result='mission-stuck';res.stuck.push({bot:job.type+' did not finish in 95 s',best:Math.round(best*100)+'%',last});}
-  res.sec=Math.round((Date.now()-t0)/1000);res.missions=[{type:job.type,stage:job.stage,end:res.result==='done'?'done@'+res.sec:null}];   // v8.2.38 end ต้องเป็น string (report ใช้ startsWith)await ctx.close();return res;}
+  res.sec=Math.round((Date.now()-t0)/1000);res.missions=[{type:job.type,stage:job.stage,end:res.result==='done'?'done@'+res.sec:null}];/* v8.2.38 end ต้องเป็น string (report ใช้ startsWith) */await ctx.close();return res;}
 
 async function runStage(browser,port,job){
   const ctx=await browser.newContext({viewport:{width:job.view.width,height:job.view.height},isMobile:!!job.view.isMobile,hasTouch:!!job.view.hasTouch,deviceScaleFactor:job.view.deviceScaleFactor||1});
