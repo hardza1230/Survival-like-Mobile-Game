@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.37';
+const GAME_VERSION = '8.2.38';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.38',date:'2026-11-20',title:'Stronger Shotgun',items:['Momo Shotgun pellets deal 25% more damage','Shotgun Build should now hold up better against bosses']},
   {v:'8.2.37',date:'2026-11-20',title:'Kitchen: pick a signature move',items:['Kitchen now offers 4 ready-made signature moves — pick one, swap for free','Sugar Rush Slam, Double Helping, Brain Freeze and Candy Armor fire in every run','Recipes no longer lower your Max HP or Attack Power','Expedition boss every 10 stages now gives Weave Thread instead of a Recipe Part']},
   {v:'8.2.36',date:'2026-11-20',title:'Cleanup: retired systems removed',items:['Removed old code for the retired Dig board, the Patrol screen, Overcharge and the unused Lobby animation so the game is lighter and safer to change','Old Patrol and Depths shortcuts now open Temple Expedition']},
   {v:'8.2.35',date:'2026-11-19',title:'Smaller app and a voice tip fix',items:['The app is about 14 MB smaller because unused Lobby animation sheets and old Dig art are no longer packed','Fixed an error when Ruby’s first-time tip for the Atlas or Expedition finished loading']},
@@ -7541,6 +7542,8 @@ function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 // v6.18: Damage Effectiveness ของ flat แบบ PoE — อาวุธยิงถี่ได้ flat น้อย, ยิงหนักได้มาก
 // v6.55.77: ATK แบบ PoE — ATK ของไอเทม (+flat DMG mod) = +5% ดาเมจต่อแต้ม คูณทุกฮิต (เดิมบวกตรง → ดาเมจฐานต่ำ ATK +1 ≈ +16%)
 const ATK_PCT=0.05;
+/* v8.2.38 เจ้าของ (feedback: Shotgun สู้บอสยาก): เม็ด Shotgun แรงขึ้น 25% (เดิม ×0.45 ต่อเม็ด) */
+const SG_PELLET_MUL=0.45*1.25;
 const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1.0}, FLAT_EFF_PATH={sniper:2.5,shotgun:0.6,ricochet:0.8};
 // v6.41 (เจ้าของ: อาวุธแรงจนการต่อสู้ไม่มีความหมาย) เดิม 1.03/lv ถึง 60 แล้ว 1.015 → iLv89 = ×8.8 · ใหม่ iLv60 ×4.3 · iLv89 ×5.0 · iLv100 ×5.2
 function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.025,l-1):Math.pow(1.025,59)*Math.pow(1.005,l-60); }
@@ -20951,7 +20954,7 @@ class Game extends Phaser.Scene {
         b.headshot=0;b.bigMul=0;b.closeMul=0;b.bounceGain=0;b.seedPierce=!!b.pierce;b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b.loopT=false;b._ptSniper=false;
         if(path==='sniper'){this.attachChargedSeed(b,38+lvl*2);b.dmg*=3.2;b.pierce=true;b.seedPierce=true;b.hitGapV=0.22;b.headshot=0.07*(R.headshot||0);b.bigMul=0.15*(R.deadeye||0);
           b.dmg*=1+(PT.sDmg||0);b.headshot+=PT.hs||0;b.bigMul+=PT.big||0;b.penGain=PT.pen||0;b.oneShot=!!PT.oneShot;b._ptSniper=true; if(this._ptHsNext){b.forceHs=true;this._ptHsNext=false;} if(PT.ghillie&&(this._ptStill||0)>=1.5&&!this._ptGhUsed){b.dmg*=2;this._ptGhUsed=true;}}
-        else if(path==='shotgun'){b.dmg*=0.45;b.life=0.4;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
+        else if(path==='shotgun'){b.dmg*=(typeof SG_PELLET_MUL!=='undefined'?SG_PELLET_MUL:.45);b.life=0.4;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
         else if(path==='ricochet'){b.dmg*=0.8;b.bounce+=2+(R.carom||0);b.bounceGain=0.08*(R.gather||0)+(PT.mom||0);b.dmg*=1+(PT.rDmg||0);if((PT.rDmg||0)>=0.119)b.bounce++;if(PT.pinball)b.bounce=Math.max(b.bounce,12);b.lastMul=PT.last||0;b.seekMul=1+(PT.seek||0);b.splitCh=PT.split||0;b.boomer2=!!PT.boomer;b.loopT=!!PT.loop;}   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
         const distance=this.dist(t.x,t.y,this.player.x,this.player.y);
         const closeLarge=path==='shotgun'&&(t.isBoss||t.isMini||t.isElite)&&distance<430;
@@ -21737,7 +21740,7 @@ class Game extends Phaser.Scene {
       b.seedPop=0;b.pierce=false;b.bounce=(basic.mutation==='ricochet'?2:0)+(this.player.gearBounce||0);b.bounceGain=0;b.seekMul=1;
       const meta=b.berrySeed;meta.path=path;meta.evolved=!!basic.evolved;
       if(path==='shotgun'){
-        b.dmg*=.45*(basic.evolved?1.35:1);b.life=.3;b.sgPellet=true;b.closeMul=.4+.15*(basic.ranks.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb||0)*60;b.dragon=!!PT.dragon;
+        b.dmg*=(typeof SG_PELLET_MUL!=='undefined'?SG_PELLET_MUL:.45)*(basic.evolved?1.35:1);b.life=.3;b.sgPellet=true;b.closeMul=.4+.15*(basic.ranks.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb||0)*60;b.dragon=!!PT.dragon;
         if(idx===Math.floor((shots-1)/2)){b.dmg*=1+.6*(basic.lv.s_slug||0)+(basic.evolved?.6:0)+(PT.slug||0);if(basic.evolved||basic.lv.s_slug)this.attachChargedSeed(b,30);}
         meta.nearBonus=basic.evolved?1.2:1;
       }else if(path==='ricochet'){

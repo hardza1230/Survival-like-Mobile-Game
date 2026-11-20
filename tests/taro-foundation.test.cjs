@@ -120,6 +120,7 @@ function legacyMethod(name){return method(name)
  .replace("    if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(this.moveDir.clone().normalize());\n",'')
  .replace("\n    if(this.character==='sesame'&&this.state==='play'&&this.player)this.sesPlaceMirror(this.player.x,this.player.y);   // v7.9.40 Mirror Network: Dash ทิ้งกระจก",'')
  .replace("\n    if(this.character==='yuzu'&&this.state==='play'&&this.player)this.yuzuRush();   // v7.9.41 Dash = ฝูงพุ่งตาม",'')
+ .replace("else if(path==='shotgun'){b.dmg*=(typeof SG_PELLET_MUL!=='undefined'?SG_PELLET_MUL:.45);","else if(path==='shotgun'){b.dmg*=0.45;")   // v8.2.38 Shotgun pellet +25%
  .replace("if(basic)shots=Math.min(12,shots);if(basic&&Math.random()<.15*(basic.lv?.size||0))shots++;   /* v8.0.70 Twin Seed */","if(basic)shots=Math.min(12,shots);")
  .replace("if(!b)return;    // ตัวเล็กลงอีก","if(!b)return; const pop=basic?(basic.ranks.size||0):0; if(pop>0)b.seedPop=pop;   // ตัวเล็กลงอีก");}
 for(const [name,hash] of Object.entries(baseline))assert.equal(crypto.createHash('sha256').update(legacyMethod(name)).digest('hex'),hash,name+' retained legacy branch');

@@ -28,3 +28,7 @@ assert(src.includes('tl:FR_SIMPLE?1:Save.frLv(r.t),el:FR_SIMPLE?1:Save.frLv(r.e)
 assert(src.includes("(FR_SIMPLE?Save.data.frPick==null:"),'red dot until first pick');
 assert(src.includes("if(!FR_SIMPLE&&typeof frRollPart==='function')"),'daily chest gives no parts');
 console.log('Kitchen simple 8.2.37: 4 presets, pick 1, no upkeep, no parts passed');
+// v8.2.38 owner: Shotgun pellets +25% (both basic-attack paths use SG_PELLET_MUL)
+assert(/const SG_PELLET_MUL=0\.45\*1\.25;/.test(src),'shotgun pellet multiplier');
+assert.strictEqual((src.match(/typeof SG_PELLET_MUL!=='undefined'\?SG_PELLET_MUL:\.45/g)||[]).length,2,'both shotgun paths use it');
+console.log('Shotgun 8.2.38: pellets +25% passed');
