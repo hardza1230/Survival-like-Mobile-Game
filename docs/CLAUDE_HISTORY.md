@@ -4346,3 +4346,11 @@ Owner 19 Nov approved items 1 + 4 of the size plan. The shipped app (www/ withou
   - Welcome back: sound + Ruby line. The Ruby tip plays the first time the screen opens.
 - **Fallback:** missing files fall back to the old dig/chest sounds or stay silent.
 - Test: `tests/audio-a19.test.cjs`. Headless: all Expedition audio is in the cache after opening the screen and `bgm_ex_expedition` plays.
+
+# Delivery: v8.2.35 — 📦 App size 187.7 → 173.3 MB (unused files out of the build) + Ruby tip crash fix
+
+- **Lobby hero motion sheets (order 34), ~14 MB:** off since v7.9.61 (`LH_USE_SHEETS=false`) but still shipped. `scripts/build-www.mjs` now has a `NOT_SHIPPED` list, so these files stay out of the build while the flag is false. The source files stay in the repo.
+- **Old Patrol track `tea_for_two_temple`, ~1 MB:** removed from `ASSET_AUDIO`. The `patrol` music entry now plays the main menu music.
+- **Old Dig board art (16 files in `assets/art/dig/`):** no longer registered. `dig_bg` and `dig_shovel` stay, and so does the `menu_orders` dig art, which is part of a tracked set.
+- **Fix:** the Ruby first-time tips for Atlas and Expedition called `VoiceActing.play` without its `valid` callback, which threw "valid is not a function" when the voice finished loading. Both calls now pass a screen check.
+- **Check:** a headless boot through hub, Loadout, Weave, Activities and Expedition shows no 404s and no page errors. App size is 173.3 MB (limit 190).

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.36';
+const GAME_VERSION = '8.2.37';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.37',date:'2026-11-20',title:'Kitchen: pick a signature move',items:['Kitchen now offers 4 ready-made signature moves — pick one, swap for free','Sugar Rush Slam, Double Helping, Brain Freeze and Candy Armor fire in every run','Recipes no longer lower your Max HP or Attack Power','Expedition boss every 10 stages now gives Weave Thread instead of a Recipe Part']},
   {v:'8.2.36',date:'2026-11-20',title:'Cleanup: retired systems removed',items:['Removed old code for the retired Dig board, the Patrol screen, Overcharge and the unused Lobby animation so the game is lighter and safer to change','Old Patrol and Depths shortcuts now open Temple Expedition']},
   {v:'8.2.35',date:'2026-11-19',title:'Smaller app and a voice tip fix',items:['The app is about 14 MB smaller because unused Lobby animation sheets and old Dig art are no longer packed','Fixed an error when Ruby’s first-time tip for the Atlas or Expedition finished loading']},
   {v:'8.2.34',date:'2026-11-19',title:'Temple Expedition gets its own sound',items:['Temple Expedition has soft tap sounds, titan pops, a ticking boss clock and its own music','Ruby calls out bosses, cheers you up after a timeout and welcomes you back','Hiring helpers, upgrades, supplies and the daily chest all have new sound effects']},
@@ -6743,6 +6744,16 @@ const FR_SIGNATURES=[
   {t:'newWave',e:'buddy',name:'Welcome Mochi'},{t:'unique',e:'shots',name:'Double Helping'},{t:'shield',e:'freeze',name:'Frozen Custard'},
   {t:'kill25',e:'burst',name:'Rainbow Feast'},{t:'timer10',e:'vacuum',name:'Slow Simmer'},
 ];
+/* v8.2.37 เจ้าของ (แผน C): Kitchen แบบย่อช่วง Closed test — สูตรสำเร็จ 4 สูตร เลือกได้ 1 · ไม่หักพลัง · ไม่ใช้ชิ้นส่วน · เปลี่ยนฟรี
+   ระบบผสมสูตรเดิม (ชิ้นส่วน/ช่อง/ค่าหัก) เก็บไว้ครบ · FR_SIMPLE=false = กลับไปแบบเดิม · ดูผลทดสอบก่อนค่อยทำ Cookbook */
+const FR_SIMPLE=true;
+const FR_PRESETS=[
+  {t:'t:dash',  e:'e:shock',  name:'Sugar Rush Slam',desc:'Every dash releases a shockwave'},
+  {t:'t:unique',e:'e:shots',  name:'Double Helping', desc:'Your Unique Skill also fires 8-way shots'},
+  {t:'t:lowHp', e:'e:freeze', name:'Brain Freeze',   desc:'Below 30% HP, freeze nearby foes'},
+  {t:'t:hurt',  e:'e:cleanse',name:'Candy Armor',    desc:'When hit, wipe nearby enemy shots'},
+];
+function frPick(){ const i=(typeof Save!=='undefined'&&Save.data)?Save.data.frPick:null; return (i!=null&&FR_PRESETS[i])?i:-1; }
 function frSignature(r){ const t=r&&(r.t||'').replace(/^t:/,''),e=r&&(r.e||'').replace(/^e:/,''); return FR_SIGNATURES.find(x=>x.t===t&&x.e===e)||null; }
 const FR_KIND={t:FR_TRIGGERS,e:FR_EFFECTS,m:FR_MODS};
 function frIconKey(key){ const icon=key&&'fr_'+key[0]+'_'+key.slice(2); return icon&&ASSET_IMAGES[icon]?icon:null; }
@@ -6874,8 +6885,8 @@ const Cos={
 function pickWeighted(list){ let r=Math.random(),acc=0; for(const [k,p] of list){ acc+=p; if(r<acc)return k; } return list[list.length-1][0]; }
 function talentsOpen(){ const d=(typeof Save!=='undefined'&&Save.data)||{},sm=d.stageMastery||{}; return !!sm[2]||(d.unlockedStage||0)>=3; }   // v8.0.86 เจ้าของ: Talent เปิดพร้อมบทสอน (จบด่าน 3)
 function kitchenOpen(){ return !!((Save.data&&Save.data.stageMastery)||{})[9]; }
-function frActive(){ if(!kitchenOpen())return []; return Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e&&!(frPart(r.e)||{}).cut); }
-function frUpkeep(){ let hp=0,dmg=0; for(const r of frActive()){ const x=0.02*(Save.frLv(r.e)-1)+(frSignature(r)?0.02:0); hp+=0.06+x; dmg+=0.04+x; } return {hp,dmg}; }
+function frActive(){ if(!kitchenOpen())return []; if(FR_SIMPLE){ const p=FR_PRESETS[frPick()]; return p?[{t:p.t,e:p.e,m:null}]:[]; } return Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e&&!(frPart(r.e)||{}).cut); }
+function frUpkeep(){ if(FR_SIMPLE)return {hp:0,dmg:0}; let hp=0,dmg=0; for(const r of frActive()){ const x=0.02*(Save.frLv(r.e)-1)+(frSignature(r)?0.02:0); hp+=0.06+x; dmg+=0.04+x; } return {hp,dmg}; }
 function applyFrUpkeep(p){ const u=frUpkeep(); if(!u.hp)return false; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-u.hp))); p.dmgMul-=u.dmg; return true; }
 function frCost(r){ return r?['t','e','m'].reduce((a,k)=>a+((frPart(r[k])||{}).cost||0),0):0; }
 function frSentence(r){ const t=frPart(r&&r.t),e=frPart(r&&r.e),m=frPart(r&&r.m); if(!t||!e)return 'Empty recipe'; const sg=frSignature(r);
@@ -6901,7 +6912,7 @@ const HUB_GROUPS = {
     ['bestiary','☷','Bestiary','Discoveries and Sugar'] ] },
   gActivity:{ title:'🎉 Activities', rows:[
     ['rewards','🎁','Rewards','Login gift, Daily Quests and Awards'],   // v8.0.75 เจ้าของ: แทน Daily + Achievements (ซ้ำกับปุ่ม Rewards)
-    ['kitchen','🍳','Kitchen','Recipes that power every run'],
+    ['kitchen','🍳','Kitchen',FR_SIMPLE?'Pick a signature move for every run':'Recipes that power every run'],
     /* v8.2.32 Mochi Patrol → รวมเข้า Temple Expedition (Weave → Expedition) */
     /* v6.80 E2: Endgame (Endless/Ascension) entry removed */
     /* v7.8.89 เจ้าของ: Boss Rush เอาออกไปก่อน (โค้ดยังอยู่ · ใส่แถวนี้กลับเพื่อเปิด) */
@@ -12865,7 +12876,7 @@ class Game extends Phaser.Scene {
     if(target==='weave')return UPG_ORDER.some(k=>Save.talCanBuy(k))||(Save.talAllMax()&&Save.threads()>=Save.promoteThreadCost());   // v7.9.55 ซื้อ Core ได้ / เลื่อนยศได้
     if(target==='specialCores')return false;   // v8.0.22 รวมเข้า Rank Rewards
     if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew)||!!this._gearBetter?.();   // v7.9.56 +ของในกระเป๋าที่ดีกว่าที่สวม
-    if(target==='kitchen')return kitchenOpen()&&Save.frRecipes().slice(0,Save.frSlots()).some(r=>['t','e'].some(k=>!(r&&r[k])&&Object.entries(Save.frParts()).some(([pk,n])=>n>0&&pk[0]===k&&!(frPart(pk)||{}).cut)));   // v7.9.56 ช่องสูตรว่าง + มีชิ้นส่วนวางได้
+    if(target==='kitchen')return kitchenOpen()&&(FR_SIMPLE?Save.data.frPick==null:Save.frRecipes().slice(0,Save.frSlots()).some(r=>['t','e'].some(k=>!(r&&r[k])&&Object.entries(Save.frParts()).some(([pk,n])=>n>0&&pk[0]===k&&!(frPart(pk)||{}).cut))));   // v8.2.37 แบบย่อ: ยังไม่เคยเลือกสูตร · v7.9.56 ช่องสูตรว่าง + มีชิ้นส่วนวางได้
     if(target==='perks')return Save.rankUnpicked()>0;   // v8.0.22 ยศใหม่ยังไม่เลือกรางวัล
     if(target==='dig')return featureOpen('dig')&&Save.expDailyReady();
     if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig')||this.hasTargetBadge('weave')||this.hasTargetBadge('specialCores');
@@ -13778,8 +13789,24 @@ class Game extends Phaser.Scene {
   // v8.0.22 buildSpecialCores ถูกรวมเข้า Rank Rewards (buildRankPerks)
   // ⛏️ v5.27 Temple Depths — หน้าขุด
   // ===== v5.37 🍳 Recipe Kitchen: ประกอบ perk เอง · แตะช่องสูตร → แตะชิ้นส่วนในถุง =====
-  buildKitchen(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🍳 Recipe Kitchen','ui_talent_hall','gActivity');
+  /* v8.2.37 แบบย่อ (FR_SIMPLE): การ์ดสูตรสำเร็จ · แตะ = ใช้ · แตะใบที่ใช้อยู่ = ถอด · ฟรี */
+  buildKitchenSimple(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🍳 Flavor Kitchen','ui_talent_hall','gActivity');
+    const w=this.W,h=this.H,hs=this._hdrShift(),cur=frPick(),cw=w-28,top=100+hs,n=FR_PRESETS.length,rowH=Math.max(62,Math.min(86,(h-top-70)/n-8));
+    this.menu.add(this.add.text(w/2,70+hs,'Pick one signature move. It fires in every run.\nFree to swap any time.',{fontFamily:'sans-serif',fontSize:'11px',color:'#b7abc9',align:'center'}).setOrigin(0.5));
+    FR_PRESETS.forEach((p,i)=>{ const y=top+i*(rowH+8),on=i===cur,t=frPart(p.t)||{},e=frPart(p.e)||{},g=this.add.graphics();
+      g.fillStyle(on?0x3a2c48:0x2c2338,1); g.fillRoundedRect(14,y,cw,rowH,14); g.lineStyle(on?3:1.5,on?0xffd166:0x4a4059,1); g.strokeRoundedRect(14,y,cw,rowH,14); this.menu.add(g);
+      const iz=Math.min(34,rowH-28),iy=y+rowH/2; [[p.t,t.emoji,26],[p.e,e.emoji,26+iz+4]].forEach(([k,fb,x])=>{ const ik=frIconKey(k); this.menu.add(ik&&this.textures.exists(ik)?this.add.image(x+iz/2,iy,ik).setDisplaySize(iz,iz):this.add.text(x+iz/2,iy,fb||'?',{fontSize:Math.round(iz*.75)+'px'}).setOrigin(0.5)); });
+      const tx=26+iz*2+14,tw=cw-(tx-14)-74;
+      this.menu.add(this.add.text(tx,y+10,p.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:on?'#ffe08a':'#ffffff'}));
+      this.menu.add(this.add.text(tx,y+30,p.desc,{fontFamily:'sans-serif',fontSize:'11px',color:'#e6dcf2',wordWrap:{width:tw}}));
+      this.menu.add(this.add.text(tx,y+rowH-16,(t.emoji||'')+' '+(t.name||'')+'  ▸  '+(e.emoji||'')+' '+(e.name||''),{fontFamily:'sans-serif',fontSize:'9px',color:'#9d90b0'}));
+      this.menu.add(this.add.text(14+cw-12,iy,on?'✓ In use':'Use',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:on?'#9ff0c8':'#ffd9a8'}).setOrigin(1,0.5));
+      this._zone(14,y,cw,rowH,()=>{ Save.data.frPick=on?-1:i; Save.save(); if(on){ Sfx.select(); this.menuToast?.('Signature move removed','#d8cce6'); } else { Sfx.card?Sfx.card():Sfx.select(); this.menuToast?.('🍳 '+p.name+' is ready for your next run!','#9ff0c8'); } this.buildMenuScreen(); }); });
+    if(Object.keys(Save.data.fparts||{}).length)this.menu.add(this.add.text(w/2,h-22,'Custom recipes are resting for now — your parts are kept safe.',{fontFamily:'sans-serif',fontSize:'9px',color:'#8d8195'}).setOrigin(0.5));
+  }
+  buildKitchen(){ if(FR_SIMPLE)return this.buildKitchenSimple();
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🍳 Flavor Kitchen','ui_talent_hall','gActivity');
     const w=this.W,h=this.H,hs=this._hdrShift(),slots=Save.frSlots(),R=Save.frRecipes();
     if(this._kSel==null)this._kSel={slot:0,k:'t'};
     const sel=this._kSel; if(sel.slot>=slots)sel.slot=0;
@@ -13845,11 +13872,12 @@ class Game extends Phaser.Scene {
   expBossFail(){ this.exSfx('boss_fail',.45); this.rubyVoiceReact?.('exfail',300); const e=Save.exp(); e.farm=true; e.s=Math.max(1,e.s-1); e.k=0; this.menuToast?.('⏱ Out of time! Farm a little, then tap Fight Boss','#ffb4b4'); Save.save(); this.expFoeNew(); this.buildMenuScreen(); }
   /* บอสครั้งแรก = รางวัลเข้าเกมหลัก (แทนของที่เคยขุดได้) · ทุก 10 ด่าน + Recipe Part · ทุก 25 ด่าน + Currency */
   expBossReward(s){ const got=[],su=15+3*s,th=3+Math.floor(s/5); Save.addSugar(su); got.push('🍬 +'+su); Save.addThreads(th); got.push('🧶 +'+th);
-    if(s%10===0&&typeof frRollPart==='function'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); got.push(pt.emoji+' '+pt.name); }
+    if(s%10===0&&FR_SIMPLE){ Save.addThreads(10); got.push('🧶 +10'); }   /* v8.2.37 Kitchen แบบย่อไม่ใช้ชิ้นส่วน → ด้ายแทน */
+    else if(s%10===0&&typeof frRollPart==='function'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); got.push(pt.emoji+' '+pt.name); }
     if(s%25===0&&typeof rollWeightedCurrency==='function'){ const k=rollWeightedCurrency(s>=75?'legend':s>=40?'epic':'rare'),n=2+Math.floor(s/25); if(k){ Save.addCurrency(k,n); got.push(currencyDef(k).emoji+'×'+n); } }
     this.menuToast?.('👑 Boss '+s+' first clear! '+got.join('  '),'#ffd166'); }
   expDaily(){ const e=Save.exp(); if(!Save.expDailyReady())return false; e.daily=localDayKey(); const b=e.best,su=40+b*3,th=25+b,got=['🍬 +'+su,'🧶 +'+th]; Save.addSugar(su); Save.addThreads(th);
-    if(typeof frRollPart==='function'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); got.push(pt.emoji+' '+pt.name); } Save.save(); this.exSfx('daily_chest',.5)||Sfx.chestWin?.(); this.menuToast?.('🎁 Daily Expedition chest: '+got.join('  '),'#a8ffb0'); return true; }
+    if(!FR_SIMPLE&&typeof frRollPart==='function'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); got.push(pt.emoji+' '+pt.name); } Save.save(); this.exSfx('daily_chest',.5)||Sfx.chestWin?.(); this.menuToast?.('🎁 Daily Expedition chest: '+got.join('  '),'#a8ffb0'); return true; }
   expBuy(kind,id){ const e=Save.exp(); if(kind==='tap'){ const c=expTapCost(e.tap); if(e.crumbs<c)return false; e.crumbs-=c; e.tap++; }
     else if(kind==='help'){ const h=EXP_HELPERS.find(x=>x.id===id),lv=e.help[id]|0,c=h?expHelpCost(h,lv):Infinity; if(e.crumbs<c)return false; e.crumbs-=c; e.help[id]=lv+1; }
     else if(kind==='supply'){ const c=expSupplyCost(e.best); if(e.supply||e.crumbs<c)return false; e.crumbs-=c; e.supply=id; }
@@ -19553,7 +19581,7 @@ class Game extends Phaser.Scene {
     g.fillStyle(0xffffff,0.7).fillCircle(p.x-r*0.45,p.y-r*0.5,4); }
   // ===== v5.36 🍳 Flavor Recipes runtime: fireRecipes(trigger) → effect · chain ลึกสุด 2 · จำกัด 8 ครั้ง/วิ =====
   frInit(){ const rs=frActive();
-    this._fr=rs.map(r=>({t:r.t.slice(2),e:r.e.slice(2),m:r.m?r.m.slice(2):null,n:0,next:0,tl:Save.frLv(r.t),el:Save.frLv(r.e),sig:!!frSignature(r)})); this._frBusy=0; this._frBudget=0; this._frSec=0;
+    this._fr=rs.map(r=>({t:r.t.slice(2),e:r.e.slice(2),m:r.m?r.m.slice(2):null,n:0,next:0,tl:FR_SIMPLE?1:Save.frLv(r.t),el:FR_SIMPLE?1:Save.frLv(r.e),sig:!!frSignature(r)})); this._frBusy=0; this._frBudget=0; this._frSec=0;
     this._frRageT=0; this._frHasteT=0; this._frRageCd=0; this._frHasteCd=0; this._frZones=[]; this._frTimer=0; this._frTimer10=0; this._frStill=0; this._frLowArm=true; this._frMoveT=0; this._frFullT=0; this._frSurT=0; this._frMk=[]; this._frBigWas=false; if(this._frOrbit&&this._frOrbit.sprs)this._frOrbit.sprs.forEach(x=>x.destroy()); this._frOrbit=null; if(this._frBuddy&&this._frBuddy.spr)this._frBuddy.spr.destroy(); this._frBuddy=null; }
   fireRecipes(trig){ const L=this._fr; if(!L||!L.length||this.state!=='play')return;
     const depth=this._frBusy||0; if(depth>0&&!(this._frCur&&this._frCur.m==='chain'))return; if(depth>=2)return;   // chain เฉพาะสูตรที่มี 🔗 Linked

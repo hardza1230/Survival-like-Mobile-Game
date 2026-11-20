@@ -7,7 +7,7 @@ const saveM=['exp','addCrumbs','expDailyReady'].map(n=>{const i=src.indexOf('\n 
 const ctx={Math,Date,localDayKey:()=>'2026-11-19',Phaser:{Math:{Between:(x,y)=>x}},Sfx:{}};vm.createContext(ctx);
 vm.runInContext(src.slice(a,b)+';this.F={expHp,expCrumb,expIsBoss,expTapDmg,expTapCost,expHelpDps,expHelpCost,expFmt,expSupplyCost};this.H=EXP_HELPERS;this.SU=EXP_SUPPLIES;'+
  'var Save={data:{chars:["mint"],character:"momo",dig:{shovels:5}},save(){},sug:0,th:0,addSugar(n){this.sug+=n},addThreads(n){this.th+=n},frAddPart(){this.part=(this.part||0)+1},addCurrency(){},'+saveM+'};this.Save=Save;'+
- 'function frRollPart(){return "x"} function frPart(){return {emoji:"🧩",name:"P"}} function rollWeightedCurrency(){return null}'+
+ 'var FR_SIMPLE=true; function frRollPart(){return "x"} function frPart(){return {emoji:"🧩",name:"P"}} function rollWeightedCurrency(){return null}'+
  'class K{'+['exSfx','expHelpers','expDps','expOffline','expFoeNew','expHit','expKill','expBossFail','expBossReward','expDaily','expBuy','expSupplyApply'].map(meth).join('\n')+'\n};this.K=K;',ctx);
 const F=ctx.F,S=ctx.Save;
 assert(F.expIsBoss(5)&&!F.expIsBoss(4));assert(F.expHp(2)>F.expHp(1));assert(F.expCrumb(10)>=1);assert.strictEqual(F.expFmt(1500),'1.50K');assert.strictEqual(F.expFmt(999),'999');
@@ -21,7 +21,7 @@ e.s=1;e.k=0;e.crumbs=0;s.expFoeNew();for(let i=0;i<10;i++)s.expHit(1e9,false,fal
 e.s=5;e.k=0;e.farm=false;s.expFoeNew();assert(s._ex.boss&&s._ex.t===30);s.expBossFail();assert(e.farm&&e.s===4);s.expFoeNew();assert(!s._ex.boss);
 // farming stays on stage, boss kill → first-clear reward once
 for(let i=0;i<10;i++)s.expHit(1e9,false,false);assert.strictEqual(e.s,4,'farming does not advance');
-e.farm=false;e.s=10;e.k=0;s.expFoeNew();s.expHit(1e9,false,false);assert.strictEqual(e.s,11);assert(S.sug>0&&S.th>0&&S.part===1,'boss 10 gives a Recipe Part');const su=S.sug;e.s=10;s.expFoeNew();s.expHit(1e9,false,false);assert.strictEqual(S.sug,su,'first clear only');
+e.farm=false;e.s=10;e.k=0;s.expFoeNew();s.expHit(1e9,false,false);assert.strictEqual(e.s,11);assert(S.sug>0&&S.th>0&&!S.part,'boss 10: v8.2.37 simple Kitchen gives threads, not parts');const su=S.sug;e.s=10;s.expFoeNew();s.expHit(1e9,false,false);assert.strictEqual(S.sug,su,'first clear only');
 // buy
 e.crumbs=1e12;const t0=e.tap;assert(s.expBuy('tap'));assert.strictEqual(e.tap,t0+1);assert(s.expBuy('help','ruby'));assert.strictEqual(e.help.ruby,1);assert(s.expDps()>0);
 // offline: 50%, capped 8h

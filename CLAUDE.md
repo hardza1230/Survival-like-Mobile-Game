@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.36**. Next release:8.2.37. Fetch the deploy branch before new work.
+Current release: **8.2.37**. Next release:8.2.38. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.36 — 🧹 ECRS E1: retired code removed (old Dig board, Patrol screen, Overcharge, Lobby motion sheets)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.37 — 🍳 Kitchen simplified for the Closed test (plan C)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -45,6 +45,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **รอเจ้าของตัดสินใจ / ทำต่อ**
 - ความถี่แท่นเริ่มภารกิจหลังเล่นจริง · Overcharge ปิดไว้ v8.1.103 (`OVERCHARGE_ON`)
 - Sesame: บาลานซ์/ความถนัดและ Talent ถาวร (ไม่ทำ Mirror Network ขั้น 2)
+- **Kitchen แบบย่อ (v8.2.37 แผน C):** สูตรสำเร็จ 4 เลือก 1 ไม่หักพลัง (`FR_SIMPLE`) · หลัง Closed test ดูผล → Cookbook หรือตัดทิ้ง (`docs/IDEAS.md`)
 - ยกเลิกแล้ว: ใบ 35 Yuzu Orchard (→ Citrus Companions 55/56) · ใบ 49 กรอบโปรไฟล์
 
 **ก่อนขึ้น Google Play**
