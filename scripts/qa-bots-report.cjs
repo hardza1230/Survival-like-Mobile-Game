@@ -19,7 +19,7 @@ const stuck=runs.filter(r=>slow(r)||(r.stuck||[]).length||['boot-timeout','never
 for(const r of stuck)P(`- ${r.id}: ${r.result}${slow(r)?' · only '+(r.elapsed||0)+' game s in '+r.sec+' s (FPS '+(r.fpsAvg??'-')+')':''} · ${(r.stuck||[]).map(s=>s.bot||(s.state+'@'+s.elapsed+'s '+s.act)).slice(0,3).join(' | ')}`);
 // 2. missions that started but never ended inside a run that kept going
 P('');P('## Missions');const mis={};
-for(const r of runs)for(const m of r.missions||[]){const o=mis[m.type]||(mis[m.type]={n:0,done:0,cleared:0,open:0,stages:new Set()});o.n++;o.stages.add(m.stage);if(!m.end)o.open++;else if(m.end.startsWith('done'))o.done++;else o.cleared++;}
+for(const r of runs)for(const m of r.missions||[]){const o=mis[m.type]||(mis[m.type]={n:0,done:0,cleared:0,open:0,stages:new Set()});o.n++;o.stages.add(m.stage);if(!m.end)o.open++;else if(m.end===true||String(m.end).startsWith('done'))o.done++;else o.cleared++;}
 P('| Mission | seen | done | ended/failed | still open at run end | stages |');P('|---|---|---|---|---|---|');
 for(const [t,o] of Object.entries(mis).sort((a,b)=>b[1].n-a[1].n))P(`| ${t} | ${o.n} | ${o.done} | ${o.cleared} | ${o.open} | ${[...o.stages].sort((a,b)=>a-b).join(' ')} |`);
 // 3. all runs
