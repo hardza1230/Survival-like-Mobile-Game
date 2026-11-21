@@ -6,13 +6,13 @@ const grab=n=>{ const i=src.indexOf('\n  '+n+'('); assert(i>0,n); let k=src.inde
 const a=src.indexOf('const HC_SEGS='),b=src.indexOf('\n',src.indexOf('const EMERGE_MS='));
 const Phaser={Math:{Clamp:(v,x,y)=>Math.max(x,Math.min(y,v)),FloatBetween:(x,y)=>(x+y)/2,Between:(x,y)=>Math.round((x+y)/2)}};
 const ctx={Math,Phaser,Sfx:{},HC_HOLES:[.3,.55,.8,1]};vm.createContext(ctx);
-vm.runInContext(src.slice(a,b)+';this.C={HC_SEGS,HC_CRAWL,HC_FOLLOW,HC_TRICKLE,HC_HOLE_N,HC_FINAL_WAVES,HC_FINAL_PER,HC_FINAL_MAX};class T{'+['hungerCrackAt0','hungerCrackAt','hungerCrackGlyph','tickHungerCrack','hungerCrackErupt','hungerCrackCrawlAt','hungerCrackHoleLoot'].map(grab).join('\n')+'}; this.T=T;',ctx);
+vm.runInContext(src.slice(a,b)+';this.C={HC_FINAL_STREAM,HC_SEGS,HC_CRAWL,HC_FOLLOW,HC_TRICKLE,HC_HOLE_N,HC_FINAL_WAVES,HC_FINAL_PER,HC_FINAL_MAX};class T{'+['hungerCrackAt0','hungerCrackAt','hungerCrackGlyph','tickHungerCrack','hungerCrackErupt','hungerCrackCrawlAt','hungerCrackHoleLoot','hungerCrackBrute'].map(grab).join('\n')+'}; this.T=T;',ctx);
 const C=ctx.C; assert(C.HC_CRAWL[0]<=80&&C.HC_CRAWL[1]<=90,'slow creep'); assert(C.HC_SEGS[1]>C.HC_SEGS[0]&&C.HC_SEGS[0]>=10,'long crack, shorter in Ch1');
 const mk=si=>{ const t=new ctx.T(),spawned=[],ev={done:0,completed:0,loot:0,emerge:0}; const pts=[{x:0,y:0},{x:600,y:0},{x:600,y:600}],cum=[0,600,1200];
   const holes=ctx.HC_HOLES.map((f,i)=>{const d=1200*f,q=t.hungerCrackAt0(pts,cum,d);return {d,x:q.x,y:q.y,open:false,stream:0,sT:0,pack:[],final:i===3};});
   t._crack={pts,cum,jag:[],L:1200,head:0,tip:{x:0,y:0},holes,hi:0,st:'wait',tag:'T',pack:[],packT:0,trT:1,fw:0,fwT:0,g:{active:false},hole:{active:false},end:pts[2]};
   Object.assign(t,{state:'play',player:{x:500,y:500},dist:(a,b,c,d)=>Math.hypot(a-c,b-d),drawHungerCrack(){},hungerCrackDone(){ev.done++;},completeWaveObjective(){ev.completed++;},time:{now:0,delayedCall(){}},
-    enemies:{countActive:()=>0},maxLive:60,spawnEnemy:()=>{const e={active:true,setPosition(){}};spawned.push(e);return e;},spawnElite:()=>{const e={active:true,setPosition(){}};spawned.push(e);return e;},emergeFoe:()=>ev.emerge++,
+    enemies:{countActive:()=>0},maxLive:60,spawnEnemy:(ty)=>{const e={active:true,type:ty,hp:100,scaleX:1,scaleY:1,setPosition(){},setScale(a){this.scaleX=a;},setTint(){}};spawned.push(e);return e;},spawnLoot:()=>{ev.drop=(ev.drop||0)+1;return null;},screenShake(){},spawnElite:()=>{const e={active:true,setPosition(){}};spawned.push(e);return e;},emergeFoe:()=>ev.emerge++,
     missionLootBurst:()=>ev.loot++,floatText(){},vfxHitRing(){},stageIndex:si});
   return {t,spawned,ev}; };
 { const {t,spawned,ev}=mk(7),o={progress:0,target:25,done:false},c=t._crack;
@@ -25,7 +25,7 @@ const mk=si=>{ const t=new ctx.T(),spawned=[],ev={done:0,completed:0,loot:0,emer
   for(let i=0;i<60;i++)follow(); assert.equal(c.holes[0].pack.length,C.HC_HOLE_N[1],'hole released its whole stream'); assert.equal(ev.loot,0,'no loot until the hole is cleared');
   c.holes[0].pack.forEach(e=>e.active=false); follow(); assert.equal(ev.loot,1,'hole cleared → loot');
   for(let i=0;i<400&&c.st!=='final';i++)follow(); assert.equal(c.st,'final');
-  for(let i=0;i<200&&!c.elite;i++){ t.tickHungerCrack(.25,o); } const F=c.holes[3]; assert(c.elite,'elite after the waves'); assert(F.pack.length>=C.HC_FINAL_WAVES*C.HC_FINAL_PER[1],'three waves poured out'); assert.equal(ev.completed,0);
+  for(let i=0;i<200&&!c.elite;i++){ t.tickHungerCrack(.25,o); } const F=c.holes[3]; assert(c.elite,'elite after the waves'); assert(F.pack.length>=C.HC_FINAL_WAVES*C.HC_FINAL_PER[1],'all final waves poured out'); assert(C.HC_FINAL_WAVES>=4&&C.HC_FINAL_PER[1]>=10,'many monsters (owner 8.2.48)'); assert(spawned.filter(e=>e.type==='tank').length>=4,'tanks mixed in + brute'); assert(c.brute&&c.brute.hp===300&&c.brute.scaleX>1.3,'Abyss Brute: big, 3x HP'); c.brute.active=false; t.tickHungerCrack(.1,o); assert.equal(ev.drop,1,'brute drops gear'); assert.equal(ev.completed,0);
   F.pack.forEach(e=>e.active=false); t.tickHungerCrack(.1,o); assert.equal(ev.done,1); assert.equal(ev.completed,1,'final cleared → complete'); assert(o.progress>0); }
 { const {t,ev}=mk(2),o={progress:0,target:25,done:false},c=t._crack; t.player={x:0,y:0}; t.tickHungerCrack(1,o); assert(Math.abs(c.head-C.HC_CRAWL[0])<1,'Ch1 slower'); c.st='final'; c.fw=0; c.elite=true; c.holes[3].pack=[{active:true,_hcTag:'T'}]; t.tickHungerCrack(C.HC_FINAL_MAX+1,o); assert.equal(ev.completed,1,'time fallback'); }
 { const t=new ctx.T(); t._crack={holes:[{open:true},{open:true},{open:false},{open:false}]}; assert.equal(t.hungerCrackGlyph(0),'▰▰▱▱'); assert(!/\d/.test(t.hungerCrackGlyph(.3)),'no numbers'); }

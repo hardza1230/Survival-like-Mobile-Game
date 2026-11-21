@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.47';
+const GAME_VERSION = '8.2.48';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.48',date:'2026-11-21',title:'Hunger Crack final hole: horde + tanks + Abyss Brute',items:['Final hole pours 4 waves x10 (Ch1 x6) with tanks mixed in','Abyss Brute (big, 3x HP) joins the Elite and drops gear','Abyss chest Sugar x1.5']},
   {v:'8.2.47',date:'2026-11-21',title:'Fix Ice Cage Sealing columns not hitting',items:['C1-4 boss: the warned ice-bar columns now hit along their whole length; find the one gap']},
   {v:'8.2.46',date:'2026-11-21',title:'Fix Start/Reroll taps on the mission deal · description text removed',items:['Start the stage / Reroll buttons respond again (pointer coordinates fixed)','No description text under the lifted mission card']},
   {v:'8.2.45',date:'2026-11-21',title:'Hunt bottles lobbed (dodgeable) · Wisp soft dome · card back order redesigned',items:['Hunt Elite lobs its poison bottle in an arc with a shrinking ground mark — walk out to dodge','Escort Wisp zone is a thin glowing dome instead of a hard ring; bleed outside stays','Art order 93: one premium card back for all cards + foil shine']},
@@ -4953,7 +4954,7 @@ Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[
 const CODE_TELEGRAPH=true;
 const CAPTURE_CRACK=true,HC_NEAR=95,HC_SEC=22,HC_TOUCH=70,HC_SPEED=460,HC_HOLES=[.3,.55,.8,1];
 /* v8.2.44 เจ้าของ: แบบ Abyss ใน PoE — รอยแยกยาว/ช้า คืบเมื่อผู้เล่นอยู่ใกล้ปลาย · มอนค่อย ๆ คลานออกตามรอยแยก · หลุมปล่อยมอนต่อเนื่อง (ฆ่าครบ = ของ) · ปลายทาง 3 ระลอก + Elite + หีบ Abyss · [Ch1, Ch2+] */
-const HC_SEGS=[10,13],HC_CRAWL=[60,72],HC_FOLLOW=260,HC_TRICKLE=[2,1.5],HC_HOLE_N=[6,9],HC_HOLE_GAP=.6,HC_FINAL_WAVES=3,HC_FINAL_PER=[4,6],HC_FINAL_GAP=3,HC_FINAL_MAX=45;
+const HC_SEGS=[10,13],HC_CRAWL=[60,72],HC_FOLLOW=260,HC_TRICKLE=[2,1.5],HC_HOLE_N=[6,9],HC_HOLE_GAP=.6,HC_FINAL_WAVES=4,HC_FINAL_PER=[6,10],HC_FINAL_GAP=3,HC_FINAL_MAX=60,HC_FINAL_STREAM=.35,HC_FINAL_TANKS=[0,1,2,0],HC_FINAL_CAP=30,HC_BRUTE={scale:1.4,hp:3,tint:0x8a5cc8},HC_CHEST_MUL=1.5;   /* v8.2.48 เจ้าของ: หลุมสุดท้ายมอนเยอะ + มีตัวถึก (4 ระลอก × 10 · Ch1 × 6 · ระลอก 2/3 มี tank · Abyss Brute ปิดท้ายพร้อม Elite · หีบ Sugar ×1.5) */
 /* v8.2.44 เจ้าของ: มอนในภารกิจโผล่เฉย ๆ → ค่อย ๆ ขึ้นจากพื้น/ก้าวออกจากประตู · ระหว่างเกิดไม่เดิน ไม่ตี ไม่โดนตี · เอฟเฟกต์เต็มพร้อมกันได้ ≤ 8 */
 const EMERGE_MS=520,EMERGE_FX_MAX=8;   /* v8.2.7 เจ้าของ: แบบ Abyss จริง — แตะรอยแยก → วิ่งเองเร็วไปหลุมถัดไป · หลุมแตก = มอน + ของ · หลุมสุดท้ายมอนเยอะ ฆ่าหมด = จบ */   /* v8.2.4 เจ้าของ: Capture the Zone (วงกลม+ตัวเลข) → 🕳️ Hunger Crack (แนว PoE Abyss) · รอยแยกงอกคดเคี้ยวไปทั่วแมพ เดินตามปลายรอยแยกให้มันงอกต่อ มอนคลานออกมาตลอดทาง ปลายทางคือหลุม → ปิดหลุม = รางวัลระเบิด · ไม่มีตัวเลข ไม่มีวง · false = วงเดิม */
 const CLEANAIR_V2=true;   /* v8.1.162 เจ้าของ: Clean Air ใหม่ = ป่ามืด (Viridian/Wildwood) · เดินหา Wisp ที่กระจายทั่วแมพ · ชาร์จ 1.5 วิ แล้วระเบิดแสง · false = แบบวงเดินตาม (v8.1.161) */
@@ -16503,12 +16504,13 @@ class Game extends Phaser.Scene {
       const H=c.holes[c.hi]; if(H&&c.head>=H.d){ this.hungerCrackErupt(c,c.hi); c.hi++; if(H.final){ c.st='final'; Sfx.eventLoopStop?.('event_capture_charge'); } } }
     else Sfx.eventLoopStop?.('event_capture_charge');
     const tp=this.hungerCrackAt(c.head); c.tip.x=tp.x; c.tip.y=tp.y;
-    if(play)for(const H of c.holes){ if(H.stream>0){ H.sT-=dt; if(H.sT<=0){ H.sT=HC_HOLE_GAP; H.stream--; const e=this.hungerCrackCrawlAt(c,H.x,H.y,H.stream); if(e)H.pack.push(e); } }
+    if(play)for(const H of c.holes){ if(H.stream>0){ H.sT-=dt; if(H.sT<=0){ H.sT=H.final?HC_FINAL_STREAM:HC_HOLE_GAP; H.stream--; const tk=H.final&&(H.tank||0)>0&&H.stream%3===1; if(tk)H.tank--; const e=this.hungerCrackCrawlAt(c,H.x,H.y,H.stream,tk?'tank':null); if(e)H.pack.push(e); } }
       if(H.open&&!H.final&&!H.looted&&H.stream<=0&&H.pack.length&&H.pack.every(e=>!e||!e.active||e._hcTag!==c.tag)){ H.looted=true; this.hungerCrackHoleLoot(c,H); } }
     o.progress=Math.min(o.target*.95,o.target*(c.head/Math.max(1,c.L))*.9);
     if(c.st==='final'&&play){ const F=c.holes[c.holes.length-1]; c.packT+=dt; c.fwT-=dt;
-      if(c.fw>0&&c.fwT<=0&&F.stream<=0){ c.fw--; c.fwT=HC_FINAL_GAP; F.stream=HC_FINAL_PER[ch]; F.sT=0; this.floatText?.(F.x,F.y-60,'🕳️ More pour out!',0xc58bff); }
-      if(c.fw<=0&&F.stream<=0&&!c.elite){ c.elite=true; try{ const e=this.spawnElite(true,true); if(e){ e.setPosition?.(F.x+20,F.y); e._hcTag=c.tag; F.pack.push(e); this.emergeFoe?.(e,'ground'); } }catch(err){} }
+      if(c.fw>0&&c.fwT<=0&&F.stream<=0){ c.fw--; c.fwT=HC_FINAL_GAP; c.fwN=(c.fwN||0)+1; F.stream=HC_FINAL_PER[ch]; F.tank=HC_FINAL_TANKS[c.fwN-1]||0; F.sT=0; this.floatText?.(F.x,F.y-60,F.tank?'🕳️ Something big is coming!':'🕳️ More pour out!',0xc58bff); }
+      if(c.fw<=0&&F.stream<=0&&!c.elite){ c.elite=true; try{ const e=this.spawnElite(true,true); if(e){ e.setPosition?.(F.x+20,F.y); e._hcTag=c.tag; F.pack.push(e); this.emergeFoe?.(e,'ground'); } }catch(err){} try{ const b=this.hungerCrackBrute?.(c,F); if(b)F.pack.push(b); }catch(err){} }
+      if(c.brute){ const b=c.brute; if(b.active){ c.bx=b.x; c.by=b.y; } else if(!c.bruteLoot){ c.bruteLoot=true; try{ const g=this.spawnLoot?.(c.bx??F.x,c.by??F.y,1); if(g)this.lootHold?.(g,1400); }catch(err){} this.floatText?.(c.bx??F.x,(c.by??F.y)-60,'💜 Abyss Brute down!',0xe0b3ff); } }
       const left=F.pack.filter(e=>e&&e.active&&e._hcTag===c.tag).length; o._hcLeft=left; c.pack=F.pack;
       if((c.elite&&left===0)||c.packT>=HC_FINAL_MAX){ this.drawHungerCrack(c); this.hungerCrackDone(c); this.completeWaveObjective(); return; } }
     this.drawHungerCrack(c); }
@@ -16518,10 +16520,14 @@ class Game extends Phaser.Scene {
     this.burst?.(H.x,H.y,col);
     if(last){ c.fw=HC_FINAL_WAVES; c.fwT=0; c.packT=0; this.floatText?.(H.x,H.y-46,'🕳️ The Hunger pours out!',col); }
     else { H.stream=HC_HOLE_N[ch]; H.sT=.2; this.floatText?.(H.x,H.y-46,'🕳️ Something crawls out!',col); } }
+  /* v8.2.48 Abyss Brute: ตัวถังใหญ่ ×1.4 เลือด ×3 ย้อมม่วงดำ ออกพร้อม Elite ที่หลุมสุดท้าย · ล้มได้ของ 1 ชิ้น */
+  hungerCrackBrute(c,F){ if(!this.spawnEnemy||!this.player)return null; const B=typeof HC_BRUTE!=='undefined'?HC_BRUTE:{scale:1.4,hp:3,tint:0x8a5cc8},P=this.player,pa=Math.atan2(F.y-P.y,F.x-P.x),pd=Math.max(60,this.dist(P.x,P.y,F.x,F.y)); const e=this.spawnEnemy('tank',pa,pd); if(!e)return null;
+    e.setPosition?.(F.x-24,F.y+6); e._hcTag=c.tag; e._hcBrute=true; e.hp=Math.round((e.hp||100)*B.hp); e.maxhp=e.hp; e.setScale?.((e.scaleX||1)*B.scale,(e.scaleY||1)*B.scale); e.tintColor=B.tint; e.setTint?.(B.tint); c.brute=e; c.bx=e.x; c.by=e.y;
+    this.emergeFoe?.(e,'ground'); this.floatText?.(F.x,F.y-80,'💜 Abyss Brute!',0xe0b3ff); this.screenShake?.(220,.008); return e; }
   /* หลุมกลางทาง: ฆ่ามอนที่ไหลออกมาครบ = ของรางวัลที่หลุม */
   hungerCrackHoleLoot(c,H){ try{ const v=Math.round(6+(this.stageIndex||0)*.9),L0=this._lootAt; this.sugarStage=(this.sugarStage||0)+v; this.sugarRun=(this.sugarRun||0)+v; this._lootAt={x:H.x,y:H.y}; try{ this.missionLootBurst?.({noCur:true,noHold:false},v); }finally{ this._lootAt=L0; } }catch(err){} this.floatText?.(H.x,H.y-50,'✨ Hole cleared!',0xffe08a); this.vfxHitRing?.(H.x,H.y,0xffe08a,true); }
-  hungerCrackCrawlAt(c,x,y,i){ if(!this.enemies||!this.player)return null; const P=this.player; if(this.enemies.countActive(true)>=(this.maxLive||60)+12)return null; const q={x:x+Phaser.Math.Between(-24,24),y:y+Phaser.Math.Between(-14,14)},pa=Math.atan2(q.y-P.y,q.x-P.x),pd=Math.max(60,this.dist(P.x,P.y,q.x,q.y));
-    const e=this.spawnEnemy((i|0)%3===2?'dasher':(i|0)%3===1?'fast':'normal',pa,pd)||this.spawnEnemy('fast',pa,pd); if(!e)return null; e.setPosition?.(q.x,q.y); e._hcTag=c.tag; this.emergeFoe?.(e,'ground'); return e; }
+  hungerCrackCrawlAt(c,x,y,i,type){ if(!this.enemies||!this.player)return null; const P=this.player; if(this.enemies.countActive(true)>=(this.maxLive||60)+(c.st==='final'?(typeof HC_FINAL_CAP!=='undefined'?HC_FINAL_CAP:30):12))return null; const q={x:x+Phaser.Math.Between(-24,24),y:y+Phaser.Math.Between(-14,14)},pa=Math.atan2(q.y-P.y,q.x-P.x),pd=Math.max(60,this.dist(P.x,P.y,q.x,q.y));
+    const e=(type&&this.spawnEnemy(type,pa,pd))||this.spawnEnemy((i|0)%3===2?'dasher':(i|0)%3===1?'fast':'normal',pa,pd)||this.spawnEnemy('fast',pa,pd); if(!e)return null; e.setPosition?.(q.x,q.y); e._hcTag=c.tag; this.emergeFoe?.(e,'ground'); return e; }
   hungerCrackCrawl(c,H,k,last){ const out=[]; for(let i=0;i<k;i++){ const e=this.hungerCrackCrawlAt(c,H.x,H.y,i); if(e)out.push(e); } return out; }
   drawHungerCrack(c){ const g=c.g,h=c.hole; if(!g?.active)return; const t=(this.time?.now||0)/1000,J=c.jag,head=c.head,run=c.st==='run'; g.clear();
     const seg=(w,col,a,from,to)=>{ g.lineStyle(w,col,a).beginPath(); let on=false; for(let i=0;i<J.length;i++){ const d=J[i].d; if(d<from)continue; if(d>to){ const q=this.hungerCrackAt(to); on?g.lineTo(q.x,q.y):g.moveTo(q.x,q.y); break; } on?g.lineTo(J[i].x,J[i].y):g.moveTo(J[i].x,J[i].y); on=true; } g.strokePath(); };
@@ -16534,7 +16540,7 @@ class Game extends Phaser.Scene {
     this.screenFlash?.(0xd9a8ff,.85,520); this.screenShake?.(460,.014); this.hitStop?.(70); this.captureFinishSweep?.(E.x,E.y,200);
     if(this.add?.circle)for(let i=0;i<4;i++)this.time.delayedCall(i*110,()=>{ const r=this.camWorld(this.add.circle(E.x,E.y,60,0xb06bff,0).setStrokeStyle(10-i*2,0xffe0ff,1).setDepth(90000)); this.tweens.add({targets:r,scale:8+i*2,alpha:0,duration:820,ease:'Cubic.out',onComplete:()=>r.destroy()}); });
     for(let i=0;i<3;i++)this.burst?.(E.x+Phaser.Math.Between(-40,40),E.y+Phaser.Math.Between(-30,30),i%2?0xffe08a:0xc58bff);
-    try{ const si=this.stageIndex||0,v=Math.round(16+si*2.2),L0=this._lootAt; this.sugarStage=(this.sugarStage||0)+v; this.sugarRun=(this.sugarRun||0)+v; this._lootAt={x:E.x,y:E.y}; try{ this.missionLootBurst?.({noHold:false},v); }finally{ this._lootAt=L0; }
+    try{ const si=this.stageIndex||0,v=Math.round((16+si*2.2)*(typeof HC_CHEST_MUL!=='undefined'?HC_CHEST_MUL:1)),L0=this._lootAt; this.sugarStage=(this.sugarStage||0)+v; this.sugarRun=(this.sugarRun||0)+v; this._lootAt={x:E.x,y:E.y}; try{ this.missionLootBurst?.({noHold:false},v); }finally{ this._lootAt=L0; }
       this._lootMinRare=true; try{ const g=this.spawnLoot?.(E.x+30,E.y-20,(si>=10||this.endgameDropActive?.())?2:1); if(g)this.lootHold?.(g,1600); }finally{ this._lootMinRare=false; } this.floatText?.(E.x,E.y-70,'🎁 Abyss chest!',0xffe08a); }catch(err){}   /* v8.2.44 หีบ Abyss */
     this.clearHungerCrack(true); }
   clearHungerCrack(fade){ const c=this._crack; if(!c)return; this._crack=null; Sfx.eventLoopStop?.('event_capture_charge'); for(const o of [c.g,c.hole]){ if(!o?.active)continue; if(fade&&this.tweens){ this.tweens.add({targets:o,alpha:0,duration:700,onComplete:()=>o.destroy()}); } else o.destroy(); } }
