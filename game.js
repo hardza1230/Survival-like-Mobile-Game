@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.52';
+const GAME_VERSION = '8.2.53';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.53',date:'2026-11-21',title:'Sesame is a finished hero',items:['Sesame now counts for Daily Quests and Awards like every hero','Sesame can roll Unique mutation cards']},
   {v:'8.2.52',date:'2026-11-21',title:'ECRS round 1: Kitchen hidden, Forge currencies 5 to 3',items:['Kitchen is hidden for the Closed test','Berry Jam and Honey Drop are now Twist Cream (old ones convert x2)','Twist Cream upgrades Forge rows 1-3']},
   {v:'8.2.51',date:'2026-11-21',title:'Fix monsters turning invisible',items:['Monsters no longer turn invisible (only a shadow) after mission monsters with painted overlays']},
   {v:'8.2.50',date:'2026-11-21',title:'Boss voice louder in fights',items:['Boss voice lines play louder during fights and lower the music more while speaking']},
@@ -5623,7 +5624,7 @@ function sesRuneControlLayout(w,h,k,left,u,d){const r=22*Math.min(1.4,Math.max(1
 const SES_MIRROR_MAX=3, SES_MIRROR_LIFE=20, SES_MIRROR_REACH=700, SES_BOUNCE=0.15, SES_PRISM=0xc86bff;
 const NAV_H=62;   // v7.9.47 ความสูงแถบเมนูล่าง
 // Citrus Companions replaces Orchard Swarm; saved path/card/talent ids stay stable.
-const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
+const HEROES_WIP=[];   // v8.2.53 เจ้าของ 22 พ.ย.: Sesame เสร็จแล้ว → นับใน Daily Quests / Awards / Unique mutation / Recipe notes   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
 const FIGHTER_PLAYTEST_ALL=false; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
 const CORE_UNLOCK_STAGE={mint:0,cocoa:1,taro:2,yuzu:3,sesame:4};   /* v8.1.0 Sesame: จบ C1-5 -> เล่นตั้งแต่ C2-1; Rune Invoker prototype ยัง WIP */   /* v8.0.66 เจ้าของ: ฮีโร่ทุกตัวปลดใน Chapter 1 ทีละด่าน — Mint C1-2 · Cocoa C1-3 · Taro C1-4 · Yuzu C1-5 */   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame เดิมวางแผน C3-3; ถูกแทนด้วยเกณฑ์ C1-5 ใน v8.1.0 */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) · v8.0.66 idx = ด่านที่เล่นได้ครั้งแรก (C1-2…C1-5)

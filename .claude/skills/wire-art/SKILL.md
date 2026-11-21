@@ -20,8 +20,7 @@ how big on screen). Read both fully before touching code. Read the MANIFEST's re
 names — they differ between batches (array vs `{assets:[…]}`, `file` vs `source`).
 
 Owner rules: owner checks visuals/FPS on the phone (no screenshots to judge looks, no
-headless balance runs); English in-game text; talk in Thai. Sesame (HEROES_WIP) art wiring is
-frozen unless the owner says otherwise.
+headless balance runs); English in-game text; talk in Thai. Sesame is finished (owner 22 Nov 2026).
 
 ## 1. Check the delivery
 

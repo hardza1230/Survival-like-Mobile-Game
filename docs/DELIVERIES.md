@@ -1,6 +1,16 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.52 — ✂️ ECRS round 1 (Eliminate + Simplify before the Closed test)
+# Latest delivery: v8.2.53 — 🌗 Sesame counts as a finished hero
+
+- **Owner:** Sesame is finished. `HEROES_WIP` is now empty, so Sesame:
+  - counts for Daily Quest hero picks and Awards,
+  - can roll Unique mutation cards,
+  - gets Recipe Book notes like every other hero.
+- No hero shows a "🚧 In development" badge; Sesame already had none.
+- CLAUDE.md and the wire-art skill no longer call Sesame WIP.
+- Tests: voice-acting-integration updated.
+
+# Previous delivery: v8.2.52 — ✂️ ECRS round 1 (Eliminate + Simplify before the Closed test)
 
 - **Owner:** apply ECRS before the Closed test, doing E and S first.
 - **E · Kitchen hidden:** `KITCHEN_ON=false`; `kitchenOpen()` returns false and the Activities row is gone. Flip it to bring it back after the test.
@@ -13,11 +23,3 @@
   - The Forge wallet line drops the two icons.
 - **Not cut, after checking:** the ~15 signature missions are each stage's identity, and Chapter 1's first playthrough already uses a fixed teaching plan with no roaming missions. Boss Rush stays hidden.
 - Tests: new `ecrs-8252`; updated mission-template, missions71-74-art, reforge-rows, forge-redesign, forge-simple and sig-missions. The frozenPantry QA bot completed with 0 errors.
-
-# Previous delivery: v8.2.51 — 👻 Fix: monsters turning invisible (only their shadow showed)
-
-- **Bug (owner, phone):** after playing a while, some monsters had no art; only their shadow was visible. Mission monsters with a painted overlay (`artFollow`, e.g. Seed Rift carriers, Herald minions) hide the real sprite at alpha .01 and draw the overlay on top. If the overlay was destroyed elsewhere first, `artFollowTick` dropped it without restoring the monster's alpha, so the monster stayed see-through.
-- **Fix:**
-  - `artFollowTick` restores alpha and clears `_artOv` when it finds a dead overlay.
-  - Safety net in the enemy update loop: a live monster with alpha < .05 and no live overlay is set back to alpha 1. Fleeing fades and `_hideOk` are exempt.
-- Tests: new `invisible-foe-8251`. QA bots seedRift + defendNectar completed with 0 errors.

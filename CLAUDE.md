@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.52**. Next release:8.2.53. Fetch the deploy branch before new work.
+Current release: **8.2.53**. Next release:8.2.54. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.52 — ✂️ ECRS round 1 (Eliminate + Simplify before the Closed test)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.53 — 🌗 Sesame counts as a finished hero** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -27,7 +27,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 4. สถานะปัจจุบัน
 - ดูเวอร์ชันที่ `GAME_VERSION` + บล็อก Latest delivery ด้านบน · ประวัติทุกเวอร์ชัน `docs/CLAUDE_HISTORY.md`
-- ระบบหลักครบ: Story 3 Chapter 15 ด่าน → Mochi Delve/Pinnacle, Temple Weave/Depths/Rank Rewards, Gear+Merge (Common→Divine)+Forge (random mods, Twist Cream), Talent ราย Build, ฮีโร่ 6 ตัว ×3 Build (Sesame WIP), Rewards hub (Login/Daily/Awards)
+- ระบบหลักครบ: Story 3 Chapter 15 ด่าน → Mochi Delve/Pinnacle, Temple Weave/Depths/Rank Rewards, Gear+Merge (Common→Divine)+Forge (random mods, Twist Cream), Talent ราย Build, ฮีโร่ 6 ตัว ×3 Build (Sesame เสร็จแล้ว · เจ้าของ 22 พ.ย.), Rewards hub (Login/Daily/Awards)
 
 ### บั๊กที่เคยเจอ (กันพลาดซ้ำ)
 - Scale.RESIZE คืน logical CSS px แล้ว — อย่าคูณ/หาร DPR เอง ใช้ `config.resolution=RENDER_DPR`
@@ -47,7 +47,6 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 **รอเจ้าของตัดสินใจ / ทำต่อ**
 - ความถี่แท่นเริ่มภารกิจหลังเล่นจริง · Overcharge ปิดไว้ v8.1.103 (`OVERCHARGE_ON`)
-- Sesame: บาลานซ์/ความถนัดและ Talent ถาวร (ไม่ทำ Mirror Network ขั้น 2)
 - **Kitchen แบบย่อ (v8.2.37 แผน C):** สูตรสำเร็จ 4 เลือก 1 ไม่หักพลัง (`FR_SIMPLE`) · หลัง Closed test ดูผล → Cookbook หรือตัดทิ้ง (`docs/IDEAS.md`)
 - ยกเลิกแล้ว: ใบ 35 Yuzu Orchard (→ Citrus Companions 55/56) · ใบ 49 กรอบโปรไฟล์
 
