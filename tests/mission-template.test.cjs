@@ -5,10 +5,10 @@ const ctx=vm.createContext({});vm.runInContext(s.match(/const MISSION_REWARDS=\{
 const R=ctx.MISSION_REWARDS,SIG=eval(s.match(/const SIG_MISSIONS=(\[[^\]]*\]);/)[1]);
 for(const t of ['fill','survive','hunt','purge','capture','cleanAir','defendNectar','seasonCycle','breakRoots',...SIG])assert(R[t],'reward for '+t);
 for(const [t,[k,n]] of Object.entries(R)){assert(k==='gear'||s.includes("{key:'"+k+"',"),t+' uses a real currency');assert(n>=1);}
-ctx.currencyDef=k=>({berryjam:{emoji:'🍓',name:'Berry Jam'}})[k];
+ctx.currencyDef=k=>({transmute:{emoji:'🟢',name:'Twist Cream'}})[k];   // v8.2.52 Jam/Honey → Twist Cream
 const C=vm.runInContext('class C{'+['missionReward','missionRewardGive'].map(method).join('\n')+'}C',ctx);
 const sc=si=>Object.assign(new C(),{stageIndex:si,player:{x:0,y:0},drops:[],spawnCurrencyDrop(x,y,k){const g={k};this.drops.push(g);return g;},lootHold(){},spawnLoot(x,y,t){this.gear=t;return {};}});
-{const a=sc(0);const r=a.missionReward({type:'capture'});assert.equal(r.n,2);assert.equal(r.txt,'🍓 Berry Jam ×2');assert.equal(sc(5).missionReward({type:'capture'}).n,3);assert.equal(sc(10).missionReward({type:'capture'}).n,4,'harder chapters pay more');
+{const a=sc(0);const r=a.missionReward({type:'capture'});assert.equal(r.n,2);assert.equal(r.txt,'🟢 Twist Cream ×2');assert.equal(sc(5).missionReward({type:'capture'}).n,3);assert.equal(sc(10).missionReward({type:'capture'}).n,4,'harder chapters pay more');
  const o={type:'capture'};a.missionRewardGive(o);assert.equal(a.drops.length,2);assert(a.drops.every(g=>g.forgeQuantity===1),'exactly what the card promised');a.missionRewardGive(o);assert.equal(a.drops.length,2,'paid once');
  const b=sc(2);b.missionRewardGive({type:'hunt'});assert.equal(b.gear,1);assert.equal(b._lootMinRare,false);
  const t=sc(0);t._inTutorial=true;assert.equal(t.missionReward({type:'capture'}),null);}

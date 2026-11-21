@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.51**. Next release:8.2.52. Fetch the deploy branch before new work.
+Current release: **8.2.52**. Next release:8.2.53. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.51 — 👻 Fix: monsters turning invisible (only their shadow showed)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.52 — ✂️ ECRS round 1 (Eliminate + Simplify before the Closed test)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

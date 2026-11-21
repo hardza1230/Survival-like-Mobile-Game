@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.51';
+const GAME_VERSION = '8.2.52';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.52',date:'2026-11-21',title:'ECRS round 1: Kitchen hidden, Forge currencies 5 to 3',items:['Kitchen is hidden for the Closed test','Berry Jam and Honey Drop are now Twist Cream (old ones convert x2)','Twist Cream upgrades Forge rows 1-3']},
   {v:'8.2.51',date:'2026-11-21',title:'Fix monsters turning invisible',items:['Monsters no longer turn invisible (only a shadow) after mission monsters with painted overlays']},
   {v:'8.2.50',date:'2026-11-21',title:'Boss voice louder in fights',items:['Boss voice lines play louder during fights and lower the music more while speaking']},
   {v:'8.2.49',date:'2026-11-21',title:'Fix Expedition hero growing on taps',items:['Temple Expedition: tapping no longer makes the hero grow','Menu press bounce never compounds on fast repeat taps']},
@@ -6903,7 +6904,8 @@ const Cos={
 };
 function pickWeighted(list){ let r=Math.random(),acc=0; for(const [k,p] of list){ acc+=p; if(r<acc)return k; } return list[list.length-1][0]; }
 function talentsOpen(){ const d=(typeof Save!=='undefined'&&Save.data)||{},sm=d.stageMastery||{}; return !!sm[2]||(d.unlockedStage||0)>=3; }   // v8.0.86 เจ้าของ: Talent เปิดพร้อมบทสอน (จบด่าน 3)
-function kitchenOpen(){ return !!((Save.data&&Save.data.stageMastery)||{})[9]; }
+const KITCHEN_ON=false;   // v8.2.52 เจ้าของ (ECRS · E): ซ่อน Kitchen ก่อน Closed test · เปิดกลับ = true
+function kitchenOpen(){ return (typeof KITCHEN_ON==='undefined'||KITCHEN_ON)&&!!((Save.data&&Save.data.stageMastery)||{})[9]; }
 function frActive(){ if(!kitchenOpen())return []; if(FR_SIMPLE){ const p=FR_PRESETS[frPick()]; return p?[{t:p.t,e:p.e,m:null}]:[]; } return Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e&&!(frPart(r.e)||{}).cut); }
 function frUpkeep(){ if(FR_SIMPLE)return {hp:0,dmg:0}; let hp=0,dmg=0; for(const r of frActive()){ const x=0.02*(Save.frLv(r.e)-1)+(frSignature(r)?0.02:0); hp+=0.06+x; dmg+=0.04+x; } return {hp,dmg}; }
 function applyFrUpkeep(p){ const u=frUpkeep(); if(!u.hp)return false; p.maxhp=Math.max(1,Math.round(p.maxhp*(1-u.hp))); p.dmgMul-=u.dmg; return true; }
@@ -6931,7 +6933,7 @@ const HUB_GROUPS = {
     ['bestiary','☷','Bestiary','Discoveries and Sugar'] ] },
   gActivity:{ title:'🎉 Activities', rows:[
     ['rewards','🎁','Rewards','Login gift, Daily Quests and Awards'],   // v8.0.75 เจ้าของ: แทน Daily + Achievements (ซ้ำกับปุ่ม Rewards)
-    ['kitchen','🍳','Kitchen',FR_SIMPLE?'Pick a signature move for every run':'Recipes that power every run'],
+    ...(KITCHEN_ON?[['kitchen','🍳','Kitchen',FR_SIMPLE?'Pick a signature move for every run':'Recipes that power every run']]:[]),   /* v8.2.52 ECRS: ซ่อน */
     /* v8.2.32 Mochi Patrol → รวมเข้า Temple Expedition (Weave → Expedition) */
     /* v6.80 E2: Endgame (Endless/Ascension) entry removed */
     /* v7.8.89 เจ้าของ: Boss Rush เอาออกไปก่อน (โค้ดยังอยู่ · ใส่แถวนี้กลับเพื่อเปิด) */
@@ -7344,14 +7346,13 @@ function sortAffixesByKind(affs){return affs.slice().sort((a,b)=>(a.line??0)-(b.
 const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
 function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
 const CURRENCY = [
-  {key:'transmute',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Forge: add or remove a mod on any row · upgrade the mod in row 1'},
+  {key:'transmute',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Forge: add or remove a mod · upgrade the mods in rows 1–3'},
   /* v8.1.84 เจ้าของ (League phase 5 · Reforge): อัปเกรดใช้สกุลเงินตามแถว · เพิ่ม/ลบ ใช้ Twist Cream ทุกแถว · Recipe Ink ย้าย mod ไปอีกชิ้น · ยังไม่มีอาร์ตไอคอน → ใช้ภาพกลาง + ย้อมสี */
-  {key:'berryjam',emoji:'🍓',asset:'currency_wild_jam',tint:0xff6f9c,name:'Berry Jam',desc:'Forge: upgrade the mod in row 2'},
-  {key:'honeydrop',emoji:'🍯',asset:'currency_honey_drop',tint:0xffc64d,name:'Honey Drop',desc:'Forge: upgrade the mod in row 3'},
+  /* v8.2.52 เจ้าของ (ECRS · S): Berry Jam + Honey Drop รวมเข้า Twist Cream (CUR_ALIAS) · เซฟเก่าแลก 1 → 2 */
   {key:'starsugar',emoji:'⭐',asset:'currency_wish_candy',tint:0xc3a6ff,name:'Star Sugar',desc:'Forge: upgrade the mods in rows 4–6'},
   {key:'recipeink',emoji:'🖋️',asset:'currency_recipe_ink',tint:0x7fd8ff,name:'Recipe Ink',desc:'Forge: move one mod to an empty row on another item'},   // v7.8.88 Spark Sugar/Twist Cream/Wild Jam รวมเป็นตัวเดียว
 ];   // v8.0.83 Crystal Glaze (divine) เลิกใช้ → เซฟเก่าแลก 1 → 3 Twist Cream (_glazeMig) · ของที่ยังให้ divine = Twist Cream
-const CUR_ALIAS={divine:'transmute',exalt:'transmute',regal:'transmute',annul:'transmute',scour:'transmute',alt:'transmute',chaos:'transmute'};
+const CUR_ALIAS={berryjam:'transmute',honeydrop:'transmute',divine:'transmute',exalt:'transmute',regal:'transmute',annul:'transmute',scour:'transmute',alt:'transmute',chaos:'transmute'};
 function curKey(k){ return CUR_ALIAS[k]||k; }
 function currencyDef(k){ k=curKey(k); return CURRENCY.find(c=>c.key===k); }
 // v4.30: flame-sand แบบ Torchlight — reroll ค่าของ mod ที่เลือก ใช้ได้ทุก rarity แต่ "ผลาญเยอะ" (เผา 3 ต่อครั้ง)
@@ -7363,7 +7364,7 @@ function forgeGlazeCost(a){return Math.max(1,11-Math.max(1,a&&a.t!=null?a.t:10))
 // ราคาต่อครั้งบนชิ้นนั้น = 1 + floor(crafts/2) · Merge รีเซ็ต crafts · item.fp ในเซฟเก่าไม่ใช้แล้ว
 const FORGE_DROP_MUL=.5;
 function forgePrice(item){return 1+Math.floor(Math.max(0,Number(item&&item.crafts)||0)/4);}
-function forgeRowCur(line){return line<=0?'transmute':line===1?'berryjam':line===2?'honeydrop':'starsugar';}   // v8.1.84 เจ้าของ: อัปเกรดแต่ละแถวใช้สกุลต่างกัน
+function forgeRowCur(line){return line<=2?'transmute':'starsugar';}   // v8.1.84 เจ้าของ: อัปเกรดแต่ละแถวใช้สกุลต่างกัน
 function forgeUpPrice(item,line){return line<=0?forgePrice(item):1+Math.floor(Math.max(0,Number(item&&item.crafts)||0)/6);}
 const FORGE_MOVE_COST=1;   // v8.1.29 เจ้าของ: Twist Cream ไม่พอ · ราคาขึ้นช้าลง (เดิม /2)
 function forgeNextStarLevel(item,mod){const cap=forgeStarCap(item,mod);for(let l=Math.max(1,Number(item&&item.itemLevel)||1)+1;l<=100;l++)if(forgeStarCap(Object.assign({},item,{itemLevel:l}),mod)>cap)return l;return 0;}
@@ -7378,7 +7379,7 @@ let _bazBoxCost=0; function bazaarCurrencyBoxCost(){ if(_bazBoxCost)return _bazB
 // One active Sugar Order: the reward is earned by clearing a regular stage, scaled by DIFFS[].reward.
 // Weighted reward pools. Values are percentages within a successful currency drop.
 const CURRENCY_DROP_POOLS = {
-  common:{transmute:100},rare:{transmute:86,berryjam:12,recipeink:2},epic:{transmute:70,berryjam:17,honeydrop:10,recipeink:3},legend:{transmute:56,berryjam:18,honeydrop:15,starsugar:7,recipeink:4},   // v8.0.83 Glaze เลิกใช้ · v8.1.84 สกุลแถว (ยิ่งยากยิ่งได้ชนิดหายาก)
+  common:{transmute:100},rare:{transmute:98,recipeink:2},epic:{transmute:97,recipeink:3},legend:{transmute:89,starsugar:7,recipeink:4},   // v8.2.52 ECRS: Jam/Honey รวมเข้า Twist Cream
 };
 function rollWeightedCurrency(tier){
   const pool=CURRENCY_DROP_POOLS[tier]||CURRENCY_DROP_POOLS.common;
@@ -7828,6 +7829,7 @@ const Save = {
     if(!this.data.rankPerks)this.data.rankPerks={};
     if(!this.data._memory87){ this.data._memory87=1; let m=0; const B=this.data.bestiary||{}; for(const id in B){ const k=B[id]|0; (typeof bestiaryTiers==='function'?bestiaryTiers(id):[1,100,1000]).forEach((t,i)=>{ if(k>=t)m+=[1,2,4][i]||0; }); } if(m)this.data.memories=(this.data.memories|0)+m; }   // v8.1.87 Memory Book: จ่ายย้อนหลังตามขั้นที่ปลดแล้ว
     if(!this.data._reforge84){ this.data._reforge84=1; const c=this.data.currency||(this.data.currency={}); if((this.data.unlockedStage||0)>=1||Object.keys(this.data.stageMastery||{}).length){ c.berryjam=(Number(c.berryjam)||0)+4; c.honeydrop=(Number(c.honeydrop)||0)+2; c.starsugar=(Number(c.starsugar)||0)+1; c.recipeink=(Number(c.recipeink)||0)+1; } }   // v8.1.84 ของขวัญเริ่มระบบสกุลแถว (เซฟที่เล่นแล้ว)
+    if(!this.data._cur8252){ this.data._cur8252=1; const c=this.data.currency||(this.data.currency={}); const n=(Number(c.berryjam)||0)+(Number(c.honeydrop)||0); if(n>0)c.transmute=(Number(c.transmute)||0)+n*2; delete c.berryjam; delete c.honeydrop; }   // v8.2.52 ECRS: Jam/Honey → Twist Cream ×2
     if(!this.data._glazeMig){ this.data._glazeMig=1; const c=this.data.currency||(this.data.currency={}),g=Math.max(0,Math.floor(Number(c.divine)||0)); if(g)c.transmute=(Number(c.transmute)||0)+g*3; delete c.divine; }   // v8.0.83 Crystal Glaze → Twist Cream ×3 ครั้งเดียว
     if(!this.data._rrMig){ this.data._rrMig=1; let th=0; for(const c of SPECIAL_CORES){ const n=Math.max(0,Math.min(3,Math.floor(Number((this.data.specialCores||{})[c.id])||0))); th+=c.base*n*(n+1)/2; } if(th>0)this.data.threads=(this.data.threads||0)+th; this.data.specialCores={}; if((this.data.rankPerks||{}).revive){ this.data.rankPick=Object.assign({},this.data.rankPick,{2:'revive'}); } this.data.rankPerks={}; }   // v8.0.22 Rank Rewards: คืน Thread ของ Special Cores · Rank Perk เดิม (Sugar/Box/Fortune → โบนัสอัตโนมัติ) · Revival Candle เดิมเลือกให้ที่ยศ 2
     for(const k in this.data.rankPerks){ if(!RANK_PERKS.some(p=>p.id===k))delete this.data.rankPerks[k]; }   // v7.8.101 perk ที่ถูกตัด (vigor/might/ironWill/reroll/banish) → คืนแต้ม RP
@@ -9127,7 +9129,7 @@ const STAGE_GIMMICKS = [
 /* v7.9.60 เจ้าของ: มาสคอต Ruby บอกวิธีเล่นแต่ละภารกิจ (กรอบข้อความด้านบน คำสำคัญเป็นสี [..]) · say = ครั้งแรก ๆ (2 บรรทัด), short = สรุปสั้น/เตือนซ้ำ */
 /* v7.9.81 เจ้าของ: Ruby พูดเป็นธรรมชาติ มีเรื่องราว · Ruby = Mochi Core ไส้แยมทับทิม ผู้เฝ้าตำราสูตรของตู้กับข้าว · Great Hunger กลืนรสของเธอไป เลยปลุกร่างนักสู้ไม่ได้ · ทุกด่านที่ชนะ = ความทรงจำกลับมาทีละชิ้น */
 /* v8.1.103 Flavor Cores ในเรื่อง: คุณยายถักแก่น 3 เส้นไว้ในเมล็ดหัวใจ (Life Core = ร่างคน · Flavor Spark = รสที่ถูกขโมย · Oath Shell = คำสัญญาปกป้องกัน) · Sugar = รสที่ชิงคืนจากมอน · ป้อนแก่น = เมล็ดยึดร่างคนได้แน่นขึ้น → แข็งแรงถาวร แบ่งให้เพื่อนทุกคนที่ปลดคำสาปแล้ว */
-const OVERCHARGE_ON=false;   // v8.1.103 เจ้าของ: เอาวง Overcharge ในด่านออกก่อน (โค้ดเก็บไว้ เปิดกลับ = true)
+/* v8.2.52 ECRS: Overcharge ลบแล้ว */ const OVERCHARGE_ON=false;   // v8.1.103 เจ้าของ: เอาวง Overcharge ในด่านออกก่อน (โค้ดเก็บไว้ เปิดกลับ = true)
 const CORE_LORE_LINES=['That Sugar is flavor the Hunger stole. We just took some back!','Grandma wove three Flavor Cores into the Heart Seed: Life Core, Flavor Spark and Oath Shell.','Feed them Sugar and the Seed holds your true form tighter. Every friend we free shares that strength too!'];
 const RUBY_TIPS={
   /* v8.1.104 ภารกิจประจำด่าน/League 14 แบบ: Ruby อธิบายตอนเริ่ม (เดิมเงียบ) · เสียงใบ A13 */
@@ -9444,7 +9446,7 @@ function missionSeenMap(){ const d=(typeof Save!=='undefined'&&Save.data)||{},o=
   if(ss[0]>0){o.fill=1;o.survive=1;o.hunt=1;} if(ss[1]>0)o.purge=1; if(ss[2]>0)o.capture=1;   // ข้อมูลเก่าก่อน v8.2.5: แผนสอน C1-1..C1-3 รับประกันว่าเจอแล้ว
   return o; }   // v8.1.114 ไม่โผล่ใน Chapter 1 รอบแรก
 /* v8.1.116 เจ้าของ (รีวิวภารกิจ ข้อ 3): รางวัลประจำภารกิจ · แสดงในการ์ดเปิดภารกิจ/แท่นเริ่มก่อนเล่น · ได้เพิ่มตอนสำเร็จ (ช่วง 6+ / 11+ ได้เพิ่ม +1) */
-const MISSION_REWARDS={fill:['berryjam',1],survive:['berryjam',1],hunt:['gear',1],purge:['honeydrop',1],capture:['berryjam',2],cleanAir:['honeydrop',1],defendNectar:['honeydrop',2],seasonCycle:['starsugar',1],breakRoots:['recipeink',1],seedRift:['transmute',3],shakeTrees:['berryjam',2],mirrorPath:['recipeink',1],vaultAltar:['gear',1],lastLight:['honeydrop',2],ultimatum:['starsugar',1],frozenPantry:['berryjam',3],hungersMouth:['starsugar',1],creepingRoots:['honeydrop',2],hungerHerald:['recipeink',1],grandmasPot:['recipeink',2],grandmasGolem:['gear',1],hungerSiege:['starsugar',1],hungerDomain:['starsugar',2]};
+const MISSION_REWARDS={fill:['transmute',1],survive:['transmute',1],hunt:['gear',1],purge:['transmute',1],capture:['transmute',2],cleanAir:['transmute',1],defendNectar:['transmute',2],seasonCycle:['starsugar',1],breakRoots:['recipeink',1],seedRift:['transmute',3],shakeTrees:['transmute',2],mirrorPath:['recipeink',1],vaultAltar:['gear',1],lastLight:['transmute',2],ultimatum:['starsugar',1],frozenPantry:['transmute',3],hungersMouth:['starsugar',1],creepingRoots:['transmute',2],hungerHerald:['recipeink',1],grandmasPot:['recipeink',2],grandmasGolem:['gear',1],hungerSiege:['starsugar',1],hungerDomain:['starsugar',2]};
 /* v8.2.27 ความยากของภารกิจไว้เรียงเวฟ ง่าย→ยาก (1 ทั่วไป · 2 ภารกิจประจำด่าน · 3 ภารกิจใหญ่) */
 /* v8.2.28 SCAMPER รอบ 2 */
 const GOLD_WAVE_CHANCE=.05,GOLD_WAVE_MUL=2,GOLD_TINT=0xffd76a,FIRST_TIME_MUL=1.2,BOSS_MISSION_ON=true,BOSS_MISSION_AT=.6,BOSS_MISSION_DUR=45,BOSS_MISSION={5:'creepingRoots',6:'seedRift',7:'shakeTrees',8:'lastLight',9:'creepingRoots',10:'seedRift',11:'lastLight',12:'mirrorPath',13:'shakeTrees',14:'creepingRoots'};
@@ -14318,7 +14320,7 @@ class Game extends Phaser.Scene {
     this.forgeText(sIx,S.y+Math.min(S.h,86)/2+22,'⇄',11,'#ffd9a0',true,0,.5);this._zone(S.x,S.y,56,Math.min(S.h,86),()=>this.forgeOpenPanel('items',items));this.tapZones[this.tapZones.length-1].tag='gear_browse';
     this.forgeText(sTx,S.y+8,gearAffixName(base.name,affs),15,'#fff0df',true,rW);
     const im=ensureImplicit(selected),imp=im&&implicitDef(im.id);this.forgeText(sTx,S.y+30,tl.name+' · iLv '+(selected.itemLevel||1)+(imp?' · ◇ '+modLine(imp,im.v):''),11,tl.color||'#cfc1d4',true,rW);
-    { const ca=this.forgeIcon('currency_twist_cream',sTx+8,S.y+56,16,'🟢');this.forgeText(sTx+20,S.y+48,have+'  🍓'+Save.currency('berryjam')+'  🍯'+Save.currency('honeydrop')+'  ⭐'+Save.currency('starsugar')+'  🖋️'+Save.currency('recipeink'),12,have>=price?'#a8f0bf':'#ffb0a0',true,S.x+S.w-14-sTx-20); }   /* v8.1.84 กระเป๋าสกุลแถว */
+    { const ca=this.forgeIcon('currency_twist_cream',sTx+8,S.y+56,16,'🟢');this.forgeText(sTx+20,S.y+48,have+'  ⭐'+Save.currency('starsugar')+'  🖋️'+Save.currency('recipeink'),12,have>=price?'#a8f0bf':'#ffb0a0',true,S.x+S.w-14-sTx-20); }   /* v8.1.84 กระเป๋าสกุลแถว */
     if(isEq){this.forgeChrome('equipped',S.x+S.w-80,S.y+8,70,26);this.forgeText(S.x+S.w-45,S.y+14,'Equipped',10,'#123b31',true,64,.5);}
     else this.forgeButton(S.x+S.w-80,S.y+6,70,36,'Equip',()=>{if(Save.equipGearInstance(slot,selected.uid))Sfx.equipment('equip');this.buildCraftBench();},{kind:'primary',tag:'equip'});
     /* v8.0.83 MOD ROWS (v8.0.87: แถวตามขั้น สูงสุด 6 · Lv แทนดาว · mod ไม่ดี · ลบเสีย Twist Cream): เต็ม = mod + Lv + ปุ่ม Upgrade (หรือเหตุผลที่ตัน) + 🗑 · ว่าง = + Add a mod · ล็อก = Merge to open */
@@ -17022,7 +17024,7 @@ class Game extends Phaser.Scene {
     if(left<=0){ S.fx?.clear?.(); this.fpArmyBonus(S,done); this.completeWaveObjective(); } }
   fpArmyBonus(S,done){ const tot=(S.st||[]).length||1,r=done/tot; if(S._bonusGiven||r<.5)return; S._bonusGiven=true; const p=this.player; if(!p)return;   // v8.2.16 ล้มได้มาก = รางวัลดีขึ้น
     if(r>=.8){ this._lootMinRare=true; try{ const g=this.spawnLoot?.(p.x+40,p.y-40,(this.stageIndex>=10||this.endgameDropActive?.())?2:1); if(g)this.lootHold?.(g,1900); }finally{ this._lootMinRare=false; } this.floatText?.(p.x,p.y-70,'🏆 Army defeated! Gear box',0xffd166); }
-    else { const g=this.spawnCurrencyDrop?.(p.x+40,p.y-30,'honeydrop'); if(g&&typeof g==='object'){ g.forgeQuantity=1; this.lootHold?.(g,1900); } this.floatText?.(p.x,p.y-70,'🍯 Most of the army defeated!',0xffd166); } }
+    else { const g=this.spawnCurrencyDrop?.(p.x+40,p.y-30,'transmute'); if(g&&typeof g==='object'){ g.forgeQuantity=1; this.lootHold?.(g,1900); } this.floatText?.(p.x,p.y-70,'🟢 Most of the army defeated!',0xffd166); } }
   fpOnKill(e,o,S){ const tok=e._fpTok; e._fpTok=0; if(!o||o.done||!S||S.type!=='frozenPantry')return false; const q=(S.st||[]).find(x=>x.tok===tok&&x.state==='awake'); if(!q)return false; this.fpResolve(q,'done');
     if(q.cap&&S.sq?.[q.sq]&&!S.sq[q.sq].leaderless){ S.sq[q.sq].leaderless=true; let n=0; for(const m of S.st){ if(m.sq!==q.sq||m.state!=='awake'||!m.e?.active)continue; const me=m.e; me.spd=(me.spd||60)*FP_LEADERLESS; me.dmg=(me.dmg||10)*FP_LEADERLESS; me.setTint?.(0xb8b8c8); me.tintColor=0xb8b8c8; n++; } this.floatText?.(e.x,e.y-56,n?'👑 Captain down! Squad weakened':'👑 Captain down!',0xffd166); this.rubyVoiceReact?.('captain',200); this.vfxHitRing?.(e.x,e.y,0xffd166,true); }   // v8.2.16 ล้ม Captain = ลูกหมู่ช้าลง/ตีเบาลง
     if(q.chest){ const si=this.stageIndex||0,su=Math.round((4+si*1.1)*(q.gen?2.5:1)); this.sugarStage+=su; this.sugarRun+=su; const L0=this._lootAt; this._lootAt={x:e.x,y:e.y}; try{ this.missionLootBurst?.({type:'tree',noCur:true,noHold:true},su); }finally{ this._lootAt=L0; } } return true; }
@@ -17231,7 +17233,7 @@ class Game extends Phaser.Scene {
      เนื้อเรื่อง: คุณยายแช่แข็งอยู่ในคุกน้ำตาล (C1-4) แต่หม้อยังจำสูตรของเธอได้ → ปลดหลังเจอคุณยาย (ผ่าน C1-4) */
   gpMenu(S){ const si=this.stageIndex||0,d=(typeof Save!=='undefined'&&Save.data)||{},full=!!S.full,M={
       sugar_s:{em:'🍬',name:'Sugar Bowl',cost:4,sugar:Math.round(8+si*1.5)},sugar_l:{em:'🍰',name:'Sugar Feast',cost:10,sugar:Math.round(25+si*4)},
-      jam:{em:'🍓',name:'Berry Jam ×2',cost:9,cur:'berryjam',n:2},ink:{em:'🖋️',name:'Recipe Ink',cost:12,cur:'recipeink',n:1},
+      jam:{em:'🟢',name:'Twist Cream ×2',cost:9,cur:'transmute',n:2},ink:{em:'🖋️',name:'Recipe Ink',cost:12,cur:'recipeink',n:1},
       box_r:{em:'🎁',name:'Gear Box',cost:13,box:'rare'},box_e:{em:'💜',name:'Epic Box',cost:22,box:'epic'},stone:{em:'🪨',name:'Hunger Stone',cost:30,stone:1}};
     const pick=[]; if(d.potDeferred&&M[d.potDeferred])pick.push(d.potDeferred); if(!pick.includes('sugar_s'))pick.push('sugar_s');
     const pool=['sugar_l','jam','ink','box_r',...(full?['box_e']:[]),...(Math.random()<.2?['stone']:[])].filter(k=>!pick.includes(k));
@@ -17355,7 +17357,7 @@ class Game extends Phaser.Scene {
     this.floatText?.(e.x,e.y-90,'🖐️ The Breachlord falls!',0xe3c4ff); this._lootAt={x:e.x,y:e.y}; try{ this.missionLootBurst?.({type:'tree',noHold:true},su); }finally{ this._lootAt=L0; }
     for(let i=0;i<3;i++)this.leagueCurrencyDrop?.(o); this.hmSplinters?.(20); try{ this.grantGear?.('legend'); }catch(_){} this.completeWaveObjective(); }
   /* v8.1.84 ภารกิจ League ดรอปสกุลแถว Reforge (Herald ได้เพิ่ม 1) */
-  leagueCurrencyDrop(o){ const P=this.missionPoint?.(o)||this.player,si=this.stageIndex||0,S=this._sig,n=(this.fpFull?.()?2:1)+(o&&o.type==='hungerHerald'?1:0),W=[['berryjam',45],['honeydrop',28],['starsugar',si>=5?15:5],['recipeink',12]],T=W.reduce((a,b)=>a+b[1],0);
+  leagueCurrencyDrop(o){ const P=this.missionPoint?.(o)||this.player,si=this.stageIndex||0,S=this._sig,n=(this.fpFull?.()?2:1)+(o&&o.type==='hungerHerald'?1:0),W=[['transmute',73],['starsugar',si>=5?15:5],['recipeink',12]],T=W.reduce((a,b)=>a+b[1],0);
     for(let i=0;i<n;i++){ let r=Math.random()*T,k=W[0][0]; for(const [kk,w] of W){ r-=w; if(r<0){ k=kk; break; } } this.spawnCurrencyDrop?.(P.x+(Math.random()-.5)*70,P.y+(Math.random()-.5)*50,k); } }
   /* ===== v8.1.93 อาร์ตภารกิจ ใบ 71–74 · ไม่มีภาพ = ใช้อีโมจิ/วงกราฟิกเดิม ===== */
   missionArtKeys(idx){ const A=typeof ASSET_FX!=='undefined'?ASSET_FX:{},pre=p=>Object.keys(A).filter(x=>x.startsWith(p)),k=[],by={0:['hh_'],1:['hm_','brm_'],2:['gp_'],3:['fp_'],4:['gg_'],7:['cr_root_'],13:['ult_']},m={6:['msn71_bubble'],8:['msn71_season_shrines','msn71_petals'],10:['msn71_rift'],11:['msn71_tree'],12:['msn71_mirror','msn71_crystal','msn71_crystal_blast'],14:['msn71_lantern','msn71_lantern_out']};
@@ -17364,7 +17366,7 @@ class Game extends Phaser.Scene {
     if(this.recipeMode||this._recipeRequested||this.riftMode)prefixes.push('hm_','brm_','hs_','ult_');
     for(const prefix of prefixes)k.push(...pre(prefix),...(fx[prefix]||[]).map(name=>'vfx78_'+name));
     { const M85={0:['hh85_','hh87_'],3:['fp85_'],4:['gg87_'],7:['cr87_'],10:['sr87_'],11:['st87_'],12:['mp85_'],13:['ult85_'],14:['ll85_']}; for(const pf of M85[idx]||[])k.push(...pre(pf)); k.push(...pre('mc86_'),...pre('hn87_'));   /* v8.2.24 การ์ดแจก + ขวดพิษ Hunt ทุกด่าน */ if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh87_'),...pre('st87_'),...pre('cr87_'),...pre('sr87_'),...pre('gg87_'),...pre('ui87_')); if(this.recipeMode||this._recipeRequested||this.riftMode)k.push(...pre('hs85_'),...pre('ult85_')); if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh85_'),...pre('mp85_'),...pre('ll85_')); }   /* v8.2.23 ใบ 85 · ภารกิจเสริม (ซ้อน) ใน Ch2+ อาจเป็น Herald/Mirror/Last Light */
-    k.push(...(m[idx]||[]),'msn71_overcharge_pad','msn71_stalker_captain','msn71_stalker_captain_attack','msn71_stalker_captain_death'); if(idx<5)k.push('msn71_supply_crate');
+    k.push(...(m[idx]||[]),'msn71_stalker_captain','msn71_stalker_captain_attack','msn71_stalker_captain_death'); if(idx<5)k.push('msn71_supply_crate');
     return [...new Set(k)].filter(x=>x!=='hm_rim'&&A[x]); }
   artSpr(key,x,y,px,frame=0,o={}){ if(!key||!this.textures?.exists?.(key))return null; const fd=(typeof ASSET_FX!=='undefined'&&ASSET_FX[key])||{},s=this.camWorld(this.add.sprite(x,y,key,frame)),fw=fd.fw||s.width,fh=fd.fh||s.height;
     s.setScale(px/Math.max(fw,fh)); s.setOrigin(.5,(o.feet!=null?o.feet:fd.anchor==='feet')?.94:.5); s.setDepth(o.depth!=null?o.depth:y+2);

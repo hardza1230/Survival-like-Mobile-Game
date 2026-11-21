@@ -12,8 +12,9 @@ const Scene=vm.runInContext('class S{'+names.map(method).join('\n')+'\n}S',ctx),
 Object.assign(s,{craftLineIndex:0,_craftContext:()=>({item:sel}),showBanner:(a,b)=>banners.push(a),buildCraftBench(){},screenFlash(){},menuToast(){}});
 const C=ctx.Save.data.currency,lv=a=>vm.runInContext('tierStars',ctx)(api.affixDef(a.id),a.t);
 assert(s.forgeUpgrade(0));assert.equal(C.transmute,9,'row 1 = Twist Cream');
-assert(s.forgeUpgrade(1));assert.equal(C.berryjam,0,'row 2 = Berry Jam');assert.equal(C.transmute,9,'Twist Cream untouched');
-assert(!s.forgeUpgrade(2));assert(/Honey Drop/.test(banners.pop()),'row 3 needs Honey Drop');assert.equal(lv(api.forgeLines(A)[2]),1);
+// v8.2.52 ECRS: rows 1–3 all use Twist Cream (Berry Jam / Honey Drop merged)
+assert(s.forgeUpgrade(1));assert.equal(C.transmute,8,'row 2 = Twist Cream');
+C.transmute=0;assert(!s.forgeUpgrade(2));assert(/Twist Cream/.test(banners.pop()),'row 3 needs Twist Cream');assert.equal(lv(api.forgeLines(A)[2]),1);C.transmute=8;
 // Move: B (rare, 2 rows, row 2 empty) can take A's row-1 mod; Lv clamps to B's iLv-1 cap
 const t=s.forgeMoveTargets(A,0);assert.equal(t.length,1);assert.equal(t[0].item.uid,'b');assert.equal(t[0].line,1);
 assert(s.forgeOpenMove(0));assert.equal(s._forgePanel.type,'move');
