@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.48';
+const GAME_VERSION = '8.2.49';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.49',date:'2026-11-21',title:'Fix Expedition hero growing on taps',items:['Temple Expedition: tapping no longer makes the hero grow','Menu press bounce never compounds on fast repeat taps']},
   {v:'8.2.48',date:'2026-11-21',title:'Hunger Crack final hole: horde + tanks + Abyss Brute',items:['Final hole pours 4 waves x10 (Ch1 x6) with tanks mixed in','Abyss Brute (big, 3x HP) joins the Elite and drops gear','Abyss chest Sugar x1.5']},
   {v:'8.2.47',date:'2026-11-21',title:'Fix Ice Cage Sealing columns not hitting',items:['C1-4 boss: the warned ice-bar columns now hit along their whole length; find the one gap']},
   {v:'8.2.46',date:'2026-11-21',title:'Fix Start/Reroll taps on the mission deal · description text removed',items:['Start the stage / Reroll buttons respond again (pointer coordinates fixed)','No description text under the lifted mission card']},
@@ -11512,12 +11513,13 @@ class Game extends Phaser.Scene {
       if(o.type==='Graphics'){ const q=o._bb; if(q&&q.x1>q.x0)b={x:q.x0*o.scaleX+o.x,y:q.y0*o.scaleY+o.y,w:(q.x1-q.x0)*o.scaleX,h:(q.y1-q.y0)*o.scaleY}; }
       else if(o.getBounds){ try{ const r=o.getBounds(); b={x:r.x,y:r.y+sc,w:r.width,h:r.height}; }catch(e){} }
       if(!b||b.w<=0||b.h<=0||b.w>zw*1.3+10||b.h>zh*1.3+10)continue; const mx=b.x+b.w/2,my=b.y+b.h/2;
-      if(mx<zx-4||mx>zx+zw+4||my<zy-4||my>zy+zh+4)continue; objs.push({o,x:o.x,y:o.y,sx:o.scaleX,sy:o.scaleY}); }
+      if(mx<zx-4||mx>zx+zw+4||my<zy-4||my>zy+zh+4)continue; const q0=o._pbBase; objs.push(q0?{o,x:q0.x,y:q0.y,sx:q0.sx,sy:q0.sy}:{o,x:o.x,y:o.y,sx:o.scaleX,sy:o.scaleY}); }   /* v8.2.49 กดซ้ำระหว่างเด้งกลับ = ใช้ขนาดเดิมก่อนกด (ไม่โตสะสม) */
     if(!objs.length)return run();
     const br=this._lbBreathe; if(br){ br.tw.remove(); for(const p of br.parts){ if(p.o.active){ p.o.x=p.x; p.o.y=p.y; p.o.setScale(p.sx,p.sy); } } this._lbBreathe=null; for(const p of objs){ const q=br.parts.find(r=>r.o===p.o); if(q){ p.x=q.x; p.y=q.y; p.sx=q.sx; p.sy=q.sy; } } }
+    for(const p of objs){ p.b={x:p.x,y:p.y,sx:p.sx,sy:p.sy}; p.o._pbBase=p.b; }
     this._pressBusy=true; Sfx.ui?.(kind); const st={k:1},apply=()=>{ for(const p of objs){ if(!p.o.active)continue; p.o.x=cx+(p.x-cx)*st.k; p.o.y=cy+(p.y-cy)*st.k; p.o.setScale(p.sx*st.k,p.sy*st.k); } };
     const done=()=>{ this._pressBusy=false; const S=Sfx; if(S._uiPending===undefined){ S._uiPending=kind; try{fn();}finally{ const cue=S._uiPending; delete S._uiPending; if(cue!==kind)S.ui(cue); } } else fn();
-      if(objs.some(p=>p.o.active))this.tweens.add({targets:st,k:1,duration:160,ease:'Back.easeOut',onUpdate:apply,onComplete:apply}); };
+      if(objs.some(p=>p.o.active))this.tweens.add({targets:st,k:1,duration:160,ease:'Back.easeOut',onUpdate:apply,onComplete:()=>{ apply(); for(const p of objs)if(p.o._pbBase===p.b)delete p.o._pbBase; }}); };
     this.tweens.add({targets:st,k:.86,duration:60,ease:'Quad.easeOut',onUpdate:apply,onComplete:()=>this.tweens.add({targets:st,k:1.08,duration:70,ease:'Quad.easeOut',onUpdate:apply,onComplete:done})});
  }
   // ไฟกระพริบบนปุ่ม + วงกระเพื่อมที่นิ้ว (อยู่นอก this.menu จึงไม่หายตอน rebuild)
@@ -13932,7 +13934,7 @@ class Game extends Phaser.Scene {
     if(this.realTex?.(bk)){ V.back=true; V.hy=top+fh-4; V.hero=this.add.sprite(w/2,V.hy,bk,0).setOrigin(.5,240/256).setScale(fh*.46/192); this.menu.add(V.hero); }   /* v8.2.33 ใบ 91 ฮีโร่มุมหลัง */
     else if(this.textures.exists(hk)){ V.hero=this.add.sprite(w/2,V.hy,hk,0).setOrigin(.5,1).setScale(Math.min(1.25,fh*.36/128)); this.menu.add(V.hero); } else V.hero=T(w/2,V.hy-30,'🍡',40,'#fff');
     this.expHelpers().filter(x=>(e.help[x.id]|0)>0).slice(0,6).forEach((hh,i)=>{ const side=i%2?1:-1,col=Math.floor(i/2),x=w/2+side*(64+col*44),y=V.hy-18-col*10; const hb='ex91_back_'+hh.id; if(hh.id!==hc&&this.realTex?.(hb)){ this.menu.add(this.add.sprite(x,y+16,hb,0).setOrigin(.5,240/256).setScale(fh*.2/192)); } else { const c=this.add.circle(x,y,15,0x2a1f3a,.92).setStrokeStyle(2,0xffd166,.9); this.menu.add(c); T(x,y,hh.em,15,'#fff'); } T(x,y+22,'Lv'+e.help[hh.id],8,'#ffe08a'); });
-    this._zone(fx,top,fw,fh+10,()=>{ const crit=Math.random()<EXP_CRIT,d=expTapDmg(Save.exp().tap)*(crit?EXP_CRIT_MUL:1); this.expHit(d,crit,true); const nw=Date.now(); if(nw-(this._exTapSnd||0)>=70){ this._exTapSnd=nw; if(!(crit?this.exSfx('crit',.45):this.exSfx('tap_'+(1+Math.floor(Math.random()*3)),.3)))Sfx.digHit?.(); } },null); this.tapZones[this.tapZones.length-1].tag='exp_tap';
+    this._zone(fx,top,fw,fh+10,()=>{ const crit=Math.random()<EXP_CRIT,d=expTapDmg(Save.exp().tap)*(crit?EXP_CRIT_MUL:1); this.expHit(d,crit,true); const nw=Date.now(); if(nw-(this._exTapSnd||0)>=70){ this._exTapSnd=nw; if(!(crit?this.exSfx('crit',.45):this.exSfx('tap_'+(1+Math.floor(Math.random()*3)),.3)))Sfx.digHit?.(); } },null); this.tapZones[this.tapZones.length-1].tag='exp_tap'; this.tapZones[this.tapZones.length-1].noBounce=true;   /* v8.2.49 เจ้าของ: แตะตีรัว ๆ แล้วตัวละครโตขึ้นเรื่อย ๆ (ลูกเล่นกดปุ่มเด้งซ้อนกัน) → พื้นที่ตีไม่เด้ง */
     // แถบข้อมูล + ปุ่ม
     let y=top+fh+18; V.crT=T(w/2,y,'',12,'#ffe0f0'); if(this.realTex?.('ex91_icons'))this.menu.add(this.add.image(20,y,'ex91_icons',0).setDisplaySize(20,20)); y+=20;
     const bh=34,btn=(x,bw,label,fill,on,fn,tag)=>{ const b=this.add.graphics(); b.fillStyle(on?fill:0x2c2338,1).fillRoundedRect(x,y,bw,bh,11).lineStyle(1.5,on?0xffe08a:0x4a4059,1).strokeRoundedRect(x,y,bw,bh,11); this.menu.add(b); T(x+bw/2,y+bh/2,label,11,on?'#ffffff':'#7a7088'); if(on){ this._zone(x,y,bw,bh,fn); this.tapZones[this.tapZones.length-1].tag=tag; } };
