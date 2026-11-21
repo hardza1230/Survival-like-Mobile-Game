@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.40';
+const GAME_VERSION = '8.2.41';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.41',date:'2026-11-21',title:'Mission deal waits for you',items:['After the mission cards are dealt, the game waits for you: tap Start the stage or Reroll','Tapping empty space no longer skips past the reroll choice']},
   {v:'8.2.40',date:'2026-11-21',title:'Mission spotlight and shorter banners',items:['The camera now shows each mission’s target the first time it appears in a stage','Hunger Herald, Grandma’s Golem, Clear the Fog and Seed Rift now get the spotlight too','In-play banners show a short title, with a one-line tip under the mission bar']},
   {v:'8.2.39',date:'2026-11-20',title:'Stage start no longer freezes',items:['Picking a newly unlocked hero no longer freezes the Heroes screen','A loading screen now stays up while a stage gets ready','If loading takes too long, the stage starts anyway']},
   {v:'8.2.38',date:'2026-11-20',title:'Stronger Shotgun',items:['Momo Shotgun pellets deal 25% more damage','Shotgun Build should now hold up better against bosses']},
@@ -16858,15 +16859,16 @@ class Game extends Phaser.Scene {
     const cards=[]; for(let i=0;i<n;i++){ const c=mk(i); c.x=W/2+(i-n/2)*1.5; c.y=cy-i*1.5; face(c,i); cards.push(c); }
     let fin=false; const tw=(o)=>this.tweens.add(o),T=(ms,f)=>this.time.delayedCall(ms,()=>{ if(!fin&&!hold)f(); });
     const finish=()=>{ if(fin)return; fin=true; this._finishDeal=null; this.input?.off?.('pointerdown',onTap); const tx=this.waveObjTxt?this.waveObjTxt.x:W/2,ty=this.waveObjTxt?this.waveObjTxt.y:40;
-      tw({targets:cards,x:tx,y:ty,scale:.2,alpha:0,duration:320,ease:'Cubic.easeIn',delay:(t,k,v,i)=>i*30}); tw({targets:[dim,cap].concat(rb?[rb]:[],ri?[ri]:[]),alpha:0,duration:300,onComplete:()=>{ L.destroy(); if(this._dealL===L)this._dealL=null; }});
+      tw({targets:cards,x:tx,y:ty,scale:.2,alpha:0,duration:320,ease:'Cubic.easeIn',delay:(t,k,v,i)=>i*30}); tw({targets:[dim,cap].concat(rb?[rb]:[],ri?[ri]:[],go?[go]:[]),alpha:0,duration:300,onComplete:()=>{ L.destroy(); if(this._dealL===L)this._dealL=null; }});
       if(this.state==='cinematic')this.state=prevState==='cinematic'?'play':prevState; this.physics.resume(); done(); };
     const canRe=!deal.plan&&!deal.adRerolled&&Array.isArray(deal.slots)&&deal.slots.some(w=>w!==deal.leadSlot),isAd=!!deal.rerolled; let rb=null,hold=false;   /* v8.2.27 เจ้าของ: ฟรี 1 ครั้ง · ครั้งที่ 2 ดูโฆษณา */
     const reArt=this.realTex?.('ev90_reroll'); let ri=null;
+    let go=null;   /* v8.2.41 เจ้าของ: จั่วเสร็จแล้วหยุดรอผู้เล่นเลือก ▶ ไปต่อ หรือ 🔄 Reroll (มีปุ่ม Reroll = ไม่เข้าด่านเอง) */
     if(canRe){ rb=this.add.text(W/2,cy+chh/2+40,(reArt?'      ':'')+(isAd?(reArt?'':'📺 ')+'Reroll again (watch ad)':(reArt?'':'🔄 ')+'Reroll missions (free)'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',backgroundColor:'#5a3d86',padding:{x:14,y:8},stroke:'#24172c',strokeThickness:3}).setOrigin(.5).setAlpha(0); L.add(rb); if(reArt){ ri=this.add.image(rb.x-(rb.width||200)/2+24,rb.y,'ev90_reroll',isAd?1:0).setDisplaySize(24,24).setAlpha(0); L.add(ri); } }   /* v8.2.31 ใบ 90 ไอคอน */
     const reroll=()=>{ if(fin)return; hold=false; fin=true; this._finishDeal=null; this.input?.off?.('pointerdown',onTap); try{ this.tweens.killTweensOf?.(cards); }catch(e){} L.destroy(); if(this._dealL===L)this._dealL=null; (this.a12?.('a18_reroll',.5,.2))||snd(); this.rubyVoiceReact?.('reroll',200); this.missionDealReroll(deal,isAd); this.missionDealShow(deal,done); };
     const tapRe=()=>{ if(!isAd){ reroll(); return; } if(hold||!this.showRewardedAd)return; hold=true; rb.setAlpha(.45); let got=false; this.showRewardedAd('Watch an ad to reroll the stage missions',()=>{ got=true; reroll(); }); this.time.delayedCall(400,()=>{ if(!got&&!this._adBusy&&hold&&!fin){ hold=false; finish(); } });
       const chk=this.time.addEvent({delay:300,loop:true,callback:()=>{ if(fin||got){ chk.remove(); return; } if(!this._adBusy&&hold){ chk.remove(); hold=false; finish(); } }}); };
-    this._finishDeal=finish; const t0=this.time.now,onTap=(pt)=>{ if(hold)return; if(rb&&rb.alpha>.5&&pt&&Math.abs(pt.x-rb.x)<=(rb.width||200)/2+10&&Math.abs(pt.y-rb.y)<=(rb.height||34)/2+10){ tapRe(); return; } if(this.time.now-t0>350)finish(); }; this.input?.on?.('pointerdown',onTap);
+    this._finishDeal=finish; const t0=this.time.now,onTap=(pt)=>{ if(hold)return; const on=b=>b&&b.alpha>.5&&pt&&Math.abs(pt.x-b.x)<=(b.width||200)/2+10&&Math.abs(pt.y-b.y)<=(b.height||34)/2+10; if(on(rb)){ tapRe(); return; } if(on(go)){ (this.a12?.('a18_reroll',.3,.2))||snd(); finish(); return; } if(!rb&&this.time.now-t0>350)finish(); }; this.input?.on?.('pointerdown',onTap);
     const snd=()=>{ try{ Sfx.card&&Sfx.card(); }catch(e){} };
     // สับ 2 ครั้ง
     for(let k=0;k<2;k++)T(k*260,()=>{ snd(); cards.forEach((c,i)=>tw({targets:c,x:W/2+(i%2?1:-1)*cw*.7,angle:(i%2?8:-8),duration:110,yoyo:true,ease:'Sine.easeInOut'})); });
@@ -16879,7 +16881,8 @@ class Game extends Phaser.Scene {
     const base=1100+n*90,big=DEAL_BIG,cyBig=Math.round(H*.36);
     cards.forEach((c,i)=>T(base+i*DEAL_SHOW_MS,()=>{ L.bringToTop?.(c); snd(); tw({targets:c,x:W/2,y:cyBig,scaleX:big,scaleY:big,duration:260,ease:'Cubic.easeOut',onComplete:()=>{ if(fin)return; tw({targets:c,scaleX:0,duration:120,ease:'Sine.easeIn',onComplete:()=>{ c._back.forEach(q=>q.setVisible(false)); c._face.forEach(q=>q.setVisible(true)); tw({targets:c,scaleX:big,duration:150,ease:'Back.out'}); if(c._sig)tw({targets:c,angle:{from:-4,to:0},duration:300,ease:'Back.out'}); info.setText(desc(i)); tw({targets:info,alpha:1,duration:180}); }}); }});
       T(DEAL_SHOW_MS-300,()=>{ tw({targets:info,alpha:0,duration:160}); tw({targets:c,x:P(i),y:cy,scaleX:1,scaleY:1,angle:0,duration:260,ease:'Cubic.easeInOut'}); }); }));
-    T(base+n*DEAL_SHOW_MS+700,finish);
+    if(!rb)T(base+n*DEAL_SHOW_MS+700,finish);
+    else T(base+n*DEAL_SHOW_MS+200,()=>{ go=this.add.text(W/2,rb.y+(rb.height||34)/2+30,'▶  Start the stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#2a1a10',backgroundColor:'#ffd166',padding:{x:22,y:10},stroke:'#fff4d6',strokeThickness:1}).setOrigin(.5).setAlpha(0); L.add(go); tw({targets:go,alpha:1,duration:220}); tw({targets:go,scale:{from:1,to:1.05},duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut',delay:300}); });
   }
   c1FirstPool(pool){ const idx=this.stageIndex||0,d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.stageMastery||{})[3]&&pool.includes('grandmasPot')){ const p2=pool.filter(t=>t!=='grandmasPot'); if(p2.length)pool=p2; }   /* v8.1.115 Pot ปลดหลังเจอคุณยาย (ผ่าน C1-4) แม้เล่นซ้ำ */ if(idx>4||this.recipeMode||this.riftMode||this.bossRush||this._replayMeter||(d.stageMastery||{})[idx]||(typeof storyCleared==='function'&&storyCleared()>=5))return pool;
     const out=pool.filter(t=>!C1_LATER_LEAGUE.includes(t)); return out.length?out:pool; }

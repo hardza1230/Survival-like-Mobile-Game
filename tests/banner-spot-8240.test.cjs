@@ -14,3 +14,8 @@ assert(src.includes("if(type!=='hunt')this.questFocusWhenReady(o,type);"),'waits
 for(const k of ["type==='grandmasGolem'&&this._sig","type==='seedRift'&&this._sig?.type==='seedRift'","type==='cleanAir'&&this._cleanAir?.v2"])assert(src.includes(k),k);
 assert(src.includes("const inPlay=this.state!=='menu'&&this.state!=='title',"),'banner play mode');
 console.log('Banner + spotlight 8.2.40: one-line descriptions, once per stage, late targets passed');
+// v8.2.41 owner: after the mission deal, wait for the player (▶ Start or 🔄 Reroll) when a reroll is offered
+assert(src.includes("if(!rb)T(base+n*DEAL_SHOW_MS+700,finish);"),'auto-start only without reroll');
+assert(src.includes("'▶  Start the stage'"),'start button');
+assert(src.includes("if(on(go)){")&&src.includes("if(!rb&&this.time.now-t0>350)finish();"),'tap outside does not skip the choice');
+console.log('Mission deal 8.2.41: waits for Start or Reroll passed');
