@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.39';
+const GAME_VERSION = '8.2.40';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.40',date:'2026-11-21',title:'Mission spotlight and shorter banners',items:['The camera now shows each mission’s target the first time it appears in a stage','Hunger Herald, Grandma’s Golem, Clear the Fog and Seed Rift now get the spotlight too','In-play banners show a short title, with a one-line tip under the mission bar']},
   {v:'8.2.39',date:'2026-11-20',title:'Stage start no longer freezes',items:['Picking a newly unlocked hero no longer freezes the Heroes screen','A loading screen now stays up while a stage gets ready','If loading takes too long, the stage starts anyway']},
   {v:'8.2.38',date:'2026-11-20',title:'Stronger Shotgun',items:['Momo Shotgun pellets deal 25% more damage','Shotgun Build should now hold up better against bosses']},
   {v:'8.2.37',date:'2026-11-20',title:'Kitchen: pick a signature move',items:['Kitchen now offers 4 ready-made signature moves — pick one, swap for free','Sugar Rush Slam, Double Helping, Brain Freeze and Candy Armor fire in every run','Recipes no longer lower your Max HP or Attack Power','Expedition boss every 10 stages now gives Weave Thread instead of a Recipe Part']},
@@ -7545,6 +7546,12 @@ function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 const ATK_PCT=0.05;
 /* v8.2.38 เจ้าของ (feedback: Shotgun สู้บอสยาก): เม็ด Shotgun แรงขึ้น 25% (เดิม ×0.45 ต่อเม็ด) */
 const SG_PELLET_MUL=0.45*1.25;
+/* v8.2.40 คำอธิบายป้ายระหว่างเล่น: มี — ใช้ท่อนหลัง (สิ่งที่ต้องทำ) · ไม่งั้นเก็บทีละท่อน (แยกด้วย — · ;) จนยาวไม่เกิน BANNER_LINE_MAX ตัวอักษร · ท่อนแรกยาวเกินตัดด้วย … */
+const BANNER_LINE_MAX=58;
+function bannerLine(sub){ const t=String(sub||'').replace(/\s*\([^)]*\)/g,'').replace(/\s+/g,' ').trim(); if(t.length<=BANNER_LINE_MAX)return t;
+  { const i=t.lastIndexOf(' — '); if(i>0){ const act=t.slice(i+3).trim(); const a2=act.replace(/^and\s+/i,''); if(a2.length>=8&&a2.length<=BANNER_LINE_MAX)return a2.charAt(0).toUpperCase()+a2.slice(1); } }   /* ท่อนหลัง — มักเป็นสิ่งที่ต้องทำ */
+  const parts=t.split(/\s*[;:]\s+|\s+(?:—|·)\s+/); let out=parts[0];
+  for(let i=1;i<parts.length&&(out+' · '+parts[i]).length<=BANNER_LINE_MAX;i++)out+=' · '+parts[i]; if(out.length>BANNER_LINE_MAX){ const cm=out.slice(0,BANNER_LINE_MAX).lastIndexOf(', '); if(cm>=18)return out.slice(0,cm); const sp=out.slice(0,BANNER_LINE_MAX-1).lastIndexOf(' '); out=out.slice(0,sp>30?sp:BANNER_LINE_MAX-1)+'…'; } return out; }
 const RUN_WAIT_MAX=45000;   // v8.2.39 เข้าด่าน: รอโหลดแต่ละขั้นได้นานสุด 45 วิ (ensureGroup เองตัดที่ 20 วิ/กลุ่ม)
 const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1.0}, FLAT_EFF_PATH={sniper:2.5,shotgun:0.6,ricochet:0.8};
 // v6.41 (เจ้าของ: อาวุธแรงจนการต่อสู้ไม่มีความหมาย) เดิม 1.03/lv ถึง 60 แล้ว 1.015 → iLv89 = ×8.8 · ใหม่ iLv60 ×4.3 · iLv89 ×5.0 · iLv100 ×5.2
@@ -15301,7 +15308,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._holdFire=false;this.time?.delayedCall?.(0,()=>this.stageMood?.(this.recipeMode||this.riftMode?null:i));this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._qfRun={};this._holdFire=false;this.time?.delayedCall?.(0,()=>this.stageMood?.(this.recipeMode||this.riftMode?null:i));this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;this._leadUsed=false;this._bountyLead=false;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -16105,7 +16112,7 @@ class Game extends Phaser.Scene {
     if(o._huntPhase)o.desc='Clear foes to reveal each marked Elite, then defeat it';
     this.renderWaveObjectiveHUD();
     if(!this.recipeMode||this._recipeMission)this.rubyTip?.(o._huntPhase?'huntClear':type,this._inTutorial?650:6200);   // v7.9.60 Ruby อธิบายภารกิจ · v8.1.121 หลังการ์ดภารกิจหุบ (ไม่ซ้อนข้อความ)
-    if(type!=='hunt')this.time?.delayedCall(350,()=>{ if(this.waveObjective===o&&!o.done)this.questFocus(type); });
+    if(type!=='hunt')this.questFocusWhenReady(o,type);
     this.missionArm?.(o,planned,p);
     if(!o._armPad&&!this._inTutorial)this.time?.delayedCall?.(450,()=>{ if(this.waveObjective===o&&!o.done)this.missionGo?.(o,null,null,false); });   /* v8.1.116 คลื่นเปิดภารกิจ */
   }
@@ -16654,11 +16661,17 @@ class Game extends Phaser.Scene {
     else if(type==='defendNectar')(this._nectarFlowers||[]).slice(0,1).forEach(f=>pt(f,90,'🌺 Protect the flower'));
     else if(type==='breakRoots')this.waveNodes?.children.iterate(n=>{ if(n?.active&&n._rootAnchor&&out.length<4)pt(n,95,n._lure?'🪨 Lure the root here':'🌳 Root anchor'); });
     else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))&&this._sig){ const S=this._sig; if(type==='seedRift')(S.carriers||[]).filter(e=>e&&e.active).slice(0,3).forEach(e=>pt(e,60,'🌰 Catch the carrier')); else if(type==='shakeTrees')(S.trees||[]).filter(t=>!t.done).forEach(t=>pt(t,100,'🌳 Stand under the tree'))   /* v8.2.14 ไม่ชี้ต้นที่เขย่าแล้ว */; else if(type==='mirrorPath'){ if((S.mirrors||[]).every(m=>m.lit))pt({x:S.cx,y:S.cy},80,'💎 The crystal');   /* v8.2.14 คริสตัลชี้เมื่อชาร์จกระจกครบแล้วเท่านั้น */ (S.mirrors||[]).filter(m=>!m.lit).slice(0,1).forEach(m=>pt(m,90,'🪞 Charge each mirror'))   /* v8.2.14 ชี้กระจกบานที่ยังไม่ชาร์จ */; } else if(type==='vaultAltar'||type==='ultimatum'){ if(S.phase==='fight'&&S.goal==='collect'&&S.seed)pt(S.seed,40,'✨ Grab the seed'); else pt({x:S.x,y:S.y},200,S.phase==='fight'?'🗝️ Stay near the altar':'🗝️ Pick a pact stone'); }   /* v8.2.14 รอบเก็บเมล็ดชี้ที่เมล็ด */ else if(type==='hungerHerald'){ let t=null,bd=1e9; this.enemies?.children?.iterate?.(e=>{ if(e&&e.active&&(e._hhPow||e._hhMin)){ const d=this.player?Math.hypot(e.x-this.player.x,e.y-this.player.y):0; if(d<bd){ bd=d; t=e; } } }); if(t)pt(t,60,t._hhMin?'💥 Stop the '+(HH_MIN_LOOK[t._hhMin]?.name||'minion'):'💜 Beat the empowered one'); }   /* v8.2.20 Herald ตีไม่ได้ → ชี้ตัวที่ถูกบัฟ/ลูกน้องพิเศษที่ใกล้สุด */ else if(type==='grandmasGolem'){ if(S.golem&&S.golem.active)pt(S.golem,110,'🗿 Beat the golem'); else if(S.parts&&S.parts.length>=S.min&&!S.carriers.some(c=>c.e&&c.e.active))pt({x:S.x,y:S.y},100,'🔥 Bake it in the oven'); else { const d=(S.drops||[])[0],c=(S.carriers||[]).find(c=>c.e&&c.e.active); if(d)pt(d,50,'Grab the golem part'); else if(c)pt(c.e,90,c.p.em+' Flavor carrier'); if(S.parts&&S.parts.length>=S.min)pt({x:S.x,y:S.y},100,'🔥 Bake now or find more parts'); } } else if(type==='grandmasPot'){ pt({x:S.x,y:S.y},(S.R||200)+10,S.phase==='wait'?'🍲 Step in to begin':'🍲 Fight inside the light'); } else if(type==='hungerDomain'){ if(S.lord&&S.lord.active)pt(S.lord,130,'🖐️ The Breachlord'); } else if(type==='hungerSiege')pt({x:S.x,y:S.y},S.R+10,'🏰 Hold the circle'); else if(type==='hungersMouth'){ if(S.phase==='seek')pt({x:S.x,y:S.y},85,'✋ Touch the Hunger’s hand'); else { const c=(S.chests||[]).find(c=>c.t&&!c.open),sh=(S.shards||[])[0]; if(c)pt(c,70,'🤲 Breach chest'); else if(sh)pt(sh,50,'🔮 Splinter'); } } else if(type==='creepingRoots'){ pt({x:S.x,y:S.y},90,'🌺 The nectar flower'); (S.lanes||[]).filter(L=>L.open).slice(0,1).forEach(L=>pt(L.pts[0],80,'🌱 Stand on the root mother')); } else if(type==='frozenPantry'){ if(S.phase==='seek')pt({x:S.x,y:S.y},95,'🫙 Open the sugar jar'); else (S.st||[]).filter(q=>q.state==='frozen').slice(0,1).forEach(q=>pt(q,70,'🧊 Walk close to paint it')); } else if(type==='lastLight')(S.lamps||[]).filter(L=>L.alive).sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp).slice(0,1).forEach(L=>pt(L,120,'🏮 Keep the lanterns lit'))   /* v8.2.14 ชี้โคมที่ใกล้ดับที่สุด */; }
+    if(!out.length&&type==='grandmasGolem'&&this._sig){ const S=this._sig; if(S.golem&&S.golem.active)pt(S.golem,90,'🗿 Beat Grandma’s Golem'); else if(S.x!=null)pt({x:S.x,y:S.y},90,'🗿 Grandma’s Golem'); }
+    if(!out.length&&type==='seedRift'&&this._sig?.type==='seedRift'&&this._sig.x!=null){ const S=this._sig; pt({x:S.x,y:S.y},S.curR||S.R||110,'🌀 The Seed Rift'); }
+    if(!out.length&&type==='cleanAir'&&this._cleanAir?.v2){ const c=this._cleanAir; pt({x:c.x,y:c.y-20},60,c.phase==='lure'?'🫧 Grab the fresh air':'🫧 Fresh air'); }
     return out; }
+  /* v8.2.40 เป้าหมายบางภารกิจโผล่ทีหลัง (Herald/Seed Rift/Golem/Clean Air) → ลองทุก 1 วิ นานสุด 20 วิ แล้วส่องตอนเจอ */
+  questFocusWhenReady(o,type,n=0){ this.time?.delayedCall?.(n?1000:350,()=>{ if(this.waveObjective!==o||o.done||(this._qfRun||{})[type])return; let tg=[]; try{ tg=this.questFocusTargets(type)||[]; }catch(e){}
+    if(tg.length&&this.state==='play'){ this.questFocus(type); return; } if(n<20)this.questFocusWhenReady(o,type,n+1); }); }
   counterTeach(x,y){ const d=typeof Save!=='undefined'&&Save.data; if(!d||this._inTutorial||(d.counterTaught||0)>=2||this._counterTaughtRun)return; this._counterTaughtRun=true; d.counterTaught=(d.counterTaught||0)+1; Save.save?.();
     this.rubyTip?.('counter',0); this.time?.delayedCall(150,()=>{ if(this.state==='play')this.questFocus('counter',true,[{x,y,r:52,l:'🦶 Dash into it!'}]); }); }
   questFocus(type,force,tgs){ if(this.state!=='play'||this._inTutorial||this.recipeMode&&!this._recipeMission||!this.time||!this.cameras)return; const d=Save.data,seen=d.questFocusSeen||(d.questFocusSeen={});
-    if(!force&&(seen[type]||0)>=3)return; const tg=tgs||this.questFocusTargets(type); if(!tg.length)return; seen[type]=(seen[type]||0)+1;Sfx.orderCue?.('quest_focus',.3,.7);
+    const run=this._qfRun||(this._qfRun={}); if(!force&&run[type])return; const tg=tgs||this.questFocusTargets(type); if(!tg.length)return; run[type]=1; seen[type]=(seen[type]||0)+1;   /* v8.2.40 เจ้าของ (แผน ก): ส่องครั้งแรกที่ภารกิจนั้นขึ้นในแต่ละด่าน (เดิม 3 ครั้งแรกตลอดเซฟ) */Sfx.orderCue?.('quest_focus',.3,.7);
     const cam=this.cameras.main,vz=this.viewZoom||cam.zoom||1; this.state='cinematic'; this.physics.pause(); this.player.setVelocity?.(0,0); cam.stopFollow();
     const g=this.camWorld(this.add.graphics().setDepth(95000)),lab=this.camUI(this.add.text(this.W/2,this.H*.24,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#fff1a8',stroke:'#1a0f1e',strokeThickness:6,align:'center'}).setOrigin(.5).setDepth(130).setAlpha(0));
     const hint=this.camUI(this.add.text(this.W/2,this.H*.24+30,'',{fontFamily:'sans-serif',fontSize:'11px',color:'#d9cce6'}).setOrigin(.5).setDepth(130).setAlpha(0));   /* v8.0.70 เจ้าของ: สอนในด่านแตะข้ามไม่ได้ (นิ้วแตะเดินบ่อย ข้ามก่อนได้อ่าน) */
@@ -18480,12 +18493,18 @@ class Game extends Phaser.Scene {
   showBanner(title,sub,ms){
     if(!this.bannerT||!this.bannerS)return;   // กันเรียกตอนยังNone HUD (เช่นจากหน้าเมนู) → ไม่ให้ crash
     { const rb=this._ruby?this._ruby.bottom+34:0; this.bannerT.y=Math.max(this.H*0.30,rb); this.bannerS.y=this.bannerT.y+this.H*0.06; }   // v7.9.60 ไม่ทับกรอบ Ruby
+    /* v8.2.40 เจ้าของ: คำอธิบายยาวกลางจอบังสนามตอนเล่น → ระหว่างเล่น ชื่อกลางจอ ~1 วิ · คำอธิบายบรรทัดเดียวใต้แถบภารกิจ ~3 วิ */
+    const inPlay=this.state!=='menu'&&this.state!=='title', line=inPlay?(typeof bannerLine==='function'?bannerLine(sub):(sub||'')):(sub||'');
+    this.tweens.killTweensOf?.([this.bannerT,this.bannerS]); this._bannerTok=(this._bannerTok||0)+1; const tok=this._bannerTok;
+    if(inPlay){ this.bannerS.y=(this.waveObjBg?.y||this.H*0.17)+48; this.bannerS.setWordWrapWidth?.(this.W*0.94); }
+    else this.bannerS.setWordWrapWidth?.(this.W*0.72);
     this.bannerT.setText(title).setVisible(true).setAlpha(0).setScale(0.7);
-    this.bannerS.setText(sub||'').setVisible(true).setAlpha(0);
+    this.bannerS.setText(line).setVisible(!!line).setAlpha(0);
     this.tweens.add({targets:[this.bannerT,this.bannerS],alpha:1,duration:250});
     this.tweens.add({targets:this.bannerT,scale:1,duration:420,ease:'Back.out'});
-    this.time.delayedCall(ms,()=>{ this.tweens.add({targets:[this.bannerT,this.bannerS],alpha:0,duration:400,
-      onComplete:()=>{ this.bannerT.setVisible(false); this.bannerS.setVisible(false); }}); });
+    const hide=(objs)=>this.tweens.add({targets:objs,alpha:0,duration:400,onComplete:()=>{ if(tok!==this._bannerTok)return; objs.forEach(q=>q.setVisible(false)); }});
+    if(inPlay){ this.time.delayedCall(Math.min(ms||1100,1100),()=>{ if(tok===this._bannerTok)hide([this.bannerT]); }); this.time.delayedCall(Math.max(3000,Math.min(ms||3000,4000)),()=>{ if(tok===this._bannerTok)hide([this.bannerS]); }); }
+    else this.time.delayedCall(ms,()=>{ if(tok===this._bannerTok)hide([this.bannerT,this.bannerS]); });
   }
   victory(){
     Stats.end(this,'win');this.rubyVoiceReact?.('clear',1200);

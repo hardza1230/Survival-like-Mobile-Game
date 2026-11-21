@@ -4379,3 +4379,11 @@ Owner chose plan C: test one question — is it fun when the moves you press (Da
 - Expedition: boss every 10 stages gives 🧶 +10 instead of a Recipe Part. The daily chest no longer adds a part.
 - Old system kept intact (parts, recipes, slots, upkeep). `FR_SIMPLE=false` restores it. Players' parts are kept.
 - Tests: new `tests/kitchen-simple-8237.test.cjs`; `expedition-8232` updated.
+
+# Delivery: v8.2.38 — 💥 Shotgun pellets +25%
+
+Owner request after tester feedback (20 Nov, v8.2.37: "Shotgun build is too hard against bosses").
+
+- New `SG_PELLET_MUL = 0.45 × 1.25` replaces the hard-coded ×0.45 pellet damage in both Momo basic-attack paths (`castSkill` sprinkle and the Berry Seed path). Close-range bonus, slug, Double Barrel and evolution multipliers are unchanged and stack on top.
+- `taro-foundation` legacy hash normalises the new text; regression check added to `kitchen-simple-8237`.
+- QA bots: nightly report crash fixed earlier today (scripts only).
