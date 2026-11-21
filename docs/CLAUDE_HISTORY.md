@@ -4459,3 +4459,10 @@ Owner: compare Hunger Crack with Path of Exile's Abyss (longer, slower, monsters
 - Applied in `sigSpawnAt` (all signature-mission spawns) and in Hunger Crack spawns. Normal edge spawns are unchanged.
 
 **Checks:** QA pool bots `capture`, `hungerHerald` and `seedRift` all complete with 0 errors. Tests: `hunger-crack` rewritten for the new flow; `taro-feedback` normalises the new `damage` guard.
+
+# Delivery: v8.2.45 — 🧪 Hunt bottles lobbed (dodgeable) · 🕯️ Wisp soft dome · art order 93 redesigned
+
+- **Hunt the Elite (owner approved order 92 set B):** the Elite no longer fires a straight bottle that always hits. It lobs it in an arc to where the hero stood at the throw. A purple ground mark shrinks toward its centre over 0.85 s (`HUNT_LOB_T`); a bottle shadow grows under the flight. Standing inside the mark (`HUNT_LOB_R` 44, flattened ellipse) when it lands = 1 poison stack + the same damage as before; walking out = dodged. A poison puddle lingers 2 s (visual only). Code-drawn until art 92 arrives. `huntLob` / `huntLobLand`; nothing lands after the run ends.
+- **Escort the Wisp (owner approved order 92 set C + the dome idea):** the hard ring is replaced by a thin glowing dome (`wispDome`): soft fill, a wobbling feathered edge, and a glass sheen arc. Gold inside, dim red outside. The bleed outside the zone stays as real damage (unchanged).
+- **Docs:** order 92 marks B/C approved with code done; set C becomes a thin dome. Order 93 is rewritten to the owner's ask: one premium card back for every card (boss back dropped), plus a foil shine pass. A20 Ruby lines are approved.
+- Tests: new `hunt-lob-wisp-dome-8245`; `mission86-87-a16` follows the bottle into `huntLob`. QA bots hunt + purge completed with 0 errors.
