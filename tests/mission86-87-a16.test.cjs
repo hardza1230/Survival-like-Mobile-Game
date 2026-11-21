@@ -8,7 +8,7 @@ const keys=['mc86_faces','hn87_poison_bottle','hn87_poison_splash','hh87_healer'
 for(const k of keys){ const dir=k.startsWith('mc86')?'mission86':'mission87',w=fs.readFileSync('assets/art/'+dir+'/'+k+'.webp');assert.ok(w.slice(8,12).toString()==='WEBP',k);assert.ok(src.includes(k+":{url:'assets/art/"+dir+"/"+k+".webp'"),'registered '+k); }
 assert.ok(/\|mc86\|hn87\|hh87\|st87\|cr87\|sr87\|gg87\|ui87\)_/.test(src),'stage-lazy');const MK=m('missionArtKeys');assert.ok(MK.includes("k.push(...pre('mc86_'),...pre('hn87_'))")&&MK.includes("11:['st87_']")&&MK.includes("7:['cr87_']")&&MK.includes("10:['sr87_']")&&MK.includes("4:['gg87_']"),'load classes');
 assert.ok(m('missionDealShow').includes("this.add.image(0,-chh*.1,'mc86_faces',fi)")&&src.includes("MC86_ORDER=['survive'"),'card faces');
-assert.ok(m('huntThrowAI').includes("b.setTexture('hn87_poison_bottle',0)")&&m('hitByFoe').includes("this.artFx?.('hn87_poison_splash'"),'bottle + splash');
+assert.ok(m('huntLob').includes("this.add.sprite(sx,sy,'hn87_poison_bottle',0)")&&m('huntLobLand').includes("this.artFx?.('hn87_poison_splash'")&&m('hitByFoe').includes("this.artFx?.('hn87_poison_splash'"),'bottle + splash');
 const H=m('hhTick');assert.ok(H.includes('this.artFollow?.(m,HH87_ART[k],64)')&&H.includes("this.artFx?.('hh87_heal_pulse'"),'Herald minions + heal pulse');
 assert.ok(src.includes("tk87={hive:'st87_tree_hive',golden:'st87_tree_golden',mimic:'st87_tree_mimic'}[kinds[i]]")&&m('stTreeSurprise').includes("this.artFollow?.(m,'st87_bee',44)"),'trees + bees');
 assert.ok(m('crLane').includes("rk87='cr87_root_'+(kind||'fast')")&&m('srCarrier').includes("this.artFollow?.(e,'sr87_carrier_'"),'root mothers + carriers');

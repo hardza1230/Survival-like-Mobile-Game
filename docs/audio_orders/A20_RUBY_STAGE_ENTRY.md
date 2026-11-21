@@ -1,6 +1,6 @@
 # A20 — ฉากเข้าด่าน "Ruby พาไปด่านถัดไป" (ม่านชื่อด่าน · เสียงเดินทาง · Ruby แนะนำด่าน) · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 21 พ.ย. 2026 · ยังไม่มีโค้ด (ตอนนี้ม่านชื่อด่านมีแค่ `sfx_stage_title` ตัวเดียวทุกด่าน)
+สถานะ: 🟡 รอเสียง · เขียน 21 พ.ย. 2026 · **เจ้าของอนุมัติบท Ruby ทั้งหมด 21 พ.ย.** · ยังไม่มีโค้ด (ตอนนี้ม่านชื่อด่านมีแค่ `sfx_stage_title` ตัวเดียวทุกด่าน)
 ส่งที่ `assets/incoming/audio_a20/` พร้อม `MANIFEST.json` (key, file, text (เฉพาะเสียงพูด), bytes, sha256, duration_ms), `PROMPTS.json`, `QA_REPORT.json`
 เครื่องมือ: **ElevenLabs** · SFX = Sound Effects · เสียงพูดใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามเสียงสร้างด้วยโค้ด/Runway · กติการ่วมดู `A00_README.md`
 
