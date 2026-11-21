@@ -50,7 +50,8 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.49';
+const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
+const GAME_VERSION = '8.2.50';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.50',date:'2026-11-21',title:'Boss voice louder in fights',items:['Boss voice lines play louder during fights and lower the music more while speaking']},
   {v:'8.2.49',date:'2026-11-21',title:'Fix Expedition hero growing on taps',items:['Temple Expedition: tapping no longer makes the hero grow','Menu press bounce never compounds on fast repeat taps']},
   {v:'8.2.48',date:'2026-11-21',title:'Hunger Crack final hole: horde + tanks + Abyss Brute',items:['Final hole pours 4 waves x10 (Ch1 x6) with tanks mixed in','Abyss Brute (big, 3x HP) joins the Elite and drops gear','Abyss chest Sugar x1.5']},
   {v:'8.2.47',date:'2026-11-21',title:'Fix Ice Cage Sealing columns not hitting',items:['C1-4 boss: the warned ice-bar columns now hit along their whole length; find the one gap']},
@@ -4799,7 +4801,8 @@ const VoiceActing={active:null,pending:null,serial:0,lastBark:-Infinity,history:
   stop(owner){if(owner&&this.active?.owner!==owner&&this.pending?.owner!==owner)return;this.serial++;if(!owner||this.pending?.owner===owner){if(this.pending?.timer)clearTimeout(this.pending.timer);this.pending=null;}if(!owner||this.active?.owner===owner){const a=this.active;this.active=null;try{a?.sound?.stop();a?.sound?.destroy();if(a?.key&&!a.key.includes('_unique_'))a.scene?.cache?.audio?.remove(a.key);if(a){clearTimeout(Sfx._duckTimer);Sfx.bgmIntense?.(Sfx._bgmIntense);}}catch(e){}}},
   play(scene,key,valid,owner,onStart){const row=A07_CATALOG[key];if(!row||!scene||!this.enabled()||this.busy())return false;if(!scene._a07AudioShutdown&&scene.events?.once){scene._a07AudioShutdown=true;scene.events.once('shutdown',()=>{this.stop();StoryMusic.stop();scene._a07AudioShutdown=false;});}const serial=++this.serial,pending=this.pending={serial,key,owner};pending.timer=setTimeout(()=>{if(this.pending===pending)this.pending=null;},8000);
     const go=()=>{if(this.pending!==pending||this.serial!==serial){if(this.pending?.key!==key)try{scene.cache?.audio?.remove(key);}catch(e){}return;}clearTimeout(pending.timer);this.pending=null;if(!this.enabled()||!valid()||!scene.cache?.audio?.exists(key)||this.active?.sound?.isPlaying)return;
-      try{const sound=scene.sound.add(key,{volume:.65*Sfx.sv,rate:1});const active=this.active={sound,owner,scene,key,end:performance.now()+row.duration};sound.once('complete',()=>{if(this.active===active)this.active=null;try{sound.destroy();if(this.pending?.key!==key&&!key.includes('_unique_'))scene.cache?.audio?.remove(key);}catch(e){}});if(sound.play()===false){this.active=null;try{sound.destroy();}catch(e){}return;}Sfx.duckBgm?.(Math.max(1000,row.duration+250),.7);onStart?.(row);}
+      const bossVo=/^vo_b\d/.test(key)&&scene.state==='play';   /* v8.2.50 เจ้าของ: เสียงพากย์บอสตอนสู้เบาไป → ดังขึ้น + กดเพลงลงมากกว่า */
+      try{const sound=scene.sound.add(key,{volume:(bossVo?(typeof VO_BOSS_VOL!=='undefined'?VO_BOSS_VOL:1):.65)*Sfx.sv,rate:1});const active=this.active={sound,owner,scene,key,end:performance.now()+row.duration};sound.once('complete',()=>{if(this.active===active)this.active=null;try{sound.destroy();if(this.pending?.key!==key&&!key.includes('_unique_'))scene.cache?.audio?.remove(key);}catch(e){}});if(sound.play()===false){this.active=null;try{sound.destroy();}catch(e){}return;}Sfx.duckBgm?.(Math.max(1000,row.duration+250),bossVo?.42:.7);onStart?.(row);}
       catch(e){this.active=null;}};
     try{if(scene.cache?.audio?.exists(key)){go();return true;}if(!scene.load?.audio){clearTimeout(pending.timer);this.pending=null;return false;}const onError=f=>{if(f?.key!==key)return;scene.load.off?.('loaderror',onError);if(this.pending===pending){clearTimeout(pending.timer);this.pending=null;}};scene.load.on?.('loaderror',onError);scene.load.once('filecomplete-audio-'+key,()=>{scene.load.off?.('loaderror',onError);go();});scene.load.audio(key,verUrl(row.url));if(!scene.load.isLoading())scene.load.start();return true;}catch(e){if(this.pending===pending){clearTimeout(pending.timer);this.pending=null;}return false;}
   },
