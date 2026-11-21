@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.50';
+const GAME_VERSION = '8.2.51';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.51',date:'2026-11-21',title:'Fix monsters turning invisible',items:['Monsters no longer turn invisible (only a shadow) after mission monsters with painted overlays']},
   {v:'8.2.50',date:'2026-11-21',title:'Boss voice louder in fights',items:['Boss voice lines play louder during fights and lower the music more while speaking']},
   {v:'8.2.49',date:'2026-11-21',title:'Fix Expedition hero growing on taps',items:['Temple Expedition: tapping no longer makes the hero grow','Menu press bounce never compounds on fast repeat taps']},
   {v:'8.2.48',date:'2026-11-21',title:'Hunger Crack final hole: horde + tanks + Abyss Brute',items:['Final hole pours 4 waves x10 (Ch1 x6) with tanks mixed in','Abyss Brute (big, 3x HP) joins the Elite and drops gear','Abyss chest Sugar x1.5']},
@@ -17414,7 +17415,7 @@ class Game extends Phaser.Scene {
     if(!list?.length)return;
     this._artFol=list.filter(s=>{
       const e=s._fe;
-      if(!s.active)return false;
+      if(!s.active){ if(e&&e._artOv===s){ e._artOv=null; e.setAlpha?.(1); } return false; }   /* v8.2.51 เจ้าของ: ภาพซ้อนถูกลบก่อน → ตัวมอนค้างโปร่ง (เห็นแต่เงา) */
       if(!e||!e.active||e._artOv!==s){
         if(e&&e._artOv===s){
           this.artFollowDeath?.(e,s);
@@ -25372,6 +25373,7 @@ class Game extends Phaser.Scene {
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
       if(e._timeStop){ e.setVelocity(0,0); return; }
       if(e._emergeUntil){ if((this.time?.now||0)<e._emergeUntil){ e.setVelocity(0,0); return; } e._emergeUntil=0; }   /* v8.2.44 กำลังเกิด */
+      if(e.alpha<.05&&!(e._artOv&&e._artOv.active)&&!e._hideOk&&!e._fleeing){ if(e._artOv)e._artOv=null; e.setAlpha(1); }   /* v8.2.51 กันมอนล่องหน: โปร่งเกือบ 0 แต่ไม่มีภาพซ้อน = คืนความทึบ */
       if(e._bigHold&&e._big&&e.isBoss&&this.boss===e){ e.setVelocity(0,0); return; }   /* v8.1.124 บอสยืนชาร์จท่าใหญ่/พัก */   // v8.1.113 หยุดเวลา (Frozen Pantry) แยกจากแช่แข็ง: ไม่เดิน ไม่ยิง ไม่ทำดาเมจสัมผัส · โดนตีได้ปกติ ไม่นับเป็น frozen (ไม่ไปเพิ่มดาเมจ Mint)
       if(this.holdArenaFogBoss(e))return;
       if(e.knock>0){ e.knock-=dt; return; }

@@ -4488,3 +4488,12 @@ Owner: compare Hunger Crack with Path of Exile's Abyss (longer, slower, monsters
   - **Time / reward:** the final hole now times out at 60 s (was 45). Abyss chest Sugar ×1.5 (harder = better rewards).
 - Constants: `HC_FINAL_*`, `HC_BRUTE`, `HC_CHEST_MUL`. New `hungerCrackBrute`; `hungerCrackCrawlAt` takes a type.
 - Tests: `hunger-crack` extended. The capture QA bot completed with 0 errors.
+
+# Delivery: v8.2.49 — ⚔️ Fix: Expedition hero grew bigger with every tap
+
+- **Bug (owner, phone):** in Temple Expedition, rapid tapping made the hero (and the art inside the tap area) grow. The generic menu "press bounce" (`_pressBounce`) shrinks then pops everything inside the tapped zone. A new press during the 160 ms pop-back captured the already-enlarged scale as its base, so every tap compounded it. Measured headless: 12 fast taps took the hero from 0.82 to 1.04 scale.
+- **Fix:**
+  - The Expedition tap area is `noBounce`; it has its own hit feedback.
+  - `_pressBounce` now remembers each object's pre-press transform (`_pbBase`) and reuses it for repeat presses, so no button can grow cumulatively.
+  - Verified headless: the scale stays at 0.82 under rapid taps.
+- Tests: new `exp-tap-scale-8249`.
