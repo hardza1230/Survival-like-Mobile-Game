@@ -4408,3 +4408,12 @@ Owner request: give the other missions the same camera spotlight as Hunt the Eli
 - `bannerLine()` picks that line: the part after " — " (usually the action), otherwise clauses up to 58 characters, cutting at a comma before falling back to "…". Menu banners are unchanged.
 - Headless check: Herald, Golem, Clean Air and Seed Rift all get the spotlight; a second Purge in the same stage is skipped; the banner title hides at about 1 s and the line at about 4 s.
 - Test: `tests/banner-spot-8240.test.cjs`.
+
+# Delivery: v8.2.41 — ▶ Mission deal waits for your choice
+
+Owner request: after the mission cards are dealt, stop and let the player choose to continue or reroll.
+
+- `missionDealShow`: when a reroll is on offer (free, or the ad reroll), the deal no longer starts the stage on its own and a tap on empty space no longer skips. A pulsing "▶ Start the stage" button appears under the Reroll button once the cards are laid out.
+- With no reroll left (after the ad reroll, or the C1-1 tutorial plan), the old auto-start stays.
+- Headless check: the deal stayed open for over 12 s; tapping Start began the stage.
+- Ideas logged in `docs/IDEAS.md` (owner 21 Nov): art on the back of mission cards; Escort the Wisp as a thin dome.
