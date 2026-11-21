@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.41';
+const GAME_VERSION = '8.2.42';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.42',date:'2026-11-21',title:'Titan lava pool redrawn',items:['Cocoa Titan’s lava pool is now a bubbling, wobbling molten puddle drawn in code','Damage, size and duration are unchanged']},
   {v:'8.2.41',date:'2026-11-21',title:'Mission deal waits for you',items:['After the mission cards are dealt, the game waits for you: tap Start the stage or Reroll','Tapping empty space no longer skips past the reroll choice']},
   {v:'8.2.40',date:'2026-11-21',title:'Mission spotlight and shorter banners',items:['The camera now shows each mission’s target the first time it appears in a stage','Hunger Herald, Grandma’s Golem, Clear the Fog and Seed Rift now get the spotlight too','In-play banners show a short title, with a one-line tip under the mission bar']},
   {v:'8.2.39',date:'2026-11-20',title:'Stage start no longer freezes',items:['Picking a newly unlocked hero no longer freezes the Heroes screen','A loading screen now stays up while a stage gets ready','If loading takes too long, the stage starts anyway']},
@@ -4047,7 +4048,6 @@ const ASSET_FX = {
   bpx_cocoa_rage2:{url:'assets/art/bp_fx/vfx_titan_rage_aura_lv2.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center',loop:true},
   bpx_cocoa_rage3:{url:'assets/art/bp_fx/vfx_titan_rage_aura_lv3.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center',loop:true},
   bpx_cocoa_crush:{url:'assets/art/bp_fx/vfx_titan_crush_burst.webp',fw:256,fh:256,frames:12,rate:20,anchor:'center'},
-  bpx_cocoa_lava:{url:'assets/art/bp_fx/vfx_titan_lava_crater.webp',fw:256,fh:256,frames:4,rate:6,anchor:'center',loop:true},
   bpx_cocoa_fist:{url:'assets/art/bp_fx/vfx_fire_fist_proj.webp',fw:256,fh:256,frames:4,rate:14,anchor:'center',loop:true},
   bpx_cocoa_fireball:{url:'assets/art/bp_fx/vfx_fireball_big.webp',fw:256,fh:256,frames:4,rate:14,anchor:'center',loop:true},
   bpx_cocoa_explode:{url:'assets/art/bp_fx/vfx_fireball_explode.webp',fw:256,fh:256,frames:8,rate:22,anchor:'center'},
@@ -21521,9 +21521,18 @@ class Game extends Phaser.Scene {
       s.dmg=power;s.life=1.4;s.homing=480;s.lockedTarget=t||null;s.faceVel=true;s.knockback=120;if(this.textures?.exists?.('proj_rocket'))s.setTexture('proj_rocket').setTint(0xc9a3ff).setScale(.6);this.attachProjectileAnim?.(s,'bpx_cocoa_shadowfist',100);if(s.body&&this.physics)this.physics.velocityFromRotation(a,600,s.body.velocity);}Sfx.bp?.('cocoa_shadow_fist',.45,.12);}
   // v6.59.7 แอ่งไฟ/ลาวาของ Chocolate (สูงสุด 12)
   cocoaPool(x,y,r,dps,t,col=0xff6a1a){const pools=this._cocoaPools||(this._cocoaPools=[]);if(pools.length>=12){const o=pools.shift();o.g?.destroy?.();}
-    let g=this.bpLoop?.(col===0xff3a10?'bpx_cocoa_lava':'bpx_cocoa_firepool',x,y,r*2.5,5)||null;if(!g&&this.add?.graphics){g=this.camWorld(this.add.graphics().setDepth(5));g.fillStyle(col,.28).fillCircle(x,y,r);g.lineStyle(2,col,.6).strokeCircle(x,y,r);}
-    pools.push({x,y,r,dps,t,tick:0,g});}
-  tickCocoaPools(dt){const pools=this._cocoaPools;if(!pools?.length)return;for(let i=pools.length-1;i>=0;i--){const q=pools[i];q.t-=dt;q.tick-=dt;
+    /* v8.2.42 เจ้าของ: บ่อลาวา Titan วาดด้วยโค้ด (เดิมภาพ bpx_cocoa_lava) · ขอบเปลือกไหม้เป็นคลื่น + ลาวาส้ม + ใจกลางเหลือง + ฟองผุด · ดาเมจ/ขนาด/เวลาเท่าเดิม */
+    const lava=col===0xff3a10;let g=lava?null:(this.bpLoop?.('bpx_cocoa_firepool',x,y,r*2.5,5)||null);if(!g&&this.add?.graphics){g=this.camWorld(this.add.graphics().setDepth(5));if(!lava){g.fillStyle(col,.28).fillCircle(x,y,r);g.lineStyle(2,col,.6).strokeCircle(x,y,r);}}
+    const q={x,y,r,dps,t,tick:0,g,lava,seed:Math.random()*9,age:0};pools.push(q);if(lava)this.lavaDraw?.(q);}
+  lavaDraw(q){const g=q.g;if(!g||!g.clear)return;const T=q.age||0,s=q.seed,r=q.r,N=16,ring=(k,ph)=>{const pts=[];for(let i=0;i<N;i++){const a=i/N*Math.PI*2,w=1+.07*Math.sin(s+i*1.9+T*1.6*ph)+.04*Math.sin(s*2+i*3.1-T*2.2);pts.push({x:q.x+Math.cos(a)*r*k*w,y:q.y+Math.sin(a)*r*k*w*.82});}return pts;};
+    const pop=Math.min(1,T/.18),k=.6+.4*pop;g.clear();
+    g.fillStyle(0x2a0d06,.5).fillPoints(ring(1.06*k,1),true);
+    g.fillStyle(0xd83a0c,.62).fillPoints(ring(.94*k,1.3),true);
+    g.fillStyle(0xff7a1a,.62).fillPoints(ring(.66*k,-1.1),true);
+    g.fillStyle(0xffc23d,.55).fillPoints(ring(.34*k,.8),true);
+    g.lineStyle(2,0x5a1c0a,.55).strokePoints(ring(1.06*k,1),true);
+    for(let j=0;j<4;j++){const ph=(T*.9+j*.27+s)%1,a=s*3+j*1.7,d=r*k*(.2+.45*((j*.37+s)%1)),bx=q.x+Math.cos(a)*d,by=q.y+Math.sin(a)*d*.82,br=r*.09*Math.sin(ph*Math.PI);if(br>.5)g.fillStyle(0xffe27a,.7*(1-ph)).fillCircle(bx,by-ph*6,br);}}
+  tickCocoaPools(dt){const pools=this._cocoaPools;if(!pools?.length)return;for(let i=pools.length-1;i>=0;i--){const q=pools[i];q.t-=dt;q.tick-=dt;if(q.lava){q.age=(q.age||0)+dt;this.lavaDraw(q);}
     if(q.tick<=0){q.tick=.3;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,q.x,q.y)<q.r)this.damage(e,q.dps*.3,e.x,e.y);});}
     if(q.g&&q.t<.4)q.g.setAlpha(Math.max(0,q.t/.4));if(q.t<=0){q.g?.destroy?.();pools.splice(i,1);}}}
   cocoaOnDash(){if(this.basicAttack?.path==='dashboxer')this._phantomDashN=Math.min(5,(this._phantomDashN||0)+1);const cc=this._cc;if(cc){cc.gen=(cc.gen||0)+1;cc.busy=false;if(this.basicAttack?.path==='dashboxer'){cc.t=0;this._cocoaNextPunch=true;}else cc.step=0;}else if(this.basicAttack?.path==='dashboxer')this._cocoaNextPunch=true;this.skillCd.meteor=Math.max(this.skillCd.meteor||0,.22);}

@@ -1,6 +1,12 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.41 — ▶ Mission deal waits for your choice
+# Latest delivery: v8.2.42 — 🌋 Titan lava pool drawn in code · art order 93 (mission card back)
+
+- Owner: Cocoa Titan's lava pool (Blood Rage release / Lava Crater, `cocoaPool` with `0xff3a10`) is now drawn in code by `lavaDraw(q)` and redrawn each tick in `tickCocoaPools`. It has a wobbling dark crust edge, a molten orange body, a yellow core and rising bubbles, and pops in over 0.18 s. Damage, radius, duration and the 12-pool cap are unchanged. The `bpx_cocoa_lava` sheet is removed from `ASSET_FX`, so it no longer loads or ships. The fire pool (`bpx_cocoa_firepool`) is unchanged.
+- Art order 93 (`docs/art_orders/93_MISSION_CARD_BACK.md`): shared card back, boss card back, flip glint (3 files). README row added.
+- Headless: the pool draws, the old texture is not loaded, no errors.
+
+# Previous delivery: v8.2.41 — ▶ Mission deal waits for your choice
 
 Owner request: after the mission cards are dealt, stop and let the player choose to continue or reroll.
 
@@ -8,15 +14,3 @@ Owner request: after the mission cards are dealt, stop and let the player choose
 - With no reroll left (after the ad reroll, or the C1-1 tutorial plan), the old auto-start stays.
 - Headless check: the deal stayed open for over 12 s; tapping Start began the stage.
 - Ideas logged in `docs/IDEAS.md` (owner 21 Nov): art on the back of mission cards; Escort the Wisp as a thin dome.
-
-# Previous delivery: v8.2.40 — 🔦 Mission spotlight every stage · short in-play banners
-
-Owner request: give the other missions the same camera spotlight as Hunt the Elite (plan A: the first time each mission appears in a stage), and stop long descriptions popping up in the middle of the screen during play.
-
-- `questFocus` now runs once per mission type per stage (`_qfRun`, reset in `startStage`) instead of the first 3 times ever per save.
-- New `questFocusWhenReady(o,type)` retries every 1 s for up to 20 s until the mission's targets exist, so missions whose objects appear later get the spotlight too.
-- New targets: Grandma's Golem (the golem or its spawn spot), Clean Air v2 (the fresh-air bubble), Seed Rift (the rift when no carrier is out yet). Hunger Herald now works through the retry.
-- `showBanner` during play (any state except menu/title): the title alone in the centre for about 1.1 s. The description moves to one line under the mission bar for 3–4 s.
-- `bannerLine()` picks that line: the part after " — " (usually the action), otherwise clauses up to 58 characters, cutting at a comma before falling back to "…". Menu banners are unchanged.
-- Headless check: Herald, Golem, Clean Air and Seed Rift all get the spotlight; a second Purge in the same stage is skipped; the banner title hides at about 1 s and the line at about 4 s.
-- Test: `tests/banner-spot-8240.test.cjs`.

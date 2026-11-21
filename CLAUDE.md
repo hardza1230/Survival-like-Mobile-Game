@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.41**. Next release:8.2.42. Fetch the deploy branch before new work.
+Current release: **8.2.42**. Next release:8.2.43. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.41 — ▶ Mission deal waits for your choice** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.42 — 🌋 Titan lava pool drawn in code · art order 93 (mission card back)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -40,6 +40,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 ## 5. ถัดไป
 **ใบ 88/89/90 + A18:** ผูกแล้ว v8.2.31 · รอ QA มือถือ
 **Temple Expedition (v8.2.32):** แทน Dig + Patrol · ขั้น 1–2 เสร็จ (แตะ/ด่าน/บอส/ผู้ช่วย/ออฟไลน์/Supplies) · ขั้น 3–4 (สกิล/Prestige/Relic) หลัง Closed test · อาร์ตใบ 91 ผูกแล้ว v8.2.33 · เสียง A19 ผูกแล้ว v8.2.34
+**ใบ 93 (หลังการ์ดภารกิจ):** เขียนแล้ว 21 พ.ย. · รออาร์ต
 **ใบ 92 (VFX จาก feedback):** เขียนแล้ว 20 พ.ย. · รออาร์ต · ชุด B (ขวดโยนโค้ง) ต้องให้เจ้าของอนุมัติการเปลี่ยนวิธีเล่น
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 

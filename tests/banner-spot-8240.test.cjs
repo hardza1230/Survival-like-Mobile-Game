@@ -19,3 +19,7 @@ assert(src.includes("if(!rb)T(base+n*DEAL_SHOW_MS+700,finish);"),'auto-start onl
 assert(src.includes("'▶  Start the stage'"),'start button');
 assert(src.includes("if(on(go)){")&&src.includes("if(!rb&&this.time.now-t0>350)finish();"),'tap outside does not skip the choice');
 console.log('Mission deal 8.2.41: waits for Start or Reroll passed');
+// v8.2.42 owner: Cocoa Titan lava pool drawn in code (no bpx_cocoa_lava art)
+assert(!src.includes('bpx_cocoa_lava:{')&&!src.includes("'bpx_cocoa_lava'"),'lava art removed');
+assert(src.includes('  lavaDraw(q){')&&src.includes('if(q.lava){q.age=(q.age||0)+dt;this.lavaDraw(q);}'),'lava drawn each tick');
+console.log('Titan lava 8.2.42: code-drawn pool passed');
