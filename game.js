@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.2.45';
+const GAME_VERSION = '8.2.46';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.46',date:'2026-11-21',title:'Fix Start/Reroll taps on the mission deal · description text removed',items:['Start the stage / Reroll buttons respond again (pointer coordinates fixed)','No description text under the lifted mission card']},
   {v:'8.2.45',date:'2026-11-21',title:'Hunt bottles lobbed (dodgeable) · Wisp soft dome · card back order redesigned',items:['Hunt Elite lobs its poison bottle in an arc with a shrinking ground mark — walk out to dodge','Escort Wisp zone is a thin glowing dome instead of a hard ring; bleed outside stays','Art order 93: one premium card back for all cards + foil shine']},
   {v:'8.2.44',date:'2026-11-21',title:'Hunger Crack reborn',items:['Hunger Crack now creeps slowly across the map while you stay near it, with monsters crawling out along the way','Holes keep pouring monsters; clear them for loot, and beat the last hole for an Abyss chest','Mission monsters now rise out of the ground or step out of portals instead of popping in']},
   {v:'8.2.43',date:'2026-11-21',title:'Hunger Mutations',items:['Monsters empowered by the Hunger Herald now gain a mutation with an icon above their head','Chapter 1: Candy Shell, Bloat and Split · from Chapter 2 also Frenzy, Hex Orbs and Leech','Beating a mutated monster counts double for the Herald reward']},
@@ -16895,7 +16896,7 @@ class Game extends Phaser.Scene {
     const reroll=()=>{ if(fin)return; hold=false; fin=true; this._finishDeal=null; this.input?.off?.('pointerdown',onTap); try{ this.tweens.killTweensOf?.(cards); }catch(e){} L.destroy(); if(this._dealL===L)this._dealL=null; (this.a12?.('a18_reroll',.5,.2))||snd(); this.rubyVoiceReact?.('reroll',200); this.missionDealReroll(deal,isAd); this.missionDealShow(deal,done); };
     const tapRe=()=>{ if(!isAd){ reroll(); return; } if(hold||!this.showRewardedAd)return; hold=true; rb.setAlpha(.45); let got=false; this.showRewardedAd('Watch an ad to reroll the stage missions',()=>{ got=true; reroll(); }); this.time.delayedCall(400,()=>{ if(!got&&!this._adBusy&&hold&&!fin){ hold=false; finish(); } });
       const chk=this.time.addEvent({delay:300,loop:true,callback:()=>{ if(fin||got){ chk.remove(); return; } if(!this._adBusy&&hold){ chk.remove(); hold=false; finish(); } }}); };
-    this._finishDeal=finish; const t0=this.time.now,onTap=(pt)=>{ if(hold)return; const on=b=>b&&b.alpha>.5&&pt&&Math.abs(pt.x-b.x)<=(b.width||200)/2+10&&Math.abs(pt.y-b.y)<=(b.height||34)/2+10; if(on(rb)){ tapRe(); return; } if(on(go)){ (this.a12?.('a18_reroll',.3,.2))||snd(); finish(); return; } if(!rb&&this.time.now-t0>350)finish(); }; this.input?.on?.('pointerdown',onTap);
+    this._finishDeal=finish; const t0=this.time.now,onTap=(p0)=>{ if(hold||!p0)return; const k=(typeof RENDER_DPR!=='undefined'&&RENDER_DPR)||1,pt={x:p0.x/k,y:p0.y/k},on=b=>b&&b.alpha>.5&&Math.abs(pt.x-b.x)<=(b.width||200)/2+14&&Math.abs(pt.y-b.y)<=(b.height||34)/2+14;   /* v8.2.46 เจ้าของ: กด Start/Reroll ไม่ติด — pointer ตอนเล่นเป็นพิกเซลจอ (×RENDER_DPR) ต้องหารก่อนเทียบกับพิกัด UI */ if(on(rb)){ tapRe(); return; } if(on(go)){ (this.a12?.('a18_reroll',.3,.2))||snd(); finish(); return; } if(!rb&&this.time.now-t0>350)finish(); }; this.input?.on?.('pointerdown',onTap);
     const snd=()=>{ try{ Sfx.card&&Sfx.card(); }catch(e){} };
     // สับ 2 ครั้ง
     for(let k=0;k<2;k++)T(k*260,()=>{ snd(); cards.forEach((c,i)=>tw({targets:c,x:W/2+(i%2?1:-1)*cw*.7,angle:(i%2?8:-8),duration:110,yoyo:true,ease:'Sine.easeInOut'})); });
@@ -16903,11 +16904,10 @@ class Game extends Phaser.Scene {
     cards.forEach((c,i)=>T(560+i*90,()=>{ snd(); tw({targets:c,x:P(i),y:cy,angle:0,duration:240,ease:'Cubic.easeOut'}); }));
     T(560,()=>tw({targets:cap,alpha:1,duration:250})); if(rb)T(560+n*90,()=>tw({targets:[rb].concat(ri?[ri]:[]),alpha:1,duration:220}));
     // พลิก · v8.2.22 เจ้าของ: ช้าลง + ยกทีละใบขึ้นมาโชว์กลางจอให้เห็นชัด แล้วค่อยกลับเข้าแถว
-    const info=this.add.text(W/2,Math.round(H*.36)+chh*DEAL_BIG/2+18,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',align:'center',stroke:'#24172c',strokeThickness:4,wordWrap:{width:W-56},lineSpacing:3}).setOrigin(.5,0).setAlpha(0); L.add(info);
-    const desc=(i)=>{ const isBoss=i===n-1,isMini=i===st.miniAt||isBoss,t=isBoss?null:deal.waves[i],o=t&&WAVE_OBJECTIVES[t]||{}; const R=!isMini&&t?this.missionReward?.({type:t}):null; return isBoss?'👑 Boss\nBeat the stage boss to clear the stage':isMini?'💀 Miniboss\nA miniboss blocks the way':((o.emoji||'✨')+' '+(o.name||'')+'\n'+(o.desc||'')+'\n🎁 '+(R?R.txt+' · ':'')+'🍬 Sugar'); };   /* v8.2.27 เจ้าของ: บอกรางวัลบนการ์ด */
+    /* v8.2.46 เจ้าของ: เอาข้อความคำอธิบายใต้การ์ดที่ยกขึ้นออก (อ่านไม่ออก/ยาวไป) · ยกการ์ดโชว์อย่างเดียว */
     const base=1100+n*90,big=DEAL_BIG,cyBig=Math.round(H*.36);
-    cards.forEach((c,i)=>T(base+i*DEAL_SHOW_MS,()=>{ L.bringToTop?.(c); snd(); tw({targets:c,x:W/2,y:cyBig,scaleX:big,scaleY:big,duration:260,ease:'Cubic.easeOut',onComplete:()=>{ if(fin)return; tw({targets:c,scaleX:0,duration:120,ease:'Sine.easeIn',onComplete:()=>{ c._back.forEach(q=>q.setVisible(false)); c._face.forEach(q=>q.setVisible(true)); tw({targets:c,scaleX:big,duration:150,ease:'Back.out'}); if(c._sig)tw({targets:c,angle:{from:-4,to:0},duration:300,ease:'Back.out'}); info.setText(desc(i)); tw({targets:info,alpha:1,duration:180}); }}); }});
-      T(DEAL_SHOW_MS-300,()=>{ tw({targets:info,alpha:0,duration:160}); tw({targets:c,x:P(i),y:cy,scaleX:1,scaleY:1,angle:0,duration:260,ease:'Cubic.easeInOut'}); }); }));
+    cards.forEach((c,i)=>T(base+i*DEAL_SHOW_MS,()=>{ L.bringToTop?.(c); snd(); tw({targets:c,x:W/2,y:cyBig,scaleX:big,scaleY:big,duration:260,ease:'Cubic.easeOut',onComplete:()=>{ if(fin)return; tw({targets:c,scaleX:0,duration:120,ease:'Sine.easeIn',onComplete:()=>{ c._back.forEach(q=>q.setVisible(false)); c._face.forEach(q=>q.setVisible(true)); tw({targets:c,scaleX:big,duration:150,ease:'Back.out'}); if(c._sig)tw({targets:c,angle:{from:-4,to:0},duration:300,ease:'Back.out'}); }}); }});
+      T(DEAL_SHOW_MS-300,()=>{ tw({targets:c,x:P(i),y:cy,scaleX:1,scaleY:1,angle:0,duration:260,ease:'Cubic.easeInOut'}); }); }));
     if(!rb)T(base+n*DEAL_SHOW_MS+700,finish);
     else T(base+n*DEAL_SHOW_MS+200,()=>{ go=this.add.text(W/2,rb.y+(rb.height||34)/2+30,'▶  Start the stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#2a1a10',backgroundColor:'#ffd166',padding:{x:22,y:10},stroke:'#fff4d6',strokeThickness:1}).setOrigin(.5).setAlpha(0); L.add(go); tw({targets:go,alpha:1,duration:220}); tw({targets:go,scale:{from:1,to:1.05},duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut',delay:300}); });
   }

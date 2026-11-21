@@ -13,5 +13,5 @@ sc.hitByFoe(sc.player,shots[0]);assert.strictEqual(sc._huntStk,1,'a bottle hit s
 const hp0=sc.player.hp;for(let k=0;k<20;k++)sc.tickHuntCurse(.1);assert.ok(sc.player.hp<hp0,'stacks drain HP');for(let k=0;k<20;k++)sc.huntCurseHit();assert.strictEqual(sc._huntStk,ctx.HUNT_STK_MAX,'capped');
 sc.huntTargetActive=()=>false;sc.tickHuntCurse(.1);assert.ok(!sc._huntCursed&&!sc._huntStk,'killing the elite cures');
 assert.ok(!m('tickWaveObjective').includes("'Blink!'"),'no more blink-away');assert.ok(m('foeShot').includes('b._huntCurse=false;'),'pooled bullets reset');
-const D=m('missionDealShow');assert.ok(D.includes('T(base+i*DEAL_SHOW_MS,')&&D.includes('scaleX:big,scaleY:big')&&D.includes('info.setText(desc(i))'),'each card is lifted, flipped big and explained');assert.ok(ctx.DEAL_SHOW_MS>=1200&&ctx.DEAL_BIG>=2);
+const D=m('missionDealShow');assert.ok(D.includes('T(base+i*DEAL_SHOW_MS,')&&D.includes('scaleX:big,scaleY:big')&&!D.includes('info.setText('),'each card is lifted and flipped big (no description text since 8.2.46)');assert.ok(ctx.DEAL_SHOW_MS>=1200&&ctx.DEAL_BIG>=2);
 console.log('Hunt 8.2.22: approach-throw-flee elite, poison stacks per bottle hit, cured on kill; slower deal showing each card passed');

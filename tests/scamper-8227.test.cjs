@@ -29,7 +29,7 @@ let vis=null;s.sideArrow={setPosition(){return this},setRotation(){return this},
 s.updateSideArrow(180,320);assert.strictEqual(vis,true);s._stack=null;s.updateSideArrow(180,320);assert.strictEqual(vis,false);
 // static checks
 assert(/vaultAltar:120,ultimatum:150/.test(src)&&/grandmasGolem:100,grandmasPot:100/.test(src),'shorter big missions');
-assert(src.includes("'\\nWin: 🍬 +'"),'curse pads show Sugar');assert(src.includes("'\\n🎁 '+(R?R.txt"),'reward on the deal card');
+assert(src.includes("'\\nWin: 🍬 +'"),'curse pads show Sugar');assert(!src.includes("'\\n🎁 '+(R?R.txt"),'deal card text removed by owner 8.2.46');
 assert(src.includes('Reroll again (watch ad)')&&src.includes('showRewardedAd(\'Watch an ad to reroll'),'ad reroll');
 assert(/this\.missionJuice\?\.\(o\); this\.doubleClearMark\?\.\('side'\)/.test(src)&&/this\.missionJuice\?\.\(o\); this\.doubleClearMark\?\.\('main'\)/.test(src));
 console.log('SCAMPER 8.2.27: side arrow, deal reward + reroll (free/ad), curse Sugar, float cap, easy→hard, juice, Double Clear, shorter missions passed');
