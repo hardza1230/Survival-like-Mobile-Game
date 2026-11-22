@@ -1,0 +1,34 @@
+[
+  {
+    "key": "vfx_seed_rift_feed",
+    "file": "vfx_seed_rift_feed.png",
+    "bytes": 177761,
+    "sha256": "0abfb1f97326ba9961a4686c0646adb934d83db95f11190ccb63eff983dc7006",
+    "width": 2304,
+    "height": 192,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 12,
+    "columns": 12,
+    "rate": 24,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  },
+  {
+    "key": "vfx_mirror_path_lock",
+    "file": "vfx_mirror_path_lock.png",
+    "bytes": 101636,
+    "sha256": "8bcf244fe52244335fe8ab71042f6668322881f2987a0f5ce30dc6c5e85527fa",
+    "width": 1536,
+    "height": 192,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 8,
+    "columns": 8,
+    "rate": 24,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  }
+]
