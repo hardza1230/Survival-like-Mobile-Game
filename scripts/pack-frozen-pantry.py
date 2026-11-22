@@ -1,4 +1,4 @@
-"""Verify Frozen Pantry PNG masters and pack the mission's four-frame WebP sheets."""
+"""Verify Frozen Pantry PNG masters and pack the mission's eight-frame WebP sheets."""
 
 import hashlib
 import json
@@ -11,7 +11,7 @@ SOURCE = ROOT / "assets/incoming/frozen-pantry"
 TARGET = ROOT / "assets/art/frozen-pantry"
 ROLES = ("basic", "fast", "dasher", "shooter", "tank", "captain", "general")
 FRAME = 128
-COUNT = 4
+COUNT = 8
 
 
 def pack():

@@ -11,6 +11,7 @@ const rows = JSON.parse(fs.readFileSync(path.join(source, 'MANIFEST.json'), 'utf
 const roles = ['basic', 'fast', 'dasher', 'shooter', 'tank', 'captain', 'general'];
 const keys = roles.map(role => 'fp_new_' + role);
 assert.deepEqual(rows.map(row => row.key), keys);
+const previousRates = [8, 11, 10, 8, 7, 8, 6];
 
 const definitions = {};
 for (const row of rows) {
@@ -20,7 +21,12 @@ for (const row of rows) {
   assert.equal(createHash('sha256').update(data).digest('hex'), row.sha256);
   const url = 'assets/art/frozen-pantry/' + key + '.webp';
   const line = src.split('\n').find(item => item.includes(key + ":{url:'" + url + "'"));
-  assert.ok(line && /fw:128,fh:128,frames:4,rate:\d+,anchor:'feet',loop:true/.test(line), key);
+  const runtime = line?.match(/fw:128,fh:128,frames:8,rate:(\d+),anchor:'feet',loop:true/);
+  assert.ok(runtime, key);
+  const rate = Number(runtime[1]);
+  assert.deepEqual([row.frameCount, row.columns, row.width, row.height, row.rate], [8, 8, 1024, 128, rate]);
+  assert.equal(8 / rate, 4 / previousRates[keys.indexOf(key)], 'preserve stride period: ' + key);
+  assert.deepEqual([data.readUInt32BE(16), data.readUInt32BE(20), data[25]], [1024, 128, 6]);
   assert.equal(fs.readFileSync(path.join(root, url)).toString('ascii', 8, 12), 'WEBP');
   definitions[key] = {url};
 }

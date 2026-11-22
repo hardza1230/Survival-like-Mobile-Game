@@ -13,6 +13,12 @@
 
 เก็บจังหวะจริงจากผู้เรียกใช้ เช่น `frameRate`, `life`, การเล่นกลับ และ tween ก่อนเพิ่มเฟรม รูปเตือนต้องตรงขนาดพื้นที่อันตราย เฟรมใหม่ใช้ pivot และ baseline เดิม ถ้าแอนิเมชันเป็นลูปให้ตรวจเฟรมสุดท้ายต่อเฟรมแรก แต่ละเฟสเตรียม preview ที่ขนาดเล่นจริง ตรวจ alpha และขอบทุกเฟรม เช็กตัวเลือก Reduced Motion, lazy load, งบ GPU และขนาด build ก่อนรวมเข้าชุด
 
+## ความคืบหน้า
+
+- **เฟส 2A · Frozen Pantry** เพิ่มท่าเดิน 8 เฟรมครบทั้ง 7 บทบาทใน v8.2.65 โดยใช้ท่ายืนเฟรมแรกเดิมและเวลาเดินครบรอบเท่าเดิม พรีวิวอยู่ที่ [Frozen Pantry](../../assets/incoming/frozen-pantry/preview.gif)
+- **เฟส 2B · มอนภารกิจอื่น** เริ่มต่อจากลูกน้อง Hunger Herald และ Seed Rift carriers แล้วจึง Bee, Moth และ Sapper พร้อมเช็กว่า key ถูกเรียกจริง
+- แนวทางใบสั่งอาร์ตล่าสุดกำหนด 6 เฟรมสำหรับประกายกระทบขนาดเล็ก 8 สำหรับลูปเดิน และ 12 สำหรับท่าใหญ่ ช่องที่เรียกตามดัชนีเป็นภาพสถานะจะตรวจตามหน้าที่เดิม
+
 ## รายการคีย์รายเฟส
 
 จำนวนด้านล่างนับเป็นคีย์อาร์ต ไม่ใช่จำนวนคลิปที่ต้องสั่งสร้าง ตัวเลข 8/12 คือข้อเสนอเฟรมต่อคลิป แถวสำรองและแผ่นภาพสถานะอยู่ในรายการเพื่อเช็กครบ
@@ -84,18 +90,18 @@
 | `sg92_pellet_trail` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3569) |
 | `fx_mint_dash_shard` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3811) |
 | `bpx_taro_plasma_ring` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3817) |
-| `bpx_taro_plasma_hit` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3819) |
+| `bpx_taro_plasma_hit` | 6 | ประกายสั้นตามกติกาใบสั่งอาร์ตล่าสุด ตรวจความถี่ในฉากจริง | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3819) |
 | `bpx_taro_shock_aura` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3823) |
 | `bpx_taro_arc_bolt` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3828) |
-| `bpx_taro_arc_hit` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3829) |
+| `bpx_taro_arc_hit` | 6 | ประกายสั้นตามกติกาใบสั่งอาร์ตล่าสุด ตรวจความถี่ในฉากจริง | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3829) |
 | `bpx_taro_arc_loop` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L3830) |
 | `bpx_taro_spark` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4005) |
-| `bpx_taro_spark_split` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4006) |
-| `bpx_taro_spark_bounce` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4007) |
-| `bpx_taro_spark_hit` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4008) |
+| `bpx_taro_spark_split` | 6 | ประกายสั้นตามกติกาใบสั่งอาร์ตล่าสุด ตรวจความถี่ในฉากจริง | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4006) |
+| `bpx_taro_spark_bounce` | 6 | ประกายสั้นตามกติกาใบสั่งอาร์ตล่าสุด ตรวจความถี่ในฉากจริง | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4007) |
+| `bpx_taro_spark_hit` | 6 | ประกายสั้นตามกติกาใบสั่งอาร์ตล่าสุด ตรวจความถี่ในฉากจริง | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4008) |
 | `bpx_taro_ball_field` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4012) |
 | `bpx_taro_ball_zap` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4013) |
-| `bpx_taro_ball_zap_hit` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4014) |
+| `bpx_taro_ball_zap_hit` | 6 | ประกายสั้นตามกติกาใบสั่งอาร์ตล่าสุด ตรวจความถี่ในฉากจริง | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4014) |
 | `bpx_taro_sentry_idle` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4016) |
 | `bpx_taro_sentry_fire` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4018) |
 | `bpx_taro_beacon_idle` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4020) |
@@ -110,7 +116,7 @@
 | `bpx_cocoa_shadowfist` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4090) |
 | `bpx_cocoa_chainline` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4091) |
 | `bpx_momo_sniperhit` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4096) |
-| `bpx_momo_pellethit` | คง 4 | อายุสั้นหรือวาบถี่มาก ตรวจในฉากจริงก่อนเพิ่มเฟรม | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4097) |
+| `bpx_momo_pellethit` | 6 | ประกายสั้นตามกติกาใบสั่งอาร์ตล่าสุด ตรวจความถี่ในฉากจริง | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4097) |
 | `bpx_cocoa_slam_mark` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4100) |
 | `bpx_cocoa_rage_preview` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4101) |
 | `bpx_cocoa_rage_target` | 8 | ท่าหรือเอฟเฟกต์ต่อสู้สั้น | [ทะเบียน](https://github.com/hardza1230/Survival-like-Mobile-Game/blob/23673ac2dd68556b50c56662758cf9b1ecdbbb58/game.js#L4102) |

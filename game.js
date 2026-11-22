@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.64';
+const GAME_VERSION = '8.2.65';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.65',date:'2026-11-22',title:'Smoother Frozen Pantry troops',items:['All seven Frozen Pantry troops have smoother eight-frame movement while keeping their distinctive designs.']},
   {v:'8.2.64',date:'2026-11-22',title:'🔮 Sesame Spell Mastery + serpent minion',items:['Sesame spells level up by casting (3/7/12/18) and grow in number','Tidal Serpent swims around you and keeps biting (2-3 at Lv3/5)','Prismatic Armament: head icon + 2 extra fanned flares']},
   {v:'8.2.63',date:'2026-11-22',title:'👻 Phantom Rush costs your Dashes',items:['Phantom Rush spends all Dash charges (+1 leap each, needs 1)','Free shadow Dashes no longer refund cooldown','Cooldown refunds capped at 40%']},
   {v:'8.2.62',date:'2026-11-22',title:'🧭 Expedition easy to find (Activities + red dot)',items:['Expedition row in Activities','Red dot when away 1h or can upgrade','Unlock text fixed']},
@@ -4166,13 +4167,13 @@ const ASSET_FX = {
   ult85_curse_pads:{url:'assets/art/mission85/ult85_curse_pads.webp',fw:192,fh:192,frames:2,rate:8,anchor:'center'},hs85_sapper:{url:'assets/art/mission85/hs85_sapper.webp',fw:160,fh:160,frames:4,rate:12,anchor:'feet',loop:true},hs85_supply_crate:{url:'assets/art/mission85/hs85_supply_crate.webp',fw:192,fh:192,frames:2,rate:8,anchor:'feet'},
   hh85_beam:{url:'assets/art/mission85/hh85_beam.webp',fw:512,fh:64,frames:4,rate:14,anchor:'center',loop:true},hh85_empower_aura:{url:'assets/art/mission85/hh85_empower_aura.webp',fw:192,fh:192,frames:6,rate:10,anchor:'center',loop:true},hh85_minion_icons:{url:'assets/art/mission85/hh85_minion_icons.webp',fw:64,fh:64,frames:3,rate:8,anchor:'center'},
   fp_jar:{url:'assets/art/league72/fp_jar.webp',fw:256,fh:256,frames:1,rate:8,anchor:'feet'},
-  fp_new_basic:{url:'assets/art/frozen-pantry/fp_new_basic.webp',fw:128,fh:128,frames:4,rate:8,anchor:'feet',loop:true},
-  fp_new_fast:{url:'assets/art/frozen-pantry/fp_new_fast.webp',fw:128,fh:128,frames:4,rate:11,anchor:'feet',loop:true},
-  fp_new_dasher:{url:'assets/art/frozen-pantry/fp_new_dasher.webp',fw:128,fh:128,frames:4,rate:10,anchor:'feet',loop:true},
-  fp_new_shooter:{url:'assets/art/frozen-pantry/fp_new_shooter.webp',fw:128,fh:128,frames:4,rate:8,anchor:'feet',loop:true},
-  fp_new_tank:{url:'assets/art/frozen-pantry/fp_new_tank.webp',fw:128,fh:128,frames:4,rate:7,anchor:'feet',loop:true},
-  fp_new_captain:{url:'assets/art/frozen-pantry/fp_new_captain.webp',fw:128,fh:128,frames:4,rate:8,anchor:'feet',loop:true},
-  fp_new_general:{url:'assets/art/frozen-pantry/fp_new_general.webp',fw:128,fh:128,frames:4,rate:6,anchor:'feet',loop:true},
+  fp_new_basic:{url:'assets/art/frozen-pantry/fp_new_basic.webp',fw:128,fh:128,frames:8,rate:16,anchor:'feet',loop:true},
+  fp_new_fast:{url:'assets/art/frozen-pantry/fp_new_fast.webp',fw:128,fh:128,frames:8,rate:22,anchor:'feet',loop:true},
+  fp_new_dasher:{url:'assets/art/frozen-pantry/fp_new_dasher.webp',fw:128,fh:128,frames:8,rate:20,anchor:'feet',loop:true},
+  fp_new_shooter:{url:'assets/art/frozen-pantry/fp_new_shooter.webp',fw:128,fh:128,frames:8,rate:16,anchor:'feet',loop:true},
+  fp_new_tank:{url:'assets/art/frozen-pantry/fp_new_tank.webp',fw:128,fh:128,frames:8,rate:14,anchor:'feet',loop:true},
+  fp_new_captain:{url:'assets/art/frozen-pantry/fp_new_captain.webp',fw:128,fh:128,frames:8,rate:16,anchor:'feet',loop:true},
+  fp_new_general:{url:'assets/art/frozen-pantry/fp_new_general.webp',fw:128,fh:128,frames:8,rate:12,anchor:'feet',loop:true},
   fp_statues:{url:'assets/art/league72/fp_statues.webp',fw:192,fh:192,frames:2,rate:8,anchor:'feet'},
   fp_shatter:{url:'assets/art/league72/fp_shatter.webp',fw:256,fh:256,frames:6,rate:16,anchor:'center',black:true},
   hm_hand:{url:'assets/art/league72/hm_hand.webp',fw:256,fh:256,frames:2,rate:8,anchor:'feet'},

@@ -1,3 +1,7 @@
+# Current checkpoint — Animation phase 2A (2026-11-22)
+
+Base c69b16fa (v8.2.64); checked v8.2.59–64 owner changes and pulled them before editing. Frozen Pantry: seven eight-frame source/runtime atlases, original frame zero, original stride duration and stage-lazy keys. Candidate v8.2.65 on integration/animation-phase2. See docs/design/animation-frame-upgrade-plan.md. Next batch is phase 2B, Hunger Herald minions and Seed Rift carriers. Verify remote release and retain owner phone review.
+
 # Current checkpoint -- Animation frames phase 1 (2026-11-22)
 
 v8.2.58 candidate from 23673ac2 on integration/animation-phase1. Inventory: docs/design/animation-frame-upgrade-plan.md, 274 art keys and 54 named ranges; snapshot is v8.2.57. Phase 1 source and runtime: Seed Rift feed 12 frames, Mirror Path lock 8, both 24 FPS, stage-lazy with fallback. Pending owner phone review. Next production phase: start Frozen Pantry walking loops and mission mobs. Confirm deploy head and tests before any further release.
