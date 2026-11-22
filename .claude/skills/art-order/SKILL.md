@@ -75,7 +75,20 @@ Each row: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `fr
 
 ## 4. Animation choices
 
-- Short effects: flipbook strips (4–8 frames). Character idle: avoid full AI-redrawn frame
+- **Frame count is mandatory (owner 22 Nov 2026):** every animated row states an exact
+  frame count chosen for how it plays in the game — never leave it to the art side (it
+  defaults to 4, which looks choppy). Guide (24 fps flipbooks · keep sheets in budget):
+  | kind | frames |
+  |---|---|
+  | tiny pop / hit spark / UI sparkle | 6 |
+  | normal one-shot VFX (slash, burst, impact, cast) | 8 |
+  | big one-shot (boss attack, Unique, ultimate, explosion) | 12 |
+  | looping VFX / aura / ground pool / portal | 8–12 (seamless) |
+  | character action (attack, dash, hurt) | 6–8 · walk 8 |
+  | boss/screen-filling showpiece | 12–16 (lower res per frame) |
+  Use 4 only for a deliberate held/snappy pose sequence and say why. In the order, write
+  "N เฟรม (ห้ามน้อยกว่านี้)" and repeat it in the MANIFEST expectations.
+- Short effects: flipbook strips (see frame table above). Character idle: avoid full AI-redrawn frame
   loops — they "boil" (order 34 had to be turned off). Prefer one clean pose split into
   layers (body/head/arms/accessories with pivots) that code animates (sway, squash,
   bob), or keep frame-to-frame changes small with a fixed silhouette.
