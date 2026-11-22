@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.55';
+const GAME_VERSION = '8.2.56';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.56',date:'2026-11-22',title:'Meet the Frozen Pantry army',items:['Seven ice-mochi designs make scouts, throwers, guards, and officers easy to tell apart.','Frozen soldiers keep their silhouettes from ice statue to battle. Spot the golden Captain to weaken its squad.']},
   {v:'8.2.55',date:'2026-11-22',title:'Mission card polish and clearer battle effects',items:['Mission cards have a new Heart Seed back, foil sweep, and flip sparkle.','Hunger Crack has distinct fissure stages and sugar-dust eruptions.','Strawberry Shotgun has new muzzle flashes and visible Double Barrel follow-up trails.','Hunt lob markers and Wisp protection now use painted effects.']},
   {v:'8.2.54',date:'2026-11-22',title:'ECRS round 2: fewer screens, Sugar gear chests, calmer Chapter 1',items:['Reward Inbox, Mochi Miners and the Expedition daily chest are gone (nothing is lost)','Silver and Gold gear chests now cost Sugar instead of Thread','Chapter 1 has no run traits or Mimic on the prize wheel']},
   {v:'8.2.53',date:'2026-11-21',title:'Sesame is a finished hero',items:['Sesame now counts for Daily Quests and Awards like every hero','Sesame can roll Unique mutation cards']},
@@ -4155,6 +4156,13 @@ const ASSET_FX = {
   ult85_curse_pads:{url:'assets/art/mission85/ult85_curse_pads.webp',fw:192,fh:192,frames:2,rate:8,anchor:'center'},hs85_sapper:{url:'assets/art/mission85/hs85_sapper.webp',fw:160,fh:160,frames:4,rate:12,anchor:'feet',loop:true},hs85_supply_crate:{url:'assets/art/mission85/hs85_supply_crate.webp',fw:192,fh:192,frames:2,rate:8,anchor:'feet'},
   hh85_beam:{url:'assets/art/mission85/hh85_beam.webp',fw:512,fh:64,frames:4,rate:14,anchor:'center',loop:true},hh85_empower_aura:{url:'assets/art/mission85/hh85_empower_aura.webp',fw:192,fh:192,frames:6,rate:10,anchor:'center',loop:true},hh85_minion_icons:{url:'assets/art/mission85/hh85_minion_icons.webp',fw:64,fh:64,frames:3,rate:8,anchor:'center'},
   fp_jar:{url:'assets/art/league72/fp_jar.webp',fw:256,fh:256,frames:1,rate:8,anchor:'feet'},
+  fp_new_basic:{url:'assets/art/frozen-pantry/fp_new_basic.webp',fw:128,fh:128,frames:4,rate:8,anchor:'feet',loop:true},
+  fp_new_fast:{url:'assets/art/frozen-pantry/fp_new_fast.webp',fw:128,fh:128,frames:4,rate:11,anchor:'feet',loop:true},
+  fp_new_dasher:{url:'assets/art/frozen-pantry/fp_new_dasher.webp',fw:128,fh:128,frames:4,rate:10,anchor:'feet',loop:true},
+  fp_new_shooter:{url:'assets/art/frozen-pantry/fp_new_shooter.webp',fw:128,fh:128,frames:4,rate:8,anchor:'feet',loop:true},
+  fp_new_tank:{url:'assets/art/frozen-pantry/fp_new_tank.webp',fw:128,fh:128,frames:4,rate:7,anchor:'feet',loop:true},
+  fp_new_captain:{url:'assets/art/frozen-pantry/fp_new_captain.webp',fw:128,fh:128,frames:4,rate:8,anchor:'feet',loop:true},
+  fp_new_general:{url:'assets/art/frozen-pantry/fp_new_general.webp',fw:128,fh:128,frames:4,rate:6,anchor:'feet',loop:true},
   fp_statues:{url:'assets/art/league72/fp_statues.webp',fw:192,fh:192,frames:2,rate:8,anchor:'feet'},
   fp_shatter:{url:'assets/art/league72/fp_shatter.webp',fw:256,fh:256,frames:6,rate:16,anchor:'center',black:true},
   hm_hand:{url:'assets/art/league72/hm_hand.webp',fw:256,fh:256,frames:2,rate:8,anchor:'feet'},
@@ -17042,6 +17050,13 @@ class Game extends Phaser.Scene {
       const t=this.add.text(0,0,'🧊 Open the Jar',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#e8faff',stroke:'#0d2a3a',strokeThickness:4}).setOrigin(.5); c.add([g,t]); this.camUI(c); c.setScrollFactor?.(1); c.setVisible(false); S.btn=c; S.btnR={w:bw,h:bh}; S.objs.push(c); this.tweens.add({targets:c,scale:{from:1,to:1.06},duration:520,yoyo:true,repeat:-1}); } }
   fpBtnOver(p){ const S=this._sig; if(!S||S.type!=='frozenPantry'||S.phase!=='seek'||!S.btn?.visible)return false; const b=S.btn,r=S.btnR; return Math.abs(p.x-b.x)<=r.w/2+10&&Math.abs(p.y-b.y)<=r.h/2+10; }
   fpBtnHit(p){ if(!this.fpBtnOver(p))return false; this.fpOpen(this.waveObjective,this._sig); return true; }
+  fpStatueArt(role,x,y,px){
+    const key='fp_new_'+role;
+    if(!this.realTex?.(key))return null;
+    const statue=this.artSpr(key,x,y+px*.42,px,0,{anim:false,depth:y+2});
+    statue?.setTint?.(0x96b9e8);
+    return statue;
+  }
   fpOpen(o,S){ if(S.phase!=='seek')return; this.missionMusic?.('bgm_m_frozen_still'); this.a12?.('lg_jar_open',.45,.3); const si=this.stageIndex||0,n=o.target; S.phase='paint'; S.btn?.setVisible(false); S.glow?.setVisible(false);
     /* v8.1.112 เจ้าของ: ช่วงกดปุ่มต้องอลังแบบ Legion ของ PoE → โหลสั่นแล้วแตกเป็นคลื่นน้ำแข็งแผ่ออก · พื้นที่ในคลื่นกลายเป็นโซนเวลาหยุด (โดมน้ำแข็ง) · รูปปั้นผุดตามคลื่นที่ผ่านไป */
     const BR=S.BR=FP_DOME,jx=S.x,jy=S.y; this.tweens.add({targets:S.jar,x:{from:(S.jar.x||jx)-4,to:(S.jar.x||jx)+4},duration:50,yoyo:true,repeat:5,onComplete:()=>{ S.jar.setAlpha?.(.45); }});
@@ -17054,14 +17069,18 @@ class Game extends Phaser.Scene {
     const rise=(t,x,y,d,big)=>this.time?.delayedCall?.(d,()=>{ if(!t.active&&t.active!==undefined)return; t.setAlpha(.85); const sx=t.scaleX||1,sy=t.scaleY||1,ty=t.y; t.setScale?.(sx*.2,sy*.2); t.y=ty+18; this.tweens.add({targets:t,scaleX:sx,scaleY:sy,y:ty,duration:340,ease:'Back.easeOut'}); this.artFx?.('fp_shatter',x,y,big?110:70); if(big||Math.random()<.34)this.vfxHitRing?.(x,y,0xbfe8ff,false); });
     const at=(x,y)=>380+Math.hypot(x-jx,y-jy)/.68,per=Math.ceil((n-1)/groups);
     for(let gi=0;gi<groups;gi++){ const ga=gi/groups*TAU+Math.random()*.5,gr=270+Math.random()*(BR-380),cx=S.x+Math.cos(ga)*gr,cy=S.y+Math.sin(ga)*gr; S.sq.push({cap:null,leaderless:false});   // กองทัพเป็นหมู่ ๆ กระจายทั่วโดม
-      for(let j=0;j<per&&k<n-1;j++,k++){ const a=Math.random()*TAU,r=j?40+Math.sqrt(Math.random())*90:0,x=Phaser.Math.Clamp(cx+Math.cos(a)*r,-lim,lim),y=Phaser.Math.Clamp(cy+Math.sin(a)*r*.8,-lim,lim),role=FP_ROLES[j]||(j%3?'basic':(si>=2?'dasher':'fast')),R=FP_ROLE_LOOK[role]||FP_ROLE_LOOK.basic,cap=role==='captain';
-        const c85=cap&&this.realTex?.('fp85_captain_statue'),t=this.sigArt(c85?'fp85_captain_statue':'fp_statues',c85?0:cap?1:0,x,y+R.px*.42,R.px,cap?'🗿':'🍡',R.fs,y-8);   /* v8.2.23 ใบ 85 รูปปั้น Captain */ t.setTint?.(R.tint); t.setAlpha(0);
+      for(let j=0;j<per&&k<n-1;j++,k++){ const a=Math.random()*TAU,r=j?40+Math.sqrt(Math.random())*90:0,x=Phaser.Math.Clamp(cx+Math.cos(a)*r,-lim,lim),y=Phaser.Math.Clamp(cy+Math.sin(a)*r*.8,-lim,lim),role=FP_ROLES[j]||(j===5?'fast':j%3?'basic':(si>=2?'dasher':'fast')),R=FP_ROLE_LOOK[role]||FP_ROLE_LOOK.basic,cap=role==='captain';
+        const c85=cap&&this.realTex?.('fp85_captain_statue'),art=this.fpStatueArt?.(role,x,y,R.px);
+        const t=art||this.sigArt(c85?'fp85_captain_statue':'fp_statues',c85?0:cap?1:0,x,y+R.px*.42,R.px,cap?'🗿':'🍡',R.fs,y-8);
+        if(!art)t.setTint?.(R.tint); t.setAlpha(0);
         const crown=cap?this.sigText(x,y-R.px*.62,'👑',20):null; crown?.setAlpha?.(0); const mark=!cap&&k%5===2?this.sigText(x+20,y-36,'🎁',18):null; mark?.setAlpha?.(0);
         const d=at(x,y); rise(t,x,y,d,cap); [crown,mark].forEach(m=>m&&this.time?.delayedCall?.(d+300,()=>m.setAlpha?.(1)));
-        const q={x,y,t,mark,crown,chest:!!mark||cap,cap,role,sq:gi,gen:false,fill:0,state:'frozen',e:null,tok:0}; if(cap)S.sq[gi].cap=q; S.st.push(q); } }
-    { const a=Math.random()*TAU,x=Phaser.Math.Clamp(jx+Math.cos(a)*170,-lim,lim),y=Phaser.Math.Clamp(jy+Math.sin(a)*130,-lim,lim),g85=this.realTex?.('fp85_general_statue'),t=this.sigArt(g85?'fp85_general_statue':'fp_statues',g85?0:1,x,y+50,S.full?130:118,'🗿',62,y-8);   /* v8.2.23 ใบ 85 Frost General */ t.setTint?.(0x9fc4e0); t.setAlpha(0);   // Frost General (ทุกครั้ง)
+        const q={x,y,t,mark,crown,chest:!!mark||cap,cap,role,art:!!art,px:R.px,sq:gi,gen:false,fill:0,state:'frozen',e:null,tok:0}; if(cap)S.sq[gi].cap=q; S.st.push(q); } }
+    { const a=Math.random()*TAU,x=Phaser.Math.Clamp(jx+Math.cos(a)*170,-lim,lim),y=Phaser.Math.Clamp(jy+Math.sin(a)*130,-lim,lim),g85=this.realTex?.('fp85_general_statue'),px=S.full?130:118,art=this.fpStatueArt?.('general',x,y,px);
+      const t=art||this.sigArt(g85?'fp85_general_statue':'fp_statues',g85?0:1,x,y+50,px,'🗿',62,y-8);
+      if(!art)t.setTint?.(0x9fc4e0); t.setAlpha(0);
       const crown=this.sigText(x,y-84,'❄️👑',24); crown.setAlpha?.(0); const d=at(x,y)+200; rise(t,x,y,d,true); this.time?.delayedCall?.(d+300,()=>crown.setAlpha?.(1));
-      S.st.push({x,y,t,mark:null,crown,chest:true,cap:false,role:'general',sq:-1,gen:true,fill:0,state:'frozen',e:null,tok:0}); k++;
+      S.st.push({x,y,t,mark:null,crown,chest:true,cap:false,role:'general',art:!!art,px,sq:-1,gen:true,fill:0,state:'frozen',e:null,tok:0}); k++;
       this.fpCrate(S,x+(x>jx?70:-70),y+40,S.full?'starsugar':'recipeink',true,d+260); }
     const tiers=S.full?FP_CRATES[1]:FP_CRATES[0]; tiers.forEach((tier,i)=>{ const a=(i+.5)/tiers.length*TAU+Math.random()*.4,r=200+Math.random()*(BR-300),x=Phaser.Math.Clamp(jx+Math.cos(a)*r,-lim,lim),y=Phaser.Math.Clamp(jy+Math.sin(a)*r*.85,-lim,lim); this.fpCrate(S,x,y,tier,false,at(x,y)); });   // ลังแช่แข็งระหว่างหมู่ · ต้องเดินไปทาสีก่อนเวลาเดิน
     S.T+=1.2; }   // เผื่อเวลาช่วงคลื่นแผ่
@@ -17098,6 +17117,8 @@ class Game extends Phaser.Scene {
     if(lost)this.objBonusFail?.(); o.target=woke+S.st.filter(q=>q.state==='pending').length; o.progress=0; S.fight=S.full?25:0;
     this.time?.delayedCall?.(700,()=>this.showBanner?.(woke?'❄️ They break free!':'🧊 Nothing was painted',woke?(woke+' awake'+(cOpen?' · '+cOpen+' crates':'')+(lost?' · '+lost+' shattered':'')):'The frozen army crumbles',1500)); if(!o.target)this.completeWaveObjective(); }
   fpWake(o,S,q){ const e=this.sigSpawnAt(q.x,q.y,q.gen,q.cap?'tank':q.role&&q.role!=='captain'&&q.role!=='general'?q.role:'basic'); if(!e){ q.state='pending'; return; } this._fpSeq=(this._fpSeq||0)+1; q.tok=this._fpSeq; e._fpTok=q.tok; q.e=e; q.state='awake'; this.tweens?.killTweensOf?.(q.t); q.t.setVisible(false); if(q.gen&&e.setScale)e.setScale((e.baseScale||e.scaleX||1)*1.25); q.crown?.setVisible?.(false); if(q.cap){ e.hp=(e.hp||1)*FP_CAPTAIN_HP; e.maxhp=e.hp; e.setScale?.((e.scaleX||1)*1.3); e.tintColor=0xffe39a; e.setTint?.(0xffe39a); }   /* Captain = Tank ตัวใหญ่สีทอง */
+    const key='fp_new_'+q.role;
+    if(this.realTex?.(key))this.artFollow?.(e,key,q.px);
     this.artFx?.('fp_shatter',q.x,q.y,110); if(q.gen)this.floatText?.(q.x,q.y-50,'🗿 The Frost General wakes!',0xffd0ea); }
   fpResolve(q,how){ q.state=how; q.e=null; this.tweens?.killTweensOf?.(q.t); q.t.setVisible(false); if(q.mark){ q.mark.setVisible(false); } q.crown?.setVisible?.(false); }
   fpVanish(q){ const e=q.e; if(e&&e.active&&e._fpTok===q.tok){ this.a12?.('lg_statue_refreeze',.35,.25); if(e._aura){ e._aura.destroy(); e._aura=null; } this.stopEnemyPresentation?.(e); e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; this.vfxSpawnPoof?.(e.x,e.y); }
@@ -17108,7 +17129,7 @@ class Game extends Phaser.Scene {
       if(S.pud&&(S.wob=((S.wob||0)+1)%2)===0){ const t=(this.time?.now||0)/1000; for(const q of S.pud)if(q._ready&&q.active)q.setScale(q.bx*(1+.06*Math.sin(t*1.7+q.ph)),q.by*(1+.06*Math.cos(t*1.3+q.ph))); }   /* แอ่งสีกระเพื่อมเบา ๆ */
       if(S.stopOn&&((S.stopT=(S.stopT||0)-dt)<=0)){ S.stopT=.3; this.fpTimeStop(S,true); }
       if(!S.pfx&&this.textures?.exists?.('vfx78_statue_paint'))S.pfx=this.artSpr('vfx78_statue_paint',p.x,p.y,110); S.pfx?.setPosition?.(p.x,p.y);   // ละอองสีหมุนรอบตัวตอนระบาย (ใบ 78)
-      let painted=0,all=0; for(const q of S.st){ if(q.state!=='frozen')continue; all++; if(q.fill<1&&this.sigNear(q.x,q.y,S.PR)){ q.fill=Math.min(1,q.fill+dt/(q.gen?1.1:q.cap?.6:.35)); if(q.fill>=1){ q.t.clearTint?.(); q.t.setTint?.(0xffd6ec); this.vfxHitRing?.(q.x,q.y,0xffb3d9,false); } } if(q.fill>=1)painted++; }
+      let painted=0,all=0; for(const q of S.st){ if(q.state!=='frozen')continue; all++; if(q.fill<1&&this.sigNear(q.x,q.y,S.PR)){ q.fill=Math.min(1,q.fill+dt/(q.gen?1.1:q.cap?.6:.35)); if(q.fill>=1){ q.t.clearTint?.(); if(!q.art)q.t.setTint?.(0xffd6ec); this.vfxHitRing?.(q.x,q.y,0xffb3d9,false); } } if(q.fill>=1)painted++; }
       for(const c of S.cr||[]){ if(c.state!=='frozen'||c.fill>=1)continue; all++; if(this.sigNear(c.x,c.y,S.PR)){ c.fill=Math.min(1,c.fill+dt/.5); if(c.fill>=1){ c.spr?.setFrame?.(c.row*3+1); c.box?.setStrokeStyle?.(4,0xffb3d9,1); c.box?.setFillStyle?.(0xffd6ec,.7); this.vfxHitRing?.(c.x,c.y,0xffb3d9,false); } } }
       o.progress=painted; const g=S.fx; if(g){ g.clear?.(); const f=Math.min(1,Math.max(0,S.T)/(S.T0||14)); g.fillStyle?.(0x190b24,.8); g.fillRoundedRect?.(p.x-60,p.y-96,120,10,5); g.fillStyle?.(f<.3?0xff5f7a:0x9fe0ff,.95); g.fillRoundedRect?.(p.x-58,p.y-94,116*f,6,3); }
       if(S.T<=0||painted>=all)this.fpThaw(o,S); return; }
@@ -17526,6 +17547,14 @@ class Game extends Phaser.Scene {
       }
       s.setPosition(e.x,e.y).setDepth((e.depth||e.y)+1);
       if(e.alpha>.02)e.setAlpha(.01);
+      if(e._fpTok){
+        const frozen=e.frozen>0;
+        if(frozen!==s._fpFrozen){
+          s._fpFrozen=frozen;
+          if(frozen){ s.setTint?.(0x9dd7ff); s.anims?.pause?.(); }
+          else { s.clearTint?.(); s.anims?.resume?.(); }
+        }
+      }
       const vx=e.body?.velocity?.x||0;
       if(Math.abs(vx)>5)s.setFlipX(vx<0);
       const p=this.player;
@@ -24991,7 +25020,8 @@ class Game extends Phaser.Scene {
   }
   // --- VFX: death poof (smoke cloud) ---
   /* v8.2.10 มอนตาย: ร่างขาววาบ บีบแบนแล้วพองหาย ~140 ms (สำเนาภาพ · ไม่เกิน 14 ชิ้นพร้อมกัน) */
-  enemyDeathPop(e){ if(!this.add?.image||(this._deathGhosts||0)>=14||!e.texture?.key||!e.visible)return; try{ const g=this.camWorld(this.add.image(e.x,e.y,e.texture.key,e.frame?.name).setOrigin(e.originX,e.originY).setScale(e.scaleX,e.scaleY).setFlipX(!!e.flipX).setRotation(e.rotation||0).setDepth((e.depth||0)+1)); g.setTintFill?.(0xffffff); this._deathGhosts=(this._deathGhosts||0)+1;
+  enemyDeathPop(e){ const pose=e._fpTok&&e._artOv?.active?e._artOv:e;
+    if(!this.add?.image||(this._deathGhosts||0)>=14||!pose.texture?.key||!e.visible)return; try{ const g=this.camWorld(this.add.image(pose.x,pose.y,pose.texture.key,pose.frame?.name).setOrigin(pose.originX,pose.originY).setScale(pose.scaleX,pose.scaleY).setFlipX(!!pose.flipX).setRotation(pose.rotation||0).setDepth((pose.depth||0)+1)); g.setTintFill?.(0xffffff); this._deathGhosts=(this._deathGhosts||0)+1;
     this.tweens.add({targets:g,scaleX:e.scaleX*1.35,scaleY:e.scaleY*.55,alpha:0,duration:140,ease:'Quad.out',onComplete:()=>{ g.destroy(); this._deathGhosts=Math.max(0,(this._deathGhosts||1)-1); }}); }catch(err){} }
   vfxDeathPoof(x,y,color,big){
     const sc=big?2.2:1.0;
@@ -25053,9 +25083,15 @@ class Game extends Phaser.Scene {
     if(!this.textures.exists(K)){ const c=document.createElement('canvas'); c.width=128; c.height=48; const x=c.getContext('2d'); x.scale(1,48/128); const g=x.createRadialGradient(64,64,4,64,64,64); g.addColorStop(0,'rgba(10,5,16,0.62)'); g.addColorStop(.55,'rgba(10,5,16,0.34)'); g.addColorStop(1,'rgba(10,5,16,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas(K,c); }
     const P=this._foeSh||(this._foeSh=[]),dark=this._chapter25D?1.25:1; let n=0;
     const pl=this.player; this.enemies.children.iterate(e=>{ if(!e||!e.active||!e.visible)return;
-      /* v8.1.120 เจ้าของ: มอนที่ยืนบังตัวเรา (อยู่หน้าและทับตัว) จางลงครึ่งหนึ่ง เห็นตัวเราชัด */ const occ=!!pl&&e.depth>pl.depth&&Math.abs(e.x-pl.x)<(e.displayWidth||40)*.42&&e.y-pl.y<(e.displayHeight||40)*.7; if(occ&&!e._occ&&e.alpha>=.95){ e._occ=true; e._occA=1; e.setAlpha(.5); } else if(!occ&&e._occ){ e._occ=false; if(e.alpha<=.55)e.setAlpha(1); }   /* v8.1.155 เจ้าของ 🐞 มอนตัวจางค้าง: เดิมจำค่า alpha ตอนกำลังเฟดเข้า (spawnRise 0→1) แล้วคืนค่านั้น = จางถาวร → จางเฉพาะตัวที่ทึบเต็ม · คืนเป็น 1 เสมอ */
-      const ea=e._occ?(e._occA??1):e.alpha; if(ea<.05)return; let sh=P[n]; if(!sh||!sh.active){ sh=P[n]=this.camWorld(this.add.image(0,0,K).setDepth(-99000)); } n++;
-      const w=Math.max(26,Math.min(260,(e.displayWidth||40)*.72)); sh.setPosition(e.x,e.y+(e.displayHeight||40)*.4).setDisplaySize(w,w*.34).setAlpha(Math.min(1,ea*dark)).setVisible(true); });
+      const pantry=e._fpTok&&e._artOv?.active?e._artOv:null;
+      const pose=pantry||e;
+      if(pantry){
+        const occludes=pl&&e.depth>pl.depth&&Math.abs(e.x-pl.x)<pose.displayWidth*.42&&e.y-pl.y<pose.displayHeight*.7;
+        pantry.setAlpha(occludes?.5:1);
+      }
+      /* v8.1.120 เจ้าของ: มอนที่ยืนบังตัวเรา (อยู่หน้าและทับตัว) จางลงครึ่งหนึ่ง เห็นตัวเราชัด */ const occ=!pantry&&!!pl&&e.depth>pl.depth&&Math.abs(e.x-pl.x)<(e.displayWidth||40)*.42&&e.y-pl.y<(e.displayHeight||40)*.7; if(occ&&!e._occ&&e.alpha>=.95){ e._occ=true; e._occA=1; e.setAlpha(.5); } else if(!occ&&e._occ){ e._occ=false; if(e.alpha<=.55)e.setAlpha(1); }   /* v8.1.155 เจ้าของ 🐞 มอนตัวจางค้าง: เดิมจำค่า alpha ตอนกำลังเฟดเข้า (spawnRise 0→1) แล้วคืนค่านั้น = จางถาวร → จางเฉพาะตัวที่ทึบเต็ม · คืนเป็น 1 เสมอ */
+      const ea=pantry?1:e._occ?(e._occA??1):e.alpha; if(ea<.05)return; let sh=P[n]; if(!sh||!sh.active){ sh=P[n]=this.camWorld(this.add.image(0,0,K).setDepth(-99000)); } n++;
+      const w=Math.max(26,Math.min(260,(pose.displayWidth||40)*.72)); sh.setPosition(e.x,e.y+(pose.displayHeight||40)*.4).setDisplaySize(w,w*.34).setAlpha(Math.min(1,ea*dark)).setVisible(true); });
     this.drawPlayerLight?.();
     for(let i=n;i<P.length;i++)if(P[i]&&P[i].visible)P[i].setVisible(false); }
 
