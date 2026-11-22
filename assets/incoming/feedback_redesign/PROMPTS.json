@@ -1,0 +1,38 @@
+[
+  {
+    "key": "hc_new_mouth",
+    "tool": "ImageGen",
+    "prompt": "Create a transparent PNG game VFX working atlas: EXACTLY 3 square cells in ONE HORIZONTAL ROW, uniform widths, no cell dividers. Each depicts the same ground-bound jagged abyss opening from high 3/4 top-down for Mochi Mayhem, purple black sugar fissure with angular hand-drawn plum edges, NOT a swirling portal nor a circle. Three distinct states left to right: small dormant split with dim violet seam; medium active jagged mouth with bright violet inner rim and few overhead lavender motes; larger final gash with two broken lavender violet fault lines and sparse amber-pink chips. Same center, transparent edges and ≥12% padding, clean readable silhouettes at 54-116px. Shadows inside opening only. Isolated, no scenery, characters, text, letters, watermark, alpha checkerboard.",
+    "source": "exec-2ca83bba-fc0a-45aa-8f28-f609d7946c28.png",
+    "workingGrid": [
+      3,
+      1
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup. Source cut at alpha-zero gutters x=640/1320."
+  },
+  {
+    "key": "hc_new_emerge",
+    "tool": "ImageGen",
+    "prompt": "Original hand-painted cute confectionery fantasy VFX sprite sheet on perfectly black RGB #000. EXACTLY SIX cells in 3 columns by 2 rows, equal square cells, strict row-major. Ground-level erupting lilac violet sugar dust and sharp short black-plum fissure fragments propelled upward, starting at bottom-center, grows dramatically then disperses into a few fading lavender motes. Six distinct sequential stages, no fire orange, no circle, no creatures, no ground art, no text or markings, no grid lines. At least 10 percent padding around each frame.",
+    "source": "exec-27ce9139-5b33-4171-b3c4-e7e661858d06.png",
+    "workingGrid": [
+      3,
+      2
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup. Align eruption base to a shared ground line."
+  },
+  {
+    "key": "sg_new_primary",
+    "tool": "ImageGen",
+    "prompt": "Original anime candy-fantasy shotgun muzzle VFX flipbook, exactly SIX equal rectangular cells in THREE COLUMNS and TWO ROWS, 3:2 cells. Pure black #000 background. Each frame blast originates LEFT MIDPOINT shooting to the RIGHT. A wide compact cone of strawberry-red and hot pink painted ribbons with a small white sugar-pressure core, three visible strawberry seed spark streaks fanning right and a brief broken pink pressure arc. The white core stays small to prevent glare. Chronological: ignition, sharp fan peak, expanding fan, pressure arc, thin pink wisps, few residual bright seeds. All art separate with 10 percent generous cell padding, align each origin left midpoint. Never orange fire, no gun, no hands, no text, no grid lines.",
+    "source": "exec-4d07f355-85df-4098-9d47-89a20fe49a08.png",
+    "workingGrid": [
+      3,
+      2
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  }
+]

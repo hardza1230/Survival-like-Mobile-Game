@@ -1,0 +1,9 @@
+[
+  {"key": "fp_new_basic", "frameMarginsLTRB": [[10, 12, 10, 10], [10, 13, 10, 10], [10, 12, 10, 10], [10, 13, 10, 10]], "walkSilhouetteOverlap": [0.971, 0.972, 0.974, 0.973], "pass": true},
+  {"key": "fp_new_fast", "frameMarginsLTRB": [[16, 12, 16, 10], [16, 12, 16, 10], [15, 12, 16, 10], [16, 13, 16, 10]], "walkSilhouetteOverlap": [0.92, 0.935, 0.916, 0.95], "pass": true},
+  {"key": "fp_new_dasher", "frameMarginsLTRB": [[12, 13, 13, 10], [13, 12, 14, 10], [13, 13, 13, 10], [13, 13, 13, 10]], "walkSilhouetteOverlap": [0.927, 0.923, 0.952, 0.95], "pass": true},
+  {"key": "fp_new_shooter", "frameMarginsLTRB": [[19, 12, 19, 10], [19, 13, 20, 10], [19, 14, 19, 10], [19, 14, 19, 10]], "walkSilhouetteOverlap": [0.926, 0.93, 0.971, 0.927], "pass": true},
+  {"key": "fp_new_tank", "frameMarginsLTRB": [[8, 14, 8, 10], [9, 15, 9, 10], [9, 12, 9, 10], [8, 14, 8, 10]], "walkSilhouetteOverlap": [0.953, 0.887, 0.915, 0.962], "pass": true},
+  {"key": "fp_new_captain", "frameMarginsLTRB": [[23, 15, 24, 10], [24, 12, 24, 10], [23, 15, 23, 10], [23, 14, 24, 10]], "walkSilhouetteOverlap": [0.841, 0.85, 0.913, 0.936], "pass": true},
+  {"key": "fp_new_general", "frameMarginsLTRB": [[8, 18, 9, 10], [9, 16, 10, 10], [8, 16, 9, 10], [8, 16, 8, 10]], "walkSilhouetteOverlap": [0.905, 0.949, 0.928, 0.924], "pass": true}
+]

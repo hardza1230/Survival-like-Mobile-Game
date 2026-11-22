@@ -1,0 +1,38 @@
+[
+  {
+    "key": "cb93_back",
+    "tool": "ImageGen",
+    "prompt": "Straight-on flat card back only, full bleed portrait aspect 320:456, rounded corners radius 24 at final 320 width, truly transparent only outside corners. Three borders: embossed warm gold biscuit outer trim, creamy icing lace, thin inner gold line. Four leaf/ribbon corners. Rich plum edges fade to lilac center with restrained gold diamond lattice. Dominant central radiant ruby-red Heart Seed (preserve heart in reddish seed and tiny gold sprout from style reference, ignore the scene) mounted on an eight-point gold star with red-white candy spiral ring and sugar petals. Two tiny symmetric mochi peek at lower corners and 3–4 subtle sparkles. Left-right symmetry, luxurious original candy fantasy collectible, reads when 66 pixels wide. No outside shadow, front, perspective, words, numbers, UI.",
+    "source": "exec-988c379d-7a2b-4ddb-8f84-e960a853083d.png",
+    "workingGrid": [
+      1,
+      1
+    ],
+    "reference": "assets/incoming/results79/core79_heart_seed.png",
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  },
+  {
+    "key": "cb93_back_shine",
+    "tool": "ImageGen",
+    "prompt": "Portrait aspect 320:456, PURE RGB BLACK #000 canvas, one centered slim soft white-gold foil light streak tilted 30 degrees from vertical, ~one fifth width, softly feathered. A smooth band, no star, object, border, text, atmospheric background or actual card. Black outside softly rounded card envelope including corners.",
+    "source": "exec-4c1e91bc-4ad9-40a5-bdd2-44fe1747d983.png",
+    "workingGrid": [
+      1,
+      1
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup. Constrain shine to the card envelope and clear corner padding."
+  },
+  {
+    "key": "cb93_flip",
+    "tool": "ImageGen",
+    "prompt": "6 sequential square animation cells 3 columns 2 rows, exact equally spaced layout row major. White-gold narrow vertical candy-card flip flare, thin glint gathers, bright rapid vertical flash, peaks with little sugar motes, recedes, small particles scatter, tiny final sparkle. PURE BLACK #000 background all cells, strictly no grid, letters or cards. Every cell separate with safe padding.",
+    "source": "exec-e7e4446d-6c14-43f7-ab0f-5d89c0314d3a.png",
+    "workingGrid": [
+      3,
+      2
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  }
+]

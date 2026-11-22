@@ -1,0 +1,5 @@
+[
+  {"key": "cb93_back", "result": "pass", "frames": [{"frame": 0, "margins": [0, 0, 0, 0]}], "webpQ80Estimate": 67778},
+  {"key": "cb93_back_shine", "result": "pass", "frames": [{"frame": 0, "margins": [74, 39, 72, 40]}], "webpQ80Estimate": 1640},
+  {"key": "cb93_flip", "result": "pass", "frames": [{"frame": 0, "margins": [120, 74, 121, 75]}, {"frame": 1, "margins": [99, 39, 100, 39]}, {"frame": 2, "margins": [60, 15, 61, 16]}, {"frame": 3, "margins": [60, 26, 61, 27]}, {"frame": 4, "margins": [59, 57, 59, 58]}, {"frame": 5, "margins": [86, 92, 87, 92]}], "webpQ80Estimate": 5720}
+]

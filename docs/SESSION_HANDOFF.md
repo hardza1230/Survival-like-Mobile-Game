@@ -1,3 +1,15 @@
+# Current checkpoint -- Animation frames phase 1 (2026-11-22)
+
+v8.2.58 candidate from 23673ac2 on integration/animation-phase1. Inventory: docs/design/animation-frame-upgrade-plan.md, 274 art keys and 54 named ranges; snapshot is v8.2.57. Phase 1 source and runtime: Seed Rift feed 12 frames, Mirror Path lock 8, both 24 FPS, stage-lazy with fallback. Pending owner phone review. Next production phase: start Frozen Pantry walking loops and mission mobs. Confirm deploy head and tests before any further release.
+
+# Current checkpoint — Mission and battle artwork (2026-11-22)
+
+Prepared v8.2.55 on integration/art92-93. Orders 92/93 and three new ImageGen feedback sheets are wired. Exact source hashes, runtimes, fallback contracts and behavior checks are covered by tests/feedback-art92-93.test.cjs and the existing mission/Shotgun tests. Manual phone review remains.
+
+# Current checkpoint — Art orders 93 and 92 delivered (2026-11-22)
+
+Source branch asset-delivery/art92-93 from 922108eb. Delivered 3 mission card back and foil files (93) and 9 Shotgun, Hunt and Wisp FX files (92) with exact PNG32 sheets, manifests, ImageGen prompts and per-file QA. Replaced the first Hunt target with a plain shrinking ring and converted the bottle shadow donor to a black alpha matte. Countdown snaps back when restarted. Both sets await integration and in-game review. A20 is a separate audio order.
+
 # Current checkpoint — code side v8.2.53 (2026-11-22)
 
 Code-side handoff lives in `docs/HANDOFF_NEXT_AI.md` (current block at the top) · art/audio pending in `docs/PENDING_ART_AUDIO_ORDERS.md` (orders 92, 93, A20). Entries below are art/audio delivery checkpoints (all delivered ones are wired — see `docs/STATUS.md`).

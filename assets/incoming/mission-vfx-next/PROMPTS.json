@@ -1,0 +1,17 @@
+[
+  {
+    "key": "vfx_seed_rift_feed",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached Mochi Mayhem Seed Rift sprite atlas into a 12-pose animation. Match the attached art: amber candy seed, thin purple thorn curves, cracked plum ground portal and dark outlined swirls. Same color, proportions, small footprint and softly painted candy-anime linework. OUTPUT GRID: exactly FOUR equally spaced columns by THREE equally spaced rows in row-major order (12 distinct frames), generous empty padding around each effect, fully transparent RGBA, zero text or numbering or borders. Use a stationary floor crack anchor in each equal tile. Timeline left-to-right then down: poses 1–3 amber seed drifting down with the small purple crack opening; poses 4–6 lower it gradually into a compact violet whirlpool; poses 7–9 seed is submerged and amber streaks tighten inward into the dark core; poses 10–12 whirlpool contracts into thin purple cracks and two faint embers, slight but visible in the final pose. Make motion between successive cells gradual, maintain the subject and relative width. Original hand-painted mobile-game VFX. No scenery, text, glyphs, cutoffs, floor shading, white halo, opaque matte or cell guides.",
+    "source": "exec-c087ec04-4188-4ed2-836b-dc0aa18d694a.png",
+    "preparation": "Extracted 12 equal 4×3 cells, normalized below-24 alpha haze, resized to 192 px and assembled a horizontal atlas.",
+    "reference": "Previous Seed Rift 8-frame atlas"
+  },
+  {
+    "key": "vfx_mirror_path_lock",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit by making an expanded animation atlas based on the attached four-pose Mochi Mayhem VFX, preserving the original exact painted color palette, linework, silhouette, glow restraint, and visual design. This reference is source art to match. Produce EXACTLY eight separate poses in a strict equal-size FOUR COLUMNS by TWO ROWS grid on a wide landscape transparent image. Top row has poses one through four, bottom row has poses five through eight. Maintain the same coordinate anchor in each equal-sized cell. Fully transparent gutter and generous transparent padding between and around all effects, contained inside individual tiles with at least 10 percent blank margin. Timeline: 1 two dim tiny golden strokes curl toward a fixed middle point. 2 three soft strokes gather around a tiny gold glint. 3 small gold-white diamond with a pair of lilac refracted facets. 4 diamond brightens and extends slightly. 5 peak, crisp gold and white star diamond with prominent four blade-like tips and three restrained lilac facets, match peak in reference. 6 bright rays bend outward and separate from a smaller star. 7 core dims and thin gold trails plus a fading lilac fragment recede. 8 final two small sparse traces barely visible. Anchor the glint in the middle at the exact same place in every frame. No text, labels, numbers, guide marks, grids or backgrounds. No added elements. All eight poses must exist, including a very faint but non-empty final pose. Make each adjacent pair a small visually continuous movement, preserving core design. Transparent RGBA.",
+    "source": "exec-a23c0267-583f-4948-ab92-dead516195dc.png",
+    "preparation": "Extracted eight equal 4×2 cells in row-major order. Resized each cell uniformly to a 192 px square and assembled one horizontal atlas. Cleared near-invisible alpha values of 1–2 across the resized output."
+  }
+]

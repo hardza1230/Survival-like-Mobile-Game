@@ -1,6 +1,6 @@
 # 92 — VFX และแอนิเมชันจาก feedback ผู้ทดสอบ (Shotgun · ขวดพิษ Hunt · เขตคุ้มกัน Wisp) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 20 พ.ย. 2026 · **21 พ.ย. เจ้าของอนุมัติชุด B และชุด C (ดาเมจจริง + รวมไอเดียโดม)** · v8.2.45 โค้ดชุด B/C ทำแล้วด้วยภาพวาดด้วยโค้ด รออาร์ตมาสลับ · ชุด A ยังไม่มีโค้ด
+สถานะ: 🟢 ผูกแล้ว v8.2.55 · รอ QA มือถือ
 ส่งไฟล์ที่ `assets/incoming/fx92/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 · **ห้ามมีตัวหนังสือหรือตัวเลขในภาพ**
 
@@ -63,4 +63,12 @@
 แต่ละแถว: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor` (`left`/`center`/`ground`), `background` (`black`/`transparent`) · พร้อม `PROMPTS.json` (prompt จริงทุกไฟล์) และ `QA_REPORT.json` (ตรวจขนาด/พื้นดำ/alpha)
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกตอนส่ง)
+
+- 2026-11-22. Delivered all 9 PNG32 files (51 frames) to `assets/incoming/fx92/` with MANIFEST, PROMPTS and QA_REPORT. Missing files: none.
+- Files: `sg92_muzzle_echo.png`, `sg92_double_barrel.png`, `sg92_pellet_trail.png`, `hn92_target_mark.png`, `hn92_bottle_shadow.png`, `hn92_poison_puddle.png`, `ws92_light_pool.png`, `ws92_dark_creep.png`, `ws92_tether.png`.
+- Verified grid, transparency or black background, nonempty frames, frame edges, sizes and hashes. Estimated WebP q80 size: 101,764 bytes.
+- Source branch: `asset-delivery/art92-93`. Ready for integration and in-game review.
+
+### Runtime · v8.2.55
+
+All nine assets are integrated. The Hunt warning preserves a subdued outer danger boundary while the painted countdown shrinks inside it. Wisp sprites follow the current escort actor. Double Barrel uses the larger painted blast on its opening shot, followed by the echo and capped pellet trails on the existing repeat.

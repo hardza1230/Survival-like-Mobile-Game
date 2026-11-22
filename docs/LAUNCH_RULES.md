@@ -30,6 +30,9 @@
 **เลขเวอร์ชัน (เจ้าของ 16 พ.ย.):** แอปตัวแรกที่ส่ง Closed test = **8.2.0** · ก่อนหน้านั้นใช้ 8.1.x
 
 ## รอ QA (AI เพิ่ม · เจ้าของเทสแล้วลบ)
+- v8.2.58 Seed Rift: เมล็ดลงรอยแยกเมื่อมอนส่งสำเร็จ · Mirror Path: ประกายเมื่อกระจกแต่ละบานชาร์จครบ
+- v8.2.57 Breach: พื้นม่วงหุบเร็ว · Herald: เห็นเป้าก่อนบัฟ · Defend Nectar: แยกตอนโดนตี ฟื้น และงอกใหม่
+- v8.2.56 C1-4 Frozen Pantry: แยก Scout, Captain และ Frost General ก่อนและหลังละลาย · รอบเต็มลองดู Lancer
 - v8.2.54 ECRS2: ไม่มีปุ่ม Mail/Miners · Rewards 3 แท็บ · กล่อง Gear ราคา 🍬 · ของใน Inbox เดิมเข้ากระเป๋าครบไหม · Ch1 ไม่มี Run trait
 - v8.2.53 Sesame: Daily Quests/Awards นับ Sesame แล้วไหม
 - v8.2.52 Forge: อัปแถว 1–3 ใช้ Twist Cream · ของเก่าแปลงครบไหม · ไม่มี Kitchen ในเมนูแล้ว
