@@ -45,9 +45,13 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **ใบ 92 (VFX จาก feedback):** รออาร์ต · เจ้าของอนุมัติชุด B + C 21 พ.ย. · v8.2.45 โค้ดขวดโยนโค้ง + โดม Wisp ทำแล้ว (ภาพวาดด้วยโค้ด) · อาร์ตมาแล้วสลับภาพ
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 
+**ECRS ก่อน Closed test (เจ้าของ 22 พ.ย. · `docs/ECRS.md`):** รอบ 1 ทำแล้ว v8.2.52 (ซ่อน Kitchen `KITCHEN_ON=false` · สกุล Forge 5→3: Jam/Honey → Twist Cream) · ทำ E (ตัด) ก่อน แล้ว S (ทำให้ง่าย) · C/R หลัง Closed test · **รอเจ้าของเลือกข้อ E ถัดไป** (ตารางใน `docs/ECRS.md`)
+
 **รอเจ้าของตัดสินใจ / ทำต่อ**
-- ความถี่แท่นเริ่มภารกิจหลังเล่นจริง · Overcharge ปิดไว้ v8.1.103 (`OVERCHARGE_ON`)
-- **Kitchen แบบย่อ (v8.2.37 แผน C):** สูตรสำเร็จ 4 เลือก 1 ไม่หักพลัง (`FR_SIMPLE`) · หลัง Closed test ดูผล → Cookbook หรือตัดทิ้ง (`docs/IDEAS.md`)
+- **Expedition → idle วางแผน (เจ้าของ 21 พ.ย.: ไม่อยากให้กดเยอะ เน้น strategy):** เสนอรอบ 1 = จัดทีม 4 ช่องหน้า/หลัง + บทบาท Tank/DPS/Support · ไททันมีคุณสมบัติ (เกราะ/ฟื้นเลือด/โล่/ฝูง) · Synergy · แตะรัว → ปุ่ม 📣 Rally คูลดาวน์ 30 วิ · รอบ 2 (หลัง test) ค่าย + Prestige · **รออนุมัติ** (รายละเอียด `docs/IDEAS.md`)
+- **Seal the Seed Rift สั้นลง:** เสนอเป้า 8→6 · ตัวขนเมล็ดทุก 2.1→1.4 วิ ระยะ 560→420 · เวฟ 100→75 วิ · **รออนุมัติ**
+- ความถี่แท่นเริ่มภารกิจหลังเล่นจริง · Overcharge ลบแล้ว (8.2.36 + 8.2.52)
+- **Kitchen:** ซ่อนแล้ว v8.2.52 · หลัง Closed test ตัดสิน Cookbook หรือลบ (`docs/IDEAS.md`)
 - ยกเลิกแล้ว: ใบ 35 Yuzu Orchard (→ Citrus Companions 55/56) · ใบ 49 กรอบโปรไฟล์
 
 **ก่อนขึ้น Google Play**
