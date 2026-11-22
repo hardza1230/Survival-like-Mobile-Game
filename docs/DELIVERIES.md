@@ -1,6 +1,13 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.69 — 🔮 Sesame spells grow from orb cards
+# Latest delivery: v8.2.70 — ▶ Missions start by themselves
+
+**Owner:** change "Start mission" to automatic.
+- `MISSION_AUTO_START=true`: no Start mission button · the mission card shows and the mission begins after 1.2 s (`missionArm`) · set false to bring the button back.
+- Bots: missions s5 (Defend Nectar ✓) and s9 (Break Roots ✓) start and finish with no tap · 0 errors.
+- Note for owner: the yellow hexagon around heroes is the Forge **Barrier** status (`st_p_barrier`), most likely from the "Overflow Cream" gear mod (overheal → timed barrier).
+
+# Previous delivery: v8.2.69 — 🔮 Sesame spells grow from orb cards
 
 **Owner:** spell growth should come from the orb cards you upgrade (not from how often you cast), and reaching a point should change how the spell plays — otherwise the orb cards feel meaningless.
 - **Level from cards:** `sesSpellLv(key, ranks)` = 1 + (sum of Ember/Gale/Tide ranks of the colors in the recipe ÷ number of colors), max 5 · cast counting removed · ★ in the recipe label follows it · Lv2–5 keep the v8.2.64 multitude table.
@@ -8,7 +15,3 @@
 - Orb card texts say what grows and the Rank 4 twist.
 - Headless: all 10 spells cast at Lv5 for 90s, 0 errors.
 - Test: `tests/sesame-mastery-8264.test.cjs` (card-level math + twist hooks).
-
-# Previous delivery: v8.2.68 — Smoother hero hit reactions
-
-Phase 3A converts the four-frame hurt sheets for Cocoa, Yuzu, Mint, Taro, and Sesame to eight-frame one-shots, for their default and Festival outfits. The update keeps the existing hit reaction windows and corresponding skin swap, frame size, body scale, and floor anchors. Momo’s two already-eight-frame hurt sheets remain the active art. The ten transparent sources, prompts, QA and preview are in assets/incoming/hero-hurt3a; pack script writes ten WebP atlases. Tests play all eight frames for both outfits, check the existing non-Cocoa and Cocoa hit windows, and verify that each run requests only its own hero and equipped skin.

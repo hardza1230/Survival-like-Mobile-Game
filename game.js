@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.69';
+const GAME_VERSION = '8.2.70';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.70',date:'2026-11-22',title:'▶ Missions start by themselves',items:['In-stage missions begin automatically after their card (no Start button)']},
   {v:'8.2.69',date:'2026-11-22',title:'🔮 Sesame spells grow from orb cards',items:['Spell level comes from Ember/Gale/Tide card ranks (not cast count)','Rank 4 twist for every spell','Orb card texts explain the growth']},
   {v:'8.2.68',date:'2026-11-22',title:'Smoother hero hit reactions',items:['Cocoa, Yuzu, Mint, Taro and Sesame now flinch and recover with eight-frame animations in their default and Festival outfits.']},
   {v:'8.2.67',date:'2026-11-22',title:'Smoother mission props and effects',items:['Ten mission props and effects now animate in eight frames, including Hunt’s spinning flask, Herald’s beam, and Last Light’s lanterns.']},
@@ -6706,6 +6707,7 @@ const PERK_TIER_REQ = { 2:2, 3:5 };   // v7.8.88 Vigor/Might/Iron Will ตัด
 /* ---- v5.27 ⛏️ Temple Depths: มินิเกมขุดใต้วิหาร (ดู docs/TEMPLE_DIG_DESIGN.md) ---- */
 /* v8.2.32 เจ้าของ 19 พ.ย.: Temple Expedition (แทน Temple Depths/Dig + Mochi Patrol) · แตะตีไททันแบบเกม tap-RPG · ผู้ช่วยตีเอง (idle) · ปิดแอปก็ยังได้ 🍪 Crumbs (50% · ≤8 ชม.)
    ทุก 5 ด่าน = บอสจับเวลา 30 วิ (แพ้ = ฝึก 10 ตัวแล้วลองบอสใหม่เอง · v8.2.61) · Crumbs ช่วยเกมหลักผ่าน Supplies (ของติดตัว 1 ชิ้นต่อด่าน) · บอสครั้งแรก/กล่องรายวัน = Sugar/ด้าย/Recipe Part เข้าเกมหลัก */
+const MISSION_AUTO_START=true;   // v8.2.70 เจ้าของ: ภารกิจในด่านเริ่มเอง (ไม่มีปุ่ม Start mission)
 const EXP_DAILY_ON=false;   // v8.2.54 ECRS2 E3: Daily chest ของ Expedition เลิก (ของรายวันมี 6 จุด → ลด)
 const EXP_ON=true,EXP_HERO_APS=2,EXP_UPALL_MAX=200,EXP_KILLS=10,EXP_BOSS_EVERY=5,EXP_BOSS_T=30,EXP_OFF_MAX_H=8,EXP_OFF_RATE=.5,EXP_CRIT=.05,EXP_CRIT_MUL=3,EXP_HP_G=1.25,EXP_BOSS_HP=6,EXP_BOSS_CR=4,SHOVEL_CRUMBS=40,
   EXP_HELPERS=[{id:'ruby',em:'🎀',name:'Ruby',base:1,cost:15},{id:'momo',em:'🍑',name:'Momo',base:5,cost:80},{id:'mint',em:'🌿',name:'Mint',base:22,cost:450},{id:'cocoa',em:'🍫',name:'Cocoa',base:100,cost:2600},{id:'taro',em:'💜',name:'Taro',base:480,cost:15000},{id:'yuzu',em:'🍋',name:'Yuzu',base:2300,cost:90000},{id:'sesame',em:'🖤',name:'Sesame',base:11000,cost:540000}],
@@ -16978,6 +16980,7 @@ class Game extends Phaser.Scene {
   missionArm(o,planned,p){ if(!this.missionArmable(o,planned,p)||!this.player)return; const q=this.objectivePosition(0,1,120,170),R=o._rw||(o._rw=this.missionReward?.(o)),objs=[];
     if(o.type==='cleanAir'&&this._cleanAir){ const c=this._cleanAir,l=this.camWorld(this.add.text(c.x,c.y+c.r+18,'⬇ Step in',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#e8fbff',stroke:'#0d0a14',strokeThickness:4}).setOrigin(.5).setDepth(95000)); this.tweens.add({targets:l,alpha:{from:1,to:.45},duration:600,yoyo:true,repeat:-1}); objs.push(l); o._armPad={x:c.x,y:c.y,objs,t:Infinity,ring:true,btn:null,btnR:{w:0,h:0}}; return; }   /* v8.1.159 เจ้าของ: Clean Air เริ่มได้เฉพาะตอนยืนในวง (ไม่มีปุ่ม/ไม่เริ่มเอง) */
     const W=this.W||390,H=this.H||844,bw=240,bh=58; let btn=null;
+    if(typeof MISSION_AUTO_START!=='undefined'&&MISSION_AUTO_START){ o._armPad={x:q.x,y:q.y,objs,t:1.2,btn:null,btnR:{w:bw,h:bh}}; return; }   /* v8.2.70 เจ้าของ: ไม่ต้องกด Start mission · เริ่มเองหลัง 1.2 วิ */
     if(this.add.container&&this.camUI){ btn=this.add.container(W/2,H-232).setDepth(9500); const g=this.add.graphics(); g.fillStyle(0x2a1a0e,.94).fillRoundedRect(-bw/2,-bh/2,bw,bh,bh/2); g.lineStyle(3,0xffe08a,1).strokeRoundedRect(-bw/2,-bh/2,bw,bh,bh/2);
       const t=this.add.text(0,R?-9:0,'▶ Start mission',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff3cf',stroke:'#2a1a0e',strokeThickness:4}).setOrigin(.5),c=this.add.text(0,R?13:20,R?'🎁 '+R.txt:'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#9fe8ff',stroke:'#2a1a0e',strokeThickness:3}).setOrigin(.5);
       btn.add([g,t,c]); this.camUI(btn); btn.setScrollFactor?.(1); objs.push(btn); this.tweens.add({targets:btn,scale:{from:1,to:1.06},duration:520,yoyo:true,repeat:-1}); btn._cd=c; btn._R=R; }
