@@ -4555,3 +4555,7 @@ Owner: compare Hunger Crack with Path of Exile's Abyss (longer, slower, monsters
   - New test `ecrs2-8254`, including the Miners save migration on a fake save.
   - Headless touch: hub (no Mail), Rewards (3 tabs), Settings, Expedition, Bazaar (🍬 prices).
   - QA bots: capture done with 0 errors; qa-menus 25 screens with no new errors (only the older "Texture key already in use" console notes on the endgame screen).
+
+# Delivery: v8.2.55 — Mission card polish and clearer battle effects
+
+Orders 92 and 93 are integrated, with three additional painted sheets for Hunger Crack and Momo Shotgun. Mission cards share the Heart Seed back, foil sweep and flip flash. Hunt retains its actual danger footprint under the painted timer. Wisp swaps the escort area, tether and outside-zone shadows as the player crosses the boundary. Hunger Crack has separate fissure states and capped spawn bursts. Shotgun distinguishes the regular shot, Double Barrel opening shot and actual follow-up. The added runtime files total 539,250 bytes (9.59 MiB decoded across all groups) and load with the stage or Momo run. Existing damage, hit areas, wave and shot timing are preserved.
