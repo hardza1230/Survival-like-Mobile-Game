@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.58';
+const GAME_VERSION = '8.2.59';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.59',date:'2026-11-22',title:'Lollipops: real money buys looks only',items:['New Lollipops currency for future purchases: cosmetics and the Mochi Pass only, never power','Wardrobe items and skins can be paid with Thread or Lollipops']},
   {v:'8.2.58',date:'2026-11-22',title:'Painted mission feedback',items:['See an amber seed spiral into the rift when a carrier feeds it.','A prism glint confirms exactly when each mirror is charged.']},
   {v:'8.2.57',date:'2026-11-22',title:'Clearer mission effects',items:['Breach spreads a violet stain with jagged veins that withdraw as it closes.','Hunger Herald marks which monster its beam will empower.','Defend Nectar shows attacks, healing range, and where the new flower blooms.']},
   {v:'8.2.56',date:'2026-11-22',title:'Meet the Frozen Pantry army',items:['Seven ice-mochi designs make scouts, throwers, guards, and officers easy to tell apart.','Frozen soldiers keep their silhouettes from ice statue to battle. Spot the golden Captain to weaken its squad.']},

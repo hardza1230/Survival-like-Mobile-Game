@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.58**. Next release:8.2.59. Fetch the deploy branch before new work.
+Current release: **8.2.59**. Next release:8.2.60. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.58 — Painted Seed Rift and Mirror Path cues** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.59 — 🍭 Lollipops: real money buys looks only, never power** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -45,7 +45,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **ใบ 92 (VFX จาก feedback):** รออาร์ต · เจ้าของอนุมัติชุด B + C 21 พ.ย. · v8.2.45 โค้ดขวดโยนโค้ง + โดม Wisp ทำแล้ว (ภาพวาดด้วยโค้ด) · อาร์ตมาแล้วสลับภาพ
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 
-**ECRS ก่อน Closed test (เจ้าของ 22 พ.ย. · `docs/ECRS.md`):** รอบ 1 v8.2.52 (Kitchen ซ่อน · Forge 5→3 สกุล) · รอบ 2 v8.2.54 จากข้อมูลผู้เล่นจริง (Inbox/Miners/Daily chest Expedition เลิก · Play Stats/Ranking ซ่อน · กล่อง Gear จ่าย Sugar · Ch1 ไม่มี Run trait/Mimic) · **รอเจ้าของ: Thread ยังซื้อพลังได้ (Enhance/Weave Rank/Ancient) ต้องแก้ก่อนเปิด IAP** · C/R หลัง test
+**ECRS ก่อน Closed test (เจ้าของ 22 พ.ย. · `docs/ECRS.md`):** รอบ 1 v8.2.52 (Kitchen ซ่อน · Forge 5→3 สกุล) · รอบ 2 v8.2.54 จากข้อมูลผู้เล่นจริง (Inbox/Miners/Daily chest Expedition เลิก · Play Stats/Ranking ซ่อน · กล่อง Gear จ่าย Sugar · Ch1 ไม่มี Run trait/Mimic) · **v8.2.59 เงินจริง → 🍭 Lollipops (ของแต่งตัวเท่านั้น) · 🧶 Thread ได้จากการเล่นเท่านั้น** · C/R หลัง test
 
 **รอเจ้าของตัดสินใจ / ทำต่อ**
 - **Expedition → idle วางแผน (เจ้าของ 21 พ.ย.: ไม่อยากให้กดเยอะ เน้น strategy):** เสนอรอบ 1 = จัดทีม 4 ช่องหน้า/หลัง + บทบาท Tank/DPS/Support · ไททันมีคุณสมบัติ (เกราะ/ฟื้นเลือด/โล่/ฝูง) · Synergy · แตะรัว → ปุ่ม 📣 Rally คูลดาวน์ 30 วิ · รอบ 2 (หลัง test) ค่าย + Prestige · **รออนุมัติ** (รายละเอียด `docs/IDEAS.md`)
@@ -57,7 +57,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **ก่อนขึ้น Google Play**
 - **เลขเวอร์ชัน:** 8.2.0 = แอปตัวแรกที่ส่ง Closed test (17 พ.ย.) · **เจ้าของเลือก 17 พ.ย.: Closed test ใช้โฆษณาทดสอบ (`ADS_TEST=true`) · `BETA_BUILD=true` (ปุ่ม 🐞 + ส่ง error อัตโนมัติให้ผู้ทดสอบ)** · ตอนขึ้น Production ค่อย `ADS_TEST=false` (+ พิจารณา BETA_BUILD) · release AAB ลบ `server.url` เอง · รายงาน 🐞 ที่ v ≥ 8.2 = จากคนทดสอบจริง (+ เจ้าของเอง)
 - ภาพ/เสียงสำรอง (fallback) เก็บไว้กันพังตอน dev ที่โหลดผ่านเว็บ · เจ้าของ 12 พ.ย.: ไม่ต้องแก้ให้รอโหลด เพราะแอป Play Store แพ็กไฟล์ในเครื่อง (เช่น เรื่องเล่า Ruby ที่สลับเป็นหน้าหนังสือเมื่อการ์ตูนโหลดไม่ทัน)
-- **รายได้ (เจ้าของแก้ 18 พ.ย. · `docs/LAUNCH_RULES.md` กฎ 4):** ช่วงทดสอบ = โฆษณา rewarded · อนาคต = เติม 🧶 เส้นด้ายด้วยเงินจริง → ซื้อแฟชั่นและของ cash shop · **ห้ามขายพลัง** (เจ้าของ 18 พ.ย.) · ขายได้: Quality of life + ของช่วยบางอย่าง (supplies) เช่น ของกันตีบวกแตก (ต้องมี Play Billing + เซิร์ฟเวอร์ตรวจใบเสร็จก่อนเปิด) · v8.1.140 ต่อ AdMob + UMP แล้ว (โฆษณาทดสอบ) · ตอนปล่อย: `ADS_TEST=false`, `BETA_BUILD=false`, ตั้งข้อความ GDPR ใน AdMob
+- **รายได้ (เจ้าของแก้ 18 พ.ย. · `docs/LAUNCH_RULES.md` กฎ 4):** ช่วงทดสอบ = โฆษณา rewarded · อนาคต = เติม **🍭 Lollipops** ด้วยเงินจริง (เจ้าของ 22 พ.ย. · v8.2.59) → ซื้อของแต่งตัว/Pass เท่านั้น · 🧶 Thread = ได้จากการเล่นเท่านั้น (Thread ซื้อพลังได้ จึงห้ามขาย) · ของแต่งตัวจ่ายได้ทั้ง 🧶 และ 🍭 · **ห้ามขายพลัง** (เจ้าของ 18 พ.ย.) · ขายได้: Quality of life + ของช่วยบางอย่าง (supplies) เช่น ของกันตีบวกแตก (ต้องมี Play Billing + เซิร์ฟเวอร์ตรวจใบเสร็จก่อนเปิด) · v8.1.140 ต่อ AdMob + UMP แล้ว (โฆษณาทดสอบ) · ตอนปล่อย: `ADS_TEST=false`, `BETA_BUILD=false`, ตั้งข้อความ GDPR ใน AdMob
 - GM (รหัส 1234) ปิดเองในแอปที่แพ็กไฟล์ (v8.1.67: เปิดเฉพาะ *.github.io / localhost:port) · **ตรวจว่า release ไม่ใช้ `server.url` ชี้ github.io** · ต้องมีเซิร์ฟเวอร์ตรวจใบเสร็จ/คะแนน
 
 **กฎเจ้าของ**
