@@ -46,7 +46,7 @@
 
 ## F. End game (หลังจบ Chapter 3)
 - [ ] Mochi Delve เข้าได้ เล่นได้หลายชั้น ไม่ค้าง
-- [ ] Temple (Weave / Depths / Rank Rewards) เปิดได้ กดได้ทุกปุ่ม
+- [ ] Flavor Weave & Rank / Rank Rewards / Temple Expedition เปิดได้ กดได้ทุกปุ่ม
 - [ ] Forge / Merge / Gear: ใส่ของ (ไอเทมลอยเข้าช่อง) · อัปเกรด · หลอมรวม ไม่ค้าง
 - [ ] Talent / Rewards hub (Login / Daily / Awards) รับรางวัลได้
 

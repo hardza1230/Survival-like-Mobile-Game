@@ -1,3 +1,5 @@
+> ⚠️ **เอกสารประวัติ (ตรวจ 22 พ.ย. 2026 · เกม v8.2.53):** แผนลด/รวมระบบปัจจุบัน: `docs/ECRS.md` (22 พ.ย.) · Kitchen ซ่อนแล้ว v8.2.52 (`KITCHEN_ON=false`)
+
 # System consolidation plan (owner approved 10 Oct 2026)
 
 Goal: fewer overlapping power systems, easier balance, lighter `damage()`.

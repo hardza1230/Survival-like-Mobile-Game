@@ -14,16 +14,16 @@
 | `A09_RUBY_STAGE_VOICE.md` | Ruby เสียงเตือนภารกิจ 14 + ปฏิกิริยาในด่าน 14 | 28 | 🟢 ผูกแล้ว v8.1.43 · รอฟังบนมือถือ |
 | `A10_SESAME_SPELLS.md` | Sesame เสียงร่ายเวท 10 + เรียกชื่อเวท 10 | 20 | ➡️ รวมเข้า A11 |
 | `A11_NEW_SCREENS_SFX.md` | **ใบรวม**: Sesame เวท 20 (จาก A10) + ฉากเงียบ SFX 26 + เสียงพากย์ที่หาย 21 (Ruby บทสอนด่านแรก 15, สอน/จบภารกิจ, Sesame เข้าทีม) | 67 | 🟢 ผูกแล้ว v8.1.65 |
-| `A12_LEAGUE_SFX.md` | เสียงภารกิจ League (Breach/Domain/Frozen/Herald/Pot/Golem/Roots/Siege) + Sugar Crown Trial + Forge สกุลแถว/ย้าย mod + Codex + Mochi Patrol · ฝั่งเสียงส่งไฟล์ · Claude ผูก | 36 | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
+| `A12_LEAGUE_SFX.md` | เสียงภารกิจ League (Breach/Domain/Frozen/Herald/Pot/Golem/Roots/Siege) + Sugar Crown Trial + Forge สกุลแถว/ย้าย mod + Codex + Mochi Patrol (Patrol เลิกแล้ว v8.2.32 → Expedition) · ฝั่งเสียงส่งไฟล์ · Claude ผูก | 36 | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | `A13_RUBY_LORE_MISSION_VOICE.md` | Ruby พากย์: เรื่อง Flavor Cores 3 + อธิบายภารกิจประจำด่าน/League 14 + เตือนสั้น 14 · ฝั่งเสียงส่งไฟล์ · Claude ผูก | 31 | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 28 | 🟢 ผูกแล้ว v8.0.91 |
 | `A14_CHEST_OPENING.md` | เสียงเปิดกล่อง: ลุ้นก่อนเปิด 1 + ระเบิดตามระดับ 4 + ประกาย/ไอเทมลง/ของซ้ำ 3 · ElevenLabs | 8 | 🟢 ผูกแล้ว v8.1.147 · รอเจ้าของฟังบนมือถือ |
-| `A15_RUBY_LOST_WISPS.md` | Ruby ภารกิจ Hunger Crack / Clear the Fog / Lure the Crown Root / Seed Rift (tip + short) | 8 | 📦 ส่งแล้ว รอผูก |
-| `A17_MISSION_MUSIC.md` | Mission music: 8 loops + 3 one-shot stingers, ElevenLabs Music | 11 | 📦 ส่งแล้ว รอผูก |
+| `A15_RUBY_LOST_WISPS.md` | Ruby ภารกิจ Hunger Crack / Clear the Fog / Lure the Crown Root / Seed Rift (tip + short) | 8 | 🟢 ผูกแล้ว v8.2.12 · รอฟังบนมือถือ |
+| `A17_MISSION_MUSIC.md` | Mission music: 8 loops + 3 one-shot stingers, ElevenLabs Music | 11 | 🟢 ผูกแล้ว v8.2.25 · รอฟังบนมือถือ |
 
-| `A16_RUBY_MISSIONS_SFX.md` | Ruby changed mission tips and reactions 12 + mission SFX 10 | 22 | 📦 ส่งแล้ว รอผูก |
-| `A18_RUBY_EVENTS_ATLAS_SFX.md` | Ruby new events8 + reroll/golden/Double Clear/boss/Pact/Atlas SFX10 | 18 | 📦 ส่งแล้ว รอผูก |
-| `A19_EXPEDITION_SFX.md` | Temple Expedition: SFX17 + music2 + saved Ruby4 | 23 | 📦 ส่งแล้ว รอผูก |
+| `A16_RUBY_MISSIONS_SFX.md` | Ruby changed mission tips and reactions 12 + mission SFX 10 | 22 | 🟢 ผูกแล้ว v8.2.24 · รอฟังบนมือถือ |
+| `A18_RUBY_EVENTS_ATLAS_SFX.md` | Ruby new events8 + reroll/golden/Double Clear/boss/Pact/Atlas SFX10 | 18 | 🟢 ผูกแล้ว v8.2.31 · รอฟังบนมือถือ |
+| `A19_EXPEDITION_SFX.md` | Temple Expedition: SFX17 + music2 + saved Ruby4 | 23 | 🟢 ผูกแล้ว v8.2.34 · รอฟังบนมือถือ |
 | `A20_RUBY_STAGE_ENTRY.md` | ม่านเข้าด่าน: SFX 7 (ม่าน/เดินทาง/สติงเกอร์ 3 บท + บอส) + Ruby แนะนำด่าน 15 + เล่นซ้ำ 4 | 26 | 🟡 รอเสียง |
 
 ## กติการ่วม (ทุกใบ)

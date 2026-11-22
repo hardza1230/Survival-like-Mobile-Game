@@ -12,7 +12,7 @@
 - Contact email: heartloveu1825@gmail.com
 - Content rating / Target audience: กรอกตามเนื้อหาจริงและผลแบบสอบถาม ไม่ถือว่าคาดเดาจากภาพการ์ตูนได้
 
-## ✅ ฉบับใช้จริง (17 พ.ย. 2026 · v8.1.167) — คัดลอกไปวางใน Play Console → Main store listing
+## ✅ ฉบับใช้จริง (17 พ.ย. 2026 · v8.1.167 · แก้ 22 พ.ย.: capture the zone → Hunger Crack ตามเกม v8.2.53) — คัดลอกไปวางใน Play Console → Main store listing
 
 **App name (≤30):**
 ```text
@@ -38,7 +38,7 @@ Mochi Mayhem is a cute survivor-style roguelike. Move with one thumb while your 
 ★ SURVIVE THE SWARM
 • Three story chapters and 15 hand-made stages
 • Waves of monsters, elites and minibosses
-• Missions in every stage: escort the Wisp, capture the zone, find the lost Wisps in the dark, shake the hollow trees and many more
+• Missions in every stage: escort the Wisp, seal the Hunger Crack, find the lost Wisps in the dark, shake the hollow trees and many more
 • Giant bosses with their own attacks and story scenes
 
 ★ GROW STRONGER

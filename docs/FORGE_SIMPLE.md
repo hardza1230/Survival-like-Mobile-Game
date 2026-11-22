@@ -1,3 +1,5 @@
+> **v8.2.52 owner (ECRS · S, supersedes the row currencies below):** Berry Jam and Honey Drop merged into **Twist Cream** (`CUR_ALIAS`, save ×2 `_cur8252`). Twist Cream = add/remove + upgrade rows 1–3 · Star Sugar = rows 4–6 · Recipe Ink = move a mod (`forgeRowCur`).
+
 # Simple Forge — spec (owner picked 1 Nov 2026, "Forge is the most confusing system")
 
 > **v8.1.84 owner (League phase 5 · Reforge, supersedes "one currency"):** Upgrade uses the row's currency — row 1 Twist Cream · row 2 Berry Jam · row 3 Honey Drop · rows 4–6 Star Sugar (`forgeRowCur`, `forgeUpPrice`). Add/Remove stay Twist Cream on every row. 🖋️ Recipe Ink moves one mod to an empty open row of another item (source loses it, Lv clamped to target iLv cap). New currencies drop from rare+ pools and League missions, not the Bazaar.

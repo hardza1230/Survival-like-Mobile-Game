@@ -4,32 +4,29 @@
 
 > หนึ่งชีวิต สองร่าง: Core Form และ Awakened Fighter คือคนเดียวกัน
 >
-> สถานะเอกสาร: **18 ตุลาคม 2026 · โค้ดเกม v7.8.56** (ปรับสมดุล 18 ต.ค.) เกมอยู่ระหว่างพัฒนาและทดสอบบนมือถือ เลขเวอร์ชันใน `game.js` → `GAME_VERSION` เป็นแหล่งอ้างอิงหลัก
+> สถานะเอกสาร: **22 พฤศจิกายน 2026 · โค้ดเกม v8.2.53** · กำลังเตรียม Closed test บน Google Play (เป้า 13 ธ.ค.) · เวอร์ชันล่าสุดและรายละเอียดดู `CLAUDE.md` บรรทัด Latest delivery
 
 [เล่นบนเว็บ](https://hardza1230.github.io/Survival-like-Mobile-Game/) · [ดาวน์โหลด APK ทดสอบ](https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk) · [GitHub Actions](https://github.com/hardza1230/Survival-like-Mobile-Game/actions) · [สรุปสถานะและงานถัดไป](docs/PROJECT_SUMMARY_TH.md)
 
 ## สิ่งที่มีในเกมปัจจุบัน
 
-- **Story 3 Chapter รวม 15 ด่าน**: Rise from Below → The Ferment Garden → Throne of the First Seed พร้อมมินิบอส บอส และบทส่งท้าย
-- **6 ฮีโร่ใน roster**: Strawberry/Momo, Mint, Cocoa, Taro, Yuzu และ Sesame แต่ละคนมี 3 Build Path, อาวุธประจำตัว, Unique และ Talent; Berry Core เก็บไว้รองรับข้อมูลเก่า แต่ไม่อยู่ใน roster ปัจจุบัน
-- Endgame **Mochi Delve**, บอส Delve/Pinnacle, Boss Rush และ Midnight Kitchen Endless
-- Gear, enhancement, Bazaar/Sugar Orders, Kitchen Recipe (WHEN → DO → TWIST), Temple Weave/Depths/Rank Perks, Daily และ Achievement
-- **Affix Forge หน้าเดียว**: Power / Sustain / Playstyle & Utility มีแค็ตตาล็อก **150 ม็อด: ใช้งานจริง 78, วางแผนไว้ 72**; ม็อด planned ไม่อยู่ใน pool สุ่ม ดู [รายละเอียด Forge](docs/FORGE_150_ROLLOUT.md)
-- Play Stats และ Combat Meter สำหรับเปรียบเทียบผลเล่นจริง; การส่ง Share Play Stats เป็นตัวเลือกและยังมีงาน backend ค้างตาม [checkpoint](docs/SESSION_HANDOFF.md)
-- ภาพตัวละคร มอนสเตอร์ บอส เมนู และ VFX ต่อเข้า runtime แล้วหลายชุด; การมีไฟล์และโค้ดไม่ได้แปลว่าผ่าน visual/FPS QA บนมือถือทุกชุด
+- **Story 3 Chapter รวม 15 ด่าน** (Rise from Below → The Ferment Garden → Throne of the First Seed) แต่ละด่านมี **ภารกิจประจำด่าน** + การ์ดภารกิจที่แจกก่อนเข้าด่าน (Reroll ได้) · มินิบอส · บอสพร้อมฉากเรื่อง/เสียงพากย์
+- **6 ฮีโร่** Strawberry/Momo · Mint · Cocoa · Taro · Yuzu · Sesame (เสร็จครบทุกตัว) คนละ 3 Build Path + Unique + Talent ราย Build · สกิน Festival
+- ภารกิจ 23 แบบ (เช่น Hunger Crack แบบ Abyss, Escort the Wisp, Hunger Herald, Seed Rift, Frozen Pantry) · Pact Relics · Mission Atlas
+- **Endgame:** Mochi Delve (Recipe Maps) · Rift · Pinnacle Boss · ยิ่งลึกยิ่งยาก ยิ่งได้ของดี (Boss Rush ซ่อนไว้)
+- **ความก้าวหน้า:** Gear + Merge + Affix Forge (สกุล 3 ตัว: Twist Cream · Star Sugar · Recipe Ink) · Flavor Weave & Rank + Rank Rewards · Temple Expedition (idle) · Bazaar · Rewards (Login 30 วัน / Daily / Awards) · Codex (Recipe Book / Bestiary)
+- **บริการ:** Cloud Save (Google) · โฆษณา rewarded แบบทดสอบ (`ADS_TEST=true`) · ปุ่ม 🐞 รายงานบั๊ก/ส่ง error อัตโนมัติ (`BETA_BUILD=true` → Supabase `qa_reports`) · บอท QA เล่นอัตโนมัติทุกคืน
+- ระบบที่ซ่อน/เลิกแล้ว: Kitchen (ซ่อน v8.2.52) · Dig/Patrol (→ Expedition v8.2.32) · Overcharge · Midnight Kitchen Endless
 
 ## อัปเดตล่าสุด
 
-| เวอร์ชัน | สิ่งที่เปลี่ยน |
-|---|---|
-| v7.8.56 | C2-4 Seasonal Wisp ลด HP ฐาน 260 → 130; Spark ลดดาเมจต่อมินิบอส 15% รวม Static Charge/Storm Mark |
-| v7.8.55 | C2-4 เปลี่ยนเป็น **Seasonal Harvest**: ฤดูเปลี่ยนทุก 10 วินาที เก็บ 12 กลีบต่อฤดูให้ครบ 4 ฤดู ไม่มีสอบตก; กลีบส่วนเกินจากฤดูที่เต็มช่วยเติมฤดูที่ขาด |
-| v7.8.51–54 | ปรับการโดนเป้า/เลี้ยวของ Taro Spark, ดาเมจบอสของ Sentry และ Static Charge เป็น 40 hits ต่อ strike |
-| v7.8.49–50 | ต่อ Temple Weave + Flavor Passives ครบ 34 ชิ้น ปรับสี แสง และ layout ให้พอดีจอเตี้ย |
-| v7.8.45–46 | ต่อ Hero VFX ครบ 21/21 รวมไฟล์ Cocoa landing dust ที่อัปใหม่ครบแล้ว |
-| v7.8.47–48 | Replay ใช้จำนวน kill เป็นเกณฑ์เรียกมินิบอส/บอส ไม่มี timer ข้าม progress |
+ดู `CLAUDE.md` (Latest delivery) และ `docs/DELIVERIES.md` (2 รุ่นล่าสุดแบบเต็ม) · ประวัติในเกมอยู่ที่ `CHANGELOG` ใน `game.js` · ประวัติเก่า [CLAUDE_HISTORY](docs/CLAUDE_HISTORY.md)
 
-ประวัติอัปเดตในเกมอยู่ที่ `CHANGELOG` ใน `game.js`; ประวัติพัฒนาเก่าอยู่ที่ [CLAUDE_HISTORY](docs/CLAUDE_HISTORY.md)
+| ช่วง | สิ่งที่เปลี่ยน |
+|---|---|
+| v8.2.52–53 | ECRS รอบ 1: ซ่อน Kitchen · สกุล Forge 5 → 3 · Sesame นับเป็นฮีโร่ที่เสร็จแล้ว |
+| v8.2.44–51 | Hunger Crack แบบ Abyss + หลุมสุดท้ายมอนเต็ม · มอนค่อย ๆ โผล่ · ขวดพิษ Hunt โยนโค้ง · โดม Wisp · แก้กด Start/Reroll · แก้มอนล่องหน |
+| v8.2.32–34 | Temple Expedition แทน Dig + Patrol (อาร์ตใบ 91 + เสียง A19) |
 
 ## การควบคุม
 
@@ -71,7 +68,7 @@ python3 -m http.server 8080 --directory www
 
 ตั้ง Settings → Pages → Source: GitHub Actions แล้วตรวจ **Deploy Web (GitHub Pages)** ของสาขานี้จนสำเร็จ ก่อนอ้างว่าเว็บ/แอป live อัปเดต ตรวจ `version.json` ของเว็บเทียบกับ `GAME_VERSION` เสมอ
 
-หลักฐานตรวจเมื่อ 18 ต.ค.: [APK ของ v7.8.55 build สำเร็จ](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/39042341016) แต่ [Pages ของสาขาหลักถูกยกเลิก](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/39042341134) และ [รันสาขาอื่นล้มเหลว](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/39042552545) จึงยังไม่ยืนยันว่าเว็บ live เป็น v7.8.55 จากผลเหล่านี้
+ทุกครั้งที่ปล่อยเวอร์ชัน ตรวจว่า run **Deploy Web (GitHub Pages)** และ **Build Android APK** ของสาขานี้สำเร็จก่อนบอกว่า live (ขั้นตอนอยู่ใน skill `release`)
 
 ขั้นตอน signed release: [RELEASE_SIGNING](docs/RELEASE_SIGNING.md) · ร่างข้อมูลสโตร์: [STORE_LISTING](docs/STORE_LISTING.md)
 
@@ -86,19 +83,20 @@ python3 -m http.server 8080 --directory www
 | `data/forge-mods.json` | แค็ตตาล็อก Forge และสถานะ active/planned |
 | `scripts/`, `tests/` | Build, packing, validation และ regression |
 | `capacitor.config.json`, `.github/workflows/` | Native shell และ workflow APK / Pages / AAB |
-| `docs/PROJECT_SUMMARY_TH.md` | สถานะระบบ ลำดับงานและข้อจำกัดปัจจุบัน |
+| `docs/PROJECT_SUMMARY_TH.md` · `docs/STATUS.md` | ภาพรวมระบบ · สถานะอาร์ต/เสียง/QA ปัจจุบัน |
 | `docs/art_orders/README.md` | ดัชนีใบสั่งอาร์ตและสถานะส่ง/ต่อเข้าเกม |
-| `AGENTS.md`, `CLAUDE.md`, `docs/SESSION_HANDOFF.md` | กติกาทำงานและ checkpoint สำหรับผู้พัฒนาต่อ |
+| `AGENTS.md`, `CLAUDE.md`, `docs/HANDOFF_NEXT_AI.md` | กติกาทำงานและ checkpoint สำหรับผู้พัฒนาต่อ |
+| `docs/GAME_PILLARS.md` · `docs/LAUNCH_RULES.md` · `docs/ECRS.md` | เสาหลักของเกม · กฎทางไปปล่อยเกม · แผนลดระบบ |
 
 `www/`, `android/` และ `node_modules/` สร้างตอน build ไม่ commit; `build-www.mjs` คัดลอกเฉพาะ runtime assets ที่อ้างอิงและสร้าง `version.json` จากเกม
 
 ## งานถัดไป
 
-1. ตรวจ deployment สาขาหลักและยืนยันเวอร์ชันเว็บ live
-2. เจ้าของทดลอง C2-4 Seasonal Harvest และเทียบ Taro Arc / Spark / Sentry ด้วย Combat Meter
-3. ตรวจ Temple Weave/Passives และ VFX ล่าสุดบนมือถือ: ความอ่านง่าย ขอบจอ การแตะ และ FPS
-4. จูน Story ทั้ง 3 Chapter, economy/Forge และ Endgame จากผลเล่นจริง
-5. งาน Play Store พักไว้ตามแผนเดิม: ยืนยัน signed AAB, account deletion/privacy/data safety, listing และการทดสอบก่อนเผยแพร่
+1. เจ้าของ QA บนมือถือตามรายการ "รอ QA" ใน `docs/LAUNCH_RULES.md`
+2. ECRS ก่อน Closed test (`docs/ECRS.md`) — รอเจ้าของเลือกข้อถัดไป
+3. รออาร์ต/เสียง: ใบ 92 · ใบ 93 · A20 (`docs/STATUS.md`)
+4. รอตัดสินใจ: Expedition แบบ idle วางแผน · Seed Rift สั้นลง
+5. Closed test 13 ธ.ค. → ดูตัวเลขผู้เล่น (D1/D7) → แก้ → Production (`ADS_TEST=false` · `BETA_BUILD=false`)
 
 ## จุดเริ่มต้น
 

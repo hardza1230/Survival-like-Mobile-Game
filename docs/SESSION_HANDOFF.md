@@ -1,3 +1,7 @@
+# Current checkpoint — code side v8.2.53 (2026-11-22)
+
+Code-side handoff lives in `docs/HANDOFF_NEXT_AI.md` (current block at the top) · art/audio pending in `docs/PENDING_ART_AUDIO_ORDERS.md` (orders 92, 93, A20). Entries below are art/audio delivery checkpoints (all delivered ones are wired — see `docs/STATUS.md`).
+
 # Current checkpoint — A19 Expedition audio source delivery (2026-11-19)
 
 Branch asset-delivery/audio-a19 fromd03ee152. Delivered all23 MP3s in assets/incoming/audio_a19 with MANIFEST/PROMPTS/QA_REPORT:17 ElevenLabs Sound Effects,2 ElevenLabs Music loops,4 exact saved-A07-Ruby voice lines. Independent23/23 readback verified order keys/scripts/Ruby ID, decoded lengths, mono44.1kHz128k SFX/speech and stereo44.1kHz192k music, onsets/peaks/hashes. Tap variants exactly120ms with4200Hz low-pass, peak-18.4/-19.0/-18.2dBTP;20-hit10Hz stress playback peaks-18.1/-19.0/-18.2 with no buildup. Music60s/32s both-18.3LUFS, approximately one-bar overlap plus3ms boundary de-click, non-silent endpoints and wrap deltas<0.0003. BPM targets112/142.5, coarse estimates111.1/142.75; final musical/phone listening remains owner review. Raw donors in.git/a19-raw and.git/a19-music-raw. Nothing missing. Order/status docs marked delivered awaiting wiring. No game.js/code/runtime/test/release changes. Commit message: Deliver Temple Expedition sound effects music and Ruby voice.

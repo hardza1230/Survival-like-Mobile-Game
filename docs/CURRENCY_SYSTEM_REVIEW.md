@@ -1,3 +1,5 @@
+> ⚠️ **เอกสารประวัติ (ตรวจ 22 พ.ย. 2026 · เกม v8.2.53):** สกุลปัจจุบัน: Sugar · 🧶 Threads · 🍪 Crumbs (Expedition) · Forge 3 สกุล (🟢 Twist Cream · ⭐ Star Sugar · 🖋️ Recipe Ink) ตั้งแต่ v8.2.52 — ดู `docs/ECRS.md`
+
 > Historical document. Current currency/row rules: [FORGE_150_ROLLOUT.md](FORGE_150_ROLLOUT.md).
 
 # Currency review and work log (2026-09-27)

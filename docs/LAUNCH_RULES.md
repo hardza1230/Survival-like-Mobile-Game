@@ -136,7 +136,7 @@
 - v8.1.136 Creeping Roots (C2-3) รากงอกจากดอกตรงกลาง
 - v8.1.135 การ์ดไม่ซ้ำ (Yuzu Best Friends / Close Guard / Golden Finish · Momo Sniper Twin Seed · Taro Spark/Sentry)
 - v8.1.116–134 checklist เดิม (ความเสถียร Lobby/หน่วยความจำ · ท่าใหญ่บอส · Frozen Pantry · ภารกิจ Ch2–3 · Forge mod · ไอเทมลอยเข้าช่อง)
-- เก่ากว่า: ดู CLAUDE.md §5 "รอ QA บนมือถือของเจ้าของ"
+- เก่ากว่า: ดู `docs/STATUS.md` (ผูกอาร์ต/เสียงแล้ว รอ QA) · เคสเครื่องจริง `docs/PLAYTEST_CASES.md`
 
 ## บัญชีและรหัส (13 พ.ย. 2026)
 - Play Console: บัญชีบุคคล "oHEARTo" · **ยืนยันตัวตนผ่านแล้ว (Google แจ้ง 16 พ.ย. 2026)** · สร้างแอป `com.oheart.mochimayhem` แล้ว (17 พ.ย. · ชื่อเดิมมีคนใช้) · Supabase Redirect URL เพิ่มแล้ว · เจ้าของทดสอบบนมือถือ v8.1.167: Sign in with Google ✅ Play as Guest ✅ · **17 พ.ย.: ตั้งค่าแอปครบ · อัปโหลด AAB 8.2.0 (versionCode 8002000 · 201 MB) เข้า Closed testing - Alpha · 178 ประเทศ · รายชื่อ Mochi Testers · ส่งรีวิวแล้ว (Changes in review)** · ถัดไป: รีวิวผ่าน → Copy link Join on the web → ผู้ทดสอบ ≥12 คน × 14 วัน → Apply for production · **เจ้าของ 17 พ.ย.: รอบนี้ถือเป็นการทดลองโครงและเรียนรู้ขั้นตอน · ยังไม่ชวนผู้ทดสอบ · พัฒนาเกมต่อก่อนแล้วค่อยเริ่ม Closed test จริง (ใช้ Internal testing ดูเองได้) · เลขเวอร์ชันเดินต่อ 8.2.x (versionCode ต้องเพิ่มเสมอ)** · ยืนยันมือถือ Android ✅ · Trader = non-trader (ช่วงทดสอบ · เปลี่ยนเป็น trader ตอนเปิดโฆษณาจริง) · ยืนยันเบอร์โทร รอหลังยืนยันตัวตน

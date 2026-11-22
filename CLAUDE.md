@@ -16,7 +16,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - เสียง: ใช้ ElevenLabs ตามใบสั่งเสียง (v8.0.38–39 เจ้าของสั่ง ห้ามใช้เสียงสร้างด้วยโค้ด/Runway แทน)
 
 ## 3. โครงไฟล์
-- `index.html` (โหลด phaser + game.js) · `game.js` = โค้ดเกมทั้งหมด (~21k บรรทัด) · `phaser.min.js` 3.80.1
+- `index.html` (โหลด phaser + game.js) · `game.js` = โค้ดเกมทั้งหมด (~25.5k บรรทัด · 22 พ.ย.) · `phaser.min.js` 3.80.1
 - `assets/` รูป/เสียงจริง · คีย์อยู่ใน `ASSET_IMAGES` / `ASSET_SHEETS` / `ASSET_FX` / `ASSET_AUDIO` / `TEMPLE_UI` (URL ต้องเป็น literal `'assets/…'` เพราะ build-www คัดลอกเฉพาะที่เจอ) · อาร์ตเข้า `assets/incoming/<batch>/` → pack script `scripts/pack-*.py` → `assets/art/<batch>/` (ใช้ skill wire-art)
 - โหลดอาร์ตใหม่แบบ lazy เสมอ (stage/menu/hero) ห้าม boot — งบ GPU บูตเต็ม ~300 MB
 - **ขนาดแอป (Google Play ไฟล์หลัก ≤ 200 MB):** ทั้งเกมที่ส่งไปต้อง < 190 MB · มาตรฐานแพ็ก (skill wire-art §2b): WebP q80 (q75 ถ้า >150 KB) · ความละเอียด ≤ 2× ขนาดบนจอ · เพลง 80k · เสียงพูด 56k โมโน · SFX 96k · ตรวจด้วย `python3 scripts/compress-assets.py --dry` · หน้า `*-review.*` ไม่ใส่ในแอป (android.yml / release-aab.yml ลบก่อน sync)
@@ -27,7 +27,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 4. สถานะปัจจุบัน
 - ดูเวอร์ชันที่ `GAME_VERSION` + บล็อก Latest delivery ด้านบน · ประวัติทุกเวอร์ชัน `docs/CLAUDE_HISTORY.md`
-- ระบบหลักครบ: Story 3 Chapter 15 ด่าน → Mochi Delve/Pinnacle, Temple Weave/Depths/Rank Rewards, Gear+Merge (Common→Divine)+Forge (random mods, Twist Cream), Talent ราย Build, ฮีโร่ 6 ตัว ×3 Build (Sesame เสร็จแล้ว · เจ้าของ 22 พ.ย.), Rewards hub (Login/Daily/Awards)
+- ระบบหลักครบ: Story 3 Chapter 15 ด่าน → Mochi Delve/Rift/Pinnacle, Flavor Weave & Rank + Rank Rewards, Temple Expedition (idle · แทน Depths/Dig/Patrol), Gear+Merge (Common→Divine)+Forge (random mods · สกุล 3: Twist Cream/Star Sugar/Recipe Ink), Talent ราย Build, ฮีโร่ 6 ตัว ×3 Build (Sesame เสร็จแล้ว · เจ้าของ 22 พ.ย.), Rewards hub (Login/Daily/Awards)
 
 ### บั๊กที่เคยเจอ (กันพลาดซ้ำ)
 - Scale.RESIZE คืน logical CSS px แล้ว — อย่าคูณ/หาร DPR เอง ใช้ `config.resolution=RENDER_DPR`

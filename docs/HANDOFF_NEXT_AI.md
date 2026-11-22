@@ -1,16 +1,20 @@
-# Current handoff — v7.8.55 · checked 2026-10-18
+# Current handoff — v8.2.53 · checked 2026-11-22
 
-Use [PROJECT_SUMMARY_TH.md](PROJECT_SUMMARY_TH.md) for the current overview and [SESSION_HANDOFF.md](SESSION_HANDOFF.md) for the latest checkpoint. Runtime source: game.js at e32cc37 on claude/vampire-survival-mobile-game-yo9e8w.
+Read in this order: `CLAUDE.md` (rules, locked decisions, §5 next) → `docs/GAME_PILLARS.md` → `docs/LAUNCH_RULES.md` (rules + "รอ QA" list) → `docs/LESSONS.md` → `docs/STATUS.md` (art/audio/QA) → `docs/ECRS.md` (cut plan). Overview: `docs/PROJECT_SUMMARY_TH.md`.
 
-- Story has 3 ready Chapters / 15 stages; 6 roster heroes (Momo, Mint, Cocoa, Taro, Yuzu, Sesame), each with 3 build paths. Berry Core remains compatibility-only.
-- C2-4 is Seasonal Harvest, not the old season trial/sanctuary objective. Follow [C2_4_QA.md](C2_4_QA.md).
-- Taro Spark/Sentry balance changed through v7.8.54. Next: owner phone benchmarks on equal stage/gear, not another speculative rebalance.
-- Hero VFX order 20 is fully wired (21/21, v7.8.45–46). Temple UI order 21 is wired (34/34, v7.8.49) and polished in v7.8.50. Do not repeat delivery/integration; mobile visual/FPS review remains.
-- Forge has 150 registered / 78 active / 72 planned effects. Planned is excluded from roll pools; retain legacy migration and paid choices.
-- APK v7.8.55 build passed; the main-branch Pages run was cancelled and another branch failed. Live v7.8.55 is not confirmed. Deploy only the main game branch; do not concurrently push session branches.
-- Share Play Stats is default off. The v7.8.44 delivery notes report that run_stats was not created; verify backend separately before claiming end-to-end readiness.
-- Play Store work remains parked. Signed AAB workflow and store images already exist; verify signing/account deletion/cloud/privacy/listing before resuming release work.
-- Documentation-only changes do not bump GAME_VERSION or require gameplay simulation. For runtime work follow [AGENT_WORKFLOW.md](AGENT_WORKFLOW.md); owner performs phone gameplay testing.
+- **Goal:** Google Play Closed test on 13 Dec 2026 (package `com.oheart.mochimayhem`, `ADS_TEST=true`, `BETA_BUILD=true`). Every round: propose a plan, get owner approval, then code. Owner tests on the phone; headless runs only for bugs.
+- **Scope now = cut and polish, not add (ECRS).** Round 1 shipped v8.2.52: Kitchen hidden (`KITCHEN_ON=false`), Forge currencies 5→3 (Berry Jam/Honey Drop → Twist Cream, save ×2 `_cur8252`). The next E items wait for the owner in `docs/ECRS.md`.
+- **Heroes:** 6, all finished (Sesame done, `HEROES_WIP=[]` since v8.2.53).
+- **Missions:** 23 types, a stage signature each, a card deal before the stage (Start/Reroll taps fixed v8.2.46: in play, divide the pointer by `RENDER_DPR`).
+  - Hunger Crack is a PoE-Abyss style mission (v8.2.44/48).
+  - Mission foes emerge via `emergeFoe`.
+  - Monsters with `artFollow` overlays restore alpha if the overlay dies (v8.2.51).
+- **Expedition** replaced Dig + Patrol (v8.2.32). The owner wants it idle + strategy, not tapping. A round-1 proposal (team slots / titan traits / synergy / Rally) waits for approval in `docs/IDEAS.md`. Do not add tap mechanics.
+- **Pending owner decisions:** Expedition idle round 1 · Seed Rift shorter (target 8→6, spawn 2.1→1.4 s, wave 100→75 s) · next ECRS items.
+- **Waiting for art/audio:** order 92 (code B/C already live with code-drawn visuals), order 93, A20. Wire them with the `wire-art` skill when they arrive.
+- **Release flow:** `release` skill. Run `bash scripts/ci-checks.sh` → `bump-version.mjs` → `npm run check` → commit → fetch + ancestor check → push the deploy branch, then the session branch. Then check `pages.yml` + `android.yml`. Docs-only commits skip the version bump.
+- **Tests:** vm method-extract tests. Hash tests (`taro-feedback` for `damage()`, `taro-foundation` for `castSkill`) need a normalisation line whenever those methods change.
+- **QA bots:** `node scripts/qa-bots.cjs --ids=pool:<mission>` after `node scripts/build-www.mjs`. Bots skip UI taps (they call `_finishDeal`), so new buttons need a real Playwright touch test (lesson 11).
 
 ## Historical handoffs
 
