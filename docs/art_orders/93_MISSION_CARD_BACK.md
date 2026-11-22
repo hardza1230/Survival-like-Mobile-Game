@@ -1,6 +1,6 @@
 # 93 — ด้านหลังการ์ดภารกิจ (แจกการ์ดก่อนเริ่มด่าน) · ใบสั่งงานอาร์ต
 
-สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 21 พ.ย. 2026 · **แก้ 21 พ.ย. ตามเจ้าของ: ออกแบบใหม่ใบเดียวสวย ๆ ตัดหลังใบบอส** · ยังไม่มีโค้ด (ตอนนี้หลังการ์ดเป็นกล่องม่วงวาดด้วยโค้ด + อีโมจิ 🍡)
+สถานะ: 🟢 ผูกแล้ว v8.2.55 · รอ QA มือถือ
 ส่งไฟล์ที่ `assets/incoming/card_back93/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือหรือตัวเลขในภาพ**
 
@@ -52,3 +52,7 @@
 - Files: `cb93_back.png`, `cb93_back_shine.png`, `cb93_flip.png`.
 - Verified grid, transparency or black background, nonempty frames, frame edges, sizes and hashes. Estimated WebP q80 size: 75,138 bytes.
 - Source branch: `asset-delivery/art92-93`. Ready for integration and in-game review.
+
+### Runtime · v8.2.55
+
+All three assets are integrated. The same back is used for every card. The foil sweep runs during the existing lift, and the flash plays at the face reveal.

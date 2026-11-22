@@ -1,0 +1,5 @@
+[
+  {"key": "hc_new_mouth", "result": "pass", "frames": [{"frame": 0, "margins": [67, 107, 68, 108]}, {"frame": 1, "margins": [43, 81, 43, 82]}, {"frame": 2, "margins": [15, 63, 16, 63]}], "webpQ80Estimate": 17924},
+  {"key": "hc_new_emerge", "result": "pass", "frames": [{"frame": 0, "margins": [83, 196, 84, 10]}, {"frame": 1, "margins": [61, 144, 61, 10]}, {"frame": 2, "margins": [35, 89, 35, 10]}, {"frame": 3, "margins": [15, 42, 16, 10]}, {"frame": 4, "margins": [15, 52, 16, 10]}, {"frame": 5, "margins": [39, 70, 40, 10]}], "webpQ80Estimate": 22736},
+  {"key": "sg_new_primary", "result": "pass", "frames": [{"frame": 0, "margins": [3, 53, 155, 54]}, {"frame": 1, "margins": [3, 26, 101, 26]}, {"frame": 2, "margins": [3, 10, 51, 10]}, {"frame": 3, "margins": [3, 25, 61, 25]}, {"frame": 4, "margins": [3, 36, 67, 37]}, {"frame": 5, "margins": [3, 46, 69, 47]}], "webpQ80Estimate": 14980}
+]

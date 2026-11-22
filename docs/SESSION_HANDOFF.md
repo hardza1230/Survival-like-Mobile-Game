@@ -1,3 +1,7 @@
+# Current checkpoint — Mission and battle artwork (2026-11-22)
+
+Prepared v8.2.55 on integration/art92-93. Orders 92/93 and three new ImageGen feedback sheets are wired. Exact source hashes, runtimes, fallback contracts and behavior checks are covered by tests/feedback-art92-93.test.cjs and the existing mission/Shotgun tests. Manual phone review remains.
+
 # Current checkpoint — Art orders 93 and 92 delivered (2026-11-22)
 
 Source branch asset-delivery/art92-93 from 922108eb. Delivered 3 mission card back and foil files (93) and 9 Shotgun, Hunt and Wisp FX files (92) with exact PNG32 sheets, manifests, ImageGen prompts and per-file QA. Replaced the first Hunt target with a plain shrinking ring and converted the bottle shadow donor to a black alpha matte. Countdown snaps back when restarted. Both sets await integration and in-game review. A20 is a separate audio order.

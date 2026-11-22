@@ -1,0 +1,47 @@
+[
+  {
+    "key": "hc_new_mouth",
+    "file": "hc_new_mouth.png",
+    "bytes": 55918,
+    "sha256": "f51b6b453bb3dd051860d75afc0628db1929ae26f17d2772a11ccbf85961feec",
+    "width": 768,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 3,
+    "columns": 3,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  },
+  {
+    "key": "hc_new_emerge",
+    "file": "hc_new_emerge.png",
+    "bytes": 221077,
+    "sha256": "bb1ab3fd8eec459e07361167002c0e0231f2ad5eaa4f37b7f0cf41efb70d849c",
+    "width": 1536,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": "ground",
+    "background": "black"
+  },
+  {
+    "key": "sg_new_primary",
+    "file": "sg_new_primary.png",
+    "bytes": 129453,
+    "sha256": "b0af7a5880d3583507da014a72edb38582cb563333bb78ef4610c441dd87abdc",
+    "width": 1536,
+    "height": 170,
+    "frameWidth": 256,
+    "frameHeight": 170,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": "left",
+    "background": "black"
+  }
+]

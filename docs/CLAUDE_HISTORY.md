@@ -4524,3 +4524,13 @@ Owner: compare Hunger Crack with Path of Exile's Abyss (longer, slower, monsters
   - The Forge wallet line drops the two icons.
 - **Not cut, after checking:** the ~15 signature missions are each stage's identity, and Chapter 1's first playthrough already uses a fixed teaching plan with no roaming missions. Boss Rush stays hidden.
 - Tests: new `ecrs-8252`; updated mission-template, missions71-74-art, reforge-rows, forge-redesign, forge-simple and sig-missions. The frozenPantry QA bot completed with 0 errors.
+
+# Delivery: v8.2.53 — 🌗 Sesame counts as a finished hero
+
+- **Owner:** Sesame is finished. `HEROES_WIP` is now empty, so Sesame:
+  - counts for Daily Quest hero picks and Awards,
+  - can roll Unique mutation cards,
+  - gets Recipe Book notes like every other hero.
+- No hero shows a "🚧 In development" badge; Sesame already had none.
+- CLAUDE.md and the wire-art skill no longer call Sesame WIP.
+- Tests: voice-acting-integration updated.

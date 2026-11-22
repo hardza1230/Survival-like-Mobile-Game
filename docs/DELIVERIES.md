@@ -1,6 +1,10 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.54 — ✂️ ECRS round 2 (from real player data): fewer screens, fewer daily chores, Sugar gear chests, a calmer Chapter 1
+# Latest delivery: v8.2.55 — Mission card polish and clearer battle effects
+
+Orders 92 and 93 are integrated, with three additional painted sheets for Hunger Crack and Momo Shotgun. Mission cards share the Heart Seed back, foil sweep and flip flash. Hunt retains its actual danger footprint under the painted timer. Wisp swaps the escort area, tether and outside-zone shadows as the player crosses the boundary. Hunger Crack has separate fissure states and capped spawn bursts. Shotgun distinguishes the regular shot, Double Barrel opening shot and actual follow-up. The added runtime files total 539,250 bytes (9.59 MiB decoded across all groups) and load with the stage or Momo run. Existing damage, hit areas, wave and shot timing are preserved.
+
+# Previous delivery: v8.2.54 — ✂️ ECRS round 2 (from real player data): fewer screens, fewer daily chores, Sugar gear chests, a calmer Chapter 1
 
 - **Owner approved ECRS round 2 (22 Nov):** the analysis uses the code plus Supabase `run_stats` screen visits from about 10 real phones (13–22 Nov). Reward Inbox, Kitchen, Delve, Atlas, Play Stats, Ranking and Trade-in had 0 visits.
 - **E1 · Reward Inbox removed** (`GEAR_INBOX_ON=false`):
@@ -20,13 +24,3 @@
   - New test `ecrs2-8254`, including the Miners save migration on a fake save.
   - Headless touch: hub (no Mail), Rewards (3 tabs), Settings, Expedition, Bazaar (🍬 prices).
   - QA bots: capture done with 0 errors; qa-menus 25 screens with no new errors (only the older "Texture key already in use" console notes on the endgame screen).
-
-# Previous delivery: v8.2.53 — 🌗 Sesame counts as a finished hero
-
-- **Owner:** Sesame is finished. `HEROES_WIP` is now empty, so Sesame:
-  - counts for Daily Quest hero picks and Awards,
-  - can roll Unique mutation cards,
-  - gets Recipe Book notes like every other hero.
-- No hero shows a "🚧 In development" badge; Sesame already had none.
-- CLAUDE.md and the wire-art skill no longer call Sesame WIP.
-- Tests: voice-acting-integration updated.
