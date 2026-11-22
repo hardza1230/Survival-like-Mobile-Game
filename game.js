@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.62';
+const GAME_VERSION = '8.2.63';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.63',date:'2026-11-22',title:'👻 Phantom Rush costs your Dashes',items:['Phantom Rush spends all Dash charges (+1 leap each, needs 1)','Free shadow Dashes no longer refund cooldown','Cooldown refunds capped at 40%']},
   {v:'8.2.62',date:'2026-11-22',title:'🧭 Expedition easy to find (Activities + red dot)',items:['Expedition row in Activities','Red dot when away 1h or can upgrade','Unlock text fixed']},
   {v:'8.2.61',date:'2026-11-22',title:'⚔️ Expedition simplified (no tapping needed)',items:['Hero auto-attacks (Hero Power)','Boss retries itself after 10 training foes','Upgrade all button','Supplies refill themselves']},
   {v:'8.2.60',date:'2026-11-22',title:'🔑 Faster Google sign-in (native account sheet)',items:['Native Google sign-in via Credential Manager when GOOGLE_WEB_CLIENT_ID is set','Custom Tab closes on return; cloud pull is one query','login timing event']},
@@ -6081,7 +6082,7 @@ const COCOA_EVOLUTIONS={
 const COCOA_UNIQUES={
   brawler:{name:'Rocket Gauntlet',emoji:'🚀',cd:18,color:0xff7a2a,desc:'Tap once: launch 3 homing fire gauntlets at the strongest enemies nearby (one per target). Every gauntlet aimed at a Boss or Mini also blasts it 3 more times',tiers:{2:'4 gauntlets',3:'Bigger explosions',4:'5 gauntlets and a 4th extra blast'}},
   titan:{name:'Colossus Fist',emoji:'👊',cd:9,color:0xd59b65,desc:'Hold to charge Blood Rage while walking (drains HP, up to 3 levels); release to slam a giant fist on the strongest nearby enemy for up to ×4.2 damage, then two more fists hit it. Ground Pounds also crack the ground toward a boss just out of reach. Cooldown starts on release',tiers:{2:'Stronger central impact',3:'Wider central impact and aftershock',4:'Maximum central power and impact size'}},
-  dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 4 times onto the strongest enemy (boss first), slamming on each landing. Every Dash before casting adds +1 leap and makes the leaps faster (max +5). Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
+  dashboxer:{name:'Phantom Rush',emoji:'👻',cd:20,color:0xc9a3ff,desc:'Tap once: auto-leap 4 times onto the strongest enemy (boss first), slamming on each landing. Uses all your Dash charges: +1 leap each, and the leaps get faster. Then for 5.5–7s every Dash is free (2–3 shadow charges) and hits harder',tiers:{2:'6s shadow mode and stronger slams',3:'4 auto leaps, 3 shadow charges, 6.5s',4:'7s shadow mode and maximum slam power'}}
 };
 const COCOA_PATH_MUTS={
   brawler:[{id:'rush',name:'Fireball Barrage',emoji:'☄️',desc:'The 5th punch launches 3 fireballs instead of 1, and combos run 18% faster'},
@@ -10371,7 +10372,7 @@ class Game extends Phaser.Scene {
   doDash(){
     const coc=this.character==='cocoa';
     if(coc&&this.state==='play')this.finishCocoaFlicker(true);   // v5.70 โกโก้สะสม Dash ได้หลายชาร์จ
-    if(coc){ if(this.state!=='play'||(this.dashTime||0)>0.06)return; if(this._dpCh==null)this._dpCh=this.cocoaDashMax(); const temp=this._cocoaPhantom&&this._cocoaPhantom.t>0&&this._cocoaPhantom.charges>0;if(!temp&&this._dpCh<=0)return;if(temp)this._cocoaPhantom.charges--;else this._dpCh--; }
+    if(coc){ if(this.state!=='play'||(this.dashTime||0)>0.06)return; if(this._dpCh==null)this._dpCh=this.cocoaDashMax(); const temp=this._cocoaPhantom&&this._cocoaPhantom.t>0&&this._cocoaPhantom.charges>0;if(!temp&&this._dpCh<=0)return;if(temp)this._cocoaPhantom.charges--;else this._dpCh--; this._dashFree=temp; }
     else if(!this.dashReady||this.state!=='play'||(this.character==='taro'&&this.basicAttack?.path==='tempest'&&this.dashTime>0)) return;
     if(this._impalerCharge)this.releaseImpalerCharge(false);if(this._berryCharge)this.releaseBerryCharge(false);
     if(this.player&&this.player._pt&&this.player._pt.hsDash)this._ptHsNext=true;
@@ -10379,7 +10380,7 @@ class Game extends Phaser.Scene {
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2; this._lastDashAt=this.elapsed||0;if(this.player.forgeMods){const r=forgeState(this);r.dashUntil=(this.elapsed||0)+1.5;r.dashPrimed=true;}
     if(this.character==='momo'){this._attackPoseTime=0;this._poseHold=0;this._momoDashT=0;}
-    this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);this.cocoaEvoDash?.();if(this.basicAttack?.path==='dashboxer'&&this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-1-this.ptv('dbRefund'));}
+    this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);this.cocoaEvoDash?.();if(this.basicAttack?.path==='dashboxer'&&this.uniqueCd>0&&!this._dashFree)this.phRefund(1+this.ptv('dbRefund'));}   /* v8.2.63 Dash ฟรีในโหมดเงาไม่ลดคูลดาวน์ */
     this.player.iframe=Math.max(this.player.iframe,0.28);
     Sfx.dash();
     this.flashBtn(this.dashBtn);
@@ -10423,7 +10424,9 @@ class Game extends Phaser.Scene {
       else if(mut==='bloom_field'&&c.storm)c.storm.deepChill=true; }
     else if(kind==='lance'){ if(mut==='lance_guard')this.artDelay?.(300,()=>{this._uqGuardT=(this.elapsed||0)+3;this._uqGuardM=.6;});
       else if(mut==='lance_mines'){ const x0=p.x,y0=p.y; this.artDelay?.(350,()=>{ if(this.state!=='play')return; const x1=p.x,y1=p.y; for(let i=1;i<=3;i++){ const x=x0+(x1-x0)*i/4,y=y0+(y1-y0)*i/4,m=this.trackArtVfx?.(this.camWorld(this.add.circle(x,y,9,0x9fe8ff,.9).setStrokeStyle(2,0xffffff).setDepth(8))); this.artDelay?.(600+i*80,()=>{ if(m?.active)m.destroy(); if(this.state==='play')this.modBoom(x,y,80,2.2*um,true); }); } }); } } }
-  uqOnKill(e){ if(this.isSesRune?.()){this.sesRuneReduceCooldowns(.1*this.uqLv('uq_kill'));return;}const T=this.elapsed||0; if(this.uniqueCd>0){ const k=this.uqLv('uq_kill'); if(k)this.uniqueCd=Math.max(0,this.uniqueCd-.1*k); if(this.uqMut()==='phantom_refund'&&T<(this._uqWinT||0))this.uniqueCd=Math.max(0,this.uniqueCd-.5); } }
+  /* v8.2.63 เจ้าของ: Phantom Rush ลดคูลดาวน์รวม (Dash/ฆ่า/Ghost Refund) ได้ไม่เกิน 40% ต่อรอบ */
+  phRefund(n){ if(!(n>0)||!(this.uniqueCd>0))return; if(this.basicAttack?.path!=='dashboxer'){ this.uniqueCd=Math.max(0,this.uniqueCd-n); return; } const left=Math.max(0,(this._phCap||0)-(this._phRef||0)),k=Math.min(n,left); this._phRef=(this._phRef||0)+k; this.uniqueCd=Math.max(0,this.uniqueCd-k); }
+  uqOnKill(e){ if(this.isSesRune?.()){this.sesRuneReduceCooldowns(.1*this.uqLv('uq_kill'));return;}const T=this.elapsed||0; if(this.uniqueCd>0){ const k=this.uqLv('uq_kill'); if(k)this.phRefund(.1*k); if(this.uqMut()==='phantom_refund'&&T<(this._uqWinT||0))this.phRefund(.5); } }
   uqSeedRing(n,dmg,tint,bounce=0,fire){ const P=this.player; for(let i=0;i<n;i++){ const c=this.getBullet(P.x,P.y,0xffffff,fire?0.2:0.13); if(!c)break; c.setTexture(fire&&this.textures.exists('proj_rocket')?'proj_rocket':'proj_sprinkle').setTint(tint); c.faceVel=true; c.dmg=dmg; c.life=1.1; c.pierce=false; c.hitGapV=0.16; c.bounce=bounce; c.homing=0; c.headshot=0; c.bigMul=0; c.closeMul=0; c.bounceGain=0; c.seedPierce=false; c.penGain=0; c.forceHs=false; c.cqMul=0; c.dragon=false; c.lastMul=0; c.seekMul=1; c.splitCh=0; c.boomer2=false; c.loopT=false; c.explode=fire?55:0; this.physics.velocityFromRotation(i*Math.PI*2/n,640,c.body.velocity); } }
   uqOverFinale(){ const t=this._taro; if(!t||this.state!=='play'||this.character!=='taro')return; const f=this.taroSwarmProfile?.(); if(!f)return; const id=++t.attackSeq; for(const n of t.nodes||[]){ if(n.beacon)continue; for(let i=0;i<8;i++)this.taroSpawnProjectile({kind:'sentry',x:n.x,y:n.y,angle:i*Math.PI/4,speed:n.speed,life:n.orbLife,damage:n.damage*2,radius:n.orbRadius,range:n.range,attackId:id}); } this.showBanner?.('🎆 Finale Burst','',700); }
 
@@ -10720,6 +10723,7 @@ class Game extends Phaser.Scene {
   useCharacterSkill(noWind){
     if(this.isSesRune?.())return this.sesRuneCast();
     if(this.state!=='play'||this.uniqueCd>0||this._uqWind||(this.character==='cocoa'&&this._cocoaUniqueT>0))return;
+    if(this.character==='cocoa'&&this.basicAttack?.path==='dashboxer'&&this._dpCh!=null&&this._dpCh<1){ this.floatText?.(this.player.x,this.player.y-60,'Need a Dash',0xc9a3ff); return; }   /* v8.2.63 */
     if(!noWind&&!(this.character==='momo'&&this.basicAttack?.path==='sniper')&&this.uniqueWindup?.(()=>this.useCharacterSkillNow()))return;
     return this.useCharacterSkillNow(); }
   uniqueWindup(go,ms=170){ const p=this.player; if(!p||!this.time?.delayedCall)return false; this._uqWind=true; const col=(this.uniqueInfo?.()||{}).color||0xffd166;
@@ -10730,6 +10734,7 @@ class Game extends Phaser.Scene {
     return true; }
   useCharacterSkillNow(){
     if(this.state!=='play'||this.uniqueCd>0||(this.character==='cocoa'&&this._cocoaUniqueT>0))return;
+    if(this.character==='cocoa'&&this.basicAttack?.path==='dashboxer'){ if(this._dpCh==null)this._dpCh=this.cocoaDashMax(); if(this._dpCh<1){ this.floatText?.(this.player.x,this.player.y-60,'Need a Dash',0xc9a3ff); return; } this._phSpent=this._dpCh; this._dpCh=0; this._dpT=0; }   /* v8.2.63 เจ้าของ: Phantom Rush กินชาร์จ Dash ทั้งหมด (+1 พุ่งทุบต่อชาร์จ) */
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
     this.heroScreenEffect?.(1.4);this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(520);this._coachUnique=(this._coachUnique||0)+1;if(!(this.character==='momo'&&this.basicAttack?.path==='sniper'))this.uniqueCastFx?.();this._mxSrc='unique';this.fireRecipes('unique');
     const spectacleRadius=c.unique==='mintSanctuary'?120+(ul-1)*28:c.unique==='voidPull'?200+(ul-1)*22:c.unique==='flickerStrike'?100+(ul-1)*10:c.unique==='oathMirror'?180+(ul-1)*18:c.unique==='jamOverdrive'?170+(ul-1)*20:155+(ul-1)*18;
@@ -21935,7 +21940,7 @@ class Game extends Phaser.Scene {
       const duration=5+ul*.5;this._cocoaUniqueT=1.5;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);this.fxPhantomScreen?.(1.4);Sfx.bp?.('uq_phantom_enter',.65,.3)||Sfx.bp?.('cocoa_phantom_start',.65,.3);
       // v6.58.4 Phantom Rush: พุ่งทุบอัตโนมัติ 3–4 ครั้งใส่เป้าแข็งสุด (บอสก่อน)
       /* v7.8.58 เจ้าของ: ยิ่ง Dash ก่อนกด มากครั้ง → พุ่งทุบเพิ่ม +1/Dash และถี่ขึ้น (สูงสุด 5) · กดแล้วนับใหม่ */
-      const dn=this._phantomDashN||0;this._phantomDashN=0;const leaps=(ul>=3?5:4)+dn,gapT=Math.max(.14,.3-.03*dn),slam=unit*1.1*(1+.1*(b.lv.p_phantom||0));if(dn)this.floatText?.(p.x,p.y-60,'👻 +'+dn+' leaps from Dashes',0xc9a3ff);
+      const dn=Math.min(5,this._phSpent||0);this._phSpent=0;this._phantomDashN=0;this._phRef=0;this._phCap=this.uniqueCooldown(this.uniqueInfo())*.4;const leaps=(ul>=3?5:4)+dn,gapT=Math.max(.14,.3-.03*dn),slam=unit*1.1*(1+.1*(b.lv.p_phantom||0));if(dn)this.floatText?.(p.x,p.y-60,'👻 +'+dn+' leaps from Dash charges',0xc9a3ff);
       for(let i=0;i<leaps;i++)this.cocoaLater(.05+i*gapT,()=>{const t=this.cocoaPriorityTarget(480);if(!t||!p.active)return;const d=this.dist(t.x,t.y,p.x,p.y),gap=Math.max(36,(t.body?.halfWidth||20)+18),k=Math.max(0,(d-gap)/Math.max(1,d));
         p.iframe=Math.max(p.iframe||0,.5);this.bpPose?.('char_cocoa_phantom',.4);this.cocoaGlideTo({x:p.x+(t.x-p.x)*k,y:p.y+(t.y-p.y)*k},.14);
         this.cocoaLater(.14,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});

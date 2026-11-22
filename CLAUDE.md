@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.62**. Next release:8.2.63. Fetch the deploy branch before new work.
+Current release: **8.2.63**. Next release:8.2.64. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.62 — 🧭 Expedition easy to find (Activities + red dot)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.63 — 👻 Phantom Rush costs your Dashes** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
