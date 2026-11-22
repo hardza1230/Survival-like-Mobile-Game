@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.66';
+const GAME_VERSION = '8.2.67';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.67',date:'2026-11-22',title:'Smoother mission props and effects',items:['Ten mission props and effects now animate in eight frames, including Hunt’s spinning flask, Herald’s beam, and Last Light’s lanterns.']},
   {v:'8.2.66',date:'2026-11-22',title:'Smoother mission creatures',items:['Nine mission creatures now walk, glide, or flap through smoother eight-frame loops.']},
   {v:'8.2.65',date:'2026-11-22',title:'Smoother Frozen Pantry troops',items:['All seven Frozen Pantry troops have smoother eight-frame movement while keeping their distinctive designs.']},
   {v:'8.2.64',date:'2026-11-22',title:'🔮 Sesame Spell Mastery + serpent minion',items:['Sesame spells level up by casting (3/7/12/18) and grow in number','Tidal Serpent swims around you and keeps biting (2-3 at Lv3/5)','Prismatic Armament: head icon + 2 extra fanned flares']},
@@ -3583,7 +3584,7 @@ const ASSET_FX = {
   hn92_poison_puddle:{url:'assets/art/fx92/hn92_poison_puddle.webp',fw:192,fh:128,frames:6,rate:8,anchor:'ground',loop:true},
   ws92_light_pool:{url:'assets/art/fx92/ws92_light_pool.webp',fw:256,fh:256,frames:8,rate:8,anchor:'ground',loop:true},
   ws92_dark_creep:{url:'assets/art/fx92/ws92_dark_creep.webp',fw:128,fh:128,frames:6,rate:10,anchor:'ground',loop:true},
-  ws92_tether:{url:'assets/art/fx92/ws92_tether.webp',fw:128,fh:20,frames:4,rate:12,anchor:'left',loop:true},
+  ws92_tether:{url:'assets/art/mission-motion2c/ws92_tether.webp',fw:128,fh:20,frames:8,rate:24,anchor:'left',loop:true},
   cb93_flip:{url:'assets/art/card_back93/cb93_flip.webp',fw:256,fh:256,frames:6,rate:30,anchor:'center'},
   hh_herald_attack:{url:'assets/art/motion77/hh_herald_attack.webp',fw:256,fh:256,frames:6,rate:12,anchor:'center'},
   hh_herald_death:{url:'assets/art/motion77/hh_herald_death.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center'},
@@ -4161,12 +4162,12 @@ const ASSET_FX = {
   /* v8.2.24 ใบ 86 หน้าการ์ดภารกิจ + ใบ 87 มอน/ของภารกิจรอบ 2 (stage-lazy · missionArtKeys) */
   /* v8.2.31 ใบ 89 Mission Atlas (menu-lazy) + ใบ 90 เหตุการณ์ภารกิจ (stage-lazy) */
   ma89_nodes:{url:'assets/art/atlas89/ma89_nodes.webp',fw:64,fh:64,frames:6,rate:16,anchor:'center'},ma89_node_frame:{url:'assets/art/atlas89/ma89_node_frame.webp',fw:240,fh:120,frames:3,rate:16,anchor:'center'},ma89_emblem:{url:'assets/art/atlas89/ma89_emblem.webp',fw:128,fh:128,frames:1,rate:16,anchor:'center'},ma89_star:{url:'assets/art/atlas89/ma89_star.webp',fw:48,fh:48,frames:2,rate:16,anchor:'center'},ma89_button:{url:'assets/art/atlas89/ma89_button.webp',fw:240,fh:64,frames:1,rate:16,anchor:'center'},ev90_arrows:{url:'assets/art/events90/ev90_arrows.webp',fw:64,fh:64,frames:2,rate:16,anchor:'center'},ev90_gold_shimmer:{url:'assets/art/events90/ev90_gold_shimmer.webp',fw:96,fh:96,frames:6,rate:12,anchor:'center',loop:true},ev90_gold_burst:{url:'assets/art/events90/ev90_gold_burst.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center'},ev90_double_clear:{url:'assets/art/events90/ev90_double_clear.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center'},ev90_boss_chip:{url:'assets/art/events90/ev90_boss_chip.webp',fw:240,fh:48,frames:1,rate:16,anchor:'center'},ev90_reroll:{url:'assets/art/events90/ev90_reroll.webp',fw:48,fh:48,frames:2,rate:16,anchor:'center'},ev90_curses:{url:'assets/art/events90/ev90_curses.webp',fw:48,fh:48,frames:3,rate:16,anchor:'center'},
-  mc86_faces:{url:'assets/art/mission86/mc86_faces.webp',fw:256,fh:256,frames:25,rate:10,anchor:'center'},hn87_poison_bottle:{url:'assets/art/mission87/hn87_poison_bottle.webp',fw:64,fh:64,frames:4,rate:12,anchor:'center',loop:true},hn87_poison_splash:{url:'assets/art/mission87/hn87_poison_splash.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center'},hh87_healer:{url:'assets/art/mission-motion2b/hh87_healer.webp',fw:160,fh:160,frames:8,rate:20,anchor:'feet',loop:true},hh87_booster:{url:'assets/art/mission-motion2b/hh87_booster.webp',fw:160,fh:160,frames:8,rate:20,anchor:'feet',loop:true},hh87_possessor:{url:'assets/art/mission-motion2b/hh87_possessor.webp',fw:160,fh:160,frames:8,rate:20,anchor:'center',loop:true},hh87_heal_pulse:{url:'assets/art/mission87/hh87_heal_pulse.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},st87_tree_hive:{url:'assets/art/mission87/st87_tree_hive.webp',fw:256,fh:320,frames:2,rate:10,anchor:'feet'},st87_tree_golden:{url:'assets/art/mission87/st87_tree_golden.webp',fw:256,fh:320,frames:2,rate:10,anchor:'feet'},st87_tree_mimic:{url:'assets/art/mission87/st87_tree_mimic.webp',fw:256,fh:320,frames:2,rate:10,anchor:'feet'},st87_bee:{url:'assets/art/mission-motion2b/st87_bee.webp',fw:96,fh:96,frames:8,rate:28,anchor:'center',loop:true},cr87_root_fast:{url:'assets/art/mission87/cr87_root_fast.webp',fw:256,fh:256,frames:2,rate:10,anchor:'feet'},cr87_root_thick:{url:'assets/art/mission87/cr87_root_thick.webp',fw:256,fh:256,frames:2,rate:10,anchor:'feet'},cr87_root_split:{url:'assets/art/mission87/cr87_root_split.webp',fw:256,fh:256,frames:2,rate:10,anchor:'feet'},sr87_carrier_fast:{url:'assets/art/mission-motion2b/sr87_carrier_fast.webp',fw:160,fh:160,frames:8,rate:24,anchor:'feet',loop:true},sr87_carrier_armored:{url:'assets/art/mission-motion2b/sr87_carrier_armored.webp',fw:160,fh:160,frames:8,rate:20,anchor:'feet',loop:true},sr87_carrier_split:{url:'assets/art/mission-motion2b/sr87_carrier_split.webp',fw:160,fh:160,frames:8,rate:24,anchor:'feet',loop:true},gg87_gold_glint:{url:'assets/art/mission87/gg87_gold_glint.webp',fw:128,fh:128,frames:6,rate:12,anchor:'center',loop:true},ui87_side_chip:{url:'assets/art/mission87/ui87_side_chip.webp',fw:240,fh:48,frames:1,rate:10,anchor:'center'},
+  mc86_faces:{url:'assets/art/mission86/mc86_faces.webp',fw:256,fh:256,frames:25,rate:10,anchor:'center'},hn87_poison_bottle:{url:'assets/art/mission-motion2c/hn87_poison_bottle.webp',fw:64,fh:64,frames:8,rate:24,anchor:'center',loop:true},hn87_poison_splash:{url:'assets/art/mission87/hn87_poison_splash.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center'},hh87_healer:{url:'assets/art/mission-motion2b/hh87_healer.webp',fw:160,fh:160,frames:8,rate:20,anchor:'feet',loop:true},hh87_booster:{url:'assets/art/mission-motion2b/hh87_booster.webp',fw:160,fh:160,frames:8,rate:20,anchor:'feet',loop:true},hh87_possessor:{url:'assets/art/mission-motion2b/hh87_possessor.webp',fw:160,fh:160,frames:8,rate:20,anchor:'center',loop:true},hh87_heal_pulse:{url:'assets/art/mission87/hh87_heal_pulse.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},st87_tree_hive:{url:'assets/art/mission87/st87_tree_hive.webp',fw:256,fh:320,frames:2,rate:10,anchor:'feet'},st87_tree_golden:{url:'assets/art/mission87/st87_tree_golden.webp',fw:256,fh:320,frames:2,rate:10,anchor:'feet'},st87_tree_mimic:{url:'assets/art/mission87/st87_tree_mimic.webp',fw:256,fh:320,frames:2,rate:10,anchor:'feet'},st87_bee:{url:'assets/art/mission-motion2b/st87_bee.webp',fw:96,fh:96,frames:8,rate:28,anchor:'center',loop:true},cr87_root_fast:{url:'assets/art/mission87/cr87_root_fast.webp',fw:256,fh:256,frames:2,rate:10,anchor:'feet'},cr87_root_thick:{url:'assets/art/mission87/cr87_root_thick.webp',fw:256,fh:256,frames:2,rate:10,anchor:'feet'},cr87_root_split:{url:'assets/art/mission87/cr87_root_split.webp',fw:256,fh:256,frames:2,rate:10,anchor:'feet'},sr87_carrier_fast:{url:'assets/art/mission-motion2b/sr87_carrier_fast.webp',fw:160,fh:160,frames:8,rate:24,anchor:'feet',loop:true},sr87_carrier_armored:{url:'assets/art/mission-motion2b/sr87_carrier_armored.webp',fw:160,fh:160,frames:8,rate:20,anchor:'feet',loop:true},sr87_carrier_split:{url:'assets/art/mission-motion2b/sr87_carrier_split.webp',fw:160,fh:160,frames:8,rate:24,anchor:'feet',loop:true},gg87_gold_glint:{url:'assets/art/mission87/gg87_gold_glint.webp',fw:128,fh:128,frames:6,rate:12,anchor:'center',loop:true},ui87_side_chip:{url:'assets/art/mission87/ui87_side_chip.webp',fw:240,fh:48,frames:1,rate:10,anchor:'center'},
   /* v8.2.23 ใบ 85 ของในภารกิจ (stage-lazy · missionArtKeys) */
   fp85_crates:{url:'assets/art/mission85/fp85_crates.webp',fw:128,fh:128,frames:15,rate:8,anchor:'feet'},fp85_captain_statue:{url:'assets/art/mission85/fp85_captain_statue.webp',fw:192,fh:192,frames:1,rate:8,anchor:'feet'},fp85_general_statue:{url:'assets/art/mission85/fp85_general_statue.webp',fw:256,fh:256,frames:1,rate:8,anchor:'feet'},
   mp85_shade:{url:'assets/art/mission85/mp85_shade.webp',fw:192,fh:192,frames:6,rate:8,anchor:'feet',loop:true},ll85_moth:{url:'assets/art/mission-motion2b/ll85_moth.webp',fw:128,fh:128,frames:8,rate:24,anchor:'center',loop:true},ll85_light_wisp:{url:'assets/art/mission85/ll85_light_wisp.webp',fw:128,fh:128,frames:6,rate:10,anchor:'center',loop:true},
   ult85_curse_pads:{url:'assets/art/mission85/ult85_curse_pads.webp',fw:192,fh:192,frames:2,rate:8,anchor:'center'},hs85_sapper:{url:'assets/art/mission-motion2b/hs85_sapper.webp',fw:160,fh:160,frames:8,rate:24,anchor:'feet',loop:true},hs85_supply_crate:{url:'assets/art/mission85/hs85_supply_crate.webp',fw:192,fh:192,frames:2,rate:8,anchor:'feet'},
-  hh85_beam:{url:'assets/art/mission85/hh85_beam.webp',fw:512,fh:64,frames:4,rate:14,anchor:'center',loop:true},hh85_empower_aura:{url:'assets/art/mission85/hh85_empower_aura.webp',fw:192,fh:192,frames:6,rate:10,anchor:'center',loop:true},hh85_minion_icons:{url:'assets/art/mission85/hh85_minion_icons.webp',fw:64,fh:64,frames:3,rate:8,anchor:'center'},
+  hh85_beam:{url:'assets/art/mission-motion2c/hh85_beam.webp',fw:512,fh:64,frames:8,rate:28,anchor:'center',loop:true},hh85_empower_aura:{url:'assets/art/mission85/hh85_empower_aura.webp',fw:192,fh:192,frames:6,rate:10,anchor:'center',loop:true},hh85_minion_icons:{url:'assets/art/mission85/hh85_minion_icons.webp',fw:64,fh:64,frames:3,rate:8,anchor:'center'},
   fp_jar:{url:'assets/art/league72/fp_jar.webp',fw:256,fh:256,frames:1,rate:8,anchor:'feet'},
   fp_new_basic:{url:'assets/art/frozen-pantry/fp_new_basic.webp',fw:128,fh:128,frames:8,rate:16,anchor:'feet',loop:true},
   fp_new_fast:{url:'assets/art/frozen-pantry/fp_new_fast.webp',fw:128,fh:128,frames:8,rate:22,anchor:'feet',loop:true},
@@ -4180,7 +4181,7 @@ const ASSET_FX = {
   hm_hand:{url:'assets/art/league72/hm_hand.webp',fw:256,fh:256,frames:2,rate:8,anchor:'feet'},
   hm_rim:{url:'assets/art/league72/hm_rim.webp',fw:1024,fh:1024,frames:1,rate:8,anchor:'center'},
   hm_breach_chest:{url:'assets/art/league72/hm_breach_chest.webp',fw:192,fh:192,frames:2,rate:8,anchor:'feet'},
-  hm_splinter:{url:'assets/art/league72/hm_splinter.webp',fw:96,fh:96,frames:4,rate:8,anchor:'center',loop:true},
+  hm_splinter:{url:'assets/art/mission-motion2c/hm_splinter.webp',fw:96,fh:96,frames:8,rate:16,anchor:'center',loop:true},
   hm_hand_lord:{url:'assets/art/league72/hm_hand_lord.webp',fw:384,fh:384,frames:6,rate:8,anchor:'center',loop:true},
   hm_collapse:{url:'assets/art/league72/hm_collapse.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',black:true},
   hm_breachlord:{url:'assets/art/league72/hm_breachlord.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
@@ -4189,15 +4190,15 @@ const ASSET_FX = {
   cr_root_vine:{url:'assets/art/league72/cr_root_vine.webp',fw:256,fh:64,frames:1,rate:8,anchor:'center'},
   hh_herald:{url:'assets/art/league72/hh_herald.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
   hh_gate:{url:'assets/art/league72/hh_gate.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
-  gp_pot:{url:'assets/art/league72/gp_pot.webp',fw:256,fh:256,frames:4,rate:8,anchor:'feet',loop:true},
+  gp_pot:{url:'assets/art/mission-motion2c/gp_pot.webp',fw:256,fh:256,frames:8,rate:16,anchor:'feet',loop:true},
   gp_ingredients:{url:'assets/art/league72/gp_ingredients.webp',fw:96,fh:96,frames:4,rate:8,anchor:'center'},
   gp_recipe_card:{url:'assets/art/league72/gp_recipe_card.webp',fw:384,fh:112,frames:1,rate:8,anchor:'center'},
   msn71_rift:{url:'assets/art/missions71/msn71_rift.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
   msn71_tree:{url:'assets/art/missions71/msn71_tree.webp',fw:256,fh:320,frames:2,rate:8,anchor:'feet'},
   msn71_mirror:{url:'assets/art/missions71/msn71_mirror.webp',fw:192,fh:192,frames:2,rate:8,anchor:'feet'},
-  msn71_crystal:{url:'assets/art/missions71/msn71_crystal.webp',fw:256,fh:256,frames:4,rate:8,anchor:'feet',loop:true},
+  msn71_crystal:{url:'assets/art/mission-motion2c/msn71_crystal.webp',fw:256,fh:256,frames:8,rate:16,anchor:'feet',loop:true},
   msn71_crystal_blast:{url:'assets/art/missions71/msn71_crystal_blast.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',black:true},
-  msn71_lantern:{url:'assets/art/missions71/msn71_lantern.webp',fw:160,fh:224,frames:4,rate:8,anchor:'feet',loop:true},
+  msn71_lantern:{url:'assets/art/mission-motion2c/msn71_lantern.webp',fw:160,fh:224,frames:8,rate:16,anchor:'feet',loop:true},
   msn71_lantern_out:{url:'assets/art/missions71/msn71_lantern_out.webp',fw:160,fh:224,frames:1,rate:8,anchor:'feet'},
   msn71_overcharge_pad:{url:'assets/art/missions71/msn71_overcharge_pad.webp',fw:192,fh:192,frames:6,rate:8,anchor:'center',loop:true},
   msn71_season_shrines:{url:'assets/art/missions71/msn71_season_shrines.webp',fw:192,fh:192,frames:4,rate:8,anchor:'center'},
@@ -4205,12 +4206,12 @@ const ASSET_FX = {
   msn71_bubble:{url:'assets/art/missions71/msn71_bubble.webp',fw:96,fh:96,frames:4,rate:8,anchor:'center',loop:true},
   msn71_supply_crate:{url:'assets/art/missions71/msn71_supply_crate.webp',fw:192,fh:192,frames:2,rate:8,anchor:'feet'},
   msn71_stalker_captain:{url:'assets/art/missions71/msn71_stalker_captain.webp',fw:256,fh:256,frames:1,rate:8,anchor:'feet'},
-  ult_altar:{url:'assets/art/trial74/ult_altar.webp',fw:256,fh:256,frames:4,rate:8,anchor:'feet',loop:true},
+  ult_altar:{url:'assets/art/mission-motion2c/ult_altar.webp',fw:256,fh:256,frames:8,rate:16,anchor:'feet',loop:true},
   ult_circle:{url:'assets/art/trial74/ult_circle.webp',fw:256,fh:256,frames:1,rate:8,anchor:'center'},
-  ult_seed:{url:'assets/art/trial74/ult_seed.webp',fw:96,fh:96,frames:4,rate:8,anchor:'center',loop:true},
+  ult_seed:{url:'assets/art/mission-motion2c/ult_seed.webp',fw:96,fh:96,frames:8,rate:16,anchor:'center',loop:true},
   ult_curse_pads:{url:'assets/art/trial74/ult_curse_pads.webp',fw:192,fh:192,frames:6,rate:8,anchor:'center'},
   ult_choice_pads:{url:'assets/art/trial74/ult_choice_pads.webp',fw:192,fh:192,frames:2,rate:8,anchor:'center'},
-  gg_oven:{url:'assets/art/league73/gg_oven.webp',fw:256,fh:256,frames:4,rate:8,anchor:'feet',loop:true},
+  gg_oven:{url:'assets/art/mission-motion2c/gg_oven.webp',fw:256,fh:256,frames:8,rate:16,anchor:'feet',loop:true},
   gg_parts:{url:'assets/art/league73/gg_parts.webp',fw:128,fh:128,frames:5,rate:8,anchor:'center'},
   gg_golem:{url:'assets/art/league73/gg_golem.webp',fw:384,fh:384,frames:6,rate:8,anchor:'feet',loop:true},
   hs_circle:{url:'assets/art/league73/hs_circle.webp',fw:256,fh:256,frames:1,rate:8,anchor:'center'},
@@ -17973,7 +17974,7 @@ class Game extends Phaser.Scene {
     const shadow=this.feedbackSprite?.('hn92_bottle_shadow',sx,sy,22,11,-99290);
     const sh=shadow?null:this.camWorld(this.add.graphics().setDepth(-99290));
     const bot=this.camWorld(bt?this.add.sprite(sx,sy,'hn87_poison_bottle',0).setScale(30/64):this.add.circle(sx,sy,8,0x9b5bff,1).setStrokeStyle(2,0xe6d0ff,1)); bot.setDepth(99000);
-    if(bt){ if(this.anims&&!this.anims.exists('hn87_poison_bottle'))this.anims.create({key:'hn87_poison_bottle',frames:this.anims.generateFrameNumbers('hn87_poison_bottle',{start:0,end:3}),frameRate:12,repeat:-1}); bot.play?.('hn87_poison_bottle'); }
+    if(bt&&this.bpAnim?.('hn87_poison_bottle'))bot.play?.('hn87_poison_bottle');
     const st={k:0},H=90+Math.min(120,this.dist(sx,sy,tx,ty)*.25),kill=()=>{ for(const o of [mark,danger,shadow,sh,bot])if(o?.active)o.destroy(); };
     this.tweens.add({targets:st,k:1,duration:T,ease:'Linear',onUpdate:()=>{ if(!bot.active)return; if(gone()){ kill(); return; } const k=st.k,z=H*4*k*(1-k),x=sx+(tx-sx)*k,y=sy+(ty-sy)*k;
         bot.setPosition(x,y-z).setRotation(k*Math.PI*3);

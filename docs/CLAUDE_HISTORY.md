@@ -4630,3 +4630,7 @@ Seed Rift plays a 12-frame (24 FPS) amber-seed intake when a carrier feeds the p
 - **Prismatic Armament:** spell icon above Sesame's head with a countdown ring · basic attack fires +2 flares in a wide fan while armed (per-flare bonus 1.4 → 1.15).
 - Same caps as before (≤ 8 spell actors, ≤ 12 fx) · Lv1 casts behave exactly as before.
 - Tests: `tests/sesame-mastery-8264.test.cjs` · `sesame-runes` serpent/armament checks updated.
+
+# Delivery: v8.2.65 — Smoother Frozen Pantry army
+
+All seven Frozen Pantry walk loops now use eight painted 128×128 frames with the original idle frame and foot line. Frame rate doubles per role to preserve its original cycle duration. Stage and roaming mission loading, fallback art, behavior and hitboxes retain the existing implementation. Source sheets with prompt and loop QA plus a preview are in assets/incoming/frozen-pantry. The updated contract verifies atlas dimensions, source checksums, the same walk cycle period, and the frozen and awake paths. This completes the first batch of phase 2 after checking the v8.2.64 updates. The next batch covers Herald minions and Seed Rift carriers.

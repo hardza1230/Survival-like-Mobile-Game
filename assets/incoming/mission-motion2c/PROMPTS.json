@@ -1,0 +1,82 @@
+[
+  {
+    "key": "ws92_tether",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. thin antique-gold wisp tether flowing left to right, restrained pale-gold cable with sparse travel motes; preserve a narrow overall footprint and aligned side endpoints on the horizontal midline. Output exactly EIGHT long slim horizontal stripes vertically stacked in ONE column × EIGHT rows on a square transparency canvas. One independently centered complete horizontal beam per equal-height row, from identical left to right endpoints, each beam approximately seven times as wide as its allocated row height. Leave generous empty space above and below each beam. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-87a1ced8-2889-4d29-b10d-ab7c71b9bd83.png",
+    "reference": "ws92_tether from v8.2.66",
+    "preparation": "Extracted [1, 8] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤112, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "hn87_poison_bottle",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. corked round poison potion shown in the reference, purple flask with lime fluid and amber cork, tumble exactly 45 degrees CLOCKWISE in each pose. Pose 1 points cork up, 3 cork right, 5 cork down, 7 cork left. Rotate about the middle of the bottle; preserv​e size.. Output exactly EIGHT separate poses in FOUR equally spaced columns × TWO rows on a wide transparency canvas, row-major chronological order. Every pose sits fully inside its own cell at the same drawing scale and position with ample transparent margin. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-9a6f6780-4e20-4db2-a3b7-76bac01af3b8.png",
+    "reference": "hn87_poison_bottle from v8.2.66",
+    "preparation": "Extracted [4, 2] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤27, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "hh85_beam",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. slender Hunger Herald ray, turquoise on the left and turning lavender-violet at the right, flying narrow sparks pass along the line in eight equal phases while its straight slim center stays fixed, preserve exact style and main beam lane. Output exactly EIGHT long slim horizontal stripes vertically stacked in ONE column × EIGHT rows on a square transparency canvas. One independently centered complete horizontal beam per equal-height row, from identical left to right endpoints, each beam approximately seven times as wide as its allocated row height. Leave generous empty space above and below each beam. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-b1111539-c603-400b-ab69-0273d1001fd1.png",
+    "reference": "hh85_beam from v8.2.66",
+    "preparation": "Extracted [1, 8] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤112, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "hm_splinter",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. small angular purple diamond-shaped Hunger Splinter, same facet arrangement, just a traveling lavender sheen, no major silhouette movement. Output exactly EIGHT separate poses in FOUR equally spaced columns × TWO rows on a wide transparency canvas, row-major chronological order. Every pose sits fully inside its own cell at the same drawing scale and position with ample transparent margin. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-56838882-39a9-4a02-a3ea-4aa215e6c3b5.png",
+    "reference": "hm_splinter from v8.2.66",
+    "preparation": "Extracted [4, 2] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤27, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "gp_pot",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. same Grandma's copper-pink strawberry cookpot with handles and spoon; keep all pot, handle and spoon positions constant, softly animate only simmer and 1 tiny steam curl. Output exactly EIGHT separate poses in FOUR equally spaced columns × TWO rows on a wide transparency canvas, row-major chronological order. Every pose sits fully inside its own cell at the same drawing scale and position with ample transparent margin. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-608a3c32-33cc-4486-8425-67983ba7cd7b.png",
+    "reference": "gp_pot from v8.2.66",
+    "preparation": "Extracted [4, 2] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤27, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "msn71_crystal",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. same bright blue pointy crystal on the dark gold-trimmed pedestal, keep crystal and pedestal completely stationary, animate a gentle blue-white sheen and one glint cycling across. Output exactly EIGHT separate poses in FOUR equally spaced columns × TWO rows on a wide transparency canvas, row-major chronological order. Every pose sits fully inside its own cell at the same drawing scale and position with ample transparent margin. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-a93744dd-a6ab-42a2-8d73-df0a2f7f2139.png",
+    "reference": "msn71_crystal from v8.2.66",
+    "preparation": "Extracted [4, 2] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤27, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "msn71_lantern",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. same tall thin antique bronze floor lantern with narrow upright metal stem and gold light; frame body and base must stay completely still, animate only the soft amber wick and interior light. Output exactly EIGHT separate poses in FOUR equally spaced columns × TWO rows on a wide transparency canvas, row-major chronological order. Every pose sits fully inside its own cell at the same drawing scale and position with ample transparent margin. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-2e1a6879-4d41-4f3c-ac8c-7890917a5df5.png",
+    "reference": "msn71_lantern from v8.2.66",
+    "preparation": "Extracted [4, 2] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤27, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "ult_altar",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. same two-tier copper caramel altar with glowing curled ribbons on top; keep pedestal, lip and rune ornaments steady, only flame tips on top slowly breathe. Output exactly EIGHT separate poses in FOUR equally spaced columns × TWO rows on a wide transparency canvas, row-major chronological order. Every pose sits fully inside its own cell at the same drawing scale and position with ample transparent margin. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-424b8acf-1f29-4e88-9ed9-1a2caefbe6db.png",
+    "reference": "ult_altar from v8.2.66",
+    "preparation": "Extracted [4, 2] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤27, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "ult_seed",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. same glowing orange-yellow ornate pumpkin seed with green golden leaves; stable silhouette, only small soft gleam travels around facets. Output exactly EIGHT separate poses in FOUR equally spaced columns × TWO rows on a wide transparency canvas, row-major chronological order. Every pose sits fully inside its own cell at the same drawing scale and position with ample transparent margin. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-3c9d1c73-2dce-47cc-99d2-b226e77e90b3.png",
+    "reference": "ult_seed from v8.2.66",
+    "preparation": "Extracted [4, 2] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤27, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  },
+  {
+    "key": "gg_oven",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached original 4-pose Mochi Mayhem mobile game sprite to eight poses, based strictly on its design, viewing angle, shape and colors. same rustic short red stone candy oven, same amber window and round iron door; base, little chimney and all masonry stay still; animate only gold fire in the hearth and a tiny warm glint. Output exactly EIGHT separate poses in FOUR equally spaced columns × TWO rows on a wide transparency canvas, row-major chronological order. Every pose sits fully inside its own cell at the same drawing scale and position with ample transparent margin. Original hand-painted candy fantasy rendering, restrained glow, no strong emission outside the effect. Pose one and pose eight connect naturally. All eight cells are populated with distinct small changes. True transparent RGBA canvas, no fog behind, no shadow, no text, numbers, borders, guides, backgrounds or grids.",
+    "sourceImage": "exec-622253d6-b761-432d-af67-2a53d2420d83.png",
+    "reference": "gg_oven from v8.2.66",
+    "preparation": "Extracted [4, 2] donor cells, centered beam bands on painted peaks where applicable, removed matte alpha ≤27, preserved the original runtime frame size and anchor; packed eight frames row-major."
+  }
+]

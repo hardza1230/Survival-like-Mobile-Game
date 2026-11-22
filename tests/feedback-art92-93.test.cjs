@@ -20,7 +20,7 @@ for (const [batch, count] of [['fx92',9],['card_back93',3],['feedback_redesign',
     const data = fs.readFileSync(dir+'/'+row.file);
     assert.equal(data.length,row.bytes);
     assert.equal(createHash('sha256').update(data).digest('hex'),row.sha256);
-    const path = 'assets/art/'+batch+'/'+row.key+'.webp';
+    const path = 'assets/art/'+(row.key==='ws92_tether'?'mission-motion2c':batch)+'/'+row.key+'.webp';
     assert(src.includes("'"+path+"'"),row.key);
     assert.equal(fs.readFileSync(path).subarray(8,12).toString(),'WEBP');
   }

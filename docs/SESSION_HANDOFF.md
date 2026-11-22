@@ -1,3 +1,7 @@
+# Current checkpoint — Animation phase 2C (2026-11-22)
+
+Base 80fae41e (v8.2.66); candidate v8.2.67 on integration/animation-phase2c. Ten mission prop/VFX loops upgraded to eight frames, matched cadence, rebuilt sprite borders and Hunt animation comes from the registry. Phase 2 complete: 26 upgraded, four deferred/static/fallback as planned. Next is phase 3, hero and Yuzu animations. Verify Pages and live version; owner mobile review remains.
+
 # Current checkpoint — Animation phase 2B (2026-11-22)
 
 Base 6d3ee7c0 (v8.2.65). Candidate v8.2.66 on integration/animation-phase2b: nine eight-frame mission creature loops, preserved cycle duration and prior stage/roam loading. Source in assets/incoming/mission-motion2b; Order 85/87 donors remain intact. Next: phase 2C mission props and VFX in docs/design/animation-frame-upgrade-plan.md. Verify deployed version and owner playtest before reporting visual acceptance.
