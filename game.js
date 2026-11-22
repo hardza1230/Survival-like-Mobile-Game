@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.70';
+const GAME_VERSION = '8.2.71';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.71',date:'2026-11-22',title:'⚫ Sesame less tanky',items:['Sesame base HP bonus 34 to 15','Blue Mantle damage reduction cap 45% to 25%']},
   {v:'8.2.70',date:'2026-11-22',title:'▶ Missions start by themselves',items:['In-stage missions begin automatically after their card (no Start button)']},
   {v:'8.2.69',date:'2026-11-22',title:'🔮 Sesame spells grow from orb cards',items:['Spell level comes from Ember/Gale/Tide card ranks (not cast count)','Rank 4 twist for every spell','Orb card texts explain the growth']},
   {v:'8.2.68',date:'2026-11-22',title:'Smoother hero hit reactions',items:['Cocoa, Yuzu, Mint, Taro and Sesame now flinch and recover with eight-frame animations in their default and Festival outfits.']},
@@ -5594,7 +5595,7 @@ const CHARACTERS = {
   mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — lances stack Chill (slow); 4 stacks freeze the enemy solid. Chilled bosses take more damage',stats:{hp:18,dmg:1.00,spd:1.12,def:0.90,crit:0.05,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
   cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'A sturdy boxer: Brawler sweeps crowds, Titan crushes marked targets, Dash Boxer strikes through movement. Toggle Flicker to warp into short punch chains and return; Dash cancels. Each path has a one-tap Unique',stats:{hp:46,dmg:1.03,spd:0.94,def:0.84,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
-  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Rune Invoker',desc:'Mix three orbs into ten spells with separate cooldowns. Red adds damage and splash, green adds movement and attack speed, blue adds regen and echo shots. PMM empowers basic attacks; BBB grants water armor. PMB blasts in every direction. No Build paths; old talent investments remain preserved',stats:{hp:34,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
+  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Rune Invoker',desc:'Mix three orbs into ten spells with separate cooldowns. Red adds damage and splash, green adds movement and attack speed, blue adds regen and echo shots. PMM empowers basic attacks; BBB grants water armor. PMB blasts in every direction. No Build paths; old talent investments remain preserved',stats:{hp:15,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
   yuzu:{name:'Yuzu',emoji:'🍋',unique:'citrusParade',weapon:'yuzuCrew',cost:0,color:0xffd85e,role:'Companion commander',desc:'Fights beside one citrus companion. Your seeds mark a target: walk toward an enemy to aim, and your partner focuses the mark. Unique empowers your partner. Choose Pomelo, Lime or Blood Orange.',stats:{hp:12,dmg:0.98,spd:1.04,def:0.96,crit:0.03,cdr:0.98,regenFlat:0.4},rating:{hp:3,atk:4,spd:3,def:3}},
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
@@ -5646,7 +5647,7 @@ const SES_RUNE_CARDS=[
  {id:'resonance',name:'Threefold Resonance',emoji:'✦',max:3,desc:'Each distinct orb color grants 4% rune spell damage per rank.'},
  {id:'pulse',name:'Orb Reprise',emoji:'✺',max:3,desc:'Casting a spell makes the three orbs pulse around you for 18 spell power per rank in a 105px area.'},
  {id:'flow',name:'Wind Memory',emoji:'✥',max:3,desc:'Each green orb reduces the cooldown of newly cast spells by 2% per rank, up to 18%.'},
- {id:'ward',name:'Blue Mantle',emoji:'◈',max:3,desc:'Casting with blue orbs grants 5% damage reduction per blue orb per rank for 2s, up to 45%.'}
+ {id:'ward',name:'Blue Mantle',emoji:'◈',max:3,desc:'Casting with blue orbs grants 5% damage reduction per blue orb per rank for 2s, up to 25%.'}
 ].map(c=>({...c,iconKey:'ic_ses811_'+c.id}));
 /* v8.2.64 เจ้าของ: Spell Mastery · คาถาเดียวกันร่ายครบ 3/7/12/18 ครั้งในรอบ = Lv2–5 · โตที่จำนวน (multitude) ไม่ใช่ดาเมจต่อลูก */
 const SES_MASTERY_AT=[3,7,12,18];
@@ -5656,7 +5657,7 @@ const SES_COLOR_CARD={p:'ember',m:'gale',b:'tide'};
 function sesSpellLv(key,ranks){const cols=[...new Set(String(key||'').split(''))].filter(c=>SES_COLOR_CARD[c]);if(!cols.length)return 1;const sum=cols.reduce((a,c)=>a+((ranks||{})[SES_COLOR_CARD[c]]|0),0);return Math.min(5,1+Math.floor(sum/cols.length));}
 function sesRunePush(orbs,key){return ['p','m','b'].includes(key)?[...orbs.slice(-2),key]:orbs.slice();}
 function sesRuneRecipe(orbs){const key=['p','m','b'].map(k=>orbs.filter(x=>x===k).join('')).join(''),r=orbs.length===3?SES_RUNE_RECIPES[key]:null;return {key,tiers:{2:'Stronger invocations',3:'Faster spell recovery',4:'Greater elemental force'},...(r||{name:'Compose 3 runes',emoji:'?',color:0x999099,cd:8}),ready:!!r};}
-function sesRuneBonuses(orbs,r={}){const n=k=>orbs.filter(x=>x===k).length,p=n('p'),m=n('m'),b=n('b'),colors=new Set(orbs).size;return {p,m,b,damage:1+p*(.10+.02*(r.ember||0)),speed:1+Math.min(.3,m*(.06+.015*(r.gale||0))),attackRate:1+Math.min(.6,m*(.08+.01*(r.gale||0))),echo:Math.min(.5,b*(.12+.01*(r.tide||0))),regen:b*(.0025+.00075*(r.tide||0)),area:1+.1*(r.reach||0),spell:1+.04*colors*(r.resonance||0),cooldown:1-Math.min(.18,m*.02*(r.flow||0)),guard:Math.min(.45,b*.05*(r.ward||0))};}
+function sesRuneBonuses(orbs,r={}){const n=k=>orbs.filter(x=>x===k).length,p=n('p'),m=n('m'),b=n('b'),colors=new Set(orbs).size;return {p,m,b,damage:1+p*(.10+.02*(r.ember||0)),speed:1+Math.min(.3,m*(.06+.015*(r.gale||0))),attackRate:1+Math.min(.6,m*(.08+.01*(r.gale||0))),echo:Math.min(.5,b*(.12+.01*(r.tide||0))),regen:b*(.0025+.00075*(r.tide||0)),area:1+.1*(r.reach||0),spell:1+.04*colors*(r.resonance||0),cooldown:1-Math.min(.18,m*.02*(r.flow||0)),guard:Math.min(.25,b*.05*(r.ward||0))};}
 function sesRuneEnemyValid(e){return !!(e?.active&&e.hp>0&&!e.isDummy&&!e._phaseGateLocked&&!(e._phaseInvuln>0)&&Number.isFinite(e.x)&&Number.isFinite(e.y));}
 function sesRuneSegmentDistance(x,y,ax,ay,bx,by){const dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-ax-dx*t,y-ay-dy*t);}
 /* v8.1.39 เจ้าของ: รูน 3 ปุ่มเป็นโค้งรอบ Unique ด้านในจอ (บน → เฉียง → ข้าง) ให้นิ้วโป้งเดียวกดถึง · Dash อยู่ใต้ Unique จึงไม่ชน */
