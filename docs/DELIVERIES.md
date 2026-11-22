@@ -1,6 +1,15 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.59 — 🍭 Lollipops: real money buys looks only, never power
+# Latest delivery: v8.2.60 — 🔑 Faster Google sign-in (native account sheet)
+
+**Owner:** signing in with a new Google account was slow on the Google web pages.
+- **Native sign-in (Android Credential Manager):** plugin `@capgo/capacitor-social-login` 8.7.7 → account sheet from the bottom of the screen, no browser → Google ID token → Supabase `signInWithIdToken` (SHA-256 nonce). Needs `GOOGLE_WEB_CLIENT_ID` (empty for now) + a new APK; until then the old Custom Tab is used (no break).
+- **Fallback path faster:** the browser closes right after the deep link returns; cloud pull is one query (`data,stats`).
+- **Timing:** Tele event `login` (`way` native/tab · `ms` · `res`).
+- `android.yml` prints the debug signing SHA-1 · owner setup steps: `docs/PLAY_CONSOLE_SETUP.md` (last section).
+- Test: `tests/google-native-8260.test.cjs`.
+
+# Previous delivery: v8.2.59 — 🍭 Lollipops: real money buys looks only, never power
 
 - **Owner (22 Nov):** 🧶 Thread buys power (gear Enhance, Weave Rank up, Ancient perks), so it must never be sold. The new real-money currency is **🍭 Lollipops**.
 - **Save:** `Save.lollipops / addLollipops / spendLollipops` (`data.lollipops`). It is spent only inside `Cos.pay` (wardrobe items and skins).
@@ -12,7 +21,3 @@
   - `thread-shop`, `bazaar-tabs` and `owner-round149` updated.
   - Headless: GM 🍭 500 → the lobby pill shows, and the Wardrobe buys a pet for 🍭 300 while 🧶 stays untouched.
 - Merged the other session's v8.2.55–58 (order 92/93 art, Frozen Pantry army, mission VFX) first.
-
-# Previous delivery: v8.2.58 — Painted Seed Rift and Mirror Path cues
-
-Seed Rift plays a 12-frame (24 FPS) amber-seed intake when a carrier feeds the portal, and Mirror Path plays an 8-frame (24 FPS) prism lock when each mirror charges. Both are original painted one-shots, stage-lazy and scoped to their mission home and roaming load routes, with the old poof or hit ring as fallbacks. Source PNGs, ImageGen prompts, QA and a preview are in mission-vfx-next. The source audit groups 274 registered or physically four-cell sheets and 54 named four-frame ranges as candidates, fixed cells, short bursts, or fallback art. The next production group is Frozen Pantry and mission monsters.

@@ -31,3 +31,18 @@
 
 ## Closed test (เงื่อนไขบัญชีส่วนตัว)
 Publish a closed testing release → ผู้ทดสอบ opt-in ≥ 12 คน → รันต่อเนื่อง ≥ 14 วัน → Apply for production
+
+## ล็อกอิน Google แบบ native (v8.2.60 · ให้เจ้าของตั้งค่า)
+ตอนนี้ `GOOGLE_WEB_CLIENT_ID=''` → เกมยังใช้หน้าเว็บ Google (Custom Tab) แบบเดิม · พอตั้งครบด้านล่าง ล็อกอินจะเป็นแผ่นเลือกบัญชีด้านล่างจอ แตะครั้งเดียว
+1. **Google Cloud Console** (โปรเจกต์เดียวกับที่ Supabase ใช้) → APIs & Services → Credentials
+   - มี OAuth client แบบ **Web application** อยู่แล้ว (ที่ใส่ใน Supabase) → คัดลอก **Client ID** (`xxxx.apps.googleusercontent.com`)
+   - Create credentials → OAuth client ID → **Android** · Package name `com.oheart.mochimayhem` · SHA-1:
+     - debug APK จาก CI: GitHub → Actions → "Build Android APK" รันล่าสุด → ขั้น **Print debug signing SHA-1**
+     - แอปจาก Play Store: Play Console → Test and release → App integrity → App signing → **SHA-1 ของ App signing key**
+     - สร้าง Android client 1 อันต่อ 1 SHA-1 (ไม่ต้องใส่ Client ID ของ Android ในเกม)
+2. **Supabase** → Authentication → Sign In / Providers → Google
+   - **Authorized Client IDs (Client IDs)**: ใส่ Web client ID (คั่นด้วย comma ถ้ามีหลายอัน)
+   - "Skip nonce check" ปิดไว้ได้ (เกมส่ง nonce ให้แล้ว)
+3. ส่ง **Web client ID** ให้ AI → ใส่ใน `GOOGLE_WEB_CLIENT_ID` (ไม่ใช่ความลับ) + ขึ้น `MIN_APK_VERSION` ให้ลง APK ใหม่
+4. ทดสอบ: ลง APK ใหม่ → Settings → Sign in with Google → ควรขึ้นแผ่นเลือกบัญชี · ถ้ายังเปิดหน้าเว็บ = ยังตั้งไม่ครบ (เกมย้อนไปทางเดิมเองไม่พัง)
+- ดูความเร็วจริง: Supabase `run_stats` mode='event' event `login` (`way` native/tab · `ms` · `res`)

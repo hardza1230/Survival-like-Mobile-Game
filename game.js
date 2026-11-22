@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.59';
+const GAME_VERSION = '8.2.60';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.60',date:'2026-11-22',title:'🔑 Faster Google sign-in (native account sheet)',items:['Native Google sign-in via Credential Manager when GOOGLE_WEB_CLIENT_ID is set','Custom Tab closes on return; cloud pull is one query','login timing event']},
   {v:'8.2.59',date:'2026-11-22',title:'Lollipops: real money buys looks only',items:['New Lollipops currency for future purchases: cosmetics and the Mochi Pass only, never power','Wardrobe items and skins can be paid with Thread or Lollipops']},
   {v:'8.2.58',date:'2026-11-22',title:'Painted mission feedback',items:['See an amber seed spiral into the rift when a carrier feeds it.','A prism glint confirms exactly when each mirror is charged.']},
   {v:'8.2.57',date:'2026-11-22',title:'Clearer mission effects',items:['Breach spreads a violet stain with jagged veins that withdraw as it closes.','Hunger Herald marks which monster its beam will empower.','Defend Nectar shows attacks, healing range, and where the new flower blooms.']},
@@ -8310,6 +8311,8 @@ const QA={ Q:'mochi_qa_q', errs:[], sentKeys:{}, autoN:0, AUTO_MAX:5,
   reportWith(kind,note,blob){ const keep=this.shot; this.shot=cb=>cb(blob); try{ this.report(kind,note,'player'); }finally{ this.shot=keep; } }
 };
 try{ QA.init(); }catch(e){}
+/* v8.2.60 ล็อกอิน Google แบบ native (Android Credential Manager · แผ่นเลือกบัญชีด้านล่าง ไม่เปิดเบราว์เซอร์) · ใส่ Web client ID ของ Google Cloud (ตัวเดียวกับที่ Supabase ใช้) · ว่าง = ใช้ Custom Tab เดิม */
+const GOOGLE_WEB_CLIENT_ID='';
 const Cloud = {
   sb:null, user:null, ready:false, _pushT:null, _deeplinkBound:false, _onLogin:null,
   enabled(){ try{ return !!(window.supabase&&CLOUD_URL&&CLOUD_KEY); }catch(e){ return false; } },
@@ -8324,10 +8327,11 @@ const Cloud = {
   bindDeepLink(){ if(this._deeplinkBound||!this.native())return;
     try{ const App=window.Capacitor.Plugins.App; if(!App)return;
       App.addListener('appUrlOpen', async (ev)=>{ const url=ev&&ev.url; if(!url||url.indexOf('login-callback')<0)return;
+        try{ const B=window.Capacitor.Plugins.Browser; if(B)B.close().catch?.(()=>{}); }catch(e){}   /* v8.2.60 ปิดหน้าเว็บก่อน แลก code ทีหลัง (ไม่ค้างหน้า Google) */
         try{ const qs=(url.split('?')[1]||'').split('#')[0], p=new URLSearchParams(qs), code=p.get('code');
           if(code){ await this.sb.auth.exchangeCodeForSession(code); }
           else { const hp=new URLSearchParams(url.split('#')[1]||''), at=hp.get('access_token'), rt=hp.get('refresh_token'); if(at&&rt)await this.sb.auth.setSession({access_token:at,refresh_token:rt}); }
-          const s=(await this.sb.auth.getSession()).data.session; if(s){ this.user=s.user; this.ready=true; }
+          const s=(await this.sb.auth.getSession()).data.session; if(s){ this.user=s.user; this.ready=true; } if(this._loginT0){ this.loginTele('tab',this._loginT0,s?'ok':'no_session'); this._loginT0=0; }
         }catch(e){ console.warn('[cloud] deeplink',e); }
         try{ const B=window.Capacitor.Plugins.Browser; if(B)await B.close(); }catch(e){}
         try{ if(this._onLogin)this._onLogin(); }catch(e){}
@@ -8341,7 +8345,7 @@ const Cloud = {
     }catch(e){ console.warn('[cloud] init',e); return false; } },
   base(){ try{ const b=JSON.parse(localStorage.getItem('mochi_cloud_base')||'null'); return b&&this.user&&b.uid===this.user.id?b.rev:null; }catch(e){ return null; } },
   setBase(rev){ try{ if(this.user)localStorage.setItem('mochi_cloud_base',JSON.stringify({uid:this.user.id,rev})); }catch(e){} },
-  async pull(){ if(!this.ready)return null; this._remoteStats=null; try{ const st=await this.sb.from('game_saves').select('stats').eq('user_id',this.user.id).maybeSingle(); if(!st.error&&st.data)this._remoteStats=st.data.stats; }catch(e){} try{ const {data,error}=await this.sb.from('game_saves').select('data').eq('user_id',this.user.id).maybeSingle(); if(error){console.warn('[cloud] pull',error.message);return null;} return data?data.data:null; }catch(e){ return null; } },
+  async pull(){ if(!this.ready)return null; this._remoteStats=null; try{ const {data,error}=await this.sb.from('game_saves').select('data,stats').eq('user_id',this.user.id).maybeSingle(); if(error){console.warn('[cloud] pull',error.message);return null;} if(data)this._remoteStats=data.stats; return data?data.data:null; }catch(e){ return null; } },   /* v8.2.60 query เดียว (เดิม 2 ครั้ง) */
   async push(data){ if(!this.ready||this.hold||(typeof GM!=='undefined'&&GM.testing()))return; try{ const rev=data.rev||0,{error}=await this.sb.from('game_saves').upsert({user_id:this.user.id,data,updated_at:new Date().toISOString()}); if(!error)this.setBase(rev); else console.warn('[cloud] push',error.message); }catch(e){ console.warn('[cloud] push',e); } },
   /* v7.8.103 Play Stats ขึ้นคลาวด์ (คอลัมน์ stats แยก · ส่งตอนจบรัน ไม่ใช่ทุกเซฟ · เก็บ 150 รันล่าสุด) */
   queueStats(){ if(!this.ready)return; clearTimeout(this._statT); this._statT=setTimeout(async()=>{ try{ const a=Stats.load().slice(-150); await this.sb.from('game_saves').update({stats:a}).eq('user_id',this.user.id); }catch(e){ console.warn('[cloud] stats',e); } },3000); },
@@ -8353,7 +8357,8 @@ const Cloud = {
     try{
       // ในแอป Android: เปิด Custom Tab Lockedอิน แล้วเด้งกลับผ่าน deep link (WebView Lockedอิน Google ตรง ๆ ไม่ได้)
       if(this.native()){
-        this.bindDeepLink();
+        const nat=await this.nativeGoogle?.(); if(nat)return nat;   /* v8.2.60 แผ่นเลือกบัญชีของ Android ก่อน · ไม่ได้ = Custom Tab เดิม */
+        this.bindDeepLink(); this._loginT0=Date.now(); this._loginWay='tab';
         const {data,error}=await this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:'com.oheart.mochimayhem://login-callback',skipBrowserRedirect:true}});
         if(error)return {ok:false,msg:error.message};
         if(data&&data.url){ const B=window.Capacitor.Plugins.Browser; if(!B)return {ok:false,msg:'Browser plugin not ready (reinstall the APK)'}; await B.open({url:data.url,presentationStyle:'popover'}); return {ok:true,native:true}; }
@@ -8368,6 +8373,15 @@ const Cloud = {
       if(r.error)return {ok:false,msg:r.error.message};
       return {ok:true,redirect:true};   // เบราว์เซอร์จะรีไดเรกต์ไป Google แล้วกลับมา
     }catch(e){ return {ok:false,msg:String(e&&e.message||e)}; } },
+  /* v8.2.60 Credential Manager → Google ID token → Supabase signInWithIdToken · nonce: Google ได้ SHA-256 · Supabase ได้ค่าดิบ */
+  async nativeGoogle(){ const SL=window.Capacitor?.Plugins?.SocialLogin; if(!SL||!(typeof GOOGLE_WEB_CLIENT_ID!=='undefined'&&GOOGLE_WEB_CLIENT_ID))return null; const t0=Date.now();
+    try{ if(!this._slInit){ await SL.initialize({google:{webClientId:GOOGLE_WEB_CLIENT_ID}}); this._slInit=true; }
+      const raw=Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join(''),hb=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw)),hashed=Array.from(new Uint8Array(hb),b=>b.toString(16).padStart(2,'0')).join('');
+      const res=await SL.login({provider:'google',options:{nonce:hashed}}),idToken=res&&res.result&&res.result.idToken; if(!idToken){ this.loginTele('native',t0,'no_token'); return null; }
+      const r=await this.sb.auth.signInWithIdToken({provider:'google',token:idToken,nonce:raw}); if(r.error){ this.loginTele('native',t0,'sb:'+r.error.message); return null; }
+      this.user=r.data.user||r.data.session?.user; this.ready=true; this.loginTele('native',t0,'ok'); try{ this._onLogin&&this._onLogin(); }catch(e){} return {ok:true,native:true,done:true};
+    }catch(e){ const m=String(e&&e.message||e); this.loginTele('native',t0,'err:'+m.slice(0,80)); if(/cancel/i.test(m))return {ok:false,msg:'Sign-in cancelled'}; return null; } },
+  loginTele(way,t0,res){ try{ if(typeof Tele!=='undefined')Tele.ev('login',{way,ms:Date.now()-t0,res}); }catch(e){} },
   async signOut(){ try{ if(this.sb)await this.sb.auth.signOut(); }catch(e){} this.user=null;this.ready=false; },
 };
 
