@@ -1,6 +1,6 @@
 # 93 — ด้านหลังการ์ดภารกิจ (แจกการ์ดก่อนเริ่มด่าน) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 21 พ.ย. 2026 · **แก้ 21 พ.ย. ตามเจ้าของ: ออกแบบใหม่ใบเดียวสวย ๆ ตัดหลังใบบอส** · ยังไม่มีโค้ด (ตอนนี้หลังการ์ดเป็นกล่องม่วงวาดด้วยโค้ด + อีโมจิ 🍡)
+สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 21 พ.ย. 2026 · **แก้ 21 พ.ย. ตามเจ้าของ: ออกแบบใหม่ใบเดียวสวย ๆ ตัดหลังใบบอส** · ยังไม่มีโค้ด (ตอนนี้หลังการ์ดเป็นกล่องม่วงวาดด้วยโค้ด + อีโมจิ 🍡)
 ส่งไฟล์ที่ `assets/incoming/card_back93/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือหรือตัวเลขในภาพ**
 
@@ -47,4 +47,8 @@
 แต่ละแถว: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor`, `background` (`transparent`/`black`) · พร้อม `PROMPTS.json` และ `QA_REPORT.json`
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกตอนส่ง)
+
+- 2026-11-22. Delivered all 3 PNG32 files (8 frames) to `assets/incoming/card_back93/` with MANIFEST, PROMPTS and QA_REPORT. Missing files: none.
+- Files: `cb93_back.png`, `cb93_back_shine.png`, `cb93_flip.png`.
+- Verified grid, transparency or black background, nonempty frames, frame edges, sizes and hashes. Estimated WebP q80 size: 75,138 bytes.
+- Source branch: `asset-delivery/art92-93`. Ready for integration and in-game review.

@@ -1,0 +1,47 @@
+[
+  {
+    "key": "cb93_back",
+    "file": "cb93_back.png",
+    "bytes": 363256,
+    "sha256": "92967e38425ae9f05a0671937394ef4e7960ad3a1dced414ce6dfd803ce4507d",
+    "width": 320,
+    "height": 456,
+    "frameWidth": 320,
+    "frameHeight": 456,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  },
+  {
+    "key": "cb93_back_shine",
+    "file": "cb93_back_shine.png",
+    "bytes": 27622,
+    "sha256": "42da7ecf0627f6c975b25101c1178a7d9bf0c8f5951ee1abf9039c1314de4b01",
+    "width": 320,
+    "height": 456,
+    "frameWidth": 320,
+    "frameHeight": 456,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "black"
+  },
+  {
+    "key": "cb93_flip",
+    "file": "cb93_flip.png",
+    "bytes": 74933,
+    "sha256": "2be0ed5bc6728af3af69f33c49dda37ec777650820f1943aa2e8473e76159bc6",
+    "width": 1536,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": "center",
+    "background": "black"
+  }
+]

@@ -8,8 +8,8 @@
 | # | ใบ | งาน | จำนวน | เครื่องมือ | ส่งที่ | สถานะ |
 |---|---|---|---|---|---|---|
 | 1 | `docs/audio_orders/A20_RUBY_STAGE_ENTRY.md` | ม่านเข้าด่าน SFX 7 · Ruby แนะนำด่าน 15 + เล่นซ้ำ 4 (เจ้าของอนุมัติบท 21 พ.ย.) | 26 | ElevenLabs | `assets/incoming/audio_a20/` | 🟡 รอเสียง |
-| 2 | `docs/art_orders/93_MISSION_CARD_BACK.md` | หลังการ์ดภารกิจแบบเดียวสวย ๆ + แสงฟอยล์ + ประกายพลิก (แก้ตามเจ้าของ 21 พ.ย. · ไม่มีหลังใบบอส) | 3 | ImageGen | `assets/incoming/card_back93/` | 🟡 รออาร์ต |
-| 3 | `docs/art_orders/92_FEEDBACK_VFX_ANIM.md` | Shotgun นัดซ้ำ · ขวดพิษ Hunt โยนโค้ง+เป้าพื้น · โดมแสง Wisp (โค้ด B/C ทำแล้ว v8.2.45 รอภาพสลับ) | 9 | ImageGen | `assets/incoming/fx92/` | 🟡 รออาร์ต |
+| 2 | `docs/art_orders/93_MISSION_CARD_BACK.md` | หลังการ์ดภารกิจแบบเดียวสวย ๆ + แสงฟอยล์ + ประกายพลิก (แก้ตามเจ้าของ 21 พ.ย. · ไม่มีหลังใบบอส) | 3 | ImageGen | `assets/incoming/card_back93/` | 📦 ส่งแล้ว รอผูก |
+| 3 | `docs/art_orders/92_FEEDBACK_VFX_ANIM.md` | Shotgun นัดซ้ำ · ขวดพิษ Hunt โยนโค้ง+เป้าพื้น · โดมแสง Wisp (โค้ด B/C ทำแล้ว v8.2.45 รอภาพสลับ) | 9 | ImageGen | `assets/incoming/fx92/` | 📦 ส่งแล้ว รอผูก |
 
 ## ส่งและผูกเข้าเกมแล้ว (ไม่ต้องทำซ้ำ)
 - ใบ 69 สกิน Festival 68/68 (ยืนยัน v8.1.108) · ใบ 79 · 80 · 81 · 82 (v8.1.108–146) · 83 (v8.2.12) · 84 (v8.2.13) · 85 (v8.2.23) · 86/87 (v8.2.24) · 88/89/90 (v8.2.31) · 91 (v8.2.33)

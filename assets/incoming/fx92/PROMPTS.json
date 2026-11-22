@@ -1,0 +1,110 @@
+[
+  {
+    "key": "sg92_muzzle_echo",
+    "tool": "ImageGen",
+    "prompt": "Six frames in 2 columns 3 rows. Narrow strawberry pink double-shot echo muzzle flash starts at consistent LEFT center, erupts RIGHT, peaks early, then dwindles into white strawberry seeds. Thin small flash, no orange fire. Original Mochi Mayhem candy fantasy VFX. Exact equal working cells, strict row-major order. Each effect fully within its cell, ample gutter (at least 10%), no text, numbers, rulers, grid, UI or watermark. Pure RGB black #000 background, no texture or backdrop haze.",
+    "source": "exec-4ea49fe8-4d37-43e9-9cbf-baaf643b58e0.png",
+    "workingGrid": [
+      2,
+      3
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  },
+  {
+    "key": "sg92_double_barrel",
+    "tool": "ImageGen",
+    "prompt": "Eight animation frames in 2 columns 4 rows, rectangular cells 8:5. Heavy two layered strawberry-pink and warm gold muzzle jets, both rooted at LEFT midpoint and firing RIGHT, expanding conical pressure waves, scattering tiny white sugar seeds. Impact peak early then decays. Original Mochi Mayhem candy fantasy VFX. Exact equal working cells, strict row-major order. Each effect fully within its cell, ample gutter (at least 10%), no text, numbers, rulers, grid, UI or watermark. Pure RGB black #000 background, no texture or backdrop haze.",
+    "source": "exec-12c8ca3e-1b6e-4bf6-b672-f1970ba81a35.png",
+    "workingGrid": [
+      2,
+      4
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  },
+  {
+    "key": "sg92_pellet_trail",
+    "tool": "ImageGen",
+    "prompt": "4 frames in 2 columns 2 rows, horizontal cells 2:1. Tiny bright-white pellet head RIGHT and tapering short pale strawberry-pink luminous tail LEFT. Same centered silhouette all frames, only mild shimmer in cyclic phases. Not a fireball. Original Mochi Mayhem candy fantasy VFX. Exact equal working cells, strict row-major order. Each effect fully within its cell, ample gutter (at least 10%), no text, numbers, rulers, grid, UI or watermark. Pure RGB black #000 background, no texture or backdrop haze.",
+    "source": "exec-aba02d86-2d50-4e0c-9214-e3ebf0148978.png",
+    "workingGrid": [
+      2,
+      2
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  },
+  {
+    "key": "hn92_target_mark",
+    "tool": "ImageGen",
+    "prompt": "Game VFX animation source atlas: 8 cells in exactly 4 columns and 2 rows, equal square cells. Pure solid RGB black #000. In each cell draw only a low, flat lavender and pink-violet elliptical ring, seen from 3/4 overhead on an imaginary floor, a soft irregular wavy rim with 2 to 4 little poison droplets along that rim. Empty BLACK hole in the middle of each oval, no filled middle. No pictogram, skull, crossbones, target crosshair, icon, graphics, insignia, glyphs, symbols, lettering or numbers whatsoever. Strictly row-major, ring shrinks gently and successively from broad first frame to diameter around 52% of first in final frame, with 10% padding even around the first largest ring; each center aligned. Bright enough for dark fantasy stage flooring. Isolated luminous lavender liquid effect, no floor, grid, divider, or background haze.",
+    "source": "exec-f60d1e32-5d7d-4335-a5be-cf0f02952da6.png",
+    "workingGrid": [
+      4,
+      2
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  },
+  {
+    "key": "hn92_bottle_shadow",
+    "tool": "ImageGen",
+    "prompt": "Generate one flat soft contact shadow asset for only a small floating bottle. RGBA on a 2:1 landscape canvas. The ONLY nontransparent color is neutral pure black RGB 0,0,0. Soft opacity gradient: darkest black in a long horizontally elongated oval center, falling smoothly to fully transparent far before the edges, with no defined edge or ring. Absolutely no white, gray, light, outline, glow, shine, hole, floor, objects, reflection, or checker pattern. No shape on top of the shadow. It should look like a soft airbrushed black shadow on transparency, designed to overlay terrain in a game. Keep the entire shape in the center with generous safety margins.",
+    "source": "exec-3d5cb678-82dc-49a4-886c-f301c4e84382.png",
+    "workingGrid": [
+      1,
+      1
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup. Convert donor luminance into black shadow opacity to remove light fringe."
+  },
+  {
+    "key": "hn92_poison_puddle",
+    "tool": "ImageGen",
+    "prompt": "6 frames in 2 columns 3 rows, cells 3:2, top-down oblique flat irregular purple poison puddle. Stable dark plum/bright lavender edge silhouette throughout, only a few small rising bubbles shift cyclically and gently. No smoke obscuring floor. Original Mochi Mayhem candy fantasy VFX. Exact equal working cells, strict row-major order. Each effect fully within its cell, ample gutter (at least 10%), no text, numbers, rulers, grid, UI or watermark. Pure RGB black #000 background, no texture or backdrop haze.",
+    "source": "exec-99a8ef23-1f47-4185-a097-1d9a89498a2c.png",
+    "workingGrid": [
+      2,
+      3
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  },
+  {
+    "key": "ws92_light_pool",
+    "tool": "ImageGen",
+    "prompt": "8 frames in 4 columns 2 rows. Overhead view delicate protective wisp sugar-glass bubble dome. Broad, VERY FAINT warm gold translucent-feeling pool, softly irregular feathery luminous edge with NO crisp circle, one thin soft curved specular highlight upper left. Center dim enough to read characters. Diameter 80% of each cell, stable center/shape/brightness, gentle tiny jelly-like breathing loop, no ground texture. Original Mochi Mayhem candy fantasy VFX. Exact equal working cells, strict row-major order. Each effect fully within its cell, ample gutter (at least 10%), no text, numbers, rulers, grid, UI or watermark. Pure RGB black #000 background, no texture or backdrop haze.",
+    "source": "exec-d5d304e7-e9e1-423e-aab7-7038a647ab4f.png",
+    "workingGrid": [
+      4,
+      2
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  },
+  {
+    "key": "ws92_dark_creep",
+    "tool": "ImageGen",
+    "prompt": "6 squares in 3 columns 2 rows. Dark purple-black small shadow tendrils rise from a ring around a small hero's feet with a few wisps of thin purple smoke. Entire central 40% of cell genuinely EMPTY and transparent to keep hero readable. Stable silhouette, only little shadow tips sway smoothly in a loop. No character. Original Mochi Mayhem candy fantasy VFX. Exact equal working cells, strict row-major order. Each effect fully within its cell, ample gutter (at least 10%), no text, numbers, rulers, grid, UI or watermark. Actual alpha-zero background, no checker pattern.",
+    "source": "exec-0e293663-616d-449b-87a9-36060453bd53.png",
+    "workingGrid": [
+      3,
+      2
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  },
+  {
+    "key": "ws92_tether",
+    "tool": "ImageGen",
+    "prompt": "Four frames one above another (1 column 4 rows), identical horizontal 4:1 cells, each containing one fine soft golden filament with a few tiny luminous gold motes moving from LEFT to RIGHT, stable continuous filament and brightness and subtly looping. No thick beam. Original Mochi Mayhem candy fantasy VFX. Exact equal working cells, strict row-major order. Each effect fully within its cell, ample gutter (at least 10%), no text, numbers, rulers, grid, UI or watermark. Pure RGB black #000 background, no texture or backdrop haze.",
+    "source": "exec-5601ab07-3251-4511-ac99-f5e1c8921b73.png",
+    "workingGrid": [
+      1,
+      4
+    ],
+    "reference": null,
+    "preparation": "Equal-cell extraction, common scaling, exact grid, RGB black normalization and alpha edge cleanup."
+  }
+]
