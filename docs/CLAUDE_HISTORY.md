@@ -4603,3 +4603,12 @@ Seed Rift plays a 12-frame (24 FPS) amber-seed intake when a carrier feeds the p
 - **Supplies refill themselves:** last packed supply rebuys on stage start / Expedition open when Crumbs allow · tap it again = auto off.
 - Rewards unchanged · old saves work · team/roles plan moved to after Closed test (`docs/IDEAS.md`).
 - Test: `tests/exp-simplify-8261.test.cjs` (+ `expedition-8232` updated).
+
+# Delivery: v8.2.62 — 🧭 Expedition easy to find (Activities + red dot)
+
+**Owner:** maybe few players use Expedition because it is buried (Home → Upgrade → Weave & Rank → Expedition).
+- **Activities row:** ⚔️ Expedition added to the Activities tab (2 taps from Home) · the Weave buttons stay · Back returns to where you came from (Activities or Weave), bottom tab follows.
+- **Red dot fixed:** it died in v8.2.54 with the daily chest · new `Save.expReady()` = away ≥ 1 h (offline 🍪 waiting) or enough 🍪 to upgrade · shows on Activities tab/row and the Weave buttons (no longer on the Upgrade tab).
+- **Unlock text:** "Depths… use shovels" → "Expedition is open! … Find it in Activities."
+- Group-screen rows get `row_<target>` tap tags (bots/tests).
+- Test: `tests/exp-findable-8262.test.cjs`.
