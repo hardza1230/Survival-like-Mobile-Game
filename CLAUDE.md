@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.53**. Next release:8.2.54. Fetch the deploy branch before new work.
+Current release: **8.2.54**. Next release:8.2.55. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.53 — 🌗 Sesame counts as a finished hero** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.54 — ✂️ ECRS round 2 (from real player data): fewer screens, fewer daily chores, Sugar gear chests, a calmer Chapter 1** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -45,7 +45,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **ใบ 92 (VFX จาก feedback):** รออาร์ต · เจ้าของอนุมัติชุด B + C 21 พ.ย. · v8.2.45 โค้ดขวดโยนโค้ง + โดม Wisp ทำแล้ว (ภาพวาดด้วยโค้ด) · อาร์ตมาแล้วสลับภาพ
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 
-**ECRS ก่อน Closed test (เจ้าของ 22 พ.ย. · `docs/ECRS.md`):** รอบ 1 ทำแล้ว v8.2.52 (ซ่อน Kitchen `KITCHEN_ON=false` · สกุล Forge 5→3: Jam/Honey → Twist Cream) · ทำ E (ตัด) ก่อน แล้ว S (ทำให้ง่าย) · C/R หลัง Closed test · **รอเจ้าของเลือกข้อ E ถัดไป** (ตารางใน `docs/ECRS.md`)
+**ECRS ก่อน Closed test (เจ้าของ 22 พ.ย. · `docs/ECRS.md`):** รอบ 1 v8.2.52 (Kitchen ซ่อน · Forge 5→3 สกุล) · รอบ 2 v8.2.54 จากข้อมูลผู้เล่นจริง (Inbox/Miners/Daily chest Expedition เลิก · Play Stats/Ranking ซ่อน · กล่อง Gear จ่าย Sugar · Ch1 ไม่มี Run trait/Mimic) · **รอเจ้าของ: Thread ยังซื้อพลังได้ (Enhance/Weave Rank/Ancient) ต้องแก้ก่อนเปิด IAP** · C/R หลัง test
 
 **รอเจ้าของตัดสินใจ / ทำต่อ**
 - **Expedition → idle วางแผน (เจ้าของ 21 พ.ย.: ไม่อยากให้กดเยอะ เน้น strategy):** เสนอรอบ 1 = จัดทีม 4 ช่องหน้า/หลัง + บทบาท Tank/DPS/Support · ไททันมีคุณสมบัติ (เกราะ/ฟื้นเลือด/โล่/ฝูง) · Synergy · แตะรัว → ปุ่ม 📣 Rally คูลดาวน์ 30 วิ · รอบ 2 (หลัง test) ค่าย + Prestige · **รออนุมัติ** (รายละเอียด `docs/IDEAS.md`)

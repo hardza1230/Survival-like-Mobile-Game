@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.53';
+const GAME_VERSION = '8.2.54';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -62,7 +62,7 @@ const RUN_TRAITS=[
   {id:'lucky',emoji:'🍀',name:'Lucky Day',desc:'Miniboss chests upgrade more often',lucky:true},
 ];
 const WHEEL_RELIC_CHANCE=0.30;   // v7.8.97 เจ้าของเลือก 30%
-const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
+const MIMIC_WHEEL_CHANCE = 0.12, CH1_CALM_UNTIL = 5;   // v8.2.54 ECRS2 S4: Chapter 1 (ด่าน 0–4) ไม่มี Run trait / วงล้อ Mimic → ลดการตัดสินใจของมือใหม่   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
 const APK_DOWNLOAD_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.54',date:'2026-11-22',title:'ECRS round 2: fewer screens, Sugar gear chests, calmer Chapter 1',items:['Reward Inbox, Mochi Miners and the Expedition daily chest are gone (nothing is lost)','Silver and Gold gear chests now cost Sugar instead of Thread','Chapter 1 has no run traits or Mimic on the prize wheel']},
   {v:'8.2.53',date:'2026-11-21',title:'Sesame is a finished hero',items:['Sesame now counts for Daily Quests and Awards like every hero','Sesame can roll Unique mutation cards']},
   {v:'8.2.52',date:'2026-11-21',title:'ECRS round 1: Kitchen hidden, Forge currencies 5 to 3',items:['Kitchen is hidden for the Closed test','Berry Jam and Honey Drop are now Twist Cream (old ones convert x2)','Twist Cream upgrades Forge rows 1-3']},
   {v:'8.2.51',date:'2026-11-21',title:'Fix monsters turning invisible',items:['Monsters no longer turn invisible (only a shadow) after mission monsters with painted overlays']},
@@ -6660,6 +6661,7 @@ const PERK_TIER_REQ = { 2:2, 3:5 };   // v7.8.88 Vigor/Might/Iron Will ตัด
 /* ---- v5.27 ⛏️ Temple Depths: มินิเกมขุดใต้วิหาร (ดู docs/TEMPLE_DIG_DESIGN.md) ---- */
 /* v8.2.32 เจ้าของ 19 พ.ย.: Temple Expedition (แทน Temple Depths/Dig + Mochi Patrol) · แตะตีไททันแบบเกม tap-RPG · ผู้ช่วยตีเอง (idle) · ปิดแอปก็ยังได้ 🍪 Crumbs (50% · ≤8 ชม.)
    ทุก 5 ด่าน = บอสจับเวลา 30 วิ (แพ้ = วนฟาร์มด่านก่อน กด Fight Boss เมื่อพร้อม) · Crumbs ช่วยเกมหลักผ่าน Supplies (ของติดตัว 1 ชิ้นต่อด่าน) · บอสครั้งแรก/กล่องรายวัน = Sugar/ด้าย/Recipe Part เข้าเกมหลัก */
+const EXP_DAILY_ON=false;   // v8.2.54 ECRS2 E3: Daily chest ของ Expedition เลิก (ของรายวันมี 6 จุด → ลด)
 const EXP_ON=true,EXP_KILLS=10,EXP_BOSS_EVERY=5,EXP_BOSS_T=30,EXP_OFF_MAX_H=8,EXP_OFF_RATE=.5,EXP_CRIT=.05,EXP_CRIT_MUL=3,EXP_HP_G=1.25,EXP_BOSS_HP=6,EXP_BOSS_CR=4,SHOVEL_CRUMBS=40,
   EXP_HELPERS=[{id:'ruby',em:'🎀',name:'Ruby',base:1,cost:15},{id:'momo',em:'🍑',name:'Momo',base:5,cost:80},{id:'mint',em:'🌿',name:'Mint',base:22,cost:450},{id:'cocoa',em:'🍫',name:'Cocoa',base:100,cost:2600},{id:'taro',em:'💜',name:'Taro',base:480,cost:15000},{id:'yuzu',em:'🍋',name:'Yuzu',base:2300,cost:90000},{id:'sesame',em:'🖤',name:'Sesame',base:11000,cost:540000}],
   EXP_SUPPLIES=[{id:'shield',em:'🫧',name:'Bubble Start',desc:'Start your next stage with a shield'},{id:'xp',em:'⭐',name:'Study Snack',desc:'+25% EXP in your next stage'},{id:'sugar',em:'🍬',name:'Sweet Tooth',desc:'+20% Sugar in your next stage'},{id:'hp',em:'❤️',name:'Hearty Meal',desc:'+15% max HP in your next stage'}];
@@ -6675,6 +6677,7 @@ function expSupplyCost(best){ return Math.max(60,Math.round(expHp(Math.max(1,bes
 const DIG_START_SHOVELS=0;
 const DIG_SHOP_COST=120, DIG_SHOP_SHOVELS=5, DIG_SHOP_DAILY_LIMIT=1;   // v8.0.27 เจ้าของ: ลดการซื้อพลั่วด้วย Sugar (3→1/วัน) · ได้จาก Daily/Awards/บอสมากขึ้น
 // v6.15 (Idle): Mochi Miners ขุดด้ายให้ตอนออฟไลน์ · [rate/ชม., เก็บได้กี่ชม., ราคาอัปไปเลเวลนี้]
+const MINERS_ON=false;   // v8.2.54 ECRS2 E2: Mochi Miners เลิก (ปุ่มเก็บใน Lobby หาย · Save ย้ายเป็นโบนัส Expedition)
 const MINER_LEVELS=[null,{rate:3,cap:8,cost:300},{rate:5,cap:10,cost:600},{rate:7,cap:12,cost:1000},{rate:9,cap:14,cost:1500},{rate:12,cap:16,cost:2200}];
 /* v8.2.36 E1: DIG_ITEMS ลบแล้ว (กระดานขุดเดิม) */
 const SCROLL_THREADS=15, ANCIENT_THREAD_COST=60;   // v7.8.88 Scroll รวมเป็น Thread: 1 ชิ้นเก่า = 15 · Ancient Perk = 60 Thread
@@ -6815,10 +6818,12 @@ function sweepReward(si){ const d=Save.data||{}; return {sugar:Math.max(1,Math.r
 function patrolStage(){ const r=(Save.data||{}).sweepRef||{}; let best=-1; for(const k in r)if((r[k]|0)>0&&+k>best)best=+k; return best; }
 function patrolRate(){ const si=patrolStage(); if(si<0)return null; const ref=Save.data.sweepRef[si]|0; return {si,sugar:ref*PATROL_CUT/PATROL_RUN_MIN,exp:(75+si*35+200)*PATROL_CUT/PATROL_RUN_MIN}; }   /* ต่อนาที */
 function patrolUsed(){ const a=(Save.data||{}).afk; return a&&a.day===localDayKey()?a.min||0:0; }
-function featureOpen(t){ if(t==='kitchen')return kitchenOpen(); if(t==='recipes')return !!Save.endgameUnlocked?.();   /* v8.0.19 เจ้าของ: Delve เปิดหลังจบเนื้อเรื่อง */ if(t==='gearInbox'&&(Save.data?.gearInbox||[]).length)return true; const n=FEATURE_OPEN[t]; return n==null||storyCleared()>=n; }
+function featureOpen(t){ if(t==='kitchen')return kitchenOpen(); if(t==='recipes')return !!Save.endgameUnlocked?.();   /* v8.0.19 เจ้าของ: Delve เปิดหลังจบเนื้อเรื่อง */ if(t==='gearInbox'&&typeof GEAR_INBOX_ON!=='undefined'&&!GEAR_INBOX_ON)return false; if(t==='gearInbox'&&(Save.data?.gearInbox||[]).length)return true; const n=FEATURE_OPEN[t]; return n==null||storyCleared()>=n; }
 const CHEST_PITY=10;
 const CHESTS=[{id:'silver',name:'Silver Chest',cost:30,odds:[['common',.5],['rare',.42],['epic',.075],['legend',.005]],tint:0xdfe6f0,bg:0x2a3346,edge:0xc9d6ea,title:'#e6eefb'},
   {id:'gold',name:'Gold Chest',cost:120,odds:[['rare',.3],['epic',.6],['legend',.1]],tint:0xffc43d,bg:0x3a2a12,edge:0xffc43d,title:'#ffe08a'}];
+/* v8.2.54 ECRS2 S1 (เจ้าของเลือก 22 พ.ย.): กล่อง Gear จ่ายด้วย 🍬 Sugar (ได้จากการเล่นเท่านั้น) ไม่ใช่ 🧶 Thread · ราคาตามระดับไอเทมเดียวกับ Sugar Chest (Silver ×1.4 · Gold ×4) */
+function chestSugarCost(c){ const b=(typeof GACHA_LEVELS!=='undefined'&&typeof gachaMaxBand==='function')?GACHA_LEVELS[Math.max(0,gachaMaxBand())].cost:150; return Math.round(b*(c&&c.id==='gold'?4:1.4)/10)*10; }
 /* v8.1.45 เจ้าของ: ร้านด้าย (Thread = สกุลหลักที่ซื้อด้วยเงินจริง) · ขายแค่ของสวย/ความสะดวก · ยังไม่ผูก Google Play Billing (Iap.available()=false) */
 const IAP_PACKS=[{id:'thread_60',thread:60,bonus:0,price:'THB 35'},{id:'thread_200',thread:180,bonus:20,price:'THB 99'},{id:'thread_400',thread:330,bonus:70,price:'THB 179'},{id:'thread_850',thread:650,bonus:200,price:'THB 349'},{id:'thread_1800',thread:1300,bonus:500,price:'THB 699'},{id:'thread_4000',thread:2600,bonus:1400,price:'THB 1,450'}];
 const MOCHI_PASS={id:'mochi_pass',price:'THB 129',instant:300,daily:60,days:30};
@@ -6905,6 +6910,8 @@ const Cos={
 };
 function pickWeighted(list){ let r=Math.random(),acc=0; for(const [k,p] of list){ acc+=p; if(r<acc)return k; } return list[list.length-1][0]; }
 function talentsOpen(){ const d=(typeof Save!=='undefined'&&Save.data)||{},sm=d.stageMastery||{}; return !!sm[2]||(d.unlockedStage||0)>=3; }   // v8.0.86 เจ้าของ: Talent เปิดพร้อมบทสอน (จบด่าน 3)
+const RANKING_ON=false, DEV_STATS_ON=false;   // v8.2.54 ECRS2 E5 ซ่อน Ranking · E4 Play Stats/Combat Meter เห็นเฉพาะ GM
+const GEAR_INBOX_ON=false;   // v8.2.54 ECRS2 E1: ไม่มีผู้เล่นเปิด Reward Inbox เลย → ของดีที่ล้นเข้ากระเป๋าตรง ๆ (เกินช่องได้) · ของธรรมดาแยกชิ้นเหมือนเดิม
 const KITCHEN_ON=false;   // v8.2.52 เจ้าของ (ECRS · E): ซ่อน Kitchen ก่อน Closed test · เปิดกลับ = true
 function kitchenOpen(){ return (typeof KITCHEN_ON==='undefined'||KITCHEN_ON)&&!!((Save.data&&Save.data.stageMastery)||{})[9]; }
 function frActive(){ if(!kitchenOpen())return []; if(FR_SIMPLE){ const p=FR_PRESETS[frPick()]; return p?[{t:p.t,e:p.e,m:null}]:[]; } return Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e&&!(frPart(r.e)||{}).cut); }
@@ -6925,10 +6932,10 @@ const HUB_GROUPS = {
     ['gear','◆','Equipment','Equip, compare and dismantle'],
     ['craft','🧪','Affix Forge','Choose gear and a line, then roll one compatible stat'],
     ['bazaar','🏪','Mochi Bazaar','Buy · Gamble · Sell for 🍬'],
-    ['gearInbox','📦','Reward Inbox','Overflow loot waiting to be claimed'] ],
+    ...(GEAR_INBOX_ON?[['gearInbox','📦','Reward Inbox','Overflow loot waiting to be claimed']]:[]) ],
     // v5.48: หน้าเป็นหมวด + ไทล์ 2 คอลัมน์ (tiles: [target,emoji,ชื่อสั้น])
     sections:[ ['POWER',0xffd36e,[['upgrade','✦','Weave & Rank']]],
-      ['GEAR',0x8fe3c4,[['gear','◆','Equipment'],['craft','🧪','Affix Forge'],['bazaar','🏪','Bazaar'],['gearInbox','📦','Inbox']]] ] },
+      ['GEAR',0x8fe3c4,[['gear','◆','Equipment'],['craft','🧪','Affix Forge'],['bazaar','🏪','Bazaar'],...(GEAR_INBOX_ON?[['gearInbox','📦','Inbox']]:[])]] ] },
   gCodex:{ title:'📖 Codex', rows:[
     ['skills','✧','Recipe Book','Heroes & Builds, Relics, Items and Sets'],
     ['bestiary','☷','Bestiary','Discoveries and Sugar'] ] },
@@ -7830,6 +7837,8 @@ const Save = {
     if(!this.data.rankPerks)this.data.rankPerks={};
     if(!this.data._memory87){ this.data._memory87=1; let m=0; const B=this.data.bestiary||{}; for(const id in B){ const k=B[id]|0; (typeof bestiaryTiers==='function'?bestiaryTiers(id):[1,100,1000]).forEach((t,i)=>{ if(k>=t)m+=[1,2,4][i]||0; }); } if(m)this.data.memories=(this.data.memories|0)+m; }   // v8.1.87 Memory Book: จ่ายย้อนหลังตามขั้นที่ปลดแล้ว
     if(!this.data._reforge84){ this.data._reforge84=1; const c=this.data.currency||(this.data.currency={}); if((this.data.unlockedStage||0)>=1||Object.keys(this.data.stageMastery||{}).length){ c.berryjam=(Number(c.berryjam)||0)+4; c.honeydrop=(Number(c.honeydrop)||0)+2; c.starsugar=(Number(c.starsugar)||0)+1; c.recipeink=(Number(c.recipeink)||0)+1; } }   // v8.1.84 ของขวัญเริ่มระบบสกุลแถว (เซฟที่เล่นแล้ว)
+    if(!this.data._inbox8254&&typeof GEAR_INBOX_ON!=='undefined'&&!GEAR_INBOX_ON){ this.data._inbox8254=1; const ib=Array.isArray(this.data.gearInbox)?this.data.gearInbox:[]; if(ib.length){ if(!Array.isArray(this.data.gearItems))this.data.gearItems=[]; for(const it of ib)if(it){ it.isNew=true; this.data.gearItems.push(it); } this.data.gearInbox=[]; } }   // v8.2.54 ECRS2 E1: ของค้างใน Inbox เข้ากระเป๋าครั้งเดียว
+    if(!this.data._miners8254){ this.data._miners8254=1; const m=this.data.miners; if(m&&m.lv>0&&MINER_LEVELS[m.lv]){ const L=MINER_LEVELS[m.lv],h=Math.max(0,(Date.now()-(m.at||Date.now()))/3600000),st=Math.min(L.rate*L.cap,(m.store||0)+L.rate*h),n=Math.floor(st); if(n>0)this.data.threads=(this.data.threads||0)+n; const d=this.data; if(!d.exp||typeof d.exp!=='object')d.exp={s:1,k:0,best:1,crumbs:0,tap:1,help:{},at:Date.now(),farm:false,supply:null,daily:'',boss:{}}; d.exp.mb=Math.max(d.exp.mb||0,m.lv); m.lv=0; m.store=0; } }   // v8.2.54 ECRS2 E2: Mochi Miners เลิก (อัปไม่ได้แล้ว · ซ้ำ Expedition) → จ่ายด้ายที่ค้าง + เลเวลเดิมเป็นโบนัสคุกกี้ Expedition ถาวร (+10%/เลเวล)
     if(!this.data._cur8252){ this.data._cur8252=1; const c=this.data.currency||(this.data.currency={}); const n=(Number(c.berryjam)||0)+(Number(c.honeydrop)||0); if(n>0)c.transmute=(Number(c.transmute)||0)+n*2; delete c.berryjam; delete c.honeydrop; }   // v8.2.52 ECRS: Jam/Honey → Twist Cream ×2
     if(!this.data._glazeMig){ this.data._glazeMig=1; const c=this.data.currency||(this.data.currency={}),g=Math.max(0,Math.floor(Number(c.divine)||0)); if(g)c.transmute=(Number(c.transmute)||0)+g*3; delete c.divine; }   // v8.0.83 Crystal Glaze → Twist Cream ×3 ครั้งเดียว
     if(!this.data._rrMig){ this.data._rrMig=1; let th=0; for(const c of SPECIAL_CORES){ const n=Math.max(0,Math.min(3,Math.floor(Number((this.data.specialCores||{})[c.id])||0))); th+=c.base*n*(n+1)/2; } if(th>0)this.data.threads=(this.data.threads||0)+th; this.data.specialCores={}; if((this.data.rankPerks||{}).revive){ this.data.rankPick=Object.assign({},this.data.rankPick,{2:'revive'}); } this.data.rankPerks={}; }   // v8.0.22 Rank Rewards: คืน Thread ของ Special Cores · Rank Perk เดิม (Sugar/Box/Fortune → โบนัสอัตโนมัติ) · Revival Candle เดิมเลือกให้ที่ยศ 2
@@ -7980,6 +7989,7 @@ const Save = {
     if(auto){if(this.data.gearAutoOut==='sell'){const sugar=gearSellSugar(item);this.addSugar?this.addSugar(sugar):(this.data.sugar=(this.data.sugar||0)+sugar);this.save();return{item,destination:'salvaged',sugar};}const shards=gearDismantleValue(item);this.data.threads=(this.data.threads||0)+shards;this.save();return{item,destination:'salvaged',shards};}
     if(this.gearInventoryFull()){
       if(auto){const shards=gearDismantleValue(item);this.data.threads=(this.data.threads||0)+shards;this.save();return{item,destination:'salvaged',shards};}
+      if(typeof GEAR_INBOX_ON!=='undefined'&&!GEAR_INBOX_ON){ if(protectedItem){ this.data.gearItems.push(item);this.save();return{item,destination:'bag',overCap:true}; } const sh=gearDismantleValue(item);this.data.threads=(this.data.threads||0)+sh;this.save();return{item,destination:'salvaged',shards:sh}; }
       if(this.data.gearInbox.length<GEAR_INBOX_CAP){this.data.gearInbox.push(item);this.save();return{item,destination:'inbox'};}
       if(protectedItem){const idx=this.data.gearInbox.findIndex(x=>x&&!x.favorite&&!x.locked&&(x.grade==='common'||x.grade==='rare'));
         let displacedShards=0;if(idx>=0){const old=this.data.gearInbox.splice(idx,1)[0];displacedShards=gearDismantleValue(old);this.data.threads=(this.data.threads||0)+displacedShards;}
@@ -8099,7 +8109,7 @@ const Save = {
     if(!e.mig){ e.mig=1; const dg=d.dig; if(dg&&dg.shovels>0){ e.crumbs+=dg.shovels*SHOVEL_CRUMBS; dg.shovels=0; } try{ if(this.minersCollect)this.minersCollect(); }catch(err){} }   /* ย้ายของเดิม: พลั่ว → Crumbs · ด้ายที่คนงานเก็บไว้ → รับเลย */
     return e; },
   addCrumbs(n){ const e=this.exp(); e.crumbs=(e.crumbs||0)+Math.max(0,n||0); this.save(); },
-  expDailyReady(){ const e=this.exp(); return e.daily!==localDayKey(); },
+  expDailyReady(){ if(typeof EXP_DAILY_ON!=='undefined'&&!EXP_DAILY_ON)return false; const e=this.exp(); return e.daily!==localDayKey(); },
   endgameUnlocked(){ return (this.data.ascension||0)>0||storyComplete(); },
   // Zone Modifiers ปลดล็อกเมื่อผ่านบอสจบ Chapter 1 (ด่าน 5 · index 4) = ผู้เล่นเรียนรู้เกมแล้ว
   zoneModsUnlocked(){ return false; },   // v6.80 E2: Zone Modifiers removed
@@ -11787,7 +11797,7 @@ class Game extends Phaser.Scene {
     if(this._stage1Coach){ const z=this.tapZones.find(q=>q.tag==='stage_0'); if(!z)return; const fn=z.fn; z.fn=()=>{ this._stage1Coach=false; fn(); };
       this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Play Stage 1!'); return; }
     if(d.gearTut===undefined){ if(!(d.stageMastery||{})[0]||!d.tutorialDone||(d.unlockedStage||0)>1){ if((d.unlockedStage||0)>1)d.gearTut=-1; return; }
-      d.gearTut=0; Save.addThreads(CHESTS[0].cost); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🧶'+CHESTS[0].cost+' Thread','#ffd166'); }   // v8.0.19 เจ้าของ: สอนเปิดหีบเงิน/ทอง (ไม่ใช่ Gacha)
+      d.gearTut=0; const gs=chestSugarCost(CHESTS[0]); Save.addSugar(gs); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🍬'+gs+' Sugar','#ffd166'); }   /* v8.2.54 กล่องจ่ายด้วย Sugar */   // v8.0.19 เจ้าของ: สอนเปิดหีบเงิน/ทอง (ไม่ใช่ Gacha)
     const st=d.gearTut; if(st<0||st>4)return;
     // v7.8.90 กระจายบทแนะนำ: ด่าน 1 = ของ · ด่าน 2 = Forge (+3 Twist Cream) · ด่าน 3 = Talent
     const sm=d.stageMastery||{}; if(st>=2&&st<=3&&!sm[1])return; if(st===4&&!sm[2])return;
@@ -12405,8 +12415,8 @@ class Game extends Phaser.Scene {
   }
   advanceDaily(kind,n=1){ if(typeof DailyQ!=='undefined')DailyQ.tick(kind,n); }   // v7.8.87 Daily เก่าตัดแล้ว เหลือ Daily Quests
   // v8.0.71 เจ้าของ: หน้า Rewards = แท็บ Login (ปฏิทิน 7 วัน) · Daily · Awards — คืนความสูงที่ใช้
-  rewardsTabs(active){ if(typeof featureOpen==='function'&&!featureOpen('rewards'))return 0; this._rwLast=active; const w=this.W,y=w<=this.H?80:46,h=32,gap=6,bw=Math.min(118,(w-28-gap*3)/4),x0=(w-(bw*4+gap*3))/2,cal=typeof LoginCal!=='undefined'?LoginCal.data():null,ready=typeof LoginCal!=='undefined'&&LoginCal.ready();
-    const tabs=[['login','📅 Login',ready],['daily','📋 Daily',typeof DailyQ!=='undefined'&&DailyQ.claimable()],['achievements','🏆 Awards',this.hasTargetBadge('achievements')],['ranking','👑 Ranks',false]];
+  rewardsTabs(active){ if(typeof featureOpen==='function'&&!featureOpen('rewards'))return 0; this._rwLast=active; const w=this.W,y=w<=this.H?80:46,h=32,gap=6,nT=(typeof RANKING_ON==='undefined'||RANKING_ON)?4:3,bw=Math.min(118,(w-28-gap*(nT-1))/nT),x0=(w-(bw*nT+gap*(nT-1)))/2,cal=typeof LoginCal!=='undefined'?LoginCal.data():null,ready=typeof LoginCal!=='undefined'&&LoginCal.ready();
+    const tabs=[['login','📅 Login',ready],['daily','📋 Daily',typeof DailyQ!=='undefined'&&DailyQ.claimable()],['achievements','🏆 Awards',this.hasTargetBadge('achievements')],...((typeof RANKING_ON==='undefined'||RANKING_ON)?[['ranking','👑 Ranks',false]]:[])];   /* v8.2.54 ECRS2 E5: ซ่อน Ranking ช่วง Closed test (ไม่มีใครเปิด · ยังไม่มีเซิร์ฟเวอร์ตรวจคะแนน) */
     tabs.forEach(([k,lab,dot],i)=>{ const x=x0+i*(bw+gap),on=k===active,g=this.add.graphics(); g.fillStyle(on?0xf4d9a1:0x261e30,on?1:.94).fillRoundedRect(x,y,bw,h,12).lineStyle(1.5,on?0xfff1e7:0x6d536d,1).strokeRoundedRect(x,y,bw,h,12); this.menu.add(g);
       const ik={login:'tab_login',daily:'tab_daily',achievements:'tab_awards'}[k],ic=this.m59Img?.(ik,0,y+h/2,24),lb=ic?lab.replace(/^\S+\s/,''):lab,t=this.add.text(x+bw/2+(ic?12:0),y+h/2,lb,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:on?'#3b2416':'#fff1e7'}).setOrigin(.5); if(t.width>bw-(ic?40:10))t.setScale((bw-(ic?40:10))/t.width); this.menu.add(t); if(ic){ ic.setX(t.x-t.displayWidth/2-14); this.menu.add(ic); }   /* ใบ 59 */ if(dot)this.drawBadgeDot?.(this.menu,x+bw-6,y+5);
       this._zone(x,y,bw,h,()=>{ if(k==='login'){ this.loginPopup(ready?'daily':'preview'); return; } if(k===active)return; Sfx.select?.(); this.menuScreen=k; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='rw_'+k; });
@@ -12809,9 +12819,9 @@ class Game extends Phaser.Scene {
       {k:'vfx',e:'🎆',n:'VFX Quality',sub:'Particle count and boss effects',value:()=>['Low','Mid','High'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
       {k:'quality',e:'⚡',n:'Performance',sub:'Auto adapts to your phone · resolution applies on restart',value:()=>(_lowMemFlag?'Low-memory · ':'')+['Auto','Low','High'][st.quality||0],toggle:()=>{st.quality=((st.quality||0)+1)%3;clearLowMem();this.menuToast&&this.menuToast('Resolution changes apply next launch');}},
       {k:'share',e:'📡',n:'Share Play Stats',sub:'Send each finished stage’s stats to the developer · anonymous',value:()=>Tele.status(),toggle:()=>{st.share=!st.share;Save.data.settings=st;if(st.share)setTimeout(()=>Tele.flush(),50);}},
-            {k:'mx',e:'📈',n:'Combat Meter',sub:'Live DPS / boss / FPS numbers in battle · full report in Play Stats',value:()=>st.mx?'On':'Off',toggle:()=>{st.mx=!st.mx;}},
+            ...((typeof DEV_STATS_ON!=='undefined'&&!DEV_STATS_ON&&!(typeof GM!=='undefined'&&GM.on()))?[]:[{k:'mx',e:'📈',n:'Combat Meter',sub:'Live DPS / boss / FPS numbers in battle · full report in Play Stats',value:()=>st.mx?'On':'Off',toggle:()=>{st.mx=!st.mx;}}]),   /* v8.2.54 ECRS2 E4: เครื่องมือพัฒนา → เห็นเฉพาะ GM */
       ...(AdManager.privacyRequired?[{k:'adPrivacy',e:'🛡',n:'Ad Privacy',sub:'Change your ad consent choices',value:()=>'Open',toggle:()=>{AdManager.privacyForm();}}]:[]),
-      {k:'stats',e:'📊',n:'Play Stats',sub:'Your runs on this device: wins, deaths, cards',value:()=>'Open',toggle:()=>{},open:true},
+      ...((typeof DEV_STATS_ON!=='undefined'&&!DEV_STATS_ON&&!(typeof GM!=='undefined'&&GM.on()))?[]:[{k:'stats',e:'📊',n:'Play Stats',sub:'Your runs on this device: wins, deaths, cards',value:()=>'Open',toggle:()=>{},open:true}]),
     ];
     if(typeof GM!=='undefined'&&GM.on())rows.push({k:'gm',e:'🛠',n:'GM Tools'+(GM.testing()?' · TEST PROFILE':''),sub:'Testing only · resources, unlocks, save tools',value:()=>'Open',toggle:()=>{},gm:true});
     const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
@@ -13171,8 +13181,8 @@ class Game extends Phaser.Scene {
     { const ty=top+gearW+6,th=30;panel(moneyKey,sx,ty,sw,th);
       if(this.realTex('ic_thread'))this.menu.add(this.add.image(sx+16,ty+th/2,'ic_thread').setDisplaySize(22,22)); else this.menu.add(this.add.text(sx+16,ty+th/2,'🧶',{fontSize:'15px'}).setOrigin(.5));
       { const t=fit(this.hubText(sx+sw-8,ty+th/2,compact(Save.threads?.()),13,'#cfe9ff',1),sw-36)||null; this.lobbyCountUp?.(t,'thread',Save.threads?.(),compact,sx+16,ty+th/2); }
-      if(featureOpen('bazaar')){ this._zone(sx,ty-2,sw,th+4,()=>{this._bazTab='chests';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='thread_pill'; }
-      try{ const mr=Save.minersReady&&Save.minersReady()&&Save.minersTick(),mn=mr?Math.floor(mr.store||0):0;   // v8.0.27 เจ้าของ: เก็บด้ายจาก Miners ได้จาก Lobby
+      if(featureOpen('bazaar')){ this._zone(sx,ty-2,sw,th+4,()=>{this._bazTab='wardrobe';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='thread_pill';   /* v8.2.54 Thread ใช้กับของแต่งตัว (กล่อง Gear จ่าย Sugar แล้ว) */ }
+      try{ const mr=(typeof MINERS_ON==='undefined'||MINERS_ON)&&Save.minersReady&&Save.minersReady()&&Save.minersTick(),mn=mr?Math.floor(mr.store||0):0;   // v8.0.27 เจ้าของ: เก็บด้ายจาก Miners ได้จาก Lobby
         if(mn>=1){ const my=ty+th+6,mh=26,mw=sw-16,mg=this.add.graphics(); mg.fillStyle(0x3d5a2a,.95).fillRoundedRect(sx,my,mw,mh,13).lineStyle(1.5,0xa8ffb0,1).strokeRoundedRect(sx,my,mw,mh,13); this.menu.add(mg);
           const miner=this.menuArtIcon?.('dig_miner',0,sx+14,my+mh/2,22);const mt=this.hubText(sx+mw/2+(miner?8:0),my+mh/2,(miner?'':'🧶 ')+'+'+mn+' ready',11,'#e8ffe0',.5); fit(mt,mw-10); this.drawBadgeDot(this.menu,sx+mw-4,my+2);
           this._zone(sx,my-2,mw,mh+4,()=>{ const n=Save.minersCollect(); if(n>0){ Sfx.menuCue?.('miners_collect',.35)||Sfx.digFind&&Sfx.digFind(); this.menuToast('👷 Miners dug 🧶 +'+n+' Thread','#a8ffb0'); } this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='miners_collect'; } }catch(e){} }
@@ -13898,7 +13908,7 @@ class Game extends Phaser.Scene {
       if(this.realTex?.('ex91_hit')){ if(!this.anims.exists('ex91_hit_a'))this.anims.create({key:'ex91_hit_a',frames:this.anims.generateFrameNumbers('ex91_hit',{start:0,end:5}),frameRate:24,repeat:0}); const hx=V.fx+Phaser.Math.Between(-40,40),hy=V.fy-V.fh*Phaser.Math.FloatBetween(.15,.35),hf=this.add.sprite(hx,hy,'ex91_hit',0).setScale((crit?150:110)/160).setTint(V.hcol||0xffffff); this.menu.add(hf); hf.play('ex91_hit_a'); hf.once?.('animationcomplete',()=>hf.destroy()); this.time.delayedCall(400,()=>{ if(hf.active)hf.destroy(); }); }
       const t=this.add.text(V.fx+Phaser.Math.Between(-50,50),V.fy-V.fh*.3,(crit?'💥':'')+expFmt(dmg),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:crit?'22px':'16px',color:crit?'#ffd166':'#ffffff',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5); this.menu.add(t); this.tweens.add({targets:t,y:t.y-50,alpha:0,duration:650,onComplete:()=>t.destroy()}); }
     if(X.hp<=0)this.expKill(); else this.expHud(); }
-  expKill(){ const e=Save.exp(),X=this._ex,cr=expCrumb(e.s)*(X.boss?EXP_BOSS_CR:1); e.crumbs+=cr; this.advanceDaily?.('dig'); const V=this._exV;
+  expKill(){ const e=Save.exp(),X=this._ex,cr=Math.round(expCrumb(e.s)*(X.boss?EXP_BOSS_CR:1)*(1+.1*Math.min(5,e.mb||0)));   /* v8.2.54 โบนัสจาก Miners เดิม */ e.crumbs+=cr; this.advanceDaily?.('dig'); const V=this._exV;
     if(!X.boss){ this.exSfx('foe_pop',.35); this.time?.delayedCall?.(120,()=>this.exSfx('crumbs',.25)); }
     if(V){ this.patrolPop?.(V.fx,V.fy-V.fh*.25,X.boss?0xffd166:0xffb6d9); const t=this.add.text(V.fx,V.fy-V.fh*.5,'🍪 +'+expFmt(cr),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5); this.menu.add(t); this.tweens.add({targets:t,y:t.y-40,alpha:0,duration:900,onComplete:()=>t.destroy()}); }
     if(X.boss){ const s=e.s; e.s++; e.k=0; e.best=Math.max(e.best,e.s); this.exSfx('boss_down',.5)||Sfx.digRare?.(); this.time?.delayedCall?.(300,()=>{ if(this.state==='menu'&&this.menuScreen==='dig')this.menuMusic?.('dig'); }); if(!e.boss[s]){ e.boss[s]=1; this.expBossReward(s); } }
@@ -13945,9 +13955,9 @@ class Game extends Phaser.Scene {
     // แถบข้อมูล + ปุ่ม
     let y=top+fh+18; V.crT=T(w/2,y,'',12,'#ffe0f0'); if(this.realTex?.('ex91_icons'))this.menu.add(this.add.image(20,y,'ex91_icons',0).setDisplaySize(20,20)); y+=20;
     const bh=34,btn=(x,bw,label,fill,on,fn,tag)=>{ const b=this.add.graphics(); b.fillStyle(on?fill:0x2c2338,1).fillRoundedRect(x,y,bw,bh,11).lineStyle(1.5,on?0xffe08a:0x4a4059,1).strokeRoundedRect(x,y,bw,bh,11); this.menu.add(b); T(x+bw/2,y+bh/2,label,11,on?'#ffffff':'#7a7088'); if(on){ this._zone(x,y,bw,bh,fn); this.tapZones[this.tapZones.length-1].tag=tag; } };
-    const dr=Save.expDailyReady(),bw3=(w-40)/3; btn(14,bw3,dr?'🎁 Daily chest':'✓ Chest tomorrow',0x3a5a3a,dr,()=>{ if(this.expDaily())this.buildMenuScreen(); },'exp_daily');
-    btn(20+bw3,bw3,e.farm?'⚔️ Fight Boss':'Stage best '+e.best,0x8a3a4a,!!e.farm,()=>{ const E=Save.exp(); E.farm=false; E.s=Math.ceil(E.s/EXP_BOSS_EVERY)*EXP_BOSS_EVERY; if(!expIsBoss(E.s))E.s++; E.k=0; Save.save(); this.expFoeNew(); this.buildMenuScreen(); },'exp_boss');
-    btn(26+bw3*2,bw3,e.supply?'🎒 '+(EXP_SUPPLIES.find(q=>q.id===e.supply)?.em||'')+' packed':'🎒 Supplies',0x4a3a8a,true,()=>{ this._exTab=this._exTab==='supply'?'tap':'supply'; this.buildMenuScreen(); },'exp_supply_tab');
+    const dOn=typeof EXP_DAILY_ON==='undefined'||EXP_DAILY_ON,dr=dOn&&Save.expDailyReady(),bw3=dOn?(w-40)/3:(w-34)/2,x2=dOn?20+bw3:14,x3=dOn?26+bw3*2:20+bw3; if(dOn)btn(14,bw3,dr?'🎁 Daily chest':'✓ Chest tomorrow',0x3a5a3a,dr,()=>{ if(this.expDaily())this.buildMenuScreen(); },'exp_daily');   /* v8.2.54 ECRS2 E3: เลิก Daily chest (ซ้ำหน้า Rewards · Daily Quest 'Defeat 30 Expedition foes' มีอยู่แล้ว) */
+    btn(x2,bw3,e.farm?'⚔️ Fight Boss':'Stage best '+e.best,0x8a3a4a,!!e.farm,()=>{ const E=Save.exp(); E.farm=false; E.s=Math.ceil(E.s/EXP_BOSS_EVERY)*EXP_BOSS_EVERY; if(!expIsBoss(E.s))E.s++; E.k=0; Save.save(); this.expFoeNew(); this.buildMenuScreen(); },'exp_boss');
+    btn(x3,bw3,e.supply?'🎒 '+(EXP_SUPPLIES.find(q=>q.id===e.supply)?.em||'')+' packed':'🎒 Supplies',0x4a3a8a,true,()=>{ this._exTab=this._exTab==='supply'?'tap':'supply'; this.buildMenuScreen(); },'exp_supply_tab');
     y+=bh+10;
     // แท็บ: อัปแตะ + ผู้ช่วย · หรือ Supplies
     const rw=w-28,rx=14,rh=40,row=(em,name,sub,cost,can,fn,tag)=>{ const g=this.add.graphics(); g.fillStyle(0x221a2c,.95).fillRoundedRect(rx,y,rw,rh,10).lineStyle(1.2,0x5a4b75,1).strokeRoundedRect(rx,y,rw,rh,10); this.menu.add(g); T(rx+22,y+rh/2,em,18,'#fff'); T(rx+44,y+13,name,12,'#ffffff',0); T(rx+44,y+29,sub,9.5,'#cfc1d4',0);
@@ -14416,7 +14426,7 @@ class Game extends Phaser.Scene {
     const band=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),gb=GACHA_LEVELS[band];
     const list=CHESTS.concat([{id:'sugar',name:'Sugar Chest',sugar:gb.cost,odds:[['common',.68],['rare',.29],['epic',.03]],tint:0xff9ad5,bg:0x3a1f33,edge:0xff9ad5,title:'#ffd0e8'}]);
     const cw=Math.min(w-28,400),cx=(w-cw)/2,ch=Math.max(124,Math.min(176,(h-top-64)/list.length-10)); let y=top+28;
-    list.forEach(c=>{ const isS=c.id==='sugar',isFree=c.id==='silver'&&free,can=isS?sug>=c.sugar:(isFree||thr>=c.cost),g=this.add.graphics(); g.fillStyle(0x000000,.35).fillRoundedRect(cx+3,y+5,cw,ch,20);
+    list.forEach(c=>{ const isS=c.id==='sugar',isFree=c.id==='silver'&&free,cs=isS?c.sugar:chestSugarCost(c),can=isS?sug>=c.sugar:(isFree||sug>=cs),g=this.add.graphics(); g.fillStyle(0x000000,.35).fillRoundedRect(cx+3,y+5,cw,ch,20);
       const card=this.tuPanel('bz_chest_card',0,cx,y,cw,ch); if(card){ g.destroy(); this.menu.add(card); } else { g.fillStyle(c.bg,.96).fillRoundedRect(cx,y,cw,ch,20).lineStyle(3,c.edge,1).strokeRoundedRect(cx,y,cw,ch,20); this.menu.add(g); }
       const isz=Math.min(ch*.7,110),im=this.chestVisual(isS?{id:'sugar'}:c,cx+isz*.5+14,y+ch/2,isz); if(isS&&im.setTint)im.setTint(0xffb8de); this.menu.add(im);
       this.hubTween({targets:im,y:y+ch/2-5,duration:1300+(c.id==='gold'?200:isS?400:0),yoyo:true,repeat:-1,ease:'Sine.inOut'});
@@ -14428,14 +14438,14 @@ class Game extends Phaser.Scene {
         const pg=this.add.graphics(),pw=Math.min(tw,CHEST_PITY*13),pc=(d.chestPity||0)%CHEST_PITY,pby=y+ch-(ch<150?34:40)-12; if(ly+lt.height+11<pby)for(let k=0;k<CHEST_PITY;k++){   /* v8.0.75 ไม่มีที่ = ไม่วาดแถบ (เดิมทับปุ่ม) */ const px=tx+k*(pw/CHEST_PITY); pg.fillStyle(k<pc?0xffc43d:0x2a1f12,1).fillRoundedRect(px,ly+lt.height+3,pw/CHEST_PITY-3,6,2); } this.menu.add(pg); }
       else this.menu.add(this.add.text(tx,ly,isS?'Gear iLv '+gb.lo+'–'+gb.hi+' · paid with Sugar':'Daily free chest · resets every day',{fontFamily:'sans-serif',fontSize:'11px',color:isS?'#ffd0e8':'#ffe08a',wordWrap:{width:tw}}));
       const bh=small?34:40,by=y+ch-bh-12,bw=isS&&gachaMaxBand()>0?tw-50:tw,bg=this.add.graphics(); bg.fillStyle(can?c.edge:0x5a4d66,1).fillRoundedRect(tx,by,bw,bh,14).fillStyle(0xffffff,.18).fillRoundedRect(tx+3,by+3,bw-6,bh*.42,10); this.menu.add(bg);
-      { const bt=this.add.text(tx+bw/2,by+bh/2,isFree?'🎁 OPEN FREE':isS?'Open · 🍬 '+c.sugar:'Open · 🧶 '+c.cost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#1a0f1e'}).setOrigin(.5); let f=15; while(bt.width>bw-12&&f>10)bt.setFontSize(--f+'px'); this.menu.add(bt); }
+      { const bt=this.add.text(tx+bw/2,by+bh/2,isFree?'🎁 OPEN FREE':'Open · 🍬 '+cs,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#1a0f1e'}).setOrigin(.5); let f=15; while(bt.width>bw-12&&f>10)bt.setFontSize(--f+'px'); this.menu.add(bt); }
       if(isFree)this.drawBadgeDot(this.menu,tx+bw-4,by+4);
-      const open=()=>{ if(!can){ Sfx.error?.(); this.menuToast(isS?'🍬 Need '+c.sugar+' Sugar':'🧶 Need '+c.cost+' Thread — earn it from salvage, stages and the Dig','#ffb3c8'); return; } if(isS)this.openGachaReveal(); else this.openChest(c,isFree); };
+      const open=()=>{ if(!can){ Sfx.error?.(); this.menuToast('🍬 Need '+cs+' Sugar — earn it from stages and missions','#ffb3c8'); return; } if(isS)this.openGachaReveal(); else this.openChest(c,isFree); };
       if(isS&&gachaMaxBand()>0){ const ax=tx+bw+6,ag=this.add.graphics(); ag.fillStyle(0x3a1f33,1).fillRoundedRect(ax,by,44,bh,12).lineStyle(2,0xff9ad5,1).strokeRoundedRect(ax,by,44,bh,12); this.menu.add(ag); this.menu.add(this.add.text(ax+22,by+bh/2,'iLv\n►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd0e8',align:'center'}).setOrigin(.5));
         this._zone(cx,y,ax-cx-2,ch,open); this.tapZones[this.tapZones.length-1].tag='chest_sugar'; this._zone(ax,by,44,bh,()=>{ this._gachaLevel=(band+1)%(gachaMaxBand()+1); Sfx.select&&Sfx.select(); this.buildBazaar(); }); this.tapZones[this.tapZones.length-1].tag='sugar_band'; }
       else { this._zone(cx,y,cw,ch,open); this.tapZones[this.tapZones.length-1].tag='chest_'+c.id; }
       y+=ch+10; });
-    this.menu.add(this.add.text(w/2,y+2,'Chests drop gear for your current item level · Thread comes from salvage, stages and the Dig',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',align:'center',wordWrap:{width:w-36}}).setOrigin(.5,0)); }
+    this.menu.add(this.add.text(w/2,y+2,'Chests drop gear for your current item level · paid with Sugar you earn by playing',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',align:'center',wordWrap:{width:w-36}}).setOrigin(.5,0)); }
   chestVisual(c,x,y,sz){ for(const k of ['chest_'+c.id,'prize_chest','chest']){ if(this.realTex(k)){ const im=this.add.image(x,y,k); im.setScale(sz/Math.max(im.width,im.height)); if(k!=='chest_'+c.id&&c.id==='silver')im.setTint(0xd8e2f0); return im; } }
     return this.add.text(x,y,'🧰',{fontSize:Math.round(sz*.7)+'px'}).setOrigin(.5); }   // ใบสั่งอาร์ต 40 จะส่ง chest_silver/chest_gold
   /* v8.1.142 owner 🐞 "chest effects not grand": confetti + light rings by rarity (code-drawn, no new art) */
@@ -14445,7 +14455,7 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:dot,x:x+Math.cos(a)*d,y:y+Math.sin(a)*d+40,alpha:0,scale:{from:1.2,to:.3},angle:Math.random()*360,duration:700+Math.random()*700,ease:'Cubic.out',onComplete:()=>dot.destroy()}); }
     for(let k=0;k<rings;k++){ const rg=this.add.circle(x,y,30,color,0).setStrokeStyle(6-k,color,.95); this.menu.add(rg); this.tweens.add({targets:rg,scale:tier==='legend'?9:6,alpha:0,delay:k*180,duration:750,ease:'Cubic.out',onComplete:()=>rg.destroy()}); }
     if(tier==='legend'||tier==='epic')this.time.delayedCall(220,()=>this.screenFlash?.(0xffffff,tier==='legend'?.45:.25,260)); }
-  openChest(c,isFree){ if(this._gachaBusy)return; const d=Save.data; if(isFree==='weekly'||isFree==='gift'||isFree==='login'){ this._chestBack=isFree==='gift'?'achievements':isFree==='login'?'hub':'daily'; } else if(isFree){ d.chestFreeDay=localDayKey(); } else { if(Save.threads()<c.cost)return; d.threads=Save.threads()-c.cost; } (typeof DailyQ!=='undefined')&&DailyQ.tick('chest'); if(isFree!=='gift'&&isFree!=='weekly'&&isFree!=='login')d.chestsOpened=(d.chestsOpened||0)+1;
+  openChest(c,isFree){ if(this._gachaBusy)return; const d=Save.data; if(isFree==='weekly'||isFree==='gift'||isFree==='login'){ this._chestBack=isFree==='gift'?'achievements':isFree==='login'?'hub':'daily'; } else if(isFree){ d.chestFreeDay=localDayKey(); } else { const cs=chestSugarCost(c); if((d.sugar||0)<cs)return; d.sugar=(d.sugar||0)-cs; } (typeof DailyQ!=='undefined')&&DailyQ.tick('chest'); if(isFree!=='gift'&&isFree!=='weekly'&&isFree!=='login')d.chestsOpened=(d.chestsOpened||0)+1;
     let tier=pickWeighted(c.odds); if(c.id==='silver'&&tier==='legend')(d.secrets||(d.secrets={})).silverLegend=1; if(c.id==='gold'){ d.chestPity=(d.chestPity||0)+1; if(tier==='legend'||d.chestPity>=CHEST_PITY){ tier='legend'; d.chestPity=0; } } Save.save();
     const lv=GACHA_LEVELS[Math.max(0,gachaMaxBand())],ilv=lv.lo+Math.floor(Math.random()*(lv.hi-lv.lo+1));
     this._gachaBusy=true; this.setMenuScroll(0); this.stopHubMotion?.(); this.menu.removeAll(true); this.tapZones=[]; this._chestOpen=true;
@@ -14458,7 +14468,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:chest,angle:{from:-6,to:6},duration:80,yoyo:true,repeat:anim?3:10});
     if(!anim){ this.tweens.add({targets:chest,scale:{from:chest.scale,to:chest.scale*1.12},duration:1100,ease:'Quad.in'}); this.time.delayedCall(500,()=>this.screenShake?.(250,.004)); this.time.delayedCall(850,()=>this.screenShake?.(300,.008)); }   /* v8.1.142 owner 🐞: chest opening felt flat → tension builds before the pop */
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.4,alpha:{from:.2,to:.85},duration:1100,ease:'Cubic.in'});
-    this.time.delayedCall(1150,()=>this.chestCine(tier,chest,glow,status,()=>{ let it=null; for(const t of [tier,'epic','rare','common']){ it=this.grantGear(t,{gacha:true,itemLevel:ilv}); if(it)break; } if(!it){ Save.addThreads(Math.round(c.cost*.5)); } if(this._chestThrTxt?.active)this._chestThrTxt.setText('🧶 Thread '+Save.threads());
+    this.time.delayedCall(1150,()=>this.chestCine(tier,chest,glow,status,()=>{ let it=null; for(const t of [tier,'epic','rare','common']){ it=this.grantGear(t,{gacha:true,itemLevel:ilv}); if(it)break; } if(!it){ Save.addSugar(Math.round(chestSugarCost(c)*.5)); } if(this._chestThrTxt?.active)this._chestThrTxt.setText('🧶 Thread '+Save.threads());
       if(!status.active||this.state!=='menu'){ this._gachaBusy=false; this._chestOpen=false; return; }
       const t2=it?it.tier:'common',color=t2==='legend'?0xff8f3a:t2==='epic'?0xc9a3ff:t2==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
       if(anim){ chest.setAngle(0); this.tweens.add({targets:chest,y:h*.57,scale:cs*.62,alpha:.85,duration:260}); status.setY(h*.71); } else this.tweens.add({targets:chest,scale:cs*1.25,alpha:0,angle:0,duration:220});
@@ -14468,7 +14478,7 @@ class Game extends Phaser.Scene {
       /* v8.1.142 owner 🐞: chest sound did not fit → the rarity reveal stingers (box_reveal_*) instead of the generic clear/legend cue */ const tn=t2==='legend'?'legend':t2==='epic'?'epic':t2==='rare'?'rare':'common'; if(t2==='legend'||t2==='epic')this.time.delayedCall(120,()=>Sfx.orderCue?.('chest_confetti',.4,.1)); this.time.delayedCall(380,()=>Sfx.orderCue?.(it?'chest_item_land':'chest_duplicate',.45,.1));   /* v8.1.147 A14 */
       if(!(Sfx.orderCue?.('chest_burst_'+tn,t2==='legend'?.6:.5,.1))&&!(Sfx.orderCue?.('box_reveal_'+tn,t2==='legend'?.55:.45,.1))){ if(t2==='legend')Sfx.legend?.(); else Sfx.clear?.(); }
       title.setText(it?(t2==='legend'?'🌟 LEGEND 🌟':t2==='epic'?'✦ EPIC ✦':t2==='rare'?'★ RARE ★':'COMMON'):'All owned').setColor(hex);
-      status.setText(it?(it.name+'\n'+TIER_LABEL[t2].name+gearDeliverySuffix(it)):'Refund 🧶'+Math.round(c.cost*.5)).setColor('#ffffff').setAlign('center').setFontSize('18px');
+      status.setText(it?(it.name+'\n'+TIER_LABEL[t2].name+gearDeliverySuffix(it)):'Refund 🍬'+Math.round(chestSugarCost(c)*.5)).setColor('#ffffff').setAlign('center').setFontSize('18px');
       const bw=Math.min(w-60,260),by=h*.82,btn=this.add.graphics(); btn.fillStyle(color,1).fillRoundedRect(w/2-bw/2,by-24,bw,48,16); const bt=this.add.text(w/2,by,'Collect',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#17101d'}).setOrigin(.5); this.menu.add([btn,bt]);
       this._gachaBusy=false; this._zone(w/2-bw/2,by-24,bw,48,()=>{ this._chestOpen=false; const bk=this._chestBack; this._chestBack=null; if(bk){ this.menuScreen=bk; } else { this._bazTab='chests'; this.menuScreen='bazaar'; } this.buildMenuScreen(); }); })); }
   /* v8.2.2+ เจ้าของ C3: ฉากเปิดหีบเท่ ๆ — ได้ Epic/Legend มีฉาก 1.4 วิ (Legend 1.8) ก่อนเปิด: จอมืด · หีบซูมเข้า · แสงสีระดับรั่วจากรอยแยกทีละเส้น · หัวใจเต้น 3 จังหวะ (สั่น+เสียงแหลมขึ้น) · แฟลชขาวแล้วค่อยเปิด · ระดับอื่นเปิดทันทีเหมือนเดิม · โค้ดล้วน ไม่มีอาร์ตใหม่ */
@@ -18800,7 +18810,7 @@ class Game extends Phaser.Scene {
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){if(this.character==='taro')this.syncTaroCombat?.();const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
-  rollRunTrait(){ if(this._inTutorial||this.recipeMode||this.bossRush||this._pinnacleRun||this.riftMode||(this.stageIndex||0)<2)return; const T=Phaser.Utils.Array.GetRandom(RUN_TRAITS); this._runTrait=T;Sfx.orderCue?.('run_trait',.35,1); this.traitTxt?.setText(T.emoji+' '+T.name).setVisible(true);
+  rollRunTrait(){ if(this._inTutorial||this.recipeMode||this.bossRush||this._pinnacleRun||this.riftMode||(this.stageIndex||0)<(typeof CH1_CALM_UNTIL!=='undefined'?CH1_CALM_UNTIL:5))return;   /* v8.2.54 ECRS2 S4: Run trait เริ่ม Chapter 2 (เดิมด่าน 3) */ const T=Phaser.Utils.Array.GetRandom(RUN_TRAITS); this._runTrait=T;Sfx.orderCue?.('run_trait',.35,1); this.traitTxt?.setText(T.emoji+' '+T.name).setVisible(true);
     if(T.player&&this.player)T.player(this.player); this.time.delayedCall(4600,()=>{ if(this._runTrait===T&&(this.state==='play'||this.state==='levelup'))this.showBanner(T.emoji+' Run trait: '+T.name,T.desc,2600); }); }   /* v7.8.102 เลื่อน 2.3→4.6s ให้พ้นแบนเนอร์เริ่มด่าน/Replay */
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this._runTrait=null;this.traitTxt?.setVisible(false);this.startStage(this.stageIndex);this.rollRunTrait?.();this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
@@ -23198,7 +23208,7 @@ class Game extends Phaser.Scene {
     // v5.15: ลุ้นอัปเกรดระดับกลางวงล้อ (ตัดสินตั้งแต่ต้น โชว์ตอนหมุนไปได้ ~55%) bronze→silver 25% · silver→gold 15%
     const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=opts.prizes?0:[0.25,0.15,0][ri]+(this._runTrait?.lucky&&ri<2?0.25:0),upTier=Math.random()<upChance?order[ri+1]:null;
     const T0=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,T=MINI_CHEST_TIERS[upTier||tier],rewards=opts.prizes?opts.prizes.slice():this.miniPrizePool(upTier||tier);
-    let mim=null; if(opts.onMimic){ let base=0; rewards.forEach(p=>base+=p.w); mim={id:'mimic',artKey:this.textures.exists('mimic_chest_animated')?'mimic_chest_animated':'prize_chest',emoji:'🦷',name:'MIMIC!',w:base*MIMIC_WHEEL_CHANCE/(1-MIMIC_WHEEL_CHANCE),color:0xd23a5a,mimic:true,give:()=>{}}; rewards.push(mim); }   // v6.89.1 Mimic เป็นช่องหนึ่งในวงล้อเสมอ
+    let mim=null; if(opts.onMimic&&!((this.stageIndex||0)<(typeof CH1_CALM_UNTIL!=='undefined'?CH1_CALM_UNTIL:5)&&!this.recipeMode&&!this.riftMode)){   /* v8.2.54 ECRS2 S4: Ch1 ไม่มี Mimic */ let base=0; rewards.forEach(p=>base+=p.w); mim={id:'mimic',artKey:this.textures.exists('mimic_chest_animated')?'mimic_chest_animated':'prize_chest',emoji:'🦷',name:'MIMIC!',w:base*MIMIC_WHEEL_CHANCE/(1-MIMIC_WHEEL_CHANCE),color:0xd23a5a,mimic:true,give:()=>{}}; rewards.push(mim); }   // v6.89.1 Mimic เป็นช่องหนึ่งในวงล้อเสมอ
     let rel=null; if(opts.relic){ let base=0; rewards.forEach(p=>base+=p.w); rel={id:'relic',artKey:this.textures.exists('relic_crown')?'relic_crown':'prize_jackpot',emoji:'🔮',name:'🔮 Relic!',w:base*WHEEL_RELIC_CHANCE/(1-WHEEL_RELIC_CHANCE),color:0xc07bff,give:()=>{}}; rewards.push(rel); }   // v7.8.97 เจ้าของ: Relic เป็นช่องในวงล้อ 30% (เดิมได้ทุกครั้งเป็นหน้าแยก)
     let tw=0;rewards.forEach(p=>tw+=p.w);let r=Math.random()*tw,winner=rewards[rewards.length-1];for(const prize of rewards){r-=prize.w;if(r<=0){winner=prize;break;}}
     // Roll from every reward first, then show eight slots including the winner.

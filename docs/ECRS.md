@@ -16,22 +16,37 @@
 - Boss Rush ซ่อนอยู่แล้ว · การ์ดเลเวลอัป/Build Path · Gear + Forge · บอส · Expedition (กำลังปรับเป็น idle วางแผน)
 - ~~Sesame~~ — เสร็จแล้ว (เจ้าของ 22 พ.ย. · v8.2.53 `HEROES_WIP=[]`)
 
-## E ที่เสนอ (รอเจ้าของเลือก)
-| # | ระบบ | ข้อเสนอ | ความมั่นใจ |
-|---|---|---|---|
-| 1 | Reward Inbox | ตัดหน้านี้ · ของล้นแปลงเป็น Sugar อัตโนมัติ | สูง |
-| 2 | Daily chest ใน Expedition | ตัด (ซ้ำกับหน้า Rewards) | สูง |
-| 3 | Endgame (Recipe Maps / Delve / Pinnacle) | ไม่ตัด แต่หยุดพัฒนาเพิ่มจนหลัง test | สูง |
-| 4 | พลังถาวร 4 ชั้นทับกัน (Cores / Rank / Passive tree / Talent ราย Build) | ตัดหรือซ่อน 1 ชั้น · ต้องคุยก่อน (ผูกเซฟ) | กลาง |
-| 5 | Bazaar ส่วนสุ่ม (Gamble / กล่องสุ่มสกุลเงิน) | ตัดส่วนสุ่ม เหลือซื้อ/ขาย | กลาง |
-| 6 | Shovels (เหลือจาก Dig) | ลบถ้ายังโผล่ · ต้องเช็กโค้ด | ต้องตรวจ |
-| 7 | Bestiary | ซ่อน หรือรอรวมตอนทำ C | กลาง |
+## รอบ 2 (เจ้าของอนุมัติ 22 พ.ย. · v8.2.54) — วิเคราะห์จากโค้ด + ข้อมูลผู้เล่นจริง
+**ข้อมูล:** Supabase `run_stats` เหตุการณ์ `screen` เฉพาะเครื่องแอปจริง (`native`) 13–22 พ.ย. ≈ 10 เครื่อง (รวมเจ้าของ) · ตัวอย่างน้อย = สัญญาณ ไม่ใช่ข้อสรุป
+- ใช้มาก: hub 211 · ฮีโร่ 97 · Gear&Power 74 · Bazaar 51 · Weave&Rank 25 · Rewards 24 · Equipment 23 · News 19 · Daily 16 · Awards 11 · Wardrobe 10
+- ใช้น้อย: Rank Rewards 6 · Talents 6 · Forge 5 · Codex 3 · Expedition 3 · Merge 2
+- 0 ครั้ง: Reward Inbox · Kitchen · Delve · Atlas · Play Stats · Ranking · Trade-in
+
+| # | ทำ | สวิตช์ / เซฟ |
+|---|---|---|
+| E1 | Reward Inbox เลิก · ของดีที่ล้นเข้ากระเป๋าตรง ๆ (เกินช่องได้) · ของธรรมดาแยกชิ้น · ของค้างเดิมย้ายเข้ากระเป๋า | `GEAR_INBOX_ON=false` · `_inbox8254` |
+| E2 | Mochi Miners เลิก (อัปไม่ได้ตั้งแต่ Depths หาย · ซ้ำ Expedition) · จ่ายด้ายค้าง + เลเวลเดิม = คุกกี้ Expedition +10%/เลเวล ถาวร | `MINERS_ON=false` · `_miners8254` · `exp.mb` |
+| E3 | Daily chest ของ Expedition เลิก (ของรายวัน 6 → 4 จุด · Daily Quest "Defeat 30 Expedition foes" ยังอยู่) | `EXP_DAILY_ON=false` |
+| E4 | Play Stats / Combat Meter ในตั้งค่า → เห็นเฉพาะ GM | `DEV_STATS_ON=false` |
+| E5 | แท็บ Ranking ใน Rewards ซ่อน (ยังไม่มีเซิร์ฟเวอร์ตรวจคะแนน) | `RANKING_ON=false` |
+| S1 | กล่อง Gear Silver/Gold จ่ายด้วย 🍬 Sugar (ราคาตามระดับไอเทม: Silver ×1.4 · Gold ×4 ของ Sugar Chest) | `chestSugarCost` |
+| S4 | Chapter 1 ไม่มี Run trait / วงล้อ Mimic (เริ่ม Ch2) | `CH1_CALM_UNTIL=5` |
+
+**⚠️ เจอเพิ่ม (รอเจ้าของตัดสินใจ):** 🧶 Thread ยังซื้อ **พลัง** ได้อีก 3 ทาง — Enhance อุปกรณ์ · Weave Rank up (`promote`) · Ancient perks (`unlockAncient`) · ถ้าเปิดขาย Thread ด้วยเงินจริง = ขายพลังทางอ้อม · ทางเลือก: (ก) แยก "Thread ที่ซื้อ" ใช้ได้แค่ของแต่งตัว (กระเป๋า 2 ช่อง แสดงไอคอนเดียว) (ข) สกุลใหม่สำหรับเงินจริง (ค) เปลี่ยน 3 ทางนั้นเป็น Sugar
+
+## E ที่ยังเหลือ (รอเลือก)
+| # | ระบบ | ข้อเสนอ |
+|---|---|---|
+| — | Endgame (Recipe Maps / Delve / Pinnacle) | ไม่ตัด · หยุดพัฒนาเพิ่มจนหลัง test (0 ครั้ง) |
+| — | Bestiary / Codex | รอรวมตอนทำ C (≤ 3 ครั้ง) |
 
 ## S ที่เหลือ
-- ปุ่มใน Forge (Merge / Enhance / เพิ่ม-ลบ mod / ย้าย / Auto-roll) → นับการใช้ แล้วเหลือ 2–3 ปุ่ม
+- ปุ่มใน Forge → หลัง test (Forge ถูกเปิดแค่ 5 ครั้ง · ดูก่อนว่าคนเข้าเพราะอะไร)
 - ข้อความเมนูที่ยาวเกิน 1 บรรทัด → ตัดสั้น (การ์ดภารกิจ/แบนเนอร์ทำแล้ว 8.2.40 · 8.2.46)
 
 ## C / R (หลัง Closed test)
+- C1: Rank Rewards (6) รวมเข้าหน้า Weave & Rank · Talent (6) ไปอยู่ในหน้าฮีโร่ (97)
+- R1: เมนู 3 ชั้น (hub → กลุ่ม → หน้า) · ปุ่มล่างพาไปหน้าที่ใช้บ่อยตรง ๆ
 - C: Codex + Bestiary + Memory Book + Mission Atlas → 📖 Collection · Login/Daily/Awards/Daily chest → กล่องรับของเดียว · Pact Relics + Relic vault → ระบบ Relic เดียว · Supplies → ขั้นเตรียมตัวก่อนเข้าด่าน
 - R: เปิดระบบตามจังหวะ (15 นาทีแรก = เล่นด่าน → อัปฮีโร่ → อุปกรณ์) · เมนูเรียงตามความถี่ที่ใช้ · ภารกิจซับซ้อนไม่โผล่ใน Ch1
-- **ก่อนตัดรอบ 2:** ใส่ตัวนับการเข้าแต่ละหน้า ช่วง Closed test → ตัดจากข้อมูลจริง
+- **ตัวนับการเข้าแต่ละหน้ามีอยู่แล้ว** (`run_stats` mode `event` result `screen`) → หลัง Closed test ดึงข้อมูลแบบรอบ 2 อีกครั้ง
