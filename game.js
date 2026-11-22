@@ -6824,8 +6824,9 @@ const CHESTS=[{id:'silver',name:'Silver Chest',cost:30,odds:[['common',.5],['rar
   {id:'gold',name:'Gold Chest',cost:120,odds:[['rare',.3],['epic',.6],['legend',.1]],tint:0xffc43d,bg:0x3a2a12,edge:0xffc43d,title:'#ffe08a'}];
 /* v8.2.54 ECRS2 S1 (เจ้าของเลือก 22 พ.ย.): กล่อง Gear จ่ายด้วย 🍬 Sugar (ได้จากการเล่นเท่านั้น) ไม่ใช่ 🧶 Thread · ราคาตามระดับไอเทมเดียวกับ Sugar Chest (Silver ×1.4 · Gold ×4) */
 function chestSugarCost(c){ const b=(typeof GACHA_LEVELS!=='undefined'&&typeof gachaMaxBand==='function')?GACHA_LEVELS[Math.max(0,gachaMaxBand())].cost:150; return Math.round(b*(c&&c.id==='gold'?4:1.4)/10)*10; }
-/* v8.1.45 เจ้าของ: ร้านด้าย (Thread = สกุลหลักที่ซื้อด้วยเงินจริง) · ขายแค่ของสวย/ความสะดวก · ยังไม่ผูก Google Play Billing (Iap.available()=false) */
-const IAP_PACKS=[{id:'thread_60',thread:60,bonus:0,price:'THB 35'},{id:'thread_200',thread:180,bonus:20,price:'THB 99'},{id:'thread_400',thread:330,bonus:70,price:'THB 179'},{id:'thread_850',thread:650,bonus:200,price:'THB 349'},{id:'thread_1800',thread:1300,bonus:500,price:'THB 699'},{id:'thread_4000',thread:2600,bonus:1400,price:'THB 1,450'}];
+/* v8.1.45 เจ้าของ: ร้านขายของสวย/ความสะดวก · ยังไม่ผูก Google Play Billing (Iap.available()=false)
+   v8.2.55 เจ้าของ 22 พ.ย.: เงินจริง → 🍭 Lollipops (สกุลใหม่) ใช้ได้แค่ของแต่งตัว/Pass · 🧶 Thread = ได้จากการเล่นเท่านั้น (Thread ซื้อพลังได้ → ห้ามขาย) */
+const IAP_PACKS=[{id:'lolli_60',lolli:60,bonus:0,price:'THB 35'},{id:'lolli_200',lolli:180,bonus:20,price:'THB 99'},{id:'lolli_400',lolli:330,bonus:70,price:'THB 179'},{id:'lolli_850',lolli:650,bonus:200,price:'THB 349'},{id:'lolli_1800',lolli:1300,bonus:500,price:'THB 699'},{id:'lolli_4000',lolli:2600,bonus:1400,price:'THB 1,450'}];
 const MOCHI_PASS={id:'mochi_pass',price:'THB 129',instant:300,daily:60,days:30};
 const Iap={
   available(){ return !!(typeof window!=='undefined'&&window.MochiBilling&&window.MochiBilling.ready); },
@@ -6833,11 +6834,11 @@ const Iap={
   firstBonus(id){ const d=(typeof Save!=='undefined'&&Save.data)||{}; return !(d.iapFirst&&d.iapFirst[id]); },
   passDaysLeft(now){ const d=Save.data||{},ps=d.mochiPass; if(!ps||!ps.until)return 0; const left=Math.ceil((ps.until-(now||Date.now()))/864e5); return Math.max(0,left); },
   passClaimable(now){ const d=Save.data||{}; return this.passDaysLeft(now)>0&&d.mochiPass.day!==localDayKey()&&(d.mochiPass.left==null||d.mochiPass.left>0); },
-  /* เรียกหลัง Play ยืนยันการซื้อแล้วเท่านั้น · คืนจำนวนด้ายที่ได้ */
+  /* เรียกหลัง Play ยืนยันการซื้อแล้วเท่านั้น · คืนจำนวน 🍭 ที่ได้ (v8.2.55: ไม่ให้ 🧶 Thread จากเงินจริงอีก) */
   grant(id,now){ const d=Save.data; if(!d)return 0; now=now||Date.now();
-    if(id===MOCHI_PASS.id){ const ps=d.mochiPass||{}; ps.until=Math.max(ps.until||0,now)+MOCHI_PASS.days*864e5; ps.left=(ps.left>0?ps.left:0)+MOCHI_PASS.days; d.mochiPass=ps;   /* v8.1.67 รับได้ไม่เกิน 30 ครั้งต่อ Pass */ Save.addThreads(MOCHI_PASS.instant); return MOCHI_PASS.instant; }
-    const p=this.pack(id); if(!p)return 0; const first=this.firstBonus(id),n=(first?p.thread*2:p.thread)+p.bonus; d.iapFirst=Object.assign({},d.iapFirst,{[id]:1}); Save.addThreads(n); return n; },
-  claimPass(now){ if(!this.passClaimable(now))return 0; Save.data.mochiPass.day=localDayKey(); if(Save.data.mochiPass.left!=null)Save.data.mochiPass.left--; Save.addThreads(MOCHI_PASS.daily); return MOCHI_PASS.daily; },
+    if(id===MOCHI_PASS.id){ const ps=d.mochiPass||{}; ps.until=Math.max(ps.until||0,now)+MOCHI_PASS.days*864e5; ps.left=(ps.left>0?ps.left:0)+MOCHI_PASS.days; d.mochiPass=ps;   /* v8.1.67 รับได้ไม่เกิน 30 ครั้งต่อ Pass */ Save.addLollipops(MOCHI_PASS.instant); return MOCHI_PASS.instant; }
+    const p=this.pack(id); if(!p)return 0; const first=this.firstBonus(id),n=(first?p.lolli*2:p.lolli)+p.bonus; d.iapFirst=Object.assign({},d.iapFirst,{[id]:1}); Save.addLollipops(n); return n; },
+  claimPass(now){ if(!this.passClaimable(now))return 0; Save.data.mochiPass.day=localDayKey(); if(Save.data.mochiPass.left!=null)Save.data.mochiPass.left--; Save.addLollipops(MOCHI_PASS.daily); return MOCHI_PASS.daily; },
   buy(id,done){ if(!this.available()){ done&&done(false,'unavailable'); return; } try{ window.MochiBilling.buy(id,ok=>{ const n=ok?this.grant(id):0; done&&done(!!ok,n); }); }catch(e){ done&&done(false,'error'); } }
 };
 /* v8.1.46 เจ้าของ: Wardrobe ของแต่ง 2D (ปีก/สัตว์เลี้ยง/หางประกาย) ซื้อด้วยด้าย · ใช้ได้ทุกฮีโร่ · ไม่มีพลัง · อาร์ตใบ 66 (ยังไม่มา = วาดแทนด้วยโค้ด) */
@@ -6897,7 +6898,10 @@ const Cos={
   skinOwns(id){ return !!this.data().sown[id]; },
   skin(hero){ const id=this.data().skin[hero],k=this.skinItem(id); return k&&this.skinOwns(id)&&this.skinReady(k)?k:null; },
   setSkin(hero,id){ if(id&&(!this.skinOwns(id)||this.skinItem(id)?.hero!==hero))return false; this.data().skin[hero]=id||null; Save.save(); return true; },
-  buySkin(id){ const k=this.skinItem(id); if(!k||this.skinOwns(id)||!this.skinReady(k))return false; if(!Save.spendThreads(SKIN_PRICE))return false; this.data().sown[id]=1; this.data().skin[k.hero]=id; Save.save(); return true; },
+  /* v8.2.55 จ่ายได้ 2 ทาง: cur='thread' (🧶 ได้จากการเล่น · ค่าเริ่ม) หรือ 'lolli' (🍭 เงินจริง) · ราคาเท่ากัน */
+  pay(n,cur){ return cur==='lolli'?Save.spendLollipops(n):Save.spendThreads(n); },
+  canPay(n,cur){ return (cur==='lolli'?Save.lollipops():Save.threads())>=n; },
+  buySkin(id,cur){ const k=this.skinItem(id); if(!k||this.skinOwns(id)||!this.skinReady(k))return false; if(!this.pay(SKIN_PRICE,cur))return false; this.data().sown[id]=1; this.data().skin[k.hero]=id; Save.save(); return true; },
   item(id){ return COSMETICS.find(c=>c.id===id)||null; },
   owns(id){ return !!this.data().own[id]; },
   equipped(slot){ if(COS_RETIRED.includes(slot))return null; const id=this.data().eq[slot]; return id&&this.owns(id)?this.item(id):null; },
@@ -6905,7 +6909,7 @@ const Cos={
   tint(c){ return c?COS_DYES[this.dye(c.id)][1]:null; },
   col(c){ return this.tint(c)??c.col; },
   nextDye(id){ if(!this.owns(id))return false; this.data().dye[id]=(this.dye(id)+1)%COS_DYES.length; Save.save(); return true; },
-  buy(id){ const c=this.item(id); if(!c||this.owns(id)||this.retired(c))return false; if(!Save.spendThreads(c.price))return false; this.data().own[id]=1; this.data().eq[c.slot]=id; Save.save(); return true; },
+  buy(id,cur){ const c=this.item(id); if(!c||this.owns(id)||this.retired(c))return false; if(!this.pay(c.price,cur))return false; this.data().own[id]=1; this.data().eq[c.slot]=id; Save.save(); return true; },
   toggle(id){ const c=this.item(id); if(!c||!this.owns(id))return false; const eq=this.data().eq; eq[c.slot]=eq[c.slot]===id?null:id; Save.save(); return true; }
 };
 function pickWeighted(list){ let r=Math.random(),acc=0; for(const [k,p] of list){ acc+=p; if(r<acc)return k; } return list[list.length-1][0]; }
@@ -8073,6 +8077,10 @@ const Save = {
   kitchenResetCost(){ return 5+2*(this.data.rank||0); },
   threads(){ return this.data.threads||0; },
   addThreads(n){ this.data.threads=this.threads()+n; this.save(); },
+  /* v8.2.55 🍭 Lollipops = สกุลเงินจริง · ได้จาก IAP/Pass เท่านั้น · ใช้ได้แค่ของแต่งตัว (Cos.buy/buySkin) · ห้ามแปลงเป็นอย่างอื่น */
+  lollipops(){ return Math.max(0,this.data.lollipops||0); },
+  addLollipops(n){ this.data.lollipops=this.lollipops()+Math.max(0,n|0); this.save(); },
+  spendLollipops(n){ if(this.lollipops()<n)return false; this.data.lollipops-=n; this.save(); return true; },
   miners(){ if(!this.data.miners)this.data.miners={lv:0,at:Date.now(),store:0}; return this.data.miners; },
   minersTick(){ const m=this.miners(),now=Date.now(); if(!m.lv){m.at=now;return m;} if(now<m.at){m.at=now;return m;} const L=MINER_LEVELS[m.lv],h=(now-m.at)/3600000; m.store=Math.min(L.rate*L.cap,(m.store||0)+L.rate*h); m.at=now; return m; },
   minersReady(){ const m=this.minersTick(); return m.lv>0&&m.store>=MINER_LEVELS[m.lv].rate*MINER_LEVELS[m.lv].cap*0.5; },
@@ -13185,7 +13193,9 @@ class Game extends Phaser.Scene {
       try{ const mr=(typeof MINERS_ON==='undefined'||MINERS_ON)&&Save.minersReady&&Save.minersReady()&&Save.minersTick(),mn=mr?Math.floor(mr.store||0):0;   // v8.0.27 เจ้าของ: เก็บด้ายจาก Miners ได้จาก Lobby
         if(mn>=1){ const my=ty+th+6,mh=26,mw=sw-16,mg=this.add.graphics(); mg.fillStyle(0x3d5a2a,.95).fillRoundedRect(sx,my,mw,mh,13).lineStyle(1.5,0xa8ffb0,1).strokeRoundedRect(sx,my,mw,mh,13); this.menu.add(mg);
           const miner=this.menuArtIcon?.('dig_miner',0,sx+14,my+mh/2,22);const mt=this.hubText(sx+mw/2+(miner?8:0),my+mh/2,(miner?'':'🧶 ')+'+'+mn+' ready',11,'#e8ffe0',.5); fit(mt,mw-10); this.drawBadgeDot(this.menu,sx+mw-4,my+2);
-          this._zone(sx,my-2,mw,mh+4,()=>{ const n=Save.minersCollect(); if(n>0){ Sfx.menuCue?.('miners_collect',.35)||Sfx.digFind&&Sfx.digFind(); this.menuToast('👷 Miners dug 🧶 +'+n+' Thread','#a8ffb0'); } this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='miners_collect'; } }catch(e){} }
+          this._zone(sx,my-2,mw,mh+4,()=>{ const n=Save.minersCollect(); if(n>0){ Sfx.menuCue?.('miners_collect',.35)||Sfx.digFind&&Sfx.digFind(); this.menuToast('👷 Miners dug 🧶 +'+n+' Thread','#a8ffb0'); } this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='miners_collect'; } }catch(e){}
+      try{ const lp=Save.lollipops?.()||0; if(lp>0){ const my=ty+th+6,mh=26,mw=sw-16,lg=this.add.graphics(); lg.fillStyle(0x4a2340,.95).fillRoundedRect(sx,my,mw,mh,13).lineStyle(1.5,0xffb8e8,1).strokeRoundedRect(sx,my,mw,mh,13); this.menu.add(lg);   /* v8.2.55 🍭 Lollipops (เงินจริง · ของแต่งตัวเท่านั้น) · โชว์เฉพาะตอนมี */
+          fit(this.hubText(sx+mw/2,my+mh/2,'🍭 '+compact(lp),11,'#ffe0f4',.5),mw-10); this._zone(sx,my-2,mw,mh+4,()=>{ this._bazTab=(typeof IAP_ENABLED!=='undefined'&&IAP_ENABLED)?'thread':'wardrobe'; this.menuScreen='bazaar'; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='lolli_pill'; } }catch(e){} }
     this.hubText(side,h-5,'v'+GAME_VERSION,8,'#d9cce6',0,1);
     // ── ข้อ 2 ปุ่มทางลัดข้างจอ (มีจุดแดงเมื่อมีของรอ) · กรอบ lb_side_btn + ไอคอน ic_side_*
     const sideBtn=(x,y,em,lab,t,ik,badge)=>{ if(!featureOpen(t))return; const s0=54;panel('lb_side_btn',x,y,s0,s0);
@@ -14498,7 +14508,7 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
     /* v8.0.25 เจ้าของ: เหลือ 3 แท็บ — หีบ (เงิน/ทอง/Sugar) · ร้าน (ของ 4 + วัสดุ 2 รีเฟรชฟรีวันละครั้ง) · แลก (Trade-in + ขายวัสดุ) */
     const TAB={buy:'shop',orders:'shop',gamble:'chests',sell:'trade'},w=this.W,h=this.H,hs=this._hdrShift(),tab=this._bazTab=(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED&&this._bazTab==='thread')?'chests':(TAB[this._bazTab]||this._bazTab||'chests'),top=(tab==='shop'?153:121)+hs;
-    const noIap=typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED,bTabs=[['chests','Chests'],['shop','Shop'],['trade','Trade'],noIap?['wardrobe','Wardrobe']:['thread','Thread']];bTabs.forEach(([id,label],i)=>{const tw=(w-28)/bTabs.length;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{ if(id==='wardrobe'){ this.menuScreen='wardrobe'; this.buildMenuScreen(); return; } this._bazTab=id;this.buildBazaar();},'tab_'+id);});   /* v8.1.149 เจ้าของ 🐞: ปิด IAP แล้วแท็บ Thread หาย → ทางเข้า Wardrobe (ร้านแฟชั่น) หายตาม · แทนด้วยแท็บ Wardrobe */
+    const noIap=typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED,bTabs=[['chests','Chests'],['shop','Shop'],['trade','Trade'],noIap?['wardrobe','Wardrobe']:['thread','🍭 Shop']];bTabs.forEach(([id,label],i)=>{const tw=(w-28)/bTabs.length;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{ if(id==='wardrobe'){ this.menuScreen='wardrobe'; this.buildMenuScreen(); return; } this._bazTab=id;this.buildBazaar();},'tab_'+id);});   /* v8.1.149 เจ้าของ 🐞: ปิด IAP แล้วแท็บ Thread หาย → ทางเข้า Wardrobe (ร้านแฟชั่น) หายตาม · แทนด้วยแท็บ Wardrobe */
     if(tab==='chests'){ this.buildChestShop(top); this.menu.setVisible(true); return; }
     if(tab==='thread'){ this.buildThreadShop(top); this.menu.setVisible(true); return; }
     let y=top;
@@ -14525,26 +14535,27 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   buildThreadShop(top){ const w=this.W,h=this.H,d=Save.data,live=Iap.available(); let y=top;
-    this.menu.add(this.add.text(14,y,'🧶 '+Save.threads()+' Thread',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffc6df'}));
+    this.menu.add(this.add.text(14,y,'🍭 '+(Save.lollipops?.()||0)+' Lollipops',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffc6df'}));   /* v8.2.55 ร้านเงินจริงขาย 🍭 (ใช้กับของแต่งตัวเท่านั้น) */
     this.paintedNavButton(this.menu,w-70,y+9,112,28,'Wardrobe',false,()=>{this.menuScreen='wardrobe';this.buildMenuScreen();},'wardrobe'); y+=26;
-    this.menu.add(this.add.text(14,y-6,live?'':'Purchases open with the Play Store release',{fontFamily:'sans-serif',fontSize:'9px',color:'#c5b5d1'})); y+=12;
+    this.menu.add(this.add.text(14,y-6,live?'Lollipops buy looks only · never power':'Purchases open with the Play Store release · Lollipops buy looks only',{fontFamily:'sans-serif',fontSize:'9px',color:'#c5b5d1'})); y+=12;
     const days=Iap.passDaysLeft(),pc=Iap.passClaimable(),ph=58,pg=this.add.graphics(); pg.fillStyle(0x3a2a14,1).fillRoundedRect(14,y,w-28,ph,12).lineStyle(2,0xffd166,.95).strokeRoundedRect(14,y,w-28,ph,12); this.menu.add(pg);
     this.menu.add(this.add.text(26,y+9,'Mochi Pass · 30 days',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}));
-    this.menu.add(this.add.text(26,y+29,days?days+' days left · +'+MOCHI_PASS.daily+' Thread every day':'+'+MOCHI_PASS.instant+' Thread now · +'+MOCHI_PASS.daily+' Thread every day',{fontFamily:'sans-serif',fontSize:'10px',color:'#fff0dc',wordWrap:{width:w-150}}));
+    this.menu.add(this.add.text(26,y+29,days?days+' days left · +'+MOCHI_PASS.daily+' 🍭 every day':'+'+MOCHI_PASS.instant+' 🍭 now · +'+MOCHI_PASS.daily+' 🍭 every day',{fontFamily:'sans-serif',fontSize:'10px',color:'#fff0dc',wordWrap:{width:w-150}}));
     this.menu.add(this.add.text(w-26,y+ph/2,days?(pc?'Claim +'+MOCHI_PASS.daily:'Claimed today'):MOCHI_PASS.price,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:pc?'#a8edc6':days?'#75697e':'#ffd166'}).setOrigin(1,.5));
-    this._zone(14,y,w-28,ph,()=>{ if(days){ const n=Iap.claimPass(); if(n){Sfx.menuCue?.('ui_pass_claim',.45)||Sfx.clear?.();this.showBanner?.('🧶 Mochi Pass','+'+n+' Thread',1300);this.buildBazaar();} return; } this.threadBuy(MOCHI_PASS.id); }); if(pc)this.drawBadgeDot?.(this.menu,w-18,y+4); y+=ph+10;
+    this._zone(14,y,w-28,ph,()=>{ if(days){ const n=Iap.claimPass(); if(n){Sfx.menuCue?.('ui_pass_claim',.45)||Sfx.clear?.();this.showBanner?.('🍭 Mochi Pass','+'+n+' Lollipops',1300);this.buildBazaar();} return; } this.threadBuy(MOCHI_PASS.id); }); if(pc)this.drawBadgeDot?.(this.menu,w-18,y+4); y+=ph+10;
     const cols=w>h?3:2,gap=8,cw=(w-28-gap*(cols-1))/cols,rows=Math.ceil(IAP_PACKS.length/cols),ch=Math.min(130,Math.max(84,(h-y-20)/rows-gap));
-    IAP_PACKS.forEach((p,i)=>{ const first=Iap.firstBonus(p.id),n=(first?p.thread*2:p.thread)+p.bonus;
-      this.bazaarProductCard(14+(i%cols)*(cw+gap),y+Math.floor(i/cols)*(ch+gap),cw,ch,{art:'ic_thread',name:n+' Thread',desc:first?'First purchase: double Thread':p.bonus?'+'+p.bonus+' bonus':'',price:p.price,color:first?0xffd166:0xffc6df,afford:live,fn:()=>this.threadBuy(p.id)}); }); }
-  threadHowTo(){ Sfx.select?.(); this.showBanner?.('🧶 Earn Thread','Dig in Temple Depths and claim Daily Login rewards',2200); }
-  threadBuy(id){ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } if(!Iap.available()){ Sfx.menuCue?.('ui_shop_soon',.35)||Sfx.error?.(); this.showBanner?.('🧶 Coming soon','Thread purchases open with the Play Store release',1600); return; }
-    const first=Iap.firstBonus(id); Iap.buy(id,(ok,n)=>{ if(ok){Sfx.menuCue?.(first&&id!==MOCHI_PASS.id?'ui_thread_first_bonus':'ui_thread_buy',.5)||Sfx.clear?.();this.showBanner?.('🧶 Thank you!','+'+n+' Thread',1600);} if(this.state==='menu'&&this.menuScreen==='bazaar')this.buildBazaar(); }); }
+    IAP_PACKS.forEach((p,i)=>{ const first=Iap.firstBonus(p.id),n=(first?p.lolli*2:p.lolli)+p.bonus;
+      this.bazaarProductCard(14+(i%cols)*(cw+gap),y+Math.floor(i/cols)*(ch+gap),cw,ch,{art:'ic_lollipop',name:n+' 🍭',desc:first?'First purchase: double Lollipops':p.bonus?'+'+p.bonus+' bonus':'',price:p.price,color:first?0xffd166:0xffc6df,afford:live,fn:()=>this.threadBuy(p.id)}); }); }
+  threadHowTo(){ Sfx.select?.(); this.showBanner?.('🧶 Earn Thread','Salvage gear, clear stages and claim Login & Daily rewards',2200); }
+  threadBuy(id){ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } if(!Iap.available()){ Sfx.menuCue?.('ui_shop_soon',.35)||Sfx.error?.(); this.showBanner?.('🍭 Coming soon','Lollipop purchases open with the Play Store release',1600); return; }
+    const first=Iap.firstBonus(id); Iap.buy(id,(ok,n)=>{ if(ok){Sfx.menuCue?.(first&&id!==MOCHI_PASS.id?'ui_thread_first_bonus':'ui_thread_buy',.5)||Sfx.clear?.();this.showBanner?.('🍭 Thank you!','+'+n+' Lollipops',1600);} if(this.state==='menu'&&this.menuScreen==='bazaar')this.buildBazaar(); }); }
   gmApply(){ if(typeof GM==='undefined'||!GM.on()||!this.player)return; if(GM.opt('dmg')){ this.player.dmgMul=(this.player.dmgMul||1)*10; this.floatText?.(this.player.x,this.player.y-70,'GM ×10 damage',0xffd166); } if(GM.opt('god'))this.floatText?.(this.player.x,this.player.y-90,'GM god mode',0x8fe8ff); }
   buildGm(){ if(typeof GM==='undefined'||!GM.on()){ this.menuScreen='settings'; this.buildMenuScreen(); return; } this.menu.removeAll(true);this.tapZones=[];this._screenBg('GM Tools','screen_settings','settings');
     const w=this.W,h=this.H,d=Save.data,done=(t,sub)=>{ GM.mark(); Save.save(); Sfx.clear?.(); this.showBanner?.('🛠 '+t,sub||'',1100); this.buildGm(); };
     const A=[
       ['🍬','+10,000 Sugar',()=>{Save.addSugar(10000);done('Sugar added');}],
       ['🧶','+1,000 Thread',()=>{Save.addThreads(1000);done('Thread added');}],
+      ['🍭','+1,000 Lollipops',()=>{Save.addLollipops(1000);done('Lollipops added');}],   /* v8.2.55 ทดสอบสกุลเงินจริง */
       ['🧪','+50 every material',()=>{for(const c of (typeof CURRENCY!=='undefined'?CURRENCY:[]))Save.addCurrency(c.key,50);done('Materials added');}],
       ['🗺️','Unlock all stages',()=>{d.unlockedStage=Math.max(d.unlockedStage||0,STAGES.length-1);d.stageMastery=d.stageMastery||{};for(let i=0;i<STAGES.length;i++)d.stageMastery[i]=d.stageMastery[i]||1;d.tutorialDone=true;Save.unlockCoreCharacters?.(false);done('All stages open');}],
       ['🦸','Unlock all heroes',()=>{d.chars=Array.isArray(d.chars)?d.chars:['momo'];for(const c of ['momo',...Object.keys(CORE_UNLOCK_STAGE)])if(!d.chars.includes(c))d.chars.push(c);done('All heroes unlocked');}],
@@ -14623,9 +14634,9 @@ class Game extends Phaser.Scene {
     const btn=(bx,by,ww,hh,fill,edge,label,fn,tag)=>{ const b=this.add.graphics(); b.fillStyle(fill,1).fillRoundedRect(bx,by,ww,hh,14).fillStyle(0xffffff,.16).fillRoundedRect(bx+3,by+3,ww-6,hh*.42,10).lineStyle(2,edge,1).strokeRoundedRect(bx,by,ww,hh,14); this.menu.add(b); T(bx+ww/2,by+hh/2,label,14,'#ffffff'); this._zone(bx,by,ww,hh,fn); this.tapZones[this.tapZones.length-1].tag=tag; return b; };
     if(!c){ const eq=COS_SLOTS.filter(([s])=>Cos.equipped(s)).length; T(w/2,y+bh/2-8,'Looks only · shown on every hero',11,'#e8d8ff'); T(w/2,y+bh/2+9,eq+' of '+COS_SLOTS.length+' slots dressed up',10,'#b9a6cf'); return; }
     const by=y+9,hh=bh-18;
-    if(!Cos.owns(c.id)){ const aff=Save.threads()>=c.price;
+    if(!Cos.owns(c.id)){ if(this.wardPayRow?.(x,by,bw,hh,c.price,cur=>this.cosTap(c,cur),btn,'ward_buy'))return; const aff=Save.threads()>=c.price;
       if(aff){ const b=btn(x+10,by,bw-20,hh,0xe0558f,0xffd166,'Buy & Wear  ·  🧶 '+c.price,()=>this.cosTap(c),'ward_buy'); this.tweens?.add({targets:b,alpha:.85,duration:700,yoyo:true,repeat:-1}); }
-      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(c.price-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+c.price,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,'Get Thread ›',()=>{ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
+      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(c.price-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+c.price,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,(typeof IAP_ENABLED!=='undefined'&&IAP_ENABLED)?'Get 🍭 ›':'Get Thread ›',()=>{ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
       return; }
     const on=Cos.equipped(c.slot)?.id===c.id,hw=(bw-30)/2;
     btn(x+10,by,hw,hh,on?0x6a5a86:0x2f9a66,on?0xd8c8f0:0xa8ffcf,on?'Take off':'Wear',()=>this.cosTap(c),'ward_wear');
@@ -14652,9 +14663,9 @@ class Game extends Phaser.Scene {
       T(w/2,y+bh/2-8,'Full outfits · art for every screen and stage',11,'#e8d8ff'); T(w/2,y+bh/2+9,'Each skin belongs to one hero',10,'#b9a6cf'); return; }
     if(!Cos.skinReady(k)){ T(w/2,y+bh/2-8,'Coming soon',13,'#ffd9a8'); T(w/2,y+bh/2+10,'This skin is still being tailored',10,'#b9a6cf'); return; }
     if(!(Save.data.chars||[]).includes(k.hero)){ T(w/2,y+bh/2,'🔒 Unlock '+(CHARACTERS?.[k.hero]?.name||k.hero)+' first',12,'#ffb0c8'); return; }
-    if(!Cos.skinOwns(k.id)){ const aff=Save.threads()>=SKIN_PRICE;
+    if(!Cos.skinOwns(k.id)){ if(this.wardPayRow?.(x,by,bw,hh,SKIN_PRICE,cur=>{ if(Cos.buySkin(k.id,cur)){ Sfx.menuCue?.('ui_cos_buy',.5)||Sfx.clear?.(); this.showBanner?.('✨ '+k.name,'Worn by '+(CHARACTERS?.[k.hero]?.name||k.hero)+' everywhere',1500); } else Sfx.error?.(); this.buildWardrobe(); },btn,'ward_skin_buy'))return; const aff=Save.threads()>=SKIN_PRICE;
       if(aff){ const b=btn(x+10,by,bw-20,hh,0xe0558f,0xffd166,'Buy & Wear  ·  🧶 '+SKIN_PRICE,()=>{ if(Cos.buySkin(k.id)){ Sfx.menuCue?.('ui_cos_buy',.5)||Sfx.clear?.(); this.showBanner?.('✨ '+k.name,'Worn by '+(CHARACTERS?.[k.hero]?.name||k.hero)+' everywhere',1500); } else Sfx.error?.(); this.buildWardrobe(); },'ward_skin_buy'); this.tweens?.add({targets:b,alpha:.85,duration:700,yoyo:true,repeat:-1}); }
-      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(SKIN_PRICE-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+SKIN_PRICE,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,'Get Thread ›',()=>{ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
+      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(SKIN_PRICE-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+SKIN_PRICE,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,(typeof IAP_ENABLED!=='undefined'&&IAP_ENABLED)?'Get 🍭 ›':'Get Thread ›',()=>{ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
       return; }
     const on=Cos.data().skin[k.hero]===k.id; btn(x+10,by,bw-20,hh,on?0x6a5a86:0x2f9a66,on?0xd8c8f0:0xa8ffcf,on?'Back to original outfit':'Wear',()=>{ Cos.setSkin(k.hero,on?null:k.id); Sfx.menuCue?.(on?'ui_cos_unequip':'ui_cos_equip',.4)||Sfx.select?.(); this.buildWardrobe(); },'ward_skin_wear'); }
   // หุ่นลองชุด: ใช้ท่า idle ของ Lobby ถ้าโหลดแล้ว ไม่งั้นภาพการ์ดฮีโร่
@@ -14724,9 +14735,14 @@ class Game extends Phaser.Scene {
       this.menu.add(o); this.tweens?.add({targets:o,y:sy-hh*.25,alpha:0,duration:1200,onComplete:()=>o.destroy()}); }); }
   lobbyCosHalo(){ const h=this._cosLobbyHalo; this._cosLobbyHalo=null; if(!h)return; let o; const k='cos_'+h.c.id; if(this.realTex?.(k)){ o=this.add.sprite(h.x,h.y,k).setScale(Math.min(h.hh*.42/96,COS_LOBBY_MAX)); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(h.c); if(t!=null)o.setTint(t); } else { o=this.add.graphics(); const r=h.hh*.17; o.lineStyle(5,Cos.col(h.c),.95).strokeEllipse(0,0,r*2,r*.6).lineStyle(2,0xffffff,.8).strokeEllipse(0,-1,r*1.6,r*.45); o.setPosition(h.x,h.y); }
     this.menu.add(o); this.cosAttach(o,h.footY,h.hh,3); }
-  cosTap(c){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.menuCue?.(Cos.equipped(c.slot)?.id===c.id?'ui_cos_equip':'ui_cos_unequip',.4)||Sfx.select?.(); this.buildWardrobe(); return; }
+  cosTap(c,cur){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.menuCue?.(Cos.equipped(c.slot)?.id===c.id?'ui_cos_equip':'ui_cos_unequip',.4)||Sfx.select?.(); this.buildWardrobe(); return; }
     if(this._cosPrev!==c.id){ this._cosPrev=c.id; Sfx.ui?.(); this.buildWardrobe(); return; }   /* v8.1.68 แตะครั้งแรก = ลองใส่ · ซื้อจากแถบล่าง */
-    if(Cos.buy(c.id)){ Sfx.menuCue?.('ui_cos_buy',.5)||Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.('🧶 Not enough Thread','Requires '+c.price+' Thread',1400); } this.buildWardrobe(); }
+    if(Cos.buy(c.id,cur)){ Sfx.menuCue?.('ui_cos_buy',.5)||Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.(cur==='lolli'?'🍭 Not enough Lollipops':'🧶 Not enough Thread','Requires '+c.price+(cur==='lolli'?' Lollipops':' Thread'),1400); } this.buildWardrobe(); }
+  /* v8.2.55 มี 🍭 Lollipops = ปุ่มจ่าย 2 ทางคู่กัน (🧶 Thread | 🍭 Lollipops ราคาเท่ากัน) · ไม่มี 🍭 = ปุ่มเดิม (คืน false) */
+  wardPayRow(x,by,bw,hh,price,buy,btn,tag){ const L=Save.lollipops?.()||0; if(L<=0)return false; const hw=(bw-30)/2,ct=Save.threads()>=price,cl=L>=price;
+    btn(x+10,by,hw,hh,ct?0xe0558f:0x4a3a55,ct?0xffd166:0x7a6a88,'🧶 '+price,()=>{ if(!ct){ Sfx.error?.(); this.menuToast?.('🧶 Need '+(price-Save.threads())+' more Thread','#ffb3c8'); return; } buy('thread'); },tag);
+    btn(x+20+hw,by,hw,hh,cl?0xd0569e:0x4a3a55,cl?0xffb8e8:0x7a6a88,'🍭 '+price,()=>{ if(!cl){ Sfx.error?.(); this.menuToast?.('🍭 Need '+(price-L)+' more Lollipops','#ffb3c8'); return; } buy('lolli'); },tag+'_lolli');
+    return true; }
   loadCosArt(){ if(!this._skinBan&&this.ensureGroup&&typeof ASSET_IMAGES!=='undefined'&&ASSET_IMAGES.skin_banner69&&!this.realTex?.('skin_banner69')){ this._skinBan=true; try{ this.ensureGroup(k=>k==='skin_banner69',()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true}); }catch(e){} }
     if(this._cosArt||!this.ensureGroup||typeof ASSET_FX==='undefined'||!(ASSET_FX.cos_icons||ASSET_FX.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_FX.cos_icons2||this.realTex?.('cos_icons2'))&&(!ASSET_FX.skin_icons69||this.realTex?.('skin_icons69')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^(cos_icons|skin_icons69)/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){} }
   /* ในด่าน: ปีกหลังตัว · สัตว์เลี้ยงลอยตาม · หางประกายตอนเดิน (ไม่มีภาพ = วาดด้วยโค้ด) */
