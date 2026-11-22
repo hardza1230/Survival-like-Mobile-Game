@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.61';
+const GAME_VERSION = '8.2.62';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.62',date:'2026-11-22',title:'🧭 Expedition easy to find (Activities + red dot)',items:['Expedition row in Activities','Red dot when away 1h or can upgrade','Unlock text fixed']},
   {v:'8.2.61',date:'2026-11-22',title:'⚔️ Expedition simplified (no tapping needed)',items:['Hero auto-attacks (Hero Power)','Boss retries itself after 10 training foes','Upgrade all button','Supplies refill themselves']},
   {v:'8.2.60',date:'2026-11-22',title:'🔑 Faster Google sign-in (native account sheet)',items:['Native Google sign-in via Credential Manager when GOOGLE_WEB_CLIENT_ID is set','Custom Tab closes on return; cloud pull is one query','login timing event']},
   {v:'8.2.59',date:'2026-11-22',title:'Lollipops: real money buys looks only',items:['New Lollipops currency for future purchases: cosmetics and the Mochi Pass only, never power','Wardrobe items and skins can be paid with Thread or Lollipops']},
@@ -6828,10 +6829,10 @@ const MENU59=['tab_login','tab_daily','tab_awards','row_rewards','row_kitchen','
 const M59_ROW={rewards:'row_rewards',kitchen:'row_kitchen',recipes:'row_recipe_maps',__tutorial:'set_tutorial',skills:'codex_recipe',bestiary:'codex_bestiary',news:'news',gearInbox:'mail',daily:'tab_daily',achievements:'tab_awards'},M59_EMOJI={'🔊':'set_sound','🎵':'set_music','🔔':'set_sound','💬':'set_voice','📳':'set_shake','✨':'set_flash','🎆':'set_vfx','☁️':'set_cloud','✅':'set_cloud'};
 const BOSS_NO_SHOT=new Set([0,3,6,10,14]);   // C1-1 Ant Empress · C1-4 Frost Golem · C2-2 Behemoth · C3-1 Colossus · C3-5 First Planter (บอส + มินิด่านนั้น; Pinnacle/Delve ยิงเหมือนเดิม)
 const FEATURE_OPEN={patrol:3,dig:5,bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
-const FEAT_TAG={dig:'gLoadout',bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
+const FEAT_TAG={dig:'gActivity',bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
 const FEAT_ICON={dig:'tile_dig',rewards:'ic_side_daily',bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
-const FEAT_LINE={dig:'Depths is open! Use shovels to dig under the temple. Find the ladder to go deeper.',rewards:'Rewards is open! Your daily login gift, Daily Quests and Awards are all here.',bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
-const FEATURE_NAME={patrol:'🌙 Mochi Patrol',dig:'⛏️ Depths',rewards:'🎁 Rewards',bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
+const FEAT_LINE={dig:'Expedition is open! Your heroes fight titans on their own, even while you’re away. Find it in Activities.',rewards:'Rewards is open! Your daily login gift, Daily Quests and Awards are all here.',bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
+const FEATURE_NAME={patrol:'🌙 Mochi Patrol',dig:'⚔️ Expedition',rewards:'🎁 Rewards',bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
 // v8.0.29 เจ้าของ: Recipe Book — การ์ดทุกใบของแต่ละ Build (การ์ดสาย + Unique Mutation) · เคยเลือก = ✓ · ครบสายได้ Thread
 const RECIPE_PATH_THREAD=30;
 function recipeCards(hero,pid){ const pt=(BASIC_PATHS[hero]||[]).find(x=>x.id===pid); if(!pt)return []; const L=(pt.upgrades||[]).map(u=>({id:u.id,name:u.name,emoji:u.emoji,iconKey:u.iconKey,desc:hero==='yuzu'?u.desc:u.headline||u.desc}));
@@ -6975,7 +6976,8 @@ const HUB_GROUPS = {
     ['skills','✧','Recipe Book','Heroes & Builds, Relics, Items and Sets'],
     ['bestiary','☷','Bestiary','Discoveries and Sugar'] ] },
   gActivity:{ title:'🎉 Activities', rows:[
-    ['rewards','🎁','Rewards','Login gift, Daily Quests and Awards'],   // v8.0.75 เจ้าของ: แทน Daily + Achievements (ซ้ำกับปุ่ม Rewards)
+    ['rewards','🎁','Rewards','Login gift, Daily Quests and Awards'],
+    ['dig','⚔️','Expedition','Heroes fight titans on their own · collect 🍪'],   /* v8.2.62 เจ้าของ: อยู่ลึกเกิน (Upgrade → Weave) → เพิ่มใน Activities · ปุ่มเดิมใน Weave ยังอยู่ */   // v8.0.75 เจ้าของ: แทน Daily + Achievements (ซ้ำกับปุ่ม Rewards)
     ...(KITCHEN_ON?[['kitchen','🍳','Kitchen',FR_SIMPLE?'Pick a signature move for every run':'Recipes that power every run']]:[]),   /* v8.2.52 ECRS: ซ่อน */
     /* v8.2.32 Mochi Patrol → รวมเข้า Temple Expedition (Weave → Expedition) */
     /* v6.80 E2: Endgame (Endless/Ascension) entry removed */
@@ -8148,6 +8150,8 @@ const Save = {
     if(!e.mig){ e.mig=1; const dg=d.dig; if(dg&&dg.shovels>0){ e.crumbs+=dg.shovels*SHOVEL_CRUMBS; dg.shovels=0; } try{ if(this.minersCollect)this.minersCollect(); }catch(err){} }   /* ย้ายของเดิม: พลั่ว → Crumbs · ด้ายที่คนงานเก็บไว้ → รับเลย */
     return e; },
   addCrumbs(n){ const e=this.exp(); e.crumbs=(e.crumbs||0)+Math.max(0,n||0); this.save(); },
+  /* v8.2.62 จุดแดง Expedition: ไม่ได้เข้า ≥1 ชม. (มีของออฟไลน์รอ) หรือ Crumbs พออัปเกรด · แทน Daily chest ที่เลิกไป */
+  expReady(){ try{ if(typeof featureOpen==='function'&&!featureOpen('dig'))return false; const e=this.exp(); if(Date.now()-(e.at||0)>=3600e3)return true; if(e.crumbs>=expTapCost(e.tap||1))return true; const own=new Set((this.data.chars||[]).concat(this.data.character||'momo')); return EXP_HELPERS.some(h=>(h.id==='ruby'||own.has(h.id))&&e.crumbs>=expHelpCost(h,e.help[h.id]|0)); }catch(err){ return false; } },
   expDailyReady(){ if(typeof EXP_DAILY_ON!=='undefined'&&!EXP_DAILY_ON)return false; const e=this.exp(); return e.daily!==localDayKey(); },
   endgameUnlocked(){ return (this.data.ascension||0)>0||storyComplete(); },
   // Zone Modifiers ปลดล็อกเมื่อผ่านบอสจบ Chapter 1 (ด่าน 5 · index 4) = ผู้เล่นเรียนรู้เกมแล้ว
@@ -11525,7 +11529,7 @@ class Game extends Phaser.Scene {
   navWrapBuild(f,a){ if(this._inMenuBuild||this.state!=='menu'||!this.menu)return f.apply(this,a); const s=this.menuScreen||'hub',nav=this.navBarOn(s),H0=this.H; if(nav)this.H=H0-NAV_H; this._navOn=nav; this._spotBuild=false; this._inMenuBuild=true; let r;
     try{ r=f.apply(this,a); }finally{ this.H=H0; this._inMenuBuild=false; } if(this.state==='menu'){ this.menu.setVisible(true); if(nav&&!this._spotBuild)this.drawNavBar(s,H0); this.setupMenuScroll(s); } return r; }
   navTabOf(s){ if(s==='hub')return 'hub'; if(['char','stats','talents'].includes(s))return 'char'; if(['chapter','stage'].includes(s))return 'hub'; if(['bazaar','tradein'].includes(s))return 'bazaar';   // v7.9.68 เจ้าของ: เลือกด่านจากกล่องด่านใน Lobby · Bazaar ได้แท็บของตัวเอง
-    if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft','merge'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
+    if(s==='dig')return this._expFrom==='upgrade'?'gLoadout':'gActivity'; if(['gLoadout','upgrade','perks','gear','gearInbox','craft','merge'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
   drawNavBar(s,H0){ const W=this.W,y0=H0-NAV_H,act=this.navTabOf(s),fix=o=>{o._menuBackdrop=true;o._menuFixedY=o.y;this.menu.add(o);return o;}; this.loadLobbyArt?.();
     const g=fix(this.add.graphics()),bgArt=this.tuHas('lb_nav_bg'); g.fillStyle(0x000000,.35).fillRect(0,y0-6,W,6);
     if(bgArt){ const p=this.tuPanel('lb_nav_bg',0,0,y0,W,NAV_H); p._menuBackdrop=true;p._menuFixedY=y0;this.menu.add(p); }   // v7.9.51 ใบ 33 พื้นแถบ C1
@@ -11805,7 +11809,7 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ if(this._patrolOn&&this.menuScreen!=='patrol')this.patrolStop(); { const sc=this.menuScreen||'hub',M={wardrobe:'ui_wardrobe_open',ranking:'ui_rank_open',bestiary:'ui_codex_open',skills:'ui_codex_open',atlas:'ui_map_open',bossrush:'ui_bossrush_open'}; if(sc!==this._cueScreen&&M[sc]&&!this._chestOpen)Sfx.menuCue?.(M[sc],.4); if(sc!==this._cueScreen){ try{ Tele.ev('screen',{s:sc}); }catch(e){} } this._cueScreen=sc; }   /* v8.1.65 A11 เสียงเปิดหน้า */
+  buildMenuScreen(){ if(this._patrolOn&&this.menuScreen!=='patrol')this.patrolStop(); { const sc=this.menuScreen||'hub',M={wardrobe:'ui_wardrobe_open',ranking:'ui_rank_open',bestiary:'ui_codex_open',skills:'ui_codex_open',atlas:'ui_map_open',bossrush:'ui_bossrush_open'}; if(sc!==this._cueScreen&&M[sc]&&!this._chestOpen)Sfx.menuCue?.(M[sc],.4); if(sc!==this._cueScreen){ try{ Tele.ev('screen',{s:sc}); }catch(e){} if(sc==='dig')this._expFrom=this._cueScreen==='upgrade'?'upgrade':'gActivity'; } this._cueScreen=sc; }   /* v8.2.62 Expedition กลับไปหน้าที่มา (Activities หรือ Weave) */   /* v8.1.65 A11 เสียงเปิดหน้า */
     if(this._chestOpen||this._rubyTalk?.active)return; this.cancelMenuMotion(); const s=this.menuScreen||'hub'; this._jrSkin=false; if(Save._cloudConflict){ this.stopHubMotion?.(); this.buildCloudConflict(); return; }if(s==='atlas'&&this.state==='menu'&&this.mcGate?.('s17',()=>this.buildMenuScreen()))return;   // v8.0.2 Motion Comic ก่อน Delve ครั้งแรก
     if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
     let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
@@ -12077,7 +12081,7 @@ class Game extends Phaser.Scene {
       else if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,y,bw,rh,nxtG.tag);
       this._zone(x,y,bw,rh,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast(kLock?'🔒 Kitchen unlocks after clearing Chapter 2':'🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
         if(target==='__tutorial'){ this.startTutorial(()=>{this.state='menu';this.menu.setVisible(true);this.menuScreen='hub';this.buildMenuScreen();},true); }
-        else { if(target==='skills'){this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;} this.menuScreen=target; this.buildMenuScreen(); } });
+        else { if(target==='skills'){this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;} this.menuScreen=target; this.buildMenuScreen(); } }); this.tapZones[this.tapZones.length-1].tag=this.tapZones[this.tapZones.length-1].tag||'row_'+target;
     });
     this.menu.setVisible(true);
   }
@@ -12975,8 +12979,8 @@ class Game extends Phaser.Scene {
     if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew)||!!this._gearBetter?.();   // v7.9.56 +ของในกระเป๋าที่ดีกว่าที่สวม
     if(target==='kitchen')return kitchenOpen()&&(FR_SIMPLE?Save.data.frPick==null:Save.frRecipes().slice(0,Save.frSlots()).some(r=>['t','e'].some(k=>!(r&&r[k])&&Object.entries(Save.frParts()).some(([pk,n])=>n>0&&pk[0]===k&&!(frPart(pk)||{}).cut))));   // v8.2.37 แบบย่อ: ยังไม่เคยเลือกสูตร · v7.9.56 ช่องสูตรว่าง + มีชิ้นส่วนวางได้
     if(target==='perks')return Save.rankUnpicked()>0;   // v8.0.22 ยศใหม่ยังไม่เลือกรางวัล
-    if(target==='dig')return featureOpen('dig')&&Save.expDailyReady();
-    if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig')||this.hasTargetBadge('weave')||this.hasTargetBadge('specialCores');
+    if(target==='dig')return featureOpen('dig')&&Save.expReady();
+    if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('weave')||this.hasTargetBadge('specialCores');
     if(target==='news')return this.hasNewsBadge();
     return false;}catch(e){return false;}}
   _gearBetter(){try{const d=Save.data,cid=d.character||'momo',items=d.gearItems||[],sig=cid+'|'+JSON.stringify(d.equippedGear||{})+'|'+items.map(g=>g.uid+':'+(g.enhanceLv||0)+':'+(g.itemLevel||0)+':'+((g.affixes||[]).length)).join(',');
@@ -12992,8 +12996,8 @@ class Game extends Phaser.Scene {
     return false;}
   navBadge(t){const d=Save.data||{},C=k=>this.hasClaimableTarget?.(k);
     if(t==='char')return Object.values(d.charUnlockNew||{}).some(Boolean);
-    if(t==='gLoadout')return C('gearInbox')||C('dig')||!!this.hasTargetBadge?.('perks');
-    if(t==='gActivity')return C('daily')||C('achievements');
+    if(t==='gLoadout')return C('gearInbox')||!!this.hasTargetBadge?.('perks');
+    if(t==='gActivity')return C('daily')||C('achievements')||C('dig');
     return false;}
   hasGroupBadge(key){const grp=HUB_GROUPS[key];return !!grp&&grp.rows.some(row=>this.hasTargetBadge(row[0]));}
   hasNewsBadge(){ return Save.data.seenVersion!==GAME_VERSION; }
@@ -13765,12 +13769,12 @@ class Game extends Phaser.Scene {
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
     const rpFree=Save.rankUnpicked(), rkW=portrait?Math.min(150,(w-40)/2):124,rkH=30,rkX=portrait?w/2-rkW-3:w-14-rkW,rkY=portrait?ry+32:44;   // v8.0.22 แท็บเหลือ 2 (Rank Rewards · Depths)
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
-    if(featureOpen('dig')){ const ex=Save.exp(),dx=portrait?w/2+3:rkX-rkW-8,glow=Save.expDailyReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Expedition · '+ex.best,'tile_dig','#fff1d6');
+    if(featureOpen('dig')){ const ex=Save.exp(),dx=portrait?w/2+3:rkX-rkW-8,glow=Save.expReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Expedition · '+ex.best,'tile_dig','#fff1d6');
       if(art)this.menu.add(art); else { const g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
       const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⚔️ Expedition · '+ex.best,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
       this.menu.add([g2,t2]); this._smallBtnIcon(t2,'tile_dig'); }
       this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
-      if(Save.expDailyReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
+      if(Save.expReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
     // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
     // v8.0.22 แท็บ Special Cores ถูกรวมเข้า Rank Rewards
     { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Rank Rewards · '+rpFree+' new'):'Rank Rewards','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
@@ -13879,7 +13883,7 @@ class Game extends Phaser.Scene {
       if(allMax)pill(x+bw-110,y+rh2/2-17,98,34,'Weave',true,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion'); if(this.tuSparkle)this.tuSparkle(x+bw-61,y+rh2/2,72); if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5'); this.buildMenuScreen(); });
       y+=rh2+28; }
     this.pwSection('MORE',x+2,y-12);
-    { const tw=(bw-gap)/2,th=60,rpFree=Save.rankUnpicked(),dg=Save.dig(),tiles=[['perks','Rank Rewards',rpFree>0?rpFree+' new':'Rank perks','tile_perks','🏅',rpFree>0],featureOpen('dig')?['dig','Expedition','Best stage '+Save.exp().best,'tile_dig','⚔️',Save.expDailyReady()]:['dig','Expedition','🔒 After Chapter 1','tile_dig','⚔️',false]];
+    { const tw=(bw-gap)/2,th=60,rpFree=Save.rankUnpicked(),dg=Save.dig(),tiles=[['perks','Rank Rewards',rpFree>0?rpFree+' new':'Rank perks','tile_perks','🏅',rpFree>0],featureOpen('dig')?['dig','Expedition','Best stage '+Save.exp().best,'tile_dig','⚔️',Save.expReady()]:['dig','Expedition','🔒 After Chapter 1','tile_dig','⚔️',false]];
       tiles.forEach(([to,name,sub,ik,em,dot],i)=>{ const tx=x+i*(tw+gap); this.pwCard(tx,y,tw,th,false); if(this.textures.exists(ik))this.menu.add(this.add.image(tx+28,y+th/2,ik).setDisplaySize(38,38)); else T(tx+28,y+th/2,em,22,'#fff',false,.5);
         const nt=T(tx+54,y+22,name,13,'#fff1e7',true),st=T(tx+54,y+41,sub,11,'#cfc1d4',false); for(const o of [nt,st])if(o.width>tw-74)o.setScale((tw-74)/o.width); T(tx+tw-12,y+th/2,'›',18,'#cfc1d4',true,1);
         if(dot&&this.drawBadgeDot)this.drawBadgeDot(this.menu,tx+tw-8,y+8); this._zone(tx,y,tw,th,()=>{ if(to==='dig'&&!featureOpen('dig')){ Sfx.error?.(); this.menuToast?.('🔒 Expedition opens after you clear Chapter 1','#ffd166'); return; } this.menuScreen=to; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='weave_'+to; }); }
@@ -14001,7 +14005,7 @@ class Game extends Phaser.Scene {
     else if(this.textures.exists('pt_foes')){ const row=ch*2+((e.s+e.k)%2),key='pt_foe_r'+row; if(!this.anims.exists(key))this.anims.create({key,frames:this.anims.generateFrameNumbers('pt_foes',{start:row*6,end:row*6+5}),frameRate:8,repeat:-1}); f=this.add.sprite(V.fx,V.fy,'pt_foes',row*6).setOrigin(.5,.9); f.play(key); V.fs=(V.fh*(X.boss?.62:.46))/128; f.setScale(V.fs); if(X.boss)f.setTint(0xff9a9a); V.tint=true; }
     else { f=this.add.ellipse(V.fx,V.fy-V.fh*.15,V.fh*(X.boss?.5:.36),V.fh*(X.boss?.42:.3),X.boss?0xff7a8a:0xffb6d9,1).setStrokeStyle(4,0xffffff,.8); V.fs=1; }
     this.menu.addAt?.(f,V.foeAt||0) ?? this.menu.add(f); V.foe=f; if(V.crown){ V.crown.setVisible(!!X.boss); } }
-  buildExpedition(){ this.stopDigPresentation?.(); this.exAudioLoad?.(); this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⚔️ Temple Expedition','dig_bg','upgrade'); const w=this.W,h=this.H,top=70+this._hdrShift(),e=Save.exp();
+  buildExpedition(){ this.stopDigPresentation?.(); this.exAudioLoad?.(); this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⚔️ Temple Expedition','dig_bg',this._expFrom==='upgrade'?'upgrade':'gActivity'); const w=this.W,h=this.H,top=70+this._hdrShift(),e=Save.exp();
     if(this._patrolOn)this.patrolStop?.(); try{ const a=Save.data.afk; if(a&&a.pend&&(a.pend.sugar>=1||a.pend.exp>=1))this.patrolCollect?.(true); }catch(err){}   /* ของค้างจาก Patrol เดิม → รับเลย */
     const off=this.expOffline(); this.expSupplyRefill(); const T=(x,y,str,fs,col,ox=.5)=>{ const o=this.add.text(x,y,str,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:col,stroke:'#1a0f1e',strokeThickness:3,align:'center',wordWrap:{width:w-36}}).setOrigin(ox,.5); this.menu.add(o); return o; };
     const fh=Math.round(Math.max(260,Math.min(380,h*.44))),fx=10,fw=w-20,gy=top+fh-24,ch=Math.floor((e.s-1)/25)%3,bgk='ex91_bg_c'+(ch+1);

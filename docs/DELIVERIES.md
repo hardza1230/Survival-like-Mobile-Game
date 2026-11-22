@@ -1,6 +1,15 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.61 — ⚔️ Expedition simplified (no tapping needed)
+# Latest delivery: v8.2.62 — 🧭 Expedition easy to find (Activities + red dot)
+
+**Owner:** maybe few players use Expedition because it is buried (Home → Upgrade → Weave & Rank → Expedition).
+- **Activities row:** ⚔️ Expedition added to the Activities tab (2 taps from Home) · the Weave buttons stay · Back returns to where you came from (Activities or Weave), bottom tab follows.
+- **Red dot fixed:** it died in v8.2.54 with the daily chest · new `Save.expReady()` = away ≥ 1 h (offline 🍪 waiting) or enough 🍪 to upgrade · shows on Activities tab/row and the Weave buttons (no longer on the Upgrade tab).
+- **Unlock text:** "Depths… use shovels" → "Expedition is open! … Find it in Activities."
+- Group-screen rows get `row_<target>` tap tags (bots/tests).
+- Test: `tests/exp-findable-8262.test.cjs`.
+
+# Previous delivery: v8.2.61 — ⚔️ Expedition simplified (no tapping needed)
 
 **Owner:** Expedition asked too much of the player → simplify, don't remove (screen `dig` is #8 of 25 by real visits).
 - **Hero fights on its own:** hero auto-attacks (Hero Power = old Tap Power `e.tap`, ×`EXP_HERO_APS`=2/s) · counts offline too · tapping still works but is optional.
@@ -9,12 +18,3 @@
 - **Supplies refill themselves:** last packed supply rebuys on stage start / Expedition open when Crumbs allow · tap it again = auto off.
 - Rewards unchanged · old saves work · team/roles plan moved to after Closed test (`docs/IDEAS.md`).
 - Test: `tests/exp-simplify-8261.test.cjs` (+ `expedition-8232` updated).
-
-# Previous delivery: v8.2.60 — 🔑 Faster Google sign-in (native account sheet)
-
-**Owner:** signing in with a new Google account was slow on the Google web pages.
-- **Native sign-in (Android Credential Manager):** plugin `@capgo/capacitor-social-login` 8.7.7 → account sheet from the bottom of the screen, no browser → Google ID token → Supabase `signInWithIdToken` (SHA-256 nonce). Needs `GOOGLE_WEB_CLIENT_ID` (empty for now) + a new APK; until then the old Custom Tab is used (no break).
-- **Fallback path faster:** the browser closes right after the deep link returns; cloud pull is one query (`data,stats`).
-- **Timing:** Tele event `login` (`way` native/tab · `ms` · `res`).
-- `android.yml` prints the debug signing SHA-1 · owner setup steps: `docs/PLAY_CONSOLE_SETUP.md` (last section).
-- Test: `tests/google-native-8260.test.cjs`.
