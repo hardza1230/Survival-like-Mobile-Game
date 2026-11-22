@@ -1,0 +1,74 @@
+[
+  {
+    "key": "hh87_healer",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: mint green round clover nurse, tiny white clover cap and pink flower staff; gentle alternating tiny feet, clover tip bobs subtly. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-62609322-13fb-45c8-a1fc-187254625f5f.png",
+    "reference": "hh87_healer four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  },
+  {
+    "key": "hh87_booster",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: gold round mochi bard with flower cap and small orange trumpet, tiny alternating walking feet; same trumpet and smile. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-e422e441-afd3-415e-a552-d0927b4ba2fb.png",
+    "reference": "hh87_booster four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  },
+  {
+    "key": "hh87_possessor",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: small lilac mochi ghost moving left, pink forehead blossom and purple curled tail to the right; stationary body, tail undulates gently. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-9da25d33-12c6-41c5-931c-f7b368d726bb.png",
+    "reference": "hh87_possessor four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  },
+  {
+    "key": "sr87_carrier_fast",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: tan lightweight seed runner facing left; oval bread face and single lime sprout bundle tied to the rear, alternating long skinny brown legs. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-bf019d77-2655-479c-98c3-98a689b45906.png",
+    "reference": "sr87_carrier_fast four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  },
+  {
+    "key": "sr87_carrier_armored",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: dark brown heavy chestnut seed runner facing left with golden edge armor and same lime sprout bundle; short powerful steps. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-3ac34d18-9af1-4473-a0a4-7b16af8d1669.png",
+    "reference": "sr87_carrier_armored four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  },
+  {
+    "key": "sr87_carrier_split",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: pale pink split seed runner facing left, blush pink large two-part pod and like-green sprout bundle; small alternating steps. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-1f6d34ef-1aef-4147-bc40-f95bc2b6f5b7.png",
+    "reference": "sr87_carrier_split four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  },
+  {
+    "key": "st87_bee",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: small angry golden honey bee with dark burgundy stripes and two white-lilac translucent wings; fixed candy bee body, 8 frames of a smooth wing flap. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-3c916b67-f68b-42b3-9f75-6531f7cf1602.png",
+    "reference": "st87_bee four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  },
+  {
+    "key": "ll85_moth",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: soft lavender two-winged smiling chibi moth with original wing spots and antennae; front-flying stationary body and smooth gradual wing flap. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-e6230dab-ac5c-47b8-910b-d95143130a79.png",
+    "reference": "ll85_moth four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  },
+  {
+    "key": "hs85_sapper",
+    "tool": "Built-in ImageGen",
+    "prompt": "Expand the attached four-pose original Mochi Mayhem enemy sprite atlas into an eight-pose matched movement loop, preserving the exact original character, colors, outlines, shapes, costume and 3/4 view. Character and movement: orange-brown round caramel sapper with original cap and tiny lit fuse, little alternating steps, no fire trail. Frame 1 looks exactly like the leftmost pose of the reference. Insert small intermediate changes to make a seamless complete loop. Grounded characters keep the planted foot on exactly the same baseline. Flying characters keep the body center in the same position. No camera rotation or motion, no change of scale, no different facial expression or costume, no additional objects or particles. EXACT OUTPUT GRID: 4 columns by 2 rows, exactly 8 similarly-sized square cells in left-to-right, top-to-bottom order, on one wide landscape transparent RGBA canvas. Leave 12 percent transparent padding in every cell. No cast shadow, floor oval, colored mist or pale/white halo. Absolutely no text, numbers, labels, cell lines, watermarks, checkerboard or background. Original softly painted candy art, respects reference.",
+    "sourceImage": "exec-a0b849d1-cfec-4bc4-a94c-4b62dd4bb7d2.png",
+    "reference": "hs85_sapper four-frame WebP from v8.2.65",
+    "preparation": "Extracted 8 cells in row-major order; cleaned alpha ≤24; aligned foot or body anchor at native frame size; reused original opening pose when continuous."
+  }
+]

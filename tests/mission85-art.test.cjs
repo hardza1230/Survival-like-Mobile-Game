@@ -3,8 +3,9 @@ const fs=require('fs'),path=require('path'),crypto=require('crypto'),assert=requ
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const rows=JSON.parse(fs.readFileSync(root+'/assets/incoming/mission85/MANIFEST.json','utf8'));assert.strictEqual(rows.length,12);
 for(const r of rows){ const b=fs.readFileSync(root+'/assets/incoming/mission85/'+r.file);assert.strictEqual(b.length,r.bytes,r.key);assert.strictEqual(crypto.createHash('sha256').update(b).digest('hex'),r.sha256,r.key);
-  const w=fs.readFileSync(root+'/assets/art/mission85/'+r.key+'.webp');assert.ok(w.slice(0,4).toString()==='RIFF'&&w.slice(8,12).toString()==='WEBP',r.key);
-  assert.ok(src.includes(r.key+":{url:'assets/art/mission85/"+r.key+".webp'"),'registered '+r.key); }
+  const dir=['ll85_moth','hs85_sapper'].includes(r.key)?'mission-motion2b':'mission85';
+  const w=fs.readFileSync(root+'/assets/art/'+dir+'/'+r.key+'.webp');assert.ok(w.slice(0,4).toString()==='RIFF'&&w.slice(8,12).toString()==='WEBP',r.key);
+  assert.ok(src.includes(r.key+":{url:'assets/art/"+dir+"/"+r.key+".webp'"),'registered '+r.key); }
 assert.ok(/fp85\|mp85\|ll85\|ult85\|hs85\|hh85\|/.test(src),'stage-lazy class');assert.ok(m('missionArtKeys').includes("const M85={0:['hh85_','hh87_'],3:['fp85_']"),'loaded with the mission home stage (+ Ch2 side missions)');
 const F=m('fpCrate');assert.ok(F.includes("this.realTex?.('fp85_crates')?this.artSpr('fp85_crates'")&&F.includes('const box=!spr&&'),'crate art or old box');
 assert.ok(m('fpCrateGone').includes('c.spr.setFrame?.(c.row*3+2)')&&m('fpTick').includes('c.spr?.setFrame?.(c.row*3+1)'),'painted / broken frames');

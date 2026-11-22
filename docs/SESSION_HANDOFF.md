@@ -1,3 +1,7 @@
+# Current checkpoint — Animation phase 2B (2026-11-22)
+
+Base 6d3ee7c0 (v8.2.65). Candidate v8.2.66 on integration/animation-phase2b: nine eight-frame mission creature loops, preserved cycle duration and prior stage/roam loading. Source in assets/incoming/mission-motion2b; Order 85/87 donors remain intact. Next: phase 2C mission props and VFX in docs/design/animation-frame-upgrade-plan.md. Verify deployed version and owner playtest before reporting visual acceptance.
+
 # Current checkpoint — Animation phase 2A (2026-11-22)
 
 Base c69b16fa (v8.2.64); checked v8.2.59–64 owner changes and pulled them before editing. Frozen Pantry: seven eight-frame source/runtime atlases, original frame zero, original stride duration and stage-lazy keys. Candidate v8.2.65 on integration/animation-phase2. See docs/design/animation-frame-upgrade-plan.md. Next batch is phase 2B, Hunger Herald minions and Seed Rift carriers. Verify remote release and retain owner phone review.
