@@ -82,7 +82,7 @@ jobs:
 
       # v8.2.60 ล็อกอิน Google แบบ native ต้องใช้ SHA-1 นี้สร้าง OAuth client ประเภท Android
       - name: Print debug signing SHA-1
-        run: keytool -list -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey | grep -E 'SHA1|SHA-1' || true
+        run: keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -storepass android | openssl dgst -sha1 -c || true
 
       - name: Rename APK
         run: cp android/app/build/outputs/apk/debug/app-debug.apk mochi-mayhem-debug.apk
