@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.60';
+const GAME_VERSION = '8.2.61';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.61',date:'2026-11-22',title:'⚔️ Expedition simplified (no tapping needed)',items:['Hero auto-attacks (Hero Power)','Boss retries itself after 10 training foes','Upgrade all button','Supplies refill themselves']},
   {v:'8.2.60',date:'2026-11-22',title:'🔑 Faster Google sign-in (native account sheet)',items:['Native Google sign-in via Credential Manager when GOOGLE_WEB_CLIENT_ID is set','Custom Tab closes on return; cloud pull is one query','login timing event']},
   {v:'8.2.59',date:'2026-11-22',title:'Lollipops: real money buys looks only',items:['New Lollipops currency for future purchases: cosmetics and the Mochi Pass only, never power','Wardrobe items and skins can be paid with Thread or Lollipops']},
   {v:'8.2.58',date:'2026-11-22',title:'Painted mission feedback',items:['See an amber seed spiral into the rift when a carrier feeds it.','A prism glint confirms exactly when each mirror is charged.']},
@@ -6690,9 +6691,9 @@ const RANK_PERKS = [
 const PERK_TIER_REQ = { 2:2, 3:5 };   // v7.8.88 Vigor/Might/Iron Will ตัด (สเตตัสถาวรเหลือ Weave + Talent ฮีโร่)   // แต้มที่ต้องลงในชั้นก่อนหน้าเพื่อปลดชั้นนี้
 /* ---- v5.27 ⛏️ Temple Depths: มินิเกมขุดใต้วิหาร (ดู docs/TEMPLE_DIG_DESIGN.md) ---- */
 /* v8.2.32 เจ้าของ 19 พ.ย.: Temple Expedition (แทน Temple Depths/Dig + Mochi Patrol) · แตะตีไททันแบบเกม tap-RPG · ผู้ช่วยตีเอง (idle) · ปิดแอปก็ยังได้ 🍪 Crumbs (50% · ≤8 ชม.)
-   ทุก 5 ด่าน = บอสจับเวลา 30 วิ (แพ้ = วนฟาร์มด่านก่อน กด Fight Boss เมื่อพร้อม) · Crumbs ช่วยเกมหลักผ่าน Supplies (ของติดตัว 1 ชิ้นต่อด่าน) · บอสครั้งแรก/กล่องรายวัน = Sugar/ด้าย/Recipe Part เข้าเกมหลัก */
+   ทุก 5 ด่าน = บอสจับเวลา 30 วิ (แพ้ = ฝึก 10 ตัวแล้วลองบอสใหม่เอง · v8.2.61) · Crumbs ช่วยเกมหลักผ่าน Supplies (ของติดตัว 1 ชิ้นต่อด่าน) · บอสครั้งแรก/กล่องรายวัน = Sugar/ด้าย/Recipe Part เข้าเกมหลัก */
 const EXP_DAILY_ON=false;   // v8.2.54 ECRS2 E3: Daily chest ของ Expedition เลิก (ของรายวันมี 6 จุด → ลด)
-const EXP_ON=true,EXP_KILLS=10,EXP_BOSS_EVERY=5,EXP_BOSS_T=30,EXP_OFF_MAX_H=8,EXP_OFF_RATE=.5,EXP_CRIT=.05,EXP_CRIT_MUL=3,EXP_HP_G=1.25,EXP_BOSS_HP=6,EXP_BOSS_CR=4,SHOVEL_CRUMBS=40,
+const EXP_ON=true,EXP_HERO_APS=2,EXP_UPALL_MAX=200,EXP_KILLS=10,EXP_BOSS_EVERY=5,EXP_BOSS_T=30,EXP_OFF_MAX_H=8,EXP_OFF_RATE=.5,EXP_CRIT=.05,EXP_CRIT_MUL=3,EXP_HP_G=1.25,EXP_BOSS_HP=6,EXP_BOSS_CR=4,SHOVEL_CRUMBS=40,
   EXP_HELPERS=[{id:'ruby',em:'🎀',name:'Ruby',base:1,cost:15},{id:'momo',em:'🍑',name:'Momo',base:5,cost:80},{id:'mint',em:'🌿',name:'Mint',base:22,cost:450},{id:'cocoa',em:'🍫',name:'Cocoa',base:100,cost:2600},{id:'taro',em:'💜',name:'Taro',base:480,cost:15000},{id:'yuzu',em:'🍋',name:'Yuzu',base:2300,cost:90000},{id:'sesame',em:'🖤',name:'Sesame',base:11000,cost:540000}],
   EXP_SUPPLIES=[{id:'shield',em:'🫧',name:'Bubble Start',desc:'Start your next stage with a shield'},{id:'xp',em:'⭐',name:'Study Snack',desc:'+25% EXP in your next stage'},{id:'sugar',em:'🍬',name:'Sweet Tooth',desc:'+20% Sugar in your next stage'},{id:'hp',em:'❤️',name:'Hearty Meal',desc:'+15% max HP in your next stage'}];
 function expHp(s){ return Math.max(1,Math.round(10*Math.pow(EXP_HP_G,Math.max(0,s-1)))); }
@@ -13950,7 +13951,16 @@ class Game extends Phaser.Scene {
     if(!n){ this._exAud=true; return; } this._exAud=true; this.load.once?.('complete',()=>{ this._exAud=true; }); if(!this.load.isLoading?.())this.load.start(); }
   exSfx(k,vol=.4,gap=.05){ return typeof Sfx!=='undefined'&&Sfx.playFile?.('sfx_ex_'+k,vol); }   /* v8.2.34 A19 · ไม่มีไฟล์ = เงียบ/เสียงเดิม */
   expHelpers(){ const own=new Set((Save.data.chars||[]).concat(Save.data.character||'momo')); return EXP_HELPERS.filter(h=>h.id==='ruby'||own.has(h.id)); }
-  expDps(){ const e=Save.exp(); let d=0; for(const h of EXP_HELPERS)d+=expHelpDps(h,e.help[h.id]|0); return d; }
+  expDps(){ const e=Save.exp(); let d=expTapDmg(e.tap||1)*(typeof EXP_HERO_APS!=='undefined'?EXP_HERO_APS:0);   /* v8.2.61 เจ้าของ: ไม่อยากให้กดเยอะ → ฮีโร่ตีเอง (Hero Power = e.tap เดิม) */ for(const h of EXP_HELPERS)d+=expHelpDps(h,e.help[h.id]|0); return d; }
+  /* v8.2.61 ปุ่มเดียว: อัปตัวที่ได้ DPS ต่อ Crumb คุ้มสุดซ้ำจนเงินไม่พอ */
+  expUpgradeAll(){ const e=Save.exp(),aps=typeof EXP_HERO_APS!=='undefined'?EXP_HERO_APS:2,mx=typeof EXP_UPALL_MAX!=='undefined'?EXP_UPALL_MAX:200,hs=this.expHelpers(),got={}; let n=0;
+    for(;n<mx;n++){ let best=null; const tc=expTapCost(e.tap); if(e.crumbs>=tc)best={k:'tap',c:tc,v:(expTapDmg(e.tap+1)-expTapDmg(e.tap))*aps/tc};
+      for(const h of hs){ const lv=e.help[h.id]|0,c=expHelpCost(h,lv); if(e.crumbs<c)continue; const v=(expHelpDps(h,lv+1)-expHelpDps(h,lv))/c; if(!best||v>best.v)best={k:h.id,c,v,h}; }
+      if(!best)break; e.crumbs-=best.c; if(best.k==='tap')e.tap++; else e.help[best.k]=(e.help[best.k]|0)+1; got[best.k]=(got[best.k]||0)+1; }
+    if(!n)return null; Save.save(); this.exSfx?.('upgrade',.4)||Sfx.select?.(); const nm=k=>k==='tap'?'⚔️ Hero':(EXP_HELPERS.find(x=>x.id===k)?.em||'')+' '+(EXP_HELPERS.find(x=>x.id===k)?.name||k);
+    this.menuToast?.('⬆ '+Object.keys(got).map(k=>nm(k)+' +'+got[k]).join('  '),'#a8ffb0'); return got; }
+  /* v8.2.61 Supplies เติมเอง: ของที่เลือกล่าสุด (e.supplyAuto) ซื้อใหม่ถ้า Crumbs พอ */
+  expSupplyRefill(){ const e=Save.exp(); if(e.supply||!e.supplyAuto||!EXP_SUPPLIES.some(q=>q.id===e.supplyAuto))return null; const c=expSupplyCost(e.best); if(e.crumbs<c)return null; e.crumbs-=c; e.supply=e.supplyAuto; Save.save(); return e.supply; }
   expOffline(){ const e=Save.exp(),now=Date.now(),dt=Math.min(EXP_OFF_MAX_H*3600,Math.max(0,(now-(e.at||now))/1000)); e.at=now; const dps=this.expDps(); if(dt<60||dps<=0)return null;
     const s=expIsBoss(e.s)?Math.max(1,e.s-1):e.s,kills=Math.floor(dt*dps*EXP_OFF_RATE/expHp(s)),cr=kills*expCrumb(s); if(kills<1)return null; e.crumbs+=cr; Save.save(); return {sec:dt,kills,cr}; }
   expFoeNew(){ const e=Save.exp(),boss=expIsBoss(e.s)&&!e.farm,hp=expHp(e.s)*(boss?EXP_BOSS_HP:1); this._ex={hp,max:hp,boss,t:boss?EXP_BOSS_T:0}; this.expFoeDraw?.();
@@ -13965,9 +13975,9 @@ class Game extends Phaser.Scene {
     if(!X.boss){ this.exSfx('foe_pop',.35); this.time?.delayedCall?.(120,()=>this.exSfx('crumbs',.25)); }
     if(V){ this.patrolPop?.(V.fx,V.fy-V.fh*.25,X.boss?0xffd166:0xffb6d9); const t=this.add.text(V.fx,V.fy-V.fh*.5,'🍪 +'+expFmt(cr),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5); this.menu.add(t); this.tweens.add({targets:t,y:t.y-40,alpha:0,duration:900,onComplete:()=>t.destroy()}); }
     if(X.boss){ const s=e.s; e.s++; e.k=0; e.best=Math.max(e.best,e.s); this.exSfx('boss_down',.5)||Sfx.digRare?.(); this.time?.delayedCall?.(300,()=>{ if(this.state==='menu'&&this.menuScreen==='dig')this.menuMusic?.('dig'); }); if(!e.boss[s]){ e.boss[s]=1; this.expBossReward(s); } }
-    else { e.k++; if(e.k>=EXP_KILLS){ e.k=0; if(!e.farm){ e.s++; e.best=Math.max(e.best,e.s); this.exSfx('stage_up',.35); } } }
+    else { e.k++; if(e.k>=EXP_KILLS){ e.k=0; if(!e.farm){ e.s++; e.best=Math.max(e.best,e.s); this.exSfx('stage_up',.35); } else { e.farm=false; e.s=Math.ceil(e.s/EXP_BOSS_EVERY)*EXP_BOSS_EVERY; if(!expIsBoss(e.s))e.s++; } } }   /* v8.2.61 ฝึกครบ → ลองบอสใหม่เอง (เลิกปุ่ม Fight Boss) */
     Save.save(); this.expFoeNew(); this.expHud(); }
-  expBossFail(){ this.exSfx('boss_fail',.45); this.rubyVoiceReact?.('exfail',300); const e=Save.exp(); e.farm=true; e.s=Math.max(1,e.s-1); e.k=0; this.menuToast?.('⏱ Out of time! Farm a little, then tap Fight Boss','#ffb4b4'); Save.save(); this.expFoeNew(); this.buildMenuScreen(); }
+  expBossFail(){ this.exSfx('boss_fail',.45); this.rubyVoiceReact?.('exfail',300); const e=Save.exp(); e.farm=true; e.s=Math.max(1,e.s-1); e.k=0; this.menuToast?.('⏱ Out of time! Training '+EXP_KILLS+' foes, then the boss again','#ffb4b4'); Save.save(); this.expFoeNew(); this.buildMenuScreen(); }
   /* บอสครั้งแรก = รางวัลเข้าเกมหลัก (แทนของที่เคยขุดได้) · ทุก 10 ด่าน + Recipe Part · ทุก 25 ด่าน + Currency */
   expBossReward(s){ const got=[],su=15+3*s,th=3+Math.floor(s/5); Save.addSugar(su); got.push('🍬 +'+su); Save.addThreads(th); got.push('🧶 +'+th);
     if(s%10===0&&FR_SIMPLE){ Save.addThreads(10); got.push('🧶 +10'); }   /* v8.2.37 Kitchen แบบย่อไม่ใช้ชิ้นส่วน → ด้ายแทน */
@@ -13978,13 +13988,13 @@ class Game extends Phaser.Scene {
     if(!FR_SIMPLE&&typeof frRollPart==='function'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); got.push(pt.emoji+' '+pt.name); } Save.save(); this.exSfx('daily_chest',.5)||Sfx.chestWin?.(); this.menuToast?.('🎁 Daily Expedition chest: '+got.join('  '),'#a8ffb0'); return true; }
   expBuy(kind,id){ const e=Save.exp(); if(kind==='tap'){ const c=expTapCost(e.tap); if(e.crumbs<c)return false; e.crumbs-=c; e.tap++; }
     else if(kind==='help'){ const h=EXP_HELPERS.find(x=>x.id===id),lv=e.help[id]|0,c=h?expHelpCost(h,lv):Infinity; if(e.crumbs<c)return false; e.crumbs-=c; e.help[id]=lv+1; }
-    else if(kind==='supply'){ const c=expSupplyCost(e.best); if(e.supply||e.crumbs<c)return false; e.crumbs-=c; e.supply=id; }
+    else if(kind==='supply'){ const c=expSupplyCost(e.best); if(e.supply||e.crumbs<c)return false; e.crumbs-=c; e.supply=id; e.supplyAuto=id; }
     Save.save(); const hl=kind==='help'?(e.help[id]|0):0; (kind==='help'?this.exSfx(hl%25===0?'milestone':'hire',.4):kind==='supply'?this.exSfx('supply',.4):this.exSfx('upgrade',.35))||Sfx.select?.(); return true; }
   expStop(){ this._exEv?.remove?.(false); this._exEv=null; this._exOn=false; this._exV=null; try{ Save.exp().at=Date.now(); Save.save(); }catch(e){} }
   expTick(){ if(!this._exOn)return; if(this.state!=='menu'||this.menuScreen!=='dig'){ this.expStop(); return; } const now=Date.now(),dt=Math.min(.5,Math.max(0,(now-(this._exAt||now))/1000)); this._exAt=now; Save.exp().at=now;
     const X=this._ex; if(!X)return; const d=this.expDps()*dt; if(d>0)this.expHit(d,false,false); if(X.boss&&this._ex===X&&X.hp>0){ const t0=X.t; X.t-=dt; if(X.t<=5&&Math.ceil(X.t)<Math.ceil(t0))this.exSfx('boss_tick',.35); if(X.t<=0){ this.expBossFail(); return; } } this.expHud(); if((this._exSave=(this._exSave||0)+1)%50===0)Save.save(); }
   expHud(){ const V=this._exV,X=this._ex,e=Save.exp(); if(!V||!X||!V.bar?.active)return; const f=X.max>0?X.hp/X.max:0; V.bar.clear(); V.bar.fillStyle(0x1a0f1e,.85).fillRoundedRect(V.bx,V.by,V.bw,12,6).fillStyle(X.boss?0xff5a6e:0x7be08a,1).fillRoundedRect(V.bx+2,V.by+2,Math.max(0,(V.bw-4)*f),8,4);
-    V.hpT?.setText(expFmt(X.hp)+' / '+expFmt(X.max)); V.stT?.setText(X.boss?'👑 BOSS · Stage '+e.s+' · ⏱ '+Math.ceil(X.t)+'s':(e.farm?'🔁 Farming · ':'')+'Stage '+e.s+' · '+(e.k+1)+'/'+EXP_KILLS); V.crT?.setText('🍪 '+expFmt(e.crumbs)+'   ⚔️ '+expFmt(expTapDmg(e.tap))+'/tap   🤝 '+expFmt(this.expDps())+'/s'); }
+    V.hpT?.setText(expFmt(X.hp)+' / '+expFmt(X.max)); V.stT?.setText(X.boss?'👑 BOSS · Stage '+e.s+' · ⏱ '+Math.ceil(X.t)+'s':(e.farm?'🔁 Training · boss in '+(EXP_KILLS-e.k)+' · Stage '+e.s:'Stage '+e.s+' · '+(e.k+1)+'/'+EXP_KILLS)); V.crT?.setText('🍪 '+expFmt(e.crumbs)+'   ⚔️ '+expFmt(this.expDps())+'/s'); }
   expFoeDraw(){ const V=this._exV,X=this._ex; if(!V)return; V.foe?.destroy?.(); const e=Save.exp(),ch=Math.floor((e.s-1)/25)%3; let f=null;
     const tk=X.boss?'ex91_bosses':'ex91_titans';
     if(this.realTex?.(tk)){ f=this.add.sprite(V.fx,V.fy+V.fh*.08,tk,X.boss?ch:ch*4+((e.s*3+e.k)%4)).setOrigin(.5,.96); V.fs=(V.fh*(X.boss?.7:.56))/(X.boss?448:320); f.setScale(V.fs); }   /* v8.2.33 ใบ 91 ไททัน/บอสหน้าตรง */
@@ -13993,7 +14003,7 @@ class Game extends Phaser.Scene {
     this.menu.addAt?.(f,V.foeAt||0) ?? this.menu.add(f); V.foe=f; if(V.crown){ V.crown.setVisible(!!X.boss); } }
   buildExpedition(){ this.stopDigPresentation?.(); this.exAudioLoad?.(); this.menu.removeAll(true); this.tapZones=[]; this._screenBg('⚔️ Temple Expedition','dig_bg','upgrade'); const w=this.W,h=this.H,top=70+this._hdrShift(),e=Save.exp();
     if(this._patrolOn)this.patrolStop?.(); try{ const a=Save.data.afk; if(a&&a.pend&&(a.pend.sugar>=1||a.pend.exp>=1))this.patrolCollect?.(true); }catch(err){}   /* ของค้างจาก Patrol เดิม → รับเลย */
-    const off=this.expOffline(); const T=(x,y,str,fs,col,ox=.5)=>{ const o=this.add.text(x,y,str,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:col,stroke:'#1a0f1e',strokeThickness:3,align:'center',wordWrap:{width:w-36}}).setOrigin(ox,.5); this.menu.add(o); return o; };
+    const off=this.expOffline(); this.expSupplyRefill(); const T=(x,y,str,fs,col,ox=.5)=>{ const o=this.add.text(x,y,str,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:col,stroke:'#1a0f1e',strokeThickness:3,align:'center',wordWrap:{width:w-36}}).setOrigin(ox,.5); this.menu.add(o); return o; };
     const fh=Math.round(Math.max(260,Math.min(380,h*.44))),fx=10,fw=w-20,gy=top+fh-24,ch=Math.floor((e.s-1)/25)%3,bgk='ex91_bg_c'+(ch+1);
     if(this.realTex?.(bgk)){ const im=this.add.image(fx+fw/2,top+fh/2,bgk),sw=im.width,sh=im.height,sc=Math.max(fw/sw,fh/sh); im.setScale(sc).setCrop((sw-fw/sc)/2,(sh-fh/sc)/2,fw/sc,fh/sc); this.menu.add(im); const fr=this.add.graphics(); fr.lineStyle(3,0xffd166,.85).strokeRoundedRect(fx,top,fw,fh,20); this.menu.add(fr); }   /* v8.2.33 ใบ 91 ฉากลึก */
     else if(!this.patrolScene?.(ch,fx,top,fw,fh,gy)){ const g=this.add.graphics(); g.fillStyle(0x1d2a3a,.95).fillRoundedRect(fx,top,fw,fh,20).fillStyle(0x2c3f2c,1).fillRoundedRect(fx,top+fh*.62,fw,fh*.38,{tl:0,tr:0,bl:20,br:20}); this.menu.add(g); }
@@ -14009,15 +14019,15 @@ class Game extends Phaser.Scene {
     let y=top+fh+18; V.crT=T(w/2,y,'',12,'#ffe0f0'); if(this.realTex?.('ex91_icons'))this.menu.add(this.add.image(20,y,'ex91_icons',0).setDisplaySize(20,20)); y+=20;
     const bh=34,btn=(x,bw,label,fill,on,fn,tag)=>{ const b=this.add.graphics(); b.fillStyle(on?fill:0x2c2338,1).fillRoundedRect(x,y,bw,bh,11).lineStyle(1.5,on?0xffe08a:0x4a4059,1).strokeRoundedRect(x,y,bw,bh,11); this.menu.add(b); T(x+bw/2,y+bh/2,label,11,on?'#ffffff':'#7a7088'); if(on){ this._zone(x,y,bw,bh,fn); this.tapZones[this.tapZones.length-1].tag=tag; } };
     const dOn=typeof EXP_DAILY_ON==='undefined'||EXP_DAILY_ON,dr=dOn&&Save.expDailyReady(),bw3=dOn?(w-40)/3:(w-34)/2,x2=dOn?20+bw3:14,x3=dOn?26+bw3*2:20+bw3; if(dOn)btn(14,bw3,dr?'🎁 Daily chest':'✓ Chest tomorrow',0x3a5a3a,dr,()=>{ if(this.expDaily())this.buildMenuScreen(); },'exp_daily');   /* v8.2.54 ECRS2 E3: เลิก Daily chest (ซ้ำหน้า Rewards · Daily Quest 'Defeat 30 Expedition foes' มีอยู่แล้ว) */
-    btn(x2,bw3,e.farm?'⚔️ Fight Boss':'Stage best '+e.best,0x8a3a4a,!!e.farm,()=>{ const E=Save.exp(); E.farm=false; E.s=Math.ceil(E.s/EXP_BOSS_EVERY)*EXP_BOSS_EVERY; if(!expIsBoss(E.s))E.s++; E.k=0; Save.save(); this.expFoeNew(); this.buildMenuScreen(); },'exp_boss');
+    const upOk=e.crumbs>=expTapCost(e.tap)||this.expHelpers().some(hh=>e.crumbs>=expHelpCost(hh,e.help[hh.id]|0)); btn(x2,bw3,'⬆ Upgrade all',0x2f9a66,upOk,()=>{ if(this.expUpgradeAll())this.buildMenuScreen(); },'exp_upall');   /* v8.2.61 แทนปุ่ม Fight Boss (บอสลองใหม่เอง) */
     btn(x3,bw3,e.supply?'🎒 '+(EXP_SUPPLIES.find(q=>q.id===e.supply)?.em||'')+' packed':'🎒 Supplies',0x4a3a8a,true,()=>{ this._exTab=this._exTab==='supply'?'tap':'supply'; this.buildMenuScreen(); },'exp_supply_tab');
     y+=bh+10;
     // แท็บ: อัปแตะ + ผู้ช่วย · หรือ Supplies
     const rw=w-28,rx=14,rh=40,row=(em,name,sub,cost,can,fn,tag)=>{ const g=this.add.graphics(); g.fillStyle(0x221a2c,.95).fillRoundedRect(rx,y,rw,rh,10).lineStyle(1.2,0x5a4b75,1).strokeRoundedRect(rx,y,rw,rh,10); this.menu.add(g); T(rx+22,y+rh/2,em,18,'#fff'); T(rx+44,y+13,name,12,'#ffffff',0); T(rx+44,y+29,sub,9.5,'#cfc1d4',0);
       const b=this.add.graphics(),bx=rx+rw-96; b.fillStyle(can?0x2f9a66:0x3a3045,1).fillRoundedRect(bx,y+6,88,rh-12,9); this.menu.add(b); T(bx+44,y+rh/2,cost,11,can?'#ffffff':'#8a8098'); if(can){ this._zone(bx,y+6,88,rh-12,fn); this.tapZones[this.tapZones.length-1].tag=tag; } y+=rh+5; };
-    if(this._exTab==='supply'){ T(w/2,y+6,'Pack 1 supply for your next real stage · used up when the stage starts',10,'#b7abc9'); y+=20; const c=expSupplyCost(e.best);
-      for(const q of EXP_SUPPLIES)row(q.em,q.name+(e.supply===q.id?'  ✓ packed':''),q.desc,e.supply?(e.supply===q.id?'Packed':'—'):'🍪 '+expFmt(c),!e.supply&&e.crumbs>=c,()=>{ if(this.expBuy('supply',q.id)){ this.menuToast?.(q.em+' '+q.name+' packed for your next stage','#a8ffb0'); this.buildMenuScreen(); } },'exp_supply_'+q.id); }
-    else { const tc=expTapCost(e.tap); row('👆','Tap Power · Lv '+e.tap,expFmt(expTapDmg(e.tap))+' → '+expFmt(expTapDmg(e.tap+1))+' per tap','🍪 '+expFmt(tc),e.crumbs>=tc,()=>{ if(this.expBuy('tap'))this.buildMenuScreen(); },'exp_tap_up');
+    if(this._exTab==='supply'){ T(w/2,y+6,'1 supply for your next stage · refills itself when you have Crumbs',10,'#b7abc9'); y+=20; const c=expSupplyCost(e.best);
+      for(const q of EXP_SUPPLIES){ const pk=e.supply===q.id,au=e.supplyAuto===q.id; row(q.em,q.name+(pk?'  ✓ packed':'')+(au?'  🔁':''),q.desc,pk||(au&&!e.supply)?(au?'🔁 Auto on':'Auto off'):e.supply?'—':'🍪 '+expFmt(c),pk||(au&&!e.supply)||(!e.supply&&e.crumbs>=c),()=>{ const E=Save.exp(); if(E.supply===q.id||(E.supplyAuto===q.id&&!E.supply)){ E.supplyAuto=E.supplyAuto===q.id?null:q.id; Save.save(); this.menuToast?.(E.supplyAuto?'🔁 Auto refill on':'Auto refill off','#c7a6ff'); this.buildMenuScreen(); return; } if(this.expBuy('supply',q.id)){ this.menuToast?.(q.em+' '+q.name+' packed · refills itself after each stage','#a8ffb0'); this.buildMenuScreen(); } },'exp_supply_'+q.id); } }   /* v8.2.61 เติมเอง · แตะของที่ใช้อยู่ = เปิด/ปิดเติมเอง */
+    else { const tc=expTapCost(e.tap); row('⚔️','Hero Power · Lv '+e.tap,expFmt(expTapDmg(e.tap)*EXP_HERO_APS)+' → '+expFmt(expTapDmg(e.tap+1)*EXP_HERO_APS)+'/s · fights on its own','🍪 '+expFmt(tc),e.crumbs>=tc,()=>{ if(this.expBuy('tap'))this.buildMenuScreen(); },'exp_tap_up');
       const hs=this.expHelpers(),maxRows=Math.max(1,Math.floor((h-y-14)/(rh+5)));
       hs.slice(0,maxRows).forEach(hh=>{ const lv=e.help[hh.id]|0,c=expHelpCost(hh,lv),nx=25*(Math.floor(lv/25)+1); row(hh.em,hh.name+' · Lv '+lv,(lv?expFmt(expHelpDps(hh,lv))+'/s':'Hire to fight for you')+' · ×2 at Lv '+nx,'🍪 '+expFmt(c),e.crumbs>=c,()=>{ if(this.expBuy('help',hh.id))this.buildMenuScreen(); },'exp_help_'+hh.id); }); }
     if(!this._ex||this._ex.hp<=0)this.expFoeNew(); else this.expFoeDraw(); this.expHud();
@@ -14025,7 +14035,7 @@ class Game extends Phaser.Scene {
     if(off)this.time.delayedCall(250,()=>{ this.exSfx('welcome_back',.45); this.rubyVoiceReact?.('exwelcome',200); const hm=Math.floor(off.sec/3600)+'h '+Math.floor(off.sec%3600/60)+'m'; this.menuToast?.('💤 While you were away ('+hm+'): helpers beat '+expFmt(off.kills)+' foes · 🍪 +'+expFmt(off.cr),'#c7a6ff'); });
     if(!this._exOn){ this._exOn=true; this._exAt=Date.now(); } this._exEv?.remove?.(false); this._exEv=this.time.addEvent({delay:100,loop:true,callback:()=>this.expTick()}); this.menu.setVisible(true); }
   /* Supplies: ใช้ตอนเริ่มด่านจริง (Story/Delve) · 1 ชิ้นต่อด่าน แล้วหายไป */
-  expSupplyApply(){ if(typeof EXP_ON==='undefined'||!EXP_ON||this._inTutorial)return null; const e=Save.exp(),id=e.supply,p=this.player; if(!id||!p)return null; e.supply=null; Save.save();
+  expSupplyApply(){ if(typeof EXP_ON==='undefined'||!EXP_ON||this._inTutorial)return null; this.expSupplyRefill?.(); const e=Save.exp(),id=e.supply,p=this.player; if(!id||!p)return null; e.supply=null; Save.save();
     if(id==='shield')this._shield=Math.max(this._shield||0,1); else if(id==='xp')p.xpMul=(p.xpMul||1)*1.25; else if(id==='sugar')p.sugarFindMul=(p.sugarFindMul||1)*1.2; else if(id==='hp'){ p.maxhp=Math.round(p.maxhp*1.15); p.hp=p.maxhp; }
     const q=EXP_SUPPLIES.find(x=>x.id===id); if(q)this.time?.delayedCall?.(1600,()=>this.showBanner?.('🎒 Supply: '+q.em+' '+q.name,q.desc.replace('in your next stage','this stage').replace('your next stage','this stage'),1600)); return id; }
   buildDig(){ return this.buildExpedition();   /* v8.2.36 E1: กระดานขุดเดิมลบแล้ว · หน้า dig = Temple Expedition */ }

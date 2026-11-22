@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.60**. Next release:8.2.61. Fetch the deploy branch before new work.
+Current release: **8.2.61**. Next release:8.2.62. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.60 — 🔑 Faster Google sign-in (native account sheet)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.61 — ⚔️ Expedition simplified (no tapping needed)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -48,7 +48,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **ECRS ก่อน Closed test (เจ้าของ 22 พ.ย. · `docs/ECRS.md`):** รอบ 1 v8.2.52 (Kitchen ซ่อน · Forge 5→3 สกุล) · รอบ 2 v8.2.54 จากข้อมูลผู้เล่นจริง (Inbox/Miners/Daily chest Expedition เลิก · Play Stats/Ranking ซ่อน · กล่อง Gear จ่าย Sugar · Ch1 ไม่มี Run trait/Mimic) · **v8.2.59 เงินจริง → 🍭 Lollipops (ของแต่งตัวเท่านั้น) · 🧶 Thread ได้จากการเล่นเท่านั้น** · C/R หลัง test
 
 **รอเจ้าของตัดสินใจ / ทำต่อ**
-- **Expedition → idle วางแผน (เจ้าของ 21 พ.ย.: ไม่อยากให้กดเยอะ เน้น strategy):** เสนอรอบ 1 = จัดทีม 4 ช่องหน้า/หลัง + บทบาท Tank/DPS/Support · ไททันมีคุณสมบัติ (เกราะ/ฟื้นเลือด/โล่/ฝูง) · Synergy · แตะรัว → ปุ่ม 📣 Rally คูลดาวน์ 30 วิ · รอบ 2 (หลัง test) ค่าย + Prestige · **รออนุมัติ** (รายละเอียด `docs/IDEAS.md`)
+- **Expedition Simplify (เจ้าของ 22 พ.ย. · v8.2.61):** ฮีโร่ตีเอง · บอสลองใหม่เอง · ปุ่ม ⬆ Upgrade all · Supplies เติมเอง · แผนจัดทีม/บทบาท (`docs/IDEAS.md`) เลื่อนหลัง Closed test ดูข้อมูลก่อน
 - **Seal the Seed Rift สั้นลง:** เสนอเป้า 8→6 · ตัวขนเมล็ดทุก 2.1→1.4 วิ ระยะ 560→420 · เวฟ 100→75 วิ · **รออนุมัติ**
 - ความถี่แท่นเริ่มภารกิจหลังเล่นจริง · Overcharge ลบแล้ว (8.2.36 + 8.2.52)
 - **Kitchen:** ซ่อนแล้ว v8.2.52 · หลัง Closed test ตัดสิน Cookbook หรือลบ (`docs/IDEAS.md`)

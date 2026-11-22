@@ -1,6 +1,6 @@
 # สถานะงานรออาร์ต/เสียง และรอ QA มือถือ
 
-(อัปเดต 22 พ.ย. 2026 · เกม v8.2.60 · อัปเดตไฟล์นี้เมื่อผูกอาร์ต/เสียงหรือเจ้าของ QA แล้ว)
+(อัปเดต 22 พ.ย. 2026 · เกม v8.2.61 · อัปเดตไฟล์นี้เมื่อผูกอาร์ต/เสียงหรือเจ้าของ QA แล้ว)
 รายการ "รอ QA" รายเวอร์ชันอยู่ที่ `docs/LAUNCH_RULES.md` (หัวข้อ รอ QA) · เคสเครื่องจริงที่ต้องตรวจซ้ำ `docs/PLAYTEST_CASES.md` หมวด J
 
 ## รออาร์ต/เสียง (ยังไม่ส่ง)
@@ -29,7 +29,7 @@
 - Boss Rush ซ่อน (v7.8.89) · Midnight Kitchen Endless เลิก (v6.80)
 
 ## รอเจ้าของตัดสินใจ
-- Expedition แบบ idle เน้นวางแผน รอบ 1 (`docs/IDEAS.md`)
+- Expedition: Simplify แล้ว v8.2.61 · แผนวางแผน/ทีม ดูหลัง Closed test (`docs/IDEAS.md`)
 - Seal the Seed Rift ให้สั้นลง (CLAUDE.md §5)
 - ECRS ข้อ E ถัดไป (`docs/ECRS.md`)
 - ล็อกอิน Google แบบ native: เจ้าของตั้ง OAuth client Android + ส่ง Web client ID (`docs/PLAY_CONSOLE_SETUP.md`)

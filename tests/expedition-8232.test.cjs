@@ -20,7 +20,7 @@ e.s=1;e.k=0;e.crumbs=0;s.expFoeNew();for(let i=0;i<10;i++)s.expHit(1e9,false,fal
 // boss: stage 5, timer fail → farm previous stage
 e.s=5;e.k=0;e.farm=false;s.expFoeNew();assert(s._ex.boss&&s._ex.t===30);s.expBossFail();assert(e.farm&&e.s===4);s.expFoeNew();assert(!s._ex.boss);
 // farming stays on stage, boss kill → first-clear reward once
-for(let i=0;i<10;i++)s.expHit(1e9,false,false);assert.strictEqual(e.s,4,'farming does not advance');
+for(let i=0;i<9;i++)s.expHit(1e9,false,false);assert.strictEqual(e.s,4,'farming does not advance');s.expHit(1e9,false,false);assert(e.s===5&&!e.farm,'v8.2.61: training done → boss again by itself');
 e.farm=false;e.s=10;e.k=0;s.expFoeNew();s.expHit(1e9,false,false);assert.strictEqual(e.s,11);assert(S.sug>0&&S.th>0&&!S.part,'boss 10: v8.2.37 simple Kitchen gives threads, not parts');const su=S.sug;e.s=10;s.expFoeNew();s.expHit(1e9,false,false);assert.strictEqual(S.sug,su,'first clear only');
 // buy
 e.crumbs=1e12;const t0=e.tap;assert(s.expBuy('tap'));assert.strictEqual(e.tap,t0+1);assert(s.expBuy('help','ruby'));assert.strictEqual(e.help.ruby,1);assert(s.expDps()>0);
