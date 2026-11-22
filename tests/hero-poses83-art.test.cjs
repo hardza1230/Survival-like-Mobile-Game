@@ -4,8 +4,9 @@ const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const M=JSON.parse(fs.readFileSync(__dirname+'/../assets/incoming/hero_poses83/MANIFEST.json','utf8'));
 assert.equal(M.length,18);
 for(const r of M){ const b=fs.readFileSync(__dirname+'/../assets/incoming/hero_poses83/'+r.file); assert.equal(b.length,r.bytes,r.key); assert.equal(crypto.createHash('sha256').update(b).digest('hex'),r.sha256,r.key);
-  const w=fs.readFileSync(__dirname+'/../assets/art/hero_poses83/'+r.key+'.webp'); assert.equal(w.slice(0,4).toString(),'RIFF',r.key);
-  assert(src.includes(`  ${r.key}:{url:'assets/art/hero_poses83/${r.key}.webp',frame:128},`),'registered '+r.key);
+  const dir=r.key.includes('_hurt')?'hero-hurt3a':'hero_poses83';
+  const w=fs.readFileSync(__dirname+'/../assets/art/'+dir+'/'+r.key+'.webp'); assert.equal(w.slice(0,4).toString(),'RIFF',r.key);
+  assert(src.includes(`  ${r.key}:{url:'assets/art/${dir}/${r.key}.webp',frame:128},`),'registered '+r.key);
   assert(r.runSheetHeightRatio>.94&&r.runSheetHeightRatio<1.06,'body height like the run sheet '+r.key); }
 assert(/return \/\\\/\(\?:hero_poses83\|hero_motion823\|/.test(src),'hero-lazy (not boot)');
 assert(src.includes("const hk='char_'+this.character+'_hurt'; if(frame===CF.hurt&&this.character!=='cocoa'&&this.textures.exists(hk))"),'hurt sheet for every hero, fallback CF.hurt');

@@ -1,3 +1,7 @@
+# Current checkpoint — Animation phase 3A (2026-11-22)
+
+Base 14700cf6 (v8.2.67); candidate v8.2.68 on integration/animation-phase3a. Ten eight-frame hurt reactions for Cocoa, Yuzu, Mint, Taro, and Sesame, both outfits. Source and preview in assets/incoming/hero-hurt3a. Active skin swap and hit windows exercised in the runtime test. Next phase 3B is Yuzu and companions from the animation roadmap. Verify Pages and live version, owner mobile review pending.
+
 # Current checkpoint — Animation phase 2C (2026-11-22)
 
 Base 80fae41e (v8.2.66); candidate v8.2.67 on integration/animation-phase2c. Ten mission prop/VFX loops upgraded to eight frames, matched cadence, rebuilt sprite borders and Hunt animation comes from the registry. Phase 2 complete: 26 upgraded, four deferred/static/fallback as planned. Next is phase 3, hero and Yuzu animations. Verify Pages and live version; owner mobile review remains.

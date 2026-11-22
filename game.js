@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.67';
+const GAME_VERSION = '8.2.68';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.68',date:'2026-11-22',title:'Smoother hero hit reactions',items:['Cocoa, Yuzu, Mint, Taro and Sesame now flinch and recover with eight-frame animations in their default and Festival outfits.']},
   {v:'8.2.67',date:'2026-11-22',title:'Smoother mission props and effects',items:['Ten mission props and effects now animate in eight frames, including Hunt’s spinning flask, Herald’s beam, and Last Light’s lanterns.']},
   {v:'8.2.66',date:'2026-11-22',title:'Smoother mission creatures',items:['Nine mission creatures now walk, glide, or flap through smoother eight-frame loops.']},
   {v:'8.2.65',date:'2026-11-22',title:'Smoother Frozen Pantry troops',items:['All seven Frozen Pantry troops have smoother eight-frame movement while keeping their distinctive designs.']},
@@ -3390,25 +3391,25 @@ const ASSET_SHEETS = {
   char_cocoa_dash_leap:{ url:'assets/art/bp_fx/cocoa_dash_leap_sheet.webp', frame:128 },
   char_cocoa_dash_jab:{ url:'assets/art/bp_fx/cocoa_dash_jab_sheet.webp', frame:128 },
   char_cocoa_phantom:{ url:'assets/art/bp_fx/cocoa_phantom_rush_sheet.webp', frame:128 },
-  char_cocoa_hurt:{ url:'assets/art/bp_fx/cocoa_hurt_sheet.webp', frame:128 },
+  char_cocoa_hurt:{ url:'assets/art/hero-hurt3a/char_cocoa_hurt.webp', frame:128 },
   /* v8.2.12 ใบ 83: ท่าโดนตี 4 เฟรม + ท่าชนะ 8 เฟรม (+ สกิน Festival) · hero-lazy */
   char_momo_victory:{url:'assets/art/hero_poses83/char_momo_victory.webp',frame:128},
-  char_yuzu_hurt:{url:'assets/art/hero_poses83/char_yuzu_hurt.webp',frame:128},
+  char_yuzu_hurt:{url:'assets/art/hero-hurt3a/char_yuzu_hurt.webp',frame:128},
   char_yuzu_victory:{url:'assets/art/hero_poses83/char_yuzu_victory.webp',frame:128},
-  char_mint_hurt:{url:'assets/art/hero_poses83/char_mint_hurt.webp',frame:128},
+  char_mint_hurt:{url:'assets/art/hero-hurt3a/char_mint_hurt.webp',frame:128},
   char_mint_victory:{url:'assets/art/hero_poses83/char_mint_victory.webp',frame:128},
-  char_taro_hurt:{url:'assets/art/hero_poses83/char_taro_hurt.webp',frame:128},
+  char_taro_hurt:{url:'assets/art/hero-hurt3a/char_taro_hurt.webp',frame:128},
   char_taro_victory:{url:'assets/art/hero_poses83/char_taro_victory.webp',frame:128},
-  char_sesame_hurt:{url:'assets/art/hero_poses83/char_sesame_hurt.webp',frame:128},
+  char_sesame_hurt:{url:'assets/art/hero-hurt3a/char_sesame_hurt.webp',frame:128},
   char_sesame_victory:{url:'assets/art/hero_poses83/char_sesame_victory.webp',frame:128},
   char_momo_victory__sakura:{url:'assets/art/hero_poses83/char_momo_victory__sakura.webp',frame:128},
-  char_yuzu_hurt__summer:{url:'assets/art/hero_poses83/char_yuzu_hurt__summer.webp',frame:128},
+  char_yuzu_hurt__summer:{url:'assets/art/hero-hurt3a/char_yuzu_hurt__summer.webp',frame:128},
   char_yuzu_victory__summer:{url:'assets/art/hero_poses83/char_yuzu_victory__summer.webp',frame:128},
-  char_mint_hurt__snow:{url:'assets/art/hero_poses83/char_mint_hurt__snow.webp',frame:128},
+  char_mint_hurt__snow:{url:'assets/art/hero-hurt3a/char_mint_hurt__snow.webp',frame:128},
   char_mint_victory__snow:{url:'assets/art/hero_poses83/char_mint_victory__snow.webp',frame:128},
-  char_taro_hurt__star:{url:'assets/art/hero_poses83/char_taro_hurt__star.webp',frame:128},
+  char_taro_hurt__star:{url:'assets/art/hero-hurt3a/char_taro_hurt__star.webp',frame:128},
   char_taro_victory__star:{url:'assets/art/hero_poses83/char_taro_victory__star.webp',frame:128},
-  char_sesame_hurt__moon:{url:'assets/art/hero_poses83/char_sesame_hurt__moon.webp',frame:128},
+  char_sesame_hurt__moon:{url:'assets/art/hero-hurt3a/char_sesame_hurt__moon.webp',frame:128},
   char_sesame_victory__moon:{url:'assets/art/hero_poses83/char_sesame_victory__moon.webp',frame:128},
   char_cocoa_victory:{ url:'assets/art/bp_fx/cocoa_victory_sheet.webp', frame:128 },
   char_mint_lance_charged:{ url:'assets/art/bp_fx/mint_lance_throw_charged_sheet.webp', frame:128 },
@@ -3507,7 +3508,7 @@ const ASSET_SHEETS = {
   char_cocoa_dash_leap__chef:{url:'assets/art/skins69/cocoa/char_cocoa_dash_leap__chef.webp',frame:128},
   char_cocoa_fire_fin__chef:{url:'assets/art/skins69/cocoa/char_cocoa_fire_fin__chef.webp',frame:128},
   char_cocoa_fire_jab__chef:{url:'assets/art/skins69/cocoa/char_cocoa_fire_jab__chef.webp',frame:128},
-  char_cocoa_hurt__chef:{url:'assets/art/skins69/cocoa/char_cocoa_hurt__chef.webp',frame:128},
+  char_cocoa_hurt__chef:{url:'assets/art/hero-hurt3a/char_cocoa_hurt__chef.webp',frame:128},
   char_cocoa_phantom__chef:{url:'assets/art/skins69/cocoa/char_cocoa_phantom__chef.webp',frame:128},
   char_cocoa_rocket__chef:{url:'assets/art/skins69/cocoa/char_cocoa_rocket__chef.webp',frame:128},
   char_cocoa_rocket_motion823__chef:{url:'assets/art/skins69/cocoa/char_cocoa_rocket_motion823__chef.webp',frame:128},
@@ -5068,7 +5069,7 @@ function pathCardKey(id){ return PATHCARD_ART[id]||'pathcard80_'+id; }
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(/^(?:vault80|forge80|book80|pathcard80|pathuq82)_/.test(k))return 'stage'; if(/assets\/art\/relics8[18]\//.test(u))return 'stage'; if(/^ev90_/.test(k))return 'stage'; if(/^ma89_/.test(k))return 'menu'; if(/^(?:cb93|hn92|ws92|hc_new)_/.test(k)||/assets\/art\/mission-vfx-next\//.test(u))return 'stage'; if(/^(?:fp|hm|hh|gp|gg|hs|ult|msn71|brm|fp85|mp85|ll85|ult85|hs85|hh85|mc86|hn87|hh87|st87|cr87|sr87|gg87|ui87)_|^cr_root_/.test(k)||/assets\/art\/vfx78\//.test(u))return 'stage'; if(/assets\/art\/(?:menu74|patrol70)\//.test(u))return 'menu';   /* v8.1.93 อาร์ตภารกิจ = stage · ไอคอน/Patrol = menu */ if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('core79_'))return 'menu'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('sc79_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ if(k.startsWith('sg92_')||k==='sg_new_primary')return true; if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_poses83|hero_motion823|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ if(k.startsWith('sg92_')||k==='sg_new_primary')return true; if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_poses83|hero_motion823|hero-hurt3a|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 try{ if(!localStorage.getItem('mochi_lowmem_reset122')){ localStorage.setItem('mochi_lowmem_reset122','1'); localStorage.removeItem('mochi_lowmem'); _lowMemFlag=false; } }catch(e){}   /* v8.1.122 เจ้าของ: ติดโหมดหน่วยความจำต่ำถาวรจนเกมวนโหลด → ล้างครั้งเดียว */
 const MENU_TEX_SOFT_MB=300;

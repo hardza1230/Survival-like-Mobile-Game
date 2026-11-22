@@ -1,0 +1,82 @@
+[
+  {
+    "key": "char_cocoa_hurt",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Cocoa with auburn ponytail, boxing gloves and her exact referenced outfit and hair accessory, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-bab31b43-b7d3-45fb-ba44-6b794074cc17.png",
+    "reference": "assets/art/bp_fx/cocoa_hurt_sheet.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_yuzu_hurt",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Yuzu with orange citrus hair and the exact referenced green and gold outfit, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-4b555f73-4b01-4bb2-92b6-815121fde7f6.png",
+    "reference": "assets/art/hero_poses83/char_yuzu_hurt.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_mint_hurt",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Mint ice lancer with mint ponytail, her ice spear and the exact referenced outfit, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-eecf7936-d8d8-4330-8c07-99b7a8544dab.png",
+    "reference": "assets/art/hero_poses83/char_mint_hurt.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_taro_hurt",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Taro with violet hair, wand and the exact referenced clothes, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-f6d940f9-b7cd-4982-ae38-98695b2b2301.png",
+    "reference": "assets/art/hero_poses83/char_taro_hurt.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_sesame_hurt",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Sesame, soft dark brown hair, original rune circles and her exact ivory and brown outfit, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-794e5001-673c-4146-9eda-9665eea01b7d.png",
+    "reference": "assets/art/hero_poses83/char_sesame_hurt.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_yuzu_hurt__summer",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Yuzu with orange citrus hair and the exact referenced green and gold outfit, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-bf1efb97-a57d-4f5e-b06f-cea61806c5b1.png",
+    "reference": "assets/art/hero_poses83/char_yuzu_hurt__summer.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_mint_hurt__snow",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Mint ice lancer with mint ponytail, her ice spear and the exact referenced outfit, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-1d195059-9022-418a-aae2-abc888003f61.png",
+    "reference": "assets/art/hero_poses83/char_mint_hurt__snow.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_taro_hurt__star",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Taro with violet hair, wand and the exact referenced clothes, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-582b37fa-fbff-476f-9473-929d854a0dce.png",
+    "reference": "assets/art/hero_poses83/char_taro_hurt__star.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_sesame_hurt__moon",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Sesame, soft dark brown hair, original rune circles and her exact ivory and brown outfit, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-4218e79a-cbe3-417d-9fc0-e2529e8c9cb1.png",
+    "reference": "assets/art/hero_poses83/char_sesame_hurt__moon.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  },
+  {
+    "key": "char_cocoa_hurt__chef",
+    "tool": "Built-in ImageGen",
+    "prompt": "Edit the attached Mochi Mayhem four-pose hurt animation by drawing eight closely matching intermediate poses. Exact same Cocoa with auburn ponytail, boxing gloves and her exact referenced outfit and hair accessory, including all costume details and proportions of THIS reference. Do not switch skins. Exact same direction and three-quarter top-down camera as reference. Show a quick non-violent cartoon flinch: (1) sharp initial hit pose matching the reference leftmost, (2) compress slightly, (3) recoil peak with eyes shut, (4) ease out of recoil, (5) half straighten, (6) re-open eyes, (7) settle, (8) match the reference rightmost recovered stance. Same face and proportions. Primary body remains the same size, her feet stay on a shared line in each cell, tiny secondary hair/cloth motion. No big knockback or jumping. Exact output: eight equal cells in a 4-column × 2-row grid, row-major chronological order, landscape canvas, 12% transparent room around each pose. True RGBA transparency with no ground shadow, background, red damage tint, bleed or lines between cells. No text, lettering, logo, watermark or effects. Preserve original softly illustrated game sprite look.",
+    "sourceImage": "exec-4507081f-2151-48e6-a611-19a3f3981aa5.png",
+    "reference": "assets/art/skins69/cocoa/char_cocoa_hurt__chef.webp",
+    "preparation": "Mapped eight row-major cells to 128 px, removed matte alpha ≤24, aligned to previous ground line, retained old endpoint poses where compatible."
+  }
+]
