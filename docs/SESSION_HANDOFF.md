@@ -1,3 +1,7 @@
+# Current checkpoint — Phase 3 source art delivered (2026-11-23)
+
+Owner changed scope to source-art only. Branch asset-delivery/hero-motion-phase3, base 8ad09f6e / v8.2.73. Delivered 40 PNG32 sheets / 328 distinct frames in assets/incoming/hero-motion-phase3, with MANIFEST, exact PROMPTS, 40-line QA_REPORT, DELIVERY and preview. Modern Mint resolver adds three sheets beyond initial estimate. All mechanical checks passed, no missing. No game.js, runtime, tests or release edits. Code owner must wire the sources, preserve durations and remove fixed six-frame Yuzu assumptions; prior completed and intentionally retained/deferred roadmap items stay unchanged. Next art phase is phase 4 (regular enemies), awaiting owner instruction. Confirm remote source branch after push; phone appearance remains owner review.
+
 # Current checkpoint — Taro phase 3C1 (2026-11-23)
 
 Candidate v8.2.73 from 5edf621f on integration/animation-taro3c. Four active eight-frame Taro loops/actions, unchanged cadence, source/runtime taro-motion3c, explicit boot deferral and reproducible packer. Remaining hero batches and active Yuzu outlined effects remain in the roadmap. Verify Pages/live version; owner phone review pending.
