@@ -4687,3 +4687,13 @@ Four active Taro sentry, beacon and overcharge effects now use eight authored fr
 - Older art tests read `tests/lib/motion-legacy.cjs`; mint/battle/boss-vfx browser checks accept 6/8/12 frames.
 - **Not wired yet:** enemy attack clips phase 4 (45) + boss body clips MB7–MB10 (6) — need atlas clip remapping.
 - Test: `tests/motion-phase3-5.test.cjs`.
+
+# Delivery: v8.2.75 — 🎞️ Smoother enemy attacks + boss bodies (51 clips)
+
+**Owner:** continue with phase 4. Sources `assets/incoming/enemy-motion-phase4` (45) + the boss body rows of `boss-motion-phase5b` (6).
+- **Enemy clips (45):** attack / windup / flee / walk now 8 frames for Chapter 1–2 regulars, elites, Mimic and Feast target · rates from the manifest (same play time).
+- **Boss bodies (6):** MB5/7/8/9 idle 8 frames (`BOSS_BODY816_MAP.idle8`, idle cycle stays 1 s) · Root Knight idle 8 / walk+charge 8 / cleave 12.
+- **How:** `scripts/pack-motion-phase4.py` appends the new frames after each atlas's old frames (49 atlases → `assets/art/motion-phase4/`, 11.4 MB, +3.4 MB vs old) so idle/walk/hurt/death indices never move; registry action lists/`anim.start` point at the new frames.
+- Not delivered by the art side (kept as before): `e_ant_drone` attack, `c24_equinox` attack.
+- Stage-lazy loading unchanged (0 new keys at boot). Live check: C2-1 attack clips 8 frames @24 fps.
+- Old animation tests read `tests/lib/motion-legacy.cjs`; `check-boss-body-ui` allows appended idle frames. Test: `tests/motion-phase4.test.cjs`.

@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.76';
+const GAME_VERSION = '8.2.77';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.77',date:'2026-11-23',title:'🛡️ Forge Barrier no longer makes heroes untouchable',items:['Barrier cap 15% HP (30% with Barrier Capacity)','Barrier gain at most 4% HP per second','3s lockout after the barrier breaks']},
   {v:'8.2.76',date:'2026-11-23',title:'🍓 Shotgun no longer melts bosses up close',items:['Bosses and minibosses skip the x2 point-blank pellet bonus','Pellets 7+ of one blast on the same boss deal half']},
   {v:'8.2.75',date:'2026-11-23',title:'🎞️ Smoother enemy attacks + boss bodies (51 clips)',items:['Chapter 1-2 enemy attack, windup, flee and walk clips now 8 frames','Minibosses MB5-MB10 idle 8 frames, Root Knight cleave 12']},
   {v:'8.2.74',date:'2026-11-23',title:'🎞️ Smoother hero & boss effects (97 sheets)',items:['Hero skill effects and Chapter 1-2 boss warnings, waves, arena effects and counters now animate in 8 or 12 frames']},
@@ -7301,7 +7302,9 @@ function forgeMigrate(data){if(data.forgeEconomyVersion===1){const w=data.curren
   for(const k of ['regal','exalt']){w.transmute=safe('transmute')+safe(k);delete w[k];}const jam=Math.floor(safe('alt')/2);w.alt=safe('alt')-jam;w.chaos=safe('chaos')+jam;
   refund('annul','alt',90,110);refund('scour','transmute',30,120);for(const it of (data.gearItems||[]).concat(data.gearInbox||[]))if(it&&it.affixes)forgeSetLines(it,forgeLines(it));data.forgeEconomyVersion=1;forgeMigrate(data);return true;}
 function forgeState(s){return s._forgeState||(s._forgeState={barrier:0,barrierUntil:0,lastHurt:s.elapsed||0,lastHit:-Infinity,kills:0,hitCount:0,xp:0,eliteBonus:0});}
-function forgeBarrier(s,amount){const p=s.player,r=forgeState(s),cap=p.maxhp*Math.min(.5,.25+forgeValue(p,61)/100);r.barrier=Math.min(cap,r.barrier+Math.max(0,amount));r.barrierUntil=(s.elapsed||0)+4*(1+forgeValue(p,62)/100);}
+/* v8.2.77 เจ้าของ: โล่ Forge โกง (เติมเร็วกว่ามอนตี) → เพดาน 15% (สูงสุด 30% กับ Barrier Capacity) · เติมรวมได้ ≤4% HP/วิ · แตกแล้วรอ 3 วิ */
+const FORGE_BARRIER_BASE=.15,FORGE_BARRIER_MAX=.30,FORGE_BARRIER_RATE=.04,FORGE_BARRIER_LOCK=3;
+function forgeBarrier(s,amount){const p=s.player,r=forgeState(s),now=s.elapsed||0;if(now<(r.barLockUntil||0))return;const cap=p.maxhp*Math.min(FORGE_BARRIER_MAX,FORGE_BARRIER_BASE+.6*forgeValue(p,61)/100);if(now-(r.barWinAt??-Infinity)>=1){r.barWinAt=now;r.barWin=0;}const room=Math.max(0,p.maxhp*FORGE_BARRIER_RATE-(r.barWin||0)),add=Math.min(Math.max(0,amount),room);if(add<=0)return;r.barWin=(r.barWin||0)+add;r.barrier=Math.min(cap,r.barrier+add);r.barrierUntil=(s.elapsed||0)+4*(1+forgeValue(p,62)/100);}
 function forgeHeal(s,amount,overflow=true){const p=s.player;if(s.recipeHas?.('noheal')||p._uqNoRegen)return;amount=Math.max(0,amount)*(s.pactHealMul?.()??1);if(s.usesStoryBudget?.()){const r=forgeState(s),now=s.elapsed||0;if(now-(r.healWindowAt??-Infinity)>=1){r.healWindowAt=now;r.healSum=0;}amount=Math.min(amount,Math.max(0,p.maxhp*.03-(r.healSum||0)));r.healSum=(r.healSum||0)+amount;}const healed=Math.min(p.maxhp-p.hp,amount);p.hp+=Math.max(0,healed);if(overflow&&forgeValue(p,24))forgeBarrier(s,(amount-healed)*forgeValue(p,24)/100);}
 function forgeStatuses(e){return[(e.frozen||0)>0||(e._chill||0)>0,(e._burnT||0)>0,(e._sourT||0)>0].filter(Boolean).length;}
 function forgeDamage(s,e,amount){const p=s.player,r=forgeState(s),v=n=>forgeValue(p,n)/100,now=s.elapsed||0,direct=!s._infTick&&!s._frDmg&&!s._gmTick&&!s._uqBursting,terminal=s.character==='taro'&&s._taroDamageContext?.terminal===true,dist=Math.hypot(e.x-p.x,e.y-p.y);let bonus=0;
@@ -7323,7 +7326,7 @@ function forgeDamage(s,e,amount){const p=s.player,r=forgeState(s),v=n=>forgeValu
 function forgeHurt(s,amount){const p=s.player,r=forgeState(s),v=n=>forgeValue(p,n)/100,now=s.elapsed||0;let reduction=0;
   reduction+=s.mode==='boss'||s.mode==='mini'?v(64):v(65);if(now<(r.dashUntil||0))reduction+=v(21);if(now<(r.brokenUntil||0))reduction+=v(71);
   if(v(66)&&amount>p.maxhp*.2&&now>=(r.cushionAt||0)){reduction+=v(66);r.cushionAt=now+6;}if(now-r.lastHurt>=5)reduction+=v(114);amount*=1-Math.min(FORGE_DR_CAP,reduction);
-  if(r.barrierUntil<now)r.barrier=0;if(r.barrier>0){const absorbed=Math.min(amount,r.barrier);amount-=absorbed;r.barrier-=absorbed;if(r.barrier<=0){r.brokenUntil=now+2;r.breakHasteUntil=now+3;}}
+  if(r.barrierUntil<now)r.barrier=0;if(r.barrier>0){const absorbed=Math.min(amount,r.barrier);amount-=absorbed;r.barrier-=absorbed;if(r.barrier<=0){r.brokenUntil=now+2;r.breakHasteUntil=now+3;r.barLockUntil=now+FORGE_BARRIER_LOCK;}}
   if(amount>0){r.lastHurt=now;r.revenge=Math.min(.5,(r.revenge||0)+v(44)*amount/(p.maxhp*.1));if(amount>=p.hp&&v(115)&&!r.lastCrumbUsed){r.lastCrumbUsed=true;amount=Math.max(0,p.hp-1);}}return amount;}
 function forgeCrit(s){const p=s.player,r=forgeState(s),now=s.elapsed||0;if(forgeValue(p,18)&&now>=(r.critBarrierAt||0)){r.critBarrierAt=now+.8;forgeBarrier(s,p.maxhp*forgeValue(p,18)/100);}}
 function forgeKill(s,e){const p=s.player,r=forgeState(s),now=s.elapsed||0;r.kills++;if(r.kills%12===0)r.earnedUntil=now+4;if(e.isElite||e.isMini)r.eliteBonus=Math.min(.3,(r.eliteBonus||0)+forgeValue(p,98)/100/10);
