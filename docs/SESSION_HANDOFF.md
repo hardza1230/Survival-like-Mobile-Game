@@ -1,3 +1,7 @@
+# Current checkpoint — Yuzu phase 3B1 (2026-11-23)
+
+Candidate v8.2.72 from 986fecd8 on integration/animation-phase3b. Four effect sheets, 40 frames, source/runtime yuzu-motion3b. Shield/Infusion loops 8, fallback slam/rain 12. Existing outlined skill takes precedence. Read dynamic frame count, preserve duration and support reduced motion. Next: phase 3B2 active outlined Yuzu effects and minion shots. Verify deploy/live version and phone review.
+
 # Current checkpoint — Animation phase 3A (2026-11-22)
 
 Base 14700cf6 (v8.2.67); candidate v8.2.68 on integration/animation-phase3a. Ten eight-frame hurt reactions for Cocoa, Yuzu, Mint, Taro, and Sesame, both outfits. Source and preview in assets/incoming/hero-hurt3a. Active skin swap and hit windows exercised in the runtime test. Next phase 3B is Yuzu and companions from the animation roadmap. Verify Pages and live version, owner mobile review pending.

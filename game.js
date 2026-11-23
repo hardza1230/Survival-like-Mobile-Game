@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.71';
+const GAME_VERSION = '8.2.72';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.72',date:'2026-11-23',title:'Smoother citrus companion effects',items:['Yuzu’s shield and Infusion use eight-frame loops with twelve-frame backup slam and rain.']},
   {v:'8.2.71',date:'2026-11-22',title:'⚫ Sesame less tanky',items:['Sesame base HP bonus 34 to 15','Blue Mantle damage reduction cap 45% to 25%']},
   {v:'8.2.70',date:'2026-11-22',title:'▶ Missions start by themselves',items:['In-stage missions begin automatically after their card (no Start button)']},
   {v:'8.2.69',date:'2026-11-22',title:'🔮 Sesame spells grow from orb cards',items:['Spell level comes from Ember/Gale/Tide card ranks (not cast count)','Rank 4 twist for every spell','Orb card texts explain the growth']},
@@ -3309,10 +3310,10 @@ const ASSET_SHEETS = {
   char_yuzu:{url:'assets/characters/yuzu_sheet.webp',frame:128},
   char_yuzu_run:{url:'assets/characters/yuzu_run_sheet.webp',frame:128},
   char_yuzu_attack:{url:'assets/characters/yuzu_attack_sheet.webp',frame:128},
-  yz_fx_slam:{url:'assets/art/yuzu_companions/yz_fx_slam.webp',frame:256},
-  yz_fx_rain:{url:'assets/art/yuzu_companions/yz_fx_rain.webp',frame:256},
-  yz_fx_infusion:{url:'assets/art/yuzu_companions/yz_fx_infusion.webp',frame:256},
-  yz_fx_shield:{url:'assets/art/yuzu_companions/yz_fx_shield.webp',frame:256},
+  yz_fx_slam:{url:'assets/art/yuzu-motion3b/yz_fx_slam.webp',frame:256},
+  yz_fx_rain:{url:'assets/art/yuzu-motion3b/yz_fx_rain.webp',frame:256},
+  yz_fx_infusion:{url:'assets/art/yuzu-motion3b/yz_fx_infusion.webp',frame:256},
+  yz_fx_shield:{url:'assets/art/yuzu-motion3b/yz_fx_shield.webp',frame:256},
   yz_49_peel:{url:'assets/art/yuzu49/yz_49_peel.webp',frame:256},
   yz_49_slam:{url:'assets/art/yuzu49/yz_49_slam.webp',frame:256},
   yz_49_volley:{url:'assets/art/yuzu49/yz_49_volley.webp',frame:256},
@@ -5072,7 +5073,7 @@ function pathCardKey(id){ return PATHCARD_ART[id]||'pathcard80_'+id; }
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(/^(?:vault80|forge80|book80|pathcard80|pathuq82)_/.test(k))return 'stage'; if(/assets\/art\/relics8[18]\//.test(u))return 'stage'; if(/^ev90_/.test(k))return 'stage'; if(/^ma89_/.test(k))return 'menu'; if(/^(?:cb93|hn92|ws92|hc_new)_/.test(k)||/assets\/art\/mission-vfx-next\//.test(u))return 'stage'; if(/^(?:fp|hm|hh|gp|gg|hs|ult|msn71|brm|fp85|mp85|ll85|ult85|hs85|hh85|mc86|hn87|hh87|st87|cr87|sr87|gg87|ui87)_|^cr_root_/.test(k)||/assets\/art\/vfx78\//.test(u))return 'stage'; if(/assets\/art\/(?:menu74|patrol70)\//.test(u))return 'menu';   /* v8.1.93 อาร์ตภารกิจ = stage · ไอคอน/Patrol = menu */ if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('core79_'))return 'menu'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('sc79_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ if(k.startsWith('sg92_')||k==='sg_new_primary')return true; if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_poses83|hero_motion823|hero-hurt3a|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ if(k.startsWith('sg92_')||k==='sg_new_primary')return true; if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_poses83|hero_motion823|yuzu-motion3b|hero-hurt3a|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 try{ if(!localStorage.getItem('mochi_lowmem_reset122')){ localStorage.setItem('mochi_lowmem_reset122','1'); localStorage.removeItem('mochi_lowmem'); _lowMemFlag=false; } }catch(e){}   /* v8.1.122 เจ้าของ: ติดโหมดหน่วยความจำต่ำถาวรจนเกมวนโหลด → ล้างครั้งเดียว */
 const MENU_TEX_SOFT_MB=300;
@@ -20114,7 +20115,10 @@ class Game extends Phaser.Scene {
 
   yuzuFx(kind,x,y,size,life=.5,follow=null){
     const key='yz_fx_'+kind;if(!this.textures.exists(key))return null;const L=this._yzFx||(this._yzFx=[]);if(L.length>=8){const old=L.shift();old.spr.destroy();}
-    const spr=this.camWorld(this.add.sprite(x,y,key,0).setDisplaySize(size,size).setAlpha(.62).setDepth(follow?95001:5));const q={spr,t:0,life,follow};L.push(q);return q;
+    const spr=this.camWorld(this.add.sprite(x,y,key,0).setDisplaySize(size,size).setAlpha(.62).setDepth(follow?95001:5));const frames=Math.max(1,(this.textures.get?.(key)?.frameTotal||5)-1);
+    const red=typeof Save!=='undefined'&&(Save.data?.settings?.reducedMotion||Save.data?.settings?.vfx===0);
+    const q={spr,t:0,life,follow,frames,red,cycle:kind==='shield'||kind==='infusion'};
+    L.push(q);return q;
   }
   yuzuTickFx(dt){
     if(this.state&&this.state!=='play')return;
@@ -20125,7 +20129,13 @@ class Game extends Phaser.Scene {
         if(bad){q.spr.destroy();L.splice(i,1);continue;}
         q.t+=Math.max(0,dt);q.spr.setPosition(q.owner.spr.x,q.owner.spr.y).setDepth(q.owner.spr.y+5);
         q.spr.setFrame(q.red?4:Math.min(7,Math.floor(q.t/q.life*8))).setAlpha(.85*Math.min(1,Math.max(0,(q.life-q.t)/.12)));
-      }else{q.t+=dt;if(q.follow){q.spr.setPosition(this.player.x,this.player.y);if(q.follow==='shield'&&!this._yzShield)q.t=q.life;}if(q.staticFrame)q.spr.setAlpha(.7*Math.max(0,1-q.t/q.life));else q.spr.setFrame(Math.min(3,Math.floor(q.t*8)%4));}
+      }else{q.t+=dt;if(q.follow){q.spr.setPosition(this.player.x,this.player.y);if(q.follow==='shield'&&!this._yzShield)q.t=q.life;}if(q.staticFrame)q.spr.setAlpha(.7*Math.max(0,1-q.t/q.life));else {
+          const frames=q.frames||4;
+          let index=Math.min(3,Math.floor(q.t*8)%4);
+          if(q.red)index=Math.min(2,frames-1);
+          else if(q.frames)index=q.cycle?Math.floor(q.t*frames*2)%frames:Math.min(frames-1,Math.floor(q.t/q.life*frames));
+          q.spr.setFrame(index);
+        }}
       if(q.t>=q.life){q.spr.destroy();L.splice(i,1);}
     }
   }

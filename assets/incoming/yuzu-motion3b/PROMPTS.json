@@ -1,0 +1,30 @@
+[
+  {
+    "key": "yz_fx_shield",
+    "kind": "shield",
+    "count": 8,
+    "prompt": "Expand the attached original Mochi Mayhem four-frame VFX into EXACTLY 8 authored animation frames. Preserve original color, hand-painted tapered gold/green/red anime linework, scale and core silhouette. Effect: gold citrus shield circle with small green leaves, constant size, subtle flowing golden highlights only, seamlessly loop. Exact grid 4 columns by 2 rows with square equal-sized cells, chronological row-major. Fixed center and stable floor plane in every cell. Generous 12% transparent padding each cell. Crisp candy fantasy game art, transparent RGBA, no matte glow behind the effect, no text, numbers, cell lines, backgrounds or watermark. No characters. Each frame contains visible effect pixels, final fading frame very sparse.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-62f7da4a-726f-43a0-bcea-318f20c5bbe4.png"
+  },
+  {
+    "key": "yz_fx_infusion",
+    "kind": "infusion",
+    "count": 8,
+    "prompt": "Expand the attached original Mochi Mayhem four-frame VFX into EXACTLY 8 authored animation frames. Preserve original color, hand-painted tapered gold/green/red anime linework, scale and core silhouette. Effect: blood-orange red and gold circle with three little orange slices, preserve circle radius, subtle flowing red-gold flame tips and slices orbit slightly, seamlessly loop. Exact grid 4 columns by 2 rows with square equal-sized cells, chronological row-major. Fixed center and stable floor plane in every cell. Generous 12% transparent padding each cell. Crisp candy fantasy game art, transparent RGBA, no matte glow behind the effect, no text, numbers, cell lines, backgrounds or watermark. No characters. Each frame contains visible effect pixels, final fading frame very sparse.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-63bfa826-f7ce-412b-b04b-1259b6dfaad6.png"
+  },
+  {
+    "key": "yz_fx_slam",
+    "kind": "slam",
+    "count": 12,
+    "prompt": "Expand the attached original Mochi Mayhem four-frame VFX into EXACTLY 12 authored animation frames. Preserve original color, hand-painted tapered gold/green/red anime linework, scale and core silhouette. Effect: gold citrus ground impact: anticipation fleck, rising sharp gold splash, peak impact spikes, expanding short gold ring and green peel flecks, dissipate to faint small green flecks; a one-shot with gradual steps. Exact grid 4 columns by 3 rows with square equal-sized cells, chronological row-major. Fixed center and stable floor plane in every cell. Generous 12% transparent padding each cell. Crisp candy fantasy game art, transparent RGBA, no matte glow behind the effect, no text, numbers, cell lines, backgrounds or watermark. No characters. Each frame contains visible effect pixels, final fading frame very sparse.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-6a009ee8-5915-44f2-ab5c-a650952e8dc8.png"
+  },
+  {
+    "key": "yz_fx_rain",
+    "kind": "rain",
+    "count": 12,
+    "prompt": "Expand the attached original Mochi Mayhem four-frame VFX into EXACTLY 12 authored animation frames. Preserve original color, hand-painted tapered gold/green/red anime linework, scale and core silhouette. Effect: lime-green and gold arrow rain: falling short green-gold arrow streaks, strike the stationary floor, gold small splash, green fragments disperse and fade; a one-shot with gradual steps. Exact grid 4 columns by 3 rows with square equal-sized cells, chronological row-major. Fixed center and stable floor plane in every cell. Generous 12% transparent padding each cell. Crisp candy fantasy game art, transparent RGBA, no matte glow behind the effect, no text, numbers, cell lines, backgrounds or watermark. No characters. Each frame contains visible effect pixels, final fading frame very sparse.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-0db0bd4b-9308-48be-8f85-014e76dc2162.png"
+  }
+]

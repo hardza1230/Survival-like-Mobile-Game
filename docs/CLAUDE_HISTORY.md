@@ -4655,3 +4655,10 @@ Phase 3A converts the four-frame hurt sheets for Cocoa, Yuzu, Mint, Taro, and Se
 - Orb card texts say what grows and the Rank 4 twist.
 - Headless: all 10 spells cast at Lv5 for 90s, 0 errors.
 - Test: `tests/sesame-mastery-8264.test.cjs` (card-level math + twist hooks).
+
+# Delivery: v8.2.70 — ▶ Missions start by themselves
+
+**Owner:** change "Start mission" to automatic.
+- `MISSION_AUTO_START=true`: no Start mission button · the mission card shows and the mission begins after 1.2 s (`missionArm`) · set false to bring the button back.
+- Bots: missions s5 (Defend Nectar ✓) and s9 (Break Roots ✓) start and finish with no tap · 0 errors.
+- Note for owner: the yellow hexagon around heroes is the Forge **Barrier** status (`st_p_barrier`), most likely from the "Overflow Cream" gear mod (overheal → timed barrier).

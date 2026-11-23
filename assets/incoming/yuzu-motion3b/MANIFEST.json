@@ -1,0 +1,58 @@
+[
+  {
+    "key": "yz_fx_shield",
+    "file": "yz_fx_shield.png",
+    "bytes": 425038,
+    "sha256": "a2c00d85c00750c645eb89a96a62bc03c222be1eabf384d4b6c9ca4876c31094",
+    "width": 1024,
+    "height": 512,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "background": "transparent"
+  },
+  {
+    "key": "yz_fx_infusion",
+    "file": "yz_fx_infusion.png",
+    "bytes": 432240,
+    "sha256": "9a1ab9ebcf6ce91d6a576297eb2f17d2d8b0c6e331b9936a1751ee6496ca6de3",
+    "width": 1024,
+    "height": 512,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "background": "transparent"
+  },
+  {
+    "key": "yz_fx_slam",
+    "file": "yz_fx_slam.png",
+    "bytes": 662011,
+    "sha256": "2212640105d7ae822a2771668761a061b60501006395f060046a8b1ea321d0cf",
+    "width": 1024,
+    "height": 768,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 12,
+    "columns": 4,
+    "loop": false,
+    "background": "transparent"
+  },
+  {
+    "key": "yz_fx_rain",
+    "file": "yz_fx_rain.png",
+    "bytes": 1080850,
+    "sha256": "52fb7f62d1ebce4e4b9ec885cef8c1f767b0f204939ed70c71ad4e5f86b2ed23",
+    "width": 1024,
+    "height": 768,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 12,
+    "columns": 4,
+    "loop": false,
+    "background": "transparent"
+  }
+]
