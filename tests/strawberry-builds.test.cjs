@@ -45,7 +45,7 @@ for(const partial of ['release','hurt']){const s=scene('sniper',[enemy()]);s.cas
 // Returning seed and split Talents preserve combat value under shared limits.
 {const foes=[enemy(),enemy({x:50})],s=scene('ricochet',foes);s.player._pt.boomer=true;const b=fire(s)[0];s.hitBerrySeed(b,foes[0]);b.x=50;s.hitBerrySeed(b,foes[1]);assert(b.active&&b._boomed&&b.pierce);const n=s.hits.length;s.hitBerrySeed(b,foes[0]);assert.equal(s.hits.length,n);}
 // S4: pellets stay non-piercing, near > far, heavy center and count overflow work after Evolution.
-{const e=enemy({isBoss:true,x:80}),s=scene('shotgun',[e]);s.basicAttack.evolved=true;s.basicAttack.lv.s_slug=1;const shots=fire(s);assert.equal(shots.length,8);assert(shots.every(b=>!b.pierce));assert(shots[3].dmg>shots[0].dmg);assert.equal(s.basicAttackInfo().evolution,'Petal Breacher');const first=shots[0];s.hitBerrySeed(first,e);assert(Math.abs(s.hits[0].n-first.dmg*2*1.4*1.2)<1e-9);}
+{const e=enemy({isBoss:true,x:80}),s=scene('shotgun',[e]);s.basicAttack.evolved=true;s.basicAttack.lv.s_slug=1;const shots=fire(s);assert.equal(shots.length,8);assert(shots.every(b=>!b.pierce));assert(shots[3].dmg>shots[0].dmg);assert.equal(s.basicAttackInfo().evolution,'Petal Breacher');const first=shots[0];s.hitBerrySeed(first,e);assert(Math.abs(s.hits[0].n-first.dmg*1.4*1.2)<1e-9,'v8.2.76 boss point blank: no x2');}
 {const s=scene('shotgun',[enemy()]);s.player.gearCount=20;s.basicAttack.evolved=true;const p=api.berryShotProfile(1,false,s.basicAttack,s.player);assert.equal(p.count,12);assert(p.power>1);assert.equal(fire(s).length,12);}
 // All seed lifecycles, including delayed volleys, reject a replaced basic/new run.
 for(const path of ['sniper','shotgun','ricochet'])for(const leave of ['clear','menu','replace']){

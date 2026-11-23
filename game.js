@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.75';
+const GAME_VERSION = '8.2.76';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.76',date:'2026-11-23',title:'🍓 Shotgun no longer melts bosses up close',items:['Bosses and minibosses skip the x2 point-blank pellet bonus','Pellets 7+ of one blast on the same boss deal half']},
   {v:'8.2.75',date:'2026-11-23',title:'🎞️ Smoother enemy attacks + boss bodies (51 clips)',items:['Chapter 1-2 enemy attack, windup, flee and walk clips now 8 frames','Minibosses MB5-MB10 idle 8 frames, Root Knight cleave 12']},
   {v:'8.2.74',date:'2026-11-23',title:'🎞️ Smoother hero & boss effects (97 sheets)',items:['Hero skill effects and Chapter 1-2 boss warnings, waves, arena effects and counters now animate in 8 or 12 frames']},
   {v:'8.2.73',date:'2026-11-23',title:'Smoother Taro sentries',items:['Sentries, beacons and Overcharge now animate with eight frames while keeping their original cadence.']},
@@ -7628,6 +7629,7 @@ function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 const ATK_PCT=0.05;
 /* v8.2.38 เจ้าของ (feedback: Shotgun สู้บอสยาก): เม็ด Shotgun แรงขึ้น 25% (เดิม ×0.45 ต่อเม็ด) */
 const SG_PELLET_MUL=0.45*1.25;
+const SG_BOSS_FULL_PELLETS=6;   // v8.2.76 เม็ดที่เกินนี้ในนัดเดียวโดนบอสตัวเดิม = ครึ่งแรง
 /* v8.2.40 คำอธิบายป้ายระหว่างเล่น: มี — ใช้ท่อนหลัง (สิ่งที่ต้องทำ) · ไม่งั้นเก็บทีละท่อน (แยกด้วย — · ;) จนยาวไม่เกิน BANNER_LINE_MAX ตัวอักษร · ท่อนแรกยาวเกินตัดด้วย … */
 const BANNER_LINE_MAX=58;
 function bannerLine(sub){ const t=String(sub||'').replace(/\s*\([^)]*\)/g,'').replace(/\s+/g,' ').trim(); if(t.length<=BANNER_LINE_MAX)return t;
@@ -21394,7 +21396,7 @@ class Game extends Phaser.Scene {
         b.headshot=0;b.bigMul=0;b.closeMul=0;b.bounceGain=0;b.seedPierce=!!b.pierce;b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b.loopT=false;b._ptSniper=false;
         if(path==='sniper'){this.attachChargedSeed(b,38+lvl*2);b.dmg*=3.2;b.pierce=true;b.seedPierce=true;b.hitGapV=0.22;b.headshot=0.07*(R.headshot||0);b.bigMul=0.15*(R.deadeye||0);
           b.dmg*=1+(PT.sDmg||0);b.headshot+=PT.hs||0;b.bigMul+=PT.big||0;b.penGain=PT.pen||0;b.oneShot=!!PT.oneShot;b._ptSniper=true; if(this._ptHsNext){b.forceHs=true;this._ptHsNext=false;} if(PT.ghillie&&(this._ptStill||0)>=1.5&&!this._ptGhUsed){b.dmg*=2;this._ptGhUsed=true;}}
-        else if(path==='shotgun'){b.dmg*=(typeof SG_PELLET_MUL!=='undefined'?SG_PELLET_MUL:.45);b.life=0.4;b.sgPellet=true;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
+        else if(path==='shotgun'){b.dmg*=(typeof SG_PELLET_MUL!=='undefined'?SG_PELLET_MUL:.45);b.life=0.4;b.sgPellet=true;b.sgBlast=this.time?.now||0;b.closeMul=0.40+0.15*(R.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb?60*PT.kb:0);b.dragon=!!PT.dragon;if(PT.slug&&shotIndex===Math.floor((shots-1)/2))b.dmg*=1+PT.slug;}
         else if(path==='ricochet'){b.dmg*=0.8;b.bounce+=2+(R.carom||0);b.bounceGain=0.08*(R.gather||0)+(PT.mom||0);b.dmg*=1+(PT.rDmg||0);if((PT.rDmg||0)>=0.119)b.bounce++;if(PT.pinball)b.bounce=Math.max(b.bounce,12);b.lastMul=PT.last||0;b.seekMul=1+(PT.seek||0);b.splitCh=PT.split||0;b.boomer2=!!PT.boomer;b.loopT=!!PT.loop;}   // v4.23 buff: ต้นเกมตี ~4→6 (×1.5 จาก 3.5+lvl*1.0)
         const distance=this.dist(t.x,t.y,this.player.x,this.player.y);
         const closeLarge=path==='shotgun'&&(t.isBoss||t.isMini||t.isElite)&&distance<430;
@@ -22189,7 +22191,7 @@ class Game extends Phaser.Scene {
       b.seedPop=0;b.pierce=false;b.bounce=(basic.mutation==='ricochet'?2:0)+(this.player.gearBounce||0);b.bounceGain=0;b.seekMul=1;
       const meta=b.berrySeed;meta.path=path;meta.evolved=!!basic.evolved;
       if(path==='shotgun'){
-        b.dmg*=(typeof SG_PELLET_MUL!=='undefined'?SG_PELLET_MUL:.45)*(basic.evolved?1.35:1);b.life=.3;b.sgPellet=true;b.closeMul=.4+.15*(basic.ranks.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb||0)*60;b.dragon=!!PT.dragon;
+        b.dmg*=(typeof SG_PELLET_MUL!=='undefined'?SG_PELLET_MUL:.45)*(basic.evolved?1.35:1);b.life=.3;b.sgPellet=true;b.sgBlast=this.time?.now||0;b.closeMul=.4+.15*(basic.ranks.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb||0)*60;b.dragon=!!PT.dragon;
         if(idx===Math.floor((shots-1)/2)){b.dmg*=1+.6*(basic.lv.s_slug||0)+(basic.evolved?.6:0)+(PT.slug||0);if(basic.evolved||basic.lv.s_slug)this.attachChargedSeed(b,30);}
         meta.nearBonus=basic.evolved?1.2:1;
       }else if(path==='ricochet'){
@@ -23116,8 +23118,10 @@ class Game extends Phaser.Scene {
     if(b.penGain&&b.hitTargets)d*=1+b.penGain*Math.max(0,b.berrySeed?b.hitTargets.size:b.hitTargets.size-1);
     if(b.forceHs||(b.headshot&&Math.random()<b.headshot)){b.forceHs=false;d*=2.5;if(b.oneShot){if(e.isBoss||e.isMini)d*=1.6;else d=Math.max(d,e.hp+1);}this.popDmg('HEADSHOT',e.x,e.y-18,true);}
     const _pd=this.player?this.dist(e.x,e.y,this.player.x,this.player.y):999;
-    if(b.sgPellet){ d*=_pd<120?2*(1+b.closeMul):_pd<200?1+b.closeMul:_pd>260?0.6:1; }   // v6.55.62 ลูกซอง: ใกล้แรงมาก ไกลอ่อน
+    const sgBig=b.sgPellet&&(e.isBoss||e.isMini);
+    if(b.sgPellet){ d*=_pd<120?(sgBig?1+b.closeMul:2*(1+b.closeMul)):_pd<200?1+b.closeMul:_pd>260?0.6:1; }   /* v8.2.76 เจ้าของ: แนบบอสแล้วละลาย → บอส/มินิบอสไม่ได้ ×2 ในระยะ 120 */   // v6.55.62 ลูกซอง: ใกล้แรงมาก ไกลอ่อน
     else if(b.closeMul&&_pd<170)d*=1+b.closeMul;
+    if(sgBig){ if(e._sgBlast!==b.sgBlast){e._sgBlast=b.sgBlast;e._sgN=0;} if(++e._sgN>(typeof SG_BOSS_FULL_PELLETS!=='undefined'?SG_BOSS_FULL_PELLETS:6))d*=.5; }   /* v8.2.76 เม็ดที่ 7+ ในนัดเดียวกันโดนบอสตัวเดิม = ครึ่งแรง */
     if(b.cqMul&&_pd<120)d*=1+b.cqMul;
     if(b.dragon)this.infusionOnHit(e,d,'spicy');
     if(b.lastMul&&(b.bounce||0)===0&&b._bounced)d*=1+b.lastMul;
