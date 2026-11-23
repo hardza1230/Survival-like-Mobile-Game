@@ -1,0 +1,22 @@
+[
+  {
+    "key": "bpx_taro_sentry_idle",
+    "prompt": "Expand the attached four-frame Mochi Mayhem sprite to EIGHT authored poses using identical painted design, colors and proportions. same compact purple crystal sentry on round gold trimmed base; stationary base, tiny diamond glints and very small purple arcs breathe in a seamless loop. Exactly 4 columns by 2 rows of equal square cells on a landscape transparent RGBA canvas. Row-major chronological order. All cells have 12% transparent padding. Same camera and object size, fixed baseline and center. Keep game candy/anime colored outline style, soft clean highlights. Tiny changes between poses, preserve silhouette, no background, no shadow, no labels/numbers/grid/watermarks or broad fog. Each of eight poses must be distinct and fully contained.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-04ce76a3-9e0e-4ccd-8af9-1873ad6b928b.png"
+  },
+  {
+    "key": "bpx_taro_sentry_fire",
+    "prompt": "Expand the attached four-frame Mochi Mayhem sprite to EIGHT authored poses using identical painted design, colors and proportions. same purple crystal sentry: anticipation glow, brightening crystal, tiny gold-white flash at tip, peak flare, glow recedes, crystal recovers and returns to neutral. One-shot attack, no detached projectile. Exactly 4 columns by 2 rows of equal square cells on a landscape transparent RGBA canvas. Row-major chronological order. All cells have 12% transparent padding. Same camera and object size, fixed baseline and center. Keep game candy/anime colored outline style, soft clean highlights. Tiny changes between poses, preserve silhouette, no background, no shadow, no labels/numbers/grid/watermarks or broad fog. Each of eight poses must be distinct and fully contained.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-e4b885f7-def4-49a5-a38e-6f4db125fcc7.png"
+  },
+  {
+    "key": "bpx_taro_beacon_idle",
+    "prompt": "Expand the attached four-frame Mochi Mayhem sprite to EIGHT authored poses using identical painted design, colors and proportions. same tall slender magical beacon tower with purple crystal and floating gold diamond crown, keep base and tower fixed, gold halo tips and small particles rotate very slightly in a seamless loop. Exactly 4 columns by 2 rows of equal square cells on a landscape transparent RGBA canvas. Row-major chronological order. All cells have 12% transparent padding. Same camera and object size, fixed baseline and center. Keep game candy/anime colored outline style, soft clean highlights. Tiny changes between poses, preserve silhouette, no background, no shadow, no labels/numbers/grid/watermarks or broad fog. Each of eight poses must be distinct and fully contained.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-57c21df8-64da-4fe4-adf5-5f7a7ebbe087.png"
+  },
+  {
+    "key": "bpx_taro_overcharge",
+    "prompt": "Expand the attached four-frame Mochi Mayhem sprite to EIGHT authored poses using identical painted design, colors and proportions. same restrained gold overcharge ring and three outlined vertical arc tips; hollow transparent center and no character, ring stays the same size and position, electrical arcs breathe subtly in seamless loop. Exactly 4 columns by 2 rows of equal square cells on a landscape transparent RGBA canvas. Row-major chronological order. All cells have 12% transparent padding. Same camera and object size, fixed baseline and center. Keep game candy/anime colored outline style, soft clean highlights. Tiny changes between poses, preserve silhouette, no background, no shadow, no labels/numbers/grid/watermarks or broad fog. Each of eight poses must be distinct and fully contained.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-ebe3f399-d4ce-4fdb-904f-d61dfc73df9a.png"
+  }
+]

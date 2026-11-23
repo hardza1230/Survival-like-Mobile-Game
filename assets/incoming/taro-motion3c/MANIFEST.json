@@ -1,0 +1,62 @@
+[
+  {
+    "key": "bpx_taro_sentry_idle",
+    "file": "bpx_taro_sentry_idle.png",
+    "bytes": 181234,
+    "sha256": "2718f4f70318752a9849dbda8d78c5b41efee769c8dda523e516c5b214581188",
+    "width": 512,
+    "height": 256,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "rate": 16,
+    "loop": true,
+    "background": "transparent"
+  },
+  {
+    "key": "bpx_taro_sentry_fire",
+    "file": "bpx_taro_sentry_fire.png",
+    "bytes": 162726,
+    "sha256": "5551b5f37343eef1e255ada365e630d773254b41e1b3e945c4a9a910f6393123",
+    "width": 512,
+    "height": 256,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "rate": 32,
+    "loop": false,
+    "background": "transparent"
+  },
+  {
+    "key": "bpx_taro_beacon_idle",
+    "file": "bpx_taro_beacon_idle.png",
+    "bytes": 120745,
+    "sha256": "272d898b7f6b6a6adc4734179b9143d7db626aa0372d2bb26b462c81ea890e10",
+    "width": 512,
+    "height": 256,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "rate": 16,
+    "loop": true,
+    "background": "transparent"
+  },
+  {
+    "key": "bpx_taro_overcharge",
+    "file": "bpx_taro_overcharge.png",
+    "bytes": 137245,
+    "sha256": "5f689eeec80076ddf4795140b9c64269c56c9df745cd14479de85136e76de089",
+    "width": 512,
+    "height": 256,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "rate": 20,
+    "loop": true,
+    "background": "transparent"
+  }
+]

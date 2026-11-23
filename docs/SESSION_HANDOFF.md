@@ -1,3 +1,7 @@
+# Current checkpoint — Taro phase 3C1 (2026-11-23)
+
+Candidate v8.2.73 from 5edf621f on integration/animation-taro3c. Four active eight-frame Taro loops/actions, unchanged cadence, source/runtime taro-motion3c, explicit boot deferral and reproducible packer. Remaining hero batches and active Yuzu outlined effects remain in the roadmap. Verify Pages/live version; owner phone review pending.
+
 # Current checkpoint — Yuzu phase 3B1 (2026-11-23)
 
 Candidate v8.2.72 from 986fecd8 on integration/animation-phase3b. Four effect sheets, 40 frames, source/runtime yuzu-motion3b. Shield/Infusion loops 8, fallback slam/rain 12. Existing outlined skill takes precedence. Read dynamic frame count, preserve duration and support reduced motion. Next: phase 3B2 active outlined Yuzu effects and minion shots. Verify deploy/live version and phone review.
