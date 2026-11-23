@@ -1,6 +1,6 @@
 const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
-const source=fs.readFileSync('game.js','utf8');
+const source=require('./lib/motion-legacy.cjs')(fs.readFileSync('game.js','utf8'));
 function method(n){const at=source.indexOf('  '+n+'('),tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next,n);return source.slice(at,at+1+next.index);}
 const start=source.indexOf('const ASSET_SHEETS ='),end=source.indexOf('\n};',start)+3;
 const defs=vm.runInNewContext(source.slice(start,end)+'\nASSET_SHEETS');

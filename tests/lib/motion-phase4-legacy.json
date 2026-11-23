@@ -1,0 +1,214 @@
+[
+[
+"const BOSS_BODY816_MAP={\"boss1\":{\"key\":\"boss_ink816_boss1\",\"stage\":0,\"oldFrame\":160,\"frames\":18},\"boss2\":{\"key\":\"boss_ink816_boss2\",\"stage\":1,\"oldFrame\":256,\"frames\":18},\"boss3\":{\"key\":\"boss_ink816_boss3\",\"stage\":2,\"oldFrame\":256,\"frames\":18},\"boss4\":{\"key\":\"boss_ink816_boss4\",\"stage\":3,\"oldFrame\":256,\"frames\":18},\"boss5_sovereign\":{\"key\":\"boss_ink816_boss5_sovereign\",\"stage\":4,\"oldFrame\":256,\"frames\":18},\"boss6_rootmother\":{\"key\":\"boss_ink816_boss6_rootmother\",\"stage\":5,\"oldFrame\":256,\"frames\":18},\"boss7_mycelium_behemoth\":{\"key\":\"boss_ink816_boss7_mycelium_behemoth\",\"stage\":6,\"oldFrame\":256,\"frames\":18},\"boss8_hornet_queen\":{\"key\":\"boss_ink816_boss8_hornet_queen\",\"stage\":7,\"oldFrame\":256,\"frames\":18},\"boss9_chronobloom_orchid\":{\"key\":\"boss_ink816_boss9_chronobloom_orchid\",\"stage\":8,\"oldFrame\":256,\"frames\":18},\"boss10_true_rootmother\":{\"key\":\"boss_ink816_boss10_true_rootmother\",\"stage\":9,\"oldFrame\":256,\"frames\":18},\"c3_boss1\":{\"key\":\"boss_ink816_c3_boss1\",\"stage\":10,\"oldFrame\":256,\"frames\":18},\"c3_boss2\":{\"key\":\"boss_ink816_c3_boss2\",\"stage\":11,\"oldFrame\":256,\"frames\":18},\"c3_boss3\":{\"key\":\"boss_ink816_c3_boss3\",\"stage\":12,\"oldFrame\":256,\"frames\":18},\"c3_boss4\":{\"key\":\"boss_ink816_c3_boss4\",\"stage\":13,\"oldFrame\":256,\"frames\":18},\"c3_boss5\":{\"key\":\"boss_ink816_c3_boss5\",\"stage\":14,\"oldFrame\":256,\"frames\":18},\"boss_pinnacle\":{\"key\":\"boss_ink816_boss_pinnacle\",\"stage\":14,\"oldFrame\":256,\"frames\":18},\"c3_mini1\":{\"key\":\"boss_ink816_c3_mini1\",\"stage\":10,\"oldFrame\":256,\"frames\":12},\"c3_mini2\":{\"key\":\"boss_ink816_c3_mini2\",\"stage\":11,\"oldFrame\":256,\"frames\":12},\"c3_mini3\":{\"key\":\"boss_ink816_c3_mini3\",\"stage\":12,\"oldFrame\":256,\"frames\":12},\"c3_mini4\":{\"key\":\"boss_ink816_c3_mini4\",\"stage\":13,\"oldFrame\":256,\"frames\":12},\"c3_mini5\":{\"key\":\"boss_ink816_c3_mini5\",\"stage\":14,\"oldFrame\":256,\"frames\":24,\"phaseStride\":12},\"mb1\":{\"key\":\"boss_ink816_mb1\",\"stage\":0,\"oldFrame\":160,\"frames\":12},\"mb2\":{\"key\":\"boss_ink816_mb2\",\"stage\":1,\"oldFrame\":192,\"frames\":12},\"mb3\":{\"key\":\"boss_ink816_mb3\",\"stage\":2,\"oldFrame\":140,\"frames\":12},\"mb4\":{\"key\":\"boss_ink816_mb4\",\"stage\":3,\"oldFrame\":140,\"frames\":12},\"mb5_banquet_executioner\":{\"idle8\":[12,13,14,15,16,17,18,19],\"key\":\"boss_ink816_mb5_banquet_executioner\",\"stage\":4,\"oldFrame\":256,\"frames\":12},\"mb6_sporewarden\":{\"key\":\"boss_ink816_mb6_sporewarden\",\"stage\":5,\"oldFrame\":256,\"frames\":12},\"mb7_fungal_juggernaut\":{\"idle8\":[12,13,14,15,16,17,18,19],\"key\":\"boss_ink816_mb7_fungal_juggernaut\",\"stage\":6,\"oldFrame\":256,\"frames\":12},\"mb8_royal_stinger\":{\"idle8\":[12,13,14,15,16,17,18,19],\"key\":\"boss_ink816_mb8_royal_stinger\",\"stage\":7,\"oldFrame\":256,\"frames\":12},\"mb9_season_keeper\":{\"idle8\":[12,13,14,15,16,17,18,19],\"key\":\"boss_ink816_mb9_season_keeper\",\"stage\":8,\"oldFrame\":256,\"frames\":12}};",
+"const BOSS_BODY816_MAP={\"boss1\":{\"key\":\"boss_ink816_boss1\",\"stage\":0,\"oldFrame\":160,\"frames\":18},\"boss2\":{\"key\":\"boss_ink816_boss2\",\"stage\":1,\"oldFrame\":256,\"frames\":18},\"boss3\":{\"key\":\"boss_ink816_boss3\",\"stage\":2,\"oldFrame\":256,\"frames\":18},\"boss4\":{\"key\":\"boss_ink816_boss4\",\"stage\":3,\"oldFrame\":256,\"frames\":18},\"boss5_sovereign\":{\"key\":\"boss_ink816_boss5_sovereign\",\"stage\":4,\"oldFrame\":256,\"frames\":18},\"boss6_rootmother\":{\"key\":\"boss_ink816_boss6_rootmother\",\"stage\":5,\"oldFrame\":256,\"frames\":18},\"boss7_mycelium_behemoth\":{\"key\":\"boss_ink816_boss7_mycelium_behemoth\",\"stage\":6,\"oldFrame\":256,\"frames\":18},\"boss8_hornet_queen\":{\"key\":\"boss_ink816_boss8_hornet_queen\",\"stage\":7,\"oldFrame\":256,\"frames\":18},\"boss9_chronobloom_orchid\":{\"key\":\"boss_ink816_boss9_chronobloom_orchid\",\"stage\":8,\"oldFrame\":256,\"frames\":18},\"boss10_true_rootmother\":{\"key\":\"boss_ink816_boss10_true_rootmother\",\"stage\":9,\"oldFrame\":256,\"frames\":18},\"c3_boss1\":{\"key\":\"boss_ink816_c3_boss1\",\"stage\":10,\"oldFrame\":256,\"frames\":18},\"c3_boss2\":{\"key\":\"boss_ink816_c3_boss2\",\"stage\":11,\"oldFrame\":256,\"frames\":18},\"c3_boss3\":{\"key\":\"boss_ink816_c3_boss3\",\"stage\":12,\"oldFrame\":256,\"frames\":18},\"c3_boss4\":{\"key\":\"boss_ink816_c3_boss4\",\"stage\":13,\"oldFrame\":256,\"frames\":18},\"c3_boss5\":{\"key\":\"boss_ink816_c3_boss5\",\"stage\":14,\"oldFrame\":256,\"frames\":18},\"boss_pinnacle\":{\"key\":\"boss_ink816_boss_pinnacle\",\"stage\":14,\"oldFrame\":256,\"frames\":18},\"c3_mini1\":{\"key\":\"boss_ink816_c3_mini1\",\"stage\":10,\"oldFrame\":256,\"frames\":12},\"c3_mini2\":{\"key\":\"boss_ink816_c3_mini2\",\"stage\":11,\"oldFrame\":256,\"frames\":12},\"c3_mini3\":{\"key\":\"boss_ink816_c3_mini3\",\"stage\":12,\"oldFrame\":256,\"frames\":12},\"c3_mini4\":{\"key\":\"boss_ink816_c3_mini4\",\"stage\":13,\"oldFrame\":256,\"frames\":12},\"c3_mini5\":{\"key\":\"boss_ink816_c3_mini5\",\"stage\":14,\"oldFrame\":256,\"frames\":24,\"phaseStride\":12},\"mb1\":{\"key\":\"boss_ink816_mb1\",\"stage\":0,\"oldFrame\":160,\"frames\":12},\"mb2\":{\"key\":\"boss_ink816_mb2\",\"stage\":1,\"oldFrame\":192,\"frames\":12},\"mb3\":{\"key\":\"boss_ink816_mb3\",\"stage\":2,\"oldFrame\":140,\"frames\":12},\"mb4\":{\"key\":\"boss_ink816_mb4\",\"stage\":3,\"oldFrame\":140,\"frames\":12},\"mb5_banquet_executioner\":{\"key\":\"boss_ink816_mb5_banquet_executioner\",\"stage\":4,\"oldFrame\":256,\"frames\":12},\"mb6_sporewarden\":{\"key\":\"boss_ink816_mb6_sporewarden\",\"stage\":5,\"oldFrame\":256,\"frames\":12},\"mb7_fungal_juggernaut\":{\"key\":\"boss_ink816_mb7_fungal_juggernaut\",\"stage\":6,\"oldFrame\":256,\"frames\":12},\"mb8_royal_stinger\":{\"key\":\"boss_ink816_mb8_royal_stinger\",\"stage\":7,\"oldFrame\":256,\"frames\":12},\"mb9_season_keeper\":{\"key\":\"boss_ink816_mb9_season_keeper\",\"stage\":8,\"oldFrame\":256,\"frames\":12}};"
+],
+[
+"  boss_ink816_mb5_banquet_executioner:{url:'assets/art/motion-phase4/boss_body818__boss_ink816_mb5_banquet_executioner.webp',frame:256},",
+"  boss_ink816_mb5_banquet_executioner:{url:'assets/art/boss_body818/boss_ink816_mb5_banquet_executioner.webp',frame:256},"
+],
+[
+"  boss_ink816_mb7_fungal_juggernaut:{url:'assets/art/motion-phase4/boss_body818__boss_ink816_mb7_fungal_juggernaut.webp',frame:256},",
+"  boss_ink816_mb7_fungal_juggernaut:{url:'assets/art/boss_body818/boss_ink816_mb7_fungal_juggernaut.webp',frame:256},"
+],
+[
+"  boss_ink816_mb8_royal_stinger:{url:'assets/art/motion-phase4/boss_body818__boss_ink816_mb8_royal_stinger.webp',frame:256},",
+"  boss_ink816_mb8_royal_stinger:{url:'assets/art/boss_body818/boss_ink816_mb8_royal_stinger.webp',frame:256},"
+],
+[
+"  boss_ink816_mb9_season_keeper:{url:'assets/art/motion-phase4/boss_body818__boss_ink816_mb9_season_keeper.webp',frame:256},",
+"  boss_ink816_mb9_season_keeper:{url:'assets/art/boss_body818/boss_ink816_mb9_season_keeper.webp',frame:256},"
+],
+[
+"  e_void_crumb_animated:{url:'assets/art/motion-phase4/monster_batch6__s5_void_crumb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_void_crumb_animated:{url:'assets/art/monster_batch6/s5_void_crumb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_maw_truffle_animated:{url:'assets/art/motion-phase4/monster_batch6__s5_maw_truffle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24},windup:{frames:[16,17,18,19,20,21,22,23],rate:20}}},",
+"  e_maw_truffle_animated:{url:'assets/art/monster_batch6/s5_maw_truffle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},"
+],
+[
+"  e_royal_oven_sentinel_animated:{url:'assets/art/motion-phase4/monster_batch6__s5_royal_oven_sentinel_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_royal_oven_sentinel_animated:{url:'assets/art/monster_batch6/s5_royal_oven_sentinel_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c3_e_basic_animated:{url:'assets/art/motion-phase4/monster_batch6__c3_basic_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c3_e_basic_animated:{url:'assets/art/monster_batch6/c3_basic_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c3_e_bomber_animated:{url:'assets/art/motion-phase4/monster_batch6__c3_bomber_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24},windup:{frames:[16,17,18,19,20,21,22,23],rate:20}}},",
+"  c3_e_bomber_animated:{url:'assets/art/monster_batch6/c3_bomber_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},"
+],
+[
+"  c3_e_tank_animated:{url:'assets/art/motion-phase4/monster_batch6__c3_tank_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c3_e_tank_animated:{url:'assets/art/monster_batch6/c3_tank_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_ice_wisp_animated:{url:'assets/art/motion-phase4/ch1_ice__wisp_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_ice_wisp_animated:{url:'assets/art/ch1_ice/wisp_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_ice_bomber_animated:{url:'assets/art/motion-phase4/ch1_ice__bomber_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24},windup:{frames:[16,17,18,19,20,21,22,23],rate:20}}},",
+"  e_ice_bomber_animated:{url:'assets/art/ch1_ice/bomber_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},"
+],
+[
+"  e_ice_guardian_animated:{url:'assets/art/motion-phase4/ch1_ice__guardian_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_ice_guardian_animated:{url:'assets/art/ch1_ice/guardian_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_fire_ember_animated:{url:'assets/art/motion-phase4/ch1_fire__ember_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_fire_ember_animated:{url:'assets/art/ch1_fire/ember_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_fire_bomber_animated:{url:'assets/art/motion-phase4/ch1_fire__bomber_sheet.webp',frame:128,facingLeft:true,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24},windup:{frames:[16,17,18,19,20,21,22,23],rate:20}}},",
+"  e_fire_bomber_animated:{url:'assets/art/ch1_fire/bomber_sheet.webp',frame:128,facingLeft:true,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},"
+],
+[
+"  e_fire_golem_animated:{url:'assets/art/motion-phase4/ch1_fire__golem_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_fire_golem_animated:{url:'assets/art/ch1_fire/golem_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_drain_slime_animated:{url:'assets/art/motion-phase4/ch1_drain__slime_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_drain_slime_animated:{url:'assets/art/ch1_drain/slime_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_drain_bomber_animated:{url:'assets/art/motion-phase4/ch1_drain__bomber_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24},windup:{frames:[16,17,18,19,20,21,22,23],rate:20}}},",
+"  e_drain_bomber_animated:{url:'assets/art/ch1_drain/bomber_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},"
+],
+[
+"  e_drain_tank_animated:{url:'assets/art/motion-phase4/ch1_drain__tank_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_drain_tank_animated:{url:'assets/art/ch1_drain/tank_sheet.webp',frame:128,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_ant_worker_animated:{url:'assets/art/motion-phase4/ch1_ants__worker_sheet.webp',frame:96,facingLeft:true,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_ant_worker_animated:{url:'assets/art/ch1_ants/worker_sheet.webp',frame:96,facingLeft:true,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_ant_soldier_animated:{url:'assets/art/motion-phase4/ch1_ants__soldier_sheet.webp',frame:96,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  e_ant_soldier_animated:{url:'assets/art/ch1_ants/soldier_sheet.webp',frame:96,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  e_acid_animated:{url:'assets/art/motion-phase4/ch1_ants__acid_sheet.webp',frame:96,facingLeft:false,anim:{start:16,frames:8,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:8}}},",
+"  e_acid_animated:{url:'assets/art/ch1_ants/acid_sheet.webp',frame:96,facingLeft:false,anim:{frames:6,rate:9},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:8}}},"
+],
+[
+"  c21_sprout_animated:{url:'assets/art/motion-phase4/ch2_canopy__c21_sprout_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c21_sprout_animated:{url:'assets/art/ch2_canopy/c21_sprout_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c21_fruit_pod_animated:{url:'assets/art/motion-phase4/ch2_canopy__c21_fruit_pod_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24},windup:{frames:[16,17,18,19,20,21,22,23],rate:20}}},",
+"  c21_fruit_pod_animated:{url:'assets/art/ch2_canopy/c21_fruit_pod_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},"
+],
+[
+"  c21_root_beetle_animated:{url:'assets/art/motion-phase4/ch2_canopy__c21_root_beetle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c21_root_beetle_animated:{url:'assets/art/ch2_canopy/c21_root_beetle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c21_thorn_oracle_animated:{url:'assets/art/motion-phase4/ch2_canopy__c21_thorn_oracle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c21_thorn_oracle_animated:{url:'assets/art/ch2_canopy/c21_thorn_oracle_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c22_drifter_animated:{url:'assets/art/motion-phase4/ch2_mycelium__c22_drifter_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c22_drifter_animated:{url:'assets/art/ch2_mycelium/c22_drifter_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c22_mold_sac_animated:{url:'assets/art/motion-phase4/ch2_mycelium__c22_mold_sac_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[16,17,18,19,20,21,22,23],rate:20},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c22_mold_sac_animated:{url:'assets/art/ch2_mycelium/c22_mold_sac_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9,10,11],rate:10},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c22_bulwark_animated:{url:'assets/art/motion-phase4/ch2_mycelium__c22_bulwark_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c22_bulwark_animated:{url:'assets/art/ch2_mycelium/c22_bulwark_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c22_sporeling_animated:{url:'assets/art/motion-phase4/ch2_mycelium__c22_sporeling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c22_sporeling_animated:{url:'assets/art/ch2_mycelium/c22_sporeling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c21_crown_sapling_animated:{url:'assets/art/motion-phase4/elite_summons__c21_crown_sapling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c21_crown_sapling_animated:{url:'assets/art/elite_summons/c21_crown_sapling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  mini_jelly_animated:{url:'assets/art/motion-phase4/elite_summons__mini_jelly_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  mini_jelly_animated:{url:'assets/art/elite_summons/mini_jelly_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c3_elite_animated:{url:'assets/art/motion-phase4/elite_summons__c3_elite_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c3_elite_animated:{url:'assets/art/elite_summons/c3_elite_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  feast_target_animated:{url:'assets/art/motion-phase4/elite_summons__feast_target_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},flee:{frames:[16,17,18,19,20,21,22,23],rate:28,repeat:-1}}},",
+"  feast_target_animated:{url:'assets/art/elite_summons/feast_target_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},flee:{frames:[8,9,10,11],rate:14,repeat:-1}}},"
+],
+[
+"  mimic_chest_animated:{url:'assets/art/motion-phase4/elite_summons__mimic_chest_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  mimic_chest_animated:{url:'assets/art/elite_summons/mimic_chest_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c23_drone_animated:{url:'assets/art/motion-phase4/ch2_nectar__c23_drone_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c23_drone_animated:{url:'assets/art/ch2_nectar/c23_drone_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c23_honey_bomb_animated:{url:'assets/art/motion-phase4/ch2_nectar__c23_honey_bomb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[16,17,18,19,20,21,22,23],rate:20},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c23_honey_bomb_animated:{url:'assets/art/ch2_nectar/c23_honey_bomb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9,10,11],rate:10},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c23_wax_guard_animated:{url:'assets/art/motion-phase4/ch2_nectar__c23_wax_guard_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c23_wax_guard_animated:{url:'assets/art/ch2_nectar/c23_wax_guard_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c23_grub_animated:{url:'assets/art/motion-phase4/ch2_nectar__c23_grub_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c23_grub_animated:{url:'assets/art/ch2_nectar/c23_grub_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c24_budling_animated:{url:'assets/art/motion-phase4/ch2_seasons__c24_budling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c24_budling_animated:{url:'assets/art/ch2_seasons/c24_budling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c24_sunscarab_animated:{url:'assets/art/motion-phase4/ch2_seasons__c24_sunscarab_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c24_sunscarab_animated:{url:'assets/art/ch2_seasons/c24_sunscarab_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c24_stormfruit_animated:{url:'assets/art/motion-phase4/ch2_seasons__c24_stormfruit_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[16,17,18,19,20,21,22,23],rate:20},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c24_stormfruit_animated:{url:'assets/art/ch2_seasons/c24_stormfruit_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9,10,11],rate:10},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c25_rootling_animated:{url:'assets/art/motion-phase4/ch2_root__c25_rootling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c25_rootling_animated:{url:'assets/art/ch2_root/c25_rootling_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c25_thorn_charger_animated:{url:'assets/art/motion-phase4/ch2_root__c25_thorn_charger_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c25_thorn_charger_animated:{url:'assets/art/ch2_root/c25_thorn_charger_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c25_seed_bomb_animated:{url:'assets/art/motion-phase4/ch2_root__c25_seed_bomb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[16,17,18,19,20,21,22,23],rate:20},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c25_seed_bomb_animated:{url:'assets/art/ch2_root/c25_seed_bomb_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9,10,11],rate:10},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  c25_bark_guard_animated:{url:'assets/art/motion-phase4/ch2_root__c25_bark_guard_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},",
+"  c25_bark_guard_animated:{url:'assets/art/ch2_root/c25_bark_guard_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},"
+],
+[
+"  mb10_ancient_root_knight:{ url:'assets/art/motion-phase4/assets__mb10_ancient_root_knight_sheet.webp', frame:256, anim:{start:24,frames:8,rate:14} },",
+"  mb10_ancient_root_knight:{ url:'assets/mb10_ancient_root_knight_sheet.webp', frame:256, anim:{start:4,frames:4,rate:7} },"
+],
+[
+"  e_dasher:   { url:'assets/art/motion-phase4/assets__e_dasher_sheet.webp',   frame:88,  anim:{start:4,frames:8,rate:26} },  // มดวิ่ง 4 เฟรม",
+"  e_dasher:   { url:'assets/e_dasher_sheet.webp',   frame:88,  anim:{frames:4, rate:13} },  // มดวิ่ง 4 เฟรม"
+],
+[
+"  e_siege:    { url:'assets/art/motion-phase4/assets__e_siege_sheet.webp',    frame:110, anim:{start:4,frames:8,rate:14}  },  // ปืนคัพเค้ก idle/ยิง 4 เฟรม",
+"  e_siege:    { url:'assets/e_siege_sheet.webp',    frame:110, anim:{frames:4, rate:7}  },  // ปืนคัพเค้ก idle/ยิง 4 เฟรม"
+],
+[
+"  const defs={idle:{frames:[16,17,18,19,20,21,22,23],rate:8,repeat:-1},cleave:{frames:[32,33,34,35,36,37,38,39,40,41,42,43],rate:12,repeat:0},bastion:{frames:[12,13],rate:4,repeat:-1,yoyo:true},oath:{frames:[12,14],rate:3,repeat:0},charge:{frames:[24,25,26,27,28,29,30,31],rate:24,repeat:-1}};   /* v8.2.75 เฟส 5B: 8/12 เฟรม ต่อท้ายชีต · เวลาเท่าเดิม */",
+"  const defs={idle:{frames:[0,1,2,3],rate:4,repeat:-1},cleave:{frames:[8,9,10,11],rate:4,repeat:0},bastion:{frames:[12,13],rate:4,repeat:-1,yoyo:true},oath:{frames:[12,14],rate:3,repeat:0},charge:{frames:[4,5,6,7],rate:12,repeat:-1}};"
+],
+[
+"  bossInkClips(fd){const c=fd.frames===18?{idle:[0,1,2,3,4,5],wind:[6,7,8,9,10,11],strike:[12,13,14,15,16,17],recover:[14,15,16,17]}:{idle:[0,1,2,3,4,5],wind:[6,7,8],strike:[9,10,11],recover:[10,11]};if(fd.idle8)c.idle=fd.idle8;return c;}   /* v8.2.75 เฟส 5B: idle 8 เฟรม (ต่อท้ายชีต) */",
+"  bossInkClips(fd){return fd.frames===18?{idle:[0,1,2,3,4,5],wind:[6,7,8,9,10,11],strike:[12,13,14,15,16,17],recover:[14,15,16,17]}:{idle:[0,1,2,3,4,5],wind:[6,7,8],strike:[9,10,11],recover:[10,11]};}"
+],
+[
+"    m.clock+=dt;let f=still?2:clips.idle[Math.floor(m.clock*clips.idle.length)%clips.idle.length];   /* v8.2.75 รอบ idle 1 วิ เท่าเดิม (6 หรือ 8 เฟรม) */const p=m.pose;",
+"    m.clock+=dt;let f=still?2:clips.idle[Math.floor(m.clock*6)%clips.idle.length];const p=m.pose;"
+]
+]

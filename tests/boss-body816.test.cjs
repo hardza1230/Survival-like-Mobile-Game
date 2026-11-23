@@ -1,6 +1,6 @@
 const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Isolated production renderer/geometry contracts, no combat simulation or appearance assertions.
-const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{EventEmitter}=require('node:events'),src=fs.readFileSync('game.js','utf8');
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{EventEmitter}=require('node:events'),src=require('./lib/motion-legacy.cjs')(fs.readFileSync('game.js','utf8'));
 function method(n){const a=src.indexOf('  '+n+'(',src.indexOf('class Game extends')),m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(a+1));assert(a>=0&&m,n);return src.slice(a,a+1+m.index);}
 const at=src.indexOf('const ASSET_SHEETS = {'),ctx={Save:{data:{settings:{vfx:1}}},STAGE_SHEETS:Array.from({length:15},()=>[])};vm.createContext(ctx);vm.runInContext(src.match(/^const BOSS_BODY816_MAP=.*$/m)[0]+src.slice(at,src.indexOf('\n};',at)+3)+';this.MAP=BOSS_BODY816_MAP;this.SHEETS=ASSET_SHEETS;',ctx);
 vm.runInContext(src.match(/^for\(const d of Object.values\(BOSS_BODY816_MAP\)\).*$/m)[0],ctx);assert.equal(Object.keys(ctx.MAP).length,30);assert.equal(new Set(ctx.STAGE_SHEETS.flat()).size,30);assert(ctx.STAGE_SHEETS[0].includes('boss_ink816_boss1'));assert(ctx.STAGE_SHEETS[14].includes('boss_ink816_boss_pinnacle'));
