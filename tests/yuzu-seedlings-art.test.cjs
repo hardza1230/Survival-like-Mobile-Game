@@ -1,7 +1,7 @@
 const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Order56 art/owned presentation adapters only; no browser, battle loop or balance simulation.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
-const src=fs.readFileSync('game.js','utf8'),base='assets/incoming/yuzu_seedlings/',run='assets/art/yuzu_seedlings/';
+const src=require('./lib/motion-legacy.cjs')(fs.readFileSync('game.js','utf8')),base='assets/incoming/yuzu_seedlings/',run='assets/art/yuzu_seedlings/';
 const manifest=JSON.parse(fs.readFileSync(base+'MANIFEST.json')),runtime=JSON.parse(fs.readFileSync(run+'MANIFEST.json'));
 const sha=b=>P.h(b);
 assert.equal(manifest.length,9);assert.equal(runtime.length,9);
@@ -31,5 +31,5 @@ for(const fps of [30,60,120])for(const kind of ['bite','tank','throw','pop']){
 {const s=scene(),q=seed(s);s.hubMotionAllowed=()=>false;q.regrow=.13;s.yuzuSeedGrow(q,1);assert(!q.spr.visible);q.regrow=.1;s.yuzuSeedGrow(q,1);assert.equal(q.spr.frame,5,'reduced regrow is brief last still');Save.data.settings.vfx=0;s.yuzuSeedGrow(q,1);assert(!q.spr.visible);Save.data.settings.vfx=1;}
 for(const fps of [30,60,120]){const s=scene(),q=s.yuzuSkillFx('seedpop',0,0,44,0,{key:'yzs_pop',frames:6,life:.42}),seen=new Set([q.spr.frame]);for(let i=0;i<fps*.5;i++){s.yuzuTickSkillFx(1/fps);if(q.spr.active)seen.add(q.spr.frame);}assert.equal(seen.size,6);assert(!q.spr.active);assert.equal(s._yzShow.length,0);}
 {const s=scene();for(let i=0;i<12;i++)s.yuzuSkillFx('seedpop',0,0,44,0,{key:'yzs_pop',frames:6});assert.equal(s._yzShow.length,4,'shared4FXcap');s._artEpoch++;s.yuzuTickSkillFx(.01);assert.equal(s._yzShow.length,0);Save.data.settings.vfx=0;assert.equal(s.yuzuSkillFx('seedpop',0,0,44,0,{key:'yzs_pop',frames:6}),null);Save.data.settings.vfx=1;}
-{const s=scene();s.yuzuShot(null,0,0,0,12,{mini:true,source:'seedling',size:18,speed:420,life:1});const q=s._yzShots[0];assert.equal(q.spr.texture.key,'yzs_seed_shot');assert.equal(q.spr.w,18);assert.equal(q.spr.h,18);assert.equal(q.amount,12);assert.equal(q.speed,420);assert(q.mini);s.yuzuTickShots(.1);assert.equal(q.spr.frame,1);assert.equal(q.x,42);}
+{const s=scene();s.yuzuShot(null,0,0,0,12,{mini:true,source:'seedling',size:18,speed:420,life:1});const q=s._yzShots[0];assert.equal(q.spr.texture.key,'yzs_seed_shot');assert.equal(q.spr.w,18);assert.equal(q.spr.h,18);assert.equal(q.amount,12);assert.equal(q.speed,420);assert(q.mini);s.yuzuTickShots(.1);assert.equal(q.spr.frame,2,'v8.2.74 8 frames @24fps');assert.equal(q.x,42);}
 console.log('Order56:9exact/source-verified assets,4actors30/60/120FPS, movement/attack/recovery, pause/stale/missing-art/reduced/Low, legacyregrowart, immortalspawn/CD, shadow cleanup,6frameFX/shared4cap and18px seed shot passed');

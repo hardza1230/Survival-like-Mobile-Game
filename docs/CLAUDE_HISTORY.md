@@ -4669,3 +4669,7 @@ Phase 3A converts the four-frame hurt sheets for Cocoa, Yuzu, Mint, Taro, and Se
 - Base HP bonus +34 → +15 (Cocoa +46 stays the tank).
 - Blue Mantle card: damage reduction cap 45% → 25% (card text updated).
 - Shields, mist and blue-orb regen stay (blue's identity).
+
+# Delivery: v8.2.72 — Smoother Yuzu companion effects
+
+Four companion VFX atlases: Shield and Infusion 8-frame loops, fallback slam and rain 12-frame one-shots. Dynamic frame playback keeps existing lifetimes and supports reduced motion. Current outlined skill visuals keep priority. Combined with upstream v8.2.69–71 changes to Sesame and automatic mission starts. Source art and QA are in assets/incoming/yuzu-motion3b.

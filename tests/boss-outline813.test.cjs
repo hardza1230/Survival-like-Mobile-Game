@@ -1,6 +1,6 @@
 const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Isolated production visual/time/ownership adapters. No combat simulation or appearance assertions.
-const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{EventEmitter}=require('node:events'),src=fs.readFileSync('game.js','utf8');
+const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{EventEmitter}=require('node:events'),src=require('./lib/motion-legacy.cjs')(fs.readFileSync('game.js','utf8'));
 function method(n){const a=src.indexOf('  '+n+'(',src.indexOf('class Game extends')),m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(a+1));assert(a>=0&&m,n);return src.slice(a,a+1+m.index);}
 const Save={data:{settings:{vfx:1}}},ctx={Save,BOSS_SHOT:Array.from({length:15},()=>({c:0x99ddff})),STAGE_SHEETS:Array.from({length:15},()=>[])};vm.createContext(ctx);const at=src.indexOf('const ASSET_FX = {');vm.runInContext(src.match(/^const BOSS_OUTLINE813_MAP=.*$/m)[0]+src.match(/^const BOSS_OUTLINE814_MAP=.*$/m)[0]+src.match(/^const BOSS_OUTLINE815_MAP=.*$/m)[0]+src.match(/^const BATTLE_OUTLINE810_MAP=.*$/m)[0]+src.slice(at,src.indexOf('\n};',at)+3)+';this.FX=ASSET_FX;this.MAP=BOSS_OUTLINE813_MAP;',ctx);
 vm.runInContext(src.match(/^for\(const \[old,key\]of Object.entries\(BOSS_OUTLINE813_MAP\)\).*$/m)[0],ctx);assert.equal(Object.keys(ctx.MAP).length,32);assert.equal(new Set(ctx.STAGE_SHEETS.flat()).size,32);assert(ctx.STAGE_SHEETS.slice(5).every(a=>!a.length));

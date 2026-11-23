@@ -1,6 +1,6 @@
 const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Asset, visual ownership and event adapters only; no combat run or appearance judgement.
-const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict'),src=fs.readFileSync('game.js','utf8');
+const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict'),src=require('./lib/motion-legacy.cjs')(fs.readFileSync('game.js','utf8'));
 const manifest=JSON.parse(fs.readFileSync('assets/art/mint_outline819/MANIFEST.json')),incoming=JSON.parse(fs.readFileSync('assets/incoming/mint_outline819/MANIFEST.json')),qa=JSON.parse(fs.readFileSync('assets/incoming/mint_outline819/QA_REPORT.json'));
 const needle=JSON.parse(fs.readFileSync('assets/incoming/mint_needle821/MANIFEST.json'));for(const a of [needle.source,needle.runtime]){const bytes=fs.readFileSync(a.path);assert.equal(P.n(bytes),a.bytes);assert.equal(P.h(bytes),a.sha256);}assert.equal(needle.runtime.frames,6);assert.equal(needle.runtime.frameWidth,256);assert(src.includes("url:'"+needle.runtime.path+"'"));
 assert.equal(manifest.assets.length,8);for(const a of [...manifest.assets,...incoming.sources]){const b=fs.readFileSync(a.path);assert.equal(P.n(b),a.bytes);assert.equal(P.h(b),a.sha256);if(a.key){assert(src.includes("'"+a.path+"'"));assert.equal(a.frames,6);assert.equal(b.toString('ascii',0,4),'RIFF');}}

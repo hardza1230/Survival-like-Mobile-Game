@@ -1,6 +1,6 @@
 // v8.0.21 ใบ 48: กลไกสนามบอส C1–C2 · ไฟล์ตรง MANIFEST · โหลดตามด่าน (ไม่บูต) · ทุกจุดยังมีภาพเดิมสำรอง
 const fs=require('fs'),crypto=require('crypto'),assert=require('assert');
-const src=fs.readFileSync(__dirname+'/../game.js','utf8'),root=__dirname+'/../',M=JSON.parse(fs.readFileSync(root+'assets/incoming/boss_arena_c1_c2/MANIFEST.json','utf8'));
+const src=require('./lib/motion-legacy.cjs')(fs.readFileSync(__dirname+'/../game.js','utf8')),root=__dirname+'/../',M=JSON.parse(fs.readFileSync(root+'assets/incoming/boss_arena_c1_c2/MANIFEST.json','utf8'));
 assert.equal(M.length,12);
 for(const r of M){const b=fs.readFileSync(root+'assets/incoming/boss_arena_c1_c2/'+r.file);assert.equal(b.length,r.bytes,r.file);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),r.sha256,r.file);
   const dir=r.key.startsWith('arena_')?'counters':'boss_vfx',url='assets/art/'+dir+'/'+r.key+'.webp',w=fs.readFileSync(root+url);assert.equal(w.slice(0,4).toString(),'RIFF');assert.equal(w.slice(8,12).toString(),'WEBP');

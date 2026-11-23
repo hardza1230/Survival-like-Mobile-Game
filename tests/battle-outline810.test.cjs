@@ -1,6 +1,6 @@
 const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Production visual/event adapters only. No combat simulation or appearance assertions.
-const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{EventEmitter}=require('node:events'),src=fs.readFileSync('game.js','utf8');
+const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{EventEmitter}=require('node:events'),src=require('./lib/motion-legacy.cjs')(fs.readFileSync('game.js','utf8'));
 function method(n){const a=src.indexOf('  '+n+'(',src.indexOf('class Game extends')),m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(a+1));assert(a>=0,n);return src.slice(a,m?a+1+m.index:src.indexOf('\n}',a));}
 const fd=src.slice(src.indexOf('const ASSET_FX = {'),src.indexOf('\n};',src.indexOf('const ASSET_FX = {'))+3),Save={data:{settings:{vfx:1}}},ctx={Save};vm.createContext(ctx);vm.runInContext(src.match(/^const BATTLE_OUTLINE810_MAP=.*$/m)[0]+fd+';this.fx=ASSET_FX;',ctx);
 const C=vm.runInContext('(class{'+['battleOutlineKey','battleOutlineTrack','battleOutlineFrame','tickBattleOutlineFx','clearBattleOutline','heroFx','bpFx','attachProjectileAnim','momoOutlineSeed','attachChargedSeed','yuzuOutlineKey','yuzuSkillFx','yuzuTickSkillFx','yuzuShot','yuzuMinionStrike'].map(method).join('\n')+'\n})',ctx);
