@@ -135,3 +135,7 @@ When interleaving new drawings with old WebP endpoint cells, copy full RGBA cell
 ### Liquid UI feedback (8.1.20)
 
 Use exponential interpolation from elapsed clock time for FPS-independent fluid/trail movement. Test sustained damage as well as one isolated hit: resetting a trail hold timer on every hit can leave a white full bar indefinitely. Start a new hold only when the previous trail has caught up; healing must not show a damage trail. Reset liquid state on actor/spawn replacement. Verify actual font bounds inside the tube, not only intended font size; source art previews are separate from production UI geometry contracts.
+
+### Recovering deleted ImageGen job metadata (verified 2026-11-24)
+
+After the owner deleted the E: checkout, native PNGs survived under the Codex generated_images folder. The same chat rollout contained item_completed records with item.kind=image_gen.generation, savedPath, inputImages path/SHA256, revisedPrompt and generationId. Match the reference filename to the worklist, rebuild references from the pinned source branch and require their SHA256 to match before recovering a job. This restored twenty phase5C outputs without regeneration. Read only relevant artifact records and keep unrelated chat data out of deliveries. A clean older C: partial clone was fetched to the published source branch; sparse-checkout add materialized the needed artwork and delivery folder. Clone/drive availability should be checked, not assumed across restarts.
