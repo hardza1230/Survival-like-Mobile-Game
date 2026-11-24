@@ -24,7 +24,7 @@
 | `A16_RUBY_MISSIONS_SFX.md` | Ruby changed mission tips and reactions 12 + mission SFX 10 | 22 | 🟢 ผูกแล้ว v8.2.24 · รอฟังบนมือถือ |
 | `A18_RUBY_EVENTS_ATLAS_SFX.md` | Ruby new events8 + reroll/golden/Double Clear/boss/Pact/Atlas SFX10 | 18 | 🟢 ผูกแล้ว v8.2.31 · รอฟังบนมือถือ |
 | `A19_EXPEDITION_SFX.md` | Temple Expedition: SFX17 + music2 + saved Ruby4 | 23 | 🟢 ผูกแล้ว v8.2.34 · รอฟังบนมือถือ |
-| `A20_RUBY_STAGE_ENTRY.md` | ม่านเข้าด่าน: SFX 7 (ม่าน/เดินทาง/สติงเกอร์ 3 บท + บอส) + Ruby แนะนำด่าน 15 + เล่นซ้ำ 4 | 26 | 🟡 รอเสียง |
+| `A20_RUBY_STAGE_ENTRY.md` | ม่านเข้าด่าน: SFX 7 (ม่าน/เดินทาง/สติงเกอร์ 3 บท + บอส) + Ruby แนะนำด่าน 15 + เล่นซ้ำ 4 | 26 | 📦 ส่งครบ 26 · รอผูก |
 
 ## กติการ่วม (ทุกใบ)
 - ทำด้วย **AI สร้างเสียง (เช่น ElevenLabs SFX/Music แบบ instrumental)** หรือ **สคริปต์สร้างเสียงด้วยโค้ด** (`scripts/gen_*_sfx.py`, jsfxr) — เลือกตามความเหมาะสมของแต่ละเสียง · **ห้ามเลียนแบบเพลง/ศิลปิน/เกมที่มีอยู่จริง** · ห้ามเสียงพูดเป็นคำ (ยกเว้นระบุ)
@@ -54,3 +54,7 @@ Owner authorized the 114 new draft lines; those, remaining authored story captio
 ## A04 / A07 integration — 2026-11-07
 
 A04 music and A07 current voice catalogue were wired into existing game flows. Cocoa was recast as a woman, Sesame as a soft mysterious woman, and boss casting was corrected where the written story explicitly states gender. See VOICE_CAST_AUDIT and A07 for scope and human-listening caveats.
+
+## Delivery A20 — 2026-11-24
+
+26/26 source MP3 files delivered in `assets/incoming/audio_a20/`: seven direct ElevenLabs Sound Effects and nineteen Ruby TTS lines using the existing A07 voice. All mechanical checks pass, exact text verified; no missing files. Branch `asset-delivery/audio-a20`. Runtime packing/wiring and owner phone listening remain separate.

@@ -1,6 +1,6 @@
 # A20 — ฉากเข้าด่าน "Ruby พาไปด่านถัดไป" (ม่านชื่อด่าน · เสียงเดินทาง · Ruby แนะนำด่าน) · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 21 พ.ย. 2026 · **เจ้าของอนุมัติบท Ruby ทั้งหมด 21 พ.ย.** · ยังไม่มีโค้ด (ตอนนี้ม่านชื่อด่านมีแค่ `sfx_stage_title` ตัวเดียวทุกด่าน)
+สถานะ: 📦 ส่งแล้ว รอผูก · เขียน 21 พ.ย. 2026 · **เจ้าของอนุมัติบท Ruby ทั้งหมด 21 พ.ย.** · ยังไม่มีโค้ด (ตอนนี้ม่านชื่อด่านมีแค่ `sfx_stage_title` ตัวเดียวทุกด่าน)
 ส่งที่ `assets/incoming/audio_a20/` พร้อม `MANIFEST.json` (key, file, text (เฉพาะเสียงพูด), bytes, sha256, duration_ms), `PROMPTS.json`, `QA_REPORT.json`
 เครื่องมือ: **ElevenLabs** · SFX = Sound Effects · เสียงพูดใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามเสียงสร้างด้วยโค้ด/Runway · กติการ่วมดู `A00_README.md`
 
@@ -80,4 +80,10 @@
 - งบขนาด: ~1.2 MB
 
 ## ส่งมอบ
-(ฝั่งเสียงกรอกตอนส่ง)
+- วันที่: 24 พ.ย. 2026
+- สถานะ: 📦 ส่งแล้ว รอผูก · สาขา `asset-delivery/audio-a20`
+- ส่งครบ **26/26 ไฟล์**: SFX 7 + Ruby 19 (แนะนำด่าน 15 + เล่นซ้ำ 4) ที่ `assets/incoming/audio_a20/` พร้อม MANIFEST.json, PROMPTS.json, QA_REPORT.json และ AUDITION.html
+- ElevenLabs Sound Effects และ TTS โดยตรง · Ruby voice ID เดิมของ A07 `GVG9R2Ywg9D3iQVsW8Z6` · ไม่สร้างเสียงใหม่
+- ผ่าน QA 26/26: MP3 mono 44.1 kHz 128 kbps, ความยาวไม่เกินตาราง, peak ≤ −1 dBTP, เงียบต้น SFX < 5 ms / Ruby ≤ 60 ms; บทใน MANIFEST และคำขอ TTS ตรงตารางทุกตัวอักษร
+- ไฟล์เสียงรวม 868,788 bytes · ไม่ขาดไฟล์ · ไม่แก้ game.js/โค้ด/เทส และไม่ปล่อยเวอร์ชัน
+- ส่งเฉพาะ source; ฝั่งโค้ดยังต้องแพ็กและผูกตามโน้ตข้างบน · การฟังบนมือถือยังเป็นขั้นตรวจของเจ้าของ
