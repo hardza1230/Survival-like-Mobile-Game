@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.81';
+const GAME_VERSION = '8.2.82';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.82',date:'2026-11-24',title:'🧹 Old stage art is freed before the next stage',items:['Art from stages you already left is freed before the next stage loads','If an image fails to load, unused art is freed so it can load again']},
   {v:'8.2.81',date:'2026-11-24',title:'🐛 Lure the Crown Root gets meaner',items:['The root speeds up with each smashed stone and splits in two after the second','Its warning circle pulls monsters in, and root kills give combo Sugar','Dodge out at the last moment for a Perfect Dodge','After the last stone the Crown Root gets stuck: hit it for Sugar before it breaks free']},
   {v:'8.2.80',date:'2026-11-24',title:'🫧 Clear the Fog: wider light, creeping darkness',items:['Wider light around the hero in Clear the Fog','No more white circles in the fog','The dark edge now creeps and claws toward you']},
   {v:'8.2.79',date:'2026-11-24',title:'🕳️ Hunger Crack no longer hangs at the end',items:['Hunger Crack ends when 2 or fewer of its monsters are left for 6 seconds','Final hole time limit 60s to 50s']},
@@ -10119,7 +10120,7 @@ class Game extends Phaser.Scene {
   /* v8.1.116 ตาข่ายกันค้าง: ถ้าเฟรมใดพังเพราะภาพที่ถูกลบ (frame.source=null) → ซ่อมอ็อบเจกต์นั้นเป็นภาพว่างแล้วเล่นต่อ แทนลูปเกมตาย (จอค้าง) */
   texHeal(){ let n=0; const T=this.textures,fix=o=>{ if(!o)return; try{ if(o.texture&&o.setTexture&&o.texture.key!=='__DEFAULT'&&(!T.exists(o.texture.key)||(o.frame&&!o.frame.source))){ o.anims?.stop?.(); o.setTexture('__DEFAULT'); n++; } }catch(e){} if(Array.isArray(o.list))o.list.forEach(fix); };
     try{ for(const sc of this.game?.scene?.getScenes?.(false)||[this])(sc?.children?.list||[]).forEach(fix); }catch(e){} return n; }
-  loopGuard(){ const G=this.game,L=G&&G.loop; if(!this._texAddOn&&this.textures?.on){ this._texAddOn=true; this.textures.on('addtexture',k=>{ (this._texAddT||(this._texAddT={}))[k]=Date.now(); }); } if(!L||L._mmGuard||typeof L.callback!=='function')return; L._mmGuard=true; const cb=L.callback; let errs=0,burst=0,burstAt=0;
+  loopGuard(){ const G=this.game,L=G&&G.loop; if(!this._texAddOn&&this.textures?.on){ this._texAddOn=true; this.textures.on('addtexture',k=>{ (this._texAddT||(this._texAddT={}))[k]=Date.now(); }); this.load?.on?.('loaderror',f=>{ if(f&&f.type!=='audio'&&this.texMemRelief?.()>0)this._memReliefFiles=(this._memReliefFiles||0)+1; }); }   /* v8.2.82 ภาพโหลดไม่ผ่านระหว่างเล่น (มักเพราะหน่วยความจำเต็ม) → คืนภาพที่ไม่ได้แสดงทันที ตัวโหลดลองใหม่เองทุก 0.6 วิ */ if(!L||L._mmGuard||typeof L.callback!=='function')return; L._mmGuard=true; const cb=L.callback; let errs=0,burst=0,burstAt=0;
     L.callback=(t,d)=>{ try{ cb(t,d); }catch(e){ const now=Date.now(); if(now-burstAt>3000){ burstAt=now; burst=0; } if(++burst>20){ try{Save.save();}catch(_){} L.callback=cb; setTimeout(()=>location.reload(),300); return; }   /* v8.1.122 พังรัว ๆ (>20 ครั้งใน 3 วิ) = เซฟแล้วรีโหลด ไม่กระพริบวน */
       const n=this.texHeal(); if(errs++<5)console.error('frame recovered ('+n+' fixed)',e); } }; }
   texTouch(keys){ const T=this._texT||(this._texT={}),now=Date.now(); for(const k of keys)T[k]=now; }
@@ -10138,14 +10139,19 @@ class Game extends Phaser.Scene {
       this._warmed={}; this._critOk={}; this._grpOk={}; this._texEvicted=(this._texEvicted||0)+drop.size;
       return drop.size; }catch(e){ return 0; } }
   texBudget(){ if(this.texMB()>TEX_BUDGET_MB)this.texEvict(()=>true,TEX_BUDGET_MB); }
+  texMemRelief(){ const now=Date.now(); if(now-(this._memReliefAt||0)<3000)return 0; this._memReliefAt=now; const n=this.texEvict(()=>true,TEX_BUDGET_MB*.7); this._memRelief=(this._memRelief||0)+1; return n; }   /* v8.2.82 โหลดพลาด → คืนภาพที่ไม่ได้แสดง (LRU) ลงเหลือ 70% ของงบ */
   runArtEndgame(){ return !!(this._recipeRequested||this._pinnacleRequested||this._riftRequested||this.recipeMode); }
   // ภาพ lazy ที่ด่านนี้ต้องใช้: ฮีโร่ที่เลือก (+มินเนียนยูซุ) และอาร์ต endgame เมื่อเล่น Delve/Pinnacle/Rift
   runArtKeys(){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),out=[];
     const sk=typeof Cos!=='undefined'&&Cos.skin?.(ch),add=(k,u)=>{ if(k.includes('__')&&!(sk&&k.endsWith('__'+sk.tag)))return; const c=artClass(k,u); if((c==='hero'&&artHero(k)===ch)||(c==='endgame'&&eg))out.push(k); };   /* v8.1.70 สกิน: โหลดเฉพาะชีตของสกินที่ใส่ */
     for(const k in ASSET_IMAGES)add(k,ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)add(k,ASSET_SHEETS[k].url); for(const k in ASSET_FX)add(k,ASSET_FX[k].url); return out; }
   // เข้าด่าน: คืนภาพหน้าเมนูย่อย/ฮีโร่ตัวอื่น/endgame ที่ไม่ใช้ (เมนูถูกเคลียร์ก่อนเรียก)
-  texFreeForRun(){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame();
-    return this.texEvict((k,c)=>c==='menu'||(c==='hero'&&artHero(k)!==ch)||(c==='endgame'&&!eg),null); }
+  texFreeForRun(idx){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),keep=idx==null?null:this.texStageKeep(idx);
+    return this.texEvict((k,c)=>c==='menu'||(c==='hero'&&artHero(k)!==ch)||(c==='endgame'&&!eg)||(!!keep&&c==='stage'&&!keep.has(k)),null); }
+  /* v8.2.82 เจ้าของ: เล่นไปสักพักเกมใช้ภาพสำรอง (หน่วยความจำเต็ม) → ก่อนโหลดด่านถัดไป คืนภาพของด่านอื่นที่ไม่ใช้ (เดิมสะสมทุกด่านที่เคยเล่น) */
+  texStageKeep(idx){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),keep=new Set(this.stageArtKeys(idx)); const crit=(k,u)=>!bootKeep(k)&&!MENU_ONLY_RE.test(u||'')&&stageCritical(k,u,ch,eg);   /* = กลุ่มภาพหลักที่ ensureStageArt โหลดทุกด่าน (ไม่รวม deferred/STAGE_SHEET_KEYS) */
+    for(const k in ASSET_IMAGES)if(!k.startsWith('screen_')&&!deferredImage(k)&&crit(k,ASSET_IMAGES[k]))keep.add(k); for(const k in ASSET_SHEETS)if(!STAGE_SHEET_KEYS.has(k)&&crit(k,ASSET_SHEETS[k].url))keep.add(k); return keep; }
+  texFreeStages(idx){ try{ const keep=this.texStageKeep(idx),n=this.texEvict((k,c)=>c==='stage'&&!keep.has(k),null); if(n)this._texFreedStages=(this._texFreedStages||0)+n; return n; }catch(e){ return 0; } }
   // หน้าเมนูย่อย: ภาพ lazy ของกลุ่มหน้านี้ที่ยังไม่ถอดรหัส
   equipmentAssetNeeded(k,u){
     if(u.includes('/character_cards/'))return k==='card_'+(this.character||Save.data.character||'momo');
@@ -12745,6 +12751,7 @@ class Game extends Phaser.Scene {
   bossRushNext(){ if(this.checkEndgameCurse((this._rushPos||0)/Math.max(1,this._rushList.length),()=>this.bossRushNext()))return; const i=this._rushList[this._rushPos]; this._finalStoryShown=true;
     this.state='loading'; this.player.setVelocity(0,0);
     if(window.GameLoader)window.GameLoader.show('Preparing next boss...',0.1);
+    this.texFreeStages?.(i);   /* v8.2.82 */
     this.ensureStageArt(i,()=>this.ensureStageAudio(i,()=>{ this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects(); this.state='play'; this.startStage(i);if(window.GameLoader)window.GameLoader.hide(); })); }
   bossRushBossDown(){ const d=this.stageDiff||1,dr=this.diffMul().reward,si=this.stageIndex;
     const sug=Math.round((50+si*25)*dr); this.sugarStage+=sug; this.sugarRun=(this.sugarRun||0)+sug; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
@@ -15265,7 +15272,7 @@ class Game extends Phaser.Scene {
         if(window.GameLoader)window.GameLoader.show('Loading hero artwork...',0.1);
         this.ensureGroup(k=>ks.has(k),()=>{ this._enteringStageArt=false; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu')this.startRun(idx); },{all:true,fx:true,label:'Loading hero artwork…'}); return; } }
     if(!force&&(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx))){
-      if(this._enteringStageArt)return;this._enteringStageArt=true;this.runWatch(idx);
+      if(this._enteringStageArt)return;this.texFreeStages(idx);this._enteringStageArt=true;this.runWatch(idx);   /* v8.2.82 คืนภาพด่านอื่นก่อนโหลดด่านนี้ */
       if(window.GameLoader)window.GameLoader.show('Loading selected stage artwork...',0.12);
       this.ensureStageArt(idx,()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);});return;
     }
@@ -15285,7 +15292,7 @@ class Game extends Phaser.Scene {
     this.state='loading';
     BGM_MODE=(this._recipeRequested||this._pinnacleRequested)?'endgame':null;
     this.menu.setVisible(false);
-    try{ this.menu.removeAll(true); this.texFreeForRun(); }catch(e){}   // v7.4 คืนภาพหน้าเมนูย่อย/ฮีโร่ตัวอื่นออกจาก GPU ระหว่างเล่น
+    try{ this.menu.removeAll(true); this.texFreeForRun(idx); }catch(e){}   // v7.4 คืนภาพหน้าเมนูย่อย/ฮีโร่ตัวอื่นออกจาก GPU ระหว่างเล่น
     if(window.GameLoader)window.GameLoader.show('Preparing the stage...',0.08);
 
     // เพลงหลายด่านเป็นไฟล์ใหญ่ จึงโหลดเฉพาะด่านที่เลือกภายในหน้านี้

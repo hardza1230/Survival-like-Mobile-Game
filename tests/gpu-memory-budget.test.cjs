@@ -33,7 +33,7 @@ assert(R.lazyArt('char_mint_run',R.ASSET_SHEETS.char_mint_run.url,'momo')&&!R.la
 assert([340,420,520].includes(R.TEX_BUDGET_MB),"v8.1.122 budgets");
 // โค้ดผูกครบ: preloadAll ดาวน์โหลดอย่างเดียว · เข้าด่านคืนภาพเมนู · เมนูคุมงบ · โหมดหน่วยความจำต่ำหลังกราฟิกดับ
 assert(/lz\(k,ASSET_IMAGES\[k\]\)\)\{  continue;/.test(src),'startup leaves lazy art to the existing on-demand loaders');
-assert(src.includes('this.menu.removeAll(true); this.texFreeForRun();'),'startRun frees menu art');
+assert(src.includes('this.menu.removeAll(true); this.texFreeForRun(idx);'),'startRun frees menu art');
 assert(src.includes('this.texTouch(this.texInUse()); this.texBudget();'),'menu enforces texture budget');
 assert(src.includes("localStorage.setItem('mochi_lowmem','1')"),'context loss turns on low-memory mode');
 assert(/DEFAULT_SETTINGS=\{[^}]*quality:0/.test(src),'Performance defaults to Auto');
