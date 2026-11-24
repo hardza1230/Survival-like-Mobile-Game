@@ -4697,3 +4697,11 @@ Four active Taro sentry, beacon and overcharge effects now use eight authored fr
 - Not delivered by the art side (kept as before): `e_ant_drone` attack, `c24_equinox` attack.
 - Stage-lazy loading unchanged (0 new keys at boot). Live check: C2-1 attack clips 8 frames @24 fps.
 - Old animation tests read `tests/lib/motion-legacy.cjs`; `check-boss-body-ui` allows appended idle frames. Test: `tests/motion-phase4.test.cjs`.
+
+# Delivery: v8.2.76 — 🍓 Shotgun no longer melts bosses up close
+
+**Owner:** Strawberry Shotgun pressed against a boss was far too strong ("the boss melts") → approved A + B.
+- **A:** bosses and minibosses no longer take the ×2 point-blank pellet bonus inside 120px (now ×(1+close bonus), the same as 120–200px). Regular foes keep ×2.8.
+- **B:** in one blast, pellets 7+ that hit the same boss/miniboss deal half (`SG_BOSS_FULL_PELLETS=6`, per-blast id `b.sgBlast`).
+- Expected boss damage up close ≈ −60%; Shotgun is still the strongest close-range build.
+- Test: `tests/shotgun-boss-8276.test.cjs` · `strawberry-builds` boss expectation and the Taro `castSkill` hash updated.

@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.77';
+const GAME_VERSION = '8.2.78';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.78',date:'2026-11-24',title:'🛡️ Barrier refills like an Energy Shield · Dash no longer shortens Phantom Rush',items:['Barrier gains ≤2% HP/s and pauses 2s after any hit','Forge damage reduction cap 30%','Dash no longer refunds Phantom Rush; Quick Refund = −5% cooldown per rank']},
   {v:'8.2.77',date:'2026-11-23',title:'🛡️ Forge Barrier no longer makes heroes untouchable',items:['Barrier cap 15% HP (30% with Barrier Capacity)','Barrier gain at most 4% HP per second','3s lockout after the barrier breaks']},
   {v:'8.2.76',date:'2026-11-23',title:'🍓 Shotgun no longer melts bosses up close',items:['Bosses and minibosses skip the x2 point-blank pellet bonus','Pellets 7+ of one blast on the same boss deal half']},
   {v:'8.2.75',date:'2026-11-23',title:'🎞️ Smoother enemy attacks + boss bodies (51 clips)',items:['Chapter 1-2 enemy attack, windup, flee and walk clips now 8 frames','Minibosses MB5-MB10 idle 8 frames, Root Knight cleave 12']},
@@ -6524,7 +6525,7 @@ const PATH_TALENTS={
     a1:{emoji:'🦘',name:'Far Leap',max:3,per:'+10% Dash Leap range',apply:_K('dbLeap',0.10)},
     a2:{emoji:'👑',name:'Hit and Run',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
     b1:{emoji:'💢',name:'Heavy Landing',max:3,per:'+12% landing slam damage',apply:_K('dbSlam',0.12)},
-    b2:{emoji:'🔋',name:'Quick Refund',max:3,per:'Each Dash cuts 0.25s more Unique cooldown',apply:_K('dbRefund',0.25)},
+    b2:{emoji:'🔋',name:'Quick Refund',max:3,per:'Phantom Rush cooldown −5% per rank',apply:_K('dbRefund',0.25)},   /* v8.2.78 Dash ไม่ลดคูลดาวน์แล้ว → −5%/ขั้น */
     capA:{emoji:'🌪️',name:'Afterimage',max:1,per:'Dash buff +80% combo damage',apply:_P({dashm:0.80})},
     capB:{emoji:'♾️',name:'Endless Dash',max:1,per:'+3 Dash charges',apply:_P({dashc:3})},
     capC:{emoji:'🍃',name:'Slip',max:1,per:'While Dash buff is active: −30% damage taken',apply:_K('dashGuard',1)}},
@@ -7238,7 +7239,7 @@ const FORGE_CATALOG = [{"number":1,"id":"f_might","label":"Might","description":
 const FORGE_ROWS=['Power','Sustain','Utility'];
 function forgeValue(p,n){return Math.max(0,Number(p&&p.forgeMods&&p.forgeMods[n])||0);}
 /* v8.1.42 เจ้าของ: เพดาน mod ที่ซ้อนแล้วหลุด — HP จาก Vital Dough รวมไม่เกิน +150 · ลดดาเมจรวมไม่เกิน 40% · Clean Recipe รวมไม่เกิน 20% · โบนัสดาเมจรวมไม่เกิน +150% */
-const FORGE_HP_CAP=150,FORGE_DR_CAP=.4,FORGE_DMG_CAP=1.5,FORGE_CLEAN_CAP=.2;
+const FORGE_HP_CAP=150,FORGE_DR_CAP=.3,FORGE_DMG_CAP=1.5,FORGE_CLEAN_CAP=.2;
 function forgeApply(p,n,v){p.forgeMods=p.forgeMods||{};p.forgeMods[n]=(p.forgeMods[n]||0)+v;
   if(n===1)p.dmgMul+=v/100;if(n===3)p.critChance=(p.critChance||0)+v/100;if(n===4)p.critMul=(p.critMul||1.55)+v/100;
   if(n===6)p.gearArea=(p.gearArea||0)+v/100;if(n===13){if(v<0)p.maxhp+=v;else{const have=p._forgeHp||0,add=Math.max(0,Math.min(v,FORGE_HP_CAP-have));p._forgeHp=have+add;p.maxhp+=add;}}if(n===14)p.armor=(p.armor||0)+v;
@@ -7303,8 +7304,8 @@ function forgeMigrate(data){if(data.forgeEconomyVersion===1){const w=data.curren
   refund('annul','alt',90,110);refund('scour','transmute',30,120);for(const it of (data.gearItems||[]).concat(data.gearInbox||[]))if(it&&it.affixes)forgeSetLines(it,forgeLines(it));data.forgeEconomyVersion=1;forgeMigrate(data);return true;}
 function forgeState(s){return s._forgeState||(s._forgeState={barrier:0,barrierUntil:0,lastHurt:s.elapsed||0,lastHit:-Infinity,kills:0,hitCount:0,xp:0,eliteBonus:0});}
 /* v8.2.77 เจ้าของ: โล่ Forge โกง (เติมเร็วกว่ามอนตี) → เพดาน 15% (สูงสุด 30% กับ Barrier Capacity) · เติมรวมได้ ≤4% HP/วิ · แตกแล้วรอ 3 วิ */
-const FORGE_BARRIER_BASE=.15,FORGE_BARRIER_MAX=.30,FORGE_BARRIER_RATE=.04,FORGE_BARRIER_LOCK=3;
-function forgeBarrier(s,amount){const p=s.player,r=forgeState(s),now=s.elapsed||0;if(now<(r.barLockUntil||0))return;const cap=p.maxhp*Math.min(FORGE_BARRIER_MAX,FORGE_BARRIER_BASE+.6*forgeValue(p,61)/100);if(now-(r.barWinAt??-Infinity)>=1){r.barWinAt=now;r.barWin=0;}const room=Math.max(0,p.maxhp*FORGE_BARRIER_RATE-(r.barWin||0)),add=Math.min(Math.max(0,amount),room);if(add<=0)return;r.barWin=(r.barWin||0)+add;r.barrier=Math.min(cap,r.barrier+add);r.barrierUntil=(s.elapsed||0)+4*(1+forgeValue(p,62)/100);}
+const FORGE_BARRIER_BASE=.15,FORGE_BARRIER_MAX=.30,FORGE_BARRIER_RATE=.02,FORGE_BARRIER_LOCK=3,FORGE_BARRIER_PAUSE=2;   /* v8.2.78 เจ้าของ: ยังไม่แตก → 2%/วิ · โดนตีแล้วหยุดเติม 2 วิ (แบบ Energy Shield) */
+function forgeBarrier(s,amount){const p=s.player,r=forgeState(s),now=s.elapsed||0;if(now<(r.barLockUntil||0)||now-(r.barHitAt??-Infinity)<FORGE_BARRIER_PAUSE)return;const cap=p.maxhp*Math.min(FORGE_BARRIER_MAX,FORGE_BARRIER_BASE+.6*forgeValue(p,61)/100);if(now-(r.barWinAt??-Infinity)>=1){r.barWinAt=now;r.barWin=0;}const room=Math.max(0,p.maxhp*FORGE_BARRIER_RATE-(r.barWin||0)),add=Math.min(Math.max(0,amount),room);if(add<=0)return;r.barWin=(r.barWin||0)+add;r.barrier=Math.min(cap,r.barrier+add);r.barrierUntil=(s.elapsed||0)+4*(1+forgeValue(p,62)/100);}
 function forgeHeal(s,amount,overflow=true){const p=s.player;if(s.recipeHas?.('noheal')||p._uqNoRegen)return;amount=Math.max(0,amount)*(s.pactHealMul?.()??1);if(s.usesStoryBudget?.()){const r=forgeState(s),now=s.elapsed||0;if(now-(r.healWindowAt??-Infinity)>=1){r.healWindowAt=now;r.healSum=0;}amount=Math.min(amount,Math.max(0,p.maxhp*.03-(r.healSum||0)));r.healSum=(r.healSum||0)+amount;}const healed=Math.min(p.maxhp-p.hp,amount);p.hp+=Math.max(0,healed);if(overflow&&forgeValue(p,24))forgeBarrier(s,(amount-healed)*forgeValue(p,24)/100);}
 function forgeStatuses(e){return[(e.frozen||0)>0||(e._chill||0)>0,(e._burnT||0)>0,(e._sourT||0)>0].filter(Boolean).length;}
 function forgeDamage(s,e,amount){const p=s.player,r=forgeState(s),v=n=>forgeValue(p,n)/100,now=s.elapsed||0,direct=!s._infTick&&!s._frDmg&&!s._gmTick&&!s._uqBursting,terminal=s.character==='taro'&&s._taroDamageContext?.terminal===true,dist=Math.hypot(e.x-p.x,e.y-p.y);let bonus=0;
@@ -7323,7 +7324,7 @@ function forgeDamage(s,e,amount){const p=s.player,r=forgeState(s),v=n=>forgeValu
     if(v(94)&&r.barrier>0&&now>=(r.spendBarrierAt||0)){r.spendBarrierAt=now+1;const spent=Math.min(r.barrier,p.maxhp*.04);r.barrier-=spent;bonus+=v(94)*spent/(p.maxhp*.04);}
     if(v(23)&&(e.isBoss||e.isMini||e.isElite)&&r.sameHits%8===0)forgeHeal(s,p.maxhp*v(23)*(p.healEffect||1));}
   return amount*(1+Math.min(FORGE_DMG_CAP,bonus));}
-function forgeHurt(s,amount){const p=s.player,r=forgeState(s),v=n=>forgeValue(p,n)/100,now=s.elapsed||0;let reduction=0;
+function forgeHurt(s,amount){const p=s.player,r=forgeState(s),v=n=>forgeValue(p,n)/100,now=s.elapsed||0;let reduction=0;if(amount>0)r.barHitAt=now;   /* v8.2.78 โดนตี (แม้โล่รับไว้) = หยุดเติมโล่ */
   reduction+=s.mode==='boss'||s.mode==='mini'?v(64):v(65);if(now<(r.dashUntil||0))reduction+=v(21);if(now<(r.brokenUntil||0))reduction+=v(71);
   if(v(66)&&amount>p.maxhp*.2&&now>=(r.cushionAt||0)){reduction+=v(66);r.cushionAt=now+6;}if(now-r.lastHurt>=5)reduction+=v(114);amount*=1-Math.min(FORGE_DR_CAP,reduction);
   if(r.barrierUntil<now)r.barrier=0;if(r.barrier>0){const absorbed=Math.min(amount,r.barrier);amount-=absorbed;r.barrier-=absorbed;if(r.barrier<=0){r.brokenUntil=now+2;r.breakHasteUntil=now+3;r.barLockUntil=now+FORGE_BARRIER_LOCK;}}
@@ -10404,7 +10405,7 @@ class Game extends Phaser.Scene {
     const d=this.moveDir.clone().normalize();
     this.dashTime=0.2; this._lastDashAt=this.elapsed||0;if(this.player.forgeMods){const r=forgeState(this);r.dashUntil=(this.elapsed||0)+1.5;r.dashPrimed=true;}
     if(this.character==='momo'){this._attackPoseTime=0;this._poseHold=0;this._momoDashT=0;}
-    this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);this.cocoaEvoDash?.();if(this.basicAttack?.path==='dashboxer'&&this.uniqueCd>0&&!this._dashFree)this.phRefund(1+this.ptv('dbRefund'));}   /* v8.2.63 Dash ฟรีในโหมดเงาไม่ลดคูลดาวน์ */
+    this.player.setVelocity(d.x*560,d.y*560);if(coc){this.cocoaStartTrail();this.cocoaDashLeap(d);this.cocoaEvoDash?.();}   /* v8.2.78 เจ้าของ: Dash ไม่ลดคูลดาวน์ Phantom Rush อีก (เดิม v8.2.63 ลดได้เฉพาะ Dash ปกติ) */
     this.player.iframe=Math.max(this.player.iframe,0.28);
     Sfx.dash();
     this.flashBtn(this.dashBtn);
@@ -21974,7 +21975,7 @@ class Game extends Phaser.Scene {
       const duration=5+ul*.5;this._cocoaUniqueT=1.5;this._cocoaPhantom={t:duration,charges:2+(ul>=3?1:0),power:unit*(1+.1*(b.lv.p_phantom||0)),width:(35+ul*3)*size};this.cocoaVisual(p.x,p.y,110,'wave',0xc9a3ff);this.fxPhantomScreen?.(1.4);Sfx.bp?.('uq_phantom_enter',.65,.3)||Sfx.bp?.('cocoa_phantom_start',.65,.3);
       // v6.58.4 Phantom Rush: พุ่งทุบอัตโนมัติ 3–4 ครั้งใส่เป้าแข็งสุด (บอสก่อน)
       /* v7.8.58 เจ้าของ: ยิ่ง Dash ก่อนกด มากครั้ง → พุ่งทุบเพิ่ม +1/Dash และถี่ขึ้น (สูงสุด 5) · กดแล้วนับใหม่ */
-      const dn=Math.min(5,this._phSpent||0);this._phSpent=0;this._phantomDashN=0;this._phRef=0;this._phCap=this.uniqueCooldown(this.uniqueInfo())*.4;const leaps=(ul>=3?5:4)+dn,gapT=Math.max(.14,.3-.03*dn),slam=unit*1.1*(1+.1*(b.lv.p_phantom||0));if(dn)this.floatText?.(p.x,p.y-60,'👻 +'+dn+' leaps from Dash charges',0xc9a3ff);
+      const dn=Math.min(5,this._phSpent||0);this._phSpent=0;this._phantomDashN=0;this._phRef=0;this._phCap=this.uniqueCooldown(this.uniqueInfo())*.4;if(this.ptv('dbRefund'))this.uniqueCd=Math.max(0,this.uniqueCd*(1-.2*this.ptv('dbRefund')));const leaps=(ul>=3?5:4)+dn,gapT=Math.max(.14,.3-.03*dn),slam=unit*1.1*(1+.1*(b.lv.p_phantom||0));if(dn)this.floatText?.(p.x,p.y-60,'👻 +'+dn+' leaps from Dash charges',0xc9a3ff);
       for(let i=0;i<leaps;i++)this.cocoaLater(.05+i*gapT,()=>{const t=this.cocoaPriorityTarget(480);if(!t||!p.active)return;const d=this.dist(t.x,t.y,p.x,p.y),gap=Math.max(36,(t.body?.halfWidth||20)+18),k=Math.max(0,(d-gap)/Math.max(1,d));
         p.iframe=Math.max(p.iframe||0,.5);this.bpPose?.('char_cocoa_phantom',.4);this.cocoaGlideTo({x:p.x+(t.x-p.x)*k,y:p.y+(t.y-p.y)*k},.14);
         this.cocoaLater(.14,()=>{if(!p.active)return;Sfx.bp?.('uq_phantom_strike',.6,.12);this.cocoaHit(p.x,p.y,110,slam,{push:200});this.cocoaVisual(p.x,p.y,110,'fist',0xc9a3ff);if(t.active&&(t.isBoss||t.isMini)&&!(t._phaseGateLocked||t._phaseInvuln>0))this.damage(t,slam*1.6,t.x,t.y);if(t.active){const now=this.elapsed||0;t._shadowN=Math.min(4,(t._shadowUntil>now?t._shadowN||0:0)+1);t._shadowUntil=now+5;this.floatText?.(t.x,t.y-50,'🌑 Shadow Mark ×'+t._shadowN,0xc9a3ff);Sfx.bp?.('cocoa_shadow_mark',.45,.1,0.94+0.05*t._shadowN);}this.cocoaLandingFx(p.x,p.y,110);this.screenShake?.(110,.005);this.hitStop?.(35);Sfx.bp?.('cocoa_dash_landing',.55,.1)||Sfx.comboPunch(i,'heavy');});});
