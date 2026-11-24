@@ -1,0 +1,1730 @@
+[
+  {
+    "key": "sfx_a21_momo_ricochet_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small springy candy-seed projectile launched with a dry woody pop and tiny rubbery twang. Playful, light and rounded, clearly smaller than a shotgun. Variation: slightly rounder lower pop. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "f15b1820131ba848e3185c3249f9a01b5a36464a97effe055d2fde135acebd65",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_momo_ricochet_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small springy candy-seed projectile launched with a dry woody pop and tiny rubbery twang. Playful, light and rounded, clearly smaller than a shotgun. Variation: slightly lighter seed snap. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "b3010ee26f666b363c33c09d2ad0e597406a109578034b9d52c31bc439276f64",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_momo_ricochet_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small springy candy-seed projectile launched with a dry woody pop and tiny rubbery twang. Playful, light and rounded, clearly smaller than a shotgun. Variation: slightly woodier soft twang. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "9118889cda2602cceda13a4a3b93134a149be69f04af5f0a0b443e3eefaa3c00",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.43284,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_momo_sniper_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One precision seed-rifle shot: a taut short spring release and firm focused midrange crack, then a very short warm low thump. Powerful but not a real firearm, no piercing gunshot or metallic ringing. Variation: compact focused crack. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.6,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "5911f6f88a7e0e2a3f172802381b957fb458c8774bbd641d5da9ecefb2455550",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_momo_sniper_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One precision seed-rifle shot: a taut short spring release and firm focused midrange crack, then a very short warm low thump. Powerful but not a real firearm, no piercing gunshot or metallic ringing. Variation: rounder weighted seed release. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.6,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "07d320d5ea34fb49af9bebb584df5d59892668283e3319ae6d1a886df57e388d",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.1215,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_momo_sniper_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One precision seed-rifle shot: a taut short spring release and firm focused midrange crack, then a very short warm low thump. Powerful but not a real firearm, no piercing gunshot or metallic ringing. Variation: crisper spring release with soft body. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.6,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "15215c3202a8c65a2a62cb1822a475c6323ee07cbda39431d0de48a2de9b5154",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.1215,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_momo_shotgun_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One wide candy shotgun blast: a single chunky rounded pop with a very brief scatter of tiny sugar pellets and a soft mechanical pump finish. Powerful wide spread, no realistic explosive gunfire. Variation: slightly bassier compact blast. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.65,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "9cef34b0dd54413aa07e93b6117defcd97569b30f03480c94cc21d1a888a00cc",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps",
+      "final_onset_trim_ms": 8.481
+    }
+  },
+  {
+    "key": "sfx_a21_momo_shotgun_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One wide candy shotgun blast: a single chunky rounded pop with a very brief scatter of tiny sugar pellets and a soft mechanical pump finish. Powerful wide spread, no realistic explosive gunfire. Variation: slightly grainier pellet scatter. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.65,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "986a169b0f7e1c43f4b64cfd3dc4c5e3b6600bdf5db39d063b8d79f23a8e9811",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_momo_shotgun_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One wide candy shotgun blast: a single chunky rounded pop with a very brief scatter of tiny sugar pellets and a soft mechanical pump finish. Powerful wide spread, no realistic explosive gunfire. Variation: slightly drier punchy release. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.65,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "db79d15c2f42f1e67dacb310459dcffba2bf3ab000e7272ae1f96f041f5cb31d",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.09402,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_mint_needle_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny slender ice-needle spear slicing forward: a tight airy swip and a delicate brittle ice tick. Fine, precise, fast and cold, not a giant ice explosion or long ringing chime. Variation: soft airy needle flick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "090c1a45fc87555f6ae63824f6e20563161dbaa7a088ffb4ba37107c73b113fd",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.43284,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_mint_needle_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny slender ice-needle spear slicing forward: a tight airy swip and a delicate brittle ice tick. Fine, precise, fast and cold, not a giant ice explosion or long ringing chime. Variation: slightly glassier tiny ice tick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "ac09c6da51087be5de555aff05ab505b6f267e4e4e7cc2a947ac487fa97b8442",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.43284,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_mint_needle_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny slender ice-needle spear slicing forward: a tight airy swip and a delicate brittle ice tick. Fine, precise, fast and cold, not a giant ice explosion or long ringing chime. Variation: slightly lower delicate frozen swip. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "3e9a78f967cdf8e92e81de1b1a065b7e45c3d27e42f69631a520d9ca0f643d66",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.43284,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_mint_shard_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One compact small ice-shard volley: three fine icy tinks blended into a single soft short frozen flick. Light sharp definition but rounded treble, much smaller than a heavy lance. Variation: finer sparse crystal flick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "cd2fa50e83679d7814774f3636e326bc92b2c168ae10bb7c576fa59fb9141a67",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.14725,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_mint_shard_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One compact small ice-shard volley: three fine icy tinks blended into a single soft short frozen flick. Light sharp definition but rounded treble, much smaller than a heavy lance. Variation: slightly breathier shard flick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "a721e39e5773330825e804179e4d73fa43ec4b70284f6e9a6ed4a3f53a35d4d1",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0392,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_mint_shard_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One compact small ice-shard volley: three fine icy tinks blended into a single soft short frozen flick. Light sharp definition but rounded treble, much smaller than a heavy lance. Variation: slightly drier frozen tinkle. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "0544acd0a7b0bef0e4f5ff1b18a5f47622321dc12278ba857d9f51facad53136",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.39503,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_firefist_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One compact fire-coated boxing jab launching forward: a rounded cloth fist swish joined to a tiny warm flame puff. Quick punchy rhythm, not an explosion, no voice. Variation: slightly drier cloth punch. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "4a39f070b6fd64ad289bf57cc34ce49399efb6cd27f6487e5ec032f352910942",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.35211,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_firefist_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One compact fire-coated boxing jab launching forward: a rounded cloth fist swish joined to a tiny warm flame puff. Quick punchy rhythm, not an explosion, no voice. Variation: slightly warmer flame puff. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "db8a8ac590feab3bb97a443f00999d1381c516dbcbe2b6649995fef11cf70c64",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.15838,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_firefist_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One compact fire-coated boxing jab launching forward: a rounded cloth fist swish joined to a tiny warm flame puff. Quick punchy rhythm, not an explosion, no voice. Variation: slightly tighter forward swish. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "1fa3c9950eb91ad27b450bcd8dadae3c675460844ad372b9859691efd8ded670",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.35211,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_finisher_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One heavy fire-boxing combo finisher: a fast cloth fist sweep into a firm rounded thump with one brief rolling flame burst. Stronger than a regular jab, short and controlled, no long explosion. Variation: heavier soft-bodied finish. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.62,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "759082786feed782822f46b8a195b44d88d592e226a200b5f213024024c8ae37",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_finisher_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One heavy fire-boxing combo finisher: a fast cloth fist sweep into a firm rounded thump with one brief rolling flame burst. Stronger than a regular jab, short and controlled, no long explosion. Variation: slightly cracklier compact flame finish. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.62,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "7538aeec82947500248c980708d84a2e1858b347fb788d3eae0a82c5c28d1906",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.08108,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_finisher_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One heavy fire-boxing combo finisher: a fast cloth fist sweep into a firm rounded thump with one brief rolling flame burst. Stronger than a regular jab, short and controlled, no long explosion. Variation: drier stronger fist finish. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.62,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "a4bce0155883e8c6370c060100de81c30f9b2e028abddcf699200707d4cac34c",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.08108,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_rocket_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny candy gauntlet rocket launching: a compact low pop and short breathy fiery zip forward. Fast, friendly and mechanical, no impact explosion, no sustained engine loop. Variation: slightly tighter rocket zip. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.55,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "7d6b4f524656f681962eb65d48d035d96333da13dea7ad5d2f47361daad79290",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -7,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_rocket_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny candy gauntlet rocket launching: a compact low pop and short breathy fiery zip forward. Fast, friendly and mechanical, no impact explosion, no sustained engine loop. Variation: slightly deeper launch pop. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.55,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "446ae3049ca74da527358649a81a22d79a1fb33c6861f3c67a4ad897b40f8386",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -7,
+      "encoding": "MP3 mono 44100 Hz 128 kbps",
+      "final_onset_trim_ms": 15.125
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_rocket_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny candy gauntlet rocket launching: a compact low pop and short breathy fiery zip forward. Fast, friendly and mechanical, no impact explosion, no sustained engine loop. Variation: slightly airier fast ignition. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.55,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "9b39b6178568cd7f3f6289e700afa8b0a3e3aa451b9a9bfbb4f5a8e669ac5eba",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.07216,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -7,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_titan_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One mighty mochi titan fist slamming the floor: a dense rounded mid-low thud with a brief scattering of cookie crumbs. Weighty and satisfying on a phone speaker, no sub-bass rumble or long quake. Variation: denser doughy floor thud. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.75,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "8"
+    },
+    "source_sha256": "c73a8c790db219c95dbd1d76d0bdbdbd3e4e7219325f5028496131ede885468a",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_titan_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One mighty mochi titan fist slamming the floor: a dense rounded mid-low thud with a brief scattering of cookie crumbs. Weighty and satisfying on a phone speaker, no sub-bass rumble or long quake. Variation: slightly drier cookie-floor crunch. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.75,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "8"
+    },
+    "source_sha256": "1445031d24d30e47f60fa4f6ef6a01e79342f9effb0377cd9aee5a78b56e6875",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.05109,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_cocoa_titan_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One mighty mochi titan fist slamming the floor: a dense rounded mid-low thud with a brief scattering of cookie crumbs. Weighty and satisfying on a phone speaker, no sub-bass rumble or long quake. Variation: rounder weighty fist impact. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.75,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "8"
+    },
+    "source_sha256": "2bc90f36d0a2d0a3dbc7ee926ce41067f4daae12df2a3472784c91a71112a632",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -5,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_taro_arc_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One short controlled arc of magical electricity: a dry branching zrrp snap with rounded sizzling texture. Clear connected lightning, no high squeal, no long buzzing electrical hum. Variation: slightly rounder branching zap. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "8d40b35d68bceaea5ef65fdba07d0ea4cf25d6917fb9928341d765ca388c1538",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.24675,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_taro_arc_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One short controlled arc of magical electricity: a dry branching zrrp snap with rounded sizzling texture. Clear connected lightning, no high squeal, no long buzzing electrical hum. Variation: slightly drier connected crackle. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "beb96a13ee4fb884f84efa75ca75f8207c9928ca7439d258e1364716c2c87815",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.16218,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_taro_arc_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One short controlled arc of magical electricity: a dry branching zrrp snap with rounded sizzling texture. Clear connected lightning, no high squeal, no long buzzing electrical hum. Variation: slightly softer low-mid electric snap. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "97ad5bc05c15ba9c944550ed892401a609274574bc3f8365789c668bda90f996",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.24675,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_taro_spark_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny electrical spark projectile launching: a soft tight bright prrt tick with a very short airy tail. Smaller and lighter than chain lightning, rounded high end, not a laser tone. Variation: softer compact spark tick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "538decb90b8aafbb0cb41e3467da3e40ad12dd9ff1aec875090f412e06cbfd03",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.52381,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_taro_spark_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny electrical spark projectile launching: a soft tight bright prrt tick with a very short airy tail. Smaller and lighter than chain lightning, rounded high end, not a laser tone. Variation: slightly airier charged flick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "01b4749c5a000943a1f9e62c1c42a67452527f4e943b3406cd7f98c99e74fb3b",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.52381,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_taro_spark_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny electrical spark projectile launching: a soft tight bright prrt tick with a very short airy tail. Smaller and lighter than chain lightning, rounded high end, not a laser tone. Variation: slightly lower tiny electric prrt. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "76cb23807e11a0622eb8568432eff8c1f2890fcd18256fba96c68a2f8527a19c",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.52381,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_sesame_flare_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small prismatic elemental flare launching: a tiny warm fire puff, airy wind flick and soft watery crystal tick fused into one cohesive magical pop. Rainbow magic, not a beam, no long chime. Variation: warmer cohesive flare pop. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "847ddbdc9857043bb240d7dafc537458e46f9a73b81b3d55a94d7bba9df38bfa",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_sesame_flare_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small prismatic elemental flare launching: a tiny warm fire puff, airy wind flick and soft watery crystal tick fused into one cohesive magical pop. Rainbow magic, not a beam, no long chime. Variation: airier cohesive flare flick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "e867d07e30f978d4f3f698793e25bca3ad0d730621042da01d3124d105180955",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.15663,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_sesame_flare_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small prismatic elemental flare launching: a tiny warm fire puff, airy wind flick and soft watery crystal tick fused into one cohesive magical pop. Rainbow magic, not a beam, no long chime. Variation: slightly cooler soft prismatic pop. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "09753a302126b802a466e8e5c962f7eb2a58870fc3746573c3bc594351a3d8ca",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.15663,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_lime_arrow_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small citrus-wood bow arrow launching: a dry soft bowstring twang and tight feathered arrow swish. Agile, clean and quiet enough for several archers. No arrow impact or metallic ringing. Variation: slightly woodier bowstring pluck. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "1215c4d768a72b8b95adab3e3a32fb08e2101fbfa474002957ff7dc4cf32662d",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.07801,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_lime_arrow_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small citrus-wood bow arrow launching: a dry soft bowstring twang and tight feathered arrow swish. Agile, clean and quiet enough for several archers. No arrow impact or metallic ringing. Variation: slightly airier arrow swish. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "2632f51a5d38ff6f0d795b5685b7c5b1c7e275ff194df0c9ebf41331f501c7f0",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.13677,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_lime_arrow_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small citrus-wood bow arrow launching: a dry soft bowstring twang and tight feathered arrow swish. Agile, clean and quiet enough for several archers. No arrow impact or metallic ringing. Variation: slightly tighter quiet bow release. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "fc5813366f8c022dd10714c1f61d8e95d12704443231f8fdfe142ad708b46549",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.14638,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_pomelo_punch_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small pomelo guardian boxing punch landing: a firm rounded padded thok with a tiny citrus-peel crunch. Physical and sturdy, distinct from fiery fists. No vocal grunt or huge slam. Variation: rounder padded peel thok. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "309b79d0a0a4cc8cd8730832f27f7c54444f9d4af4af01426b2c7200dcf75dc2",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0786,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps",
+      "final_onset_trim_ms": 10.34
+    }
+  },
+  {
+    "key": "sfx_a21_pomelo_punch_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small pomelo guardian boxing punch landing: a firm rounded padded thok with a tiny citrus-peel crunch. Physical and sturdy, distinct from fiery fists. No vocal grunt or huge slam. Variation: slightly drier citrus crunch. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "d0dc9233904d701d4e5c55ef670b6219be4b6860b68bced2a74f4cd16ab1c095",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_pomelo_punch_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small pomelo guardian boxing punch landing: a firm rounded padded thok with a tiny citrus-peel crunch. Physical and sturdy, distinct from fiery fists. No vocal grunt or huge slam. Variation: slightly lower compact glove thump. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "dfc3a67a6ca49c36955ca83c7448791257099f2e194922de7760557db6bb5a14",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_bloodorange_spell_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small blood-orange mage elemental bolt launching: a warm ember flick folded with a low juicy citrus magic pulse. Mysterious short spell release, distinct from bowstring and punch. No splat, beam or voice. Variation: warmer small ember pulse. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "15892edeef798e9c1164cc9a3a173cdd89eb6b5d999aa252e89927cc3f762766",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_bloodorange_spell_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small blood-orange mage elemental bolt launching: a warm ember flick folded with a low juicy citrus magic pulse. Mysterious short spell release, distinct from bowstring and punch. No splat, beam or voice. Variation: slightly deeper juicy arcane flick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "ef39b5749f85a008cff6d57bb3ef6574ee3c12ab5c192fa7bb255e452ff1a700",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.15663,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_bloodorange_spell_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small blood-orange mage elemental bolt launching: a warm ember flick folded with a low juicy citrus magic pulse. Mysterious short spell release, distinct from bowstring and punch. No splat, beam or voice. Variation: slightly drier orange-magic release. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "51816cdfa58a56caceccba5cf267d4fac63b31614468afc02c95a9e61c3f61e4",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_mochi_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small nonviolent impact on a soft mochi monster: a dry padded doughy thup with a tiny elastic squish. No wet gore, no burst, no voice. Variation: round soft dough thup. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "1692d2badc3f6834e4ceb3bad700c4f2764e42643217e8b0d24193cd44fbea09",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_mochi_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small nonviolent impact on a soft mochi monster: a dry padded doughy thup with a tiny elastic squish. No wet gore, no burst, no voice. Variation: slightly firmer padded tap. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "d678f4ef407cecb3d4b195d8b9698cb9ce83a8785746b05db735f79405202f38",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.52381,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_mochi_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small nonviolent impact on a soft mochi monster: a dry padded doughy thup with a tiny elastic squish. No wet gore, no burst, no voice. Variation: slightly springier dough tick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "dc9a441a508a04dd560e5ef2b08e6aa1ce42a0a39b067a8c46ad16a2b9f40898",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.52381,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_mochi_4",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small nonviolent impact on a soft mochi monster: a dry padded doughy thup with a tiny elastic squish. No wet gore, no burst, no voice. Variation: slightly drier soft mochi knock. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "090902dd5161d8afbe67b29e9cf47e576724f67dc1e5c233b7695d84673a8230",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.52381,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_armor_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact against confectionery knight armor: a muted firm metal-and-wafer clink with a short solid body. Clearly armored but no high ringing bell or shrill clang. Variation: lower muted armor clink. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "db0f36cb982ad72df6e2fed686625d3282e1d4ca8a3f0c983eb466455b6e0766",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.35211,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_armor_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact against confectionery knight armor: a muted firm metal-and-wafer clink with a short solid body. Clearly armored but no high ringing bell or shrill clang. Variation: drier short plated knock. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "77428d374ff65832a4aa72027f9641dd15b62ee7f076bfa22833952a44636c66",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.35211,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_armor_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact against confectionery knight armor: a muted firm metal-and-wafer clink with a short solid body. Clearly armored but no high ringing bell or shrill clang. Variation: slightly heavier compact metal tick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "3cda708ed20ab4bffa02a34b2162fab5a0fe270d41c6481f431f4e85d6965b3f",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_armor_4",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact against confectionery knight armor: a muted firm metal-and-wafer clink with a short solid body. Clearly armored but no high ringing bell or shrill clang. Variation: softer biscuit-armor chink. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "556d2c136302aae60c9e26efaf9e35a6382a9af5a8b8dd30faff050da1bfe297",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -9,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_ice_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on frozen candy ice: a fine brittle crack with a soft cold tink and immediate short decay. Small hit, not mass ice shatter, no long glass ring. Variation: fine dry frozen crack. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "7a9f9dff1ddcdeff337a7e027d28e8e5a06c6ca01273d1f7a3c9b2ed26461368",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.16702,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_ice_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on frozen candy ice: a fine brittle crack with a soft cold tink and immediate short decay. Small hit, not mass ice shatter, no long glass ring. Variation: rounder delicate ice tick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "2d684d7d49265e561560654b90b442fefc0bd61205c0d39e77d9376603574eb6",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.21542,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_ice_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on frozen candy ice: a fine brittle crack with a soft cold tink and immediate short decay. Small hit, not mass ice shatter, no long glass ring. Variation: slightly grainier small frost crunch. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "60c1180ca61a6083e8b742f68bd795c71a20556b63f2dd943946b242c61e8a4b",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.11138,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_ice_4",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on frozen candy ice: a fine brittle crack with a soft cold tink and immediate short decay. Small hit, not mass ice shatter, no long glass ring. Variation: slightly cooler compact ice chip. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "d111d172e2177a8b697325dbc00e49056883a02254bdf2b2c0d959079955041f",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.3198,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_plant_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on a cursed root or plant monster: a short woody tok with a tiny dry leaf crinkle. Organic and firm, no wet flesh, no large branch snapping. Variation: soft woody root tok. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "f1c7abad964a75bd746e60303d15f35ea5f24ae1844caba47c4ef5152f229b6a",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.28582,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_plant_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on a cursed root or plant monster: a short woody tok with a tiny dry leaf crinkle. Organic and firm, no wet flesh, no large branch snapping. Variation: slightly drier bark tap. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "8f5b26a56a938f509e1b8b5f2c43f65ce310c85ed081e22ed1aee3fd2f7d7be5",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.19755,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_plant_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on a cursed root or plant monster: a short woody tok with a tiny dry leaf crinkle. Organic and firm, no wet flesh, no large branch snapping. Variation: slightly leafier compact knock. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "550baa2f1922b96782a0fe77fc5982d07328d995b003d1c1707a666bc2635032",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.20852,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_plant_4",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on a cursed root or plant monster: a short woody tok with a tiny dry leaf crinkle. Organic and firm, no wet flesh, no large branch snapping. Variation: slightly lower small root thump. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "4ad3981769c81c9ad8a69c19e4ec7f76392989544e99c97081a570e7ba9e2c3c",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_crystal_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on a crystal-shell candy monster: a precise rounded crystalline tik with a compact hard body. Clearer than ice but no piercing glass squeal or long resonance. Variation: rounded compact crystal tik. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "32b2eca4f8b4c7ee6dfc9769b5b59b516f2960ad48e37e8a0ea5186cfe0f03f2",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.23631,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_crystal_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on a crystal-shell candy monster: a precise rounded crystalline tik with a compact hard body. Clearer than ice but no piercing glass squeal or long resonance. Variation: slightly lower faceted knock. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "d7c2e9a059b10f2940603a56da6f4fa63270e351c167e58e767edbd9ac714917",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.35211,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_crystal_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on a crystal-shell candy monster: a precise rounded crystalline tik with a compact hard body. Clearer than ice but no piercing glass squeal or long resonance. Variation: drier short sugar-glass tick. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "b549bcd79dfc9ea21fe7f83dc2df29e5be192587e32e3ed9dce99d37a2f1a6dc",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.35211,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_hit_crystal_4",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One small impact on a crystal-shell candy monster: a precise rounded crystalline tik with a compact hard body. Clearer than ice but no piercing glass squeal or long resonance. Variation: softer jewel-shell clink. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "4f223049553f354daf148eaebb55188c7910a5be8f07c3d9bea82390cfb0438c",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.11654,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -10,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_critical_1",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One self-contained critical-hit impact: a firm dry padded crack with a tiny warm high-mid glint and short low-mid punch. Clearly stronger than normal hit, no bell melody, no explosive boom or piercing ping. Variation: slightly deeper critical punch. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "5239d0f203906e92f78fc90c668d944dd36822bf48c95a6677029a57efccd8ae",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_critical_2",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One self-contained critical-hit impact: a firm dry padded crack with a tiny warm high-mid glint and short low-mid punch. Clearly stronger than normal hit, no bell melody, no explosive boom or piercing ping. Variation: slightly crisper rounded critical crack. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "80edd4ed7e63e7b07da752f9e28fc15f439172186cf1aa6419e5d8a7f9ad8343",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.15663,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_critical_3",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One self-contained critical-hit impact: a firm dry padded crack with a tiny warm high-mid glint and short low-mid punch. Clearly stronger than normal hit, no bell melody, no explosive boom or piercing ping. Variation: slightly warmer decisive impact. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "a4f0aab310c88a630a45221ac352f8f43d19f10c5de0fd520ab549b2f8a11256",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.0,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  },
+  {
+    "key": "sfx_a21_critical_4",
+    "provider": "ElevenLabs Sound Effects",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One self-contained critical-hit impact: a firm dry padded crack with a tiny warm high-mid glint and short low-mid punch. Clearly stronger than normal hit, no bell melody, no explosive boom or piercing ping. Variation: drier compact powerful critical hit. Original sweet-fantasy combat one-shot. Immediate dry attack, short complete decay, warm midrange, soft treble. Isolated, no voice, no music, no ambience, no imitation.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "9de2c9128a33d5fad3a918534a664ea9158f4611edba35708b2e381d253994e4",
+    "postprocess": {
+      "silence_trim": true,
+      "atempo": 1.15663,
+      "boundary_fade_ms": [
+        1,
+        8
+      ],
+      "target_sample_peak_dbfs": -8,
+      "encoding": "MP3 mono 44100 Hz 128 kbps"
+    }
+  }
+]
