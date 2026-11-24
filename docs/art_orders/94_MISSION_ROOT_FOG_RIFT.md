@@ -1,6 +1,6 @@
 # 94 — Lure the Crown Root · Clear the Fog · Abyss Brute · Seed Rift เตือน · ป้าย Perfect/Combo · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 24 พ.ย. 2026 · โค้ดพร้อมแล้ว (v8.2.79–8.2.83) ใช้ภาพวาดด้วยโค้ด/ย้อมสีอยู่
+สถานะ: 📦 ส่งครบ 14 · รอผูก · เขียน 24 พ.ย. 2026 · โค้ดพร้อมแล้ว (v8.2.79–8.2.83) ใช้ภาพวาดด้วยโค้ด/ย้อมสีอยู่
 ส่งไฟล์ที่ `assets/incoming/mission94/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 · **ห้ามมีตัวหนังสือหรือตัวเลขในภาพ**
 
@@ -81,5 +81,10 @@
 - MANIFEST ต่อแถว: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor`, `background` (`transparent`/`black`) · ป้าย E ระบุกรอบที่ว่างกลางป้าย `textBox` [x,y,w,h] · Abyss Brute ระบุแถวท่า `actions`
 
 ## ส่งมอบ
-- วันที่: —
-- สถานะ: 🟡 รออาร์ต
+- วันที่: 24 พ.ย. 2026
+- สถานะ: 📦 ส่งครบ 14 · รอผูก
+- ไฟล์: 14/14 PNG32 · 108 cells/frames · ส่งที่ `assets/incoming/mission94/` พร้อม MANIFEST.json, PROMPTS.json, QA_REPORT.json
+- ไฟล์ที่ยังขาด: ไม่มี
+- ใช้ built-in ImageGen; ปรับขนาด/จัดกริดด้วยสคริปต์ ใช้กรอบครอปร่วมกันทุกเฟรมเพื่อรักษาขนาดและจังหวะ, คง alpha จริง, คอมโพสิตพื้นดำ #000 ตามใบ และจับคู่ขอบ texture ที่ปูต่อ
+- QA ผ่านทุกไฟล์: ขนาด/กริด/RGBA/เฟรมไม่ว่าง/ขอบเฟรม; ตรวจรอยต่อหรือพื้นที่กลางโปร่งและ 9-slice ตามประเภทไฟล์ · no runtime/game.js/tests/release changes
+- สาขาส่งมอบ: `asset-delivery/art95-94` · รอฝั่งโค้ดแพ็กและผูก · เจ้าของตรวจภาพจริงบนมือถือแยกจาก QA เชิงเทคนิค

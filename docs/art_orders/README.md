@@ -53,7 +53,7 @@
 | 91 | `91_EXPEDITION_SCENE.md` | Temple Expedition: ฮีโร่มุมหลัง 6 · ไททันหน้าตรง 12 · บอส 3 · ฉากลึก 3 · เอฟเฟกต์แตะ · ไอคอน 6 | 13 | สูง | ✅ ผูกแล้ว v8.2.33 |
 | 92 | `92_FEEDBACK_VFX_ANIM.md` | VFX จาก feedback: Shotgun นัดซ้ำ/Double Barrel · ขวดพิษ Hunt โยนโค้ง+เป้าพื้น · เขต Wisp โดมแสงบาง | 9 | สูง | 🟢 ผูกแล้ว v8.2.55 · รอ QA มือถือ |
 | 93 | `93_MISSION_CARD_BACK.md` | หลังการ์ดภารกิจ (ออกแบบใหม่ สวย ๆ ใช้ทุกใบ) · ประกายตอนพลิก | 3 | กลาง | 🟢 ผูกแล้ว v8.2.55 · รอ QA มือถือ |
-| 94 | `94_MISSION_ROOT_FOG_RIFT.md` | Lure the Crown Root (มุดดิน/รอยเตือน/รากพุ่ง/หินแตก/หัวรากมงกุฎ) · Clear the Fog (หมอก tile/กรงเล็บมืด/ขอบแสง) · Abyss Brute · Seed Rift เตือน · ป้าย Perfect/Combo | 14 | สูง | 🟡 รออาร์ต |
+| 94 | `94_MISSION_ROOT_FOG_RIFT.md` | Lure the Crown Root (มุดดิน/รอยเตือน/รากพุ่ง/หินแตก/หัวรากมงกุฎ) · Clear the Fog (หมอก tile/กรงเล็บมืด/ขอบแสง) · Abyss Brute · Seed Rift เตือน · ป้าย Perfect/Combo | 14 | สูง | 📦 ส่งครบ 14 · รอผูก |
 | 95 | `95_BOSS_TWISTS.md` | ลูกเล่นบอส 5 แบบ: ราก · เมล็ด · ผลไม้ · มืด · เงาบอส + ไอคอน/แถบป้าย | 14 | สูง | 📦 ส่งครบ 14 · รอผูก |
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |

@@ -1,0 +1,299 @@
+[
+  {
+    "key": "cr94_burrow",
+    "file": "cr94_burrow.png",
+    "frameWidth": 128,
+    "frameHeight": 96,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 81252,
+    "sha256": "459dbd00fd5e8e9e56426fe45b3774ca16b11cd65128913a65be43a0c7cc4888",
+    "width": 512,
+    "height": 192
+  },
+  {
+    "key": "cr94_warn_crack",
+    "file": "cr94_warn_crack.png",
+    "frameWidth": 256,
+    "frameHeight": 160,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 318528,
+    "sha256": "09abcd1cab85c76f1fc0e875315647563fa1ac8af88fd3f52a2a26d926bca9c2",
+    "width": 1024,
+    "height": 320
+  },
+  {
+    "key": "cr94_strike",
+    "file": "cr94_strike.png",
+    "frameWidth": 192,
+    "frameHeight": 256,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 207690,
+    "sha256": "73a2674bf8c97ee4c3c2b4cb15fc1844aa093740facf0f723c566a75a722603b",
+    "width": 768,
+    "height": 512
+  },
+  {
+    "key": "cr94_crown_head",
+    "file": "cr94_crown_head.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 12,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 624417,
+    "sha256": "0d16bc339d56d1d0adbe0b0d40238da9d7d9a140ab2d0a1c9052f77d728bc8cd",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "key": "cr94_anchor_break",
+    "file": "cr94_anchor_break.png",
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 184966,
+    "sha256": "f5262c9b6c402f109546d131e69d14fba3862aed732c17fceb630fcca2164dd4",
+    "width": 768,
+    "height": 384
+  },
+  {
+    "key": "sr94_rift_warn",
+    "file": "sr94_rift_warn.png",
+    "frameWidth": 256,
+    "frameHeight": 160,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 136706,
+    "sha256": "e0a4d36c5195e2e23cae218565f6693d12e046f45338b2e81734c51a079b9896",
+    "width": 1024,
+    "height": 320
+  },
+  {
+    "key": "cr94_crown_burst",
+    "file": "cr94_crown_burst.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 12,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 371011,
+    "sha256": "e31310c7841c08591f458ecc640c593bfe8db20a93588221fdd8a88cd49d1963",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "key": "fg94_fog_tile",
+    "file": "fg94_fog_tile.png",
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "opaque",
+    "bytes": 244019,
+    "sha256": "52a2b4634ca145d2c8703866e07e3e9fa7c926c6772d0a8f8dd729b584cc5426",
+    "width": 512,
+    "height": 512,
+    "tileX": true,
+    "tileY": true
+  },
+  {
+    "key": "fg94_dark_claw",
+    "file": "fg94_dark_claw.png",
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "transparent",
+    "bytes": 93753,
+    "sha256": "97b757caab64f0810eedb7a1faa200464bbe8b635c8bae45637a1d46efeff68b",
+    "width": 512,
+    "height": 256
+  },
+  {
+    "key": "fg94_lantern_edge",
+    "file": "fg94_lantern_edge.png",
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "transparent",
+    "bytes": 137245,
+    "sha256": "11c832f6eba4988d759b985f745b602d604a99075ba9bf8ec75e25d0d7101cf6",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "key": "hc94_abyss_brute",
+    "file": "hc94_abyss_brute.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 16,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 786610,
+    "sha256": "9b12ba81bbfcf4781bf38e3a01eed0120094046f78d0be4e54fb63f926d1df2d",
+    "width": 1024,
+    "height": 1024,
+    "actions": {
+      "walk": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "idle": [
+        4,
+        5
+      ],
+      "windup": [
+        6,
+        7
+      ],
+      "attack": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "hurt": [
+        12,
+        13
+      ],
+      "death": [
+        14,
+        15
+      ]
+    },
+    "facingLeft": false
+  },
+  {
+    "key": "cr94_crown_hurt",
+    "file": "cr94_crown_hurt.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 6,
+    "columns": 3,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 315685,
+    "sha256": "7dbede1a8d13d3260f0eeb8ddc514921f47be4482de53817c7d479c96285fca4",
+    "width": 768,
+    "height": 512
+  },
+  {
+    "key": "fb94_combo_badge",
+    "file": "fb94_combo_badge.png",
+    "frameWidth": 256,
+    "frameHeight": 96,
+    "frameCount": 6,
+    "columns": 3,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "transparent",
+    "bytes": 90655,
+    "sha256": "94c36dfd3d5c27ecc4769e76947595e2944984fafa9aca109823c3fbdccbdf18",
+    "width": 768,
+    "height": 192,
+    "textBox": [
+      38,
+      26,
+      180,
+      44
+    ]
+  },
+  {
+    "key": "fb94_perfect_badge",
+    "file": "fb94_perfect_badge.png",
+    "frameWidth": 256,
+    "frameHeight": 96,
+    "frameCount": 6,
+    "columns": 3,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "transparent",
+    "bytes": 146394,
+    "sha256": "e8c56339e6152e332689ac9364f3c09dd4dacfd8cf7bc6629841c4d1b2f1d5f2",
+    "width": 768,
+    "height": 192,
+    "textBox": [
+      38,
+      26,
+      180,
+      44
+    ]
+  }
+]
