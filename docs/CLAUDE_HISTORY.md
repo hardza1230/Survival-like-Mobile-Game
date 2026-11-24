@@ -4705,3 +4705,11 @@ Four active Taro sentry, beacon and overcharge effects now use eight authored fr
 - **B:** in one blast, pellets 7+ that hit the same boss/miniboss deal half (`SG_BOSS_FULL_PELLETS=6`, per-blast id `b.sgBlast`).
 - Expected boss damage up close ≈ −60%; Shotgun is still the strongest close-range build.
 - Test: `tests/shotgun-boss-8276.test.cjs` · `strawberry-builds` boss expectation and the Taro `castSkill` hash updated.
+
+# Delivery: v8.2.77 — 🛡️ Forge Barrier no longer makes heroes untouchable
+
+**Owner:** the gold-hexagon Barrier (Forge gear mods) let heroes take no damage → approved all 3 limits.
+- Cap 25% → **15% max HP** (Barrier Capacity: 50% → **30%**).
+- All sources together (Overflow Cream, Critical Barrier, Mark, …) add at most **4% max HP per second**.
+- After the barrier breaks, **no new barrier for 3 s**.
+- Constants `FORGE_BARRIER_BASE/MAX/RATE/LOCK` in `forgeBarrier` · tests: `forge-150` updated to the new numbers, `tests/forge-barrier-8277.test.cjs`.

@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.78';
+const GAME_VERSION = '8.2.79';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.79',date:'2026-11-24',title:'🕳️ Hunger Crack no longer hangs at the end',items:['Hunger Crack ends when 2 or fewer of its monsters are left for 6 seconds','Final hole time limit 60s to 50s']},
   {v:'8.2.78',date:'2026-11-24',title:'🛡️ Barrier refills like an Energy Shield · Dash no longer shortens Phantom Rush',items:['Barrier gains ≤2% HP/s and pauses 2s after any hit','Forge damage reduction cap 30%','Dash no longer refunds Phantom Rush; Quick Refund = −5% cooldown per rank']},
   {v:'8.2.77',date:'2026-11-23',title:'🛡️ Forge Barrier no longer makes heroes untouchable',items:['Barrier cap 15% HP (30% with Barrier Capacity)','Barrier gain at most 4% HP per second','3s lockout after the barrier breaks']},
   {v:'8.2.76',date:'2026-11-23',title:'🍓 Shotgun no longer melts bosses up close',items:['Bosses and minibosses skip the x2 point-blank pellet bonus','Pellets 7+ of one blast on the same boss deal half']},
@@ -5010,7 +5011,7 @@ Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[
 const CODE_TELEGRAPH=true;
 const CAPTURE_CRACK=true,HC_NEAR=95,HC_SEC=22,HC_TOUCH=70,HC_SPEED=460,HC_HOLES=[.3,.55,.8,1];
 /* v8.2.44 เจ้าของ: แบบ Abyss ใน PoE — รอยแยกยาว/ช้า คืบเมื่อผู้เล่นอยู่ใกล้ปลาย · มอนค่อย ๆ คลานออกตามรอยแยก · หลุมปล่อยมอนต่อเนื่อง (ฆ่าครบ = ของ) · ปลายทาง 3 ระลอก + Elite + หีบ Abyss · [Ch1, Ch2+] */
-const HC_SEGS=[10,13],HC_CRAWL=[60,72],HC_FOLLOW=260,HC_TRICKLE=[2,1.5],HC_HOLE_N=[6,9],HC_HOLE_GAP=.6,HC_FINAL_WAVES=4,HC_FINAL_PER=[6,10],HC_FINAL_GAP=3,HC_FINAL_MAX=60,HC_FINAL_STREAM=.35,HC_FINAL_TANKS=[0,1,2,0],HC_FINAL_CAP=30,HC_BRUTE={scale:1.4,hp:3,tint:0x8a5cc8},HC_CHEST_MUL=1.5;   /* v8.2.48 เจ้าของ: หลุมสุดท้ายมอนเยอะ + มีตัวถึก (4 ระลอก × 10 · Ch1 × 6 · ระลอก 2/3 มี tank · Abyss Brute ปิดท้ายพร้อม Elite · หีบ Sugar ×1.5) */
+const HC_SEGS=[10,13],HC_CRAWL=[60,72],HC_FOLLOW=260,HC_TRICKLE=[2,1.5],HC_HOLE_N=[6,9],HC_HOLE_GAP=.6,HC_FINAL_WAVES=4,HC_FINAL_PER=[6,10],HC_FINAL_GAP=3,HC_FINAL_MAX=50,HC_FINAL_TAIL=2,HC_FINAL_TAIL_SEC=6,HC_FINAL_STREAM=.35,HC_FINAL_TANKS=[0,1,2,0],HC_FINAL_CAP=30,HC_BRUTE={scale:1.4,hp:3,tint:0x8a5cc8},HC_CHEST_MUL=1.5;   /* v8.2.48 เจ้าของ: หลุมสุดท้ายมอนเยอะ + มีตัวถึก (4 ระลอก × 10 · Ch1 × 6 · ระลอก 2/3 มี tank · Abyss Brute ปิดท้ายพร้อม Elite · หีบ Sugar ×1.5) */
 /* v8.2.44 เจ้าของ: มอนในภารกิจโผล่เฉย ๆ → ค่อย ๆ ขึ้นจากพื้น/ก้าวออกจากประตู · ระหว่างเกิดไม่เดิน ไม่ตี ไม่โดนตี · เอฟเฟกต์เต็มพร้อมกันได้ ≤ 8 */
 const EMERGE_MS=520,EMERGE_FX_MAX=8;   /* v8.2.7 เจ้าของ: แบบ Abyss จริง — แตะรอยแยก → วิ่งเองเร็วไปหลุมถัดไป · หลุมแตก = มอน + ของ · หลุมสุดท้ายมอนเยอะ ฆ่าหมด = จบ */   /* v8.2.4 เจ้าของ: Capture the Zone (วงกลม+ตัวเลข) → 🕳️ Hunger Crack (แนว PoE Abyss) · รอยแยกงอกคดเคี้ยวไปทั่วแมพ เดินตามปลายรอยแยกให้มันงอกต่อ มอนคลานออกมาตลอดทาง ปลายทางคือหลุม → ปิดหลุม = รางวัลระเบิด · ไม่มีตัวเลข ไม่มีวง · false = วงเดิม */
 const CLEANAIR_V2=true;   /* v8.1.162 เจ้าของ: Clean Air ใหม่ = ป่ามืด (Viridian/Wildwood) · เดินหา Wisp ที่กระจายทั่วแมพ · ชาร์จ 1.5 วิ แล้วระเบิดแสง · false = แบบวงเดินตาม (v8.1.161) */
@@ -16668,7 +16669,8 @@ class Game extends Phaser.Scene {
     const segN=(this.stageIndex||0)<5?HC_SEGS[0]:HC_SEGS[1]; for(let i=0;i<segN;i++){ a+=Phaser.Math.FloatBetween(-.75,.75); const L=Phaser.Math.Between(120,170),q=pts[pts.length-1],[nx,ny]=inMapPt(q.x+Math.cos(a)*L,q.y+Math.sin(a)*L,160); if(Math.hypot(nx-q.x,ny-q.y)<60){a+=Math.PI*.6;i--;if(pts.length>40)break;continue;} pts.push({x:nx,y:ny}); }
     const cum=[0]; for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y));
     const jag=[]; for(let i=0;i<pts.length-1;i++){ const A=pts[i],B=pts[i+1],n=4,ang=Math.atan2(B.y-A.y,B.x-A.x); for(let k=0;k<n;k++){ const t=k/n,j=k?Phaser.Math.FloatBetween(-14,14):0; jag.push({x:A.x+(B.x-A.x)*t-Math.sin(ang)*j,y:A.y+(B.y-A.y)*t+Math.cos(ang)*j,d:cum[i]+(cum[i+1]-cum[i])*t}); } } jag.push({...pts[pts.length-1],d:cum[cum.length-1]});
-    const end=pts[pts.length-1],L=cum[cum.length-1],holes=HC_HOLES.map(f=>{ const d=Math.max(80,L*f),q=this.hungerCrackAt0(pts,cum,d); return {d,x:q.x,y:q.y,open:false}; });
+    const end=pts[pts.length-1],L=cum[cum.length-1],holes=HC_HOLES.map(f=>{ const d=Math.min(L,Math.max(80,L*f)),   /* v8.2.79 หลุมต้องอยู่บนเส้นเสมอ (เส้นสั้น <80 เคยค้าง) */
+      q=this.hungerCrackAt0(pts,cum,d); return {d,x:q.x,y:q.y,open:false}; });
     this._crack={pts,cum,jag,L,head:0,tip:{x:start.x,y:start.y},holes,hi:0,st:'wait',tag:'hc'+Date.now()+Math.random(),pack:null,packT:0,g:this.camWorld(this.add.graphics().setDepth(4)),hole:this.camWorld(this.add.graphics().setDepth(3)),end};
     this._crack.holes.forEach((H,i)=>{ H.stream=0; H.sT=0; H.pack=[]; H.final=i===this._crack.holes.length-1; }); this._crack.trT=1; this._crack.fw=0; this._crack.fwT=0; this._crack.pack=[];
     this.tickHungerCrack(0,o); this.floatText?.(start.x,start.y-50,'🕳️ Stay near the crack!',0xc58bff); }
@@ -16691,7 +16693,8 @@ class Game extends Phaser.Scene {
       if(c.fw<=0&&F.stream<=0&&!c.elite){ c.elite=true; try{ const e=this.spawnElite(true,true); if(e){ e.setPosition?.(F.x+20,F.y); e._hcTag=c.tag; F.pack.push(e); this.emergeFoe?.(e,'ground'); } }catch(err){} try{ const b=this.hungerCrackBrute?.(c,F); if(b)F.pack.push(b); }catch(err){} }
       if(c.brute){ const b=c.brute; if(b.active){ c.bx=b.x; c.by=b.y; } else if(!c.bruteLoot){ c.bruteLoot=true; try{ const g=this.spawnLoot?.(c.bx??F.x,c.by??F.y,1); if(g)this.lootHold?.(g,1400); }catch(err){} this.floatText?.(c.bx??F.x,(c.by??F.y)-60,'💜 Abyss Brute down!',0xe0b3ff); } }
       const left=F.pack.filter(e=>e&&e.active&&e._hcTag===c.tag).length; o._hcLeft=left; c.pack=F.pack;
-      if((c.elite&&left===0)||c.packT>=HC_FINAL_MAX){ this.drawHungerCrack(c); this.hungerCrackDone(c); this.completeWaveObjective(); return; } }
+      if(c.elite&&left>0&&left<=HC_FINAL_TAIL){ c.tailT=(c.tailT||0)+dt; }else c.tailT=0;   /* v8.2.79 เจ้าของ: ค้างตอนจบ → เหลือ ≤2 ตัวนาน 6 วิ = จบเลย (ตัวที่เหลือกลายเป็นมอนปกติ) */
+      if((c.elite&&left===0)||(c.tailT||0)>=HC_FINAL_TAIL_SEC||c.packT>=HC_FINAL_MAX){ if(left>0)for(const e of F.pack)if(e&&e._hcTag===c.tag)e._hcTag=null; this.drawHungerCrack(c); this.hungerCrackDone(c); this.completeWaveObjective(); return; } }
     this.drawHungerCrack(c); }
   hungerCrackErupt(c,i){ const H=c.holes[i],last=!!H.final; H.open=true; const col=0xc58bff,ch=(this.stageIndex||0)<5?0:1;
     const eruption=this.hungerCrackFeedbackBurst?.(H.x,H.y,last?145:86,true);
