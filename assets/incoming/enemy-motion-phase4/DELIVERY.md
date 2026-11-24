@@ -16,13 +16,15 @@ Source files only. The original atlases, game.js, runtime art, tests and release
 - Preserve enemy facing, origin, display size, hitboxes, lazy loading and old visual fallbacks. No asset is registered or loaded at boot by this delivery.
 - PREVIEW.gif uses normalized timing for comparison and does not prescribe runtime speed. Mechanical QA does not replace the owner's phone review of appearance and motion.
 
-## Delivered
+## Delivered — updated 2026-11-24
 
-2026-11-23: 45 of 47 sheets / 360 frames delivered, every delivered sheet passes exact dimensions/grid, real RGBA alpha, nonempty distinct frames, >=4% transparent safety margins (at least 2px), and median silhouette height ratio 0.95–1.05. Reference attack/windup aliases are recorded separately from the asset count.
+47 of 47 PNG32 sheets / 376 frames delivered. No missing files. All retain the original mechanical criteria: exact grid, real RGBA alpha, nonempty distinct frames, >=4% transparent margins per axis (minimum 2px), median reference silhouette-height ratio 0.95–1.05. Original 45 delivered PNG SHA256 values are unchanged.
 
-## Missing after two attempts
+## Final two corrective sheets
 
-- e_ant_drone__attack8.png — ('height ratio', 0.9060402684563759); two generation attempts; not delivered.
-- c24_equinox__attack8.png — ('height ratio', 0.9236453201970444); two generation attempts; not delivered.
+The initial 2026-11-23 delivery had two reported exceptions after two attempts. On 2026-11-24 the owner explicitly requested finishing the remaining art. A fresh corrective request re-posed the wing/arm spread instead of shrinking the bodies or lowering QA thresholds. Both passed on the first generation in this fix run (cumulative attempt3).
 
-Generation stops for these files under the owner’s two-attempt rule. Keep their existing atlas clips until a future approved fix. No failed PNG is included in the delivery. QA_REPORT.json contains all 47 outcomes, and PROMPTS.json includes the actual final attempt for both missing files.
+- e_ant_drone__attack8.png — bodyHeightRatio 1.0134, minimum empty margin 7px, 96px native cells. Attack and windup reuse the same eight poses with separate original/suggested rates.
+- c24_equinox__attack8.png — bodyHeightRatio 1.0000, minimum empty margin 19px, 256px native cells.
+
+PROMPTS preserves the previous failed prompt records under previousAttempt and records the exact successful corrective prompts. QA_REPORT contains 47 passing entries, retaining the two old failure reasons as history. Current status: delivered complete, awaiting code integration and owner phone review. Runtime art and game logic remain unchanged.
