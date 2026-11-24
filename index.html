@@ -46,11 +46,12 @@
   #game-loader .fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#91d9c2,#e8dab4);
     box-shadow:none;transition:width .18s ease;}
   #game-loader .status{white-space:pre-line;}
+  #load-cover{display:none;position:absolute;inset:0;z-index:0;background:#120d18;} #load-cover img{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:min(92vw,420px);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.6);opacity:.95;} #load-cover-title{position:absolute;left:0;right:0;top:calc(42% + min(46vw,210px) + 12px);text-align:center;font:700 20px sans-serif;color:#ffe6f1;text-shadow:0 2px 6px #000;} #game-loader.stage-cover #load-cover{display:block;} #game-loader.stage-cover .card{position:absolute;bottom:9vh;z-index:1;} #game-loader.stage-cover .kitchen{display:none;}   /* v8.2.83 หน้าโหลดเข้าด่าน: ภาพปกด่าน + Tip */
   #game-loader .percent{margin-top:8px;font-size:13px;font-weight:500;color:#d2c8d8;}
 </style>
 <script>
   window.GameLoader = {
-    TIPS:['Dash makes you briefly invincible — dash through enemy attacks.','Red circles on the ground explode — step out fast.','Pick cards that boost your main attack early.','Elites drop more EXP and loot — hunt them down.','Grab hearts when HP is low; magnets pull in every EXP orb.','Your Unique skill charges over time — save it for bosses.','Higher difficulty gives better rewards.','Spend Sugar in the Temple to grow stronger between runs.','Keep moving — standing still lets the swarm surround you.','Watch the mission text above your hero to know what to do.'],
+    TIPS:['Dash out of a red circle at the last moment for a Perfect Dodge!','Big missions are optional chaos — the stage moves on when the main goal is done.','Bosses change tactics at 60% and 30% HP — watch for the warning.','Each stage remembers your best stars — come back stronger for 3 stars.','Dash makes you briefly invincible — dash through enemy attacks.','Red circles on the ground explode — step out fast.','Pick cards that boost your main attack early.','Elites drop more EXP and loot — hunt them down.','Grab hearts when HP is low; magnets pull in every EXP orb.','Your Unique skill charges over time — save it for bosses.','Higher difficulty gives better rewards.','Spend Sugar in the Temple to grow stronger between runs.','Keep moving — standing still lets the swarm surround you.','Watch the mission text above your hero to know what to do.'],
     _introDone:false,
     _introFinished:false,
     _introTimer:null,
@@ -66,6 +67,7 @@
     // แสงกลางจอเริ่มโผล่ (48% ของฉากเปิด) → เริ่มเพลงเมนูได้
     lightOn:function(){if(this._lightOn)return;this._lightOn=true;window.dispatchEvent(new Event('mochi-intro-light'));},
     skipIntro:function(){var root=document.getElementById('game-loader');if(this._introDone&&root&&root.classList.contains('opening'))this.finishIntro();},
+    stageCover:function(url,title){var root=document.getElementById('game-loader'),img=document.getElementById('load-cover-img'),tt=document.getElementById('load-cover-title');if(!root||!img)return;if(url){img.src=url;root.classList.add('stage-cover');this._minUntil=performance.now()+800;}else root.classList.remove('stage-cover');if(tt)tt.textContent=title||'';},
     show:function(label,progress){
       var root=document.getElementById('game-loader');
       if(!root)return;
@@ -84,7 +86,8 @@
       if(pct)pct.textContent=Math.round(p*100)+'%';
       if(status&&!this._tipT){var T=this.TIPS,me=this,i=Math.floor(Math.random()*T.length);status.textContent='💡 '+T[i];this._tipT=setInterval(function(){i=(i+1)%T.length;var el=document.getElementById('load-status');if(el)el.textContent='💡 '+T[i];},4000);}
     },
-    hide:function(){this._visibilityToken=(this._visibilityToken||0)+1;clearInterval(this._tipT);this._tipT=null;
+    hide:function(){var wait=(this._minUntil||0)-performance.now();if(wait>0){var me=this;clearTimeout(this._minT);this._minT=setTimeout(function(){me._minUntil=0;me.hide();},wait);return;}   /* v8.2.83 หน้าโหลดเข้าด่านโชว์อย่างน้อย 0.8 วิ */
+      this._visibilityToken=(this._visibilityToken||0)+1;clearInterval(this._tipT);this._tipT=null;var rc=document.getElementById('game-loader');if(rc)setTimeout(function(){if(rc.style.opacity==='0')rc.classList.remove('stage-cover');},260);
       var root=document.getElementById('game-loader');
       if(!root)return;
       if(!this._introDone && root.classList.contains('intro-mode')){
@@ -150,6 +153,7 @@
     <div class="k-transition-light"></div><div class="k-menu-light"></div>
   </div>
   <button id="entry-skip" type="button" onclick="window.GameLoader.skipIntro()">Skip intro ›</button>
+  <div id="load-cover" aria-hidden="true"><img id="load-cover-img" alt=""><div id="load-cover-title"></div></div>
   <div class="card">
     <div class="status" id="load-status">💡 Keep moving — standing still lets the swarm surround you.</div>
     <div class="track"><div class="fill" id="load-fill"></div></div>
