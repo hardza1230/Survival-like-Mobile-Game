@@ -9,7 +9,7 @@
 |---|---|---|---|---|---|---|
 | 1 | `docs/art_orders/95_BOSS_TWISTS.md` | ลูกเล่นบอส 5 แบบ + ไอคอน/แถบ | 15 | ImageGen | `assets/incoming/twist95/` | 🟡 รออาร์ต |
 | 2 | `docs/art_orders/94_MISSION_ROOT_FOG_RIFT.md` | Crown Root · Clear the Fog · Abyss Brute · Seed Rift เตือน · ป้าย Perfect/Combo | 14 | ImageGen | `assets/incoming/mission94/` | 🟡 รออาร์ต |
-| 3 | `docs/audio_orders/A21_BOSS_TWISTS_ROOT_RIFT.md` | SFX 21 + Ruby 8 (บทรอเจ้าของอนุมัติก่อนทำเสียงพูด) | 29 | ElevenLabs | `assets/incoming/audio_a21/` | 🟡 รอเสียง |
+| 3 | `docs/audio_orders/A22_BOSS_TWISTS_ROOT_RIFT.md` | SFX 21 + Ruby 8 (บทรอเจ้าของอนุมัติก่อนทำเสียงพูด) | 29 | ElevenLabs | `assets/incoming/audio_a22/` | 🟡 รอเสียง |
 
 ## ส่งและผูกเข้าเกมแล้ว (ไม่ต้องทำซ้ำ)
 - ใบ 92/93 (v8.2.55) · รอ QA มือถือ

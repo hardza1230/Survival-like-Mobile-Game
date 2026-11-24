@@ -25,7 +25,9 @@
 | `A18_RUBY_EVENTS_ATLAS_SFX.md` | Ruby new events8 + reroll/golden/Double Clear/boss/Pact/Atlas SFX10 | 18 | 🟢 ผูกแล้ว v8.2.31 · รอฟังบนมือถือ |
 | `A19_EXPEDITION_SFX.md` | Temple Expedition: SFX17 + music2 + saved Ruby4 | 23 | 🟢 ผูกแล้ว v8.2.34 · รอฟังบนมือถือ |
 | `A20_RUBY_STAGE_ENTRY.md` | ม่านเข้าด่าน: SFX 7 (ม่าน/เดินทาง/สติงเกอร์ 3 บท + บอส) + Ruby แนะนำด่าน 15 + เล่นซ้ำ 4 | 26 | ✅ ผูกแล้ว v8.2.84 (ส่งครบ 26) · รอ QA มือถือ |
-| `A21_BOSS_TWISTS_ROOT_RIFT.md` | ลูกเล่นบอส 5 + รอด · Crown Root (มุด/เตือน/พุ่ง/หินแตก/Perfect/combo/ตีหัว/ระเบิด) · Seed Rift เหตุการณ์ 4 · Ruby 8 | 29 | 🟡 รอเสียง · บท Ruby รอเจ้าของอนุมัติ |
+| `A22_BOSS_TWISTS_ROOT_RIFT.md` | ลูกเล่นบอส 5 + รอด · Crown Root (มุด/เตือน/พุ่ง/หินแตก/Perfect/combo/ตีหัว/ระเบิด) · Seed Rift เหตุการณ์ 4 · Ruby 8 | 29 | 🟡 รอเสียง · บท Ruby รอเจ้าของอนุมัติ |
+
+| `A21_COMBAT_ATTACK_IMPACTS.md` | เสียงโจมตีประจำฮีโร่ 45 + เสียงกระทบวัสดุ/คริติคอล 24 · variations | 69 | 📦 ส่งครบ 69 · รอผูก |
 
 ## กติการ่วม (ทุกใบ)
 - ทำด้วย **AI สร้างเสียง (เช่น ElevenLabs SFX/Music แบบ instrumental)** หรือ **สคริปต์สร้างเสียงด้วยโค้ด** (`scripts/gen_*_sfx.py`, jsfxr) — เลือกตามความเหมาะสมของแต่ละเสียง · **ห้ามเลียนแบบเพลง/ศิลปิน/เกมที่มีอยู่จริง** · ห้ามเสียงพูดเป็นคำ (ยกเว้นระบุ)
@@ -59,3 +61,7 @@ A04 music and A07 current voice catalogue were wired into existing game flows. C
 ## Delivery A20 — 2026-11-24
 
 26/26 source MP3 files delivered in `assets/incoming/audio_a20/`: seven direct ElevenLabs Sound Effects and nineteen Ruby TTS lines using the existing A07 voice. All mechanical checks pass, exact text verified; no missing files. Branch `asset-delivery/audio-a20`. Runtime packing/wiring and owner phone listening remain separate.
+
+## Delivery A21 — 2026-11-24
+
+69/69 independently generated ElevenLabs Sound Effects source masters delivered in `assets/incoming/audio_combat_a21/`; all mechanical checks pass. Attack variations 45 + material/critical hits 24. No missing files. Branch `asset-delivery/combat-sfx-a21`. No runtime edits or release; wiring and owner phone listening remain separate.
