@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.84';
+const GAME_VERSION = '8.2.85';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.85',date:'2026-11-24',title:'🔊 Attack and hit sounds vary every time',items:['Each hero attack now has three sound variations that rotate','Hits sound different on soft, armored, icy, plant and crystal monsters','Critical hits have their own new sound']},
   {v:'8.2.84',date:'2026-11-24',title:'🎞️ Smoother boss, menu and Expedition animation · 🔊 Ruby leads you into each stage',items:['Chapter 3 and Pinnacle boss effects, boss shots and counter rings now animate in 8–12 frames','Ruby, Expedition heroes and lobby buttons animate more smoothly','Ruby now speaks and the curtain has sound when you enter a stage']},
   {v:'8.2.83',date:'2026-11-24',title:'⚡ Spark volley · ⚠️ Boss twists · 🌀 Seed Rift event · 🖼️ Stage loading cover',items:['Taro Storm Mark fires all Sparks at once straight at the target','Bosses in Chapters 2 and 3 now throw twists at 60% and 30% HP instead of missions','Seed Rift is now a random event that can tear open in any Chapter 2–3 wave','Stage loading shows the stage picture and tips']},
   {v:'8.2.82',date:'2026-11-24',title:'🧹 Old stage art is freed before the next stage',items:['Art from stages you already left is freed before the next stage loads','If an image fails to load, unused art is freed so it can load again']},
@@ -1692,8 +1693,11 @@ const Sfx = {
     return this.muted;
   },
   _ok(key,gap){ const t=(this.ctx?this.ctx.currentTime:0); if((this._last[key]||-9)+gap>t)return false; this._last[key]=t; return true; },
+  /* v8.2.85 A21: สุ่มเสียงแบบต่าง ๆ ของ family เดียวกัน ไม่ซ้ำติดกัน · เฉพาะไฟล์ที่โหลดแล้ว (ไม่มี = ใช้เสียงเดิม) */
+  a21Pick(fam){ const n=typeof A21_FAMS!=='undefined'&&A21_FAMS[fam];if(!n)return null;const c=window.__g?.cache?.audio;if(!c)return null;const L=this._a21Last||(this._a21Last={}),ok=[];for(let i=1;i<=n;i++){const k='sfx_a21_'+fam+'_'+i;if(c.exists(k)&&(k!==L[fam]||n===1))ok.push(k);}if(!ok.length)return null;const k=ok[Math.floor(Math.random()*ok.length)];L[fam]=k;return k; },
+  a21(fam,vol=.3,gap=.08){ if(this.muted||this.sv<=0)return true;const k=this.a21Pick(fam);if(!k)return false;if(!this._ok('a21_'+fam.replace(/_\w+$/,''),gap))return true;return this.playFile(k,vol,1); },
   playFile(key, vol=0.5, rate){
-    if(this.muted||this.sv<=0)return false;if(typeof VoiceActing!=='undefined'&&VoiceActing.active?.sound?.isPlaying)vol*=.7;
+    if(this.muted||this.sv<=0)return false; { const fam=typeof A21_REF!=='undefined'?(A21_REF[key]||(key==='sfx_shoot'&&this.hero==='momo'?'momo_ricochet':null)):null; if(fam){ const v=this.a21Pick(fam); if(v){ key=v; rate=1; } } }if(typeof VoiceActing!=='undefined'&&VoiceActing.active?.sound?.isPlaying)vol*=.7;
     try{const g=window.__g; if(g&&g.cache&&g.cache.audio&&g.cache.audio.exists(key)){
       const now=performance.now(); this._live=this._live.filter(x=>x.end>now);
       const uq=key.startsWith('sfx_uq_')||key.startsWith('sfx_punch')||key.startsWith('sfx_cocoa_');   /* v7.6.3 หมัด Cocoa ถี่สุด เคยโดนเพดานรวมตัดเงียบตอนชุลมุน */ if((!uq&&this._live.length>=10)||this._live.filter(x=>x.k===key).length>=3)return true;   // v6.82.1 Unique ไม่โดนตัดจากเพดานเสียงรวม   // จำกัดเสียงซ้อน กันเสียงแตกตอนมอนตายเป็นฝูง (true = ไม่ fallback ไป synth)
@@ -1737,7 +1741,7 @@ const Sfx = {
   streak(step){if(this.playFile('sfx_streak_real',0.32,1+Math.min(0.5,(step||0)*0.06)))return;const base=540+step*150;this.tone(base,0.10,'triangle',0.075,base+300);this.tone(base*1.5,0.11,'sine',0.05,base*1.5+240,0.05);},   // เสียงคอมโบ pitch สูงขึ้นตามสเต็ป
   xp(){ const t=this.ctx?this.ctx.currentTime:0; this._xpStep=(t-this._xpAt<0.7)?Math.min(12,this._xpStep+1):0; this._xpAt=t;   // ไล่โน้ตสูงขึ้นตอนเก็บต่อเนื่อง
     if(this._ok('xp',0.07)){const r=1+this._xpStep*0.045; if(!this.playFile('sfx_xp',0.16,r))this.tone(760*r,0.05,'sine',0.035,1020*r);}},
-  crit(){ if(!this._ok('crit',0.09))return; if(!this.playFile('sfx_crit',0.32))this.playFile('sfx_hit',0.30,1.25+Math.random()*0.1); if(!this.playFile('sfx_crit_accent_real',0.22))this.tone(1480,0.06,'triangle',0.045,2100); },   // คริ = เสียงตีสูง + ping
+  crit(){ if(!this._ok('crit',0.09))return; if(this.a21Pick&&this.a21('critical',.34,0))return; if(!this.playFile('sfx_crit',0.32))this.playFile('sfx_hit',0.30,1.25+Math.random()*0.1); if(!this.playFile('sfx_crit_accent_real',0.22))this.tone(1480,0.06,'triangle',0.045,2100); },   // คริ = เสียงตีสูง + ping
   bigKill(){ if(!this._ok('bigKill',0.18))return; this.duckBgm(260,0.7); if(!this.playFile('sfx_kill_big',0.34)&&!this.playFile('sfx_ult_bomb',0.30,1.15))this.tone(150,0.18,'sine',0.08,65); if(!this.playFile('sfx_bigkill_accent_real',0.3)){ this.tone(90,0.22,'sine',0.09,45); this.noise(0.12,0.05,0.02,true); } },   // ฆ่าตัวใหญ่ = ซ้อน 3 ชั้น
   setVolumes(mv,sv){ this.mv=mv; this.sv=sv;if(typeof VoiceActing!=='undefined'&&VoiceActing.active?.sound){if(sv<=0)VoiceActing.stop();else VoiceActing.active.sound.setVolume(.65*sv);}if(sv<=0)this.eventLoopStop();else for(const snd of Object.values(this._eventLoops||{}))snd.setVolume((snd._sfxBaseVolume??.16)*sv); if(this._bgmGain)this._bgmGain.gain.value=0.5*mv; this.bgmIntense(this._bgmIntense); },
   hurt(){if(this._ok('hurt',0.42)){this.duckBgm(300,0.68);if(!this.playFile('sfx_hurt',0.36,0.96+Math.random()*0.08)&&!this.playFile('sfx_hit',0.42))this.tone(270,0.14,'triangle',0.09,120);}},
@@ -4701,6 +4705,75 @@ const ASSET_AUDIO = {
   bgm_m_frozen_still: 'assets/audio/bgm/missions_a17/bgm_m_frozen_still.mp3',
   /* v8.2.34 A19 Temple Expedition */
   bgm_ex_expedition: 'assets/audio/bgm/expedition_a19/bgm_ex_expedition.mp3',
+  sfx_a21_momo_ricochet_1: 'assets/audio/sfx/a21/sfx_a21_momo_ricochet_1.mp3',
+  sfx_a21_momo_ricochet_2: 'assets/audio/sfx/a21/sfx_a21_momo_ricochet_2.mp3',
+  sfx_a21_momo_ricochet_3: 'assets/audio/sfx/a21/sfx_a21_momo_ricochet_3.mp3',
+  sfx_a21_momo_sniper_1: 'assets/audio/sfx/a21/sfx_a21_momo_sniper_1.mp3',
+  sfx_a21_momo_sniper_2: 'assets/audio/sfx/a21/sfx_a21_momo_sniper_2.mp3',
+  sfx_a21_momo_sniper_3: 'assets/audio/sfx/a21/sfx_a21_momo_sniper_3.mp3',
+  sfx_a21_momo_shotgun_1: 'assets/audio/sfx/a21/sfx_a21_momo_shotgun_1.mp3',
+  sfx_a21_momo_shotgun_2: 'assets/audio/sfx/a21/sfx_a21_momo_shotgun_2.mp3',
+  sfx_a21_momo_shotgun_3: 'assets/audio/sfx/a21/sfx_a21_momo_shotgun_3.mp3',
+  sfx_a21_mint_needle_1: 'assets/audio/sfx/a21/sfx_a21_mint_needle_1.mp3',
+  sfx_a21_mint_needle_2: 'assets/audio/sfx/a21/sfx_a21_mint_needle_2.mp3',
+  sfx_a21_mint_needle_3: 'assets/audio/sfx/a21/sfx_a21_mint_needle_3.mp3',
+  sfx_a21_mint_shard_1: 'assets/audio/sfx/a21/sfx_a21_mint_shard_1.mp3',
+  sfx_a21_mint_shard_2: 'assets/audio/sfx/a21/sfx_a21_mint_shard_2.mp3',
+  sfx_a21_mint_shard_3: 'assets/audio/sfx/a21/sfx_a21_mint_shard_3.mp3',
+  sfx_a21_cocoa_firefist_1: 'assets/audio/sfx/a21/sfx_a21_cocoa_firefist_1.mp3',
+  sfx_a21_cocoa_firefist_2: 'assets/audio/sfx/a21/sfx_a21_cocoa_firefist_2.mp3',
+  sfx_a21_cocoa_firefist_3: 'assets/audio/sfx/a21/sfx_a21_cocoa_firefist_3.mp3',
+  sfx_a21_cocoa_finisher_1: 'assets/audio/sfx/a21/sfx_a21_cocoa_finisher_1.mp3',
+  sfx_a21_cocoa_finisher_2: 'assets/audio/sfx/a21/sfx_a21_cocoa_finisher_2.mp3',
+  sfx_a21_cocoa_finisher_3: 'assets/audio/sfx/a21/sfx_a21_cocoa_finisher_3.mp3',
+  sfx_a21_cocoa_rocket_1: 'assets/audio/sfx/a21/sfx_a21_cocoa_rocket_1.mp3',
+  sfx_a21_cocoa_rocket_2: 'assets/audio/sfx/a21/sfx_a21_cocoa_rocket_2.mp3',
+  sfx_a21_cocoa_rocket_3: 'assets/audio/sfx/a21/sfx_a21_cocoa_rocket_3.mp3',
+  sfx_a21_cocoa_titan_1: 'assets/audio/sfx/a21/sfx_a21_cocoa_titan_1.mp3',
+  sfx_a21_cocoa_titan_2: 'assets/audio/sfx/a21/sfx_a21_cocoa_titan_2.mp3',
+  sfx_a21_cocoa_titan_3: 'assets/audio/sfx/a21/sfx_a21_cocoa_titan_3.mp3',
+  sfx_a21_taro_arc_1: 'assets/audio/sfx/a21/sfx_a21_taro_arc_1.mp3',
+  sfx_a21_taro_arc_2: 'assets/audio/sfx/a21/sfx_a21_taro_arc_2.mp3',
+  sfx_a21_taro_arc_3: 'assets/audio/sfx/a21/sfx_a21_taro_arc_3.mp3',
+  sfx_a21_taro_spark_1: 'assets/audio/sfx/a21/sfx_a21_taro_spark_1.mp3',
+  sfx_a21_taro_spark_2: 'assets/audio/sfx/a21/sfx_a21_taro_spark_2.mp3',
+  sfx_a21_taro_spark_3: 'assets/audio/sfx/a21/sfx_a21_taro_spark_3.mp3',
+  sfx_a21_sesame_flare_1: 'assets/audio/sfx/a21/sfx_a21_sesame_flare_1.mp3',
+  sfx_a21_sesame_flare_2: 'assets/audio/sfx/a21/sfx_a21_sesame_flare_2.mp3',
+  sfx_a21_sesame_flare_3: 'assets/audio/sfx/a21/sfx_a21_sesame_flare_3.mp3',
+  sfx_a21_lime_arrow_1: 'assets/audio/sfx/a21/sfx_a21_lime_arrow_1.mp3',
+  sfx_a21_lime_arrow_2: 'assets/audio/sfx/a21/sfx_a21_lime_arrow_2.mp3',
+  sfx_a21_lime_arrow_3: 'assets/audio/sfx/a21/sfx_a21_lime_arrow_3.mp3',
+  sfx_a21_pomelo_punch_1: 'assets/audio/sfx/a21/sfx_a21_pomelo_punch_1.mp3',
+  sfx_a21_pomelo_punch_2: 'assets/audio/sfx/a21/sfx_a21_pomelo_punch_2.mp3',
+  sfx_a21_pomelo_punch_3: 'assets/audio/sfx/a21/sfx_a21_pomelo_punch_3.mp3',
+  sfx_a21_bloodorange_spell_1: 'assets/audio/sfx/a21/sfx_a21_bloodorange_spell_1.mp3',
+  sfx_a21_bloodorange_spell_2: 'assets/audio/sfx/a21/sfx_a21_bloodorange_spell_2.mp3',
+  sfx_a21_bloodorange_spell_3: 'assets/audio/sfx/a21/sfx_a21_bloodorange_spell_3.mp3',
+  sfx_a21_hit_mochi_1: 'assets/audio/sfx/a21/sfx_a21_hit_mochi_1.mp3',
+  sfx_a21_hit_mochi_2: 'assets/audio/sfx/a21/sfx_a21_hit_mochi_2.mp3',
+  sfx_a21_hit_mochi_3: 'assets/audio/sfx/a21/sfx_a21_hit_mochi_3.mp3',
+  sfx_a21_hit_mochi_4: 'assets/audio/sfx/a21/sfx_a21_hit_mochi_4.mp3',
+  sfx_a21_hit_armor_1: 'assets/audio/sfx/a21/sfx_a21_hit_armor_1.mp3',
+  sfx_a21_hit_armor_2: 'assets/audio/sfx/a21/sfx_a21_hit_armor_2.mp3',
+  sfx_a21_hit_armor_3: 'assets/audio/sfx/a21/sfx_a21_hit_armor_3.mp3',
+  sfx_a21_hit_armor_4: 'assets/audio/sfx/a21/sfx_a21_hit_armor_4.mp3',
+  sfx_a21_hit_ice_1: 'assets/audio/sfx/a21/sfx_a21_hit_ice_1.mp3',
+  sfx_a21_hit_ice_2: 'assets/audio/sfx/a21/sfx_a21_hit_ice_2.mp3',
+  sfx_a21_hit_ice_3: 'assets/audio/sfx/a21/sfx_a21_hit_ice_3.mp3',
+  sfx_a21_hit_ice_4: 'assets/audio/sfx/a21/sfx_a21_hit_ice_4.mp3',
+  sfx_a21_hit_plant_1: 'assets/audio/sfx/a21/sfx_a21_hit_plant_1.mp3',
+  sfx_a21_hit_plant_2: 'assets/audio/sfx/a21/sfx_a21_hit_plant_2.mp3',
+  sfx_a21_hit_plant_3: 'assets/audio/sfx/a21/sfx_a21_hit_plant_3.mp3',
+  sfx_a21_hit_plant_4: 'assets/audio/sfx/a21/sfx_a21_hit_plant_4.mp3',
+  sfx_a21_hit_crystal_1: 'assets/audio/sfx/a21/sfx_a21_hit_crystal_1.mp3',
+  sfx_a21_hit_crystal_2: 'assets/audio/sfx/a21/sfx_a21_hit_crystal_2.mp3',
+  sfx_a21_hit_crystal_3: 'assets/audio/sfx/a21/sfx_a21_hit_crystal_3.mp3',
+  sfx_a21_hit_crystal_4: 'assets/audio/sfx/a21/sfx_a21_hit_crystal_4.mp3',
+  sfx_a21_critical_1: 'assets/audio/sfx/a21/sfx_a21_critical_1.mp3',
+  sfx_a21_critical_2: 'assets/audio/sfx/a21/sfx_a21_critical_2.mp3',
+  sfx_a21_critical_3: 'assets/audio/sfx/a21/sfx_a21_critical_3.mp3',
+  sfx_a21_critical_4: 'assets/audio/sfx/a21/sfx_a21_critical_4.mp3',
   sfx_a20_curtain_in: 'assets/audio/sfx/a20/sfx_a20_curtain_in.mp3',
   sfx_a20_steps: 'assets/audio/sfx/a20/sfx_a20_steps.mp3',
   sfx_a20_title_ch1: 'assets/audio/sfx/a20/sfx_a20_title_ch1.mp3',
@@ -9558,6 +9631,9 @@ function missionSeenMap(){ const d=(typeof Save!=='undefined'&&Save.data)||{},o=
 const MISSION_REWARDS={fill:['transmute',1],survive:['transmute',1],hunt:['gear',1],purge:['transmute',1],capture:['transmute',2],cleanAir:['transmute',1],defendNectar:['transmute',2],seasonCycle:['starsugar',1],breakRoots:['recipeink',1],seedRift:['transmute',3],shakeTrees:['transmute',2],mirrorPath:['recipeink',1],vaultAltar:['gear',1],lastLight:['transmute',2],ultimatum:['starsugar',1],frozenPantry:['transmute',3],hungersMouth:['starsugar',1],creepingRoots:['transmute',2],hungerHerald:['recipeink',1],grandmasPot:['recipeink',2],grandmasGolem:['gear',1],hungerSiege:['starsugar',1],hungerDomain:['starsugar',2]};
 /* v8.2.27 ความยากของภารกิจไว้เรียงเวฟ ง่าย→ยาก (1 ทั่วไป · 2 ภารกิจประจำด่าน · 3 ภารกิจใหญ่) */
 /* v8.2.28 SCAMPER รอบ 2 */
+const A21_FAMS={"momo_ricochet":3,"momo_sniper":3,"momo_shotgun":3,"mint_needle":3,"mint_shard":3,"cocoa_firefist":3,"cocoa_finisher":3,"cocoa_rocket":3,"cocoa_titan":3,"taro_arc":3,"taro_spark":3,"sesame_flare":3,"lime_arrow":3,"pomelo_punch":3,"bloodorange_spell":3,"hit_mochi":4,"hit_armor":4,"hit_ice":4,"hit_plant":4,"hit_crystal":4,"critical":4};   /* v8.2.85 เสียงโจมตี/ตีโดนแบบสุ่ม (A21) */
+const A21_REF={sfx_strawberry_sniper_shot:'momo_sniper',sfx_shotgun:'momo_shotgun',sfx_mint_lance_launch:'mint_needle',sfx_mint_barrage_volley:'mint_shard',sfx_cocoa_fire_fist:'cocoa_firefist',sfx_cocoa_fire_finisher:'cocoa_finisher',sfx_cocoa_rocket_launch:'cocoa_rocket',sfx_cocoa_titan_slam:'cocoa_titan',sfx_taro_chain:'taro_arc',sfx_yz_arrow:'lime_arrow',sfx_yz_bite:'pomelo_punch',sfx_yz_orb:'bloodorange_spell'};
+const A21_HERO={momo:['momo_ricochet','momo_sniper','momo_shotgun'],mint:['mint_needle','mint_shard'],cocoa:['cocoa_firefist','cocoa_finisher','cocoa_rocket','cocoa_titan'],taro:['taro_arc','taro_spark'],sesame:['sesame_flare'],yuzu:['lime_arrow','pomelo_punch','bloodorange_spell']};
 const SR_EVENT_ON=true,SR_EVENT_FROM=5,SR_EVENT_HOME=10,SR_EVENT_CHANCE=[.15,.35],SR_EVENT_AT=[8,20],SR_EVENT_DUR=20,SR_EVENT_PULL=35,SR_EVENT_GAP=1.6,SR_EVENT_SPILL=2;   /* v8.2.83 Seed Rift = เหตุการณ์สุ่ม */
 const BOSS_TWIST_ON=true,BOSS_TWIST_AT=[.6,.3],BOSS_TWIST_DUR=15,BOSS_TWIST_RATE={roots:1.4,seeds:1.5,fruit:1.3},BOSS_SEED_HATCH=3,BOSS_DARK_SPD=1.3,BOSS_SHADOWS=3,BOSS_TWIST_SUGAR=[4,.8],BOSS_TWIST_BOX=true;   /* v8.2.83 ลูกเล่นบอส (แทนภารกิจบอส) */
 const BOSS_TWIST={5:['roots','fruit'],6:['seeds','dark'],7:['fruit','roots'],8:['dark','seeds'],9:['roots','shadows'],10:['seeds','fruit'],11:['dark','roots'],12:['shadows','seeds'],13:['fruit','dark'],14:['roots','shadows']};
@@ -10164,6 +10240,8 @@ class Game extends Phaser.Scene {
     return this.texEvict((k,c)=>c==='menu'||(c==='hero'&&artHero(k)!==ch)||(c==='endgame'&&!eg)||(!!keep&&c==='stage'&&!keep.has(k)),null); }
   /* v8.2.82 เจ้าของ: เล่นไปสักพักเกมใช้ภาพสำรอง (หน่วยความจำเต็ม) → ก่อนโหลดด่านถัดไป คืนภาพของด่านอื่นที่ไม่ใช้ (เดิมสะสมทุกด่านที่เคยเล่น) */
   stageLoadCover(idx){ try{ const k='stage_card_s'+String((idx|0)+1).padStart(2,'0'),u=ASSET_IMAGES[k],st=STAGES[idx]; if(u&&window.GameLoader?.stageCover)window.GameLoader.stageCover(verUrl(u),st?((st.emoji||'')+' '+(st.en||st.name||'')).trim():''); }catch(e){} }   /* v8.2.83 เจ้าของ: หน้าโหลดเข้าด่าน = ภาพปกด่าน (DOM ไม่กิน GPU ของเกม) + Tip */
+  /* v8.2.85 A21: วัสดุของมอนสำหรับเสียงตีโดน (เดาจากชนิด/ด่าน · ไม่มีผลกับดาเมจ) */
+  a21Mat(e){ if(!e)return 'mochi'; if(e.isElite||e.isMini||e._a21Armor||e.siege)return 'armor'; const si=this.stageIndex||0; return si===3?'ice':(si>=5&&si<=10)?'plant':(si===12||si===13||si===14)?'crystal':'mochi'; }
   texStageKeep(idx){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),keep=new Set(this.stageArtKeys(idx)); const crit=(k,u)=>!bootKeep(k)&&!MENU_ONLY_RE.test(u||'')&&stageCritical(k,u,ch,eg);   /* = กลุ่มภาพหลักที่ ensureStageArt โหลดทุกด่าน (ไม่รวม deferred/STAGE_SHEET_KEYS) */
     for(const k in ASSET_IMAGES)if(!k.startsWith('screen_')&&!deferredImage(k)&&crit(k,ASSET_IMAGES[k]))keep.add(k); for(const k in ASSET_SHEETS)if(!STAGE_SHEET_KEYS.has(k)&&crit(k,ASSET_SHEETS[k].url))keep.add(k); return keep; }
   texFreeStages(idx){ try{ const keep=this.texStageKeep(idx),n=this.texEvict((k,c)=>c==='stage'&&!keep.has(k),null); if(n)this._texFreedStages=(this._texFreedStages||0)+n; return n; }catch(e){ return 0; } }
@@ -15225,7 +15303,8 @@ class Game extends Phaser.Scene {
     const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage)].filter(Boolean);
     this.evictOtherBgm?.([...keys,bgmKeyFor('mini',stage),bgmKeyFor('boss',stage)]);
     if((this.character||Save.data.character)==='yuzu')keys.push(...Object.keys(ASSET_AUDIO).filter(k=>k.startsWith('sfx_yz_')));
-    keys.push(...Object.keys(ASSET_AUDIO).filter(k=>k.startsWith('sfx_a20_')));   /* v8.2.84 A20 ม่านเข้าด่าน (~70 KB) */   // v6.92 คืนแรมเพลงด่านอื่น   // เข้าเกมทันทีเมื่อเพลงด่านพร้อม
+    keys.push(...Object.keys(ASSET_AUDIO).filter(k=>k.startsWith('sfx_a20_')));
+    { const hc=this.character||Save.data.character||'momo',fs=[...((typeof A21_HERO!=='undefined'&&A21_HERO[hc])||[]),'hit_mochi','hit_armor','hit_ice','hit_plant','hit_crystal','critical']; keys.push(...Object.keys(ASSET_AUDIO).filter(k=>fs.some(f=>k.startsWith('sfx_a21_'+f+'_')))); if(typeof Sfx!=='undefined')Sfx.hero=hc; }   /* v8.2.85 A21 เฉพาะฮีโร่ที่เล่น + เสียงตีโดน (~150 KB) */   /* v8.2.84 A20 ม่านเข้าด่าน (~70 KB) */   // v6.92 คืนแรมเพลงด่านอื่น   // เข้าเกมทันทีเมื่อเพลงด่านพร้อม
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
     // v6.45: รอเฉพาะไฟล์เพลงของด่าน (เดิมรอ loader 'complete' = รอของเบื้องหลังทั้งหมด) · ช้าเกิน 8 วิ = เข้าด่านก่อน เพลงตามมาทีหลัง
     const loader=window.GameLoader,t0=Date.now();let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
@@ -19999,7 +20078,7 @@ class Game extends Phaser.Scene {
   // Presentation owns no damage, targeting, charge or gameplay timers.
   taroTrackVisual(fx,duration=.2){const t=this._taro;if(!t?.enabled){fx?.destroy();return null;}fx._taroLife=duration;fx._taroDuration=duration;fx._taroBaseAlpha=fx.alpha??1;t.fx.add(fx);return fx;}
   taroVisualBudget(own=false){const t=this._taro;if(!t?.enabled||this.state!=='play')return false;return [...t.fx].filter(fx=>fx._taroLife>0).length<20&&(own||this.fxOk());}
-  taroSound(kind){Sfx.bp?.('taro_'+({spark:'chain',deploy:'smite',beacon:'ready'}[kind]||kind),kind==='ready'?.28:.32,kind==='chain'?.18:kind==='smite'?.22:.25,1);return true;}
+  taroSound(kind){if(kind==='spark'&&Sfx.a21?.('taro_spark',.3,.25))return true;Sfx.bp?.('taro_'+({spark:'chain',deploy:'smite',beacon:'ready'}[kind]||kind),kind==='ready'?.28:.32,kind==='chain'?.18:kind==='smite'?.22:.25,1);return true;}
   taroRing(x,y,radius,duration=.3){
     const t=this._taro;if(!t?.enabled)return;
     // Pending bombs are owned by the existing capped job, never a new fuse.
@@ -21362,6 +21441,7 @@ class Game extends Phaser.Scene {
     else if(type==='siege'){ e.hp=72*s;   /* v7.8.64 เจ้าของ: Siege ต้องไม่ถึกกว่า Tank → 90% ของ Tank (เดิม 260 = 3.3× Tank, C2-4 130) */ e.spd=24; e.dmg=18; e.xp=5; e.siege=true;   /* v7.8.65 ดาเมจชน = Tank · XP 10→5 */ e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
     const storyDmg=[1,1.082,1.171,1.267,1.371,1.483,1.605,1.736,1.879,2.033,2.199,2.38,2.689,3.038,3.433],dmgCurve=this.recipeMode?stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09)*(this.stageIndex===6?BALANCE.c2Mycelium.dmg:this.stageIndex===7?BALANCE.c2Nectar.dmg:this.stageIndex===8?BALANCE.c2Seasons.dmg:this.stageIndex===9?BALANCE.c2Root.dmg:1):(storyDmg[this.stageIndex]??storyDmg[14]*Math.pow(1.13,this.stageIndex-14));e.dmg=Math.max(1,Math.round(e.dmg*1.3/*v6.55.66 mob dmg*/*dmgCurve*pg.enemyDmg*this.diffMul().dmg));if(this.stageIndex>=10&&!this.recipeMode)e.spd*=1.08;   /* v7.8.65 เจ้าของ: Story ไต่ความยากสม่ำเสมอ HP ×1.29 / ดาเมจ ×1.082 ต่อด่าน · C3-3/C3-4/C3-5 ×1.40 / ×1.13 · ตัวคูณ C2 รวมในตารางแล้ว (Recipe ใช้สูตรเดิม) · C3 เดินเร็ว ×1.08 เท่า C2-5 */if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed;else if(this.stageIndex===7)e.spd*=BALANCE.c2Nectar.speed;else if(this.stageIndex===8)e.spd*=BALANCE.c2Seasons.speed;else if(this.stageIndex===9)e.spd*=BALANCE.c2Root.speed;if(this.recipeMode&&this.recipeHas('haste'))e.spd*=1.3;if(this.recipeMode&&this._amapInf&&this._amapInf.frosty)e.spd*=1-0.07*this._amapInf.frosty;if(this.recipeMode&&this._pact&&this._pact.speed)e.spd*=1+0.1*this._pact.speed;
+    e._a21Armor=type==='tank'||type==='siege';   /* v8.2.85 A21 เสียงตีโดนแบบเกราะ */
     if(this.stageIndex===0&&type!=='acid'){
       scale=(type==='tank'||type==='siege')?0.86:(type==='fast'||type==='dasher')?0.68:0.74;
       e.setCircle(type==='tank'||type==='siege'?25:20,type==='tank'||type==='siege'?23:28,type==='tank'||type==='siege'?23:28);
@@ -22929,7 +23009,7 @@ class Game extends Phaser.Scene {
   }
   clearSesRune(){const s=this._sesRune;if(s){s.actors.forEach(q=>{q.g?.destroy();q.images?.forEach(i=>i?.destroy());});s.flares?.forEach(f=>f.image?.destroy());s.fx?.forEach(f=>f.image?.destroy());s.orbSprites?.forEach(o=>o?.destroy());s.armIcon?.destroy?.();s.g?.destroy();}this._sesRune=null;this._sesRunePointers?.clear();this._sesRuneUI?.forEach(o=>o.setVisible(false));}
   sesRuneFireFlares(s,shot){
-    if(s!==this._sesRune||this.state!=='play')return;const p=this.player,t=this.sesRuneTarget(p.x,p.y,650),a=t?Math.atan2(t.y-p.y,t.x-p.x):Math.atan2(this.moveDir?.y||0,this.moveDir?.x||1);
+    if(s!==this._sesRune||this.state!=='play')return;if(!shot.echo)Sfx.a21?.('sesame_flare',.26,.12);const p=this.player,t=this.sesRuneTarget(p.x,p.y,650),a=t?Math.atan2(t.y-p.y,t.x-p.x):Math.atan2(this.moveDir?.y||0,this.moveDir?.x||1);
     for(let i=0;i<shot.count&&s.flares.length<18;i++){const angle=a+(i-(shot.count-1)/2)*(shot.empowered?.3:.16),image=this.sesRuneImage(3,p.x,p.y,shot.empowered?64:48,p.y+2,'flare');image?.setDisplaySize(shot.empowered?72:54,shot.empowered?38:28).setRotation(angle).setAlpha(shot.echo?.65:1);s.flares.push({x:p.x,y:p.y,angle,life:1.3,dmg:shot.dmg,radius:shot.radius,image});}
   }
   castSesRuneFlare(lvl,dm,basic){
@@ -23319,7 +23399,7 @@ class Game extends Phaser.Scene {
     if(this.usesStoryBudget?.())this.storyOnKillHealing();
     else if(this.player.lifesteal) this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifesteal);   // ดูดเลือด (พรสวรรค์)
     if(!this.usesStoryBudget?.()&&this.player.lifeOnKill&&(!this._lifeOnKillCd||this._lifeOnKillCd<=0)){this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.lifeOnKill*(this.player.healEffect||1));this._lifeOnKillCd=0.45;}
-    if(!big) Sfx.pop();
+    if(!big){ if(!Sfx.a21?.('hit_'+this.a21Mat(e),.22,.085))Sfx.pop(); }   /* v8.2.85 A21 เสียงตีโดนตามวัสดุ */
     // Bestiary: นับจำนวนที่ฆ่าตามชนิด
     const si=Math.min(STAGES.length-1,Math.max(0,this.stageIndex||0));   // v4.62: เดิม cap 5 → บอส/มินิ C2-2..C2-5 ถูกนับเป็นของ C2-1
     const btype=this.bestiaryKey(e);

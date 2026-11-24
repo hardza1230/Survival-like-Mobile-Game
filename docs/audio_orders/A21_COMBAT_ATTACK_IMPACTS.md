@@ -1,6 +1,6 @@
 # A21 — Hero attack and material-hit variations
 
-สถานะ: 📦 ส่งครบ 69 · รอผูก · 24 พ.ย. 2026
+สถานะ: ✅ ผูกแล้ว v8.2.85 (สุ่มเสียงใน `Sfx.playFile` · โหลดของฮีโร่ที่เล่นก่อนตอนเข้าด่าน) · รอฟังบนมือถือ · 24 พ.ย. 2026
 
 Owner approved recommendations 1–2: improve hero attack identity and add short impact variations. Source-only delivery, based on deploy `ef18630cb0f8ae3a94ab79a6678ea758179ac293` / v8.2.84. A20 is already integrated on this base. This order does not add new Unique skills, voices, enemies, materials or gameplay rules.
 

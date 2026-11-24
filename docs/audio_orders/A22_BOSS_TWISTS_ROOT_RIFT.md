@@ -31,7 +31,6 @@
 | `sfx_a22_anchor_break` | หินแตกโครม + ประกายทอง | 0.8 วิ |
 | `sfx_a22_perfect_dodge` | เวลาหยุดวูบ "วู้ม" + กริ่งใสขึ้นสูง | 0.6 วิ |
 | `sfx_a22_root_combo` | หลายเสียงป๊อปไล่กันเร็ว ๆ (ฆ่าหลายตัว) | 0.6 วิ |
-| `sfx_a22_head_hit` | ตีหัวราก "ป๊อก" ไม้กลวง (ได้ยินบ่อย ต้องเบา ไม่น่ารำคาญ) | 0.2 วิ |
 | `sfx_a22_head_burst` | หัวรากระเบิด ครืนใหญ่ + เศษไม้ + ประกายทอง | 1.2 วิ |
 
 ## C. Seed Rift เหตุการณ์ (SFX)
@@ -55,12 +54,11 @@
 | `vo_ruby_perfect` | Perfect dodge! | ดีใจ ภูมิใจ (≤ 1 วิ) |
 | `vo_ruby_crown_stuck` | It’s stuck! Hit it now! | เร่ง ดีใจ |
 
-**รวม 29 ไฟล์ (SFX 21 · เสียงพูด 8)** · งบขนาดหลังแพ็ก ~0.9 MB
+**รวม 28 ไฟล์ (SFX 20 · เสียงพูด 8)** · ตัด `head_hit` ออก — ใช้ `sfx_a21_hit_plant_*` ที่ส่งมาแล้ว (A21 combat) แทน · งบขนาดหลังแพ็ก ~0.9 MB
 
 ## ข้อห้าม
 - ห้ามเปลี่ยนคำในบท · ใช้ `’` / `—` / `…` ตามบท · ห้ามเสียง Ruby แบบใหม่ (ต้องใช้ voice ID เดิม)
 - SFX ต้องจบเองตามเวลา ไม่มีหาง reverb ยาวทับเพลงบอส · ห้ามเสียงกรีดร้องหรือเสียงน่ากลัวเกินโลกขนม
-- `sfx_a22_head_hit` จะเล่นถี่มาก (ได้หลายครั้งต่อวิ) → ต้องสั้น เบา ไม่แหลม
 - บท Ruby ต้องไม่ขัด `docs/STORY_CANON.md`
 
 ## โน้ตฝั่งโค้ด
@@ -72,7 +70,7 @@
 - **B:**
   - `crownRootTickHead` ตอน burrow → loop `root_burrow` (หยุดตอน warn) · warn → `root_warn` · `crownRootStrike` → `root_strike`
   - ชนหิน → `anchor_break` · Perfect → `perfect_dodge` + `vo_ruby_perfect` (ครั้งแรกต่อด่าน) · combo → `root_combo`
-  - `crownRootFinale` → `vo_ruby_crown_stuck` · โดนตี → `head_hit` (gap ≥ 0.12 วิ) · ระเบิด → `head_burst`
+  - `crownRootFinale` → `vo_ruby_crown_stuck` · โดนตี → `Sfx.a21('hit_plant')` (มีแล้วจาก A21 combat) · ระเบิด → `head_burst`
 - **C:** `seedRiftEventStart` → rift_warn (ตอนเพิ่มช่วงเตือนตามใบอาร์ต 94) → rift_open + `vo_ruby_rift_event` · feed → rift_feed · `seedRiftEventEnd(true)` → rift_close
 - ใช้ `this.a12?.(key)` / `Sfx.orderCue` (ไม่มีไฟล์ = ใช้เสียงเดิม) · โหลด SFX ตอนเข้าด่าน Ch2+ (คู่กับ `ensureStageAudio`) · ปิด Ruby ในตั้งค่า (`noRuby`) = ไม่พูด
 

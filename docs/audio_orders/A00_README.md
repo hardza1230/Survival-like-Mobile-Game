@@ -25,9 +25,9 @@
 | `A18_RUBY_EVENTS_ATLAS_SFX.md` | Ruby new events8 + reroll/golden/Double Clear/boss/Pact/Atlas SFX10 | 18 | 🟢 ผูกแล้ว v8.2.31 · รอฟังบนมือถือ |
 | `A19_EXPEDITION_SFX.md` | Temple Expedition: SFX17 + music2 + saved Ruby4 | 23 | 🟢 ผูกแล้ว v8.2.34 · รอฟังบนมือถือ |
 | `A20_RUBY_STAGE_ENTRY.md` | ม่านเข้าด่าน: SFX 7 (ม่าน/เดินทาง/สติงเกอร์ 3 บท + บอส) + Ruby แนะนำด่าน 15 + เล่นซ้ำ 4 | 26 | ✅ ผูกแล้ว v8.2.84 (ส่งครบ 26) · รอ QA มือถือ |
-| `A22_BOSS_TWISTS_ROOT_RIFT.md` | ลูกเล่นบอส 5 + รอด · Crown Root (มุด/เตือน/พุ่ง/หินแตก/Perfect/combo/ตีหัว/ระเบิด) · Seed Rift เหตุการณ์ 4 · Ruby 8 | 29 | 🟡 รอเสียง · บท Ruby รอเจ้าของอนุมัติ |
+| `A22_BOSS_TWISTS_ROOT_RIFT.md` | ลูกเล่นบอส 5 + รอด · Crown Root (มุด/เตือน/พุ่ง/หินแตก/Perfect/combo/ตีหัว/ระเบิด) · Seed Rift เหตุการณ์ 4 · Ruby 8 | 28 | 🟡 รอเสียง · บท Ruby รอเจ้าของอนุมัติ |
 
-| `A21_COMBAT_ATTACK_IMPACTS.md` | เสียงโจมตีประจำฮีโร่ 45 + เสียงกระทบวัสดุ/คริติคอล 24 · variations | 69 | 📦 ส่งครบ 69 · รอผูก |
+| `A21_COMBAT_ATTACK_IMPACTS.md` | เสียงโจมตีประจำฮีโร่ 45 + เสียงกระทบวัสดุ/คริติคอล 24 · variations | 69 | ✅ ผูกแล้ว v8.2.85 · รอฟังบนมือถือ |
 
 ## กติการ่วม (ทุกใบ)
 - ทำด้วย **AI สร้างเสียง (เช่น ElevenLabs SFX/Music แบบ instrumental)** หรือ **สคริปต์สร้างเสียงด้วยโค้ด** (`scripts/gen_*_sfx.py`, jsfxr) — เลือกตามความเหมาะสมของแต่ละเสียง · **ห้ามเลียนแบบเพลง/ศิลปิน/เกมที่มีอยู่จริง** · ห้ามเสียงพูดเป็นคำ (ยกเว้นระบุ)
