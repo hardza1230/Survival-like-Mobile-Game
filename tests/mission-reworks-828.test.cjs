@@ -3,11 +3,11 @@ const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const grab=n=>{ const i=src.indexOf('\n  '+n+'('); assert(i>0,n); let k=src.indexOf('\n',i+1); while(src.startsWith('\n    ',k))k=src.indexOf('\n',k+1); return src.slice(i+3,k); };
 // Crown Root: burrow → warn → strike; strike next to an anchor smashes it, a miss does not
-const T=vm.runInNewContext('class T{'+['tickCrownRoot','crownRootStrike','clearCrownRoot'].map(grab).join('\n')+' drawCrownRoot(){} }; T',{Math,Sfx:{}});
+const T=vm.runInNewContext('class T{'+['tickCrownRoot','crownRootTickHead','crownRootStrike','clearCrownRoot'].map(grab).join('\n')+' drawCrownRoot(){} }; T',{Math,Sfx:{},CR_ESC_SPD:.18,CR_WARN:[.9,.12,.6],CR_LOCK_D:190,CR_LOCK_T:2.2,CR_PULL_R:170,CR_HIT_R:120,CR_PERFECT:.35});
 const mk=()=>{ const t=new T(),smashed=[],hurt=[],anchors=[{x:300,y:0,active:true,_lure:true,_waveObjectiveNode:true}];
   Object.assign(t,{state:'play',stageIndex:9,player:{x:300,y:0},dist:(a,b,c,d)=>Math.hypot(a-c,b-d),floatText(){},screenShake(){},hitStop(){},burst(){},screenFlash(){},captureFinishSweep(){},hurtPlayer:d=>hurt.push(d),damage(){},
     enemies:{getChildren:()=>[]},waveNodes:{children:{iterate:f=>anchors.forEach(f)}},destroyWaveObjectiveNode:n=>{n.active=false;smashed.push(n);},
-    _lure:{x:0,y:0,st:'burrow',t:0,tx:0,ty:0,trail:[],g:{active:false}}});
+    _lure:{x:0,y:0,st:'burrow',t:0,tx:0,ty:0,trail:[],g:{active:false}}}); t._lure.heads=[t._lure];
   return {t,smashed,hurt,anchors}; };
 { const {t,smashed,hurt}=mk(),o={done:false}; t.waveObjective=o; for(let i=0;i<40&&t._lure.st==='burrow';i++)t.tickCrownRoot(.1,o); assert.equal(t._lure.st,'warn','root reaches the hero and warns');
   assert.equal(t._lure.tx,300); for(let i=0;i<10&&t._lure.st==='warn';i++)t.tickCrownRoot(.1,o); assert.equal(t._lure.st,'strike'); assert.equal(smashed.length,1,'strike next to the anchor smashes it'); assert.equal(hurt.length,1,'hero standing there gets hurt');

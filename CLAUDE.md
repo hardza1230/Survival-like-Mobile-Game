@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.80**. Next release:8.2.81. Fetch the deploy branch before new work.
+Current release: **8.2.81**. Next release:8.2.82. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.80 — 🫧 Clear the Fog: wider light, creeping darkness** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.81 — 🐛 Lure the Crown Root gets meaner (and more fun)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

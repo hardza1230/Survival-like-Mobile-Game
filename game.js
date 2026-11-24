@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.80';
+const GAME_VERSION = '8.2.81';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.81',date:'2026-11-24',title:'🐛 Lure the Crown Root gets meaner',items:['The root speeds up with each smashed stone and splits in two after the second','Its warning circle pulls monsters in, and root kills give combo Sugar','Dodge out at the last moment for a Perfect Dodge','After the last stone the Crown Root gets stuck: hit it for Sugar before it breaks free']},
   {v:'8.2.80',date:'2026-11-24',title:'🫧 Clear the Fog: wider light, creeping darkness',items:['Wider light around the hero in Clear the Fog','No more white circles in the fog','The dark edge now creeps and claws toward you']},
   {v:'8.2.79',date:'2026-11-24',title:'🕳️ Hunger Crack no longer hangs at the end',items:['Hunger Crack ends when 2 or fewer of its monsters are left for 6 seconds','Final hole time limit 60s to 50s']},
   {v:'8.2.78',date:'2026-11-24',title:'🛡️ Barrier refills like an Energy Shield · Dash no longer shortens Phantom Rush',items:['Barrier gains ≤2% HP/s and pauses 2s after any hit','Forge damage reduction cap 30%','Dash no longer refunds Phantom Rush; Quick Refund = −5% cooldown per rank']},
@@ -5011,6 +5012,7 @@ Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[
 /* v8.2.36 E1: LH_SHEETS/LH_USE_SHEETS ลบแล้ว (ใบ 34 ปิดตั้งแต่ v7.9.61) */
 const CODE_TELEGRAPH=true;
 const CA_LANTERN=[200,150],CA_LOBES=9,CA_CLAWS=7;   /* v8.2.80 เจ้าของ: Clear the Fog แสงรอบตัวกว้างขึ้น (130→85 เดิม) · ขอบมืดขยับน่ากลัว */
+const CR_ESC_SPD=.18,CR_WARN=[.9,.12,.6],CR_LOCK_D=190,CR_LOCK_T=2.2,CR_PULL_R=170,CR_HIT_R=120,CR_PERFECT=.35,CR_STUCK=8,CR_HEAD_HP=6,CR_HEAD_POP=.1;   /* v8.2.81 Lure the Crown Root SCAMPER 1–4 */
 const CAPTURE_CRACK=true,HC_NEAR=95,HC_SEC=22,HC_TOUCH=70,HC_SPEED=460,HC_HOLES=[.3,.55,.8,1];
 /* v8.2.44 เจ้าของ: แบบ Abyss ใน PoE — รอยแยกยาว/ช้า คืบเมื่อผู้เล่นอยู่ใกล้ปลาย · มอนค่อย ๆ คลานออกตามรอยแยก · หลุมปล่อยมอนต่อเนื่อง (ฆ่าครบ = ของ) · ปลายทาง 3 ระลอก + Elite + หีบ Abyss · [Ch1, Ch2+] */
 const HC_SEGS=[10,13],HC_CRAWL=[60,72],HC_FOLLOW=260,HC_TRICKLE=[2,1.5],HC_HOLE_N=[6,9],HC_HOLE_GAP=.6,HC_FINAL_WAVES=4,HC_FINAL_PER=[6,10],HC_FINAL_GAP=3,HC_FINAL_MAX=50,HC_FINAL_TAIL=2,HC_FINAL_TAIL_SEC=6,HC_FINAL_STREAM=.35,HC_FINAL_TANKS=[0,1,2,0],HC_FINAL_CAP=30,HC_BRUTE={scale:1.4,hp:3,tint:0x8a5cc8},HC_CHEST_MUL=1.5;   /* v8.2.48 เจ้าของ: หลุมสุดท้ายมอนเยอะ + มีตัวถึก (4 ระลอก × 10 · Ch1 × 6 · ระลอก 2/3 มี tank · Abyss Brute ปิดท้ายพร้อม Elite · หีบ Sugar ×1.5) */
@@ -16371,24 +16373,47 @@ class Game extends Phaser.Scene {
   /* ---- v8.2.8 🐛 Lure the Crown Root (เจ้าของอนุมัติ: เปลี่ยน "ยืน" เป็น "ล่อ") ----
      หัวรากมุดดินไล่ผู้เล่น (ช้ากว่าผู้เล่น) · ใกล้ ≤150 หรือครบ 4 วิ → ล็อกจุดที่ผู้เล่นยืน · รอยแตกเตือน 0.9 วิ → พุ่งขึ้น: โดนผู้เล่นเจ็บ · หินสมอในรัศมี 95 แตก
      หินกันกระสุน (_coreLocked) และไม่ตัดด้วยการยืน (_lure) · แตกครบ 3 ก้อน = รากติดระเบิด จบภารกิจ */
+  /* v8.2.81 เจ้าของ: Lure the Crown Root จืด → SCAMPER 1–4 · (1) ยิ่งแตกยิ่งโหด: เร็วขึ้น เตือนสั้นลง หินก้อน 2 แตก = รากแยก 2 หัว · ล็อกเร็ว (ไม่รอ 4 วิ)
+     (2) วงเตือนดูดมอนเข้ามา · รากฟาดฆ่ามอนธรรมดา = คอมโบ 🍬 · (3) อยู่ในวงช่วงท้ายแล้วหลบออกทัน = Perfect Dodge (เวลาหยุดวูบ · รากติดดินนานขึ้น)
+     (4) หินก้อนสุดท้ายแตก → หัวรากมงกุฎติดพื้น 8 วิ รุมตีได้ · เลือดลดทุก 10% = 🍬 เด้ง · ตายหรือหมดเวลา = ระเบิด จบภารกิจ */
+  crownRootHead(x,y){ return {x,y,st:'burrow',t:0,tx:0,ty:0,trail:[],close:false,g:this.camWorld(this.add.graphics().setDepth(90020))}; }
   spawnCrownRoot(o){ this.clearCrownRoot(); const q=this.objectivePosition(0,1,380,520);
     this.waveNodes?.children?.iterate?.(n=>{ if(n&&n.active&&n._rootAnchor){ n._lure=true; n._coreLocked=true; n._objectiveCue?.setTint?.(0xc9a27a); } });
-    this._lure={x:q.x,y:q.y,st:'burrow',t:0,tx:0,ty:0,trail:[],g:this.camWorld(this.add.graphics().setDepth(90020))}; this.floatText?.(q.x,q.y-50,'🐛 The root is coming!',0xd56bff); }
-  clearCrownRoot(){ const L=this._lure; if(!L)return; this._lure=null; if(L.g?.active)L.g.destroy(); }
-  tickCrownRoot(dt,o){ const L=this._lure,P=this.player; if(!L||!P)return; const play=this.state==='play'&&!o.done; L.t+=dt; const si=this.stageIndex||0;
-    if(play){ if(L.st==='burrow'){ const d=this.dist(L.x,L.y,P.x,P.y),sp=165+si*4; if(d>1){ L.x+=(P.x-L.x)/d*Math.min(d,sp*dt); L.y+=(P.y-L.y)/d*Math.min(d,sp*dt); } L.trail.push({x:L.x,y:L.y,a:1}); if(L.trail.length>18)L.trail.shift();
-        if(d<150||L.t>4){ L.st='warn'; L.t=0; L.tx=P.x; L.ty=P.y; Sfx.orderCue?.('wave_start',.3,.4); } }
-      else if(L.st==='warn'){ const k=Math.min(1,dt*7); L.x+=(L.tx-L.x)*k; L.y+=(L.ty-L.y)*k; if(L.t>=.9){ L.st='strike'; L.t=0; this.crownRootStrike(L,o); } }
-      else if(L.st==='strike'&&L.t>=.75){ L.st='burrow'; L.t=0; } }
+    this._lure=this.crownRootHead(q.x,q.y); this._lure.heads=[this._lure]; this.floatText?.(q.x,q.y-50,'🐛 The root is coming!',0xd56bff); }
+  clearCrownRoot(){ const L=this._lure; if(!L)return; this._lure=null; for(const h of (L.heads||[L]))if(h.g?.active)h.g.destroy(); const F=L.fin; if(F?.e?.active&&F.e._crownHead){ F.e._timeStop=false; F.e._crownHead=false; } }
+  crownRootSplit(o){ const L=this._lure; if(!L||L.heads.length>1||L.fin)return; const P=this.player,a=Math.random()*Math.PI*2,h=this.crownRootHead(P.x+Math.cos(a)*420,P.y+Math.sin(a)*420); h.t=-1.2; L.heads.push(h); this.floatText?.(h.x,h.y-50,'🐛🐛 The root splits!',0xd56bff); this.screenShake?.(180,.007); }
+  tickCrownRoot(dt,o){ const L=this._lure,P=this.player; if(!L||!P)return; if(L.fin){ this.crownRootFinTick(dt,o); return; } for(const h of L.heads)this.crownRootTickHead(h,dt,o); }
+  crownRootTickHead(L,dt,o){ const P=this.player,play=this.state==='play'&&!o.done; L.t+=dt; const si=this.stageIndex||0,k=Math.max(0,Math.floor(o.progress||0)),warn=Math.max(CR_WARN[2],CR_WARN[0]-CR_WARN[1]*k);
+    if(play){ if(L.st==='burrow'){ if(L.t<0){ this.drawCrownRoot(L); return; } const d=this.dist(L.x,L.y,P.x,P.y),sp=(165+si*4)*(1+CR_ESC_SPD*k); if(d>1){ L.x+=(P.x-L.x)/d*Math.min(d,sp*dt); L.y+=(P.y-L.y)/d*Math.min(d,sp*dt); } L.trail.push({x:L.x,y:L.y,a:1}); if(L.trail.length>18)L.trail.shift();
+        if(d<CR_LOCK_D||L.t>CR_LOCK_T){ L.st='warn'; L.t=0; L.tx=P.x; L.ty=P.y; L.close=false; L.warn=warn; Sfx.orderCue?.('wave_start',.3,.4); } }
+      else if(L.st==='warn'){ const kk=Math.min(1,dt*7); L.x+=(L.tx-L.x)*kk; L.y+=(L.ty-L.y)*kk;
+        (this.enemies?.getChildren?.()||[]).forEach(e=>{ if(!e||!e.active||e.isBoss||e.isMini||e.isElite||e.isDummy)return; const d=this.dist(e.x,e.y,L.tx,L.ty); if(d>CR_PULL_R||d<20)return; e.knock=Math.max(e.knock||0,.08); e.setVelocity?.((L.tx-e.x)/d*150,(L.ty-e.y)/d*150); });   /* (2) วงดูดมอน */
+        if(L.t>=L.warn-CR_PERFECT&&this.dist(P.x,P.y,L.tx,L.ty)<75)L.close=true;
+        if(L.t>=L.warn){ L.st='strike'; L.t=0; L.hold=.75; this.crownRootStrike(L,o); } }
+      else if(L.st==='strike'&&L.t>=(L.hold||.75)){ L.st='burrow'; L.t=0; } }
     for(const q of L.trail)q.a=Math.max(0,q.a-dt*1.6); this.drawCrownRoot(L); }
   crownRootStrike(L,o){ const x=L.tx,y=L.ty,P=this.player,si=this.stageIndex||0; this.screenShake?.(220,.01); this.hitStop?.(40); this.burst?.(x,y,0x8a5a3a);
     if(this.add?.circle)for(let k=0;k<2;k++){ const r=this.camWorld(this.add.circle(x,y,30,0xd56bff,0).setStrokeStyle(7-k*2,0xffd0ff,1).setDepth(90000)); this.tweens.add({targets:r,scale:4+k*1.5,alpha:0,duration:480,delay:k*70,ease:'Cubic.out',onComplete:()=>r.destroy()}); }
-    if(P&&this.dist(P.x,P.y,x,y)<75)this.hurtPlayer?.(Math.round(10+si*1.6));
-    (this.enemies?.getChildren?.()||[]).slice().forEach(e=>{ if(e&&e.active&&!e.isBoss&&this.dist(e.x,e.y,x,y)<90)this.damage?.(e,(e.maxhp||20)*.5,e.x,e.y); });
+    const out=!P||this.dist(P.x,P.y,x,y)>=75; if(!out)this.hurtPlayer?.(Math.round(10+si*1.6));
+    else if(L.close){ L.hold=1.6; this.hitStop?.(140); this.screenFlash?.(0xe0b3ff,.35,220); const b=3; this.sugarStage=(this.sugarStage||0)+b; this.sugarRun=(this.sugarRun||0)+b; this.floatText?.(P.x,P.y-80,'✨ Perfect dodge! 🍬+'+b,0xffe08a); }   /* (3) */
+    let n=0; (this.enemies?.getChildren?.()||[]).slice().forEach(e=>{ if(!e||!e.active||e.isBoss||e.isDummy||e._crownHead||this.dist(e.x,e.y,x,y)>=CR_HIT_R)return; const hard=e.isElite||e.isMini; this.damage?.(e,(e.maxhp||20)*(hard?.3:1.2),e.x,e.y); if(!hard&&(!e.active||e.hp<=0))n++; });
+    if(n>=2){ const b=n; this.sugarStage=(this.sugarStage||0)+b; this.sugarRun=(this.sugarRun||0)+b; this.floatText?.(x,y-110,'🐛 Root combo ×'+n+'  🍬+'+b,0xd56bff); }   /* (2) คอมโบ */
     let hit=null; this.waveNodes?.children?.iterate?.(n=>{ if(!hit&&n&&n.active&&n._lure&&n._waveObjectiveNode&&this.dist(n.x,n.y,x,y)<95)hit=n; });
     if(hit){ const hx=hit.x,hy=hit.y; this.floatText?.(hx,hy-70,'💥 Anchor smashed!',0xffd166); this.screenFlash?.(0xffe0a0,.3,240); this.destroyWaveObjectiveNode(hit);
-      if(o.done||this.waveObjective!==o){ this.captureFinishSweep?.(x,y,240); this.screenShake?.(420,.014); this.screenFlash?.(0xd56bff,.6,420); this.floatText?.(x,y-90,'🐛 The root is stuck — and bursts!',0xd56bff); this.clearCrownRoot(); } }
-    else this.floatText?.(x,y-50,'Missed — lure it to a stone!',0xc9a27a); }
+      if(!this._lure?.fin&&(o.progress||0)>=2)this.crownRootSplit(o); }   /* (1) ก้อนที่ 2 แตก = แยก 2 หัว */
+    if(this.renderWaveObjectiveHUD)this.renderWaveObjectiveHUD(); }
+  crownRootFinale(x,y,o){ const L=this._lure; if(!L||L.fin)return false; for(const h of L.heads){ h.st='gone'; h.g?.clear?.(); }
+    const P=this.player,e=this.spawnEnemy?.('tank',Math.atan2(y-(P?.y||0),x-(P?.x||0)),Math.max(60,P?this.dist(P.x,P.y,x,y):200)); const F=L.fin={x,y,t:CR_STUCK,last:1,e:null,pops:0};
+    if(e){ e.setPosition?.(x,y); if(e.body)e.body.reset?.(x,y); e._crownHead=true; e._timeStop=true; e.hp=Math.round((e.maxhp||e.hp||100)*CR_HEAD_HP); e.maxhp=e.hp; e.setScale?.((e.scaleX||1)*1.7,(e.scaleY||1)*1.7); e.tintColor=0xd56bff; e.setTint?.(0xd56bff); this.emergeFoe?.(e,'ground'); F.e=e; }
+    this.screenShake?.(380,.014); this.screenFlash?.(0xd56bff,.45,320); this.showBanner?.('👑 The Crown Root is stuck!','Hit it before it breaks free',1600); this.floatText?.(x,y-110,'👑 Hit the Crown Root!',0xffd166); return true; }   /* (4) */
+  crownRootFinTick(dt,o){ const L=this._lure,F=L.fin,e=F.e,si=this.stageIndex||0; if(this.state!=='play')return; F.t-=dt; const g=L.g;
+    if(g?.active){ g.clear(); const t=(this.time?.now||0)/1000; for(let i=0;i<5;i++){ const a=-Math.PI/2+(i-2)*.32,h=80+i%2*30+Math.sin(t*6+i)*6; g.lineStyle(14-Math.abs(i-2)*3,0x6b3f22,1); g.beginPath(); g.moveTo(F.x+(i-2)*12,F.y+8); g.lineTo(F.x+(i-2)*12+Math.cos(a)*h*.5,F.y+8+Math.sin(a)*h); g.strokePath(); } g.lineStyle(4,0xffd166,.6+.3*Math.sin(t*8)); g.beginPath(); g.arc(F.x,F.y,70,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(0,F.t/CR_STUCK),false); g.strokePath(); }
+    const alive=!!(e&&e.active&&e._crownHead&&e.hp>0),frac=alive?e.hp/Math.max(1,e.maxhp):0;
+    while(F.last-frac>=CR_HEAD_POP-1e-9&&F.last>0){ F.last-=CR_HEAD_POP; F.pops++; const v=Math.round(2+si*.4); this.sugarStage=(this.sugarStage||0)+v; this.sugarRun=(this.sugarRun||0)+v; this.floatText?.(F.x+Phaser.Math.Between(-40,40),F.y-90-F.pops*4,'🍬+'+v,0xffe08a); this.burst?.(F.x,F.y-30,0xffd166); }
+    if(alive&&F.t>0)return;
+    if(alive){ e._timeStop=false; e._crownHead=false; e._emergeUntil=0; this.damage?.(e,e.hp+1,e.x,e.y); if(e.active&&e.hp>0)this.killEnemy?.(e); }
+    this.captureFinishSweep?.(F.x,F.y,240); this.screenShake?.(420,.014); this.screenFlash?.(0xd56bff,.6,420); this.floatText?.(F.x,F.y-90,alive?'🐛 The root bursts!':'👑 Crown Root smashed!',0xd56bff);
+    o._crownFinDone=true; this.clearCrownRoot(); this.completeWaveObjective(); }
   drawCrownRoot(L){ const g=L.g; if(!g?.active)return; g.clear(); const t=(this.time?.now||0)/1000;
     for(const q of L.trail)if(q.a>0){ g.fillStyle(0x5a3a22,.35*q.a).fillEllipse(q.x,q.y+6,26,10); }
     if(L.st==='burrow'||L.st==='warn'){ const bob=Math.sin(t*14)*2; g.fillStyle(0x3a2414,.9).fillEllipse(L.x,L.y+4,46,20); g.fillStyle(0x7a5232,1).fillEllipse(L.x,L.y+bob,34,16); g.fillStyle(0xd56bff,.5+.3*Math.sin(t*9)).fillCircle(L.x,L.y-4+bob,4); }
@@ -16667,7 +16692,7 @@ class Game extends Phaser.Scene {
   destroyWaveObjectiveNode(node){
     if(!node||!node.active)return;const x=node.x,y=node.y;if(node._objectiveCue){this.tweens.killTweensOf(node._objectiveCue);node._objectiveCue.destroy();node._objectiveCue=null;}
     node._waveObjectiveNode=false;node._lure=false;node.setActive(false).setVisible(false);if(node.body)node.body.enable=false;this.burst(x,y,this.waveObjective?.color||0xffd166);
-    const o=this.waveObjective;if(o&&(o.type==='purge'||o.type==='breakRoots')&&!o.done){o.progress++;this.renderWaveObjectiveHUD();if(o.progress>=o.target)this.completeWaveObjective();}
+    const o=this.waveObjective;if(o&&(o.type==='purge'||o.type==='breakRoots')&&!o.done){o.progress++;this.renderWaveObjectiveHUD();if(o.progress>=o.target){ if(o.type==='breakRoots'&&this._lure&&!o._crownFinDone&&this.crownRootFinale?.(x,y,o))return; this.completeWaveObjective();}}   /* v8.2.81 หินก้อนสุดท้าย = ช่วงตีหัวราก */
   }
   /* ---- v8.2.4 🕳️ Hunger Crack (เจ้าของเลือก PoE Abyss) ----
      เส้นทาง 7 ท่อน คดเคี้ยวในแมพ · ปลายที่เปิดแล้ว (tip) เรืองแสง · ยืนใกล้ปลาย ≤ HC_NEAR → รอยแยกงอกต่อ (ครบทั้งเส้น ~22 วิ) · ไม่อยู่ = หยุดงอก (ไม่ถอย ไม่เลือดไหล)
