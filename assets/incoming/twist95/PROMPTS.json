@@ -1,0 +1,128 @@
+[
+  {
+    "key": "tw95_root_tile",
+    "provider": "built-in ImageGen",
+    "prompt": "Mochi Mayhem mobile confectionery fantasy game sprite sheet tw95_root_tile. Exactly EIGHT animation frames arranged FOUR columns by TWO rows, equal cells, read left-right then top-bottom, no gutters, no borders, no text or numbers. Each cell contains the SAME horizontal dark chocolate-brown thorny creeping root strand with thin muted violet sap-light traveling slowly toward the RIGHT. Root lies on floor in slight 3/4 top-down view. Loop keeps the root body silhouette exactly fixed; animate only violet flow and tiny soft highlights, final phase joins first. Strand crosses both left and right edges of each cell at same height, designed to tile seamlessly horizontally; leave top and bottom generous fully transparent clearance. Intended cell 256x64, entire atlas1024x128, very wide thin roots, not branches or monster faces. Soft painted dark-purple outlines, restrained glossy candy shading, readable at22px height, darker than hero, original cartoon food fantasy. Genuine transparent alpha background everywhere except root. No shadow, no pale halo, no frame labels, no grid lines.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-3ef6d579-1862-464b-b177-dafb3cf418cb.png",
+    "source_sha256": "d800cca44b0e9ea3ee1d8150e4b3e5cb1d2395a8caf528ad866d40f2016875ce",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_root_tip",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 8 equally sized frames, 4 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Genuine transparent alpha background, no checkerboard, no white halo. Keep every cell content inside generous 8 percent empty margins. For this loop keep the main body and silhouette identical in every frame; only animate the stated small details; final frame joins the first smoothly. Same squat root tip throughout: chocolate-brown twisted root opening like a small cartoon maw, muted violet sap inside. Frames1-4 gently gather sap, frames5-6 spit one tiny purple slime puff, frames7-8 settle. Body stays fixed. Grounded plant prop, not a full monster. Intended frame dimensions 128x128; atlas 512x256.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-647ae3a1-e0c4-48b6-8762-ce157a51bf45.png",
+    "source_sha256": "062bb18f1cdba2df999b51fbc7c41b4243fe0814cfedd8fb2ade9a2e15081822",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_seed_drop",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 8 equally sized frames, 4 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Genuine transparent alpha background, no checkerboard, no white halo. Keep every cell content inside generous 8 percent empty margins. ONE same dark brown cracked almond-like cursed seed with dark purple outline falls downward in frames1-5; SMALL subtle oval ground shadow grows underneath. Frames6-8 land then make a tiny bounce and settle at the SAME bottom groundline92percent. Keep the object same size, move vertically. Do not crop the falling seed. Intended frame dimensions 96x160; atlas 384x320.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-574ea898-c071-4c8e-8262-944ce9ecddb1.png",
+    "source_sha256": "a729c509e77c29c271a35b08529df7f006319c55004537704fa9ebd5c3008008",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_seed_idle",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 8 equally sized frames, 4 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Genuine transparent alpha background, no checkerboard, no white halo. Keep every cell content inside generous 8 percent empty margins. For this loop keep the main body and silhouette identical in every frame; only animate the stated small details; final frame joins the first smoothly. The SAME chocolate-brown cursed seed resting on ground, thin muted green cracks pulse gently brighter then dim again. Tiny breathing bob only, no morphing or new objects. Thick dark outline reads on green/brown ground. Intended frame dimensions 96x96; atlas 384x192. Input reference is the already generated seed sprite sheet: preserve that seed's chocolate-brown shell design. Green light for idle/pop as specified.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-87e3bdc6-885c-446b-a68f-3a968db68215.png",
+    "source_sha256": "9cd5e7c474519aee33bf8a811e233f57113812feacff74843699512cfa349f44",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_seed_pop",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 6 equally sized frames, 3 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Pure solid black #000 background, not transparency. All light and particles contained safely inside every cell. Six-step squash-and-break effect: brown seed shell breaks into small sparse flakes with soft green sparks, largest breakup in frames3-4 then fragments fade to a tiny final glint. Cartoon candy, no monster, no text. Intended frame dimensions 128x128; atlas 384x256. Input reference is the already generated seed sprite sheet: preserve that seed's chocolate-brown shell design. Green light for idle/pop as specified.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-4115834e-a393-45d2-a552-30380f22392e.png",
+    "source_sha256": "54363616ffafacce2e6df0d7d73cb4c27cbea6247c5cc9949470de23626dfeb4",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_seed_hatch",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 8 equally sized frames, 4 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Pure solid black #000 background, not transparency. All light and particles contained safely inside every cell. Eight-step seed hatch puff: small cracked brown seed grows violet-green magical smoke puff, opens and disperses. Peak smoke frames4-5, sparse final fading curls. No monster inside, code spawns it separately. Keep effect compact and soft. Intended frame dimensions 128x128; atlas 512x256. Input reference is the already generated seed sprite sheet: preserve that seed's chocolate-brown shell design. Green light for idle/pop as specified.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-0b95c8f0-f964-4290-97a1-0dfca2e1e06e.png",
+    "source_sha256": "884ae276623fde2f741fa33d95ad06ec81b63b7548c5dc63d426e674d7322642",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_fruit_fall",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 8 equally sized frames, 4 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Genuine transparent alpha background, no checkerboard, no white halo. Keep every cell content inside generous 8 percent empty margins. ONE same round candy peach-plum with warm pink-purple skin FALLING vertically and rotating a little. Frames1-5 descend, frames6-8 land near groundline92percent. Soft oval ground shadow beneath grows with descent. Dark outlined fruit, no face, no splatter yet. Intended frame dimensions 96x192; atlas 384x384.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-48f2cbda-9e9b-46eb-9d76-f6621fda1f9d.png",
+    "source_sha256": "9c04201e048d5c5a638ddb1ffd6e2ca2e9a9dd78d351330d2c2773528fc388b2",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_fruit_splat",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 8 equally sized frames, 4 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Pure solid black #000 background, not transparency. All light and particles contained safely inside every cell. An eight-step LOW FLAT ELLIPTICAL fruit impact on floor, orange-pink nectar splashes outward in a ring then scatters and fades. Top-down oval aspect1.5. Warm syrup, no blood, no fruit still falling, no huge vertical plume. Intended frame dimensions 192x128; atlas 768x256.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-96b02e4b-10d8-4aa5-a29a-95b2dbbb3ad5.png",
+    "source_sha256": "7301be74c5ae8caf0c743ac3d8fc8707af8856e5983903f8110784ace6018dab",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_dark_vignette",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. One static image. Genuine transparent alpha background, no checkerboard, no white halo. Keep every cell content inside generous 8 percent empty margins. PORTRAIT screen-edge shadow vignette. Dark black-violet smoky uneven soft edges around screen, a very wide truly TRANSPARENT elliptical central opening occupying60percent of screen width. Center100percent transparent so player and boss remain visible. No central illustration, no scene, no objects, no frame. Intended frame dimensions 540x960; atlas 540x960.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-0e77e005-3a23-4fa7-8fc1-1fe113138460.png",
+    "source_sha256": "0c5443832e2ba0185a87d12b5591874f35084167f7971411b54dfdf4bc02e64f",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_shadow_summon",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 12 equally sized frames, 4 columns by 3 rows, ordered left to right then top to bottom, no gutters or separators. Pure solid black #000 background, not transparency. All light and particles contained safely inside every cell. Twelve-step shadow summon: a small elliptical mirror on ground cracks, dark violet smoke silhouette rises briefly then dissolves into peripheral smoke and sparse mirror fragments. No specific boss or monster design. Main eruption frames5-8, clean sparse fade by12. Candy fantasy, not horror. Intended frame dimensions 256x256; atlas 1024x768.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-0f2fe51a-8efb-4634-b155-469d922ad7c8.png",
+    "source_sha256": "a3bb7223feb3476e9fd3de384dbb7ca76e876e03d97b96fcda7361114b8692f0",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_shadow_aura",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 8 equally sized frames, 4 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Pure solid black #000 background, not transparency. All light and particles contained safely inside every cell. For this loop keep the main body and silhouette identical in every frame; only animate the stated small details; final frame joins the first smoothly. A sparse dark violet smoky aura surrounding an INVISIBLE elite silhouette. Center kept very dark and empty so real elite remains visible. A few dim broken-mirror slivers orbit near edge, smoke curls gently. No actual monster drawn, no giant bright ring. Intended frame dimensions 192x192; atlas 768x384.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-c64ec835-db91-4423-b5b2-db55bd7aa9a9.png",
+    "source_sha256": "7c86d05ff582658add9ae7bd54b6e680a21e036478c9b9ce0802fc13d765118e",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_frenzy_aura",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 8 equally sized frames, 4 columns by 2 rows, ordered left to right then top to bottom, no gutters or separators. Pure solid black #000 background, not transparency. All light and particles contained safely inside every cell. For this loop keep the main body and silhouette identical in every frame; only animate the stated small details; final frame joins the first smoothly. Small restrained red-rose frenzy aura under monster feet, LOW FLAT ELLIPSE with a few tiny wavering ember licks. Ring shape stays fixed, animate only gentle flame flicker. Not a bright explosive circle, no character. Must remain subtle with20instances. Intended frame dimensions 128x64; atlas 512x128. CRITICAL: VFX ONLY. Every frame shows ONLY a thin low flat red oval flame ring floating on BLACK. Empty black center. Absolutely NO MONSTER, NO CHARACTER, NO FOOD OBJECT, NO CREATURE, NO face, NO body or feet. Overall effect silhouette twice as wide as tall.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-78b0016d-bded-4281-bbfc-24c47431ecff.png",
+    "source_sha256": "530bc3c7a2ec1d2c82f1f971988020a93c4070b152a3ed3977547db2214bfad2",
+    "attempt": 2,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_icons",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. Exactly 5 equally sized frames, 5 columns by 1 rows, ordered left to right then top to bottom, no gutters or separators. Genuine transparent alpha background, no checkerboard, no white halo. Keep every cell content inside generous 8 percent empty margins. FIVE DISTINCT icons in order:1 twisted dark root sprout with faint violet seam;2 brown cracked seed;3 rosy candy peach-plum;4 dark crescent moon;5 a small violet shadow mirror. Each one bold and minimal, reads at22px. No frame around icons, no symbols or numbers painted. Intended frame dimensions 64x64; atlas 320x64.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-8b3af4e4-92df-4256-bd85-cf7a9b2bce74.png",
+    "source_sha256": "e6ee8aea918fa1f68f54f210c2b859de03d0f0d498e4d6ee89a4dfb2025237c1",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  },
+  {
+    "key": "tw95_chip",
+    "provider": "built-in ImageGen",
+    "prompt": "Original Mochi Mayhem confectionery fantasy mobile game art, soft painted dark-purple outlines, restrained glossy candy highlights, clear chunky silhouette, 3/4 top-down view unless screen overlay, subtle soft shading, darker and less saturated than the hero. No lettering, no numbers, no labels, no grid lines, no watermark. One static image. Genuine transparent alpha background, no checkerboard, no white halo. Keep every cell content inside generous 8 percent empty margins. A very long slim rounded game warning-label chip. Match reference capsule construction: thin pale candy trim with subtle inset highlight, recolored muted burgundy red center and small dark thorn accents at rounded END CAPS only. Center is plain and EMPTY for code text. Symmetrical rounded corners and straight extendable center for9slice. No emblem, no text. Wide aspect9.6to1. Intended frame dimensions 460x48; atlas 460x48. Input image is capsule style reference only. Remove its left emblem, replace cyan by dark muted burgundy, add restrained thorn endcaps. Fill final wide canvas with the chip, not a small chip in a tall canvas.",
+    "source": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-107b4ae1-bb4e-4b1d-bccb-21203d6990d0.png",
+    "source_sha256": "47a13df943b5ac97cdcce2217952de46610786ba6350ed529e4f513afe8af551",
+    "attempt": 1,
+    "postprocess": "Cell crop/resize/packing; preserve generated alpha; exact-black compositing where specified; matching tile edge columns/rows. No code-drawn art."
+  }
+]

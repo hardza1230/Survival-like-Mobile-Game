@@ -1,0 +1,261 @@
+[
+  {
+    "key": "tw95_root_tile",
+    "file": "tw95_root_tile.png",
+    "frameWidth": 256,
+    "frameHeight": 64,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "transparent",
+    "bytes": 142448,
+    "sha256": "bb61a18ec87fca4000ec36a85ed9da8ccf11b24c48ce3f7d0f83f3f638c9f4b5",
+    "width": 1024,
+    "height": 128,
+    "tileX": true
+  },
+  {
+    "key": "tw95_root_tip",
+    "file": "tw95_root_tip.png",
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 139038,
+    "sha256": "49729d432f171153f65718a2d4ae740e69cecdab39de9004feff79c67854effd",
+    "width": 512,
+    "height": 256
+  },
+  {
+    "key": "tw95_seed_drop",
+    "file": "tw95_seed_drop.png",
+    "frameWidth": 96,
+    "frameHeight": 160,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 66544,
+    "sha256": "c603d8246a21232b0a56f17233ee9d974c58dc6502e711e9a831a37d9dafc05b",
+    "width": 384,
+    "height": 320
+  },
+  {
+    "key": "tw95_seed_idle",
+    "file": "tw95_seed_idle.png",
+    "frameWidth": 96,
+    "frameHeight": 96,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 77949,
+    "sha256": "41a629bb71057323205d642c26096384b9df13c254e6963782c29f41c739b903",
+    "width": 384,
+    "height": 192
+  },
+  {
+    "key": "tw95_seed_pop",
+    "file": "tw95_seed_pop.png",
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 6,
+    "columns": 3,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 66013,
+    "sha256": "f56ecbf9a77cf25ae186605d27e33da5ea116f326aec922f11d4c732c93bcd45",
+    "width": 384,
+    "height": 256
+  },
+  {
+    "key": "tw95_seed_hatch",
+    "file": "tw95_seed_hatch.png",
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 84428,
+    "sha256": "d4b4135b2dc08a0269d05e51e6174239bda946bdd086f6e80b75c92e7727720c",
+    "width": 512,
+    "height": 256
+  },
+  {
+    "key": "tw95_fruit_fall",
+    "file": "tw95_fruit_fall.png",
+    "frameWidth": 96,
+    "frameHeight": 192,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.92
+    ],
+    "background": "transparent",
+    "bytes": 73699,
+    "sha256": "686c1a4cb9f85f387392343c932a9c345a302c2197af977a7831c99eef2c6824",
+    "width": 384,
+    "height": 384
+  },
+  {
+    "key": "tw95_fruit_splat",
+    "file": "tw95_fruit_splat.png",
+    "frameWidth": 192,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 98576,
+    "sha256": "96e4f9060af4bea22e1f458ccc964f2284cae1915df96cbf7b2c8c848378a111",
+    "width": 768,
+    "height": 256
+  },
+  {
+    "key": "tw95_dark_vignette",
+    "file": "tw95_dark_vignette.png",
+    "frameWidth": 540,
+    "frameHeight": 960,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "transparent",
+    "bytes": 417084,
+    "sha256": "0f2955c32a0422c63a3cc1706d4d4e703ad8b8b538b6cb58bde65531fe60741a",
+    "width": 540,
+    "height": 960
+  },
+  {
+    "key": "tw95_shadow_summon",
+    "file": "tw95_shadow_summon.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 12,
+    "columns": 4,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 595689,
+    "sha256": "031974a1620425b6740a3e632a9f80a77c70045845f9391b14e710ddf3c42702",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "key": "tw95_shadow_aura",
+    "file": "tw95_shadow_aura.png",
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 104776,
+    "sha256": "73e026cd2c6817a5f021036a0fa8ce7d059d623c08cff6be35475bdcff646b5c",
+    "width": 768,
+    "height": 384
+  },
+  {
+    "key": "tw95_frenzy_aura",
+    "file": "tw95_frenzy_aura.png",
+    "frameWidth": 128,
+    "frameHeight": 64,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "black",
+    "bytes": 19697,
+    "sha256": "46b514f9b03392df25a958aded9b45af70ede4b4a357ed4b639ca1b9c51ef5b9",
+    "width": 512,
+    "height": 128
+  },
+  {
+    "key": "tw95_icons",
+    "file": "tw95_icons.png",
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 5,
+    "columns": 5,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "transparent",
+    "bytes": 22120,
+    "sha256": "4b7abf09c9e81d25080fc8851a5b95772336abac3e242d87b6c0fe685c763d9c",
+    "width": 320,
+    "height": 64
+  },
+  {
+    "key": "tw95_chip",
+    "file": "tw95_chip.png",
+    "frameWidth": 460,
+    "frameHeight": 48,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": [
+      0.5,
+      0.5
+    ],
+    "background": "transparent",
+    "bytes": 22943,
+    "sha256": "8d79a1c2d67c10a3b082056f8c3e006e89044443dd2f56aebc659b43afba7873",
+    "width": 460,
+    "height": 48,
+    "nineSlice": [
+      24,
+      12,
+      24,
+      12
+    ]
+  }
+]

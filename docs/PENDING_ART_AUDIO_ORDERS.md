@@ -7,7 +7,7 @@
 ## ค้างอยู่ตอนนี้ (ทำตามลำดับ)
 | # | ใบ | งาน | จำนวน | เครื่องมือ | ส่งที่ | สถานะ |
 |---|---|---|---|---|---|---|
-| 1 | `docs/art_orders/95_BOSS_TWISTS.md` | ลูกเล่นบอส 5 แบบ + ไอคอน/แถบ | 15 | ImageGen | `assets/incoming/twist95/` | 🟡 รออาร์ต |
+| 1 | `docs/art_orders/95_BOSS_TWISTS.md` | ลูกเล่นบอส 5 แบบ + ไอคอน/แถบ | 14 | ImageGen | `assets/incoming/twist95/` | 📦 ส่งแล้ว รอผูก |
 | 2 | `docs/art_orders/94_MISSION_ROOT_FOG_RIFT.md` | Crown Root · Clear the Fog · Abyss Brute · Seed Rift เตือน · ป้าย Perfect/Combo | 14 | ImageGen | `assets/incoming/mission94/` | 🟡 รออาร์ต |
 | 3 | `docs/audio_orders/A22_BOSS_TWISTS_ROOT_RIFT.md` | SFX 20 + Ruby 8 (บทรอเจ้าของอนุมัติก่อนทำเสียงพูด) | 28 | ElevenLabs | `assets/incoming/audio_a22/` | 🟡 รอเสียง |
 
