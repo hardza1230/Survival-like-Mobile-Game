@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.79';
+const GAME_VERSION = '8.2.80';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.80',date:'2026-11-24',title:'🫧 Clear the Fog: wider light, creeping darkness',items:['Wider light around the hero in Clear the Fog','No more white circles in the fog','The dark edge now creeps and claws toward you']},
   {v:'8.2.79',date:'2026-11-24',title:'🕳️ Hunger Crack no longer hangs at the end',items:['Hunger Crack ends when 2 or fewer of its monsters are left for 6 seconds','Final hole time limit 60s to 50s']},
   {v:'8.2.78',date:'2026-11-24',title:'🛡️ Barrier refills like an Energy Shield · Dash no longer shortens Phantom Rush',items:['Barrier gains ≤2% HP/s and pauses 2s after any hit','Forge damage reduction cap 30%','Dash no longer refunds Phantom Rush; Quick Refund = −5% cooldown per rank']},
   {v:'8.2.77',date:'2026-11-23',title:'🛡️ Forge Barrier no longer makes heroes untouchable',items:['Barrier cap 15% HP (30% with Barrier Capacity)','Barrier gain at most 4% HP per second','3s lockout after the barrier breaks']},
@@ -5009,6 +5010,7 @@ Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[
 /* v7.9.58 ใบสั่งอาร์ต 34: ฮีโร่ขยับในหน้า Lobby (แพ็ก 75% = 384×480/เฟรม, เท้า y450) · โหลดเฉพาะฮีโร่ที่เลือก ไม่โหลดตอนบูต · Sesame ผูกด้วย (เจ้าของ 22 ต.ค.) */
 /* v8.2.36 E1: LH_SHEETS/LH_USE_SHEETS ลบแล้ว (ใบ 34 ปิดตั้งแต่ v7.9.61) */
 const CODE_TELEGRAPH=true;
+const CA_LANTERN=[200,150],CA_LOBES=9,CA_CLAWS=7;   /* v8.2.80 เจ้าของ: Clear the Fog แสงรอบตัวกว้างขึ้น (130→85 เดิม) · ขอบมืดขยับน่ากลัว */
 const CAPTURE_CRACK=true,HC_NEAR=95,HC_SEC=22,HC_TOUCH=70,HC_SPEED=460,HC_HOLES=[.3,.55,.8,1];
 /* v8.2.44 เจ้าของ: แบบ Abyss ใน PoE — รอยแยกยาว/ช้า คืบเมื่อผู้เล่นอยู่ใกล้ปลาย · มอนค่อย ๆ คลานออกตามรอยแยก · หลุมปล่อยมอนต่อเนื่อง (ฆ่าครบ = ของ) · ปลายทาง 3 ระลอก + Elite + หีบ Abyss · [Ch1, Ch2+] */
 const HC_SEGS=[10,13],HC_CRAWL=[60,72],HC_FOLLOW=260,HC_TRICKLE=[2,1.5],HC_HOLE_N=[6,9],HC_HOLE_GAP=.6,HC_FINAL_WAVES=4,HC_FINAL_PER=[6,10],HC_FINAL_GAP=3,HC_FINAL_MAX=50,HC_FINAL_TAIL=2,HC_FINAL_TAIL_SEC=6,HC_FINAL_STREAM=.35,HC_FINAL_TANKS=[0,1,2,0],HC_FINAL_CAP=30,HC_BRUTE={scale:1.4,hp:3,tint:0x8a5cc8},HC_CHEST_MUL=1.5;   /* v8.2.48 เจ้าของ: หลุมสุดท้ายมอนเยอะ + มีตัวถึก (4 ระลอก × 10 · Ch1 × 6 · ระลอก 2/3 มี tank · Abyss Brute ปิดท้ายพร้อม Elite · หีบ Sugar ×1.5) */
@@ -16259,7 +16261,7 @@ class Game extends Phaser.Scene {
      dark: เห็นแค่ตะเกียงรอบตัว (130→85 หรี่ช้า ๆ · ปลดได้ = เต็มใหม่) · Wisp กะพริบให้เห็นในความมืด · มอนโผล่จากความมืดข้างหน้า (ตาเรืองแสงก่อน 0.6 วิ) ·
      ยืนใกล้ 1.5 วิ (ออกแล้วหยุดไว้ ไม่รีเซ็ต) → ระเบิดแสง ผลัก/ดาเมจมอนรอบ ๆ · สว่างถาวร r260 · Sugar นิดหน่อย ·
      ครบ = Wisp บินกลับหาเรา แสงวาบ หมอกสลาย 1 วิ · จบใน 45 วิ (นับจากมืด) = โบนัส Sugar ===== */
-  cleanAirV2Spawn(o){ const pos=this.objectivePosition(0,1,170,250); const c=this._cleanAir={v2:true,phase:'lure',x:pos.x,y:pos.y,r:70,t:0,darkT:0,lantern:130,wisps:[],lit:[],eyes:[],spawnT:1.6,dark:0,objs:[]};
+  cleanAirV2Spawn(o){ const pos=this.objectivePosition(0,1,170,250); const c=this._cleanAir={v2:true,phase:'lure',x:pos.x,y:pos.y,r:70,t:0,darkT:0,lantern:130,wisps:[],lit:[],eyes:[],spawnT:1.6,dark:0,objs:[]}; c.lantern=CA_LANTERN[0];
     const glow=this.camWorld(this.add.circle(pos.x,pos.y-20,46,0xbff6ff,.22).setDepth(94590)); this.tweens.add({targets:glow,scale:{from:.85,to:1.25},alpha:{from:.32,to:.12},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const bub=this.realTex?.('msn71_bubble'),spr=this.camWorld(bub?this.add.image(pos.x,pos.y-22,'msn71_bubble',0).setDisplaySize(74,74).setDepth(94600):this.add.image(pos.x,pos.y-22,'ch2_mycelium_enemy_atlas',7).setScale(.26).setDepth(94600)); this.tweens.add({targets:spr,y:pos.y-30,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});   /* v8.2.8 ฟองอากาศดี */
     c.lure=[glow,spr]; c.objs.push(glow,spr); c.g=this.camWorld(this.add.graphics().setDepth(94610)); c.objs.push(c.g); return c; }
@@ -16268,8 +16270,13 @@ class Game extends Phaser.Scene {
     let rt=this._cleanAirFogRT; if(rt&&rt.scene&&(rt.width<VW||rt.height<VH)){ rt.destroy(); rt=null; } if(!rt||!rt.scene){ rt=this._cleanAirFogRT=this.camWorld(this.add.renderTexture(0,0,VW+80,VH+80).setOrigin(0)); rt.setDepth?.(94500); }
     if(!(alpha>0)){ rt.setVisible?.(false); return; } rt.setVisible?.(true);
     if(!this._fogBrush){ if(!this.textures.exists('fog_brush')&&typeof document!=='undefined'){ const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d'),g=x.createRadialGradient(64,64,8,64,64,64); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.62,'rgba(255,255,255,.92)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas('fog_brush',cv); } this._fogBrush=this.make?.image?.({key:'fog_brush',add:false})?.setOrigin(.5); }
-    const ox=v.x-PAD,oy=v.y-PAD,B=this._fogBrush; rt.setPosition?.(ox,oy); rt.clear(); rt.fill(0x1b2410,Math.min(.95,alpha)); if(!B)return; { const t=(this.time?.now||0)/1000; for(let i=0;i<7;i++){ const px=(i*173+t*(18+i*4))%(VW+200)-100,py=(i*291+Math.sin(t*.5+i)*60)%(VH+100); rt.draw?.(B,px,py,.22*alpha,i%2?0x6f8f2a:0x7a4a8f); } }   /* v8.2.8 Clear the Fog: หมอกพิษเขียว-ม่วง ฟุ้งลอย */
-    for(const h of holes){ if(!(h.r>1))continue; const sx=h.x-ox,sy=h.y-oy; if(sx<-h.r||sy<-h.r||sx>VW+h.r||sy>VH+h.r)continue; B.setPosition(sx,sy).setScale(h.r*2/128); rt.erase(B); } }
+    const ox=v.x-PAD,oy=v.y-PAD,B=this._fogBrush; rt.setPosition?.(ox,oy); rt.clear(); rt.fill(0x1b2410,Math.min(.95,alpha)); if(!B)return;   /* v8.2.80 เจ้าของ: ลบวงขาวลอย (RT วาดแปรงไม่รับสี → ขาว) */
+    const t=(this.time?.now||0)/1000;
+    for(const h of holes){ if(!(h.r>1))continue; const sx=h.x-ox,sy=h.y-oy; if(sx<-h.r||sy<-h.r||sx>VW+h.r||sy>VH+h.r)continue;
+      if(h.wob){ B.setPosition(sx,sy).setScale(h.r*1.7/128); rt.erase(B); for(let i=0;i<CA_LOBES;i++){ const a=i/CA_LOBES*Math.PI*2+t*.35,d=h.r*(.62+.1*Math.sin(t*1.6+i*2.1)),lr=h.r*(.42+.12*Math.sin(t*2.3+i*1.7)); B.setPosition(sx+Math.cos(a)*d,sy+Math.sin(a)*d).setScale(lr*2/128); rt.erase(B); } continue; }   /* v8.2.80 ขอบแสงหยัก ๆ ขยับเหมือนความมืดกำลังคืบ */
+      B.setPosition(sx,sy).setScale(h.r*2/128); rt.erase(B); }
+    const D=this.cleanAirDarkBrush?.(); if(D)for(const h of holes){ if(!h.wob||!(h.r>1))continue; const sx=h.x-ox,sy=h.y-oy; for(let i=0;i<CA_CLAWS;i++){ const ph=(t*.55+i*.37)%1,a=i/CA_CLAWS*Math.PI*2+Math.sin(t*.7+i)*.5,d=h.r*(1.05-.38*Math.sin(ph*Math.PI)),cr=h.r*(.22+.06*Math.sin(t*3+i)); const px=sx+Math.cos(a)*d,py=sy+Math.sin(a)*d; D.setPosition(px,py).setScale(cr*2/128); rt.draw?.(D,px,py,.55*Math.min(1,alpha)*Math.sin(ph*Math.PI)); } } }   /* v8.2.80 กรงเล็บความมืดยื่นเข้าหาตัวแล้วถอยออก */
+  cleanAirDarkBrush(){ if(this._fogDark)return this._fogDark; if(!this.textures?.exists?.('fog_brush_dark')){ if(typeof document==='undefined')return null; const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d'),g=x.createRadialGradient(64,64,6,64,64,64); g.addColorStop(0,'rgba(10,14,6,1)'); g.addColorStop(.55,'rgba(14,18,8,.85)'); g.addColorStop(1,'rgba(20,26,12,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas('fog_brush_dark',cv); } this._fogDark=this.make?.image?.({key:'fog_brush_dark',add:false})?.setOrigin(.5)||null; return this._fogDark; }
   cleanAirV2Tick(dt,o){ const c=this._cleanAir,P=this.player; if(!c||!o||!P)return; c.t+=dt; const g=c.g; g?.clear?.(); const ease=k=>1-Math.pow(1-Math.max(0,Math.min(1,k)),3);
     if(c.phase==='lure'){ this.cleanAirV2Fog(c,[],0); if(this.dist(P.x,P.y,c.x,c.y)<c.r){ c.phase='close'; c.t=0; for(const q of c.lure)this.tweens.add({targets:q,x:P.x,y:P.y-20,alpha:0,duration:300,onComplete:()=>q.setVisible(false)}); Sfx.orderCue?.('wave_start',.4,.3); } return; }
     const W=this.W||390,H=this.H||844,big=Math.hypot(W,H)/(this.cameras?.main?.zoom||1)*.6;
@@ -16280,7 +16287,7 @@ class Game extends Phaser.Scene {
       return; }
     if(c.phase==='end'){ const a=Math.max(0,1-c.t/1.0); this.cleanAirV2Fog(c,[{x:P.x,y:P.y,r:c.lantern+c.t*900},...c.lit],a*.92); if(c.t>=1.0&&!c.done){ c.done=true; this.cleanAirV2Fog(c,[],0); this.completeWaveObjective(); } return; }
     // dark
-    c.darkT+=dt; c.lgrow=Math.min(1,(c.lgrow||0)+dt/.35); c.lantern=Math.max(85,c.lantern-dt*2.2); const lr=c.lantern*ease(c.lgrow);
+    c.darkT+=dt; c.lgrow=Math.min(1,(c.lgrow||0)+dt/.35); c.lantern=Math.max(CA_LANTERN[1],c.lantern-dt*2.2); const lr=c.lantern*ease(c.lgrow);
     let near=null;
     for(const w of c.wisps){ if(!w.spr?.active)continue; const pulse=((c.darkT+w.ph)%3)<.35; w.spr.setAlpha(w.freed?.55:pulse?1:.6); w.glow?.setAlpha(w.freed?.18:pulse?.5:.2).setScale(pulse?1.5:1);
       if(w.freed)continue; const d=this.dist(P.x,P.y,w.x,w.y); if(d<85)near=w;
@@ -16290,10 +16297,10 @@ class Game extends Phaser.Scene {
     c.spawnT-=dt; if(c.spawnT<=0&&this.state==='play'){ c.spawnT=2.4; const mv=this.player.body?.velocity,ang0=mv&&Math.hypot(mv.x,mv.y)>20?Math.atan2(mv.y,mv.x):Math.random()*Math.PI*2,n=2+((this.stageIndex||0)>=10?1:0);
       for(let i=0;i<n;i++){ const a=ang0+(Math.random()*2-1)*.9,d=lr+70+Math.random()*90,x=P.x+Math.cos(a)*d,y=P.y+Math.sin(a)*d; if(c.lit.some(L=>this.dist(x,y,L.x,L.y)<L.r*.8))continue; this.cleanAirV2Eyes(c,x,y); } }
     for(let i=c.eyes.length-1;i>=0;i--){ const E=c.eyes[i]; E.t-=dt; if(E.t<=0){ c.eyes.splice(i,1); if(E.g?.active)E.g.destroy(); if(this.state!=='play')continue; const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'],e=this.spawnEnemy?.(types[Math.floor(Math.random()*types.length)]); if(e){ e.setPosition(E.x,E.y); if(e.body)e.body.reset?.(E.x,E.y); this.spawnRise?.(e,E.x,E.y); } } }
-    this.cleanAirV2Fog(c,[{x:P.x,y:P.y,r:lr},...c.lit,...c.wisps.filter(w=>!w.freed).map(w=>({x:w.x,y:w.y,r:34}))],.9); }
+    this.cleanAirV2Fog(c,[{x:P.x,y:P.y,r:lr,wob:true},...c.lit,...c.wisps.filter(w=>!w.freed).map(w=>({x:w.x,y:w.y,r:34}))],.9); }
   cleanAirV2Eyes(c,x,y){ const g=this.camWorld(this.add.graphics().setDepth(94605)); g.fillStyle(0xffe066,.95).fillCircle(x-7,y-4,3.2).fillCircle(x+7,y-4,3.2); g.fillStyle(0xff4d6d,.4).fillCircle(x-7,y-4,6).fillCircle(x+7,y-4,6); g.setAlpha(0); this.tweens.add({targets:g,alpha:1,duration:250}); c.eyes.push({x,y,t:.6,g}); }
   cleanAirV2Burst(c,x,y,R,dmg){ this.codeShock?.(x,y,R,0xbff6ff,{depth:94606,dust:14,rings:2,dur:520,flat:.8}); if(!dmg)return 0; let n=0; (this.enemies?.getChildren?.()||[]).slice().forEach(e=>{ if(!e||!e.active||e.isBoss||e.isDummy)return; const d=this.dist(e.x,e.y,x,y); if(d>R)return; const hard=e.isElite||e.isMini,a=Math.atan2(e.y-y,e.x-x); this.damage?.(e,(e.maxhp||e.hp||10)*(hard?.15:.6),e.x,e.y); if(e.active&&!hard){ e.knock=Math.max(e.knock||0,.35); e.setVelocity?.(Math.cos(a)*560,Math.sin(a)*560); } n++; }); return n; }
-  cleanAirV2Free(c,o,w){ w.freed=true; w.charge=1.5; c.lit.push({x:w.x,y:w.y,r:260}); c.lantern=130; o.progress=Math.min(o.target,(o.progress||0)+1); this.screenFlash?.(0xe8fbff,.35,260); this.cleanAirV2Burst(c,w.x,w.y,230,true); Sfx.orderCue?.('mission_tube_pop',.45,.3);
+  cleanAirV2Free(c,o,w){ w.freed=true; w.charge=1.5; c.lit.push({x:w.x,y:w.y,r:260}); c.lantern=CA_LANTERN[0]; o.progress=Math.min(o.target,(o.progress||0)+1); this.screenFlash?.(0xe8fbff,.35,260); this.cleanAirV2Burst(c,w.x,w.y,230,true); Sfx.orderCue?.('mission_tube_pop',.45,.3);
     const su=Math.round(4+(this.stageIndex||0)*1.2); this.sugarStage=(this.sugarStage||0)+su; this.sugarRun=(this.sugarRun||0)+su; this.floatText?.(w.x,w.y-60,'🌟 '+o.progress+'/'+o.target+'  🍬+'+su,0xbff6ff); this.renderWaveObjectiveHUD?.();
     if(o.progress>=o.target){ if(c.charging){ c.charging=false; Sfx.eventLoopStop?.('event_wisp_purify_charge'); } const P=this.player; for(const q of c.wisps){ if(q.spr?.active)this.tweens.add({targets:q.spr,x:P.x,y:P.y-24,alpha:0,duration:700,ease:'Cubic.in'}); }
       if(c.darkT<=45){ const b=Math.round(su*3); this.sugarStage+=b; this.sugarRun+=b; this.floatText?.(P.x,P.y-90,'⚡ Fast clear! 🍬+'+b,0xffe08a); }
