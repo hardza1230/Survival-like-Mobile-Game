@@ -139,3 +139,7 @@ Use exponential interpolation from elapsed clock time for FPS-independent fluid/
 ### Recovering deleted ImageGen job metadata (verified 2026-11-24)
 
 After the owner deleted the E: checkout, native PNGs survived under the Codex generated_images folder. The same chat rollout contained item_completed records with item.kind=image_gen.generation, savedPath, inputImages path/SHA256, revisedPrompt and generationId. Match the reference filename to the worklist, rebuild references from the pinned source branch and require their SHA256 to match before recovering a job. This restored twenty phase5C outputs without regeneration. Read only relevant artifact records and keep unrelated chat data out of deliveries. A clean older C: partial clone was fetched to the published source branch; sparse-checkout add materialized the needed artwork and delivery folder. Clone/drive availability should be checked, not assumed across restarts.
+
+### Acknowledged blob missing at tree creation (verified 2026-11-24)
+
+During phase5D delivery, create_tree returned GitHub 422 naming a QA blob as invalid even after a matching create_blob acknowledgement. Re-uploading that exact local immutable blob by SHA, then recreating the same tree, returned the expected local tree SHA. Keep the branch unchanged until every blob and tree matches; do not treat an acknowledgement alone as the final repository-write proof. A transient protocol disconnect was reported separately from the actual 422 response.
