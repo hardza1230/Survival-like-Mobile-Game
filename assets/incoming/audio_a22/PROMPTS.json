@@ -1,0 +1,704 @@
+[
+  {
+    "key": "sfx_a22_twist_roots",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "Large woody roots forcing through cookie soil with a short deep rounded rumble and creaking wood. Compact boss warning, no long quake. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.2,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "13"
+    },
+    "source_sha256": "44f318373a47382d525295b0e28608542a2c882adf4780afe2a6314b210788dc",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.05727,
+      "peakDbtp": -4.45
+    }
+  },
+  {
+    "key": "sfx_a22_twist_seeds",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "Several hard candy seeds dropping in quick soft tok tok tok knocks against the floor, a short airy descending whistle. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.0,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "11"
+    },
+    "source_sha256": "07a172db04db56b146bb473dc009669d96e0c420f625f08a7a532a4edf3342fe",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.06952,
+      "peakDbtp": -4.52
+    }
+  },
+  {
+    "key": "sfx_a22_twist_fruit",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A branch shakes with dry leafy rustles and one heavy candy fruit drops with a brief low falling whistle, no impact splat yet. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.2,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "13"
+    },
+    "source_sha256": "8fe08086d20c84c34e3671505048988b3f92f34e27560b55adde30b373c2aed6",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.05727,
+      "peakDbtp": -4.04
+    }
+  },
+  {
+    "key": "sfx_a22_twist_dark",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "Light extinguishes with a soft fwump followed by a short low eerie magical drone that fully resolves. Gentle family-friendly suspense, no scream. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.6,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "18"
+    },
+    "source_sha256": "3958fc8c18f41f4e8136c8eb4264bc66c6c7ce6b978067ced072eb108e04e9b2",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.04235,
+      "peakDbtp": -4.44
+    }
+  },
+  {
+    "key": "sfx_a22_twist_shadows",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A magical mirror cracks and scatters tiny glass-sugar fragments with a short dark violet echo. Soft treble and restrained suspense. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.4,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "15"
+    },
+    "source_sha256": "8249afb124b0dc4e28ced143d445ef125e51474d7d747db94f2d69d68baa5d5e",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -4.07
+    }
+  },
+  {
+    "key": "sfx_a22_twist_survive",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "One tiny bright survival success stinger: warm little bell and exactly two rising plucked harp notes. Resolves in under a second, no words. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.9,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "10"
+    },
+    "source_sha256": "49a46f65a60a01d0ea3298f362154ff499e59b548337ebe4ec1e3c0a941bd04b",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -4.45
+    }
+  },
+  {
+    "key": "sfx_a22_seed_pop",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "ONE extremely short dry seed shell crunch under a foot with one tiny sugar sparkle. Finished within250milliseconds, no rumble or long ring. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "2bcf81b0c4332eca59b62e0ed9c8586cb63cdc75979f8063c3b4b35e21cbd58f",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 2.04255,
+      "peakDbtp": -3.83
+    }
+  },
+  {
+    "key": "sfx_a22_seed_hatch",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "One small seed hatching with a compact airy puff and a rounded low pop. Clean quick end, no monster voice. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "748219e82136faad8d100a50d0ef9734a2be1c9db410af160c764665342384db",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.10345,
+      "peakDbtp": -4.35
+    }
+  },
+  {
+    "key": "sfx_a22_fruit_splat",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "One brief juicy candy peach fruit splatting and scattering soft nectar drops. Compact rounded playful wet plap, not flesh or gore. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "source_sha256": "6b6d00ce9bd49fb4e847844058e2624f79c148037bb0a2ee2ddf5df8c95aee78",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.31736,
+      "peakDbtp": -4.35
+    }
+  },
+  {
+    "key": "sfx_a22_root_burrow",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "Seamlessly looping quiet gritty soil scraping and low woody root movement beneath the cookie floor. Steady subtle underground texture, no distinct start, no ending impact, no dramatic accents. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.5,
+      "loop": true,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "17"
+    },
+    "source_sha256": "d8f95f355fa7ba9910dbeb47b958b7445086affe4d7acb1e8af16fc7c049121c",
+    "postprocess": {
+      "loop_crossfade_ms": 60,
+      "loop_start_ms": 0,
+      "loop_end_ms": 1444,
+      "target_sample_peak_dbfs": -10
+    }
+  },
+  {
+    "key": "sfx_a22_root_warn",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A short accelerating sequence of dry floor crackles, beginning slow and becoming urgent. Ground warning, not a giant impact. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.8,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "9"
+    },
+    "source_sha256": "76fc98b1da5375d93e521aec1c74a5893563258042c1f1c4f9016ec334c5e5ec",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -4.42
+    }
+  },
+  {
+    "key": "sfx_a22_root_strike",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "One root punching up through cookie dirt: firm rounded thump and short woody crack with a few grit particles. Quick attack, no lasting rumble. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.7,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "8"
+    },
+    "source_sha256": "1398cca8596daf785c7f9ee525654e85f35468daf4aec33c12789238d136f9ce",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -4.33,
+      "final_onset_trim_ms": 15.76
+    }
+  },
+  {
+    "key": "sfx_a22_anchor_break",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "One heavy rough stone anchor cracking into several small rocks, a compact rocky crash with a short warm gold magic sparkle. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.8,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "9"
+    },
+    "source_sha256": "d5a60e35c42472e6820e6a013f81edbc7b445f1a30d6b3460d407b3502a5c5df",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.04953,
+      "peakDbtp": -4.4
+    }
+  },
+  {
+    "key": "sfx_a22_perfect_dodge",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A brief time-stop vacuum wooum followed immediately by a tiny clear rising bell glint. Satisfying precise dodge, short and soft, no melody. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.6,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "2b2e8922580a49224438fc919922d8095562926a1731db8d0f67ca8dafffe002",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.1215,
+      "peakDbtp": -4.2
+    }
+  },
+  {
+    "key": "sfx_a22_root_combo",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A rapid tightly grouped succession of four rounded candy pops rising slightly in energy, one compact combo confirmation. No words or fanfare. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.6,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "531d71d923f1bce2bf613b199bcc97e3856fc315e86be8645217d60006007e8e",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.03584,
+      "peakDbtp": -4.32
+    }
+  },
+  {
+    "key": "sfx_a22_head_burst",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A large magical woody root head harmlessly bursts: low rounded rumble, splintering bark and scattered warm golden sugar sparks, fully fades within1.2seconds. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.2,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "13"
+    },
+    "source_sha256": "3815a349bff82b753cc1e76b938fb0d8191d267f7a799b19632f9bd27d90f835",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.05727,
+      "peakDbtp": -4.37
+    }
+  },
+  {
+    "key": "sfx_a22_rift_warn",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A gentle ground tremor with several small seeds rattling in a fissure, softly increasing tension for1.5seconds. Pre-opening warning only, no portal opening yet. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.5,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "17"
+    },
+    "source_sha256": "f7a17cdcc08d7f35bbd70535f4988438ef0a74227cda410cf3be6385524e90e5",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.00758,
+      "peakDbtp": -3.75
+    }
+  },
+  {
+    "key": "sfx_a22_rift_open",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A small magical dimensional crack tears open with a short deep paper-wood rip and inward rushing wind. Whimsical dark candy fantasy, not horror. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.2,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "13"
+    },
+    "source_sha256": "c9fa7470d0c84d1c92d2be46256bc408a8513d06e4921f11d719d897fde07437",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.04125,
+      "peakDbtp": -3.9
+    }
+  },
+  {
+    "key": "sfx_a22_rift_feed",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A tiny seed parcel tumbles into a hungry magical fissure with a soft plop and one small rounded nonverbal low burp. Funny and brief, no words. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 0.6,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "42a84de190217046e513bd05773e2773dd3d734fd4f18a0052a9606a55382276",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.05605,
+      "peakDbtp": -4.22
+    }
+  },
+  {
+    "key": "sfx_a22_rift_close",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A magical fissure closes with a rounded inward fwoop, its tiny sugar sparkles diminishing quickly to silence. No huge explosion. Original candy-fantasy game cue. Immediate dry onset, rounded phone-audible midrange, soft treble, short complete release. No speech, music bed, scream, gore or imitation.",
+      "duration_seconds": 1.0,
+      "loop": false,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "11"
+    },
+    "source_sha256": "fdb764e74acd545d68e88f26a463f6a8974338f30c65fd0a749ac94761b9dc36",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.06952,
+      "peakDbtp": -4.44
+    }
+  },
+  {
+    "key": "vo_ruby_twist_roots",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ระวัง",
+    "parameters": {
+      "text": "Roots! Watch where they pop out!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892240,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "6hzGn5HAOB7uPF3D5z65",
+      "character-cost": "14"
+    },
+    "source_sha256": "f1a569ae0b93a3281f10395f7e12c1f119890c24df402dcb1ab157298d0bcf4a",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.01409,
+      "peakDbtp": -2.59
+    }
+  },
+  {
+    "key": "vo_ruby_twist_seeds",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เร่ง",
+    "parameters": {
+      "text": "Step on the seeds before they hatch!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892241,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "zd7gZHTqW7N3e3WhIdpj",
+      "character-cost": "16"
+    },
+    "source_sha256": "93f2294dcf5909172ba28356ffd705bf80aa6999c1fd3bb3a670b673bb3b720f",
+    "postprocess": {
+      "onset_trim_ms": 184.65,
+      "atempo": 1.0,
+      "peakDbtp": -2.64
+    }
+  },
+  {
+    "key": "vo_ruby_twist_fruit",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ขำ ๆ ตื่นเต้น",
+    "parameters": {
+      "text": "Fruit’s falling — keep moving!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892242,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "uNHBTkb8W7IXioTZsFWs",
+      "character-cost": "13"
+    },
+    "source_sha256": "e19a6cee751c482eb9f8c97f6a88ed7f32d185b4d8f826afcd5809480c71cf17",
+    "postprocess": {
+      "onset_trim_ms": 330.14,
+      "atempo": 1.0,
+      "peakDbtp": -2.49
+    }
+  },
+  {
+    "key": "vo_ruby_twist_dark",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "กลัวนิด ๆ",
+    "parameters": {
+      "text": "It’s getting dark… they’re getting angry!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892243,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "NKOOe9ln4O5DyPjnVdU9",
+      "character-cost": "18"
+    },
+    "source_sha256": "d20a2d6e6f974c7cfc9cadb5a14f6ec0d03b77a1d08eaf1f439129269a6dfa2e",
+    "postprocess": {
+      "onset_trim_ms": 281.29,
+      "atempo": 1.10879,
+      "peakDbtp": -2.53
+    }
+  },
+  {
+    "key": "vo_ruby_twist_shadows",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "จริงจัง",
+    "parameters": {
+      "text": "Shadows of the boss? Don’t let them surround you!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892244,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "1FS82GZ9TkKFuVHWZkUx",
+      "character-cost": "22"
+    },
+    "source_sha256": "f0cfd7b359672694ff1dec126b65e3d004b57b66711e56956c62569266785e36",
+    "postprocess": {
+      "onset_trim_ms": 319.16,
+      "atempo": 1.16983,
+      "peakDbtp": -2.6
+    }
+  },
+  {
+    "key": "vo_ruby_rift_event",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตื่นเต้น",
+    "parameters": {
+      "text": "A Seed Rift! Catch the carriers for Sugar!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892245,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "OyQQAfI5ujjKSPLO6jN4",
+      "character-cost": "18"
+    },
+    "source_sha256": "74bab5ea8eda16c3a07b4538d01f5245083d31d3899ac1975c21b468011db6c0",
+    "postprocess": {
+      "onset_trim_ms": 342.9,
+      "atempo": 1.24071,
+      "peakDbtp": -2.6
+    }
+  },
+  {
+    "key": "vo_ruby_perfect",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ดีใจ ภูมิใจ (≤ 1 วิ)",
+    "parameters": {
+      "text": "Perfect dodge!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892246,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "UZtpRQPzriu8bU88UHHr",
+      "character-cost": "6"
+    },
+    "source_sha256": "71e18166839294ac650e1d7236340610fd521f14b9628b381ded292b98300d6e",
+    "postprocess": {
+      "onset_trim_ms": 346.58,
+      "atempo": 1.09052,
+      "peakDbtp": -2.58
+    }
+  },
+  {
+    "key": "vo_ruby_crown_stuck",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เร่ง ดีใจ",
+    "parameters": {
+      "text": "It’s stuck! Hit it now!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892247,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "Di2ZHeaft3zqj0uBnu0T",
+      "character-cost": "10"
+    },
+    "source_sha256": "c9cd60fbcae3eb65471be1967ae027106738faf6fba4a7e4a7a69d9192325572",
+    "postprocess": {
+      "onset_trim_ms": 55.74,
+      "atempo": 1.0,
+      "peakDbtp": -2.57
+    }
+  }
+]

@@ -1,6 +1,6 @@
 # A22 — ลูกเล่นบอส · Lure the Crown Root · Seed Rift เหตุการณ์สุ่ม · Perfect Dodge · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 24 พ.ย. 2026 · **บท Ruby รอเจ้าของอนุมัติ** · โค้ดพร้อมแล้ว (v8.2.81 / v8.2.83) ตอนนี้ใช้เสียงเดิมที่ใช้ร่วมกับที่อื่น
+สถานะ: 🟢 ผูกแล้ว v8.2.87 · เขียน 24 พ.ย. 2026 · **เจ้าของอนุมัติบท Ruby ทั้งหมด 24 พ.ย. 2026** · โค้ดพร้อมแล้ว (v8.2.81 / v8.2.83) ตอนนี้ใช้เสียงเดิมที่ใช้ร่วมกับที่อื่น
 ส่งที่ `assets/incoming/audio_a22/` พร้อม `MANIFEST.json` (key, file, text (เฉพาะเสียงพูด), bytes, sha256, duration_ms, kind), `PROMPTS.json`, `QA_REPORT.json`
 เครื่องมือ: **ElevenLabs** · SFX = Sound Effects · เสียงพูดใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามเสียงสร้างด้วยโค้ด/Runway
 
@@ -75,5 +75,12 @@
 - ใช้ `this.a12?.(key)` / `Sfx.orderCue` (ไม่มีไฟล์ = ใช้เสียงเดิม) · โหลด SFX ตอนเข้าด่าน Ch2+ (คู่กับ `ensureStageAudio`) · ปิด Ruby ในตั้งค่า (`noRuby`) = ไม่พูด
 
 ## ส่งมอบ
-- วันที่: —
-- สถานะ: 🟡 รอเสียง
+- วันที่: 24 พ.ย. 2026 · เจ้าของอนุมัติบท Ruby ทั้ง 8 และให้สร้าง/ผูกเข้าเกมในรอบเดียว
+- ส่งครบ 28/28: ElevenLabs Sound Effects 20 + Ruby A07 voice เดิม 8 (`GVG9R2Ywg9D3iQVsW8Z6`) · บทตรงทุกตัวอักษร
+- ต้นฉบับ `assets/incoming/audio_a22/` พร้อม MANIFEST.json, PROMPTS.json, QA_REPORT.json, AUDITION.html · ไม่มีไฟล์ขาด
+- ผูกใน v8.2.87: SFX 96k mono ที่ `assets/audio/sfx/a22/`; voice 56k mono ที่ `assets/audio/acting/` · runtime รวม 334,195 bytes
+- โหลด SFX เฉพาะเข้าด่าน Ch2+; Ruby โหลดตามเหตุการณ์ผ่าน VoiceActing เดิม ไม่โหลดตอน boot/เมนู · เสียงเดิมเป็น fallback
+- ลูกเล่นบอสเริ่ม/จบ, เมล็ดแตก/ฟัก, ผลไม้ตกกระแทก, รากมุด/เตือน/พุ่ง/หินแตก/Perfect/combo/หัวระเบิด และ Seed Rift เตือน/เปิด/กิน/ปิดครบ · ตีหัวใช้ A21 hit_plant เดิม
+- Loop รากใช้หนึ่งเสียงร่วมทุกหัว หยุดเมื่อเตือน/พุ่ง/ติดพื้น/พัก/ออกด่าน/ตาย/ปิดเสียง/scene shutdown · Ruby ไม่ซ้ำลูกเล่นเดิมและ Perfect ต่อด่าน, ตรวจ noRuby และ stage epoch/เจ้าของเหตุการณ์ก่อนเล่น
+- ผ่าน QA ไฟล์ต้นฉบับและ true peak หลังแพ็ก ≤ −1 dBTP · เทส `tests/audio-a22.test.cjs` เพิ่มใน npm run check · CI/build/release state ดู Latest delivery และ SESSION_HANDOFF
+- ไม่เปลี่ยนดาเมจ เวลา รัศมี รางวัล หรือโอกาสเกิดเหตุการณ์ · เจ้าของฟังบนมือถือเป็นขั้นตรวจสุดท้าย

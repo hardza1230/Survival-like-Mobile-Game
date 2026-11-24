@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.86**. Next release:8.2.87. Fetch the deploy branch before new work.
+Current release: **8.2.87**. Next release:8.2.88. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.86 — 🎨 Art 94 + 95: Crown Root, poison fog, Abyss Brute, rift warning, badges, boss twists** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.87 — A22 boss twists and Crown Root audio** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,6 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **Temple Expedition (v8.2.32):** แทน Dig + Patrol · ขั้น 1–2 เสร็จ (แตะ/ด่าน/บอส/ผู้ช่วย/ออฟไลน์/Supplies) · ขั้น 3–4 (สกิล/Prestige/Relic) หลัง Closed test · อาร์ตใบ 91 ผูกแล้ว v8.2.33 · เสียง A19 ผูกแล้ว v8.2.34
 **เสียง A20 (ม่านเข้าด่าน Ruby พาไปด่านถัดไป):** ผูกแล้ว v8.2.84 · รอ QA มือถือ
 **แอนิเมชัน 8/12 เฟรม เฟส 3–6:** ผูกครบ v8.2.74/75/84 · รอ QA มือถือ (`docs/design/animation-frame-upgrade-plan.md`)
+**เสียง A22:** ผูกแล้ว v8.2.87 · SFX 20 + Ruby 8 บทอนุมัติ · รอฟังบนมือถือ
 **ใบ 92 + 93:** ผูกแล้ว v8.2.55 · รอ QA มือถือ
 **ใบ 94 + 95:** ผูกแล้ว v8.2.86 · รอ QA มือถือ · **เสียง A22:** รอเสียง · บท Ruby รออนุมัติ
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
