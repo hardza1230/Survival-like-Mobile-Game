@@ -1,0 +1,410 @@
+{
+ "cr94_burrow": {
+  "url": "assets/art/mission94/cr94_burrow.webp",
+  "fw": 128,
+  "fh": 96,
+  "frames": 8,
+  "rate": 12,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": null
+ },
+ "cr94_warn_crack": {
+  "url": "assets/art/mission94/cr94_warn_crack.webp",
+  "fw": 256,
+  "fh": 160,
+  "frames": 8,
+  "rate": 10,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "cr94_strike": {
+  "url": "assets/art/mission94/cr94_strike.webp",
+  "fw": 192,
+  "fh": 256,
+  "frames": 8,
+  "rate": 10.7,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": null
+ },
+ "cr94_crown_head": {
+  "url": "assets/art/mission94/cr94_crown_head.webp",
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "rate": 10,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": null
+ },
+ "cr94_anchor_break": {
+  "url": "assets/art/mission94/cr94_anchor_break.webp",
+  "fw": 192,
+  "fh": 192,
+  "frames": 8,
+  "rate": 14,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "sr94_rift_warn": {
+  "url": "assets/art/mission94/sr94_rift_warn.webp",
+  "fw": 256,
+  "fh": 160,
+  "frames": 8,
+  "rate": 12,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "cr94_crown_burst": {
+  "url": "assets/art/mission94/cr94_crown_burst.webp",
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "rate": 16,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "fg94_fog_tile": {
+  "url": "assets/art/mission94/fg94_fog_tile.webp",
+  "fw": 512,
+  "fh": 512,
+  "frames": 1,
+  "rate": 8,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "fg94_dark_claw": {
+  "url": "assets/art/mission94/fg94_dark_claw.webp",
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "rate": 8,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "fg94_lantern_edge": {
+  "url": "assets/art/mission94/fg94_lantern_edge.webp",
+  "fw": 512,
+  "fh": 512,
+  "frames": 1,
+  "rate": 8,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "hc94_abyss_brute": {
+  "url": "assets/art/mission94/hc94_abyss_brute.webp",
+  "fw": 256,
+  "fh": 256,
+  "frames": 16,
+  "rate": 8,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": {
+   "walk": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "idle": [
+    4,
+    5
+   ],
+   "windup": [
+    6,
+    7
+   ],
+   "attack": [
+    8,
+    9,
+    10,
+    11
+   ],
+   "hurt": [
+    12,
+    13
+   ],
+   "death": [
+    14,
+    15
+   ]
+  }
+ },
+ "cr94_crown_hurt": {
+  "url": "assets/art/mission94/cr94_crown_hurt.webp",
+  "fw": 256,
+  "fh": 256,
+  "frames": 6,
+  "rate": 18,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": null
+ },
+ "fb94_combo_badge": {
+  "url": "assets/art/mission94/fb94_combo_badge.webp",
+  "fw": 256,
+  "fh": 96,
+  "frames": 6,
+  "rate": 20,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": [
+   38,
+   26,
+   180,
+   44
+  ]
+ },
+ "fb94_perfect_badge": {
+  "url": "assets/art/mission94/fb94_perfect_badge.webp",
+  "fw": 256,
+  "fh": 96,
+  "frames": 6,
+  "rate": 20,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": [
+   38,
+   26,
+   180,
+   44
+  ]
+ },
+ "tw95_root_tile": {
+  "url": "assets/art/twist95/tw95_root_tile.webp",
+  "fw": 256,
+  "fh": 64,
+  "frames": 8,
+  "rate": 10,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_root_tip": {
+  "url": "assets/art/twist95/tw95_root_tip.webp",
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "rate": 10,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": null
+ },
+ "tw95_seed_drop": {
+  "url": "assets/art/twist95/tw95_seed_drop.webp",
+  "fw": 96,
+  "fh": 160,
+  "frames": 8,
+  "rate": 14,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": null
+ },
+ "tw95_seed_idle": {
+  "url": "assets/art/twist95/tw95_seed_idle.webp",
+  "fw": 96,
+  "fh": 96,
+  "frames": 8,
+  "rate": 8,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": null
+ },
+ "tw95_seed_pop": {
+  "url": "assets/art/twist95/tw95_seed_pop.webp",
+  "fw": 128,
+  "fh": 128,
+  "frames": 6,
+  "rate": 18,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_seed_hatch": {
+  "url": "assets/art/twist95/tw95_seed_hatch.webp",
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "rate": 16,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_fruit_fall": {
+  "url": "assets/art/twist95/tw95_fruit_fall.webp",
+  "fw": 96,
+  "fh": 192,
+  "frames": 8,
+  "rate": 10.5,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.92
+  ],
+  "extra": null
+ },
+ "tw95_fruit_splat": {
+  "url": "assets/art/twist95/tw95_fruit_splat.webp",
+  "fw": 192,
+  "fh": 128,
+  "frames": 8,
+  "rate": 16,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_dark_vignette": {
+  "url": "assets/art/twist95/tw95_dark_vignette.webp",
+  "fw": 540,
+  "fh": 960,
+  "frames": 1,
+  "rate": 8,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_shadow_summon": {
+  "url": "assets/art/twist95/tw95_shadow_summon.webp",
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "rate": 14,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_shadow_aura": {
+  "url": "assets/art/twist95/tw95_shadow_aura.webp",
+  "fw": 192,
+  "fh": 192,
+  "frames": 8,
+  "rate": 10,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_frenzy_aura": {
+  "url": "assets/art/twist95/tw95_frenzy_aura.webp",
+  "fw": 128,
+  "fh": 64,
+  "frames": 8,
+  "rate": 12,
+  "loop": true,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_icons": {
+  "url": "assets/art/twist95/tw95_icons.webp",
+  "fw": 64,
+  "fh": 64,
+  "frames": 5,
+  "rate": 8,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": null
+ },
+ "tw95_chip": {
+  "url": "assets/art/twist95/tw95_chip.webp",
+  "fw": 460,
+  "fh": 48,
+  "frames": 1,
+  "rate": 8,
+  "loop": false,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "extra": [
+   24,
+   12,
+   24,
+   12
+  ]
+ }
+}

@@ -1,7 +1,7 @@
 // v8.2.83 owner: boss missions → boss twists (mission pieces, no bar) · Seed Rift → random natural-disaster event · stage loading cover.
 const fs=require('fs'),vm=require('vm'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8'),html=fs.readFileSync(__dirname+'/../index.html','utf8');
 const grab=n=>{const i=src.indexOf('\n  '+n+'(');assert(i>0,n);let k=src.indexOf('\n',i+1);while(src.startsWith('\n    ',k))k=src.indexOf('\n',k+1);return src.slice(i+3,k);};
-const consts=src.match(/const SR_EVENT_ON=[^\n]*\n/)[0];
+const consts=src.match(/const SR_EVENT_WARN=[^\n]*\n/)[0];
 const T=vm.runInNewContext(consts+'class T{'+['seedRiftEventTick','seedRiftEventEnd'].map(grab).join('\n')+'};T',{Math});
 const s=new T();let started=0;Object.assign(s,{state:'play',mode:'wave',stageIndex:6,waveIndex:1,seedRiftEventStart(){started++;this._srEv={objs:[],carriers:[]};},seedRiftEventRun(){}});
 let rolls=0;const R=Math.random;Math.random=()=>.1;s.seedRiftEventTick(1);assert(s._srAt>=8&&s._srAt<=20,'15% roll hit → scheduled 8–20 s into the wave');

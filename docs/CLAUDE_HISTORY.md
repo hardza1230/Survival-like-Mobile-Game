@@ -4774,3 +4774,18 @@ Owner approved all four ("ทำเลยครับ · A · ภารกิจ
   - Seed carriers run in. Each one fed grows the rift and spills 2 monsters; each one killed gives 🍬. Never extends or blocks the wave. Rift/carrier art loads on Ch2–3 stages.
 - **Stage loading screen:** the stage card art as the background, the stage name and tips (4 new), shown for at least 0.8 s. It is a DOM image, so it uses no game GPU memory.
 - Tests: `spark-burst-8283`, `events-8283`; `scamper-8228`, `special-picks`, `sig-missions` updated. Headless browser: all 5 twists run and end, the rift event spawns carriers and closes, the loader cover hides after play starts.
+
+# Delivery: v8.2.84 — 🎞️ Animation phases 5C/5D/6 + phase 4 fixes · 🔊 A20 Ruby stage entry
+
+- **Animation phase 5C** (Ch3 + Pinnacle boss VFX, 28 sheets: warning rings, waves, beams, sweeps, counters), **5D** (11 boss shots + shared counter ring) and **6** (Ruby point, 6 Expedition rear heroes, level-card border, hub firefly/moon, 5 hub buttons) are wired as 8/12-frame sheets.
+  - `scripts/pack-motion-phase5c-6.py` → `scripts/motion-phase5c-6.json`, 55 sheets, 3.5 MB.
+  - Same cycle time as before. Damage, timing and hitboxes unchanged.
+- **Manual players updated:**
+  - `tickBossShotLoops` reads the registered frames/rate (8@16 = the old 0.5 s loop).
+  - Expedition rear strike plays `[1..7,0]` over the old 165 ms.
+  - Ruby point plays 8 cells × 90 ms (old 720 ms loop).
+  - The rear-hero sheets stay in `expedition91/` so they keep loading lazily with the menu (checked with `artClass`).
+- **Phase 4 fixes:** Ant Drone attack/windup and Equinox Guardian attack now use 8 frames (appended clips, `motion-phase4.json` 51 atlases).
+- **A20 audio** (26 files, 472 KB): the stage-entry curtain plays curtain in/out, a chapter stinger (boss stinger on stages 5/10/15), footsteps and Ruby's intro line the first time (`vo_ruby_go_01..15`), and a short repeat line 50% of the time after that.
+  - Respects the Ruby-off setting. A20 SFX preload with stage audio.
+- Older art tests read game.js through the legacy view (`tests/lib/motion-phase5c-6-legacy.json`). New test `motion-phase5c-6-a20`. Boss-shot review check reads the frame count. App size 179.8 MB.

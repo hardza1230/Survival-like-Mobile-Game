@@ -1,6 +1,6 @@
 # 94 — Lure the Crown Root · Clear the Fog · Abyss Brute · Seed Rift เตือน · ป้าย Perfect/Combo · ใบสั่งงานอาร์ต
 
-สถานะ: 📦 ส่งครบ 14 · รอผูก · เขียน 24 พ.ย. 2026 · โค้ดพร้อมแล้ว (v8.2.79–8.2.83) ใช้ภาพวาดด้วยโค้ด/ย้อมสีอยู่
+สถานะ: 🟢 ผูกแล้ว v8.2.86 · รอ QA มือถือ · เขียน 24 พ.ย. 2026
 ส่งไฟล์ที่ `assets/incoming/mission94/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 · **ห้ามมีตัวหนังสือหรือตัวเลขในภาพ**
 
@@ -82,7 +82,7 @@
 
 ## ส่งมอบ
 - วันที่: 24 พ.ย. 2026
-- สถานะ: 📦 ส่งครบ 14 · รอผูก
+- สถานะ: 🟢 ผูกแล้ว v8.2.86 (`scripts/pack-art94-95.py` · stage-lazy · ภาพที่โค้ดวาดเดิมเก็บไว้เป็น fallback) · รอ QA มือถือ
 - ไฟล์: 14/14 PNG32 · 108 cells/frames · ส่งที่ `assets/incoming/mission94/` พร้อม MANIFEST.json, PROMPTS.json, QA_REPORT.json
 - ไฟล์ที่ยังขาด: ไม่มี
 - ใช้ built-in ImageGen; ปรับขนาด/จัดกริดด้วยสคริปต์ ใช้กรอบครอปร่วมกันทุกเฟรมเพื่อรักษาขนาดและจังหวะ, คง alpha จริง, คอมโพสิตพื้นดำ #000 ตามใบ และจับคู่ขอบ texture ที่ปูต่อ
