@@ -43,6 +43,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 **เสียง A20 (ม่านเข้าด่าน Ruby พาไปด่านถัดไป):** ผูกแล้ว v8.2.84 · รอ QA มือถือ
 **แอนิเมชัน 8/12 เฟรม เฟส 3–6:** ผูกครบ v8.2.74/75/84 · รอ QA มือถือ (`docs/design/animation-frame-upgrade-plan.md`)
 **ใบ 92 + 93:** ผูกแล้ว v8.2.55 · รอ QA มือถือ
+**ใบ 94 (Crown Root/Fog/Abyss Brute/Rift เตือน/ป้าย) + 95 (ลูกเล่นบอส) + เสียง A21:** เขียน 24 พ.ย. · รออาร์ต/เสียง · โค้ดพร้อม v8.2.80–83 (ภาพ/เสียงชั่วคราว) · บท Ruby A21 รออนุมัติ
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 
 **ECRS ก่อน Closed test (เจ้าของ 22 พ.ย. · `docs/ECRS.md`):** รอบ 1 v8.2.52 (Kitchen ซ่อน · Forge 5→3 สกุล) · รอบ 2 v8.2.54 จากข้อมูลผู้เล่นจริง (Inbox/Miners/Daily chest Expedition เลิก · Play Stats/Ranking ซ่อน · กล่อง Gear จ่าย Sugar · Ch1 ไม่มี Run trait/Mimic) · **v8.2.59 เงินจริง → 🍭 Lollipops (ของแต่งตัวเท่านั้น) · 🧶 Thread ได้จากการเล่นเท่านั้น** · C/R หลัง test
