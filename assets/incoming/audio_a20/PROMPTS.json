@@ -1,0 +1,726 @@
+[
+  {
+    "key": "sfx_a20_curtain_in",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A soft plush velvet theatre curtain swishes closed in one quick downward fwoomp with one tiny warm bell accent. Compact 0.6 second cue. Original cute confectionery fantasy mobile game. One isolated finished cue, immediate dry onset, warm rounded tone, soft treble, short natural release fully inside the stated time. No speech, no lyrics, no sustained music bed, no long reverb, no imitation of existing games or songs.",
+      "duration_seconds": 0.6,
+      "prompt_influence": 0.62,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "source_sha256": "9f764f86ff57eb319e4b0d3754b4e51213d70caee304283910cd429229e50177",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.07962,
+      "peakDbtp": -4.4
+    }
+  },
+  {
+    "key": "sfx_a20_steps",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "Four to five tiny quick hero footsteps running across a soft cookie floor alongside a friendly little jelly spirit making rounded squishy bounces. One compact sequence lasting 1.2 seconds. No voices. Original candy-fantasy cue. Immediate onset, rounded tone, soft treble, short complete release. No speech, lyrics, music bed, long reverb or imitation.",
+      "duration_seconds": 1.2,
+      "prompt_influence": 0.62,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "13"
+    },
+    "source_sha256": "3d24af958005abfc0365f7252108aaa1eaa59d6b93a8356cdd5b8c98a97c3677",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -4.33
+    }
+  },
+  {
+    "key": "sfx_a20_title_ch1",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A warm whimsical kitchen stage-title one-shot: a light saucepan lid clink followed immediately by exactly three ascending wooden marimba notes. Fully resolves within 1.4 seconds. Not a full song. Original candy-fantasy cue. Immediate onset, rounded tone, soft treble, short complete release. No speech, lyrics, music bed, long reverb or imitation.",
+      "duration_seconds": 1.4,
+      "prompt_influence": 0.62,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "15"
+    },
+    "source_sha256": "29d66e378435f5bdc45453c247c744b3c15624f88bb1f1bc33bea6a48c05e00a",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.01873,
+      "peakDbtp": -4.44
+    }
+  },
+  {
+    "key": "sfx_a20_title_ch2",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A mysterious hopeful garden stage-title one-shot: a brief leafy rustle with delicate wind chimes and exactly three ascending plucked harp notes. Fully resolves within 1.4 seconds. Not a full song. Original candy-fantasy cue. Immediate onset, rounded tone, soft treble, short complete release. No speech, lyrics, music bed, long reverb or imitation.",
+      "duration_seconds": 1.4,
+      "prompt_influence": 0.62,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "15"
+    },
+    "source_sha256": "21f227bd349929d4ed06ec4626da1eba549e81c8b0727cfb03958e9254c1ae59",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -3.98
+    }
+  },
+  {
+    "key": "sfx_a20_title_ch3",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A dark but hopeful throne-chamber stage-title one-shot: one low warm chapel bell with a brief held string chord that resolves and decays completely within 1.6 seconds. Restrained cinematic suspense, not a full song. Original candy-fantasy cue. Immediate onset, rounded tone, soft treble, short complete release. No speech, lyrics, music bed, long reverb or imitation.",
+      "duration_seconds": 1.6,
+      "prompt_influence": 0.62,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "18"
+    },
+    "source_sha256": "1396fae574307ca0bd808ad6a0d13c984dcc045e3f2f6c9843d9397c186282cb",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -4.44
+    }
+  },
+  {
+    "key": "sfx_a20_title_boss",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A suspenseful but family-friendly confectionery boss stage-title one-shot: exactly two large rounded drum strikes and one distant low nonverbal creature growl, resolving fully within 1.8 seconds. No words, no harsh shriek. Original candy-fantasy cue. Immediate onset, rounded tone, soft treble, short complete release. No speech, lyrics, music bed, long reverb or imitation.",
+      "duration_seconds": 1.8,
+      "prompt_influence": 0.62,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "20"
+    },
+    "source_sha256": "ec5cb927d6802c8c1f4d439b1cdc88cc67d07d9b41029e4d109e6235ca62c4ce",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -4.45
+    }
+  },
+  {
+    "key": "sfx_a20_curtain_out",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "voice_id": null,
+    "mood": null,
+    "parameters": {
+      "text": "A plush velvet theatre curtain opens with one swift upward airy whoosh and a brief delicate sugar sparkle at the end. Compact 0.7 second cue. Original candy-fantasy cue. Immediate onset, rounded tone, soft treble, short complete release. No speech, lyrics, music bed, long reverb or imitation.",
+      "duration_seconds": 0.7,
+      "prompt_influence": 0.62,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "8"
+    },
+    "source_sha256": "185e194a4ceef57f1d31d2270235db07c8bb605bbc1ee1d195823dba194884d9",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.07126,
+      "peakDbtp": -4.18
+    }
+  },
+  {
+    "key": "vo_ruby_go_01",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ตื่นเต้น",
+    "parameters": {
+      "text": "Down we go — into the Sour Ant Nest!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892207,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "H4vR2xD2glyC7EJieo3Q",
+      "character-cost": "16"
+    },
+    "source_sha256": "8b9153c8fc6dbc4e0e558bb9eee2449cebfe3a518c97f29b6d46fc7bb6aa38d3",
+    "postprocess": {
+      "onset_trim_ms": 0.0,
+      "atempo": 1.0,
+      "peakDbtp": -2.52
+    }
+  },
+  {
+    "key": "vo_ruby_go_02",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ขำ ๆ",
+    "parameters": {
+      "text": "Hold your nose. The Rotting Drain is next!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892208,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "b8qjFs0L7jdWtL36jTVA",
+      "character-cost": "18"
+    },
+    "source_sha256": "5cc8604bafc23c1d9e5449139b147be5b2c702c6c8a4e7d94e69867a2d1b6d51",
+    "postprocess": {
+      "onset_trim_ms": 308.55,
+      "atempo": 1.0,
+      "peakDbtp": -2.28
+    }
+  },
+  {
+    "key": "vo_ruby_go_03",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ระวัง",
+    "parameters": {
+      "text": "Feel that heat? The Chili Engine Room!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892209,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "96gHR8oN6rEb6ev0qV43",
+      "character-cost": "17"
+    },
+    "source_sha256": "231da62ca9d0d998ec87a9f55f5de26612f4b752d73f67d3bd1046681dfd3f36",
+    "postprocess": {
+      "onset_trim_ms": 6.12,
+      "atempo": 1.0,
+      "peakDbtp": -2.71
+    }
+  },
+  {
+    "key": "vo_ruby_go_04",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เศร้า อ่อนโยน",
+    "parameters": {
+      "text": "Brr… someone is trapped in the Frost Prison.",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892210,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "DZhogN1slg9XoPrfEjYC",
+      "character-cost": "19"
+    },
+    "source_sha256": "86e6cec5983597e341fd2ebc282b63addff7603e44e428bff0dfed39cf0541bd",
+    "postprocess": {
+      "onset_trim_ms": 525.37,
+      "atempo": 1.0,
+      "peakDbtp": -2.63
+    }
+  },
+  {
+    "key": "vo_ruby_go_05",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "กลัวแต่กล้า",
+    "parameters": {
+      "text": "The Crown Oven. Stay close to me.",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892211,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "XAYWmyvrpRtBkSHaTGeG",
+      "character-cost": "15"
+    },
+    "source_sha256": "b73d479b062570115bff042be1d6ec0f808e00569afe0d742618addd646789bd",
+    "postprocess": {
+      "onset_trim_ms": 173.61,
+      "atempo": 1.0,
+      "peakDbtp": -2.53
+    }
+  },
+  {
+    "key": "vo_ruby_go_06",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ดีใจ",
+    "parameters": {
+      "text": "Up into the garden — the Fermented Canopy!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892212,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "qW8cGrcFKJ3x65n0FVbj",
+      "character-cost": "18"
+    },
+    "source_sha256": "5269d9e2aa160131cb95713018944149d16ed58d36cf55121c405df32c83cf95",
+    "postprocess": {
+      "onset_trim_ms": 307.87,
+      "atempo": 1.0,
+      "peakDbtp": -2.65
+    }
+  },
+  {
+    "key": "vo_ruby_go_07",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ระวัง",
+    "parameters": {
+      "text": "Mycelium Marsh. Don’t breathe the spores!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892213,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "sUVwy8rc7qW2Q0miXp50",
+      "character-cost": "18"
+    },
+    "source_sha256": "474123654764a37ea821290306a7c4c89b850a39d6f6203a58ed38cb4ae61bae",
+    "postprocess": {
+      "onset_trim_ms": 319.64,
+      "atempo": 1.0,
+      "peakDbtp": -2.69
+    }
+  },
+  {
+    "key": "vo_ruby_go_08",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "สงสัย",
+    "parameters": {
+      "text": "The Nectar Hive smells so sweet… too sweet.",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892214,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "r96vcuhZ5vhkep9X5K3S",
+      "character-cost": "19"
+    },
+    "source_sha256": "3a83825ca89b888b528319f6b6210bdf01213eefd95ebd76f1d064d5ac7864af",
+    "postprocess": {
+      "onset_trim_ms": 545.1,
+      "atempo": 1.0,
+      "peakDbtp": -2.56
+    }
+  },
+  {
+    "key": "vo_ruby_go_09",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "อยากรู้",
+    "parameters": {
+      "text": "Four seasons in one room? Let’s go see!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892215,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "DHJFM6XNFaXtTwesMv9d",
+      "character-cost": "17"
+    },
+    "source_sha256": "8f442c1cb796f9d81ebc197b725e3a6993e4372c695417275aa72eeb1c4610a2",
+    "postprocess": {
+      "onset_trim_ms": 3.4,
+      "atempo": 1.0,
+      "peakDbtp": -2.61
+    }
+  },
+  {
+    "key": "vo_ruby_go_10",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "จริงจัง",
+    "parameters": {
+      "text": "The Root Throne. This is where it’s been hiding.",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892216,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "xggwv0uKH98SC0FARHGl",
+      "character-cost": "21"
+    },
+    "source_sha256": "0a1775de21abda2f7d3acca0b192498ffec03e419e5ee9809ec0f010d6239300",
+    "postprocess": {
+      "onset_trim_ms": 299.16,
+      "atempo": 1.0,
+      "peakDbtp": -2.54
+    }
+  },
+  {
+    "key": "vo_ruby_go_11",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เศร้า",
+    "parameters": {
+      "text": "The Seedfields are all ash… we have to keep going.",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892217,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "PaAzOJE0aS4TcFuFo48a",
+      "character-cost": "22"
+    },
+    "source_sha256": "2c31e5800dbf8634a3a3790ad9e71b0d9a25f0bb077730fb16d24cc7de3e22a8",
+    "postprocess": {
+      "onset_trim_ms": 322.83,
+      "atempo": 1.2108,
+      "peakDbtp": -2.88
+    }
+  },
+  {
+    "key": "vo_ruby_go_12",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ระวัง",
+    "parameters": {
+      "text": "Hollow Orchard. Don’t trust the shiny fruit!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892218,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "wIPS1Ne9aRHxDiizTmYx",
+      "character-cost": "19"
+    },
+    "source_sha256": "775a690aa7dac4d466ef542589e8277e4358d1f6215da657f2587206d54d620d",
+    "postprocess": {
+      "onset_trim_ms": 330.61,
+      "atempo": 1.0,
+      "peakDbtp": -2.65
+    }
+  },
+  {
+    "key": "vo_ruby_go_13",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "ทึ่ง",
+    "parameters": {
+      "text": "Look at the glass — it’s showing old memories!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892219,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "gyfofdkWoyFO63NGWmAA",
+      "character-cost": "20"
+    },
+    "source_sha256": "805a334d1c5e59e282192594fe741516681cb39000071510462b97ec08e25c6d",
+    "postprocess": {
+      "onset_trim_ms": 281.02,
+      "atempo": 1.0,
+      "peakDbtp": -2.58
+    }
+  },
+  {
+    "key": "vo_ruby_go_14",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "หวัง",
+    "parameters": {
+      "text": "The Seed Vault. Every lost flavor is in here!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892220,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "8g0sF50CCRBNV9QPBUMr",
+      "character-cost": "20"
+    },
+    "source_sha256": "066130e35549d793f23dd19fdbfaf878789d10d160c6b9664bc8745a38ac8b0e",
+    "postprocess": {
+      "onset_trim_ms": 351.29,
+      "atempo": 1.0,
+      "peakDbtp": -2.63
+    }
+  },
+  {
+    "key": "vo_ruby_go_15",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "เด็ดเดี่ยว อบอุ่น",
+    "parameters": {
+      "text": "The First Seed’s throne. Let’s end this — together.",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892221,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "uPWhYiyOObJZqRscRASF",
+      "character-cost": "22"
+    },
+    "source_sha256": "79e4bc3ab6ac7e1b17fd3c6aceba436ad99720063ecc4f0df225ce43cee26640",
+    "postprocess": {
+      "onset_trim_ms": 240.29,
+      "atempo": 1.05709,
+      "peakDbtp": -2.56
+    }
+  },
+  {
+    "key": "vo_ruby_go_again_1",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "bright supportive friend",
+    "parameters": {
+      "text": "Back again? Let’s go!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892222,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "srXe8yAgWIA4oGNDNzDq",
+      "character-cost": "9"
+    },
+    "source_sha256": "bc74943f4ea9b89366496f944c5422d41253a378a727dd17cd43992408565fe7",
+    "postprocess": {
+      "onset_trim_ms": 22.43,
+      "atempo": 1.0,
+      "peakDbtp": -2.54
+    }
+  },
+  {
+    "key": "vo_ruby_go_again_2",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "bright supportive friend",
+    "parameters": {
+      "text": "I remember this place!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892223,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "gIo0WN3guTOXi4KeBT0t",
+      "character-cost": "10"
+    },
+    "source_sha256": "2a0bb5b02db8b3bf278ee2b45b8c186dba754bd6af1753650112932cc81ea3bc",
+    "postprocess": {
+      "onset_trim_ms": 273.58,
+      "atempo": 1.0,
+      "peakDbtp": -2.53
+    }
+  },
+  {
+    "key": "vo_ruby_go_again_3",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "bright supportive friend",
+    "parameters": {
+      "text": "Ready when you are!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892224,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "64Anvl1h6lLfoEkcwH7W",
+      "character-cost": "8"
+    },
+    "source_sha256": "559696e24312bd2e29845173d15ca25986f4ae9f8c71d98a98b2649411b8cd1f",
+    "postprocess": {
+      "onset_trim_ms": 268.16,
+      "atempo": 1.0,
+      "peakDbtp": -2.51
+    }
+  },
+  {
+    "key": "vo_ruby_go_again_4",
+    "provider": "ElevenLabs",
+    "endpoint": "text-to-speech/GVG9R2Ywg9D3iQVsW8Z6",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mood": "bright supportive friend",
+    "parameters": {
+      "text": "One more time — stay sharp!",
+      "model_id": "eleven_multilingual_v2",
+      "seed": 892225,
+      "apply_text_normalization": "off",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.32,
+        "speed": 1.2,
+        "use_speaker_boost": true
+      }
+    },
+    "response": {
+      "request-id": "K1EgabRFIf35ZHrfXKYU",
+      "character-cost": "12"
+    },
+    "source_sha256": "e245985868192173cfbd7951ba91d89ff8e304795b56e31d2fd544237720aafc",
+    "postprocess": {
+      "onset_trim_ms": 150.41,
+      "atempo": 1.13496,
+      "peakDbtp": -2.59
+    }
+  }
+]
