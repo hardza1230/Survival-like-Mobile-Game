@@ -1293,6 +1293,65 @@
    }
   }
  },
+ "assets/art/ch1_ants/drone_sheet.webp": {
+  "url": "assets/art/motion-phase4/ch1_ants__drone_sheet.webp",
+  "frame": 96,
+  "old": 16,
+  "cols": 4,
+  "clips": {
+   "e_ant_drone__attack8": {
+    "start": 16,
+    "count": 8,
+    "actions": [
+     "attack",
+     "windup"
+    ],
+    "rates": {
+     "attack": 24,
+     "windup": 20
+    },
+    "prev": {
+     "attack": 12,
+     "windup": 10
+    },
+    "sourceKey": "e_ant_drone_animated",
+    "sourceFrames": [
+     8,
+     9,
+     10,
+     11
+    ]
+   }
+  }
+ },
+ "assets/art/ch2_seasons/c24_equinox_sheet.webp": {
+  "url": "assets/art/motion-phase4/ch2_seasons__c24_equinox_sheet.webp",
+  "frame": 256,
+  "old": 16,
+  "cols": 4,
+  "clips": {
+   "c24_equinox__attack8": {
+    "start": 16,
+    "count": 8,
+    "actions": [
+     "attack"
+    ],
+    "rates": {
+     "attack": 24
+    },
+    "prev": {
+     "attack": 12
+    },
+    "sourceKey": "c24_equinox_animated",
+    "sourceFrames": [
+     8,
+     9,
+     10,
+     11
+    ]
+   }
+  }
+ },
  "assets/art/boss_body818/boss_ink816_mb7_fungal_juggernaut.webp": {
   "url": "assets/art/motion-phase4/boss_body818__boss_ink816_mb7_fungal_juggernaut.webp",
   "frame": 256,

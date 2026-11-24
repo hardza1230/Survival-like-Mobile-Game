@@ -1,6 +1,21 @@
 <!-- scripts/bump-version.mjs keeps the newest two release notes in this file (Latest + Previous); older ones move to docs/CLAUDE_HISTORY.md -->
 
-# Latest delivery: v8.2.83 — ⚡ Spark volley · ⚠️ Boss twists · 🌀 Seed Rift event · 🖼️ Stage loading cover
+# Latest delivery: v8.2.84 — 🎞️ Animation phases 5C/5D/6 + phase 4 fixes · 🔊 A20 Ruby stage entry
+
+- **Animation phase 5C** (Ch3 + Pinnacle boss VFX, 28 sheets: warning rings, waves, beams, sweeps, counters), **5D** (11 boss shots + shared counter ring) and **6** (Ruby point, 6 Expedition rear heroes, level-card border, hub firefly/moon, 5 hub buttons) are wired as 8/12-frame sheets.
+  - `scripts/pack-motion-phase5c-6.py` → `scripts/motion-phase5c-6.json`, 55 sheets, 3.5 MB.
+  - Same cycle time as before. Damage, timing and hitboxes unchanged.
+- **Manual players updated:**
+  - `tickBossShotLoops` reads the registered frames/rate (8@16 = the old 0.5 s loop).
+  - Expedition rear strike plays `[1..7,0]` over the old 165 ms.
+  - Ruby point plays 8 cells × 90 ms (old 720 ms loop).
+  - The rear-hero sheets stay in `expedition91/` so they keep loading lazily with the menu (checked with `artClass`).
+- **Phase 4 fixes:** Ant Drone attack/windup and Equinox Guardian attack now use 8 frames (appended clips, `motion-phase4.json` 51 atlases).
+- **A20 audio** (26 files, 472 KB): the stage-entry curtain plays curtain in/out, a chapter stinger (boss stinger on stages 5/10/15), footsteps and Ruby's intro line the first time (`vo_ruby_go_01..15`), and a short repeat line 50% of the time after that.
+  - Respects the Ruby-off setting. A20 SFX preload with stage audio.
+- Older art tests read game.js through the legacy view (`tests/lib/motion-phase5c-6-legacy.json`). New test `motion-phase5c-6-a20`. Boss-shot review check reads the frame count. App size 179.8 MB.
+
+# Previous delivery: v8.2.83 — ⚡ Spark volley · ⚠️ Boss twists · 🌀 Seed Rift event · 🖼️ Stage loading cover
 
 Owner approved all four ("ทำเลยครับ · A · ภารกิจ ใช่ลูกเล่น · Seedrift สุ่ม").
 - **Taro Spark Unique (Storm Mark), option A:**
@@ -17,14 +32,3 @@ Owner approved all four ("ทำเลยครับ · A · ภารกิจ
   - Seed carriers run in. Each one fed grows the rift and spills 2 monsters; each one killed gives 🍬. Never extends or blocks the wave. Rift/carrier art loads on Ch2–3 stages.
 - **Stage loading screen:** the stage card art as the background, the stage name and tips (4 new), shown for at least 0.8 s. It is a DOM image, so it uses no game GPU memory.
 - Tests: `spark-burst-8283`, `events-8283`; `scamper-8228`, `special-picks`, `sig-missions` updated. Headless browser: all 5 twists run and end, the rift event spawns carriers and closes, the loader cover hides after play starts.
-
-# Previous delivery: v8.2.82 — 🧹 Free old stage art before the next stage
-
-- **Owner:** after playing a while the game stops loading art and shows fallback graphics (no crash).
-- **Cause:** entering a run freed menu art, other heroes and unused endgame art, but **never other stages' art**. Every stage played stayed decoded in GPU memory, and `texBudget` only ran on menu screens. Once memory filled, new loads failed or stalled, and after the long-load watchdog the stage opened with fallback art.
-- **Fix:**
-  - `texFreeStages(idx)` runs before loading the next stage (and for each Boss Rush boss). It frees stage-class art that is not in `stageArtKeys(idx)` and not in the shared battle group (`texStageKeep`).
-  - `texFreeForRun(idx)` does the same at run start.
-  - A failed image load during play calls `texMemRelief()`: unshown textures are freed (LRU) down to 70% of `TEX_BUDGET_MB` (throttled to once per 3 s). The loader re-kicks itself every 0.6 s.
-- **Headless:** loading stage 10 art 411 → 511 MB; switching to stage 3 frees 62 textures → 411 MB; a load error relieves 511 → 364 MB.
-- Tests: new `tests/tex-stage-free-8282.test.cjs`, `gpu-memory-budget` updated.

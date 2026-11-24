@@ -12,7 +12,7 @@ for(const [old,v] of Object.entries(M)){
     else if(/^mb10_/.test(k)){}
     else for(const a of c.actions){if(a==='walk')assert(src.includes('anim:{start:'+c.start+',frames:'+c.count),k+' walk');else assert(src.includes(a+':{frames:['+list+']'),k+' '+a);}}
 }
-assert.equal(Object.keys(M).length,49);assert.equal(clips,51);
+assert.equal(Object.keys(M).length,51);assert.equal(clips,53);   // v8.2.84 +Ant Drone, +Equinox fixes
 for(const d of ['enemy-motion-phase4','boss-motion-phase5b'])for(const r of JSON.parse(fs.readFileSync(root+'assets/incoming/'+d+'/MANIFEST.json','utf8'))){if(!r.key.includes('__'))continue;const f=root+'assets/incoming/'+d+'/'+r.file;if(/preview/.test(r.file)&&!fs.existsSync(f))continue;const bb=fs.readFileSync(f);assert.equal(bb.length,r.bytes,r.file);assert.equal(crypto.createHash('sha256').update(bb).digest('hex'),r.sha256,r.file);}
 // Root Knight clip table · boss ink idle 8 keeps a one-second cycle
 assert(src.includes("idle:{frames:[16,17,18,19,20,21,22,23],rate:8,repeat:-1},cleave:{frames:[32,33,34,35,36,37,38,39,40,41,42,43],rate:12,repeat:0}")&&src.includes("charge:{frames:[24,25,26,27,28,29,30,31],rate:24,repeat:-1}"));

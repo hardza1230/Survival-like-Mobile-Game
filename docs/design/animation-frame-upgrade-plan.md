@@ -6,13 +6,13 @@
 
 | ชุด source | แผ่นที่ส่ง | เฟรม | สถานะ |
 |---|---:|---:|---|
-| [เฟส 3 ส่วนที่เหลือ](../../assets/incoming/hero-motion-phase3/) | 40 | 328 | ส่งครบ · รอผูก |
-| [เฟส 4](../../assets/incoming/enemy-motion-phase4/) | 47/47 | 376 | ส่งครบ · รอผูก |
-| [เฟส 5A](../../assets/incoming/boss-motion-phase5a/) | 22 | 196 | ส่งครบ · รอผูก |
-| [เฟส 5B](../../assets/incoming/boss-motion-phase5b/) | 41 | 364 | ส่งครบ · รอผูก |
-| [เฟส 5C](../../assets/incoming/boss-motion-phase5c/) | 28 | 256 | ส่งครบ · รอผูก |
-| [เฟส 5D](../../assets/incoming/boss-motion-phase5d/) | 12 | 96 | ส่งครบ · รอผูก |
-| [เฟส 6](../../assets/incoming/menu-motion-phase6/) | 15 | 120 | ส่งครบ · รอผูก |
+| [เฟส 3 ส่วนที่เหลือ](../../assets/incoming/hero-motion-phase3/) | 40 | 328 | ผูกแล้ว v8.2.74 · รอ QA มือถือ |
+| [เฟส 4](../../assets/incoming/enemy-motion-phase4/) | 47/47 | 376 | ผูกแล้ว v8.2.75 · แก้ 2 แผ่น v8.2.84 · รอ QA มือถือ |
+| [เฟส 5A](../../assets/incoming/boss-motion-phase5a/) | 22 | 196 | ผูกแล้ว v8.2.74 · รอ QA มือถือ |
+| [เฟส 5B](../../assets/incoming/boss-motion-phase5b/) | 41 | 364 | ผูกแล้ว v8.2.74–75 · รอ QA มือถือ |
+| [เฟส 5C](../../assets/incoming/boss-motion-phase5c/) | 28 | 256 | ผูกแล้ว v8.2.84 · รอ QA มือถือ |
+| [เฟส 5D](../../assets/incoming/boss-motion-phase5d/) | 12 | 96 | ผูกแล้ว v8.2.84 · รอ QA มือถือ |
+| [เฟส 6](../../assets/incoming/menu-motion-phase6/) | 15 | 120 | ผูกแล้ว v8.2.84 · รอ QA มือถือ |
 
 แก้ข้อยกเว้นครบแล้ว: `e_ant_drone__attack8.png` และ `c24_equinox__attack8.png` ใช้ท่าใหม่ที่พับปีก/แขนเข้าหาลำตัว คงขนาดตัว ผ่าน median alpha-silhouette height 101.34% / 100.00% และขอบว่าง 7px / 19px ตามเกณฑ์เดิม โดย PNG เดิมอีก 45 แผ่นไม่เปลี่ยน
 

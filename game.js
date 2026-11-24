@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.83';
+const GAME_VERSION = '8.2.84';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -91,6 +91,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.2.84',date:'2026-11-24',title:'🎞️ Smoother boss, menu and Expedition animation · 🔊 Ruby leads you into each stage',items:['Chapter 3 and Pinnacle boss effects, boss shots and counter rings now animate in 8–12 frames','Ruby, Expedition heroes and lobby buttons animate more smoothly','Ruby now speaks and the curtain has sound when you enter a stage']},
   {v:'8.2.83',date:'2026-11-24',title:'⚡ Spark volley · ⚠️ Boss twists · 🌀 Seed Rift event · 🖼️ Stage loading cover',items:['Taro Storm Mark fires all Sparks at once straight at the target','Bosses in Chapters 2 and 3 now throw twists at 60% and 30% HP instead of missions','Seed Rift is now a random event that can tear open in any Chapter 2–3 wave','Stage loading shows the stage picture and tips']},
   {v:'8.2.82',date:'2026-11-24',title:'🧹 Old stage art is freed before the next stage',items:['Art from stages you already left is freed before the next stage loads','If an image fails to load, unused art is freed so it can load again']},
   {v:'8.2.81',date:'2026-11-24',title:'🐛 Lure the Crown Root gets meaner',items:['The root speeds up with each smashed stone and splits in two after the second','Its warning circle pulls monsters in, and root kills give combo Sugar','Dodge out at the last moment for a Perfect Dodge','After the last stone the Crown Root gets stuck: hit it for Sugar before it breaks free']},
@@ -2174,7 +2175,7 @@ const ASSET_IMAGES = {
   ruby_comic_s1_1:'assets/art/ruby_comic/ruby_comic_s1_1.webp',ruby_comic_s1_2:'assets/art/ruby_comic/ruby_comic_s1_2.webp',ruby_comic_s1_3:'assets/art/ruby_comic/ruby_comic_s1_3.webp',ruby_comic_s2_1:'assets/art/ruby_comic/ruby_comic_s2_1.webp',ruby_comic_s2_2:'assets/art/ruby_comic/ruby_comic_s2_2.webp',ruby_comic_s2_3:'assets/art/ruby_comic/ruby_comic_s2_3.webp',ruby_comic_s3_1:'assets/art/ruby_comic/ruby_comic_s3_1.webp',ruby_comic_s3_2:'assets/art/ruby_comic/ruby_comic_s3_2.webp',ruby_comic_s3_3:'assets/art/ruby_comic/ruby_comic_s3_3.webp',ruby_comic_s4_1:'assets/art/ruby_comic/ruby_comic_s4_1.webp',ruby_comic_s4_2:'assets/art/ruby_comic/ruby_comic_s4_2.webp',ruby_comic_s4_3:'assets/art/ruby_comic/ruby_comic_s4_3.webp',ruby_comic_s5_1:'assets/art/ruby_comic/ruby_comic_s5_1.webp',ruby_comic_s5_2:'assets/art/ruby_comic/ruby_comic_s5_2.webp',ruby_comic_s5_3:'assets/art/ruby_comic/ruby_comic_s5_3.webp',
   ruby_story_pantry:'assets/art/ruby_storybook/ruby_story_pantry.webp',ruby_story_furnace:'assets/art/ruby_storybook/ruby_story_furnace.webp',ruby_story_frozen:'assets/art/ruby_storybook/ruby_story_frozen.webp',ruby_story_crown:'assets/art/ruby_storybook/ruby_story_crown.webp',ruby_story_paper:'assets/art/ruby_storybook/ruby_story_paper.webp',
   mascot_ruby:'assets/art/mascot/mascot_ruby.webp',mascot_ruby_happy:'assets/art/mascot/mascot_ruby_happy.webp',mascot_ruby_alert:'assets/art/mascot/mascot_ruby_alert.webp',mascot_ruby_think:'assets/art/mascot/mascot_ruby_think.webp',mascot_ruby_cheer:'assets/art/mascot/mascot_ruby_cheer.webp',mascot_ruby_sad:'assets/art/mascot/mascot_ruby_sad.webp',
-  ruby_talk_normal:'assets/art/mascot/ruby_talk_normal.webp',ruby_talk_explain:'assets/art/mascot/ruby_talk_explain.webp',ruby_talk_proud:'assets/art/mascot/ruby_talk_proud.webp',ruby_talk_worried:'assets/art/mascot/ruby_talk_worried.webp',ruby_memory_grandma:'assets/art/mascot/ruby_memory_grandma.webp',ruby_memory_jar:'assets/art/mascot/ruby_memory_jar.webp',ruby_point:'assets/art/mascot/ruby_point.webp',vfx_ruby_sparkle:'assets/art/mascot/vfx_ruby_sparkle.webp',
+  ruby_talk_normal:'assets/art/mascot/ruby_talk_normal.webp',ruby_talk_explain:'assets/art/mascot/ruby_talk_explain.webp',ruby_talk_proud:'assets/art/mascot/ruby_talk_proud.webp',ruby_talk_worried:'assets/art/mascot/ruby_talk_worried.webp',ruby_memory_grandma:'assets/art/mascot/ruby_memory_grandma.webp',ruby_memory_jar:'assets/art/mascot/ruby_memory_jar.webp',ruby_point:'assets/art/menu-motion-phase6/ruby_point.webp',vfx_ruby_sparkle:'assets/art/mascot/vfx_ruby_sparkle.webp',
   ic_unique_mastery:'assets/art/talents/unique_mastery.webp',
   ic_status_tremor:'assets/art/p1_feedback/tremor.webp',
   ic_status_frostburn:'assets/art/p1_feedback/frost_burn.webp',
@@ -3296,7 +3297,7 @@ const ASSET_SHEETS = {
   e_ant_scout_animated:{url:'assets/art/ch1_ants/scout_sheet.webp',frame:96,facingLeft:true,anim:{frames:6,rate:13},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:4},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
   e_ant_spitter_animated:{url:'assets/art/ch1_ants/spitter_sheet.webp',frame:96,facingLeft:true,deathFlip:true,anim:{frames:6,rate:8},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
   e_ant_soldier_animated:{url:'assets/art/motion-phase4/ch1_ants__soldier_sheet.webp',frame:96,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},
-  e_ant_drone_animated:{url:'assets/art/ch1_ants/drone_sheet.webp',frame:96,facingLeft:true,deathFlip:true,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,6],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12},windup:{frames:[8,9,10,11],rate:10}}},
+  e_ant_drone_animated:{url:'assets/art/motion-phase4/ch1_ants__drone_sheet.webp',frame:96,facingLeft:true,deathFlip:true,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[8,6],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24},windup:{frames:[16,17,18,19,20,21,22,23],rate:20}}},   /* v8.2.84 phase 4 fix */
   e_acid_animated:{url:'assets/art/motion-phase4/ch1_ants__acid_sheet.webp',frame:96,facingLeft:false,anim:{start:16,frames:8,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:8}}},
 
   c3_e_basic:{url:'assets/art/ch3_enemies/c3_e_basic_walk.webp',frame:128,anim:{frames:4,rate:7}},
@@ -3490,7 +3491,7 @@ const ASSET_SHEETS = {
   c24_leafblade_animated:{url:'assets/art/ch2_seasons/c24_leafblade_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:12},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:5},dash:{frames:[10,11],rate:7},attack:{frames:[10,11],rate:7}}},
   c24_frostbell_animated:{url:'assets/art/ch2_seasons/c24_frostbell_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
   c24_stormfruit_animated:{url:'assets/art/motion-phase4/ch2_seasons__c24_stormfruit_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[16,17,18,19,20,21,22,23],rate:20},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},
-  c24_equinox_animated:{url:'assets/art/ch2_seasons/c24_equinox_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[8,9,10,11],rate:12}}},
+  c24_equinox_animated:{url:'assets/art/motion-phase4/ch2_seasons__c24_equinox_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:6},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},attack:{frames:[16,17,18,19,20,21,22,23],rate:24}}},   /* v8.2.84 phase 4 fix */
   c24_season_wisp_animated:{url:'assets/art/ch2_seasons/c24_season_wisp_sheet.webp',frame:256,facingLeft:false,anim:{frames:6,rate:7},actions:{idle:{frames:[6,7],rate:4},hurt:{frames:[12,13],rate:16},death:{frames:[14,15],rate:8},windup:{frames:[8,9],rate:12},attack:{frames:[10,11],rate:5}}},
   ch2_seasons_enemy_atlas:{ url:'assets/ch2_seasons_enemy_atlas.webp', frame:256 },
   // v7.8.32 art order 19 (assets/art/c24_seasons · scripts/pack-c24-season-art.py): Bloom Sprout, season HUD icons, boss projectiles (128 cells = proj_foe body)
@@ -3687,56 +3688,56 @@ const ASSET_FX = {
   cos_trail2:{url:'assets/art/cosmetics/cos_trail2.webp',fw:48,fh:48,frames:3,rate:8,anchor:'center',loop:false},
   cos_icons2:{url:'assets/art/cosmetics/cos_icons2.webp',fw:128,fh:128,frames:19,rate:8,anchor:'center',loop:false},
   bshot_anim817_01:{url:'assets/art/boss_shots817/bshot_anim817_01.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_02:{url:'assets/art/boss_shots817/bshot_anim817_02.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_03:{url:'assets/art/boss_shots817/bshot_anim817_03.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  bshot_anim817_02:{url:'assets/art/boss-motion-phase5d/bshot_anim817_02.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  bshot_anim817_03:{url:'assets/art/boss-motion-phase5d/bshot_anim817_03.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   bshot_anim817_04:{url:'assets/art/boss_shots817/bshot_anim817_04.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_05:{url:'assets/art/boss_shots817/bshot_anim817_05.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_06:{url:'assets/art/boss_shots817/bshot_anim817_06.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  bshot_anim817_05:{url:'assets/art/boss-motion-phase5d/bshot_anim817_05.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  bshot_anim817_06:{url:'assets/art/boss-motion-phase5d/bshot_anim817_06.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   bshot_anim817_07:{url:'assets/art/boss_shots817/bshot_anim817_07.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_08:{url:'assets/art/boss_shots817/bshot_anim817_08.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_09:{url:'assets/art/boss_shots817/bshot_anim817_09.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_10:{url:'assets/art/boss_shots817/bshot_anim817_10.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  bshot_anim817_08:{url:'assets/art/boss-motion-phase5d/bshot_anim817_08.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  bshot_anim817_09:{url:'assets/art/boss-motion-phase5d/bshot_anim817_09.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  bshot_anim817_10:{url:'assets/art/boss-motion-phase5d/bshot_anim817_10.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   bshot_anim817_11:{url:'assets/art/boss_shots817/bshot_anim817_11.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_12:{url:'assets/art/boss_shots817/bshot_anim817_12.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_13:{url:'assets/art/boss_shots817/bshot_anim817_13.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_14:{url:'assets/art/boss_shots817/bshot_anim817_14.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  bshot_anim817_12:{url:'assets/art/boss-motion-phase5d/bshot_anim817_12.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  bshot_anim817_13:{url:'assets/art/boss-motion-phase5d/bshot_anim817_13.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  bshot_anim817_14:{url:'assets/art/boss-motion-phase5d/bshot_anim817_14.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   bshot_anim817_15:{url:'assets/art/boss_shots817/bshot_anim817_15.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  bshot_anim817_pin:{url:'assets/art/boss_shots817/bshot_anim817_pin.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  bshot_anim817_pin:{url:'assets/art/boss-motion-phase5d/bshot_anim817_pin.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   vfx815_b11_impact:{url:'assets/art/boss_outline815/vfx815_b11_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx815_b11_wave:{url:'assets/art/boss_outline815/vfx815_b11_wave.webp',fw:256,fh:256,frames:6,rate:8.4,anchor:'center',fill:[0.99,0.58]},
+  vfx815_b11_wave:{url:'assets/art/boss-motion-phase5c/vfx815_b11_wave.webp',fw:256,fh:256,frames:12,rate:16.8,anchor:'center',fill:[0.99,0.58]},
   vfx815_b11_lane:{url:'assets/art/boss_outline815/vfx815_b11_lane.webp',fw:512,fh:64,frames:6,rate:15,anchor:'left',loop:true},
   vfx815_b11_scythe_cut:{url:'assets/art/boss_outline815/vfx815_b11_scythe_cut.webp',fw:512,fh:256,frames:6,rate:12,anchor:'center'},
   vfx815_b12_impact:{url:'assets/art/boss_outline815/vfx815_b12_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx815_b12_wave:{url:'assets/art/boss_outline815/vfx815_b12_wave.webp',fw:256,fh:256,frames:6,rate:8.4,anchor:'center',fill:[0.96,0.7]},
+  vfx815_b12_wave:{url:'assets/art/boss-motion-phase5c/vfx815_b12_wave.webp',fw:256,fh:256,frames:12,rate:16.8,anchor:'center',fill:[0.96,0.7]},
   vfx815_b12_lane:{url:'assets/art/boss_outline815/vfx815_b12_lane.webp',fw:512,fh:64,frames:6,rate:15,anchor:'left',loop:true},
-  vfx815_b12_wither_pull:{url:'assets/art/boss_outline815/vfx815_b12_wither_pull.webp',fw:256,fh:256,frames:6,rate:12,anchor:'center',loop:true,fill:[0.89,0.81]},
+  vfx815_b12_wither_pull:{url:'assets/art/boss-motion-phase5c/vfx815_b12_wither_pull.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.89,0.81]},
   vfx815_b13_impact:{url:'assets/art/boss_outline815/vfx815_b13_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx815_b13_wave:{url:'assets/art/boss_outline815/vfx815_b13_wave.webp',fw:256,fh:256,frames:6,rate:8.4,anchor:'center',fill:[0.95,0.66]},
+  vfx815_b13_wave:{url:'assets/art/boss-motion-phase5c/vfx815_b13_wave.webp',fw:256,fh:256,frames:12,rate:16.8,anchor:'center',fill:[0.95,0.66]},
   vfx815_b13_lane:{url:'assets/art/boss_outline815/vfx815_b13_lane.webp',fw:512,fh:64,frames:6,rate:15,anchor:'left',loop:true},
-  vfx815_b13_prism_beam:{url:'assets/art/boss_outline815/vfx815_b13_prism_beam.webp',fw:512,fh:64,frames:6,rate:12,anchor:'left',loop:true},
+  vfx815_b13_prism_beam:{url:'assets/art/boss-motion-phase5c/vfx815_b13_prism_beam.webp',fw:512,fh:64,frames:8,rate:16,anchor:'left',loop:true},
   vfx815_b14_impact:{url:'assets/art/boss_outline815/vfx815_b14_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx815_b14_wave:{url:'assets/art/boss_outline815/vfx815_b14_wave.webp',fw:256,fh:256,frames:6,rate:8.4,anchor:'center',fill:[0.95,0.72]},
+  vfx815_b14_wave:{url:'assets/art/boss-motion-phase5c/vfx815_b14_wave.webp',fw:256,fh:256,frames:12,rate:16.8,anchor:'center',fill:[0.95,0.72]},
   vfx815_b14_lane:{url:'assets/art/boss_outline815/vfx815_b14_lane.webp',fw:512,fh:64,frames:6,rate:15,anchor:'left',loop:true},
-  vfx815_b14_vault_ring:{url:'assets/art/boss_outline815/vfx815_b14_vault_ring.webp',fw:128,fh:64,frames:6,rate:12,anchor:'center',loop:true},
+  vfx815_b14_vault_ring:{url:'assets/art/boss-motion-phase5c/vfx815_b14_vault_ring.webp',fw:128,fh:64,frames:8,rate:16,anchor:'center',loop:true},
   vfx815_b15_impact:{url:'assets/art/boss_outline815/vfx815_b15_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx815_b15_wave:{url:'assets/art/boss_outline815/vfx815_b15_wave.webp',fw:256,fh:256,frames:6,rate:8.4,anchor:'center',fill:[0.98,0.75]},
+  vfx815_b15_wave:{url:'assets/art/boss-motion-phase5c/vfx815_b15_wave.webp',fw:256,fh:256,frames:12,rate:16.8,anchor:'center',fill:[0.98,0.75]},
   vfx815_b15_lane:{url:'assets/art/boss_outline815/vfx815_b15_lane.webp',fw:512,fh:64,frames:6,rate:15,anchor:'left',loop:true},
-  vfx815_b15_root_cage:{url:'assets/art/boss_outline815/vfx815_b15_root_cage.webp',fw:256,fh:256,frames:6,rate:12,anchor:'center',loop:true,fill:[0.96,0.75]},
+  vfx815_b15_root_cage:{url:'assets/art/boss-motion-phase5c/vfx815_b15_root_cage.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.96,0.75]},
   vfx815_bpin_impact:{url:'assets/art/boss_outline815/vfx815_bpin_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx815_bpin_wave:{url:'assets/art/boss_outline815/vfx815_bpin_wave.webp',fw:256,fh:256,frames:6,rate:8.4,anchor:'center',fill:[0.94,0.64]},
+  vfx815_bpin_wave:{url:'assets/art/boss-motion-phase5c/vfx815_bpin_wave.webp',fw:256,fh:256,frames:12,rate:16.8,anchor:'center',fill:[0.94,0.64]},
   vfx815_bpin_lane:{url:'assets/art/boss_outline815/vfx815_bpin_lane.webp',fw:512,fh:64,frames:6,rate:15,anchor:'left',loop:true},
-  vfx815_bpin_maw:{url:'assets/art/boss_outline815/vfx815_bpin_maw.webp',fw:256,fh:256,frames:6,rate:12,anchor:'center',loop:true,fill:[0.94,0.8]},
+  vfx815_bpin_maw:{url:'assets/art/boss-motion-phase5c/vfx815_bpin_maw.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.94,0.8]},
   vfx815_b11_harvest_moon:{url:'assets/art/boss_outline815/vfx815_b11_harvest_moon.webp',fw:256,fh:256,frames:6,rate:7.5,anchor:'center'},
   vfx815_b11_stampede_trail:{url:'assets/art/boss_outline815/vfx815_b11_stampede_trail.webp',fw:512,fh:64,frames:6,rate:12,anchor:'left',loop:true},
-  vfx815_b12_nectar_drip:{url:'assets/art/boss_outline815/vfx815_b12_nectar_drip.webp',fw:128,fh:128,frames:6,rate:12,anchor:'center',loop:true},
+  vfx815_b12_nectar_drip:{url:'assets/art/boss-motion-phase5c/vfx815_b12_nectar_drip.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   vfx815_b12_empty_heart:{url:'assets/art/boss_outline815/vfx815_b12_empty_heart.webp',fw:256,fh:256,frames:6,rate:7.5,anchor:'center'},
   vfx815_b13_dome_shard:{url:'assets/art/boss_outline815/vfx815_b13_dome_shard.webp',fw:128,fh:256,frames:6,rate:12,anchor:'center'},
-  vfx815_b14_last_seed:{url:'assets/art/boss_outline815/vfx815_b14_last_seed.webp',fw:256,fh:256,frames:6,rate:12,anchor:'center',loop:true,fill:[0.89,0.87]},
+  vfx815_b14_last_seed:{url:'assets/art/boss-motion-phase5c/vfx815_b14_last_seed.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.89,0.87]},
   vfx815_b15_seed_tile:{url:'assets/art/boss_outline815/vfx815_b15_seed_tile.webp',fw:128,fh:128,frames:6,rate:12,anchor:'center'},
-  vfx815_b15_crown_sweep:{url:'assets/art/boss_outline815/vfx815_b15_crown_sweep.webp',fw:512,fh:96,frames:6,rate:12,anchor:'left',loop:true},
+  vfx815_b15_crown_sweep:{url:'assets/art/boss-motion-phase5c/vfx815_b15_crown_sweep.webp',fw:512,fh:96,frames:12,rate:24,anchor:'left',loop:true},
   vfx815_b15_first_bloom:{url:'assets/art/boss_outline815/vfx815_b15_first_bloom.webp',fw:256,fh:256,frames:6,rate:7.5,anchor:'center'},
-  vfx815_bpin_jaw_ring:{url:'assets/art/boss_outline815/vfx815_bpin_jaw_ring.webp',fw:128,fh:64,frames:6,rate:12,anchor:'center',loop:true},
-  vfx815_bpin_tongue:{url:'assets/art/boss_outline815/vfx815_bpin_tongue.webp',fw:512,fh:128,frames:6,rate:12,anchor:'left',loop:true},
+  vfx815_bpin_jaw_ring:{url:'assets/art/boss-motion-phase5c/vfx815_bpin_jaw_ring.webp',fw:128,fh:64,frames:8,rate:16,anchor:'center',loop:true},
+  vfx815_bpin_tongue:{url:'assets/art/boss-motion-phase5c/vfx815_bpin_tongue.webp',fw:512,fh:128,frames:12,rate:24,anchor:'left',loop:true},
   vfx815_bpin_eclipse:{url:'assets/art/boss_outline815/vfx815_bpin_eclipse.webp',fw:256,fh:256,frames:6,rate:7.5,anchor:'center'},
   vfx814_b06_impact:{url:'assets/art/boss_outline814/vfx814_b06_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
   vfx814_b06_wave:{url:'assets/art/boss-motion-phase5b/vfx814_b06_wave.webp',fw:256,fh:256,frames:12,rate:16.8,anchor:'center',fill:[0.89,0.51]},
@@ -3877,23 +3878,23 @@ const ASSET_FX = {
   vfx_c24_metamorph:{url:'assets/art/c24_seasons/vfx_c24_metamorph.webp',fw:384,fh:384,frames:8,rate:10,anchor:'center'},
   // v7.8.59 art orders 23–25 VFX
   vfx_lvl_open:{url:'assets/art/levelup/vfx_lvl_open.webp',fw:384,fh:384,frames:8,rate:18,anchor:'center'},
-  vfx_lvl_card_in:{url:'assets/art/levelup/vfx_lvl_card_in.webp',fw:512,fh:200,frames:4,rate:16,anchor:'center'},
+  vfx_lvl_card_in:{url:'assets/art/menu-motion-phase6/vfx_lvl_card_in.webp',fw:512,fh:200,frames:8,rate:32,anchor:'center'},
   vfx_lvl_confirm:{url:'assets/art/levelup/vfx_lvl_confirm.webp',fw:512,fh:256,frames:6,rate:16,anchor:'center'},
   vfx_lvl_special_confirm:{url:'assets/art/levelup/vfx_lvl_special_confirm.webp',fw:512,fh:256,frames:8,rate:14,anchor:'center'},
   vfx_hub_petals:{url:'assets/art/hub_motion/vfx_hub_petals.webp',fw:64,fh:64,frames:8,rate:10,anchor:'center',loop:true},
   vfx_hub_wand_sparkle:{url:'assets/art/hub_motion/vfx_hub_wand_sparkle.webp',fw:128,fh:128,frames:8,rate:10,anchor:'center',loop:true},
   vfx_hub_flag:{url:'assets/art/hub_motion/vfx_hub_flag.webp',fw:128,fh:128,frames:6,rate:9,anchor:'center',loop:true},
-  vfx_hub_firefly:{url:'assets/art/hub_motion/vfx_hub_firefly.webp',fw:48,fh:48,frames:4,rate:6,anchor:'center',loop:true},
+  vfx_hub_firefly:{url:'assets/art/menu-motion-phase6/vfx_hub_firefly.webp',fw:48,fh:48,frames:8,rate:12,anchor:'center',loop:true},
   vfx_hub_logo_shine:{url:'assets/art/hub_motion/vfx_hub_logo_shine.webp',fw:256,fh:80,frames:8,rate:16,anchor:'center'},
   vfx_hub_play_shimmer:{url:'assets/art/hub_motion/vfx_hub_play_shimmer.webp',fw:256,fh:64,frames:6,rate:16,anchor:'center'},
-  vfx_hub_moon_twinkle:{url:'assets/art/hub_motion/vfx_hub_moon_twinkle.webp',fw:64,fh:64,frames:4,rate:5,anchor:'center',loop:true},
-  hub_btn_play_anim:{url:'assets/art/hub_motion/hub_btn_play_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
-  hub_btn_heroes_anim:{url:'assets/art/hub_motion/hub_btn_heroes_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
-  hub_btn_gear_anim:{url:'assets/art/hub_motion/hub_btn_gear_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
-  hub_btn_activity_anim:{url:'assets/art/hub_motion/hub_btn_activity_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
+  vfx_hub_moon_twinkle:{url:'assets/art/menu-motion-phase6/vfx_hub_moon_twinkle.webp',fw:64,fh:64,frames:8,rate:10,anchor:'center',loop:true},
+  hub_btn_play_anim:{url:'assets/art/menu-motion-phase6/hub_btn_play_anim.webp',fw:128,fh:128,frames:8,rate:14,anchor:'center',loop:true},
+  hub_btn_heroes_anim:{url:'assets/art/menu-motion-phase6/hub_btn_heroes_anim.webp',fw:128,fh:128,frames:8,rate:14,anchor:'center',loop:true},
+  hub_btn_gear_anim:{url:'assets/art/menu-motion-phase6/hub_btn_gear_anim.webp',fw:128,fh:128,frames:8,rate:14,anchor:'center',loop:true},
+  hub_btn_activity_anim:{url:'assets/art/menu-motion-phase6/hub_btn_activity_anim.webp',fw:128,fh:128,frames:8,rate:14,anchor:'center',loop:true},
   vfx_tr_edge_sparkle:{url:'assets/art/transition/vfx_tr_edge_sparkle.webp',fw:128,fh:256,frames:4,rate:12,anchor:'center',loop:true},
   vfx_tr_puff:{url:'assets/art/transition/vfx_tr_puff.webp',fw:128,fh:128,frames:6,rate:18,anchor:'center'},
-  hub_btn_codex_anim:{url:'assets/art/hub_motion/hub_btn_codex_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
+  hub_btn_codex_anim:{url:'assets/art/menu-motion-phase6/hub_btn_codex_anim.webp',fw:128,fh:128,frames:8,rate:14,anchor:'center',loop:true},
   // v7.8.57 art order 22: boss attack VFX C1–C2 (assets/art/boss_vfx · scripts/pack-boss-vfx-c1-c2.py) · stage kit vfx_bNN_warn/impact/wave/lane + signatures · loaded per stage via STAGE_SHEETS
   vfx_b01_warn:{url:'assets/art/boss-motion-phase5a/vfx_b01_warn.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.95,0.4]},
   vfx_b01_impact:{url:'assets/art/boss_vfx/vfx_b01_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
@@ -3957,7 +3958,7 @@ const ASSET_FX = {
   // v7.9.30 art order 31: ของให้เตะ C1–C2 (counter_cCN_ โหลดพร้อมด่าน) + วงใต้ของ/ระเบิดตอนชน (vfx_counter_* ทุกด่าน)
   counter_c15_dishes:{url:'assets/art/counters/counter_c15_dishes.webp',fw:128,fh:128,frames:5,rate:8,anchor:'center'},
   counter_c21_pod:{url:'assets/art/boss-motion-phase5b/counter_c21_pod.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
-  vfx_counter_ring:{url:'assets/art/counters/vfx_counter_ring.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  vfx_counter_ring:{url:'assets/art/boss-motion-phase5d/vfx_counter_ring.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   counter_c12_sponge:{url:'assets/art/boss-motion-phase5a/counter_c12_sponge.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   counter_c13_pan:{url:'assets/art/boss-motion-phase5a/counter_c13_pan.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   counter_c14_ice:{url:'assets/art/boss-motion-phase5a/counter_c14_ice.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
@@ -3968,17 +3969,17 @@ const ASSET_FX = {
   vfx_counter_hit:{url:'assets/art/counters/vfx_counter_hit.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
   counter_c11_egg:{url:'assets/art/boss-motion-phase5a/counter_c11_egg.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   // v7.9.29 art order 30: ท่าบอส C3 + Pinnacle (vfx_b11…b15 โหลดพร้อมด่านผ่านลูป vfx_bNN · vfx_bpin_/counter_pin_ → ด่าน 14 · counter_c3N_ → ด่าน N+9)
-  vfx_b11_warn:{url:'assets/art/boss_vfx/vfx_b11_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.91,0.68]},
+  vfx_b11_warn:{url:'assets/art/boss-motion-phase5c/vfx_b11_warn.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.91,0.68]},
   vfx_b11_impact:{url:'assets/art/boss_vfx/vfx_b11_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx_b12_warn:{url:'assets/art/boss_vfx/vfx_b12_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.91,0.57]},
+  vfx_b12_warn:{url:'assets/art/boss-motion-phase5c/vfx_b12_warn.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.91,0.57]},
   vfx_b12_impact:{url:'assets/art/boss_vfx/vfx_b12_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx_b13_warn:{url:'assets/art/boss_vfx/vfx_b13_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.92,0.65]},
+  vfx_b13_warn:{url:'assets/art/boss-motion-phase5c/vfx_b13_warn.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.92,0.65]},
   vfx_b13_impact:{url:'assets/art/boss_vfx/vfx_b13_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx_b14_warn:{url:'assets/art/boss_vfx/vfx_b14_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.85,0.69]},
+  vfx_b14_warn:{url:'assets/art/boss-motion-phase5c/vfx_b14_warn.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.85,0.69]},
   vfx_b14_impact:{url:'assets/art/boss_vfx/vfx_b14_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx_b15_warn:{url:'assets/art/boss_vfx/vfx_b15_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.95,0.76]},
+  vfx_b15_warn:{url:'assets/art/boss-motion-phase5c/vfx_b15_warn.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.95,0.76]},
   vfx_b15_impact:{url:'assets/art/boss_vfx/vfx_b15_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
-  vfx_bpin_warn:{url:'assets/art/boss_vfx/vfx_bpin_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.94,0.75]},
+  vfx_bpin_warn:{url:'assets/art/boss-motion-phase5c/vfx_bpin_warn.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center',loop:true,fill:[0.94,0.75]},
   vfx_bpin_impact:{url:'assets/art/boss_vfx/vfx_bpin_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
   vfx_b11_scythe_cut:{url:'assets/art/boss_vfx/vfx_b11_scythe_cut.webp',fw:512,fh:256,frames:6,rate:12,anchor:'center'},
   vfx_b12_wither_pull:{url:'assets/art/boss_vfx/vfx_b12_wither_pull.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.89,0.81]},
@@ -3989,8 +3990,8 @@ const ASSET_FX = {
   vfx_b15_seed_tile:{url:'assets/art/boss_vfx/vfx_b15_seed_tile.webp',fw:128,fh:128,frames:6,rate:12,anchor:'center'},
   vfx_bpin_maw:{url:'assets/art/boss_vfx/vfx_bpin_maw.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.94,0.80]},
   vfx_bpin_jaw_ring:{url:'assets/art/boss_vfx/vfx_bpin_jaw_ring.webp',fw:128,fh:64,frames:4,rate:8,anchor:'center',loop:true},
-  counter_c33_mirror:{url:'assets/art/boss_vfx/counter_c33_mirror.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  counter_c35_crown_seed:{url:'assets/art/boss_vfx/counter_c35_crown_seed.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c33_mirror:{url:'assets/art/boss-motion-phase5c/counter_c33_mirror.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  counter_c35_crown_seed:{url:'assets/art/boss-motion-phase5c/counter_c35_crown_seed.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   vfx_b11_wave:{url:'assets/art/boss_vfx/vfx_b11_wave.webp',fw:256,fh:256,frames:4,rate:5.6,anchor:'center',fill:[0.99,0.58]},
   vfx_b11_lane:{url:'assets/art/boss_vfx/vfx_b11_lane.webp',fw:512,fh:64,frames:4,rate:10,anchor:'left',loop:true},
   vfx_b12_wave:{url:'assets/art/boss_vfx/vfx_b12_wave.webp',fw:256,fh:256,frames:4,rate:5.6,anchor:'center',fill:[0.96,0.70]},
@@ -4025,10 +4026,10 @@ const ASSET_FX = {
   vfx_b10_root_band:{url:'assets/art/boss_vfx/vfx_b10_root_band.webp',fw:256,fh:64,frames:4,rate:8,anchor:'left',loop:true},
   arena_b04_ice_pillar:{url:'assets/art/counters/arena_b04_ice_pillar.webp',fw:64,fh:96,frames:4,rate:12,anchor:'center'},
   vfx_bpin_eclipse:{url:'assets/art/boss_vfx/vfx_bpin_eclipse.webp',fw:256,fh:256,frames:8,rate:10,anchor:'center'},
-  counter_c31_sheaf:{url:'assets/art/boss_vfx/counter_c31_sheaf.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  counter_c32_nectar:{url:'assets/art/boss_vfx/counter_c32_nectar.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  counter_c34_vault_bomb:{url:'assets/art/boss_vfx/counter_c34_vault_bomb.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
-  counter_pin_meat:{url:'assets/art/boss_vfx/counter_pin_meat.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c31_sheaf:{url:'assets/art/boss-motion-phase5c/counter_c31_sheaf.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  counter_c32_nectar:{url:'assets/art/boss-motion-phase5c/counter_c32_nectar.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  counter_c34_vault_bomb:{url:'assets/art/boss-motion-phase5c/counter_c34_vault_bomb.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
+  counter_pin_meat:{url:'assets/art/boss-motion-phase5c/counter_pin_meat.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
   bpx_taro_arc_overload_hit:{url:'assets/art/taro_unique/vfx_taro_arc_overload_hit.webp',fw:256,fh:256,frames:6,rate:20,anchor:'center'},
   bpx_taro_spark:{url:'assets/art/taro_spark_ball/vfx_taro_spark.webp',fw:128,fh:128,frames:4,rate:14,anchor:'center',loop:true},
   bpx_taro_spark_split:{url:'assets/art/taro_spark_ball/vfx_taro_spark_split.webp',fw:128,fh:128,frames:4,rate:26,anchor:'center'},
@@ -4700,6 +4701,13 @@ const ASSET_AUDIO = {
   bgm_m_frozen_still: 'assets/audio/bgm/missions_a17/bgm_m_frozen_still.mp3',
   /* v8.2.34 A19 Temple Expedition */
   bgm_ex_expedition: 'assets/audio/bgm/expedition_a19/bgm_ex_expedition.mp3',
+  sfx_a20_curtain_in: 'assets/audio/sfx/a20/sfx_a20_curtain_in.mp3',
+  sfx_a20_steps: 'assets/audio/sfx/a20/sfx_a20_steps.mp3',
+  sfx_a20_title_ch1: 'assets/audio/sfx/a20/sfx_a20_title_ch1.mp3',
+  sfx_a20_title_ch2: 'assets/audio/sfx/a20/sfx_a20_title_ch2.mp3',
+  sfx_a20_title_ch3: 'assets/audio/sfx/a20/sfx_a20_title_ch3.mp3',
+  sfx_a20_title_boss: 'assets/audio/sfx/a20/sfx_a20_title_boss.mp3',
+  sfx_a20_curtain_out: 'assets/audio/sfx/a20/sfx_a20_curtain_out.mp3',
   bgm_ex_boss: 'assets/audio/bgm/expedition_a19/bgm_ex_boss.mp3',
   sfx_ex_tap_1: 'assets/audio/sfx/a19/sfx_ex_tap_1.mp3',
   sfx_ex_tap_2: 'assets/audio/sfx/a19/sfx_ex_tap_2.mp3',
@@ -4848,6 +4856,7 @@ Object.assign(A07_CATALOG,{"vo_ruby_core_1":{"url":"assets/audio/acting/vo_ruby_
 Object.assign(A07_CATALOG,{"vo_ruby_react_golden_1":{"url":"assets/audio/acting/vo_ruby_react_golden.mp3","text":"A golden wave! Everything’s worth double!","role":"ruby","duration":2170},"vo_ruby_react_double_1":{"url":"assets/audio/acting/vo_ruby_react_double.mp3","text":"Double clear! Both missions in one wave!","role":"ruby","duration":2183},"vo_ruby_react_bossmission_1":{"url":"assets/audio/acting/vo_ruby_react_bossmission.mp3","text":"The boss is calling the stage — finish that mission too!","role":"ruby","duration":2986},"vo_ruby_react_newmission_1":{"url":"assets/audio/acting/vo_ruby_react_newmission.mp3","text":"Something new! Let me show you how this works.","role":"ruby","duration":2584},"vo_ruby_react_reroll_1":{"url":"assets/audio/acting/vo_ruby_react_reroll.mp3","text":"New cards, new luck!","role":"ruby","duration":1207},"vo_ruby_react_curse_1":{"url":"assets/audio/acting/vo_ruby_react_curse.mp3","text":"A curse on this wave — but the rewards are bigger!","role":"ruby","duration":2579},"vo_ruby_react_jackpot_1":{"url":"assets/audio/acting/vo_ruby_react_jackpot.mp3","text":"Jackpot! Triple rewards!","role":"ruby","duration":1581},"vo_ruby_tip_atlas":{"url":"assets/audio/acting/vo_ruby_tip_atlas.mp3","text":"Spend Atlas stars to upgrade the missions you love. You can’t have them all, so choose!","role":"ruby","duration":4583}});   /* v8.2.31 A18 */
 Object.assign(A07_CATALOG,{"vo_ruby_react_exboss_1":{"url":"assets/audio/acting/vo_ruby_react_exboss.mp3","text":"A boss! Tap as fast as you can!","role":"ruby","duration":1781},"vo_ruby_react_exfail_1":{"url":"assets/audio/acting/vo_ruby_react_exfail.mp3","text":"So close! Let’s get a bit stronger first.","role":"ruby","duration":1718},"vo_ruby_react_exwelcome_1":{"url":"assets/audio/acting/vo_ruby_react_exwelcome.mp3","text":"Welcome back! Our helpers kept fighting!","role":"ruby","duration":1850},"vo_ruby_tip_expedition":{"url":"assets/audio/acting/vo_ruby_tip_expedition.mp3","text":"Tap to fight! Hire helpers — they keep going even when you’re away.","role":"ruby","duration":4173}});   /* v8.2.34 A19 */
 Object.assign(A07_CATALOG,{"vo_ruby_tip_hungerHerald":{"url":"assets/audio/acting/vo_ruby_tip_hungerHerald.mp3","text":"The Herald can’t be hurt — beat the monsters it powers up!","role":"ruby","duration":3136},"vo_ruby_short_hungerHerald":{"url":"assets/audio/acting/vo_ruby_short_hungerHerald.mp3","text":"Beat the powered-up ones!","role":"ruby","duration":1580},"vo_ruby_tip_hunt":{"url":"assets/audio/acting/vo_ruby_tip_hunt.mp3","text":"Dodge its poison bottles and beat the marked Elite!","role":"ruby","duration":2972},"vo_ruby_short_hunt":{"url":"assets/audio/acting/vo_ruby_short_hunt.mp3","text":"Dodge the bottles!","role":"ruby","duration":1004},"vo_ruby_tip_frozenPantry":{"url":"assets/audio/acting/vo_ruby_tip_frozenPantry.mp3","text":"Open the sugar jar, then walk through the frozen army and crates!","role":"ruby","duration":3580},"vo_ruby_short_frozenPantry":{"url":"assets/audio/acting/vo_ruby_short_frozenPantry.mp3","text":"Walk through the frozen army!","role":"ruby","duration":1504},"vo_ruby_react_captain_1":{"url":"assets/audio/acting/vo_ruby_react_captain.mp3","text":"Their Captain is down — the squad is weaker now!","role":"ruby","duration":2552},"vo_ruby_react_side_1":{"url":"assets/audio/acting/vo_ruby_react_side.mp3","text":"A side mission! Let’s try to do both!","role":"ruby","duration":2178},"vo_ruby_react_hurry_1":{"url":"assets/audio/acting/vo_ruby_react_hurry.mp3","text":"Hurry, the wave is almost over!","role":"ruby","duration":1596},"vo_ruby_react_half_1":{"url":"assets/audio/acting/vo_ruby_react_half.mp3","text":"We got halfway — that still counts!","role":"ruby","duration":1985},"vo_ruby_react_early_1":{"url":"assets/audio/acting/vo_ruby_react_early.mp3","text":"Done early! Let’s catch our breath.","role":"ruby","duration":1757},"vo_ruby_react_empowered_1":{"url":"assets/audio/acting/vo_ruby_react_empowered.mp3","text":"Watch out, that one got stronger!","role":"ruby","duration":1374}});   // v8.2.24 A16: Ruby Herald/Hunt/Frozen Pantry tips + 6 new reacts (captain/side/hurry/half/early/empowered)
+Object.assign(A07_CATALOG,{"vo_ruby_go_01":{"url":"assets/audio/acting/vo_ruby_go_01.mp3","text":"Down we go — into the Sour Ant Nest!","role":"ruby","duration":2784},"vo_ruby_go_02":{"url":"assets/audio/acting/vo_ruby_go_02.mp3","text":"Hold your nose. The Rotting Drain is next!","role":"ruby","duration":2655},"vo_ruby_go_03":{"url":"assets/audio/acting/vo_ruby_go_03.mp3","text":"Feel that heat? The Chili Engine Room!","role":"ruby","duration":2920},"vo_ruby_go_04":{"url":"assets/audio/acting/vo_ruby_go_04.mp3","text":"Brr… someone is trapped in the Frost Prison.","role":"ruby","duration":2586},"vo_ruby_go_05":{"url":"assets/audio/acting/vo_ruby_go_05.mp3","text":"The Crown Oven. Stay close to me.","role":"ruby","duration":2006},"vo_ruby_go_06":{"url":"assets/audio/acting/vo_ruby_go_06.mp3","text":"Up into the garden — the Fermented Canopy!","role":"ruby","duration":2416},"vo_ruby_go_07":{"url":"assets/audio/acting/vo_ruby_go_07.mp3","text":"Mycelium Marsh. Don’t breathe the spores!","role":"ruby","duration":2919},"vo_ruby_go_08":{"url":"assets/audio/acting/vo_ruby_go_08.mp3","text":"The Nectar Hive smells so sweet… too sweet.","role":"ruby","duration":2868},"vo_ruby_go_09":{"url":"assets/audio/acting/vo_ruby_go_09.mp3","text":"Four seasons in one room? Let’s go see!","role":"ruby","duration":1715},"vo_ruby_go_10":{"url":"assets/audio/acting/vo_ruby_go_10.mp3","text":"The Root Throne. This is where it’s been hiding.","role":"ruby","duration":2600},"vo_ruby_go_11":{"url":"assets/audio/acting/vo_ruby_go_11.mp3","text":"The Seedfields are all ash… we have to keep going.","role":"ruby","duration":2941},"vo_ruby_go_12":{"url":"assets/audio/acting/vo_ruby_go_12.mp3","text":"Hollow Orchard. Don’t trust the shiny fruit!","role":"ruby","duration":2549},"vo_ruby_go_13":{"url":"assets/audio/acting/vo_ruby_go_13.mp3","text":"Look at the glass — it’s showing old memories!","role":"ruby","duration":2634},"vo_ruby_go_14":{"url":"assets/audio/acting/vo_ruby_go_14.mp3","text":"The Seed Vault. Every lost flavor is in here!","role":"ruby","duration":2574},"vo_ruby_go_15":{"url":"assets/audio/acting/vo_ruby_go_15.mp3","text":"The First Seed’s throne. Let’s end this — together.","role":"ruby","duration":2946},"vo_ruby_go_again_1":{"url":"assets/audio/acting/vo_ruby_go_again_1.mp3","text":"Back again? Let’s go!","role":"ruby","duration":1557},"vo_ruby_go_again_2":{"url":"assets/audio/acting/vo_ruby_go_again_2.mp3","text":"I remember this place!","role":"ruby","duration":1305},"vo_ruby_go_again_3":{"url":"assets/audio/acting/vo_ruby_go_again_3.mp3","text":"Ready when you are!","role":"ruby","duration":1218},"vo_ruby_go_again_4":{"url":"assets/audio/acting/vo_ruby_go_again_4.mp3","text":"One more time — stay sharp!","role":"ruby","duration":1745}});   /* v8.2.84 A20 Ruby พาเข้าด่าน */
 const A07_BY_TEXT=new Map();
 for(const [key,r] of Object.entries(A07_CATALOG)){const id=r.role+'|'+String(r.text).replace(/[\[\]]/g,'');if(!A07_BY_TEXT.has(id))A07_BY_TEXT.set(id,key);}
 const VoiceActing={active:null,pending:null,serial:0,lastBark:-Infinity,history:{},recentBarks:[],
@@ -14019,7 +14028,7 @@ class Game extends Phaser.Scene {
     if(boss&&this._exV&&this.state==='menu'){ this.exSfx('boss_appear',.5); this.rubyVoiceReact?.('exboss',400); this.menuMusic?.('dig'); } }   /* v8.2.34 A19 */
   expHit(dmg,crit,tap){ const X=this._ex; if(!X||X.hp<=0)return; X.hp=Math.max(0,X.hp-dmg); const V=this._exV;
     if(tap&&V){ if(V.foe?.active){ this.tweens.killTweensOf(V.foe); V.foe.setScale(V.fs*1.06,V.fs*.94); this.tweens.add({targets:V.foe,scaleX:V.fs,scaleY:V.fs,duration:120}); V.foe.setTintFill?.(0xffffff); this.time.delayedCall(50,()=>{ if(V.foe?.active){ V.foe.clearTint(); if(X.boss&&V.tint)V.foe.setTint(0xff9a9a); } }); }
-      if(V.hero?.active){ this.tweens.killTweensOf(V.hero); V.hero.y=V.hy; this.tweens.add({targets:V.hero,y:V.hy-10,duration:60,yoyo:true}); if(V.back){ const hs=[1,2,3,0]; hs.forEach((fr,i)=>this.time.delayedCall(i*55,()=>{ if(V.hero?.active)V.hero.setFrame(fr); })); } }   /* v8.2.33 ใบ 91 ท่าตีมุมหลัง */
+      if(V.hero?.active){ this.tweens.killTweensOf(V.hero); V.hero.y=V.hy; this.tweens.add({targets:V.hero,y:V.hy-10,duration:60,yoyo:true}); if(V.back){ const n8=(V.hero.texture?.frameTotal||5)-1>=8,hs=n8?[1,2,3,4,5,6,7,0]:[1,2,3,0],ts=n8?[0,27.5,55,82.5,110,137.5,151.25,165]:[0,55,110,165]; hs.forEach((fr,i)=>this.time.delayedCall(ts[i],()=>{ if(V.hero?.active)V.hero.setFrame(fr); })); } }   /* v8.2.84 เฟส 6: ท่าตีมุมหลัง 8 เฟรม เวลาเดิม 165ms */   /* v8.2.33 ใบ 91 ท่าตีมุมหลัง */
       if(this.realTex?.('ex91_hit')){ if(!this.anims.exists('ex91_hit_a'))this.anims.create({key:'ex91_hit_a',frames:this.anims.generateFrameNumbers('ex91_hit',{start:0,end:5}),frameRate:24,repeat:0}); const hx=V.fx+Phaser.Math.Between(-40,40),hy=V.fy-V.fh*Phaser.Math.FloatBetween(.15,.35),hf=this.add.sprite(hx,hy,'ex91_hit',0).setScale((crit?150:110)/160).setTint(V.hcol||0xffffff); this.menu.add(hf); hf.play('ex91_hit_a'); hf.once?.('animationcomplete',()=>hf.destroy()); this.time.delayedCall(400,()=>{ if(hf.active)hf.destroy(); }); }
       const t=this.add.text(V.fx+Phaser.Math.Between(-50,50),V.fy-V.fh*.3,(crit?'💥':'')+expFmt(dmg),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:crit?'22px':'16px',color:crit?'#ffd166':'#ffffff',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5); this.menu.add(t); this.tweens.add({targets:t,y:t.y-50,alpha:0,duration:650,onComplete:()=>t.destroy()}); }
     if(X.hp<=0)this.expKill(); else this.expHud(); }
@@ -15215,7 +15224,8 @@ class Game extends Phaser.Scene {
   ensureStageAudio(idx,done){
     const stage=(idx||0)+1,keys=[bgmKeyFor('stage',stage)].filter(Boolean);
     this.evictOtherBgm?.([...keys,bgmKeyFor('mini',stage),bgmKeyFor('boss',stage)]);
-    if((this.character||Save.data.character)==='yuzu')keys.push(...Object.keys(ASSET_AUDIO).filter(k=>k.startsWith('sfx_yz_')));   // v6.92 คืนแรมเพลงด่านอื่น   // เข้าเกมทันทีเมื่อเพลงด่านพร้อม
+    if((this.character||Save.data.character)==='yuzu')keys.push(...Object.keys(ASSET_AUDIO).filter(k=>k.startsWith('sfx_yz_')));
+    keys.push(...Object.keys(ASSET_AUDIO).filter(k=>k.startsWith('sfx_a20_')));   /* v8.2.84 A20 ม่านเข้าด่าน (~70 KB) */   // v6.92 คืนแรมเพลงด่านอื่น   // เข้าเกมทันทีเมื่อเพลงด่านพร้อม
     const pending=keys.filter(k=>ASSET_AUDIO[k]&&!this.cache.audio.exists(k));if(!pending.length){done();return;}
     // v6.45: รอเฉพาะไฟล์เพลงของด่าน (เดิมรอ loader 'complete' = รอของเบื้องหลังทั้งหมด) · ช้าเกิน 8 วิ = เข้าด่านก่อน เพลงตามมาทีหลัง
     const loader=window.GameLoader,t0=Date.now();let finished=false;const finish=()=>{if(finished)return;finished=true;done();};
@@ -17010,7 +17020,7 @@ class Game extends Phaser.Scene {
     const hint=this.camUI(this.add.text(this.W/2,this.H*.24+30,'',{fontFamily:'sans-serif',fontSize:'11px',color:'#d9cce6'}).setOrigin(.5).setDepth(130).setAlpha(0));   /* v8.0.70 เจ้าของ: สอนในด่านแตะข้ามไม่ได้ (นิ้วแตะเดินบ่อย ข้ามก่อนได้อ่าน) */
     const ruby=this.camUI(this.add.container(this.W-86,this.H*.24+60).setDepth(131)); let pointTick=null;
     ruby.once('destroy',()=>pointTick?.remove());
-    if(this.tuHas('ruby_point')){ const im=this.tuImg('ruby_point',0,0,0,84,84); ruby.add(im); let frame=0; pointTick=this.time.addEvent({delay:180,loop:true,callback:()=>{ if(im.active)im.setFrame('cell'+(++frame%4)); }}); }
+    if(this.tuHas('ruby_point')){ const im=this.tuImg('ruby_point',0,0,0,84,84); ruby.add(im); let frame=0; const rn=this.textures.get('ruby_point')?.has?.('cell7')?8:4; pointTick=this.time.addEvent({delay:rn>=8?90:180,loop:true,callback:()=>{ if(im.active)im.setFrame('cell'+(++frame%rn)); }}); }   /* v8.2.84 เฟส 6: Ruby ชี้ 8 เฟรม × 90ms (รอบ 720ms เท่าเดิม) */
     else ruby.add(this.rubyAvatar(-40,40,76,'cheer')); this.rubySparkle(ruby,0,0);
     let done=false,cur=null; const spot={r:600,a:0},timers=[];
     const draw=()=>{ g.clear(); if(!cur)return; const R=spot.r; g.lineStyle(3000,0x080410,.62*spot.a).strokeCircle(cur.x,cur.y,R+1500); g.lineStyle(4,0xfff1a8,.9*spot.a).strokeCircle(cur.x,cur.y,R); };
@@ -19340,12 +19350,19 @@ class Game extends Phaser.Scene {
     const st=STAGES[idx]||{},first=!(Save.data?.stageMastery||{})[idx],tag=typeof STAGE_TAGLINES!=='undefined'?STAGE_TAGLINES[idx]:'';
     const ct=this.cineTitle?this.cineTitle(c,{kicker:'CHAPTER '+((st.chapter||0)+1)+' · STAGE '+(st.chapterStage||idx+1),title:st.name||'Into the pantry',tag,speed:first?1:.55},t=>(c._tw||(c._tw=[])).push(t)):null;
     c._t0=Date.now(); c._need=ct?ct.dur+(first?700:250):0; c._ct=ct;
+    this.rubyEntryAudio?.(c,idx,first);
     c.once('destroy',()=>{(c._tw||[]).forEach(t=>t.remove?.());if(this._rubyEntry===c)this._rubyEntry=null;});
   }
+  /* v8.2.84 A20: ม่านเข้าด่านมีเสียง · ม่านขึ้น → สติงเกอร์ตามบท (ด่านบอส 5/10/15 = boss) · ครั้งแรก = เท้าวิ่ง + Ruby แนะนำด่าน · เล่นซ้ำ 50% = ประโยคสั้น · ไม่มีไฟล์ = เงียบ */
+  rubyEntryAudio(c,idx,first){ if(typeof Sfx==='undefined')return; try{ const miss=Object.keys(ASSET_AUDIO).filter(k=>k.startsWith('sfx_a20_')&&!this.cache.audio.exists(k)); if(miss.length&&this.load?.audio){ miss.forEach(k=>this.load.audio(k,verUrl(ASSET_AUDIO[k]))); if(!this.load.isLoading())this.load.start(); } }catch(e){} const ok=()=>this._rubyEntry===c&&c.active,st=STAGES[idx]||{},boss=idx%5===4,ti=boss?'a20_title_boss':'a20_title_ch'+Math.min(3,(st.chapter||0)+1);
+    Sfx.orderCue?.('a20_curtain_in',.45,.3); this.time?.delayedCall?.(320,()=>{ if(ok())Sfx.orderCue?.(ti,.5,.3); });
+    const vo=first?'vo_ruby_go_'+String(idx+1).padStart(2,'0'):(Math.random()<.5?'vo_ruby_go_again_'+(1+Math.floor(Math.random()*4)):null);
+    if(first)this.time?.delayedCall?.(150,()=>{ if(ok())Sfx.orderCue?.('a20_steps',.35,.3); });
+    if(vo&&typeof VoiceActing!=='undefined'&&A07_CATALOG[vo]&&!Save.data?.settings?.noRuby)this.time?.delayedCall?.(first?650:380,()=>{ if(ok())VoiceActing.play?.(this,vo,ok); }); }
   rubyEnterStage(done){const c=this._rubyEntry;if(!c?.active){done();return;}let ended=false;
     const finish=()=>{if(ended||!c.active)return;ended=true;c._skip=null;c.destroy();done();if(this.hubMotionAllowed())this.cameras.main.fadeIn(650,9,7,12);};
     if(!this.hubMotionAllowed()){finish();return;}
-    let leaving=false;const leave=ms=>{if(leaving)return;leaving=true;if(c._ct)c._ct.out(ms,finish);else finish();};
+    let leaving=false;const leave=ms=>{if(leaving)return;leaving=true;try{Sfx.orderCue?.('a20_curtain_out',.45,.3);}catch(e){}if(c._ct)c._ct.out(ms,finish);else finish();};   /* v8.2.84 A20 */
     c._skip=()=>leave(300);
     const wait=Math.max(0,(c._t0||0)+(c._need||0)-Date.now());this.tweens.add({targets:{v:0},v:1,duration:Math.max(1,wait),onComplete:()=>leave(1000)});
   }
@@ -24147,7 +24164,7 @@ class Game extends Phaser.Scene {
   tickBossShotLoops(wallDt){
     if(this.state!=='play')return;const still=this.hubMotionAllowed?.()===false||(typeof Save!=='undefined'&&Save.data.settings?.vfx===0);
     for(const b of this._bossShotLoops||[]){const m=b._bossShot817;if(!b.active||!m||m.serial!==b._bossShotSerial817||m.player!==this.player||m.stage!==this.stageIndex||m.epoch!==(this._artEpoch||0)||b.texture?.key!==m.key){this.dropBossShotLoop(b);continue;}
-      m.t+=Math.max(0,wallDt||0);const f=still?1:Math.floor(m.t*8)%4;if(m.frame!==f){m.frame=f;b.setFrame(f);}}
+      m.t+=Math.max(0,wallDt||0);const fd=(typeof ASSET_FX!=='undefined'&&ASSET_FX[m.key])||{},nf=Math.max(1,fd.frames||4),rt=fd.rate||8;const f=still?1:Math.floor(m.t*rt)%nf;if(m.frame!==f){m.frame=f;b.setFrame(f);}}   /* v8.2.84 เฟส 5D: เล่นตามจำนวนเฟรม/ความเร็วที่ลงทะเบียน (8@16 = รอบ 0.5 วิเท่าเดิม) */
   }
   clearBossShotLoops(){for(const b of [...(this._bossShotLoops||[])])this.dropBossShotLoop(b);this._bossShotLoops?.clear();}
 

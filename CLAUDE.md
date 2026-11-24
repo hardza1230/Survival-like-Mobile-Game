@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.83**. Next release:8.2.84. Fetch the deploy branch before new work.
+Current release: **8.2.84**. Next release:8.2.85. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.83 — ⚡ Spark volley · ⚠️ Boss twists · 🌀 Seed Rift event · 🖼️ Stage loading cover** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.2.84 — 🎞️ Animation phases 5C/5D/6 + phase 4 fixes · 🔊 A20 Ruby stage entry** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -40,7 +40,8 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 ## 5. ถัดไป
 **ใบ 88/89/90 + A18:** ผูกแล้ว v8.2.31 · รอ QA มือถือ
 **Temple Expedition (v8.2.32):** แทน Dig + Patrol · ขั้น 1–2 เสร็จ (แตะ/ด่าน/บอส/ผู้ช่วย/ออฟไลน์/Supplies) · ขั้น 3–4 (สกิล/Prestige/Relic) หลัง Closed test · อาร์ตใบ 91 ผูกแล้ว v8.2.33 · เสียง A19 ผูกแล้ว v8.2.34
-**เสียง A20 (ม่านเข้าด่าน Ruby พาไปด่านถัดไป):** เขียนแล้ว 21 พ.ย. · เจ้าของอนุมัติบท · รอเสียง
+**เสียง A20 (ม่านเข้าด่าน Ruby พาไปด่านถัดไป):** ผูกแล้ว v8.2.84 · รอ QA มือถือ
+**แอนิเมชัน 8/12 เฟรม เฟส 3–6:** ผูกครบ v8.2.74/75/84 · รอ QA มือถือ (`docs/design/animation-frame-upgrade-plan.md`)
 **ใบ 92 + 93:** ผูกแล้ว v8.2.55 · รอ QA มือถือ
 **รออาร์ต/เสียง และรอ QA มือถือ:** ดู `docs/STATUS.md` (ใบสั่งที่ผูกแล้ว/รอเทส) · ตารางใบสั่ง `docs/art_orders/README.md` · งานค้างให้ AI อีกตัว `docs/PENDING_ART_AUDIO_ORDERS.md`
 

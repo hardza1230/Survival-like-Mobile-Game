@@ -1,0 +1,772 @@
+{
+ "assets/art/boss_vfx/vfx_b11_warn.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx_b11_warn.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b11_warn"
+  ]
+ },
+ "assets/art/boss_vfx/vfx_b12_warn.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx_b12_warn.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b12_warn"
+  ]
+ },
+ "assets/art/boss_vfx/vfx_b13_warn.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx_b13_warn.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b13_warn"
+  ]
+ },
+ "assets/art/boss_vfx/vfx_b14_warn.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx_b14_warn.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b14_warn"
+  ]
+ },
+ "assets/art/boss_vfx/vfx_b15_warn.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx_b15_warn.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b15_warn"
+  ]
+ },
+ "assets/art/boss_vfx/vfx_bpin_warn.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx_bpin_warn.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_bpin_warn"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b12_wither_pull.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b12_wither_pull.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b12_wither_pull"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b12_nectar_drip.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b12_nectar_drip.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b12_nectar_drip"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b13_prism_beam.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b13_prism_beam.webp",
+  "inPlace": false,
+  "fw": 512,
+  "fh": 64,
+  "frames": 8,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b13_prism_beam"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b14_vault_ring.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b14_vault_ring.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 64,
+  "frames": 8,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b14_vault_ring"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b15_root_cage.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b15_root_cage.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b15_root_cage"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_bpin_maw.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_bpin_maw.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_bpin_maw"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_bpin_jaw_ring.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_bpin_jaw_ring.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 64,
+  "frames": 8,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_bpin_jaw_ring"
+  ]
+ },
+ "assets/art/boss_vfx/counter_c33_mirror.webp": {
+  "url": "assets/art/boss-motion-phase5c/counter_c33_mirror.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "counter_c33_mirror"
+  ]
+ },
+ "assets/art/boss_vfx/counter_c35_crown_seed.webp": {
+  "url": "assets/art/boss-motion-phase5c/counter_c35_crown_seed.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "counter_c35_crown_seed"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b11_wave.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b11_wave.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "prev": 6,
+  "prevRate": 8.4,
+  "rate": 16.8,
+  "loop": false,
+  "keys": [
+   "vfx_b11_wave"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b12_wave.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b12_wave.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "prev": 6,
+  "prevRate": 8.4,
+  "rate": 16.8,
+  "loop": false,
+  "keys": [
+   "vfx_b12_wave"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b13_wave.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b13_wave.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "prev": 6,
+  "prevRate": 8.4,
+  "rate": 16.8,
+  "loop": false,
+  "keys": [
+   "vfx_b13_wave"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b14_wave.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b14_wave.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "prev": 6,
+  "prevRate": 8.4,
+  "rate": 16.8,
+  "loop": false,
+  "keys": [
+   "vfx_b14_wave"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b15_wave.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b15_wave.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "prev": 6,
+  "prevRate": 8.4,
+  "rate": 16.8,
+  "loop": false,
+  "keys": [
+   "vfx_b15_wave"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_bpin_wave.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_bpin_wave.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 12,
+  "prev": 6,
+  "prevRate": 8.4,
+  "rate": 16.8,
+  "loop": false,
+  "keys": [
+   "vfx_bpin_wave"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b14_last_seed.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b14_last_seed.webp",
+  "inPlace": false,
+  "fw": 256,
+  "fh": 256,
+  "frames": 8,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_b14_last_seed"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_b15_crown_sweep.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_b15_crown_sweep.webp",
+  "inPlace": false,
+  "fw": 512,
+  "fh": 96,
+  "frames": 12,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 24.0,
+  "loop": true,
+  "keys": [
+   "vfx_b15_crown_sweep"
+  ]
+ },
+ "assets/art/boss_outline815/vfx815_bpin_tongue.webp": {
+  "url": "assets/art/boss-motion-phase5c/vfx815_bpin_tongue.webp",
+  "inPlace": false,
+  "fw": 512,
+  "fh": 128,
+  "frames": 12,
+  "prev": 6,
+  "prevRate": 12,
+  "rate": 24.0,
+  "loop": true,
+  "keys": [
+   "vfx_bpin_tongue"
+  ]
+ },
+ "assets/art/boss_vfx/counter_c31_sheaf.webp": {
+  "url": "assets/art/boss-motion-phase5c/counter_c31_sheaf.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "counter_c31_sheaf"
+  ]
+ },
+ "assets/art/boss_vfx/counter_c32_nectar.webp": {
+  "url": "assets/art/boss-motion-phase5c/counter_c32_nectar.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "counter_c32_nectar"
+  ]
+ },
+ "assets/art/boss_vfx/counter_c34_vault_bomb.webp": {
+  "url": "assets/art/boss-motion-phase5c/counter_c34_vault_bomb.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "counter_c34_vault_bomb"
+  ]
+ },
+ "assets/art/boss_vfx/counter_pin_meat.webp": {
+  "url": "assets/art/boss-motion-phase5c/counter_pin_meat.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "counter_pin_meat"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_02.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_02.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_02"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_03.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_03.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_03"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_05.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_05.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_05"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_06.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_06.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_06"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_08.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_08.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_08"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_09.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_09.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_09"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_10.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_10.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_10"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_12.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_12.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_12"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_13.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_13.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_13"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_14.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_14.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_14"
+  ]
+ },
+ "assets/art/boss_shots817/bshot_anim817_pin.webp": {
+  "url": "assets/art/boss-motion-phase5d/bshot_anim817_pin.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "bshot_anim817_pin"
+  ]
+ },
+ "assets/art/counters/vfx_counter_ring.webp": {
+  "url": "assets/art/boss-motion-phase5d/vfx_counter_ring.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 8,
+  "rate": 16.0,
+  "loop": true,
+  "keys": [
+   "vfx_counter_ring"
+  ]
+ },
+ "assets/art/mascot/ruby_point.webp": {
+  "url": "assets/art/menu-motion-phase6/ruby_point.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 5.555555555555555,
+  "rate": 11.11111111111111,
+  "loop": true,
+  "keys": [
+   "ruby_point"
+  ]
+ },
+ "assets/art/expedition91/ex91_back_momo.webp": {
+  "url": "assets/art/expedition91/ex91_back_momo.webp",
+  "inPlace": true,
+  "fw": 192,
+  "fh": 192,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": null,
+  "rate": null,
+  "loop": false,
+  "keys": [
+   "ex91_back_momo"
+  ]
+ },
+ "assets/art/expedition91/ex91_back_mint.webp": {
+  "url": "assets/art/expedition91/ex91_back_mint.webp",
+  "inPlace": true,
+  "fw": 192,
+  "fh": 192,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": null,
+  "rate": null,
+  "loop": false,
+  "keys": [
+   "ex91_back_mint"
+  ]
+ },
+ "assets/art/expedition91/ex91_back_cocoa.webp": {
+  "url": "assets/art/expedition91/ex91_back_cocoa.webp",
+  "inPlace": true,
+  "fw": 192,
+  "fh": 192,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": null,
+  "rate": null,
+  "loop": false,
+  "keys": [
+   "ex91_back_cocoa"
+  ]
+ },
+ "assets/art/expedition91/ex91_back_taro.webp": {
+  "url": "assets/art/expedition91/ex91_back_taro.webp",
+  "inPlace": true,
+  "fw": 192,
+  "fh": 192,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": null,
+  "rate": null,
+  "loop": false,
+  "keys": [
+   "ex91_back_taro"
+  ]
+ },
+ "assets/art/expedition91/ex91_back_yuzu.webp": {
+  "url": "assets/art/expedition91/ex91_back_yuzu.webp",
+  "inPlace": true,
+  "fw": 192,
+  "fh": 192,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": null,
+  "rate": null,
+  "loop": false,
+  "keys": [
+   "ex91_back_yuzu"
+  ]
+ },
+ "assets/art/expedition91/ex91_back_sesame.webp": {
+  "url": "assets/art/expedition91/ex91_back_sesame.webp",
+  "inPlace": true,
+  "fw": 192,
+  "fh": 192,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": null,
+  "rate": null,
+  "loop": false,
+  "keys": [
+   "ex91_back_sesame"
+  ]
+ },
+ "assets/art/levelup/vfx_lvl_card_in.webp": {
+  "url": "assets/art/menu-motion-phase6/vfx_lvl_card_in.webp",
+  "inPlace": false,
+  "fw": 512,
+  "fh": 200,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 16,
+  "rate": 32.0,
+  "loop": false,
+  "keys": [
+   "vfx_lvl_card_in"
+  ]
+ },
+ "assets/art/hub_motion/vfx_hub_firefly.webp": {
+  "url": "assets/art/menu-motion-phase6/vfx_hub_firefly.webp",
+  "inPlace": false,
+  "fw": 48,
+  "fh": 48,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 6,
+  "rate": 12.0,
+  "loop": true,
+  "keys": [
+   "vfx_hub_firefly"
+  ]
+ },
+ "assets/art/hub_motion/vfx_hub_moon_twinkle.webp": {
+  "url": "assets/art/menu-motion-phase6/vfx_hub_moon_twinkle.webp",
+  "inPlace": false,
+  "fw": 64,
+  "fh": 64,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 5,
+  "rate": 10.0,
+  "loop": true,
+  "keys": [
+   "vfx_hub_moon_twinkle"
+  ]
+ },
+ "assets/art/hub_motion/hub_btn_play_anim.webp": {
+  "url": "assets/art/menu-motion-phase6/hub_btn_play_anim.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 7,
+  "rate": 14.0,
+  "loop": true,
+  "keys": [
+   "hub_btn_play_anim"
+  ]
+ },
+ "assets/art/hub_motion/hub_btn_heroes_anim.webp": {
+  "url": "assets/art/menu-motion-phase6/hub_btn_heroes_anim.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 7,
+  "rate": 14.0,
+  "loop": true,
+  "keys": [
+   "hub_btn_heroes_anim"
+  ]
+ },
+ "assets/art/hub_motion/hub_btn_gear_anim.webp": {
+  "url": "assets/art/menu-motion-phase6/hub_btn_gear_anim.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 7,
+  "rate": 14.0,
+  "loop": true,
+  "keys": [
+   "hub_btn_gear_anim"
+  ]
+ },
+ "assets/art/hub_motion/hub_btn_activity_anim.webp": {
+  "url": "assets/art/menu-motion-phase6/hub_btn_activity_anim.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 7,
+  "rate": 14.0,
+  "loop": true,
+  "keys": [
+   "hub_btn_activity_anim"
+  ]
+ },
+ "assets/art/hub_motion/hub_btn_codex_anim.webp": {
+  "url": "assets/art/menu-motion-phase6/hub_btn_codex_anim.webp",
+  "inPlace": false,
+  "fw": 128,
+  "fh": 128,
+  "frames": 8,
+  "prev": 4,
+  "prevRate": 7,
+  "rate": 14.0,
+  "loop": true,
+  "keys": [
+   "hub_btn_codex_anim"
+  ]
+ }
+}

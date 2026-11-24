@@ -4745,3 +4745,14 @@ Owner: "Lure the Crown Root จืดเกินไป" → SCAMPER, owner pick
 - **(3) Perfect Dodge:** be inside the circle in the last 0.35 s and get out before it lands → slow-mo, +3 🍬, root stays stuck 1.6 s. The "Missed" text is gone.
 - **(4) Finale:** the 3rd stone no longer ends the mission at once. The Crown Root head gets stuck (a 6× HP tank under `_timeStop`) for 8 s. Every 10% of its HP lost = 🍬 pop; killing it or timing out = burst + mission complete.
 - Constants `CR_*`. Tests: new `tests/crown-root-8281.test.cjs`, `mission-reworks-828` updated. Headless browser: finale, pops, timeout burst OK with no errors.
+
+# Delivery: v8.2.82 — 🧹 Free old stage art before the next stage
+
+- **Owner:** after playing a while the game stops loading art and shows fallback graphics (no crash).
+- **Cause:** entering a run freed menu art, other heroes and unused endgame art, but **never other stages' art**. Every stage played stayed decoded in GPU memory, and `texBudget` only ran on menu screens. Once memory filled, new loads failed or stalled, and after the long-load watchdog the stage opened with fallback art.
+- **Fix:**
+  - `texFreeStages(idx)` runs before loading the next stage (and for each Boss Rush boss). It frees stage-class art that is not in `stageArtKeys(idx)` and not in the shared battle group (`texStageKeep`).
+  - `texFreeForRun(idx)` does the same at run start.
+  - A failed image load during play calls `texMemRelief()`: unshown textures are freed (LRU) down to 70% of `TEX_BUDGET_MB` (throttled to once per 3 s). The loader re-kicks itself every 0.6 s.
+- **Headless:** loading stage 10 art 411 → 511 MB; switching to stage 3 frees 62 textures → 411 MB; a load error relieves 511 → 364 MB.
+- Tests: new `tests/tex-stage-free-8282.test.cjs`, `gpu-memory-budget` updated.
