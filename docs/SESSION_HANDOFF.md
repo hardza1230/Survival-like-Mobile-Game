@@ -1,6 +1,6 @@
 # Current checkpoint — Chapter 1 Continuous Combat (2026-11-25)
 
-Extended the development branch to first clears in C1-1 through C1-5. Combat Director has ten pattern types; two automatic field encounters are drawn from Hunger’s Mouth, Frozen Pantry and Grandma’s Pot. Preserved existing tutorial, replay and special modes. The owner requested skipping gameplay and automated tests for this pass. See `docs/design/GAMEPLAY_OVERHAUL_RUNTIME.md`. Keep official production on its separate deploy branch.
+Chapter 1 development previews are labeled v8.3.3 in Updates; public Pages remains v8.2.87. Extended the development branch to first clears in C1-1 through C1-5. Combat Director has ten pattern types; two automatic field encounters are drawn from Hunger’s Mouth, Frozen Pantry and Grandma’s Pot. Preserved existing tutorial, replay and special modes. The owner requested skipping gameplay and automated tests for this pass. See `docs/design/GAMEPLAY_OVERHAUL_RUNTIME.md`. Keep official production on its separate deploy branch.
 
 # Current checkpoint — C1-4 combat HUD preview (2026-11-25)
 

@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.2.87';
+const GAME_VERSION = '8.3.3';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -104,6 +104,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.3.3',date:'2026-11-25',title:'Chapter 1 Continuous Combat Preview',items:['First clears of C1-1 through C1-5 use continuous combat','The Combat Director uses ten spawn patterns and the phase HUD tracks the fight','Side events begin automatically while combat continues']},
   {v:'8.2.87',date:'2026-11-24',title:'Boss twists find their voice',items:['Boss twists, Crown Roots and Seed Rifts now have distinct sound cues','Ruby warns about boss tricks and reacts to perfect dodges']},
   {v:'8.2.86',date:'2026-11-24',title:'🎨 New art: Crown Root, poison fog, Abyss Brute, boss twists',items:['Lure the Crown Root has a real burrowing root, warning crack, strike and stuck crown head','Clear the Fog has thick poison fog with a misty light edge and dark claws','Abyss Brute, Seed Rift warning, Perfect Dodge and combo badges have new art','Boss twists show roots, seeds, fruit, darkness and shadows, with a twist bar on screen']},
   {v:'8.2.85',date:'2026-11-24',title:'🔊 Attack and hit sounds vary every time',items:['Each hero attack now has three sound variations that rotate','Hits sound different on soft, armored, icy, plant and crystal monsters','Critical hits have their own new sound']},
@@ -12329,12 +12330,12 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Updates','screen_news');
     const w=this.W,h=this.H;
     const hs=this._hdrShift();
-    const cur=this.add.text(w/2,53+hs,'Current version v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
+    const cur=this.add.text(w/2,53+hs,'Preview version v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
     this.menu.add(cur);
     // ปุ่มดาวน์โหลด APK (เปิดหน้า releases ในเบราว์เซอร์)
     const dlW=Math.min(w-40,250),dx=w/2-dlW/2,dy=65+hs,dlH=34;
     const dg=this.add.graphics(); dg.fillStyle(COLORS.mint,1); dg.fillRoundedRect(dx,dy,dlW,dlH,11); dg.lineStyle(2,0xffffff,0.3); dg.strokeRoundedRect(dx,dy,dlW,dlH,11);
-    const dt=this.add.text(w/2,dy+dlH/2,'📥 Download latest APK',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#12331f'}).setOrigin(0.5);
+    const dt=this.add.text(w/2,dy+dlH/2,'📥 Download stable APK',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#12331f'}).setOrigin(0.5);
     this.menu.add([dg,dt]); this._zone(dx,dy,dlW,dlH,()=>{ try{ window.open(RELEASES_URL,'_blank'); }catch(e){} });
     const portrait=w<=h, cols=portrait?1:3, gap=portrait?8:9, y=portrait?116+hs:110;
     const cw=portrait?w-28:(w-28-gap*2)/3;
