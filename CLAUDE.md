@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.2.87**. Next release:8.2.88. Fetch the deploy branch before new work.
+Current release: **8.3.4**. Next release:8.3.5. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.2.87 — A22 boss twists and Crown Root audio** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.4 — Chapter 1 Continuous Combat** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -26,6 +26,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - โน้ตเทคนิคยุคแรก (VFX flipbook, การตัด sprite, raw assets) อยู่ใน `docs/CLAUDE_HISTORY.md`
 
 ## 4. สถานะปัจจุบัน
+- v8.3.4 เปิด Continuous Combat + Combat Director สำหรับการเล่น Story Chapter 1 ครั้งแรก · กิจกรรมแทรกเริ่มอัตโนมัติ · บทสอนและ Replay ใช้กติกาเดิม
 - ดูเวอร์ชันที่ `GAME_VERSION` + บล็อก Latest delivery ด้านบน · ประวัติทุกเวอร์ชัน `docs/CLAUDE_HISTORY.md`
 - ระบบหลักครบ: Story 3 Chapter 15 ด่าน → Mochi Delve/Rift/Pinnacle, Flavor Weave & Rank + Rank Rewards, Temple Expedition (idle · แทน Depths/Dig/Patrol), Gear+Merge (Common→Divine)+Forge (random mods · สกุล 3: Twist Cream/Star Sugar/Recipe Ink), Talent ราย Build, ฮีโร่ 6 ตัว ×3 Build (Sesame เสร็จแล้ว · เจ้าของ 22 พ.ย.), Rewards hub (Login/Daily/Awards)
 
