@@ -1,0 +1,18 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {PHASES,enabled,initial,advance}=require('../scripts/gameplay-timeline-v83.cjs');
+assert.equal(enabled({stageIndex:3}),false);
+assert.equal(enabled({stageIndex:3,flag:true}),true);
+for(const k of ['tutorial','recipe','rift','bossRush','replay'])assert.equal(enabled({stageIndex:3,flag:true,[k]:true}),false);
+assert.equal(enabled({stageIndex:2,flag:true}),false);
+let s=initial();assert.equal(advance(s,99,{playing:false}),s);
+s=advance(s,30);assert.equal(PHASES[s.index].id,'pressure');
+s=advance(s,45);assert.equal(PHASES[s.index].id,'mini');
+s=advance(s,100);assert.equal(PHASES[s.index].id,'mini');
+s=advance(s,0,{bossDefeated:true});assert.equal(PHASES[s.index].id,'recovery');
+for(const dt of [30,75,60])s=advance(s,dt);
+assert.equal(PHASES[s.index].id,'boss');assert.equal(s.done,false);
+s=advance(s,0,{bossDefeated:true});assert.equal(s.done,true);
+assert.equal(advance(s,10),s);
+assert.throws(()=>advance(initial(),-1),RangeError);
+console.log('Gameplay timeline contracts passed');
