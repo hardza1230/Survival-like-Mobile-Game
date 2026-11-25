@@ -15610,7 +15610,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._qfRun={};this._holdFire=false;this.time?.delayedCall?.(0,()=>this.stageMood?.(this.recipeMode||this.riftMode?null:i));this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this._v83Run=false;this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._qfRun={};this._holdFire=false;this.time?.delayedCall?.(0,()=>this.stageMood?.(this.recipeMode||this.riftMode?null:i));this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._a22Said={};
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;this._leadUsed=false;this._bountyLead=false;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
@@ -15647,7 +15647,8 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(1400,()=>{ if(!this._busy())return; this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); }); return; }
     if(this.recipeMode){ this.startRecipeRun(st); return; }
     if(this.usesReplaySurvival()){this.startReplayRun(st);return;}
-    this._missionDeal=MISSION_DECK&&!this.riftMode&&!this._inTutorial?this.missionDeckDeal?.():null;   /* v8.2.6 สำรับภารกิจ + แจกไพ่ */
+    this._v83Run=i===3&&!this.riftMode&&!this._inTutorial&&!this.recipeMode&&!this.bossRush&&typeof window!=='undefined'&&new URLSearchParams(window.location.search).get('combat83')==='1';
+    this._missionDeal=!this._v83Run&&MISSION_DECK&&!this.riftMode&&!this._inTutorial?this.missionDeckDeal?.():null;   /* v8.2.6 สำรับภารกิจ + แจกไพ่ */
     if(this._missionDeal)this.time.delayedCall(700,()=>{ if(this._busy())this.missionDealShow(this._missionDeal,()=>{ if(this._busy())this.startWave(0); }); });
     else this.time.delayedCall(1400,()=>{ if(this._busy()) this.startWave(0); });
   }
@@ -16186,11 +16187,17 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===2&&w===0&&!seamless&&!Save.data.mintIntro&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!this._inTutorial&&this.textures.exists('card_mint')){   // v6.55.3 แนะนำ Mint ที่ Stage 3
       Save.data.mintIntro=1;Save.save();const me=this.character==='mint';
       this.playStoryPanel('card_mint','NEW ALLY · MINT 🌿','Mint, the Frostleaf Guard',me?'Your Frost Lances stack Chill — 4 stacks freeze enemies solid. Mint Gale lets you dash through the swarm!':'A cool, agile fighter: Frost Lances stack Chill and 4 stacks freeze enemies. Try her in Heroes — she is already unlocked!',()=>this.startWave(w,seamless));return;}
+    if(this._v83Run){this.waveIndex=w;this.boss=null;this.bossUI.forEach(o=>o.setVisible(false));this.beginWave(w,seamless,null);return;}
     const beat=(STAGE_STORY_BEATS[this.stageIndex]||[])[w];this.waveIndex=w;this.boss=null;this.bossUI.forEach(o=>o.setVisible(false));
     this.playWaveCutscene(w,beat,()=>this.beginWave(w,seamless,beat));
   }
   beginWave(w,seamless,beat){
     const st=STAGES[this.stageIndex],p=this.waveProfile(w); this._waveTimed=false; this._goldWave=false; this._crownCurse=null;
+    if(this._v83Run&&w!==st.miniAt){
+      this.mode='wave';this.clearWaveObjective();this.startSurvivalWave(w,!!seamless);
+      this.waveDur=this.waveTimer=([30,45,0,105,60][w]||60);
+      this.updateWaveText();return;
+    }
     if(w===st.miniAt){this.mode='miniWarning';this.setupSpawnRates(w);this.updateWaveText();
       this.showBanner('⚠️ '+(beat?beat.title:st.mini),beat?beat.sub:(st.mini+' — get ready to find space to dodge'),2600);Sfx.bossWarn();this.screenFlash(0xff4d8f,0.18,500);
       this.scheduleStageEvent(2800,'miniWarning',()=>this.spawnMiniBoss());
@@ -16401,8 +16408,8 @@ class Game extends Phaser.Scene {
       this.spawnWaveRing(fill);
     }
     // กล่อง/โหลทุบได้ (ธีมครัว) — ทุบเอาของ (ออร์บ/ฟื้นฟู)
-    const nc=2+Math.floor(si*0.6); for(let i=0;i<nc;i++) this.spawnCrate();
-    if(!this._replayMeter)this.spawnStageGimmick();
+    const nc=2+Math.floor(si*0.6); if(!this._v83Run||!seamless)for(let i=0;i<nc;i++) this.spawnCrate();
+    if(!this._replayMeter&&(!this._v83Run||!seamless))this.spawnStageGimmick();
   }
   setupWaveObjective(w,p){
     this.stackEnd?.(false); this._stackTried=false;
@@ -18313,6 +18320,7 @@ class Game extends Phaser.Scene {
         if(_o&&(_o.type==='survive'||!this._waveTimed))this.completeWaveObjective();   // survive ครบเวลา = สำเร็จ
         else if(_o&&_o._timedGoal&&_o.type==='hungerHerald')this.hhFinish?.(_o,this._sig);   // v8.2.20 Herald จบเมื่อหมดเวลา
         else if(_o)this.expireWaveObjective();   // v8.2.20 หมดเวลา: ≥50% ได้ครึ่ง
+        else if(this._v83Run){this.settleStoryBudget?.(true);this.onWaveCleared(true,false);}
         else if(this.usesStoryBudget?.()&&!this._replayMeter){ this.clearFoes?.(); this.clearEnemies?.(); this.settleStoryBudget?.(true); this.mode='waveclear'; this.showBanner('🌊 Wave complete','Collect your EXP — next wave soon',1400); }
         else{this.mode='waveclear';this.showBanner('⏳ Time’s Up!','Clear all remaining enemies to advance',1800);}
       }   // เวฟภารกิจ (hunt/purge/capture) = ไม่หมดเวลา ต้องเคลียร์ภารกิจให้จบ
@@ -18729,6 +18737,12 @@ class Game extends Phaser.Scene {
   onWaveCleared(keep,fromMini){
     if(this.usesStoryBudget?.())this.settleStoryBudget(!!fromMini,!!(this._replayMeter&&fromMini));
     this._clearT=0;this._clearFled=false;
+    if(this._v83Run&&this.waveIndex+1<STAGES[this.stageIndex].waves){
+      this.boss=null;Sfx.bgmIntense(false);if(fromMini)Sfx.playStageBgm(this.stageIndex+1);
+      this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();
+      const next=this.waveIndex+1;this.mode='breather';
+      this.scheduleStageEvent(0,'breather',()=>this.startWave(next,true));return;
+    }
     this.boss=null;Sfx.bgmIntense(false);if(String(Sfx._currentBgmKey||'').startsWith('bgm_m'))Sfx.playStageBgm(this.stageIndex+1);this.bossUI.forEach(o=>o.setVisible(false));this.clearWaveObjective();this.clearFoes();this.clearEnemies();
     if(fromMini&&this._replayMeter){this._replayMeter.miniDone=true;this.mode='breather';this.clearPickups(false);this.scheduleStageEvent(900,'breather',()=>this.startWave(this.waveIndex+1,false));return;}
     const st=STAGES[this.stageIndex],next=this.waveIndex+1;this.mode='breather';this.clearPickups(false);this.updateWaveText();this.poseFlash(CF.cheer,600);
