@@ -70,6 +70,9 @@ jobs:
         with:
           name: github-pages-${{ github.run_attempt }}
           path: www
+      # The artifact API can lag behind a successful upload. Give Pages time to see it.
+      - name: Wait for Pages artifact visibility
+        run: sleep 20
       - id: deployment
         uses: actions/deploy-pages@v4
         with:
