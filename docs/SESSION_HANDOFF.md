@@ -1,6 +1,6 @@
-# Current checkpoint — Gameplay overhaul v8.3 (2026-11-25)
+# Current checkpoint — Stage 4 and Mint preview QA (2026-11-25)
 
-Owner approved Phase 0–1. Branch feature/gameplay-overhaul-v83 from c1cd4c3feb8dda53a6725218a527f6c0cfefa056 (v8.2.87). Static audit and isolated timeline foundation in docs/design/GAMEPLAY_OVERHAUL_V83.md, scripts/gameplay-timeline-v83.cjs and tests/gameplay-timeline-v83.test.cjs. No runtime wiring, telemetry, full CI, mobile QA or deployment yet. Next: integrate guarded Stage 4 timeline into game.js using existing spawn/reward lifecycle; preserve legacy default. fetch_file returned empty for large game.js; GitHub fetch of contents endpoint returned full 3.8M-character source. No version bump. Prior release checkpoint follows in history of this file.
+Stage 4 branch `feature/gameplay-overhaul-v83` adds an experimental phase HUD, a single stage EXP settlement, and a stale continuation guard. Chrome at 390 × 844 passed accelerated C1-4 play, pause, preserved enemies/orbs, both boss kill paths, reward wheel and persisted stage mastery. Timeline and runtime contracts are in `tests/gameplay-timeline-v83.test.cjs` and run in the project check. The experiment stays opt-in, first-clear only. Mint's separate `preview/mint-lobby-rig` branch passed real touch toggles, spear gesture and texture disposal again at 393 × 852. Current production remains v8.2.87. Phone play, reward/balance review, Mint visual approval and any Play Console update remain owner-side. The standard debug APK points at live Pages and won't show preview branches by itself. No production merge or deployment.
 
 # Current checkpoint — A22 released and live verified (2026-11-24)
 

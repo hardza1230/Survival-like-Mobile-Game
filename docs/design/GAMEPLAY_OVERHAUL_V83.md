@@ -24,4 +24,4 @@ Run node tests/gameplay-timeline-v83.test.cjs. No runtime or release version cha
 5. Run npm run check, build and CI; owner phone QA before enabling by default. No art/audio or economy changes.
 
 ## Status
-Static audit and isolated timeline foundation only. Runtime integration, telemetry, full tests and mobile playtest pending. No claim of playable prototype or deployment.
+Stage 4 runtime and accelerated browser QA are complete for the opt-in prototype. See [Runtime experiment](GAMEPLAY_OVERHAUL_RUNTIME.md) for verified behavior and remaining playtest and balance work.
