@@ -1,6 +1,6 @@
 # Current checkpoint — Chapter 1 release (2026-11-25)
 
-Owner approved releasing Chapter 1 Continuous Combat to the main game. Preview v8.3.3 is superseded by public v8.3.4. Candidate on feature/gameplay-overhaul-v83, based on the current production head. Pending release checks, Pages and Android publish verification. Gameplay is enabled for first clears in C1-1 through C1-5. Tutorial, replay and later chapters use their existing mode rules.
+Owner approved releasing Chapter 1 Continuous Combat to the main game. Preview v8.3.3 is superseded by public v8.3.4. Candidate on feature/gameplay-overhaul-v83, based on the current production head. All 261 package checks and 11 browser UI checks passed; shipped web app 182.0 MB. Release commit 373b6aa0. APK v8.3.4 published via Android run 45587085569. Pages run 45587085548 twice missed the artifact immediately after upload. Added a 20-second visibility wait in 562c9474; Pages run 45588342371 passed both jobs. Live version.json and game.js verified v8.3.4 with the director and automatic events. Phone gameplay review remains. Gameplay is enabled for first clears in C1-1 through C1-5. Tutorial, replay and later chapters use their existing mode rules.
 
 # Current checkpoint — C1-4 combat HUD preview (2026-11-25)
 

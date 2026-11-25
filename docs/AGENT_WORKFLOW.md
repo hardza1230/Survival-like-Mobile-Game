@@ -37,6 +37,10 @@ The existing checkout plus Node REPL can transfer `git cat-file blob <sha>` byte
 - A CI-only commit added a5min timeout to the Pages checkout step and started a fresh runner, deliberately canceling our stalled run via existing concurrency. Pages41647720647 succeeded; live8.1.9/all8art hashes verified. Use bounded recovery for an observed stuck runner; avoid repeatedly pushing or changing runtime/version numbers just to retry.
 - Preserve source readback evidence before generating metadata for CI/docs-only commits; the helper overwrites default .git/ses811-* filenames. Verify the new final tree/head and published result again.
 
+### Pages artifact visibility delay (verified 2026-11-25)
+
+- In run 45587085548 the Pages artifact finalized successfully, but deploy-pages looked it up within a second and missed it in both attempts. The REST run-artifact list later showed the upload. The main workflow now waits 20 seconds after uploading. Run 45588342371 deployed the same v8.3.4 game successfully. This is a Pages timing workaround, not a game or Android build change.
+
 ## Local environment: observations, not prerequisites
 
 - Ask the app's workspace-dependency discovery tool for runtime/library paths instead of guessing old absolute paths.
