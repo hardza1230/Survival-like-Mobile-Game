@@ -10080,6 +10080,122 @@ function heroTalentSpendable(id){ try{ const cp=Save.cp(id)||{},tp=cp.tp||0; if(
   for(const m of ['fillCircle','strokeCircle']){ const f=P[m]; if(f)P[m]=function(x,y,rad,...r){ grow(this,x-rad,y-rad,rad*2,rad*2); return f.call(this,x,y,rad,...r); }; }
   const c=P.clear; if(c)P.clear=function(...a){ this._bb=null; return c.apply(this,a); };
 })();
+// Temporary Mint Lobby preview, using the same poses and pivots as the standalone prototype.
+function createMintLobbyRig(atlas,ctx){
+  const rig = [
+    {name:'cape', rect:[1039,63,466,413], pivot:[406,70], scale:.73},
+    {name:'body', rect:[46,522,420,490], pivot:[211,17], scale:.87},
+    {name:'hair', rect:[545,11,463,485], pivot:[382,155], scale:.65},
+    {name:'spear', rect:[503,607,506,235], pivot:[479,103], scale:.75},
+    {name:'shield', rect:[1107,564,383,404], pivot:[40,75], scale:.71},
+    {name:'head', rect:[47,58,443,409], pivot:[210,386], scale:.73}
+  ];
+  const byName=Object.fromEntries(rig.map(part=>[part.name,part]));
+  function draw(name,x,y,angle=0){
+    const {rect,pivot,scale}=byName[name],w=rect[2],h=rect[3];
+    ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.scale(scale,scale);
+    ctx.drawImage(atlas,...rect,-pivot[0],-pivot[1],w,h);ctx.restore();
+  }
+  const elbow=[386,139],grip=[316,145];
+  function drawSpearArm(x,y,upperAngle,bend,wrist){
+    const {rect:[ax,ay,width,height],pivot:[px,py],scale}=byName.spear;
+    function slice(from,to){
+      ctx.drawImage(atlas,ax+from,ay,to-from,height,from-px,-py,to-from,height);
+    }
+    ctx.save();
+    ctx.translate(x,y);ctx.rotate(upperAngle);ctx.scale(scale,scale);
+    slice(elbow[0]-12,width);
+    ctx.translate(elbow[0]-px,elbow[1]-py);
+    ctx.rotate(bend);
+    ctx.translate(px-elbow[0],py-elbow[1]);
+    slice(grip[0]-10,elbow[0]+10);
+    ctx.translate(grip[0]-px,grip[1]-py);
+    ctx.rotate(wrist);
+    ctx.translate(px-grip[0],py-grip[1]);
+    slice(0,grip[0]+8);
+    ctx.restore();
+  }
+  function drawCape(x,y,angle,flutter){
+    const {rect:[ax,ay,width,height],pivot:[px,py],scale}=byName.cape;
+    const sag=u=>flutter*Math.max(0,(px-u)/px)**2;
+    ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.scale(scale,scale);
+    // Adjacent texture strips share their boundary. The collar stays fixed.
+    for(let u=0;u<width;u+=6){
+      const span=Math.min(6,width-u),start=sag(u),slope=(sag(u+span)-start)/span;
+      ctx.save();ctx.transform(1,slope,0,1,u-px,start-py);
+      const sample=Math.min(span+1.5,width-u);
+      ctx.drawImage(atlas,ax+u,ay,sample,height,0,0,sample,height);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  function movement(time,keys){
+    if(time<=keys[0][0])return keys[0][1];
+    for(let i=1;i<keys.length;i++){
+      if(time<=keys[i][0]){
+        const [a,from]=keys[i-1],[b,to]=keys[i],u=(time-a)/(b-a);
+        return from+(to-from)*u*u*(3-2*u);
+      }
+    }
+    return keys.at(-1)[1];
+  }
+  const shoulderKeys=[[0,0],[.19,-.08],[.57,.28],[.74,.32],[.98,.30],[1.47,-.035],[1.75,0]];
+  const elbowKeys=[[0,0],[.23,.12],[.56,.60],[.78,.53],[.98,.53],[1.42,.11],[1.75,0]];
+  const wristKeys=[[0,0],[.25,-.03],[.58,-.24],[.82,-.16],[1,-.16],[1.53,.035],[1.75,0]];
+  const weightKeys=[[0,0],[.12,.2],[.27,1],[.51,.76],[.76,.67],[1.03,.69],[1.38,.43],[1.68,-.08],[1.95,0]];
+  const chestKeys=[[0,0],[.22,-.38],[.6,1],[1.02,.91],[1.52,-.12],[1.85,0]];
+  const bodyBase={x:453,y:410};
+  // Fade the body's movement out above the boots. Shoes retain their source positions.
+  function bodyOffset(y,weight,chest){
+    const u=Math.max(0,Math.min(1,(742-y)/332));
+    const support=u*u*(3-2*u);
+    const upper=Math.max(0,(u-.48)/.52)**2;
+    return [22*weight*support-13*chest*upper,11*weight*support-5*chest*upper];
+  }
+  function drawBody(weight,chest){
+    const {rect:[ax,ay,w,h],pivot:[px,py],scale}=byName.body;
+    const left=bodyBase.x-px*scale,top=bodyBase.y-py*scale;
+    const movingRows=Math.min(h,Math.ceil((742-top)/scale));
+    // A band uses the same transformed boundary as the next band.
+    for(let row=0;row<movingRows;row+=8){
+      const span=Math.min(8,movingRows-row),y=top+row*scale;
+      const [x0,y0]=bodyOffset(y,weight,chest);
+      const [x1,y1]=bodyOffset(y+span*scale,weight,chest);
+      const sample=Math.min(span+1.5,h-row);
+      ctx.save();
+      ctx.transform(scale,0,(x1-x0)/span,scale+(y1-y0)/span,left+x0,y+y0);
+      ctx.drawImage(atlas,ax,ay+row,w,sample,0,0,w,sample);
+      ctx.restore();
+    }
+    if(movingRows<h)ctx.drawImage(atlas,ax,ay+movingRows,w,h-movingRows,left,top+movingRows*scale,w*scale,(h-movingRows)*scale);
+  }
+  return (t,age)=>{
+    ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+    ctx.save();
+    ctx.scale(ctx.canvas.width/800,ctx.canvas.height/900);
+    const breath=Math.sin(t*2.1),follow=Math.sin(t*2.1-.9);
+    const lift=movement(age,[[0,0],[.2,-.12],[.68,1],[1,1],[1.62,0]]);
+    const weight=movement(age,weightKeys)+.08*breath;
+    const chest=movement(age,chestKeys);
+    const attachment=(x,y,tilt=true)=>{
+      const [dx,dy]=bodyOffset(y,weight,chest);
+      return [x+dx,y+dy+(tilt?(x-bodyBase.x)*.072*chest:0)];
+    };
+    const headAngle=.018*breath-.047*lift-.033*chest;
+    // Hair follows the head joint first, then rotates around its own tie.
+    const dx=-61,dy=-168;
+    const [neckX,neckY]=attachment(453,405-3*breath);
+    const trailing=movement(age,[[0,0],[.32,-5],[.78,23],[1.13,14],[1.46,-13],[1.72,5],[2,0]]);
+    drawCape(...attachment(430,442),.009*follow+.019*lift+.025*chest,7*follow+trailing);
+    draw('hair',neckX+dx*Math.cos(headAngle)-dy*Math.sin(headAngle),neckY+dx*Math.sin(headAngle)+dy*Math.cos(headAngle),headAngle+.048*follow+.055*lift);
+    drawSpearArm(...attachment(392-3*lift,449-2*breath-6*lift),.015*breath+.065*chest+movement(age,shoulderKeys),movement(age,elbowKeys),movement(age,wristKeys));
+    drawBody(weight,chest);
+    draw('shield',...attachment(523,447-2*breath),-.034*follow-.12*lift+.045*chest);
+    draw('head',neckX,neckY,headAngle);
+    ctx.restore();
+  };
+}
+
 class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
 
@@ -13459,13 +13575,17 @@ class Game extends Phaser.Scene {
       this._lhShadow=[sg,si].filter(Boolean).map(o=>({o,sx:o.scaleX,sy:o.scaleY,a:o.alpha})); this.hubTween({targets:g,alpha:{from:.78,to:1},duration:2800,yoyo:true,repeat:-1,ease:'Sine.inOut'}); this.lobbyHeroAmbient?.('back',w/2,fy,heroH,ch.color||0xffc6e0); }
     this.lobbyCos?.(w/2,heroY,heroH);   // v8.1.47 ของแต่งที่ Lobby (ปีกอยู่หลังฮีโร่ เพราะวาดก่อน)
     this._lhSprite=null;   /* v8.2.36 E1: ชีตฮีโร่ขยับ (ใบ 34) ลบแล้ว */
-    if(this.textures.exists(hk)&&this.lobbyHeroWarp?.(hk,w/2,heroY,heroH)){}
+    const mintRig=c==='mint'&&this._mintRigEnabled&&this.mountMintLobbyRig?.(
+      w/2,heroY-heroH*(1-((LOBBY_FACE[c]||[])[3]||1)),heroH);
+    if(mintRig){}
+    else if(this.textures.exists(hk)&&this.lobbyHeroWarp?.(hk,w/2,heroY,heroH)){}
     else if(this.textures.exists(hk)){ const hi=this.add.image(w/2,heroY,hk).setOrigin(.5,1);hi.setScale(heroH/hi.height);this.menu.add(hi);this.hubTween({targets:hi,y:heroY-5,duration:1600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
     else this.hubText(w/2,heroY-heroH/2,ch.emoji||'🍡',Math.min(96,heroH*.5),'#fff',.5);
     this.lobbyHeroAmbient?.('front',w/2,heroY,heroH,ch.color||0xffc6e0);
     /* v7.9.94 เจ้าของ: กล่องคำพูดลอยเหนือหัวฮีโร่ (หางชี้ลง) · กว้างไม่เกินช่องระหว่างปุ่มข้างจอ */
     { const gapW=w-2*(side+54)-8,bw=Math.max(120,Math.min(170,gapW-16)),lf=LOBBY_FACE[c]||[.5,.28,.27,1],headY=Math.min(heroY-heroH*(1-lf[1]+lf[2]*.62),heroY-heroH*.95+10),hx=w/2+(lf[0]-.5)*heroH*.55;
       this.startLobbyVoice(c,hx,headY,bw,top+ph+8,side+54+4,w-side-54-4); }
+    if(c==='mint')this.mintLobbyRigButton?.(w-side-54,top+ph+28+2*62,!!mintRig);
     // กล่องด่าน (A1) · CHAPTER · C1-1 · ชื่อ · ดาว 3 ดวง (D1)
     if(!panel('lb_stage_panel',px,panY,panW,panH)){ const pg=this.add.graphics();pg.fillStyle(0x000000,.4).fillRoundedRect(px+3,panY+4,panW,panH,18).fillStyle(0x2a1a3a,.96).fillRoundedRect(px,panY,panW,panH,18).lineStyle(3,0xffc43d,1).strokeRoundedRect(px,panY,panW,panH,18);this.menu.add(pg); }
     const chN=st.chapter||0,lab='C'+(chN+1)+'-'+(st.chapterStage||STAGES.slice(0,si+1).filter(x=>(x.chapter||0)===chN).length),starW=Math.round(panH*.22),SM=30,tcx=px+(panW-starW*3-SM)/2+8;   // v7.9.65 SM = ระยะดาวจากขอบขวา (เดิม 14 ชิดขอบเกิน)
@@ -13538,6 +13658,72 @@ class Game extends Phaser.Scene {
       else{v.g.fillStyle(0xfff6e7,.96).fillTriangle(tailX-14,H-4,tailX,H-4,tailX+2,H+8);}}
     v.root.setVisible(true);v.showing=true;v.t=5.5;if(kind==='says'){const role=v.hero==='momo'?'strawberry':v.hero;this.voiceLine?.(role,line,()=>v.root.active&&v.showing&&this.menuScreen==='hub'&&v.text.text===line,v);}
     if(this.tweens&&v.root.setScale){v.root.setScale(.8);this.tweens.add({targets:v.root,scale:1,duration:220,ease:'Back.easeOut'});}
+  }
+  mintLobbyRigButton(x,y,enabled){
+    this.hubPanel(x,y,54,48,enabled?this.hubTone(1):null);
+    this.hubText(x+27,y+14,'Mint Rig',10,'#c6f5ed',.5);
+    const label=this.hubText(x+27,y+33,enabled?'ON':'OFF',11,enabled?'#a7ffdb':'#e2cbdc',.5);
+    this._zone(x,y,54,48,()=>{
+      if(this._mintRigLoading)return;
+      if(enabled||this._mintRigAtlas){
+        this._mintRigEnabled=!enabled;
+        this.buildMenuScreen();
+        return;
+      }
+      const atlas=new Image();
+      this._mintRigLoading=true;
+      if(label.active)label.setText('Loading');
+      atlas.onload=()=>{
+        this._mintRigLoading=false;
+        this._mintRigAtlas=atlas;
+        if(this.state==='menu'&&this.menuScreen==='hub'&&Save.data.character==='mint'){
+          this._mintRigEnabled=true;
+          this.buildMenuScreen();
+        }
+      };
+      atlas.onerror=()=>{
+        this._mintRigLoading=false;
+        if(label.active)label.setText('Retry');
+      };
+      atlas.src=verUrl('assets/art/lobby-preview/mint-rig.webp');
+    });
+    const zone=this.tapZones[this.tapZones.length-1];
+    zone.tag='mint_rig_toggle';
+    zone.noBounce=true;
+  }
+  mountMintLobbyRig(x,footY,heroHeight){
+    const atlas=this._mintRigAtlas;
+    if(!atlas||heroHeight<=0)return false;
+    const key='mint_rig_lobby_canvas';
+    const tex=this.textures.createCanvas(key,400,450);
+    if(!tex)return false;
+    const render=createMintLobbyRig(atlas,tex.getContext());
+    const paint=(time,age)=>{render(time,age);tex.refresh();};
+    paint(0,2.2);
+    const scale=heroHeight/690;
+    const sprite=this.add.image(x,footY,key).setOrigin(453/800,817/900).setDisplaySize(800*scale,900*scale);
+    this.menu.add(sprite);
+    this._lhWarp=null;
+    let gesture=null;
+    const moving=this.hubMotionAllowed();
+    const started=this.time.now;
+    const loop=moving?this.hubEvery(1000/30,0,()=>{
+      const now=this.time.now;
+      paint((now-started)/1000,gesture===null?2.2:(now-gesture)/1000);
+    }):null;
+    sprite.once('destroy',()=>{
+      loop?.remove(false);
+      this.textures.remove(key);
+    });
+    this._zone(x-heroHeight*.3,footY-heroHeight*.95,heroHeight*.6,heroHeight*.95,()=>{
+      gesture=this.time.now;
+      if(!moving)paint(0,.83);
+      this.lobbyTapSay();
+    });
+    const zone=this.tapZones[this.tapZones.length-1];
+    zone.tag='lobby_hero';
+    zone.noBounce=true;
+    return true;
   }
   lobbyHeroWarp(key,x,y,H){ if(!this.textures.exists(key)||!this.tweens)return false; const src=this.textures.get(key).getSourceImage(),tw=src.width,th=src.height; if(!tw||!th)return false;
     const N=28,sc=H/th,c=this.add.container(x,y); this.menu.add(c); const strips=[];
