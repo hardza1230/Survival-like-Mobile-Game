@@ -4,7 +4,8 @@ const {PHASES,enabled,initial,advance}=require('../scripts/gameplay-timeline-v83
 assert.equal(enabled({stageIndex:3}),false);
 assert.equal(enabled({stageIndex:3,flag:true}),true);
 for(const k of ['tutorial','recipe','rift','bossRush','replay'])assert.equal(enabled({stageIndex:3,flag:true,[k]:true}),false);
-assert.equal(enabled({stageIndex:2,flag:true}),false);
+for(let i=0;i<5;i++)assert.equal(enabled({stageIndex:i,flag:true}),true);
+for(const i of [-1,5,9])assert.equal(enabled({stageIndex:i,flag:true}),false);
 let s=initial();assert.equal(advance(s,99,{playing:false}),s);
 s=advance(s,30);assert.equal(PHASES[s.index].id,'pressure');
 s=advance(s,45);assert.equal(PHASES[s.index].id,'mini');

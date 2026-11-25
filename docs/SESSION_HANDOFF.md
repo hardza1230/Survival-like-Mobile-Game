@@ -1,3 +1,11 @@
+# Current checkpoint — Chapter 1 Continuous Combat (2026-11-25)
+
+Extended the development branch to first clears in C1-1 through C1-5. Combat Director has ten pattern types; two automatic field encounters are drawn from Hunger’s Mouth, Frozen Pantry and Grandma’s Pot. Preserved existing tutorial, replay and special modes. The owner requested skipping gameplay and automated tests for this pass. See `docs/design/GAMEPLAY_OVERHAUL_RUNTIME.md`. Keep official production on its separate deploy branch.
+
+# Current checkpoint — C1-4 combat HUD preview (2026-11-25)
+
+The experiment now shows a fixed, high-contrast phase and timer chip beneath the existing controls. Seven compact markers follow the actual sequence, including the Recovery/Escalation split. Boss HP still occupies the boss layout, and the initial signature-attack banner is suppressed only in the experiment. Standard battles retain their regular HUD. The local C1-4 preview is served at `http://127.0.0.1:8795/stage4`.
+
 # Current checkpoint — Stage 4 and Mint preview QA (2026-11-25)
 
 Stage 4 branch `feature/gameplay-overhaul-v83` adds an experimental phase HUD, a single stage EXP settlement, and a stale continuation guard. Chrome at 390 × 844 passed accelerated C1-4 play, pause, preserved enemies/orbs, both boss kill paths, reward wheel and persisted stage mastery. Timeline and runtime contracts are in `tests/gameplay-timeline-v83.test.cjs` and run in the project check. The experiment stays opt-in, first-clear only. Mint's separate `preview/mint-lobby-rig` branch passed real touch toggles, spear gesture and texture disposal again at 393 × 852. Current production remains v8.2.87. Phone play, reward/balance review, Mint visual approval and any Play Console update remain owner-side. The standard debug APK points at live Pages and won't show preview branches by itself. No production merge or deployment.

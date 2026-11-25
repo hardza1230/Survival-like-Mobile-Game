@@ -24,4 +24,4 @@ Run node tests/gameplay-timeline-v83.test.cjs. No runtime or release version cha
 5. Run npm run check, build and CI; owner phone QA before enabling by default. No art/audio or economy changes.
 
 ## Status
-Stage 4 runtime and accelerated browser QA are complete for the opt-in prototype. See [Runtime experiment](GAMEPLAY_OVERHAUL_RUNTIME.md) for verified behavior and remaining playtest and balance work.
+The Chapter 1 development build now includes all ten Combat Director patterns and three automatic field encounters. See [Chapter 1 runtime](GAMEPLAY_OVERHAUL_RUNTIME.md) for current behavior and the legacy comparison flag.

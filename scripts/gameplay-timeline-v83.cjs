@@ -7,7 +7,7 @@ const PHASES=Object.freeze([
   {id:'boss',seconds:null}
 ].map(Object.freeze));
 function enabled(o={}) {
-  return o.flag===true && o.stageIndex===3 && !o.tutorial && !o.recipe && !o.rift && !o.bossRush && !o.replay;
+  return o.flag===true && Number.isInteger(o.stageIndex) && o.stageIndex>=0 && o.stageIndex<5 && !o.tutorial && !o.recipe && !o.rift && !o.bossRush && !o.replay;
 }
 function initial(){return {index:0,elapsed:0,combatSeconds:0,done:false};}
 function advance(state,dt,{playing=true,bossDefeated=false}={}){
