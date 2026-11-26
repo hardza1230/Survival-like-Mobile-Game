@@ -22,6 +22,23 @@ const fs=require('fs'),path=require('path'),http=require('http'),assert=require(
   await page.waitForFunction(()=>!!window.probeScene);assert.equal(await page.evaluate(()=>window.probeDone),0,'placeholder and pending real HTTP image cannot complete readiness');
   await page.waitForFunction(()=>window.probeDone===1);assert(await page.evaluate(()=>!(window.probeScene.textures.get('picture').getSourceImage() instanceof HTMLCanvasElement)),'real Phaser texture replaces placeholder');
   await page.evaluate(()=>window.probeScene.ensureGroup(k=>k==='missing',()=>window.probeDone++,{all:true,strict:true,onError:(keys,reason)=>window.probeErrors.push({keys,reason})}));await page.waitForFunction(()=>window.probeErrors.length===1);assert.equal(await page.evaluate(()=>window.probeDone),1,'repeated real HTTP 404 cannot report ready');assert.equal(await page.evaluate(()=>window.probeErrors[0].reason),'request_failed');await page.evaluate(()=>window.probeGame.destroy(true));
+  const fitCode=gameSource.slice(gameSource.indexOf('const MAX_CANVAS_PX='),gameSource.indexOf('const _vs0='));
+  const touch=await browser.newPage({viewport:{width:393,height:852},hasTouch:true,isMobile:true});
+  await touch.goto('http://127.0.0.1:'+server.address().port);
+  for(const [width,height,fit] of [[393,852,false],[800,1280,false],[640,640,true],[852,393,true],[393,852,false]]){
+   await touch.setViewportSize({width,height});
+   const result=await touch.evaluate(code=>{
+    const view=new Function('const RENDER_BASE_DPR=1.5,DESKTOP_FIT=false;'+code+';return applyCanvasFit();')();
+    const canvas=document.querySelector('canvas')||document.body.appendChild(document.createElement('canvas'));
+    const rect=canvas.getBoundingClientRect(),loader=document.getElementById('game-loader').getBoundingClientRect();
+    return {view,canvasWidth:rect.width,canvasX:rect.x,loaderWidth:loader.width,loaderX:loader.x};
+   },fitCode);
+   assert.equal(result.view.fit,fit);
+   assert(result.view.w<result.view.h,'game layout stays portrait on wide touch windows too');
+   assert(Math.abs(result.canvasWidth-result.loaderWidth)<1&&Math.abs(result.canvasX-result.loaderX)<1,'canvas and loading screen share the same frame');
+   assert(Math.abs(result.canvasWidth-result.view.w)<1,'displayed canvas matches game layout width');
+  }
+  await touch.close();
   console.log('Stage loading browser UI: twelve real atlas frames, progress, retry/back, small-phone controls, reduced motion and real Phaser delayed/404 texture loading passed');
  }finally{await browser?.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

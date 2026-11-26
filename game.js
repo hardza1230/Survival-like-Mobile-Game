@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.6';
+const GAME_VERSION = '8.3.7';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -104,6 +104,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.3.7',date:'2026-11-26',title:'Portrait layout and visible Chapter 1 waves',items:['Wide windows keep the same portrait layout as your phone.','Chapter 1 enemy packs arrive in view so you can see them coming and find a way around them.']},
   {v:'8.3.6',date:'2026-11-26',title:'Artwork ready before battle',items:['Battle waits for the selected hero and stage artwork before starting.','A new animated honey and jam portal accompanies stage loading.','Interrupted artwork downloads offer Try again or Back instead of starting with placeholder images.']},
   {v:'8.3.5',date:'2026-11-26',title:'A livelier battlefield',items:['Enemy formations and surprise events have their own sound cues.','Quiet stage ambience and new character reactions bring battles to life.','Monster sounds vary by family and stay restrained during crowded fights.']},
   {v:'8.3.4',date:'2026-11-25',title:'Chapter 1 Continuous Combat',items:['Fight continuously through all five Chapter 1 stages on your first clear','Meet ten enemy formations as each fight builds toward its bosses','Side events begin automatically and reward Sugar on success']},
@@ -16641,6 +16642,19 @@ class Game extends Phaser.Scene {
   // เกิดมอนเป็น "circle" Waitบผู้เล่นแล้วบีบวงเข้ามา (chase AI ทำให้ค่อย ๆ หุบวง)
   spawnWaveRing(n){
     if(n<=0)return; const types=this.waveTypes&&this.waveTypes.length?this.waveTypes:['basic'];
+    if(this._v83Run&&this.mode==='wave'){
+      const direction=Math.random()*Math.PI*2;
+      for(let i=0;i<n;i++){
+        // Adjacent enemies approach as a pack, leaving an escape lane on the opposite side.
+        const angle=direction+(i-(n-1)/2)*Math.min(.24,1.4/n);
+        const distance=250+(i%2)*32;
+        let point=this.chapterVisibleSpawn(angle,distance);
+        if(!point)point=this.chapterVisibleSpawn(angle+Math.PI,distance);
+        if(!point)point=this.chapterVisibleSpawn(angle+Math.PI/2,distance)||this.chapterVisibleSpawn(angle-Math.PI/2,distance);
+        if(point)this.spawnEnemy(Phaser.Utils.Array.GetRandom(types),point.angle,point.distance,true);
+      }
+      return;
+    }
     const base=Math.random()*Math.PI*2, step=Math.PI*2/n, jitter=step*0.26;
     const rad=Math.max(this.W,this.H)/this.viewZoom*0.62+40;
     for(let i=0;i<n;i++){ const ang=base+i*step+Phaser.Math.FloatBetween(-jitter,jitter);
@@ -16658,10 +16672,10 @@ class Game extends Phaser.Scene {
     const beat=STAGE_SWARM_BEATS[this.stageIndex]||STAGE_SWARM_BEATS[0];
     this.showBanner(beat.title,beat.sub,1800);Sfx.bossWarn();this.screenShake(180,0.005);
   }
-  spawnElite(allowRecycle=true,objective=false){
+  spawnElite(allowRecycle=true,objective=false,arrival=null){
     if(this.storyCanSpawn?.(objective)===false)return null;
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
-    const [x,y]=(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad);
+    const [x,y]=arrival?[arrival.x,arrival.y]:(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad);
     let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?this.antArtKey('elite'):(this.stageIndex===1?this.drainArtKey('elite'):this.stageIndex===2?this.fireArtKey('elite'):this.stageIndex===3?this.iceArtKey('elite'):this.stageIndex===4?this.stage5ArtKey('elite'):this.stageIndex===5?'ch2_enemy_atlas':this.stageIndex===8?'ch2_seasons_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:this.stageIndex===8?5:0;
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ if(!allowRecycle)return null;e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // Other elite events retain their existing pool fallback.
@@ -18643,7 +18657,7 @@ class Game extends Phaser.Scene {
     const pattern=d.patterns.splice(candidate,1)[0];
     this.spawnChapterCombatPattern(d,pattern,room);
     d.last=pattern;
-    d.delay=8+Math.random()*4;
+    d.delay=7+Math.random()*3;
   }
   spawnChapterCombatPattern(d,pattern,room){
     const audioPattern=pattern.toLowerCase().replace(/ /g,'_'),player=this.player,epoch=this._artEpoch;
@@ -18657,13 +18671,15 @@ class Game extends Phaser.Scene {
     const points=this.chapterCombatFormation(pattern,n,r),followers=[],routes=[];
     let leader=null;
     for(const p of points){
-      const [x,y]=inMapPt(ox+p.x*c-p.y*s,oy+p.x*s+p.y*c),dx=x-ox,dy=y-oy;
-      if(Math.hypot(dx,dy)<92)continue;
-      const enemy=p.type==='elite'?this.spawnElite(false):this.spawnEnemy(p.type,Math.atan2(dy,dx),Math.hypot(dx,dy));
+      const dx=p.x*c-p.y*s,dy=p.x*s+p.y*c;
+      const point=this.chapterVisibleSpawn(Math.atan2(dy,dx),Math.hypot(dx,dy));
+      if(!point)continue;
+      const enemy=p.type==='elite'?this.spawnElite(false,false,point):this.spawnEnemy(p.type,point.angle,point.distance,true);
       if(!enemy)continue;
       const id=enemy._c1SpawnId;
       if(p.type==='elite'){
-        enemy.setPosition(x,y);leader=enemy;
+        this.spawnRise(enemy,point.x,point.y,true);
+        leader=enemy;
       }else if(pattern==='Commander')followers.push({enemy,id,speed:enemy.spd});
       if(pattern==='Stampede'){
         const [x,y]=inMapPt(ox-r*c-p.y*s,oy-r*s+p.y*c);
@@ -21950,6 +21966,8 @@ class Game extends Phaser.Scene {
     e.rotation=0;e.stepT=0;e._sqX=1;e._sqY=1;
   }
   resetEnemyPresentation(e,frame=0){
+    e._emergeUntil=0;
+    e._spawnGrace=0;
     if(e._enemyArtKey==='feast_target_animated'){this.tweens.killTweensOf(e);e._fleeing=false;e._huntFlee=false;e.setAlpha(1);}
     this.stopEnemyPresentation(e);if(e.body)e.setVelocity(0,0);e._enemyArtKey=e.texture.key;e._enemyRestFrame=frame;
     this.tickEnemyPresentation(e,0);
@@ -22021,6 +22039,25 @@ class Game extends Phaser.Scene {
   }
   /* v8.1.105 เจ้าของ: มอนปกติ (ไม่ใช่ event/ภารกิจ) ต้องเดินเข้ามาจากขอบจอเท่านั้น → จุดเกิด = นอกกรอบกล้องเล็กน้อยตามทิศ ang ·
      ถ้าชิดขอบแมพจนจุดนั้นตกลงในจอ ลองทิศอื่น (ด้านที่ยังมีพื้นที่) */
+  chapterVisibleSpawn(angle,wantedDistance){
+    const {x,y}=this.player,zoom=this.viewZoom||1,view=this.cameras?.main?.worldView;
+    const width=view?.width||this.W/zoom,height=view?.height||this.H/zoom;
+    const viewX=view?.width?view.x:x-width/2,viewY=view?.height?view.y:y-height/2;
+    const [mapLeft,mapTop]=inMapPt(-Infinity,-Infinity),[mapRight,mapBottom]=inMapPt(Infinity,Infinity);
+    const left=Math.max(mapLeft,viewX+32/zoom),right=Math.min(mapRight,viewX+width-32/zoom);
+    const hudInset=Math.min(100/zoom,height*.19);
+    const top=Math.max(mapTop,viewY+hudInset),bottom=Math.min(mapBottom,viewY+height-hudInset);
+    const dx=Math.cos(angle),dy=Math.sin(angle),epsilon=1e-6;
+    const tx=Math.abs(dx)>epsilon?((dx>0?right:left)-x)/dx:Infinity;
+    const ty=Math.abs(dy)>epsilon?((dy>0?bottom:top)-y)/dy:Infinity;
+    const distance=Math.min(wantedDistance,tx,ty);
+    if(distance<92)return null;
+    const [sx,sy]=inMapPt(x+dx*distance,y+dy*distance);
+    if(sx<left-epsilon||sx>right+epsilon||sy<top-epsilon||sy>bottom+epsilon)return null;
+    const actualDistance=Math.hypot(sx-x,sy-y);
+    if(actualDistance<92)return null;
+    return {x:sx,y:sy,angle:Math.atan2(sy-y,sx-x),distance:actualDistance};
+  }
   edgeSpawnPt(ang){ const P=this.player,z=this.viewZoom||1,cam=this.cameras?.main?.worldView,cx=cam&&cam.width?cam.centerX:P.x,cy=cam&&cam.height?cam.centerY:P.y,
       hw=(cam&&cam.width?cam.width:this.W/z)/2+42,hh=(cam&&cam.height?cam.height:this.H/z)/2+42,clamp=typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y];
     const at=a=>{ const c=Math.cos(a),s=Math.sin(a),t=Math.min(Math.abs(c)>1e-4?hw/Math.abs(c):1e9,Math.abs(s)>1e-4?hh/Math.abs(s):1e9); return clamp(cx+c*t,cy+s*t); },
@@ -22028,7 +22065,7 @@ class Game extends Phaser.Scene {
     let best=at(ang); if(!inView(best[0],best[1]))return best;
     for(let i=1;i<12;i++){ const p=at(ang+i*Math.PI/6); if(!inView(p[0],p[1]))return p; }
     return best; }
-  spawnEnemy(type,angOverride,radOverride){
+  spawnEnemy(type,angOverride,radOverride,chapterArrival=false){
     if(this.storyCanSpawn?.(false,type)===false)return null;
     if(this.enemies&&this.enemies.countActive(true)>=(this.maxLive||100)+24)return null;   // v4.60: เพดานรวมกันมอนล้น (Colony Call/Mold Sac ของ C2-2 เคยสะสมถึง 209 ตัว) · ผู้เรียกทุกจุด guard null แล้ว
     const ang=angOverride!=null?angOverride:Math.random()*Math.PI*2;
@@ -22103,7 +22140,7 @@ class Game extends Phaser.Scene {
     e._bloat=false; e._feast=false; if(this._biome==='fermented'&&!e.isBoss&&!e.isMini&&Math.random()<0.18){ e._bloat=true; e.tintColor=0xb07cff; e.setTint(0xb07cff); } e._ember=false; if(this._biome==='spicy'&&!e.isBoss&&!e.isMini&&Math.random()<0.15){ e._ember=true; e._emberT=Math.random(); e.tintColor=0xff7a3d; e.setTint(0xff7a3d); }
     e._gold=false; if(this._goldWave&&!e.tintColor&&!e.isElite&&!e.isMini){ e.tintColor=GOLD_TINT; e.setTint?.(GOLD_TINT); e._gold=true; if(this.realTex?.('ev90_gold_shimmer')&&(this._goldShimN=(this._goldShimN||0)+1)%2===0)this.goldShimAdd?.(e); }   /* v8.2.31 ใบ 90 ประกาย (ครึ่งหนึ่งของมอน กันหนัก) */   /* v8.2.28 เวฟทอง */
     this.camWorld(e);
-    this.vfxSpawnPoof(x,y);this.spawnRise?.(e,x,y);this.storySpawned?.();this.enemyAudio?.(e,'spawn');return e;
+    this.vfxSpawnPoof(x,y);this.spawnRise?.(e,x,y,chapterArrival);this.storySpawned?.();this.enemyAudio?.(e,'spawn');return e;
   }
   /* v8.1.120 เจ้าของ: มอนที่เกิดในจอ (ขอบแผนที่) ไม่โผล่ทับตัวทันที → ค่อย ๆ ปรากฏ 0.3 วิ + วงฝุ่นที่พื้น + ชนไม่เจ็บ 0.42 วิ · เกิดนอกจอไม่ต้องทำอะไร */
   /* v8.2.44 มอนภารกิจค่อย ๆ เกิด: ground = พื้นแตก → ดันตัวขึ้น + ฝุ่น · portal = วงวนม่วง → ก้าวออก + แสงวาบ */
@@ -22117,7 +22154,8 @@ class Game extends Phaser.Scene {
         else { const rw=Math.min(1,w/.4); g.fillStyle(0x1a0624,.55*(1-Math.max(0,w-.7)/.3)).fillEllipse(x,gy,56*rw,18*rw); g.lineStyle(2,0x7a2ad0,.8*(1-Math.max(0,w-.7)/.3)); for(let k=0;k<4;k++){ const a=seed+k*1.6; g.lineBetween(x,gy,x+Math.cos(a)*34*rw,gy+Math.sin(a)*11*rw); }
           if(w>.3){ const d=(w-.3)/.7; for(let k=0;k<6;k++){ const a=seed+k*1.05; g.fillStyle(0x6b4a3a,.8*(1-d)).fillCircle(x+Math.cos(a)*(10+30*d),gy+Math.sin(a)*8*d-26*d*(1-d)*2,3); } } }
         if(t>=ms+60){ ev.remove(); g.destroy(); this._emergeLive=Math.max(0,(this._emergeLive|0)-1); } }}); }); }
-  spawnRise(e,x,y){ if(!e)return; e._occ=false; const v=this.cameras?.main?.worldView; if(!v||!v.width||!v.contains?.(x,y)||e.isBoss)return; const now=this.time?.now||0; e._spawnGrace=now+420;
+  spawnRise(e,x,y,chapterArrival=false){ if(!e)return; e._occ=false; const v=this.cameras?.main?.worldView; if(!v||!v.width||!v.contains?.(x,y)||e.isBoss)return; const now=this.time?.now||0; e._spawnGrace=now+420;
+    if(chapterArrival)e._emergeUntil=e._spawnGrace;
     if(this.tweens){ e.setAlpha?.(0); this.tweens.add({targets:e,alpha:1,duration:300,ease:'Sine.out'}); const gy=y+(e.displayHeight||40)*.4,r=this.camWorld(this.add.ellipse(x,gy,24,9,0xb98cff,.0).setStrokeStyle(3,0xb98cff,.85).setDepth(-98990)); this.tweens.add({targets:r,scaleX:3.2,scaleY:3.2,alpha:0,duration:420,ease:'Cubic.out',onComplete:()=>r.destroy()}); } }
 
 
@@ -26679,11 +26717,21 @@ const DESKTOP_FIT=(()=>{ try{ return !window.Capacitor?.isNativePlatform?.()&&!(
 /* v8.2.1: Google's store crawler opens the web build at 1024×10000 → WebGL framebuffer 'Incomplete Attachment' crash. Cap the backing canvas at 4096 px a side (real phones/tablets are far below this) */
 const MAX_CANVAS_PX=4096;
 function capView(v){ const k=RENDER_BASE_DPR; if(v.h*k>MAX_CANVAS_PX)v.h=Math.floor(MAX_CANVAS_PX/k); if(v.w*k>MAX_CANVAS_PX)v.w=Math.floor(MAX_CANVAS_PX/k); return v; }
-function viewSize(){ const w=window.innerWidth,h=window.innerHeight; if(!DESKTOP_FIT||w<=h*0.62)return capView({w,h,fit:false}); return capView({w:Math.round(h*9/16),h,fit:true}); }
+function viewSize(){
+  const width=Math.max(1,window.innerWidth),height=Math.max(2,window.innerHeight);
+  // Wide windows always host a portrait game, including touch and native viewports.
+  const fit=width>=height||(DESKTOP_FIT&&width>height*.62);
+  const view=capView({w:fit?Math.max(1,Math.round(height*9/16)):width,h:height,fit});
+  view.w=Math.min(view.w,view.h-1);
+  return view;
+}
 /* v8.1.164 เจ้าของ (Honor Pad 9): UI เล็กไปบนแท็บเล็ต → ขยาย layout ทั้งเกมตามด้านสั้นของจอ (มือถือ ≤430 = ×1 · 600 = ×1.22 · 800 = ×1.45 สูงสุด) · canvas/GPU เท่าเดิม แค่พิกัด layout เล็กลงแล้วกล้อง zoom ขึ้น · โลกในเกมขนาดเท่าเดิม */
 function uiScaleFor(w,h,fit){ if(fit||DESKTOP_FIT)return 1; const s=Math.min(w,h); return Math.max(1,Math.min(1.45,Math.pow(s/430,.6))); }
-function applyCanvasFit(){ const v=viewSize(); let st=document.getElementById('desk-fit'); if(!st){ st=document.createElement('style'); st.id='desk-fit'; document.head.appendChild(st); }
-  st.textContent=v.fit?'canvas{left:calc(50% - '+(v.w/2)+'px)!important;right:auto!important;width:'+v.w+'px!important;box-shadow:0 0 40px rgba(0,0,0,.6);}':''; return v; }
+function applyCanvasFit(){
+  const view=viewSize(),root=document.documentElement;
+  root.classList.toggle('portrait-fit',view.fit);
+  return view;
+}
 const _vs0=applyCanvasFit();
 const UI_SCALE=uiScaleFor(_vs0.w,_vs0.h,_vs0.fit);
 const RENDER_DPR=RENDER_BASE_DPR*UI_SCALE;   // layout px → backing px (รวมตัวขยาย UI)

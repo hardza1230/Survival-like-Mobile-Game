@@ -12,5 +12,12 @@ assert(/const t0=Date\.now\(\);this\._zone\([^;]+\{if\(Date\.now\(\)-t0<900\)ret
 // A5: backing canvas capped at 4096 px a side
 { const m=src.match(/const MAX_CANVAS_PX=4096;\nfunction capView\(v\)\{[^\n]+\}/); assert(m,'capView'); const capView=vm.runInNewContext(m[0]+';capView',{RENDER_BASE_DPR:1.5});
   const v=capView({w:1024,h:10000,fit:false}); assert(v.h*1.5<=4096&&v.w===1024,'crawler size capped'); const p=capView({w:390,h:844,fit:false}); assert.deepEqual([p.w,p.h],[390,844],'phones untouched'); }
-assert(/return capView\(\{w,h,fit:false\}\)/.test(src),'viewSize uses the cap');
+{
+  const fit=src.slice(src.indexOf('const MAX_CANVAS_PX='),src.indexOf('function uiScaleFor('));
+  const window={innerWidth:5000,innerHeight:5000};
+  const viewSize=vm.runInNewContext(fit+';viewSize',{RENDER_BASE_DPR:1.5,DESKTOP_FIT:false,window});
+  const v=viewSize();assert(v.fit&&v.w<v.h&&v.h*1.5<=4096,'wide touch display preserves portrait layout and the backing cap');
+  Object.assign(window,{innerWidth:800,innerHeight:1280});
+  const tablet=viewSize();assert(!tablet.fit&&tablet.w===800&&tablet.h===1280,'portrait tablet keeps its native layout');
+}
 console.log('owner round 8.2.1 (HUD after loss, rescue scene taps, canvas cap) passed');

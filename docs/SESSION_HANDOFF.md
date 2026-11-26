@@ -1,3 +1,9 @@
+# Current checkpoint — Portrait-only layout and Chapter 1 arrivals
+
+Owner approved publishing both changes as v8.3.7. The release is based on 31d81264. The game computes a portrait viewport on wide and square touch, native and desktop windows. The canvas and loader share the same portrait frame. Android and the PWA already declare portrait. Existing touch rotation prompt continues to pause play while sideways.
+
+Chapter 1 first-clear refills now arrive as directional packs inside the camera view and formations use the same visible, map-safe placement. The 420 ms rise is protected from damage and contact. The test covers portrait bounds, map edges and legacy flow. Browser checks exercise phone, portrait tablet, square and wide touch sizes and returning upright. Gameplay feel and hardware rotation still need phone review.
+
 # Current checkpoint — Strict stage art + twelve-frame transition (2026-11-26)
 
 Owner asked to investigate fallback/delayed art, wait for selected-stage artwork behind a loading screen, and create a twelve-frame transition. Released v8.3.6 on both feature/gameplay-overhaul-v83 and claude/vampire-survival-mobile-game-yo9e8w, from production df01e7a6. Original built-in ImageGen atlas delivered to assets/incoming/loading_transition836 (1448×1086, 4×3, 12 cells of 362px), packed DOM WebP 103,918 bytes. The full displayed atlas was checked once; no separate per-frame visual review. Mechanical cells/hash/size and browser animation/recovery contracts pass. No registered local art paths were missing. Main findings: false 20-second group success, global/cached ready flags, 25-second hero retry bypass, forced 45-second start, broad post-stage background decoding, portal transition skipping art, and cached animations referencing replaced fallback textures.
