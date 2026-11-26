@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.15';
+const GAME_VERSION = '8.3.16';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -148,6 +148,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.16',date:'2026-11-26',title:'Stage cards stay put and more sounds',items:['Tapping quickly no longer skips the cards before a Chapter 1 stage','Cocoa leaps, Rage charge, Pinball, Berry Blast and Yuzu crew hits have their own sounds']},
   {v:'8.3.15',date:'2026-11-26',title:'Harder dailies and a new Rank Rewards look',items:['Kicking a glowing object into a boss now stuns it for 2 seconds','Daily quests ask for about 50% more','Ancient perks are gone from Rank Rewards','Rank Rewards has a new look with glowing cards and sparkles when you pick']},
   {v:'8.3.14',date:'2026-11-26',title:'Update prompt in the store app',items:['The update prompt now comes back if it was closed by a screen change','The game checks for a new version when you return to the app or the Hub','The Updates page shows when a new version is ready and downloads the right app']},
   {v:'8.3.13',date:'2026-11-26',title:'Shorter waves and a wider view',items:['Chapter 1 waves last 30 seconds at most','The camera shows more of the map, and EXP gems and items are smaller','Higher levels need a little more EXP','Tap a side event on the map to start it','Your first chest always gives a starter item']},
@@ -11158,7 +11159,7 @@ class Game extends Phaser.Scene {
   releaseBerryBlast(ang,c){ this.heroScreenEffect?.(1.2); const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player,bm=this.blastMods(),basic=this.basicAttack;
     this.uniqueCd=this.uniqueCooldown(u);this.uqMutHook?.('blast',{ang});this.flashBtn(this.uniqueBtn);this.poseAttack(380);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this._mxSrc='unique';this.fireRecipes('unique');
     const pb=1+0.15*(((this.basicAttack&&this.basicAttack.lv)||{}).pointblank||0);
-    const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */
+    const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.uqReady?.('uq_shotgun_blast')&&Sfx.bp?.('uq_shotgun_blast',.75*Math.max(.7,mul),.1))||(Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */
       const R=300,h=bm.cone/2,unit=(14+ul*5)*dm*up*(0.7+0.3*c)*mul; let hits=0;
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const dx=e.x-pl.x,dy=e.y-pl.y,d=Math.hypot(dx,dy); if(d>R+(e.body?e.body.halfWidth:18))return;
         let da=Math.atan2(dy,dx)-ang; while(da>Math.PI)da-=Math.PI*2; while(da<-Math.PI)da+=Math.PI*2; if(Math.abs(da)>h&&d>40)return;
@@ -17763,7 +17764,8 @@ class Game extends Phaser.Scene {
     const reroll=()=>{ if(fin)return; hold=false; fin=true; this._finishDeal=null; this.input?.off?.('pointerdown',onTap); try{ this.tweens.killTweensOf?.(cards); }catch(e){} L.destroy(); if(this._dealL===L)this._dealL=null; (this.a12?.('a18_reroll',.5,.2))||snd(); this.rubyVoiceReact?.('reroll',200); this.missionDealReroll(deal,isAd); this.missionDealShow(deal,done); };
     const tapRe=()=>{ if(!isAd){ reroll(); return; } if(hold||!this.showRewardedAd)return; hold=true; rb.setAlpha(.45); let got=false; this.showRewardedAd('Watch an ad to reroll the stage missions',()=>{ got=true; reroll(); }); this.time.delayedCall(400,()=>{ if(!got&&!this._adBusy&&hold&&!fin){ hold=false; finish(); } });
       const chk=this.time.addEvent({delay:300,loop:true,callback:()=>{ if(fin||got){ chk.remove(); return; } if(!this._adBusy&&hold){ chk.remove(); hold=false; finish(); } }}); };
-    this._finishDeal=finish; const t0=this.time.now,onTap=(p0)=>{ if(hold||!p0)return; const k=(typeof RENDER_DPR!=='undefined'&&RENDER_DPR)||1,pt={x:p0.x/k,y:p0.y/k},on=b=>b&&b.alpha>.5&&Math.abs(pt.x-b.x)<=(b.width||200)/2+14&&Math.abs(pt.y-b.y)<=(b.height||34)/2+14;   /* v8.2.46 เจ้าของ: กด Start/Reroll ไม่ติด — pointer ตอนเล่นเป็นพิกเซลจอ (×RENDER_DPR) ต้องหารก่อนเทียบกับพิกัด UI */ if(on(rb)){ tapRe(); return; } if(on(go)){ (this.a12?.('a18_reroll',.3,.2))||snd(); finish(); return; } if(!rb&&this.time.now-t0>350)finish(); }; this.input?.on?.('pointerdown',onTap);
+    const dealAllShown=1100+n*90+n*DEAL_SHOW_MS;
+    this._finishDeal=finish; const t0=this.time.now,onTap=(p0)=>{ if(hold||!p0)return; const k=(typeof RENDER_DPR!=='undefined'&&RENDER_DPR)||1,pt={x:p0.x/k,y:p0.y/k},on=b=>b&&b.alpha>.5&&Math.abs(pt.x-b.x)<=(b.width||200)/2+14&&Math.abs(pt.y-b.y)<=(b.height||34)/2+14;   /* v8.2.46 เจ้าของ: กด Start/Reroll ไม่ติด — pointer ตอนเล่นเป็นพิกเซลจอ (×RENDER_DPR) ต้องหารก่อนเทียบกับพิกัด UI */ if(on(rb)){ tapRe(); return; } if(on(go)){ (this.a12?.('a18_reroll',.3,.2))||snd(); finish(); return; } if(!rb&&this.time.now-t0>(deal.preview?dealAllShown:350))finish(); };   /* v8.3.16 เจ้าของ: แตะรัวตอนการ์ดก่อนด่าน C1 = ข้ามการ์ดทั้งชุด → ต้องพลิกครบทุกใบก่อนถึงแตะข้ามได้ */ this.input?.on?.('pointerdown',onTap);
     const snd=()=>{ try{ Sfx.card&&Sfx.card(); }catch(e){} };
     // สับ 2 ครั้ง
     for(let k=0;k<2;k++)T(k*260,()=>{ snd(); cards.forEach((c,i)=>tw({targets:c,x:W/2+(i%2?1:-1)*cw*.7,angle:(i%2?8:-8),duration:110,yoyo:true,ease:'Sine.easeInOut'})); });
@@ -21410,7 +21412,7 @@ class Game extends Phaser.Scene {
     const u=this.yuzuBuff();if(u&&m===u.m&&u.kind==='pomelo'&&source==='sweep')amount*=1+.45*u.power;if(u&&m===u.m&&u.kind==='yuzling'&&source==='bite')amount*=1+.25*u.power;
     const own=this._yzHitOwner,src=this._mxSrc,crit=this._yzForceCrit,before=e.hp,id=e._yzSpawnId;
     this._yzHitOwner=m;this._mxSrc='yuzu.'+source;this._yzForceCrit=critical?e:null;
-    try{this.damage(e,amount,e.x,e.y);if(e._yzSpawnId===id&&e.hp<before){this.yuzuImpactFx(m,e,source);if(u&&u.kind==='lime'&&source==='focus_arrow')u.marks=Math.min(12,u.marks+1);}}
+    try{this.damage(e,amount,e.x,e.y);if(e._yzSpawnId===id&&e.hp<before){this.yuzuImpactFx(m,e,source);if(u&&m===u.m)Sfx.bp?.('uq_yuzu_crew_hit',.28,.22);if(u&&u.kind==='lime'&&source==='focus_arrow')u.marks=Math.min(12,u.marks+1);}}
     finally{this._yzHitOwner=own;this._mxSrc=src;this._yzForceCrit=crit;}
   }
   yuzuOnKill(){const m=this._yzHitOwner;if(this.character!=='yuzu'||!m||m!==this._yuzuCrew?.[0])return;if(m.kind==='lime')m.cd=Math.max(0,m.cd-.3*this.yuzuRank('p_feast'));m.kills=(m.kills||0)+1;}
@@ -22581,7 +22583,7 @@ class Game extends Phaser.Scene {
     const near=target&&this.dist(target.x,target.y,anchor.x,anchor.y)<=(target.body?.halfWidth||20)+70;
     if(!target||near||this.cocoaFlickerRetreat(anchor,target)){this.castCocoaRush(lvl,aw,dm,evo,basic,false,true);return;}
     this._cocoaFlickerBoss=target.isBoss||target.isMini?target:null;
-    const f=this._cocoaFlicker={player:this.player,basic,path:basic.path,anchor,range,target,epoch:this._cocoaEpoch||0,left:basic.path==='titan'?1:basic.path==='dashboxer'?3:2};f.total=f.left;
+    const f=this._cocoaFlicker={player:this.player,basic,path:basic.path,anchor,range,target,epoch:this._cocoaEpoch||0,left:basic.path==='titan'?1:basic.path==='dashboxer'?3:2};f.total=f.left; Sfx.bp?.(basic.path==='titan'?'cocoa_titan_leap':'cocoa_flicker_step',.45,.25);   /* v8.3.16 ผูกเสียงที่ค้าง: Titan กระโดด / Flicker พุ่ง */
     const strike=()=>{
       if(this._cocoaFlicker!==f)return;
       if(f.stop||!this._cocoaFlickerOn){this.finishCocoaFlicker();return;}
@@ -22683,7 +22685,7 @@ class Game extends Phaser.Scene {
     let r=this._titanRage||0;const prev=Math.floor(r);
     if(this._titanHold&&(this.uniqueCd>0||this.state!=='play'))this._titanHold=null;
     if(this.uniqueBtn){const k=this._titanHold?.86:1;if(this.uniqueBtn.scaleX!==k){this.uniqueBtn.setScale(k);this.uniqueTxt?.setScale(k);}}
-    if(this._titanHold){const M=this.titanMaxLv();r=Math.min(M,r+dt*(1+.2*(b.lv?.p_fastrage||0)+this.ptv('trSpeed'))/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*(b.mutation==='bloodpact'?1.5:1)*(this.cocoaHasInf('sweet')?.7:1)*Math.max(.3,1-this.ptv('trCost'))*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;Sfx.bpLoopStart?.('uq_titan_charge',.26);Sfx.bpLoopRate?.(.9+.08*r);}
+    if(this._titanHold){const M=this.titanMaxLv();r=Math.min(M,r+dt*(1+.2*(b.lv?.p_fastrage||0)+this.ptv('trSpeed'))/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*(b.mutation==='bloodpact'?1.5:1)*(this.cocoaHasInf('sweet')?.7:1)*Math.max(.3,1-this.ptv('trCost'))*dt;p.hp=Math.max(1,p.hp-cost);if(!this._rageCharging)Sfx.bp?.('cocoa_rage_charge',.42,.4);this._rageCharging=true;Sfx.bpLoopStart?.('uq_titan_charge',.26);Sfx.bpLoopRate?.(.9+.08*r);}
     else{r=0;this._rageCharging=false;Sfx.bpLoopStop?.('uq_titan_charge');
       if(!this.recipeHas('noheal')&&!p._uqNoRegen&&p.hp<p.maxhp)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*(.012+.004*iron+this.ptv('trRegen'))*this.pactHealMul()*dt);}
     this._titanRage=r;const lv=Math.floor(r);if(lv>prev){if(lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_full',.65,.5);else Sfx.bp?.('cocoa_rage_level',.6,.1,0.92+0.08*lv);this.screenShake(60+lv*30,.002+lv*.0012);}
@@ -23211,7 +23213,7 @@ class Game extends Phaser.Scene {
         if(idx===Math.floor((shots-1)/2)){b.dmg*=1+.6*(basic.lv.s_slug||0)+(basic.evolved?.6:0)+(PT.slug||0);if(basic.evolved||basic.lv.s_slug)this.attachChargedSeed(b,30);}
         meta.nearBonus=basic.evolved?1.2:1;
       }else if(path==='ricochet'){
-        b.dmg*=.8*(1+(PT.rDmg||0));b.bounce+=2+(basic.lv.carom||0)+(basic.evolved?2:0)+((PT.rDmg||0)>=.119?1:0);if(PT.pinball)b.bounce=Math.max(b.bounce,12);
+        b.dmg*=.8*(1+(PT.rDmg||0));b.bounce+=2+(basic.lv.carom||0)+(basic.evolved?2:0)+((PT.rDmg||0)>=.119?1:0);if(PT.pinball){b.bounce=Math.max(b.bounce,12);if(idx===0)Sfx.bp?.('strawberry_pinball_cast',.35,.4);}
         b.bounceGain=.08*(basic.ranks.gather||0)+(PT.mom||0);b.seekMul=(1+(PT.seek||0))*(1+.2*(basic.lv.s_seek||0));b.lastMul=PT.last||0;b.splitCh=PT.split||0;b.loopT=!!PT.loop;b.boomer2=!!PT.boomer;
       }
       b.dmg*=1+.08*Math.min(10,Math.max(0,b.bounce-8));b.bounce=Math.min(8,b.bounce);meta.base=b.dmg;

@@ -17,7 +17,7 @@ console.log('Banner + spotlight 8.2.40: one-line descriptions, once per stage, l
 // v8.2.41 owner: after the mission deal, wait for the player (▶ Start or 🔄 Reroll) when a reroll is offered
 assert(src.includes("if(!rb)T(base+n*DEAL_SHOW_MS+700,finish);"),'auto-start only without reroll');
 assert(src.includes("'▶  Start the stage'"),'start button');
-assert(src.includes("if(on(go)){")&&src.includes("if(!rb&&this.time.now-t0>350)finish();"),'tap outside does not skip the choice');
+assert(src.includes("if(on(go)){")&&src.includes("if(!rb&&this.time.now-t0>(deal.preview?dealAllShown:350))finish();")&&src.includes("const dealAllShown=1100+n*90+n*DEAL_SHOW_MS;"),'tap outside does not skip the choice');
 console.log('Mission deal 8.2.41: waits for Start or Reroll passed');
 // v8.2.42 owner: Cocoa Titan lava pool drawn in code (no bpx_cocoa_lava art)
 assert(!src.includes('bpx_cocoa_lava:{')&&!src.includes("'bpx_cocoa_lava'"),'lava art removed');

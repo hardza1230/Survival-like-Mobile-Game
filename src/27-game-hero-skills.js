@@ -520,7 +520,7 @@
     const near=target&&this.dist(target.x,target.y,anchor.x,anchor.y)<=(target.body?.halfWidth||20)+70;
     if(!target||near||this.cocoaFlickerRetreat(anchor,target)){this.castCocoaRush(lvl,aw,dm,evo,basic,false,true);return;}
     this._cocoaFlickerBoss=target.isBoss||target.isMini?target:null;
-    const f=this._cocoaFlicker={player:this.player,basic,path:basic.path,anchor,range,target,epoch:this._cocoaEpoch||0,left:basic.path==='titan'?1:basic.path==='dashboxer'?3:2};f.total=f.left;
+    const f=this._cocoaFlicker={player:this.player,basic,path:basic.path,anchor,range,target,epoch:this._cocoaEpoch||0,left:basic.path==='titan'?1:basic.path==='dashboxer'?3:2};f.total=f.left; Sfx.bp?.(basic.path==='titan'?'cocoa_titan_leap':'cocoa_flicker_step',.45,.25);   /* v8.3.16 ผูกเสียงที่ค้าง: Titan กระโดด / Flicker พุ่ง */
     const strike=()=>{
       if(this._cocoaFlicker!==f)return;
       if(f.stop||!this._cocoaFlickerOn){this.finishCocoaFlicker();return;}
@@ -622,7 +622,7 @@
     let r=this._titanRage||0;const prev=Math.floor(r);
     if(this._titanHold&&(this.uniqueCd>0||this.state!=='play'))this._titanHold=null;
     if(this.uniqueBtn){const k=this._titanHold?.86:1;if(this.uniqueBtn.scaleX!==k){this.uniqueBtn.setScale(k);this.uniqueTxt?.setScale(k);}}
-    if(this._titanHold){const M=this.titanMaxLv();r=Math.min(M,r+dt*(1+.2*(b.lv?.p_fastrage||0)+this.ptv('trSpeed'))/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*(b.mutation==='bloodpact'?1.5:1)*(this.cocoaHasInf('sweet')?.7:1)*Math.max(.3,1-this.ptv('trCost'))*dt;p.hp=Math.max(1,p.hp-cost);this._rageCharging=true;Sfx.bpLoopStart?.('uq_titan_charge',.26);Sfx.bpLoopRate?.(.9+.08*r);}
+    if(this._titanHold){const M=this.titanMaxLv();r=Math.min(M,r+dt*(1+.2*(b.lv?.p_fastrage||0)+this.ptv('trSpeed'))/TITAN_RAGE_SEC);const cost=p.maxhp*.025*(1+Math.floor(r)*.5)*(1-.2*iron)*(b.mutation==='bloodpact'?1.5:1)*(this.cocoaHasInf('sweet')?.7:1)*Math.max(.3,1-this.ptv('trCost'))*dt;p.hp=Math.max(1,p.hp-cost);if(!this._rageCharging)Sfx.bp?.('cocoa_rage_charge',.42,.4);this._rageCharging=true;Sfx.bpLoopStart?.('uq_titan_charge',.26);Sfx.bpLoopRate?.(.9+.08*r);}
     else{r=0;this._rageCharging=false;Sfx.bpLoopStop?.('uq_titan_charge');
       if(!this.recipeHas('noheal')&&!p._uqNoRegen&&p.hp<p.maxhp)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*(.012+.004*iron+this.ptv('trRegen'))*this.pactHealMul()*dt);}
     this._titanRage=r;const lv=Math.floor(r);if(lv>prev){if(lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_full',.65,.5);else Sfx.bp?.('cocoa_rage_level',.6,.1,0.92+0.08*lv);this.screenShake(60+lv*30,.002+lv*.0012);}
@@ -1150,7 +1150,7 @@
         if(idx===Math.floor((shots-1)/2)){b.dmg*=1+.6*(basic.lv.s_slug||0)+(basic.evolved?.6:0)+(PT.slug||0);if(basic.evolved||basic.lv.s_slug)this.attachChargedSeed(b,30);}
         meta.nearBonus=basic.evolved?1.2:1;
       }else if(path==='ricochet'){
-        b.dmg*=.8*(1+(PT.rDmg||0));b.bounce+=2+(basic.lv.carom||0)+(basic.evolved?2:0)+((PT.rDmg||0)>=.119?1:0);if(PT.pinball)b.bounce=Math.max(b.bounce,12);
+        b.dmg*=.8*(1+(PT.rDmg||0));b.bounce+=2+(basic.lv.carom||0)+(basic.evolved?2:0)+((PT.rDmg||0)>=.119?1:0);if(PT.pinball){b.bounce=Math.max(b.bounce,12);if(idx===0)Sfx.bp?.('strawberry_pinball_cast',.35,.4);}
         b.bounceGain=.08*(basic.ranks.gather||0)+(PT.mom||0);b.seekMul=(1+(PT.seek||0))*(1+.2*(basic.lv.s_seek||0));b.lastMul=PT.last||0;b.splitCh=PT.split||0;b.loopT=!!PT.loop;b.boomer2=!!PT.boomer;
       }
       b.dmg*=1+.08*Math.min(10,Math.max(0,b.bounce-8));b.bounce=Math.min(8,b.bounce);meta.base=b.dmg;

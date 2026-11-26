@@ -12,4 +12,7 @@ for(const m of pool.matchAll(/name:'[^']*?(\d+)[^']*',target:(\d+)/g))if(m[2]!==
 const a=s.indexOf('  buildRankPerks(){'),body=s.slice(a,s.indexOf('\n  jrOn(){',a));
 assert(a>0&&!/ANCIENT_PERKS|Temple Depths|tuPanel|tuHeader|menuArtIcon|tuSparkle/.test(body),'Rank Rewards page: no Ancient section and no art panels');
 assert(/_rrBurst/.test(body)&&/padlock/.test(body)&&/edge\(/.test(body),'Rank Rewards VFX: pick burst, locked padlock/chain, border sparkle');
+// v8.3.16: C1 preview cards cannot be skipped by rapid taps; silent SFX wired
+for(const k of ['cocoa_titan_leap','cocoa_flicker_step','cocoa_rage_charge','strawberry_pinball_cast','uq_shotgun_blast','uq_yuzu_crew_hit'])assert(s.includes("Sfx.bp?.('"+k+"'")||s.includes("'cocoa_titan_leap':'cocoa_flicker_step'"),k+' has a play site');
+assert(s.includes("deal.preview?dealAllShown:350"),'preview deal waits for every card before a tap skips');
 console.log('Owner round 8.3.15: stun 2 s, Daily ×1.5, Ancient off, code-drawn Rank Rewards passed');
