@@ -22,3 +22,7 @@ Owner requested investigating fallback art and a twelve-frame loading transition
 ## Validation
 
 Tests exercise missing/placeholder files, healthy slow progress, repeated request errors, cancellation/stale callbacks, false cached-ready flags, selected-stage scope, pinned textures, transition hashes and atlas geometry. Browser checks exercise all twelve CSS frames, progress counts, retry/back, small-phone control bounds and reduced motion. Existing persistent asset caching remains unchanged. Phone listening/visual/performance review is owner-side.
+
+## Delivery
+
+v8.3.6 released on 26 November 2026, game commit `27abfaf2`. All 263 package checks and 12 browser contracts passed; shipped app 188.3 MB. [Pages deploy and visual passed](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/45757435659), [Android APK passed](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/45757435671). Live version/HTML/code and the deployed transition atlas SHA-256 verified. Owner phone review remains.
