@@ -1,7 +1,7 @@
 # สถานะงานรออาร์ต/เสียง และรอ QA มือถือ
 
 (อัปเดต 26 พ.ย. 2026 · เกม v8.3.6 · อัปเดตไฟล์นี้เมื่อผูกอาร์ต/เสียงหรือเจ้าของ QA แล้ว)
-รายการ "รอ QA" รายเวอร์ชันอยู่ที่ `docs/LAUNCH_RULES.md` (หัวข้อ รอ QA) · เคสเครื่องจริงที่ต้องตรวจซ้ำ `docs/PLAYTEST_CASES.md` หมวด J
+รายการ "รอ QA" รายเวอร์ชันอยู่ที่ `docs/QA_PENDING.md` · เคสเครื่องจริงที่ต้องตรวจซ้ำ `docs/PLAYTEST_CASES.md` หมวด J
 
 ## รออาร์ต/เสียง (ยังไม่ส่ง)
 - ไม่มีใบค้างผลิตหรือรอผูกในตารางล่าสุด (A23 ส่งครบ 264 · ผูก 222 · อีก 42 เป็นคลังสำรอง)
@@ -33,6 +33,21 @@
 
 ## รอเจ้าของตัดสินใจ
 - Expedition: Simplify แล้ว v8.2.61 · อยู่ใน Activities + จุดแดง v8.2.62 · แผนวางแผน/ทีม ดูหลัง Closed test (`docs/IDEAS.md`)
-- Seal the Seed Rift ให้สั้นลง (CLAUDE.md §5)
+- Seal the Seed Rift ให้สั้นลง (ดูหัวข้อด้านล่าง)
 - ECRS ข้อ E ถัดไป (`docs/ECRS.md`)
 - ล็อกอิน Google แบบ native: เจ้าของตั้ง OAuth client Android + ส่ง Web client ID (`docs/PLAY_CONSOLE_SETUP.md`)
+
+## ย้ายมาจาก CLAUDE.md §5 (26 พ.ย. · v8.3.11)
+- ใบ 88/89/90 + A18: ผูกแล้ว v8.2.31 · รอ QA มือถือ
+- Temple Expedition (v8.2.32): แทน Dig + Patrol · ขั้น 1–2 เสร็จ (แตะ/ด่าน/บอส/ผู้ช่วย/ออฟไลน์/Supplies) · ขั้น 3–4 (สกิล/Prestige/Relic) หลัง Closed test · อาร์ตใบ 91 v8.2.33 · เสียง A19 v8.2.34
+- Expedition Simplify (เจ้าของ 22 พ.ย. · v8.2.61): ฮีโร่ตีเอง · บอสลองใหม่เอง · ⬆ Upgrade all · Supplies เติมเอง · แผนจัดทีม/บทบาท (`docs/IDEAS.md`) หลัง Closed test
+- เสียง A20 (ม่านเข้าด่าน Ruby): ผูกแล้ว v8.2.84 · รอ QA มือถือ
+- แอนิเมชัน 8/12 เฟรม เฟส 3–6: ผูกครบ v8.2.74/75/84 · รอ QA (`docs/design/animation-frame-upgrade-plan.md`)
+- เสียง A22: ผูกแล้ว v8.2.87 · SFX 20 + Ruby 8 บทอนุมัติ · รอฟังบนมือถือ
+- ใบ 92 + 93: ผูกแล้ว v8.2.55 · ใบ 94 + 95: ผูกแล้ว v8.2.86 · รอ QA มือถือ
+- ECRS ก่อน Closed test (`docs/ECRS.md`): รอบ 1 v8.2.52 (Kitchen ซ่อน · Forge 5→3 สกุล) · รอบ 2 v8.2.54 (Inbox/Miners/Daily chest Expedition เลิก · Play Stats/Ranking ซ่อน · กล่อง Gear จ่าย Sugar · Ch1 ไม่มี Run trait/Mimic) · v8.2.59 เงินจริง → 🍭 Lollipops · รอบขนาดแอป v8.3.8 (188.3 → 175.7 MB) · C/R หลัง test
+- **Seal the Seed Rift สั้นลง (รออนุมัติ):** เสนอเป้า 8→6 · ตัวขนเมล็ดทุก 2.1→1.4 วิ ระยะ 560→420 · เวฟ 100→75 วิ
+- ความถี่แท่นเริ่มภารกิจ: ดูหลังเล่นจริง · Overcharge ลบแล้ว (8.2.36 + 8.2.52)
+- Kitchen: ซ่อน v8.2.52 · หลัง Closed test ตัดสิน Cookbook หรือลบ (`docs/IDEAS.md`)
+- ยกเลิกแล้ว: ใบ 35 Yuzu Orchard (→ Citrus Companions 55/56) · ใบ 49 กรอบโปรไฟล์
+- Chapter 1 Continuous Combat (v8.3.4 · เวฟสั้นลง + การ์ดบอกด่าน v8.3.10): การเล่น Story C1 ใช้ Combat Director · ภารกิจแทรกเฉพาะที่เคยเจอ · บทสอน/Replay ใช้กติกาเดิม

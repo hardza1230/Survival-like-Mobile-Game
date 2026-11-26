@@ -103,7 +103,7 @@ Boot GPU is full (~300 MB). New art must be lazy (`artClass` decides):
 
 ## 6. Test
 
-Add `tests/<batch>-art.test.cjs` and append it to `npm run check` in package.json. Copy the
+Add `tests/<batch>-art.test.cjs` and append it to the `"check:tests"` chain in package.json (`npm run check` runs that chain quietly). Copy the
 pattern of `tests/winter-art.test.cjs` / `tests/ruby-comic.test.cjs`:
 - MANIFEST sha/bytes of sources + packed files exist (WebP RIFF header).
 - Keys/URLs present in game.js, loading class is stage/menu (not boot).

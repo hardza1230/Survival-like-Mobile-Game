@@ -47,7 +47,7 @@ It bumps `GAME_VERSION` (patch +1), adds the CHANGELOG entry (English, 1–4 ite
 names), updates the CLAUDE.md version + one-line "Latest delivery" line, puts the new Latest
 block in `docs/DELIVERIES.md`, renames the old one to Previous and moves the oldest block to
 `docs/CLAUDE_HISTORY.md`, and adds the
-"รอ QA" line to `docs/LAUNCH_RULES.md`. Minor/major bumps: edit by hand.
+"รอ QA" line to `docs/QA_PENDING.md`. Minor/major bumps: edit by hand.
 - If the release changes "สถานะปัจจุบัน"/"ถัดไป" facts, update those sections too.
 
 ## 3. Checks (must all pass before committing)

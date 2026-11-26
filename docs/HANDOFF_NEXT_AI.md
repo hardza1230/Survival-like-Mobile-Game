@@ -1,6 +1,6 @@
 # Current handoff — v8.2.53 · checked 2026-11-22
 
-Read in this order: `CLAUDE.md` (rules, locked decisions, §5 next) → `docs/GAME_PILLARS.md` → `docs/LAUNCH_RULES.md` (rules + "รอ QA" list) → `docs/LESSONS.md` → `docs/STATUS.md` (art/audio/QA) → `docs/ECRS.md` (cut plan). Overview: `docs/PROJECT_SUMMARY_TH.md`.
+Read in this order: `CLAUDE.md` (rules, locked decisions) → `docs/GAME_PILLARS.md` → `docs/LAUNCH_RULES.md` (rules) · "รอ QA" list: `docs/QA_PENDING.md` (read only when needed) → `docs/LESSONS.md` → `docs/STATUS.md` (art/audio/QA) → `docs/ECRS.md` (cut plan). Overview: `docs/PROJECT_SUMMARY_TH.md`.
 
 - **Goal:** Google Play Closed test on 13 Dec 2026 (package `com.oheart.mochimayhem`, `ADS_TEST=true`, `BETA_BUILD=true`). Every round: propose a plan, get owner approval, then code. Owner tests on the phone; headless runs only for bugs.
 - **Scope now = cut and polish, not add (ECRS).** Round 1 shipped v8.2.52: Kitchen hidden (`KITCHEN_ON=false`), Forge currencies 5→3 (Berry Jam/Honey Drop → Twist Cream, save ×2 `_cur8252`). The next E items wait for the owner in `docs/ECRS.md`.

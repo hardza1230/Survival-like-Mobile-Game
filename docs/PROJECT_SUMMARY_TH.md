@@ -24,7 +24,7 @@
 
 ## งานถัดไป (22 พ.ย.)
 
-1. เจ้าของ QA มือถือตามรายการ "รอ QA" (`LAUNCH_RULES.md`) และเคสหมวด J ใน `PLAYTEST_CASES.md`
+1. เจ้าของ QA มือถือตามรายการ "รอ QA" (`QA_PENDING.md`) และเคสหมวด J ใน `PLAYTEST_CASES.md`
 2. ECRS ก่อน Closed test (`ECRS.md`): รอบ 1 ทำแล้ว v8.2.52 · รอเลือกข้อ E ถัดไป
 3. รอตัดสินใจ: Expedition แบบ idle เน้นวางแผน (`IDEAS.md`) · Seed Rift สั้นลง (CLAUDE.md §5)
 4. รออาร์ต/เสียง: ใบ 92 · ใบ 93 · A20 (`STATUS.md` · `PENDING_ART_AUDIO_ORDERS.md`)

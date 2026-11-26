@@ -3,7 +3,7 @@
 // Usage: node scripts/bump-version.mjs "<changelog title>" "<item 1>|<item 2>" "<Thai QA line>" < delivery-block.md
 //   stdin = the new CLAUDE.md "# Latest delivery: …" block (markdown, starts with "# Latest delivery").
 // Does: GAME_VERSION patch+1 · CHANGELOG entry (today) · CLAUDE.md version + Latest line · docs/DELIVERIES.md new Latest block,
-//       old Latest → Previous, old Previous → docs/CLAUDE_HISTORY.md · "รอ QA" line in docs/LAUNCH_RULES.md
+//       old Latest → Previous, old Previous → docs/CLAUDE_HISTORY.md · "รอ QA" line in docs/QA_PENDING.md
 import fs from 'node:fs';
 const [title, items, qa] = process.argv.slice(2);
 if (!title || !items) { console.error('usage: bump-version.mjs "<title>" "<a|b>" "<qa line>" < block.md'); process.exit(1); }
@@ -44,6 +44,6 @@ d = d.replace('# Latest delivery', '# Previous delivery');
 d = d.replace('# Previous delivery', nb + '\n\n# Previous delivery');
 fs.writeFileSync('docs/DELIVERIES.md', d);
 fs.appendFileSync('docs/CLAUDE_HISTORY.md', '\n' + oldPrev.replace('# Previous delivery', '# Delivery'));
-if (qa) { const p = 'docs/LAUNCH_RULES.md', h = '## รอ QA (AI เพิ่ม · เจ้าของเทสแล้วลบ)\n'; let l = fs.readFileSync(p, 'utf8');
+if (qa) { const p = 'docs/QA_PENDING.md', h = '## รอ QA (AI เพิ่ม · เจ้าของเทสแล้วลบ)\n'; let l = fs.readFileSync(p, 'utf8');
   if (l.includes(h)) { l = l.replace(h, h + `- v${next} ${qa}\n`); fs.writeFileSync(p, l); } }
 console.log(`bumped to v${next}`);
