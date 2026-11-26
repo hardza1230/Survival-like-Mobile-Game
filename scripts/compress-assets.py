@@ -1,7 +1,7 @@
 """Recompress shipped assets in place (packing standard v8.1.139 · docs: .claude/skills/wire-art/SKILL.md "Packing standard").
 Only files referenced by game.js as 'assets/...'. Keeps a new file only if it is >=10% smaller. Sources stay in git history and assets/incoming/.
 WebP: quality 80 (75 for files > 150 KB), alpha 85. PNG/JPG untouched (renaming would change keys).
-MP3: music/story 80k stereo 44.1 kHz · voice/acting mono 56k · other SFX 96k. WAV untouched.
+MP3 (v8.3.8 ECRS): music/story 64k (channels kept) 44.1 kHz · voice/acting mono 48k · other SFX mono 64k. WAV untouched.
 Usage: python3 scripts/compress-assets.py [--dry] [--jobs 3] [--only list.txt]
 After writing, refresh the ledger: python3 scripts/compress-assets.py --ledger (records original sha/bytes of every changed file vs git HEAD into assets/RECOMPRESSED.json; tests/_packed.cjs uses it)"""
 import os,re,io,sys,subprocess,tempfile
@@ -25,9 +25,9 @@ def webp(f):
     return f,a,a
 def mp3(f):
     a=os.path.getsize(f); low=f.lower()
-    if any(k in low for k in ('/acting/','/voices/','vo_')): args=['-ac','1','-ar','44100','-b:a','56k']
-    elif any(k in low for k in ('/bgm/','/story_music/','bgm_')): args=['-ar','44100','-b:a','80k']
-    else: args=['-ar','44100','-b:a','96k']
+    if any(k in low for k in ('/acting/','/voices/','vo_')): args=['-ac','1','-ar','44100','-b:a','48k']
+    elif any(k in low for k in ('/bgm/','/story_music/','bgm_')): args=['-ar','44100','-b:a','64k']
+    else: args=['-ac','1','-ar','44100','-b:a','64k']
     fd,o=tempfile.mkstemp(suffix='.mp3'); os.close(fd)
     try:
         r=subprocess.run(['ffmpeg','-nostdin','-v','error','-y','-i',f,'-map_metadata','-1']+args+[o])

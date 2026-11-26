@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.7';
+const GAME_VERSION = '8.3.8';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -104,6 +104,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.3.8',date:'2026-11-26',title:'ECRS app size: 188.3 → 175.7 MB',items:['Audio re-encoded: music 64k, voice 48k mono, SFX 64k mono (−11.7 MB)','17 unused art keys removed (−0.5 MB)','Store-like test APK release']},
   {v:'8.3.7',date:'2026-11-26',title:'Portrait layout and visible Chapter 1 waves',items:['Wide windows keep the same portrait layout as your phone.','Chapter 1 enemy packs arrive in view so you can see them coming and find a way around them.']},
   {v:'8.3.6',date:'2026-11-26',title:'Artwork ready before battle',items:['Battle waits for the selected hero and stage artwork before starting.','A new animated honey and jam portal accompanies stage loading.','Interrupted artwork downloads offer Try again or Back instead of starting with placeholder images.']},
   {v:'8.3.5',date:'2026-11-26',title:'A livelier battlefield',items:['Enemy formations and surprise events have their own sound cues.','Quiet stage ambience and new character reactions bring battles to life.','Monster sounds vary by family and stay restrained during crowded fights.']},
@@ -2291,7 +2292,6 @@ const ASSET_IMAGES = {
   ic_card_b_wide:'assets/art/build_cards/b_wide.webp',
   ic_card_b_recoil:'assets/art/build_cards/b_recoil.webp',
   ic_card_b_double:'assets/art/build_cards/b_double.webp',
-  ic_card_buckshot:'assets/art/build_cards/buckshot.webp',
   ic_card_m_grow:'assets/art/build_cards/m_grow.webp',
   ic_card_m_hold:'assets/art/build_cards/m_hold.webp',
   ic_card_m_shard:'assets/art/build_cards/m_shard.webp',
@@ -2528,14 +2528,8 @@ const ASSET_IMAGES = {
   bg8:'assets/bg8.webp',
   bg9:'assets/bg9.webp',
   bg10:'assets/bg10.webp',
-  currency_spark_sugar:'assets/ui/currency/spark-sugar.webp',
   currency_twist_cream:'assets/ui/currency/twist-cream.webp',
-  currency_crown_icing:'assets/ui/currency/crown-icing.webp',
-  currency_wild_jam:'assets/ui/currency/wild-jam.webp',
   currency_wish_candy:'assets/ui/currency/wish-candy.webp',
-  currency_crystal_glaze:'assets/ui/currency/crystal-glaze.webp',
-  currency_fading_gumdrop:'assets/ui/currency/fading-gumdrop.webp',
-  currency_plain_dough:'assets/ui/currency/plain-dough.webp',
   heal:'assets/items/heal_mochi_heart.webp',
   gift:'assets/items/gear_gift.webp',
   prize_sugar:'assets/icons/icon_sugar.webp',
@@ -2617,11 +2611,7 @@ const ASSET_IMAGES = {
   mui_stat_icon_regen:'assets/art/mobile_ui_789/stat_icon_regen.webp',
   mui_stat_icon_speed:'assets/art/mobile_ui_789/stat_icon_speed.webp',
   mui_stat_icon_info:'assets/art/mobile_ui_789/stat_icon_info.webp',
-  mui_gear_card_upgrade:'assets/art/mobile_ui_789/gear_card_upgrade.webp',
   mui_gear_card_gear:'assets/art/mobile_ui_789/gear_card_gear.webp',
-  mui_gear_card_craft:'assets/art/mobile_ui_789/gear_card_craft.webp',
-  mui_gear_card_bazaar:'assets/art/mobile_ui_789/gear_card_bazaar.webp',
-  mui_gear_card_gearInbox:'assets/art/mobile_ui_789/gear_card_gearInbox.webp',
   screen_gear_power_789:'assets/art/mobile_ui_789/gear_background.webp',
   hr_ui_back:'assets/art/hero_roster_ui/ui_back.webp',
   hr_ui_currency:'assets/art/hero_roster_ui/ui_currency.webp',
@@ -3165,10 +3155,9 @@ const ASSET_IMAGES = {
   // ไอคอนอัปเกรดเฉพาะตัว: Mint / Taro / Sesame
   ic_mint_power:'assets/icons/levelup/mint_power.webp', ic_mint_rate:'assets/icons/levelup/mint_rate.webp',
   ic_mint_chill:'assets/icons/levelup/mint_chill.webp', ic_mint_linger:'assets/icons/levelup/mint_linger.webp',
-  ic_taro_spark:'assets/icons/levelup/taro_arc.webp',
   fx_taro_sentry:'assets/art/taro_swarm/sentry.webp',
   ic_path_tempest_sentry:'assets/art/build_paths/taro_sentry_path.webp',ic_taro_reserve_cell:'assets/art/build_paths/taro_reserve_cell.webp',ic_taro_wide_conductor:'assets/art/build_paths/taro_wide_conductor.webp',
-  ic_taro_rapid_pulse:'assets/art/build_paths/taro_rapid_pulse.webp',ic_path_smite_spark:'assets/art/build_paths/taro_spark_path.webp',ic_taro_storm_mark:'assets/art/build_paths/taro_storm_mark.webp',ic_taro_plasma_field:'assets/art/build_paths/taro_plasma_field.webp',ic_taro_overcharge:'assets/art/build_paths/taro_overcharge.webp',ic_taro_arc_overload:'assets/art/build_paths/taro_arc_overload.webp',ic_taro_live_current:'assets/art/build_paths/taro_live_current.webp',ic_taro_fast_sparks:'assets/art/build_paths/taro_fast_sparks.webp',ic_taro_split_spark:'assets/art/build_paths/taro_split_spark.webp',ic_taro_piercing_current:'assets/art/build_paths/taro_piercing_current.webp',ic_taro_long_current:'assets/art/build_paths/taro_long_current.webp',ic_taro_storm_beacon:'assets/art/build_paths/taro_storm_beacon.webp',
+  ic_path_smite_spark:'assets/art/build_paths/taro_spark_path.webp',ic_taro_storm_mark:'assets/art/build_paths/taro_storm_mark.webp',ic_taro_plasma_field:'assets/art/build_paths/taro_plasma_field.webp',ic_taro_overcharge:'assets/art/build_paths/taro_overcharge.webp',ic_taro_arc_overload:'assets/art/build_paths/taro_arc_overload.webp',ic_taro_live_current:'assets/art/build_paths/taro_live_current.webp',ic_taro_fast_sparks:'assets/art/build_paths/taro_fast_sparks.webp',ic_taro_split_spark:'assets/art/build_paths/taro_split_spark.webp',ic_taro_piercing_current:'assets/art/build_paths/taro_piercing_current.webp',ic_taro_long_current:'assets/art/build_paths/taro_long_current.webp',
   fx_taro_dash_bomb:'assets/art/taro_t6/dash_bomb.webp',
   ic_taro_power:'assets/icons/levelup/taro_power.webp', ic_taro_rate:'assets/icons/levelup/taro_rate.webp',
   ic_taro_arc:'assets/icons/levelup/taro_arc.webp', ic_taro_surge:'assets/icons/levelup/taro_surge.webp',
@@ -3403,8 +3392,6 @@ const ASSET_SHEETS = {
   yz_bloodorange:{url:'assets/art/yuzu_companions/yz_bloodorange.webp',frame:256},
   minion_yuzling:{url:'assets/characters/yuzling_sheet.webp',frame:128,anim:{frames:4,rate:7}},
   minion_cheese:{url:'assets/characters/cheese_sheet.webp',frame:128,anim:{frames:4,rate:6}},
-  minion_yuzling_attack:{url:'assets/characters/yuzling_attack_sheet.webp',frame:128},
-  minion_cheese_attack:{url:'assets/characters/cheese_attack_sheet.webp',frame:128},
   // คง key char_momo เพื่อให้เซฟเก่าใช้ต่อได้ แต่เปลี่ยนภาพเป็น Strawberry Fighter
   char_momo:  { url:'assets/char_momo_fighter_sheet.webp', frame:128 },
   char_momo_idle:{ url:'assets/characters/momo_v2/momo_idle_8f.webp', frame:128 },
@@ -4111,7 +4098,6 @@ const ASSET_FX = {
   bpx_taro_orb_launch:{url:'assets/art/hero-motion-phase3/bpx_taro_orb_launch.webp',fw:128,fh:128,frames:8,rate:40,anchor:'center'},
   bpx_taro_orb_burst:{url:'assets/art/taro_sentry/vfx_taro_orb_burst.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center'},
   bpx_taro_beacon_strike:{url:'assets/art/taro_sentry/vfx_taro_beacon_strike.webp',fw:128,fh:256,frames:8,rate:18,anchor:'bottom'},
-  bpx_taro_beacon_ring:{url:'assets/art/taro_sentry/vfx_taro_beacon_ring.webp',fw:256,fh:256,frames:6,rate:16,anchor:'center'},
   bpx_taro_overcharge:{url:'assets/art/taro-motion3c/bpx_taro_overcharge.webp',fw:128,fh:128,frames:8,rate:20,anchor:'center',loop:true},
   bpx_taro_tesla:{url:'assets/art/taro_sentry/vfx_taro_tesla_link.webp',fw:512,fh:64,frames:4,rate:14,anchor:'left',loop:true},
   bpx_cocoa810_shadowfist:{url:'assets/art/hero-motion-phase3/bpx_cocoa810_shadowfist.webp',fw:256,fh:256,frames:8,rate:24,anchor:'center',loop:true},

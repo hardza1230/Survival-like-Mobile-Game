@@ -56,9 +56,9 @@ The pack step decides the shipped size, so every pack script follows these numbe
 | Still / sheet / UI WebP | lossy `quality=80` (`75` if the output is still > 150 KB), `alpha_quality=85`, `method=6`. Lossless only for tiny pixel-exact UI (< 20 KB). |
 | Resolution | at most **2× the real on-screen size** from the order's "แสดงจริง" column at 360×780 (e.g. shown 110 px → 220 px wide). Frame sheets: per frame. |
 | Black-bg VFX | luminance alpha as before, then the same WebP quality rule. |
-| Music / story music | MP3 80 kbps stereo 44.1 kHz. |
-| Voice / acting | MP3 56 kbps **mono**. |
-| SFX | MP3 96 kbps (mono if the source is mono). |
+| Music / story music | MP3 64 kbps 44.1 kHz (v8.3.8 ECRS; channels kept). |
+| Voice / acting | MP3 48 kbps **mono**. |
+| SFX | MP3 64 kbps **mono**. |
 | New PNG/JPG in the game | avoid — pack to WebP. |
 
 - Print the shipped total of the batch and the decoded size; keep one batch ≲ 2–3 MB WebP unless the order says otherwise.

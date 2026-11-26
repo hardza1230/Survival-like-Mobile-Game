@@ -10,7 +10,8 @@ for(const r of M){
  if(r.kind==='voice'){assert.equal(p.parameters.text,r.text);assert.equal(p.voice_id,r.voice_id);assert(!r.text.includes("'"),'English dialogue uses curly apostrophes');}
  assert(r.peakDbtp<=-1,r.key);
 }
-for(const r of R){const b=fs.readFileSync(path.join(root,'assets/audio/a23',r.file));assert.equal(b.length,r.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),r.sha256);assert(src.includes(r.url));assert(r.peakDbtp<=-1);}
+const PK=require('./_packed.cjs');   /* v8.3.8 runtime MP3s recompressed in place (assets/RECOMPRESSED.json) */
+for(const r of R){const rp='assets/audio/a23/'+r.file,b=fs.readFileSync(path.join(root,rp));assert.equal(PK.bytes(rp,b),r.bytes);assert.equal(PK.sha(rp,b),r.sha256);assert(src.includes(r.url));assert(r.peakDbtp<=-1);}
 const voices=vm.runInNewContext(src.match(/const A23_VOICES=[^\n]+/)[0]+';A23_VOICES',{});
 assert.equal(Object.keys(voices).length,48);for(const r of M.filter(r=>r.kind==='voice'))assert.equal(voices[r.key].text,r.text);
 const a=src.indexOf('\n  a23(family,'),z=src.indexOf('\n  playFile(',a),played=[],cache=new Set(['sfx_a23_monster_ice_attack_1','sfx_a23_monster_ice_attack_2']);
