@@ -1,0 +1,70 @@
+{
+  "pass": true,
+  "size": [
+    1448,
+    1086
+  ],
+  "frames": [
+    {
+      "frame": 0,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 1,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 2,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 3,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 4,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 5,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 6,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 7,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 8,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 9,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 10,
+      "nonempty": true,
+      "clear_edges": true
+    },
+    {
+      "frame": 11,
+      "nonempty": true,
+      "clear_edges": true
+    }
+  ],
+  "format": "RGBA PNG, opaque background"
+}

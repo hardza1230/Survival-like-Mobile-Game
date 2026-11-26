@@ -1,0 +1,21 @@
+{
+  "key": "loading_transition836",
+  "file": "loading_transition836.png",
+  "bytes": 1897114,
+  "sha256": "24d3d26701a2b6ac718d39514148da130ef9bfd640f77f62d25926a5a594135c",
+  "width": 1448,
+  "height": 1086,
+  "frameWidth": 362,
+  "frameHeight": 362,
+  "frameCount": 12,
+  "columns": 4,
+  "rows": 3,
+  "loop": true,
+  "background": "opaque plum",
+  "runtime": {
+    "path": "assets/art/entry/transition836.webp",
+    "file": "transition836.webp",
+    "bytes": 103918,
+    "sha256": "192e478e273a1f73c4fb9a3c33b4bc5a6e7260a9b63d242bdcfd1ac609f089fc"
+  }
+}

@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.5';
+const GAME_VERSION = '8.3.6';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -104,6 +104,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.3.6',date:'2026-11-26',title:'Artwork ready before battle',items:['Battle waits for the selected hero and stage artwork before starting.','A new animated honey and jam portal accompanies stage loading.','Interrupted artwork downloads offer Try again or Back instead of starting with placeholder images.']},
   {v:'8.3.5',date:'2026-11-26',title:'A livelier battlefield',items:['Enemy formations and surprise events have their own sound cues.','Quiet stage ambience and new character reactions bring battles to life.','Monster sounds vary by family and stay restrained during crowded fights.']},
   {v:'8.3.4',date:'2026-11-25',title:'Chapter 1 Continuous Combat',items:['Fight continuously through all five Chapter 1 stages on your first clear','Meet ten enemy formations as each fight builds toward its bosses','Side events begin automatically and reward Sugar on success']},
   {v:'8.2.87',date:'2026-11-24',title:'Boss twists find their voice',items:['Boss twists, Crown Roots and Seed Rifts now have distinct sound cues','Ruby warns about boss tricks and reacts to perfect dodges']},
@@ -3223,7 +3224,7 @@ const PASS_ICON  = { heart:'ic_mochi_vitality', magnet:'ic_magnet', power:'ic_po
 function registerEnemyActionAnimations(scene,keys=Object.keys(ASSET_SHEETS)){
   for(const key of keys){const sh=ASSET_SHEETS[key];if(!sh||!sh.actions)continue;
     for(const [state,a] of Object.entries(sh.actions)){const tex=a.texture||key,id=key+'_'+state;
-      if(!scene.textures.exists(tex)||scene.anims.exists(id))continue;
+      if(!scene.textures.exists(tex)||(scene.realTex&&!scene.realTex(tex))||scene.anims.exists(id))continue;
       const frames=Array.isArray(a.frames)?a.frames.map(frame=>({key:tex,frame})):scene.anims.generateFrameNumbers(tex,{start:a.start||0,end:(a.start||0)+(a.frames||1)-1});
       scene.anims.create({key:id,frames,frameRate:a.rate||8,repeat:a.repeat??(['idle','walk'].includes(state)?-1:0),yoyo:!!a.yoyo});
     }
@@ -5293,7 +5294,7 @@ const LoadMeter={ total:0, done:0, dev:0, seen:new Set(), t0:0, hist:[],
   const TIPS=['Dash makes you briefly invincible — dash through enemy attacks.','Red circles on the ground explode — step out fast.','Pick cards that boost your main attack early.','Elites drop more EXP and loot — hunt them down.','Grab hearts when HP is low; magnets pull in every EXP orb.','Your Unique skill charges over time — save it for bosses.','Higher difficulty gives better rewards.','Spend Sugar in the Temple to grow stronger between runs.','Keep moving — standing still lets the swarm surround you.','Watch the mission text above your hero to know what to do.'];
   let i=Math.floor(Math.random()*TIPS.length); const put=()=>{ const el=document.getElementById('load-status'); if(el)el.textContent='💡 '+TIPS[i]; };
   if(L._tipT){clearInterval(L._tipT);L._tipT=null;} put(); setInterval(()=>{ i=(i+1)%TIPS.length; put(); },4000);
-  L.set=function(progress){ const p=Math.max(0,Math.min(1,Number(progress)||0)),f=document.getElementById('load-fill'),pc=document.getElementById('load-percent'); if(f)f.style.width=Math.round(p*100)+'%'; if(pc){ const n=LoadMeter.count||0,D=window.__dlPhase,net=LoadMeter.done-LoadMeter.dev; pc.textContent=D?'⬇️ Downloading '+Math.round(p*100)+'%  ('+D.n+' / '+D.N+')':(n&&LoadMeter.seen.size?(LoadMeter.dev>=net?'📦 Preparing ':'⬇️ Loading ')+Math.round(p*100)+'%  ('+Math.min(n,LoadMeter.seen.size)+' / '+n+')':Math.round(p*100)+'%'); } put(); };   /* v7.9.91 เจ้าของ: แยก Downloading (เน็ต) กับ Preparing (ไฟล์ในเครื่อง) */   /* v6.96.1 file count (xx / yy) */
+  L.set=function(progress,label){ const p=Math.max(0,Math.min(1,Number(progress)||0)),f=document.getElementById('load-fill'),pc=document.getElementById('load-percent'); if(f)f.style.width=Math.round(p*100)+'%'; if(pc&&L._stageActive)pc.textContent=Math.round(p*100)+'%';else if(pc){ const n=LoadMeter.count||0,D=window.__dlPhase,net=LoadMeter.done-LoadMeter.dev; pc.textContent=D?'⬇️ Downloading '+Math.round(p*100)+'%  ('+D.n+' / '+D.N+')':(n&&LoadMeter.seen.size?(LoadMeter.dev>=net?'📦 Preparing ':'⬇️ Loading ')+Math.round(p*100)+'%  ('+Math.min(n,LoadMeter.seen.size)+' / '+n+')':Math.round(p*100)+'%'); } if(L._stageActive&&label){const phase=document.getElementById('load-phase');if(phase)phase.textContent=label;}put(); };   /* v7.9.91 เจ้าของ: แยก Downloading (เน็ต) กับ Preparing (ไฟล์ในเครื่อง) */   /* v6.96.1 file count (xx / yy) */
 })();
 function fileFromDevice(f){ try{ const x=f&&f.xhrLoader; return !!(x&&x.getResponseHeader&&x.getResponseHeader('x-mochi-cache')==='hit'); }catch(e){ return false; } }
 function verUrl(u){ const v=ASSET_FILE_VERSIONS&&ASSET_FILE_VERSIONS[u];return v?(u+'?v='+v):(ASSET_VER?(u+'?v='+ASSET_VER):u); }
@@ -7995,7 +7996,7 @@ function bannerLine(sub){ const t=String(sub||'').replace(/\s*\([^)]*\)/g,'').re
 /* v8.2.43 เจ้าของ: มอนที่ Herald บัฟธรรมดาไป → สุ่ม Hunger Mutation 1 อย่าง (ไอคอนเหนือหัว) · Ch1 = 3 แบบอ่านง่าย · Ch2+ ครบ 6 · ฆ่าตัวที่มี mutation = Sugar เพิ่ม */
 const HH_MUT={shell:{em:'🛡️',name:'Candy Shell',c:0x9fe4ff},frenzy:{em:'💨',name:'Frenzy',c:0xff8a5c},bloat:{em:'💥',name:'Bloat',c:0xff5a5a},split:{em:'👯',name:'Split',c:0xffd166},orbs:{em:'🔮',name:'Hex Orbs',c:0xc28bff},leech:{em:'🔗',name:'Leech',c:0x6dffb4}};
 const HH_MUT_CH1=['shell','bloat','split'],HH_MUT_ALL=['shell','frenzy','bloat','split','orbs','leech'],HH_SHELL=3,HH_FRENZY_CD=3,HH_ORB_CD=3.5,HH_BLOAT_R=95,HH_BLOAT_T=800,HH_LEECH_R=170,HH_LEECH_HEAL=.08,HH_MUT_ICONS=12;
-const RUN_WAIT_MAX=45000;   // v8.2.39 เข้าด่าน: รอโหลดแต่ละขั้นได้นานสุด 45 วิ (ensureGroup เองตัดที่ 20 วิ/กลุ่ม)
+const RUN_WAIT_MAX=45000;   // v8.2.39 เข้าด่าน: ค้างโดยไม่มีความคืบหน้า 45 วิ → ลองใหม่/กลับเมนู (ไม่บังคับเริ่มด้วยภาพสำรอง)
 const FLAT_EFF={momo:1.0,mint:0.4,cocoa:0.6,taro:1.0,sesame:1.5,yuzu:0.5,berry:1.0}, FLAT_EFF_PATH={sniper:2.5,shotgun:0.6,ricochet:0.8};
 // v6.41 (เจ้าของ: อาวุธแรงจนการต่อสู้ไม่มีความหมาย) เดิม 1.03/lv ถึง 60 แล้ว 1.015 → iLv89 = ×8.8 · ใหม่ iLv60 ×4.3 · iLv89 ×5.0 · iLv100 ×5.2
 function itemPowerMul(ilvl){ const l=Math.max(1,Math.min(100,Number(ilvl)||1)); return l<=60?Math.pow(1.025,l-1):Math.pow(1.025,59)*Math.pow(1.005,l-60); }
@@ -10445,7 +10446,7 @@ class Game extends Phaser.Scene {
   // v6.49.6: เติมไฟล์ที่ยังไม่อยู่ใน cache ของ Service Worker (ครั้งแรกบางไฟล์โหลดก่อน SW ทำงาน → เปิดครั้งต่อไปต้องดาวน์โหลดซ้ำ)
   fillAssetCache(){ /* On-demand cache only; no background whole-game sweep. */ }
   // v6.91 ปล่อย texture ของด่านอื่น (เดิมโหลดทั้งเกม ~940MB เข้า GPU → มือถือจอขาว) · ไฟล์ยังอยู่ใน cache เครื่อง โหลดกลับเร็วตอนเข้าด่านนั้น
-  freeOtherStageArt(idx){ try{ const keep=new Set(this.stageArtKeys(idx)),drop=new Set();
+  freeOtherStageArt(idx){ try{ const keep=new Set(this.stageRequiredKeys?.(idx)||this.stageArtKeys(idx)),drop=new Set();
       for(let j=0;j<(STAGES||[]).length;j++){ if(j===idx)continue; for(const k of this.stageArtKeys(j))if(!keep.has(k)&&!bootKeep(k))drop.add(k); }
       if(!drop.size)return; const am=this.anims; const all=am.anims?am.anims.getArray():[];
       this.texDetach(drop); for(const a of all){ if((a.frames||[]).some(f=>drop.has(f.textureKey)))am.remove(a.key); }
@@ -10467,6 +10468,7 @@ class Game extends Phaser.Scene {
   /* v8.1.116 เจ้าของ: จบ C1-1 กด Lobby แล้วค้าง → ลบภาพสำรอง (placeholder) ที่ยังแสดงอยู่ทำให้ WebGL 'glTexture of null' แล้วลูปเกมตาย · ก่อนลบ ย้ายทุกอ็อบเจกต์ที่ใช้ภาพนั้นไปภาพว่าง แล้วคืนภาพจริงเมื่อโหลดเสร็จ */
   texSafeRemove(k){ if(!this.textures?.exists?.(k))return; const hold=[],seen=new Set(),fix=o=>{ if(!o||seen.has(o))return; seen.add(o); if(o.texture&&o.texture.key===k&&o.setTexture){ hold.push([o,o.frame?o.frame.name:null]); try{ o.anims?.stop?.(); o.setTexture('__DEFAULT'); }catch(e){} } if(Array.isArray(o.list))o.list.forEach(fix); };
     try{ for(const sc of this.game?.scene?.getScenes?.(false)||[this])(sc?.children?.list||[]).forEach(fix); for(const key in this){ const g=this[key]; if(g&&g.children&&g.children.entries&&typeof g.getChildren==='function')g.getChildren().forEach(fix); } }catch(e){}
+    const animationList=this.anims?.anims?.getArray?.()||[];for(const a of animationList)if(a.key===k||(a.frames||[]).some(f=>f.textureKey===k))this.anims.remove(a.key);
     this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); });
     if(!hold.length)return; const H=this._texHold||(this._texHold={}); (H[k]||(H[k]=[])).push(...hold);
     if(!this._texHoldOn){ this._texHoldOn=true; this.textures.on?.('addtexture',key=>{ const L=this._texHold&&this._texHold[key]; if(!L)return; delete this._texHold[key]; const T=this.textures.get(key); for(const [o,f] of L){ try{ if(o.scene&&o.texture&&o.texture.key==='__DEFAULT')o.setTexture(key,f!=null&&T.has(f)?f:undefined); }catch(e){} } }); } }
@@ -10480,7 +10482,7 @@ class Game extends Phaser.Scene {
   // ภาพ lazy ทีละใบในหน้าเมนู: มีแล้ว = true · ยังไม่มี = สั่งโหลด แล้ววาดหน้านี้ใหม่เมื่อเสร็จ
   // pred(k,cls) เลือกผู้สมัคร · budgetMB=null คืนทุกตัวที่ตรง · ตัวที่แสดงอยู่บนจอไม่ถูกคืนเด็ดขาด
   texEvict(pred,budgetMB){ try{ const used=this.texInUse(),T=this._texT||{},cand=[];
-      const _now=Date.now(),_A=this._texAddT||{}; for(const k in this.textures.list){ if(k[0]==='_'||used.has(k)||!this.realTex(k)||_now-(_A[k]||0)<20000)continue;   /* v8.1.122 ภาพที่เพิ่งโหลดไม่ถึง 20 วิห้ามคืน (เดิมโหลด→คืน→โหลดวน) */ if((this._forceCoachTutorial||this._inTutorial)&&/^(?:vfx_)?tut_/.test(k))continue; if(k.startsWith('cos_')&&this.cosWornKeys?.().includes(k))continue; const c=artClass(k); if(c&&pred(k,c))cand.push(k); }   // v8.1.58 ไม่คืนภาพของแต่งที่สวมอยู่ (เดิมโดนคืนตอนเข้าด่าน → ในด่านเป็นภาพแทน) · v7.9.68 ใบ 38 ไม่คืนภาพบทสอนระหว่างบทสอน
+      const _now=Date.now(),_A=this._texAddT||{}; for(const k in this.textures.list){ if(k[0]==='_'||used.has(k)||(this._stagePinned?.has(k)&&(this._enteringStageArt||this.state==='loading'||this.state==='play'))||!this.realTex(k)||_now-(_A[k]||0)<20000)continue;   /* v8.1.122 ภาพที่เพิ่งโหลดไม่ถึง 20 วิห้ามคืน (เดิมโหลด→คืน→โหลดวน) */ if((this._forceCoachTutorial||this._inTutorial)&&/^(?:vfx_)?tut_/.test(k))continue; if(k.startsWith('cos_')&&this.cosWornKeys?.().includes(k))continue; const c=artClass(k); if(c&&pred(k,c))cand.push(k); }   // v8.1.58 ไม่คืนภาพของแต่งที่สวมอยู่ (เดิมโดนคืนตอนเข้าด่าน → ในด่านเป็นภาพแทน) · v7.9.68 ใบ 38 ไม่คืนภาพบทสอนระหว่างบทสอน
       if(!cand.length)return 0; cand.sort((a,b)=>(T[a]||0)-(T[b]||0));
       let mb=budgetMB==null?0:this.texMB(); const drop=new Set();
       for(const k of cand){ if(budgetMB!=null&&mb<=budgetMB)break; drop.add(k); mb-=this.texBytes(k)/1e6; }
@@ -10505,8 +10507,8 @@ class Game extends Phaser.Scene {
   stageLoadCover(idx){ try{ const k='stage_card_s'+String((idx|0)+1).padStart(2,'0'),u=ASSET_IMAGES[k],st=STAGES[idx]; if(u&&window.GameLoader?.stageCover)window.GameLoader.stageCover(verUrl(u),st?((st.emoji||'')+' '+(st.en||st.name||'')).trim():''); }catch(e){} }   /* v8.2.83 เจ้าของ: หน้าโหลดเข้าด่าน = ภาพปกด่าน (DOM ไม่กิน GPU ของเกม) + Tip */
   /* v8.2.85 A21: วัสดุของมอนสำหรับเสียงตีโดน (เดาจากชนิด/ด่าน · ไม่มีผลกับดาเมจ) */
   a21Mat(e){ if(!e)return 'mochi'; if(e.isElite||e.isMini||e._a21Armor||e.siege)return 'armor'; const si=this.stageIndex||0; return si===3?'ice':(si>=5&&si<=10)?'plant':(si===12||si===13||si===14)?'crystal':'mochi'; }
-  texStageKeep(idx){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),keep=new Set(this.stageArtKeys(idx)); const crit=(k,u)=>!bootKeep(k)&&!MENU_ONLY_RE.test(u||'')&&stageCritical(k,u,ch,eg);   /* = กลุ่มภาพหลักที่ ensureStageArt โหลดทุกด่าน (ไม่รวม deferred/STAGE_SHEET_KEYS) */
-    for(const k in ASSET_IMAGES)if(!k.startsWith('screen_')&&!deferredImage(k)&&crit(k,ASSET_IMAGES[k]))keep.add(k); for(const k in ASSET_SHEETS)if(!STAGE_SHEET_KEYS.has(k)&&crit(k,ASSET_SHEETS[k].url))keep.add(k); return keep; }
+  texStageKeep(idx){return new Set(this.stageRequiredKeys(idx));}
+
   texFreeStages(idx){ try{ const keep=this.texStageKeep(idx),n=this.texEvict((k,c)=>c==='stage'&&!keep.has(k),null); if(n)this._texFreedStages=(this._texFreedStages||0)+n; return n; }catch(e){ return 0; } }
   // หน้าเมนูย่อย: ภาพ lazy ของกลุ่มหน้านี้ที่ยังไม่ถอดรหัส
   equipmentAssetNeeded(k,u){
@@ -10545,7 +10547,7 @@ class Game extends Phaser.Scene {
   }
   registerStageAnimations(keys){
     registerEnemyActionAnimations(this,keys);
-    for(const k of keys){const sh=ASSET_SHEETS[k];if(!sh||!this.textures.exists(k))continue;
+    for(const k of keys){const sh=ASSET_SHEETS[k];if(!sh||!this.textures.exists(k)||(this.realTex&&!this.realTex(k)))continue;
       if(sh.anim&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:sh.anim.start||0,end:(sh.anim.start||0)+sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo});
       if(/^c3_(?:mini|boss)/.test(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
     }
@@ -10556,21 +10558,40 @@ class Game extends Phaser.Scene {
   // v6.38 โหลดเบื้องหลัง 2 ชั้น: tier 1 = ของที่ใช้ในด่าน (เข้าด่านรอแค่ชั้นนี้) · tier 2 = ของเฉพาะเมนู (วิหาร/ครัว/ขุด/Delve/การ์ดตัวละคร)
   // ย้ายไฟล์ของหน้าที่เปิดขึ้นหัวคิว loader (ไม่ต้องรอภาพเข้าด่านที่โหลดเบื้องหลังอยู่)
   prioritizeLoad(keys){ try{ const L=this.load.list; if(!L||!L.entries||!L.entries.length)return; const ks=new Set(keys),arr=L.entries; const front=arr.filter(f=>ks.has(f.key)); if(!front.length)return; const rest=arr.filter(f=>!ks.has(f.key)); arr.length=0; front.concat(rest).forEach(f=>arr.push(f)); }catch(e){} }
-  ensureGroup(re,done,opts={}){ const need=[],hit=typeof re==='function'?re:((k,u)=>re.test(u||''));
-    const real=k=>{ if(!this.textures.exists(k))return false; const src=this.textures.get(k).getSourceImage(); return !(src instanceof HTMLCanvasElement); };
-    const inQ=k=>{ const L=this.load,E=S=>S?(S.entries||(S.values?[...S.values()]:[])):[]; return [L.list,L.inflight,L.queue].some(S=>E(S).some(f=>f.key===k)); };
-    const add=(k,fn)=>{ if(real(k))return; need.push(k); if(inQ(k))return; this.texSafeRemove(k); fn(); };   /* v8.1.165 QA bot: กำลังโหลดอยู่แล้ว (เช่น คัตซีนถูกข้ามแล้วเปิดใหม่) → ไม่สั่งโหลดซ้ำ (เดิม "Texture key already in use") */
-    for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if((opts.all||(!k.startsWith('screen_')&&!deferredImage(k)))&&hit(k,u))add(k,()=>this.load.image(k,verUrl(u))); }
-    for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if((opts.all||!STAGE_SHEET_KEYS.has(k))&&hit(k,sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
-    if(opts.fx)for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(hit(k,fx.url))add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh})); }
-    if(!need.length){ done(); return; }
-    this.prioritizeLoad(need);
-    if(!this.load.isLoading())this.load.start();
-    let lastKick=Date.now(); const t0=Date.now(),chk=()=>{ const miss=need.filter(k=>!real(k)),left=miss.length; const ents=S=>S?(S.entries||(S.values?[...S.values()]:[])):[],queued=k=>{ const L=this.load; return [L.list,L.inflight,L.queue].some(S=>ents(S).some(f=>f.key===k)); }; if(left&&Date.now()-lastKick>600&&miss.some(k=>!queued(k))){ lastKick=Date.now(); miss.forEach(k=>{ if(this.textures.exists(k)||queued(k))return; if(ASSET_IMAGES[k])this.load.image(k,verUrl(ASSET_IMAGES[k])); else if(ASSET_SHEETS[k]){ const sh=ASSET_SHEETS[k]; this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); } else if(ASSET_FX[k]){ const fx=ASSET_FX[k]; this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); } }); this.prioritizeLoad(miss); if(!this.load.isLoading())this.load.start(); } if(window.GameLoader&&!opts.quiet)window.GameLoader.set(1-left/need.length,opts.label||'Loading…'); if(!left||Date.now()-t0>20000){ this.buildDeferredAnims(); done(); return; } setTimeout(chk,80); }; setTimeout(chk,60); }
-  buildDeferredAnims(){ registerEnemyActionAnimations(this); for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(this.textures.exists(k)&&!this.anims.exists(k))this.anims.create({key:k,frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}),frameRate:fx.rate,repeat:fx.loop?-1:0}); }
-      for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(sh.anim&&this.textures.exists(k)&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:sh.anim.start||0,end:(sh.anim.start||0)+sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo}); }
-      if(this.textures.exists('fx_bossportal')&&!this.anims.exists('portal_idle'))this.anims.create({key:'portal_idle',frames:this.anims.generateFrameNumbers('fx_bossportal',{start:0,end:(ASSET_FX.fx_bossportal.frames||8)-1}),frameRate:12,repeat:-1});
-      for(const k of Object.keys(ASSET_SHEETS).filter(k=>k.startsWith('c3_mini')||k.startsWith('c3_boss')))if(this.textures.exists(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
+  ensureGroup(re,done,opts={}){
+    const need=[],hit=typeof re==='function'?re:((k,u)=>re.test(u||''));
+    const real=k=>this.textures.exists(k)&&!(this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement);
+    const entries=S=>S?(S.entries||(S.values?[...S.values()]:[])):[],queued=k=>[this.load.list,this.load.inflight,this.load.queue].some(S=>entries(S).some(f=>f.key===k));
+    const add=(k,fn)=>{if(real(k))return;need.push(k);if(queued(k))return;this.texSafeRemove(k);fn();};
+    for(const k in ASSET_IMAGES){const u=ASSET_IMAGES[k];if((opts.all||(!k.startsWith('screen_')&&!deferredImage(k)))&&hit(k,u))add(k,()=>this.load.image(k,verUrl(u)));}
+    for(const k in ASSET_SHEETS){const sh=ASSET_SHEETS[k];if((opts.all||!STAGE_SHEET_KEYS.has(k))&&hit(k,sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}));}
+    if(opts.fx)for(const k in ASSET_FX){const fx=ASSET_FX[k];if(hit(k,fx.url))add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}));}
+    if(!need.length){done();return;}
+    const priorParallel=this.load.maxParallelDownloads;if(opts.strict)this.load.maxParallelDownloads=Math.min(priorParallel||4,4);
+    let ended=false,lastKick=Date.now(),lastProgress=lastKick,lastLeft=need.length;const started=lastKick,errors={};
+    const clean=()=>{ended=true;if(opts.strict)this.load.maxParallelDownloads=priorParallel;this.load.off?.('loaderror',onError);this.load.off?.('fileprogress',onProgress);};
+    const fail=reason=>{if(ended)return;const missing=need.filter(k=>!real(k));clean();opts.onError?.(missing,reason);};
+    const onError=file=>{if(!opts.strict||!need.includes(file?.key))return;errors[file.key]=(errors[file.key]||0)+1;if(errors[file.key]>=3)fail('request_failed');};
+    const onProgress=(file,value)=>{if(opts.strict&&need.includes(file?.key)&&value>0){lastProgress=Date.now();this._stageArtProgressAt=lastProgress;}};
+    this.load.on?.('loaderror',onError);this.load.on?.('fileprogress',onProgress);
+    this.prioritizeLoad(need);if(!this.load.isLoading())this.load.start();
+    const check=()=>{
+      if(ended)return;if(opts.valid&&!opts.valid()){clean();return;}
+      const missing=need.filter(k=>!real(k)),left=missing.length,now=Date.now();
+      if(left<lastLeft){lastProgress=now;this._stageArtProgressAt=now;lastLeft=left;}
+      if(window.GameLoader&&!opts.quiet){const total=opts.total||need.length,loaded=total-left;if(opts.strict&&window.GameLoader.stageProgress)window.GameLoader.stageProgress(loaded,total,opts.label);else window.GameLoader.set(loaded/total,opts.label||'Loading…');}
+      if(!left){clean();this.buildDeferredAnims();done();return;}
+      if(opts.strict&&now-lastProgress>20000){fail('stalled');return;}
+      if(!opts.strict&&now-started>20000){clean();this.buildDeferredAnims();done();return;}
+      if(now-lastKick>600&&missing.some(k=>!queued(k))){lastKick=now;for(const k of missing){if(real(k)||queued(k))continue;this.texSafeRemove(k);if(ASSET_IMAGES[k])this.load.image(k,verUrl(ASSET_IMAGES[k]));else if(ASSET_SHEETS[k]){const sh=ASSET_SHEETS[k];this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame});}else if(ASSET_FX[k]){const fx=ASSET_FX[k];this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh});}}this.prioritizeLoad(missing);if(!this.load.isLoading())this.load.start();}
+      setTimeout(check,80);
+    };setTimeout(check,60);
+  }
+
+  buildDeferredAnims(){ registerEnemyActionAnimations(this); for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(this.realTex(k)&&!this.anims.exists(k))this.anims.create({key:k,frames:this.anims.generateFrameNumbers(k,{start:0,end:fx.frames-1}),frameRate:fx.rate,repeat:fx.loop?-1:0}); }
+      for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(sh.anim&&this.realTex(k)&&!this.anims.exists(k+'_walk'))this.anims.create({key:k+'_walk',frames:this.anims.generateFrameNumbers(k,{start:sh.anim.start||0,end:(sh.anim.start||0)+sh.anim.frames-1}),frameRate:sh.anim.rate,repeat:-1,yoyo:!!sh.anim.yoyo}); }
+      if(this.realTex('fx_bossportal')&&!this.anims.exists('portal_idle'))this.anims.create({key:'portal_idle',frames:this.anims.generateFrameNumbers('fx_bossportal',{start:0,end:(ASSET_FX.fx_bossportal.frames||8)-1}),frameRate:12,repeat:-1});
+      for(const k of Object.keys(ASSET_SHEETS).filter(k=>k.startsWith('c3_mini')||k.startsWith('c3_boss')))if(this.realTex(k)&&!this.anims.exists(k+'_idle'))this.anims.create({key:k+'_idle',frames:[{key:k,frame:0},{key:k,frame:1}],frameRate:2.5,repeat:-1,yoyo:true});
       this.registerStageAnimations(Object.keys(ASSET_SHEETS)); }
   ensureDeferred(done,tier=2){
     const D=this._dT||(this._dT={1:{q:[]},2:{q:[]}}),T=D[tier];
@@ -10591,21 +10612,44 @@ class Game extends Phaser.Scene {
     this.load.once('complete',fin); if(!this.load.isLoading())this.load.start(); }
   critKey(){ return (this.character||Save.data.character||'momo')+((this._recipeRequested||this._pinnacleRequested||this.recipeMode)?'+eg':''); }
   critReady(idx){ return !!(this._deferDone||(this._critOk&&this._critOk[this.critKey()+(idx>=10?'+c3':'')])); }
+  prepareStageEncounter(done){
+    if(this.battleArtReady(this.stageIndex)){done();return;}
+    const state=this.state,player=this.player,epoch=this._artEpoch,paused=!!this.physics?.world?.isPaused;
+    this.state='loading';this.physics?.pause?.();this.stageLoadCover?.(this.stageIndex);window.GameLoader?.show?.('Preparing mission artwork…',0);
+    this.ensureStageArt(this.stageIndex,()=>{if(this.state!=='loading'||this.player!==player||this._artEpoch!==epoch)return;this.state=state;if(!paused)this.physics?.resume?.();window.GameLoader?.hide?.();done();});
+  }
+  stageRequiredKeys(idx){
+    const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),keys=new Set([...this.stageArtKeys(idx),...this.runArtKeys()]);
+    const common=(k,u)=>!bootKeep(k)&&!MENU_ONLY_RE.test(u||'')&&artClass(k,u)===null&&stageCritical(k,u,ch,eg)&&(!Save.data.tutorialDone||!/training_floor/.test(u||''));
+    for(const k in ASSET_IMAGES)if(!k.startsWith('screen_')&&!deferredImage(k)&&common(k,ASSET_IMAGES[k]))keys.add(k);
+    for(const k in ASSET_SHEETS)if(!STAGE_SHEET_KEYS.has(k)&&common(k,ASSET_SHEETS[k].url))keys.add(k);
+    for(const k in ASSET_FX)if(common(k,ASSET_FX[k].url))keys.add(k);
+    return [...keys];
+  }
+  battleArtReady(idx){return this.stageRequiredKeys(idx).every(k=>this.realTex(k));}
+  stageLoadFailure(idx,missing=[],reason='stalled',retry){
+    this._enteringStageArt=false;this._runWatchN=(this._runWatchN||0)+1;this._stageLoadTicket=(this._stageLoadTicket||0)+1;this._stageArtReady?.delete(idx);this._stageArtWait?.delete(idx);
+    try{Tele.ev('stage_art_failed',{stage:idx,reason,keys:missing.slice(0,12),count:missing.length});}catch(e){}
+    const again=()=>{if(this.state==='menu')this.startRun(idx);else retry?.();};
+    const back=()=>{this._stageLoadTicket++;this._runWatchN++;this._enteringStageArt=false;this._stagePinned=null;window.GameLoader?.hide?.();if(this.state==='menu')this.buildMenuScreen();else this.showMenu?.();};
+    const L=window.GameLoader;if(L?.error)L.error('Some artwork could not be prepared. Check your connection and try again.',again,back);else{L?.hide?.();this.menuToast?.('Artwork is still loading — please try again.');if(this.state==='menu')this.buildMenuScreen();}
+  }
   ensureStageArt(idx,done){
-    if(!this._deferDone){ const ch=this.character||Save.data.character||'momo',eg=!!(this._recipeRequested||this._pinnacleRequested||this.recipeMode),ck=this.critKey()+(idx>=10?'+c3':'');
-      if(!(this._critOk&&this._critOk[ck])){ this._critOk=this._critOk||{};
-        const c3=idx>=10;this.ensureGroup((k,u)=>!bootKeep(k)&&!MENU_ONLY_RE.test(u||'')&&stageCritical(k,u,ch,eg)&&(c3||!/art\/ch3_|^c3_/.test((u||'')+' '+k))&&(!Save.data.tutorialDone||!/training_floor/.test(u||'')),()=>{ this._critOk[ck]=true; this.ensureStageArt(idx,done); this.ensureDeferred(null,1); },{quiet:!this._enteringStageArt,label:'Loading battle assets…'});
-        return; } }
+    const keys=this.stageRequiredKeys(idx),selected=new Set(keys),ticket=this._stageLoadTicket||0;
+    this._stagePinned=selected;this.texFreeStages?.(idx);
     if(!this._stageArtReady)this._stageArtReady=new Set();
-    if(this._stageArtReady.has(idx)){done&&done();return;}
+    if(keys.every(k=>this.realTex(k))){this.buildDeferredAnims();this.registerStageAnimations(keys);this._stageArtReady.add(idx);done?.();return;}
+    this._stageArtReady.delete(idx);
     if(!this._stageArtWait)this._stageArtWait=new Map();
     if(this._stageArtWait.has(idx)){if(done)this._stageArtWait.get(idx).push(done);return;}
-    const keys=this.stageArtKeys(idx),ks=new Set(keys);
-    if(!keys.some(k=>!this.textures.exists(k)||this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement)){this.registerStageAnimations(keys);this._stageArtReady.add(idx);done&&done();return;}
     this._stageArtWait.set(idx,done?[done]:[]);
-    // v6.45: รอเฉพาะไฟล์ของด่านนี้ (เดิมรอ loader 'complete' = รอของเบื้องหลังทั้งหมด)
-    this.ensureGroup(k=>ks.has(k),()=>{this.registerStageAnimations(keys);this._stageArtReady.add(idx);const wait=this._stageArtWait.get(idx)||[];this._stageArtWait.delete(idx);for(const cb of wait)cb();},{all:true,fx:true,quiet:!this._enteringStageArt,label:'Loading stage…'});
+    this.ensureGroup(k=>selected.has(k),()=>{
+      if(ticket!==(this._stageLoadTicket||0))return;
+      if(!keys.every(k=>this.realTex(k))){this.stageLoadFailure(idx,keys.filter(k=>!this.realTex(k)),'not_ready',()=>this.ensureStageArt(idx,done));return;}
+      this.registerStageAnimations(keys);this._stageArtReady.add(idx);const wait=this._stageArtWait.get(idx)||[];this._stageArtWait.delete(idx);for(const callback of wait)callback();
+    },{all:true,fx:true,strict:true,total:keys.length,valid:()=>ticket===(this._stageLoadTicket||0),quiet:false,label:'Preparing stage artwork…',onError:(missing,reason)=>this.stageLoadFailure(idx,missing,reason,()=>this.ensureStageArt(idx,done))});
   }
+
   ensureStageCards(chapter){
     if(!this._stageCardsQueued)this._stageCardsQueued=new Set();
     const range=CHAPTERS[chapter]&&CHAPTERS[chapter].stages;if(!range)return;
@@ -15624,12 +15668,13 @@ class Game extends Phaser.Scene {
     if(d){ this._activeZoneMods.push(d.id); this._zoneMul=this.zoneModMul(); this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});
       this.showBanner('☠ Curse: '+d.name,d.desc+' · rewards ×'+d.reward.toFixed(2),2200); Sfx.bossWarn&&Sfx.bossWarn(); this.screenFlash&&this.screenFlash(0x6b2bd9,0.25); }
     if(onResume)onResume(); }
-  /* v8.2.39 กันค้างตอนเข้าด่าน: ถ้ารอโหลดภาพเกิน RUN_WAIT_MAX ms → ปลดล็อกแล้วเข้าด่านด้วยภาพสำรอง (เดิม callback ไม่มา = หน้าเมนูไม่มีปุ่ม ค้างถาวร) */
-  runWatch(idx){ const t=this._runWatchN=(this._runWatchN||0)+1,t0=Date.now(),MAX=typeof RUN_WAIT_MAX!=='undefined'?RUN_WAIT_MAX:45000;
-    const showL=()=>{ try{ const L=window.GameLoader,r=document.getElementById('game-loader'); if(L&&r&&(r.style.display!=='flex'||r.style.opacity==='0'))L.show('Getting the stage ready…',0.1); }catch(e){} };   /* ช่วงรอที่ไม่มีหน้าโหลด = ดูเหมือนเกมค้าง */
-    showL(); const tick=()=>{ if(t!==this._runWatchN||!this._enteringStageArt||this.state!=='menu')return;
-      if(Date.now()-t0>=MAX){ this._enteringStageArt=false; this._runForce=idx; try{ window.GameLoader?.hide?.(); }catch(e){} try{ Tele.ev('run_wait_timeout',{s:idx}); }catch(e){} this.startRun(idx); return; }
-      showL(); setTimeout(tick,1000); }; setTimeout(tick,1000); }
+  /* Stage preparation watchdog offers recovery without starting with placeholder art. */
+  runWatch(idx){
+    const ticket=this._runWatchN=(this._runWatchN||0)+1;this._stageArtProgressAt=Date.now();const MAX=typeof RUN_WAIT_MAX!=='undefined'?RUN_WAIT_MAX:45000;
+    const show=()=>{try{const L=window.GameLoader,r=document.getElementById('game-loader');if(L&&r&&(r.style.display!=='flex'||r.style.opacity==='0'))L.show('Getting the stage ready…',.1);}catch(e){}};
+    const tick=()=>{if(ticket!==this._runWatchN||!this._enteringStageArt||this.state!=='menu')return;if(Date.now()-this._stageArtProgressAt>=MAX){this.stageLoadFailure?.(idx,[],'preparation_stalled');return;}show();setTimeout(tick,1000);};show();setTimeout(tick,1000);
+  }
+
   startRun(idx){ try{ window.__mochiTitleMusic=false;window.LoaderMusic&&window.LoaderMusic.stop(); }catch(e){} if(this.state==='menu'){this._cocoaFlickerOn=false;this.finishCocoaFlicker(true);this.refreshFlickerUI();}  this._dmgBy={}; this._lastHitSrc=null; this._charExpGain=null;
     if(this.state!=='menu')return;
     this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;
@@ -15638,22 +15683,15 @@ class Game extends Phaser.Scene {
     this.clearYuzuCrew();
     idx=Math.max(0,Math.floor(Number(idx)||0));
     if(!isStageReady(idx)){ this.showBanner('🛠️ Stage in production','This stage unlocks only after its monsters, miniboss and boss pass QA',1500); return; }
-    const force=this._runForce===idx;   /* v8.2.39 เจ้าของ 🐞: ได้ Mint แล้วกดเลือกค้าง — รอโหลดนานเกิน/โหลดไม่ตอบ → เข้าด่านด้วยภาพสำรอง */
-    if(!this._allLoaded&&!force){ if(this._enteringStageArt)return;this._enteringStageArt=true;this.runWatch(idx); this.preloadAll(()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);}); return; }
-    // v7.4 ภาพฮีโร่ที่เลือก (+ endgame) ไม่ได้ถอดรหัสตอนบูต → โหลดก่อนเข้าด่าน (ลองครั้งเดียวต่อ 25 วิ กันวน)
-    if(!force&&Date.now()-(this._runArtTry||0)>25000){ const miss=this.runArtKeys().filter(k=>!this.realTex(k));
-      if(miss.length){ if(this._enteringStageArt)return; this._enteringStageArt=true;this.runWatch(idx); this._runArtTry=Date.now(); const ks=new Set(miss);
-        if(window.GameLoader)window.GameLoader.show('Loading hero artwork...',0.1);
-        this.ensureGroup(k=>ks.has(k),()=>{ this._enteringStageArt=false; if(window.GameLoader)window.GameLoader.hide(); if(this.state==='menu')this.startRun(idx); },{all:true,fx:true,label:'Loading hero artwork…'}); return; } }
-    if(!force&&(!this._stageArtReady||!this._stageArtReady.has(idx)||!this.critReady(idx))){
-      if(this._enteringStageArt)return;this.texFreeStages(idx);this._enteringStageArt=true;this.runWatch(idx);   /* v8.2.82 คืนภาพด่านอื่นก่อนโหลดด่านนี้ */
-      if(window.GameLoader){ this.stageLoadCover?.(idx); window.GameLoader.show('Loading selected stage artwork...',0.12); }
-      this.ensureStageArt(idx,()=>{this._enteringStageArt=false;if(this.state==='menu')this.startRun(idx);});return;
+    if(!this._allLoaded){if(this._enteringStageArt)return;this._enteringStageArt=true;this.runWatch(idx);const token=this._runWatchN;this.preloadAll(()=>{if(token!==this._runWatchN||this.state!=='menu')return;this._enteringStageArt=false;this.startRun(idx);});return;}
+    if(!this.battleArtReady(idx)){
+      if(this._enteringStageArt)return;this._enteringStageArt=true;this.runWatch(idx);const token=this._runWatchN;
+      this.stageLoadCover?.(idx);window.GameLoader?.show?.('Preparing stage artwork…',0);
+      this.ensureStageArt(idx,()=>{if(token!==this._runWatchN||this.state!=='menu')return;this._enteringStageArt=false;this.startRun(idx);});return;
     }
-    // v6.51.1: วาด texture ของด่านล่วงหน้าหลังหน้าโหลด (decode/อัป GPU ครั้งแรก) → ไม่กระตุกตอนมอนชุดแรกโผล่
-    if(!this._warmed)this._warmed={}; const wk=idx+'|'+(this.character||Save.data.character);
-    if(force)this._runForce=null;
-    if(!this._warmed[wk]&&!force){ if(this._enteringStageArt)return; this._warmed[wk]=true; this._enteringStageArt=true;this.runWatch(idx); this.warmStageTextures(idx,()=>{ this._enteringStageArt=false; if(this.state==='menu')this.startRun(idx); }); return; }
+    this._stagePinned=new Set(this.stageRequiredKeys(idx));
+    if(!this._warmed)this._warmed={};const wk=idx+'|'+(this.character||Save.data.character)+'|'+(typeof Cos!=='undefined'?Cos.skin?.(this.character||Save.data.character)?.tag||'':'');
+    if(!this._warmed[wk]){if(this._enteringStageArt)return;this._enteringStageArt=true;this.runWatch(idx);const token=this._runWatchN;this.warmStageTextures(idx,()=>{if(token!==this._runWatchN||this.state!=='menu')return;this._warmed[wk]=true;this._enteringStageArt=false;this.startRun(idx);});return;}
     this.freeOtherStageArt?.(idx);   // v6.91 ปล่อยภาพด่านอื่นออกจาก GPU
     const challenge=null;this._challengeRequested=null; // Story never inherits old curse tickets.
     const ticket=challenge?challenge.length*150:0;
@@ -15882,19 +15920,12 @@ class Game extends Phaser.Scene {
   }
   // 📜 Recipe run (R2): ไม่มีเวฟ/มินิ · ฆ่าเติม Hunger Meter เต็ม → บอสโผล่ทันที · เคลียร์เร็ว=จบเร็ว · กันค้าง: ครบ RECIPE_HUNGER_CAP วิ บอสมาเอง
   warmStageTextures(idx,done){
-    const ch=this.character||Save.data.character||'momo',st=STAGES[idx]||{},keys=new Set();
-    const re=new RegExp('^(e_|proj_|fx_|vfx_|orb|xp_|candy|heal|chest|crate|vac|gift|char_'+ch+(idx>=10?'|c3_e_':'')+(idx>=5&&idx<10?'|ch2_':'')+')');
-    this.textures.getTextureKeys().forEach(k=>{ if(re.test(k))keys.add(k); });
-    Object.values(st).forEach(v=>{ if(typeof v==='string'&&this.textures.exists(v))keys.add(v); });
-    ['bg'+(idx+1),FLOOR_KEYS[idx],'mb'+(idx+1),'boss'+(idx+1)].forEach(k=>{ if(k&&this.textures.exists(k))keys.add(k); });
-    const list=[...keys]; if(!list.length){done();return;}
-    if(window.GameLoader)window.GameLoader.show('Preparing battle…',0.9);
-    const cam=this.cameras.main,c=this.add.container(cam.midPoint.x,cam.midPoint.y).setDepth(-1e6); let i=0;
-    const step=()=>{ c.removeAll(true); for(let n=0;n<24&&i<list.length;n++,i++){ const im=this.add.image(0,0,list[i]).setAlpha(0.01).setScale(0.05); c.add(im); }
-      if(i<list.length)setTimeout(step,16); else setTimeout(()=>{ c.destroy(true); if(window.GameLoader)window.GameLoader.hide(); done(); },32); };
-    step();
+    const list=this.stageRequiredKeys(idx).filter(k=>this.realTex(k)),token=this._runWatchN;
+    if(!list.length){done();return;}window.GameLoader?.show?.('Preparing battle…',.9);
+    const cam=this.cameras.main,c=this.add.container(cam.midPoint.x,cam.midPoint.y).setDepth(-1e6);let i=0;
+    const step=()=>{if(token!==this._runWatchN){c.destroy(true);return;}c.removeAll(true);for(let n=0;n<12&&i<list.length;n++,i++)c.add(this.add.image(0,0,list[i]).setAlpha(.01).setScale(.05));if(i<list.length)setTimeout(step,16);else setTimeout(()=>{c.destroy(true);if(token===this._runWatchN)done();},32);};step();
   }
-  // v7.8.47 เจ้าของ: เล่นซ้ำมอนน้อยกว่ารอบแรก → เลเวลตอนเจอบอสต่ำ · รอบแรก 5 เวฟ ≈ 322 ตัว → replay ต้องฆ่า ~320 ตัว (240/0.75) · spawn 340 · v7.8.48 ไม่มีตัดเวลาแล้ว (มินิที่ครึ่งหลอด บอสเมื่อเต็มเท่านั้น)
+
   usesReplaySurvival(){return !!(Save.data.stageMastery||{})[this.stageIndex]&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush;}
   startReplayRun(st){
     this.clearWaveObjective();this._finalStoryShown=true;if(this.pipG)this.pipG.setVisible(false);
@@ -17649,7 +17680,7 @@ class Game extends Phaser.Scene {
     let fin=false; const tw=(o)=>this.tweens.add(o),T=(ms,f)=>this.time.delayedCall(ms,()=>{ if(!fin&&!hold)f(); });
     const finish=()=>{ if(fin)return; fin=true; this._finishDeal=null; this.input?.off?.('pointerdown',onTap); const tx=this.waveObjTxt?this.waveObjTxt.x:W/2,ty=this.waveObjTxt?this.waveObjTxt.y:40;
       tw({targets:cards,x:tx,y:ty,scale:.2,alpha:0,duration:320,ease:'Cubic.easeIn',delay:(t,k,v,i)=>i*30}); tw({targets:[dim,cap].concat(rb?[rb]:[],ri?[ri]:[],go?[go]:[]),alpha:0,duration:300,onComplete:()=>{ L.destroy(); if(this._dealL===L)this._dealL=null; }});
-      if(this.state==='cinematic')this.state=prevState==='cinematic'?'play':prevState; this.physics.resume(); done(); };
+      const proceed=()=>{if(this.state==='cinematic')this.state=prevState==='cinematic'?'play':prevState; this.physics.resume(); done();};if(this.prepareStageEncounter)this.prepareStageEncounter(proceed);else proceed(); };
     const canRe=!deal.plan&&!deal.adRerolled&&Array.isArray(deal.slots)&&deal.slots.some(w=>w!==deal.leadSlot),isAd=!!deal.rerolled; let rb=null,hold=false;   /* v8.2.27 เจ้าของ: ฟรี 1 ครั้ง · ครั้งที่ 2 ดูโฆษณา */
     const reArt=this.realTex?.('ev90_reroll'); let ri=null;
     let go=null;   /* v8.2.41 เจ้าของ: จั่วเสร็จแล้วหยุดรอผู้เล่นเลือก ▶ ไปต่อ หรือ 🔄 Reroll (มีปุ่ม Reroll = ไม่เข้าด่านเอง) */
@@ -19366,8 +19397,8 @@ class Game extends Phaser.Scene {
     if(last){this.time.delayedCall(500,()=>this.victory());return;}
     this.player.setVelocity(0,0);this.state='loading';
     if(window.GameLoader)window.GameLoader.show('Opening the door to the next stage...',0.18);
-    this.time.delayedCall(520,()=>this.ensureStageAudio(next,()=>{this.resetStageLoadout();this.state='play';this.startStage(next);
-      if(window.GameLoader){window.GameLoader.set(1,'Entering a new stage!');this.time.delayedCall(160,()=>window.GameLoader.hide());}}));
+    this.stageLoadCover?.(next);this.time.delayedCall(520,()=>this.ensureStageArt(next,()=>this.ensureStageAudio(next,()=>{this.resetStageLoadout();this.state='play';this.startStage(next);
+      if(window.GameLoader){window.GameLoader.set(1,'Entering a new stage!');this.time.delayedCall(160,()=>window.GameLoader.hide());}})));
   }
   resetStageLoadout(){ this.cancelSnipe();this.clearArtVfx();
     if(this._triSeals)this._triSeals.forEach(p=>{if(p.obj&&p.obj.active)p.obj.destroy();});this._triSeals=[];this._echoTrail=[];

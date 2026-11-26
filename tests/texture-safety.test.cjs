@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');const s=fs.readFileSync('game.js','utf8');
 function method(n){const at=s.indexOf('  '+n+'('),tail=s.slice(at+1),nx=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&nx,n);return s.slice(at,at+1+nx.index);}
 assert.equal((s.match(/this\.textures\.remove\(k\); \['_idle','_walk'\]/g)||[]).length,1,'only texSafeRemove drops placeholders directly');
-assert.equal((s.match(/this\.texSafeRemove\(k\)/g)||[]).length,3,'preloadAll, ensureGroup, ensureDeferred use the safe path');
+assert.equal((s.match(/this\.texSafeRemove\(k\)/g)||[]).length,4,'preloadAll, ensureGroup initial/retry, ensureDeferred use the safe path');
 assert(s.includes('  create(){\n    this.loopGuard?.();\n    this._sesRuneButtons=null;'),'loop guard installed in the Game scene');
 const C=vm.runInContext('class C{'+['texSafeRemove','texHeal','loopGuard'].map(method).join('\n')+'}C',vm.createContext({console:{error(){}}}));
 const list={a:1},ev={};const textures={list,exists:k=>k in list,remove(k){delete list[k];},on(n,f){ev[n]=f;},get:k=>({has:f=>f===3})};
