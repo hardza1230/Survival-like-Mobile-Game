@@ -1,6 +1,6 @@
 # Current checkpoint — Portrait-only layout and Chapter 1 arrivals
 
-Owner approved publishing both changes as v8.3.7. The release is based on 31d81264. The game computes a portrait viewport on wide and square touch, native and desktop windows. The canvas and loader share the same portrait frame. Android and the PWA already declare portrait. Existing touch rotation prompt continues to pause play while sideways.
+Released both changes as v8.3.7 at a4f04d70. Pages run 45768706091 and Android run 45768706094 passed. Verified the published version and game code. All 263 package checks and 12 browser checks passed. Shipped build size is 188.3 MB. The game computes a portrait viewport on wide and square touch, native and desktop windows. The canvas and loader share the same portrait frame. Android and the PWA already declare portrait. Existing touch rotation prompt continues to pause play while sideways.
 
 Chapter 1 first-clear refills now arrive as directional packs inside the camera view and formations use the same visible, map-safe placement. The 420 ms rise is protected from damage and contact. The test covers portrait bounds, map edges and legacy flow. Browser checks exercise phone, portrait tablet, square and wide touch sizes and returning upright. Gameplay feel and hardware rotation still need phone review.
 
