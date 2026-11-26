@@ -1420,15 +1420,19 @@
       visuals.push(this.camWorld(this.add.circle(x,y,58,def.color,.08).setStrokeStyle(3,def.color,.7).setDepth(-989)));
       const art=this.artSpr?.(def.key,x,y+22,72,0,{sig:false,depth:y+3});
       visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
-      visuals.push(this.camWorld(this.add.text(x,y-70,def.icon+' '+def.name+'\nTouch to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',align:'center',stroke:'#171321',strokeThickness:4}).setOrigin(.5).setDepth(90010)));
+      visuals.push(this.camWorld(this.add.text(x,y-70,def.icon+' '+def.name+'\nTap to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',align:'center',stroke:'#171321',strokeThickness:4}).setOrigin(.5).setDepth(90010)));
       d.objects.push({def,x,y,visuals,done:false});});
+    /* v8.3.13 เจ้าของ: กดที่วัตถุเพื่อเริ่ม (เดิมต้องเดินไปทับ) · ยังเดินไปทับได้เหมือนเดิม */
+    if(this.input&&!this._c1SideTap){this._c1SideTap=p=>{const D=this._c1Combat;if(!D||D.event||!D.objects||this.state!=='play')return;const cam=this.cameras?.main,wp=cam?.getWorldPoint?cam.getWorldPoint(p.x,p.y):{x:p.worldX,y:p.worldY};
+      for(const o of D.objects){if(o.done)continue;if(this.dist(wp.x,wp.y,o.x,o.y)<84){this.chapterSideObjectStart(D,o);return;}}};this.input.on('pointerdown',this._c1SideTap);}
   }
+  chapterSideObjectStart(d,o){o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
   tickChapterSideObjects(d){
     if(!d.objects)this.placeChapterSideObjects(d);
     const P=this.player;if(!P)return;
-    for(const o of d.objects){if(o.done)continue;if(this.dist(P.x,P.y,o.x,o.y)<60){o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);return;}}
+    for(const o of d.objects){if(o.done)continue;if(this.dist(P.x,P.y,o.x,o.y)<60){this.chapterSideObjectStart(d,o);return;}}
   }
-  clearChapterSideObjects(d){for(const o of d?.objects||[])for(const v of o.visuals)v.destroy();if(d)d.objects=null;}
+  clearChapterSideObjects(d){for(const o of d?.objects||[])for(const v of o.visuals)v.destroy();if(d)d.objects=null;if(this._c1SideTap){this.input?.off?.('pointerdown',this._c1SideTap);this._c1SideTap=null;}}
   startChapterSideEvent(d,def,pos){
     const {x,y}=pos||this.objectivePosition(0,1,95,132),active=d.event={
       def,x,y,left:20,hold:0,spawned:0,spawnDelay:.25,progress:0,targets:new Map(),visuals:[]

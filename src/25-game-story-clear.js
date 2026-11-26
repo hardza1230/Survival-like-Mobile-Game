@@ -996,6 +996,7 @@
     this.showTutorialComplete(rewardGranted);
   }
   showTutorialComplete(rewardGranted){
+    this.lobbyPreload?.();   /* v8.3.13 เจ้าของ: โหลดภาพ Lobby ระหว่างหน้าจบบทสอน (กันภาพสำรองตอนกลับ Lobby) */
     this.state='summary'; if(this.physics)this.physics.pause(); if(this.player)this.player.setVelocity(0,0);
     const w=this.W,h=this.H; this.over.removeAll(true);
     const bg=this.add.rectangle(0,0,w,h,0x160f21,0.92).setOrigin(0,0);

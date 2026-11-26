@@ -1554,11 +1554,11 @@ class Game extends Phaser.Scene {
   }
 
   // zoom กล้องให้ "visible field width" คงที่ทุกเครื่อง (อ้างอิงมือถือ ~430px) — แท็บเล็ตจอกว้าง = zoom เข้ามากขึ้น ตัวละครไม่เล็กจิ๋ว
-  computeViewZoom(){ const REF_W=430, BASE=0.74;   /* v8.1.161 เจ้าของ: ใกล้ไป → 0.74 (ถอยกล้อง ~5%) */   /* v6.95.1 wider view (was .76) · v8.1.118 เจ้าของ: ไกลไป → 0.78 (ใกล้ขึ้น ~11%) */ this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
+  computeViewZoom(){ const REF_W=430, BASE=0.74/1.2;   /* v8.3.13 เจ้าของ: เห็นแผนที่กว้างขึ้น 20% */   /* v8.1.161 เจ้าของ: ใกล้ไป → 0.74 (ถอยกล้อง ~5%) */   /* v6.95.1 wider view (was .76) · v8.1.118 เจ้าของ: ไกลไป → 0.78 (ใกล้ขึ้น ~11%) */ this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
   // ซูมออกระหว่างบอสด้วย lerp ต่อเฟรม เพื่อให้เห็นสนามกว้างและทำงานสม่ำเสมอทุกอุปกรณ์
   applyMainZoom(){ if(this.cameras&&this.cameras.main)this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
   tickBossZoom(){
-    const want=(this.mode==='boss'?0.58:(this.mode==='mini'?0.68:1))*(this.boss?._big?.stage==='charge'?1.14:1)*(this._snipe&&(this._snipe.kind!=='yuzu'||performance.now()-this._snipe.t0>250)?0.72:1);   // v8.0.65 Yuzu tap = no zoom pulse   // v6.0.66 ชาร์จสไนเปอร์ = ซูมออก
+    const want=(this.mode==='boss'?0.58*1.2/1.08:(this.mode==='mini'?0.68*1.2/1.08:1))   /* v8.3.13 บอส/มินิบอส ถอยเพิ่มแค่ 8% จากเดิม */*(this.boss?._big?.stage==='charge'?1.14:1)*(this._snipe&&(this._snipe.kind!=='yuzu'||performance.now()-this._snipe.t0>250)?0.72:1);   // v8.0.65 Yuzu tap = no zoom pulse   // v6.0.66 ชาร์จสไนเปอร์ = ซูมออก
     if(this._bossZoom==null)this._bossZoom=1;
     if(Math.abs(this._bossZoom-want)>0.003){this._bossZoom+=(want-this._bossZoom)*0.10;this.applyMainZoom();}
     else if(this._bossZoom!==want){this._bossZoom=want;this.applyMainZoom();}

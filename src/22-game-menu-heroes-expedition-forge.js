@@ -963,7 +963,8 @@
     for(let k=0;k<rings;k++){ const rg=this.add.circle(x,y,30,color,0).setStrokeStyle(6-k,color,.95); this.menu.add(rg); this.tweens.add({targets:rg,scale:tier==='legend'?9:6,alpha:0,delay:k*180,duration:750,ease:'Cubic.out',onComplete:()=>rg.destroy()}); }
     if(tier==='legend'||tier==='epic')this.time.delayedCall(220,()=>this.screenFlash?.(0xffffff,tier==='legend'?.45:.25,260)); }
   openChest(c,isFree){ if(this._gachaBusy)return; const d=Save.data; if(isFree==='weekly'||isFree==='gift'||isFree==='login'){ this._chestBack=isFree==='gift'?'achievements':isFree==='login'?'hub':'daily'; } else if(isFree){ d.chestFreeDay=localDayKey(); } else { const cs=chestSugarCost(c); if((d.sugar||0)<cs)return; d.sugar=(d.sugar||0)-cs; } (typeof DailyQ!=='undefined')&&DailyQ.tick('chest'); if(isFree!=='gift'&&isFree!=='weekly'&&isFree!=='login')d.chestsOpened=(d.chestsOpened||0)+1;
-    let tier=pickWeighted(c.odds); if(c.id==='silver'&&tier==='legend')(d.secrets||(d.secrets={})).silverLegend=1; if(c.id==='gold'){ d.chestPity=(d.chestPity||0)+1; if(tier==='legend'||d.chestPity>=CHEST_PITY){ tier='legend'; d.chestPity=0; } } Save.save();
+    let tier=pickWeighted(c.odds); if(!d.firstChestDone){ d.firstChestDone=1; tier='common'; }   /* v8.3.13 เจ้าของ: กล่องแรกของผู้เล่นใหม่ (ช่วงสอน) = ของ Common 1 ชิ้นเสมอ */
+    else if(c.id==='silver'&&tier==='legend')(d.secrets||(d.secrets={})).silverLegend=1; if(c.id==='gold'){ d.chestPity=(d.chestPity||0)+1; if(tier==='legend'||d.chestPity>=CHEST_PITY){ tier='legend'; d.chestPity=0; } } Save.save();
     const lv=GACHA_LEVELS[Math.max(0,gachaMaxBand())],ilv=lv.lo+Math.floor(Math.random()*(lv.hi-lv.lo+1));
     this._gachaBusy=true; this.setMenuScroll(0); this.stopHubMotion?.(); this.menu.removeAll(true); this.tapZones=[]; this._chestOpen=true;
     const w=this.W,h=this.H,bg=this.add.rectangle(0,0,w,h,0x090510,.97).setOrigin(0),title=this.add.text(w/2,h*.14,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:c.title}).setOrigin(.5);
@@ -1347,7 +1348,7 @@
     this.tweens.add({targets:glow,rotation:0,scale:.5,alpha:{from:0.08,to:0.18},duration:900,ease:'Cubic.in'});
     this.time.delayedCall(420,()=>{ if(status.active)status.setText('COMMON  ·  RARE  ·  EPIC').setColor('#fff0b8'); });
     this.time.delayedCall(920,()=>{
-      const it=this.gachaRoll(ilv);let tier=it?it.tier:'common';if(!it){Save.addSugar(120);Save.addThreads(6);}
+      const first=!Save.data.firstChestDone;if(first)Save.data.firstChestDone=1;const it=this.gachaRoll(ilv,first?'common':null);let tier=it?it.tier:'common';if(!it){Save.addSugar(120);Save.addThreads(6);}
       if(!status.active||this.state!=='menu')return;   // v7.9.35 ออกจากหน้าก่อนเปิดกล่อง → ของยังได้ แต่ไม่วาดต่อ (เดิม setText บนข้อความที่ถูกลบ = error)
       const color=tier==='legend'?0xff8f3a:tier==='epic'?0xc9a3ff:tier==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
       const gArt=it?('gear_'+it.id):null;

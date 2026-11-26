@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.3.12**. Next release:8.3.13. Fetch the deploy branch before new work.
+Current release: **8.3.13**. Next release:8.3.14. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.3.12 — Chapter 1: combat situations every wave, opt-in side events, smarter Combat Director** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.13 — Owner round: shorter waves, wider camera, smaller EXP gems, tap side events, first chest fixed** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

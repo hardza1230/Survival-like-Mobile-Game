@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.12';
+const GAME_VERSION = '8.3.13';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -93,7 +93,7 @@ const C1_COMBAT_PATTERNS={
   swarm:['Last Stand','Pincer','Ambush']
 };
 // v8.3.10 เจ้าของ: เวฟ C1 สั้นลง (เดิม 30/45/–/105/60 วิ) · ช่วงพักต้นเวฟ 4 (เดิม 30 วิ)
-const C1_WAVE_SEC=[24,35,0,80,45],C1_RECOVERY_SEC=20;
+const C1_WAVE_SEC=[24,30,0,30,30],C1_RECOVERY_SEC=8;   // v8.3.13 เจ้าของ: ทุกเวฟไม่เกิน 30 วิ
 // v8.3.10 เจ้าของ: ภารกิจแทรกโผล่เฉพาะที่เคยเจอ · home = ด่านที่ภารกิจเต็มอยู่ (C1-2 Hunger’s Mouth · C1-3 Grandma’s Pot · C1-4 Frozen Pantry)
 const C1_SIDE_EVENTS=[
   {name:'Hunger Herald',home:0,key:'hh_gate',icon:'📯',color:0xff8fb1,types:['fast','basic','basic','dasher'],reward:22},
@@ -144,4 +144,5 @@ const STORY_HP_MUL=1.2;   // v7.9.85 เจ้าของ: ตัวละค�
 const CARD_UNLOCK={path:0,relic:2,unique:3,mod:4,mutation:5,evolution:5,infusion:6,trade:7};
 const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes was tucked in your Heart Seed! Pick 1 of 3 fighting styles for this stage. Your next cards follow that style.'],relic:['🔮','Relic','A strong passive bonus that lasts the whole stage. You can hold a few.'],unique:['⭐','Unique Upgrade','You used your Unique 3 times — now you can power it up.'],mod:['🧩','Modifier','Adds a new trick to your attack, like an explosion or chain hit.'],mutation:['⭐','Mutation','Change how your attack works. Pick 1, the other locks.'],evolution:['✨','Evolution','Your attack is maxed — evolve it into its final form!'],infusion:['🍯','Flavor Infusion','Give your attack a flavor: burn, freeze, poison or heal.'],trade:['⚖️','Trade-off','Big bonus with a cost. Read both sides before you take it.']};
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
-function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
+function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
+const XP_LATE_GROW=.02;

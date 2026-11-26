@@ -1,7 +1,7 @@
 // v8.1.118 owner: monsters blend into the floor → soft image shadows (not Graphics ellipses: Android WebView black bars); camera closer 0.78.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');const s=fs.readFileSync('game.js','utf8');
 function method(n){const at=s.indexOf('  '+n+'('),tail=s.slice(at+1),nx=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&nx,n);return s.slice(at,at+1+nx.index);}
-assert(s.includes('const REF_W=430, BASE=0.74;'),'camera base zoom 0.74 (v8.1.161 owner: a bit farther)');
+assert(s.includes('const REF_W=430, BASE=0.74/1.2;'),'camera base zoom 0.74/1.2 (v8.3.13 owner: see 20% more)');
 const ds=method('drawShadows');assert(ds.includes('this.drawFoeShadows?.()')&&!/enemies[^\n]*fillEllipse/.test(ds),'no Graphics ellipses for enemies');
 const ctx=vm.createContext({document:{createElement:()=>({getContext:()=>({scale(){},createRadialGradient:()=>({addColorStop(){}}),fillRect(){}})})}});
 const C=vm.runInContext('class C{'+method('drawFoeShadows')+'\n}C',ctx);const made=[];

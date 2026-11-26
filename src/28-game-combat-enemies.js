@@ -77,9 +77,9 @@
   showPickupCue(o,color,baseScale){
     if(!o)return;this.hidePickupCue(o);o._pickupColor=color;o._pickupBaseScale=baseScale||1;o._pickupEmphasis=o.dropType==='currency'?.4:o.dropType==='gear'&&o.lootTier==='common'?.45:1;
     // ปรับให้ไอเทมมี "ขนาดบนสนาม" คงที่ตาม native width (กันอาร์ต PNG ความละเอียดสูงเช่น gear_gift.png 256px โผล่ใหญ่เกินจอ)
-    const nativeW=(o.width||36),target=o._pickupBaseScale*36; o.setScale(nativeW>0?target/nativeW:o._pickupBaseScale).setDepth(80000);
-    o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30));
-    o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20));
+    const nativeW=(o.width||36),target=o._pickupBaseScale*36*PICKUP_SIZE; o.setScale(nativeW>0?target/nativeW:o._pickupBaseScale).setDepth(80000);
+    o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30*PICKUP_SIZE));
+    o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20*PICKUP_SIZE));
   }
   // v6.97 ของตก (currency/gear) ดูดเข้าหาตัวเมื่ออยู่ใกล้ ~120px · ช้ากว่าเม็ด EXP
   tickLootMagnet(dt){ const p=this.player; if(!p||!this.loots||this.state!=='play')return; const R=120,R2=R*R,now=this.time?.now||0;
@@ -749,7 +749,7 @@
     const delivery=Save.receiveGearInstance(it.id,extra); if(delivery&&!this._inTutorial)(typeof DailyQ!=='undefined')&&DailyQ.tick('gear');   // v7.5
     return delivery?Object.assign({},it,{instance:delivery.item,delivery:delivery.destination,shards:delivery.shards||0}):null; }
   // v4.31: gacha ลดเกรด — ส่วนใหญ่ common/rare, epic หายาก, ไม่มี legend (legend ได้จาก forge/ดรอปนรกเท่านั้น) · v4.32 รับ itemLevel ที่ผู้เล่นเลือก
-  gachaRoll(itemLevel=1){ const r=Math.random(), roll=r<0.68?'common':r<0.97?'rare':'epic';   // 68% common · 29% rare · 3% epic
+  gachaRoll(itemLevel=1,force=null){ const r=Math.random(), roll=force||(r<0.68?'common':r<0.97?'rare':'epic');   // 68% common · 29% rare · 3% epic
     for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t,{gacha:true,itemLevel}); if(it)return it; } return null; }
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0||e._timeStop||(e._spawnGrace&&(this.time?.now||0)<e._spawnGrace))return;
     if(!e.shooter&&!e.acid&&!e.bomber&&!e.dasher&&this.anims.exists((e._enemyArtKey||e.texture.key)+'_attack'))this.enemyAction(e,'attack',340);

@@ -13,7 +13,7 @@ s.cleanAirFogWar(c,.4,true); assert(c.dark>0&&c.dark<1,'darkness falls gradually
 for(let i=0;i<10;i++){ c.x+=40; s.cleanAirFogWar(c,1/60,true); } assert.equal(c.rev.length,11,'trail remembered'); assert(filled>0);
 c.x+=5000; s.cleanAirFogWar(c,1/60,true); assert(erased<c.rev.length+2,'off-screen trail points culled');
 assert(src.includes("if(o.type==='cleanAir'&&this._cleanAir){")&&src.includes("t:Infinity,ring:true"),'ring arm: no button, no auto start');
-assert(src.includes("if(c&&P&&Math.hypot(P.x-c.x,P.y-c.y)<=c.r){ A.t=0;"),'starts when the hero is inside'); assert(!src.includes("'🌬️ Follow the Wisp','Stay in its clean air"),'no banner'); assert(src.includes('BASE=0.74;'),'camera a bit farther');
+assert(src.includes("if(c&&P&&Math.hypot(P.x-c.x,P.y-c.y)<=c.r){ A.t=0;"),'starts when the hero is inside'); assert(!src.includes("'🌬️ Follow the Wisp','Stay in its clean air"),'no banner'); assert(src.includes('BASE=0.74/1.2;'),'camera see 20% more (v8.3.13)');
 assert(src.includes("const CLEANAIR_FOGWAR=true;")&&src.includes("'_cleanAirFog','_cleanAirFogRT'"),'switch + cleanup');
 assert(src.includes("if(t&&t._codeTex)return; if(inUse(k))return;")&&src.includes("if(this._texInUseFn?.(k))return;"),'no texture swap while in use (glTexture null fix)');
 assert(src.includes("/^bpx_cocoa_(?:dashring|landing_dust)$/.test(key)"),'Titan shockwave/crack art restored');

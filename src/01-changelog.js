@@ -1,4 +1,5 @@
 const CHANGELOG = [
+  {v:'8.3.13',date:'2026-11-26',title:'Shorter waves and a wider view',items:['Chapter 1 waves last 30 seconds at most','The camera shows more of the map, and EXP gems and items are smaller','Higher levels need a little more EXP','Tap a side event on the map to start it','Your first chest always gives a starter item']},
   {v:'8.3.12',date:'2026-11-26',title:'Chapter 1: a new fight every wave',items:['Every Chapter 1 wave brings a named combat situation with a tip on how to beat it','Beat a situation’s goal for a burst of EXP','Side events wait on the map all stage; walk onto one only if you want to']},
   {v:'8.3.11',date:'2026-11-26',title:'Behind the scenes: tidier game code',items:['The game code is now organized in smaller files so updates can ship faster']},
   {v:'8.3.10',date:'2026-11-26',title:'Shorter Chapter 1 waves and stage preview cards',items:['Chapter 1 waves are shorter','Side events only appear after you have met them in their own stage','Cards before each Chapter 1 stage show what you will face']},
