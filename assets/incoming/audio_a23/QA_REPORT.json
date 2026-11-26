@@ -1,0 +1,4226 @@
+[
+  {
+    "key": "sfx_a23_pattern_ambush_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 997,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 16.76,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_ambush_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1066,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 11.13,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_ambush_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 942,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_ambush_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 946,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_ambush_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 750,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.47,
+    "leading_silence_ms": 0.11,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_ambush_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 414,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_stampede_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1104,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.42,
+    "leading_silence_ms": 0.27,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_stampede_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1226,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 9.52,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_stampede_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 942,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.61,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_stampede_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 886,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.75,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_stampede_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 624,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.4,
+    "leading_silence_ms": 0.82,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_stampede_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 744,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.34,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_commander_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1245,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_commander_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 673,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.41,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_commander_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 873,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.4,
+    "leading_silence_ms": 1.61,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_commander_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 943,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_commander_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 620,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.46,
+    "leading_silence_ms": 0.29,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_commander_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 742,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 0.16,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_barrage_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1242,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.11,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_barrage_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1252,
+    "max_duration_ms": 1300,
+    "peakDbtp": -2.98,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_barrage_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 943,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.38,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_barrage_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 950,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.52,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_barrage_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 704,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.28,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_barrage_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 734,
+    "max_duration_ms": 800,
+    "peakDbtp": -3.63,
+    "leading_silence_ms": 0.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_pincer_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1225,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_pincer_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 886,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.89,
+    "leading_silence_ms": 10.79,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_pincer_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 643,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.89,
+    "leading_silence_ms": 10.34,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_pincer_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 477,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.88,
+    "leading_silence_ms": 10.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_pincer_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 656,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.87,
+    "leading_silence_ms": 10.29,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_pincer_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 593,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.25,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hunter_pack_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1226,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.86,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hunter_pack_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1229,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 0.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hunter_pack_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 923,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hunter_pack_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 924,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.41,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hunter_pack_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 734,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.27,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hunter_pack_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 742,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_fortress_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1245,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 0.07,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_fortress_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1127,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 0.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_fortress_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 915,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.36,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_fortress_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 673,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.7,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_fortress_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 607,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.16,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_fortress_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 503,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hazard_shift_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1248,
+    "max_duration_ms": 1300,
+    "peakDbtp": -3.99,
+    "leading_silence_ms": 0.32,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hazard_shift_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1247,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.1,
+    "leading_silence_ms": 0.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hazard_shift_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 951,
+    "max_duration_ms": 1000,
+    "peakDbtp": -3.84,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hazard_shift_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 927,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.59,
+    "leading_silence_ms": 0.23,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hazard_shift_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 753,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.49,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_hazard_shift_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 743,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.13,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_loot_rush_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1240,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.4,
+    "leading_silence_ms": 0.07,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_loot_rush_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1243,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.38,
+    "leading_silence_ms": 0.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_loot_rush_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 937,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.24,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_loot_rush_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 946,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.05,
+    "leading_silence_ms": 0.2,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_loot_rush_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 737,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.15,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_loot_rush_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 741,
+    "max_duration_ms": 800,
+    "peakDbtp": -3.66,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_last_stand_warning_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1235,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.07,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_last_stand_warning_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1230,
+    "max_duration_ms": 1300,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_last_stand_arrival_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 932,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.45,
+    "leading_silence_ms": 0.34,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_last_stand_arrival_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 926,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 0.45,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_last_stand_release_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 736,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.43,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_pattern_last_stand_release_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 738,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.52,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_breach_open",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1418,
+    "max_duration_ms": 1500,
+    "peakDbtp": -4.26,
+    "leading_silence_ms": 3.49,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_breach_progress",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 633,
+    "max_duration_ms": 700,
+    "peakDbtp": -4.62,
+    "leading_silence_ms": 1.36,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_breach_complete",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1446,
+    "max_duration_ms": 1600,
+    "peakDbtp": -3.72,
+    "leading_silence_ms": 1.5,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_breach_close",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 907,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.04,
+    "leading_silence_ms": 0.39,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_ritual_open",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1308,
+    "max_duration_ms": 1500,
+    "peakDbtp": -4.04,
+    "leading_silence_ms": 1.11,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_ritual_progress",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 637,
+    "max_duration_ms": 700,
+    "peakDbtp": -4.3,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_ritual_complete",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1542,
+    "max_duration_ms": 1600,
+    "peakDbtp": -4.48,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_ritual_close",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 928,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.52,
+    "leading_silence_ms": 0.29,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_legion_open",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1448,
+    "max_duration_ms": 1500,
+    "peakDbtp": -4.12,
+    "leading_silence_ms": 7.48,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_legion_progress",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 518,
+    "max_duration_ms": 700,
+    "peakDbtp": -4.51,
+    "leading_silence_ms": 7.85,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_legion_complete",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1531,
+    "max_duration_ms": 1600,
+    "peakDbtp": -4.55,
+    "leading_silence_ms": 0.39,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_legion_close",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 767,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.4,
+    "leading_silence_ms": 0.2,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_ultimatum_open",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1445,
+    "max_duration_ms": 1500,
+    "peakDbtp": -3.96,
+    "leading_silence_ms": 0.07,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_ultimatum_progress",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 576,
+    "max_duration_ms": 700,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_ultimatum_complete",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 844,
+    "max_duration_ms": 1600,
+    "peakDbtp": -4.49,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_ultimatum_close",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 892,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.35,
+    "leading_silence_ms": 0.34,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_frozen_pantry_open",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 824,
+    "max_duration_ms": 1500,
+    "peakDbtp": -3.95,
+    "leading_silence_ms": 0.29,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_frozen_pantry_progress",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 634,
+    "max_duration_ms": 700,
+    "peakDbtp": -4.47,
+    "leading_silence_ms": 0.7,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_frozen_pantry_complete",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1548,
+    "max_duration_ms": 1600,
+    "peakDbtp": -4.28,
+    "leading_silence_ms": 0.16,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_frozen_pantry_close",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 803,
+    "max_duration_ms": 1000,
+    "peakDbtp": -3.98,
+    "leading_silence_ms": 0.61,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_hunger_herald_open",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1440,
+    "max_duration_ms": 1500,
+    "peakDbtp": -4.4,
+    "leading_silence_ms": 0.11,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_hunger_herald_progress",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 436,
+    "max_duration_ms": 700,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.36,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_hunger_herald_complete",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1532,
+    "max_duration_ms": 1600,
+    "peakDbtp": -3.98,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_hunger_herald_close",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 938,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.52,
+    "leading_silence_ms": 0.23,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_defend_nectar_open",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1169,
+    "max_duration_ms": 1500,
+    "peakDbtp": -4.3,
+    "leading_silence_ms": 0.11,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_defend_nectar_progress",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 651,
+    "max_duration_ms": 700,
+    "peakDbtp": -4.23,
+    "leading_silence_ms": 0.34,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_defend_nectar_complete",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1556,
+    "max_duration_ms": 1600,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_defend_nectar_close",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 791,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.17,
+    "leading_silence_ms": 0.93,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_hunger_crack_open",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1145,
+    "max_duration_ms": 1500,
+    "peakDbtp": -4.14,
+    "leading_silence_ms": 8.91,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_hunger_crack_progress",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 636,
+    "max_duration_ms": 700,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 1.5,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_hunger_crack_complete",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1150,
+    "max_duration_ms": 1600,
+    "peakDbtp": -4.56,
+    "leading_silence_ms": 10.59,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_event_hunger_crack_close",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 562,
+    "max_duration_ms": 1000,
+    "peakDbtp": -4.39,
+    "leading_silence_ms": 3.06,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s01_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.43,
+    "lufs": -23.54,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s02_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.29,
+    "lufs": -25.72,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s03_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.49,
+    "lufs": -24.17,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s04_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.5,
+    "lufs": -25.75,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s05_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.5,
+    "lufs": -24.51,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s06_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.39,
+    "lufs": -25.56,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s07_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -4.4,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s08_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -6.33,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s09_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.37,
+    "lufs": -25.71,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s10_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.31,
+    "lufs": -24.25,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s11_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.42,
+    "lufs": -24.97,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s12_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -5.16,
+    "lufs": -23.95,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s13_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -15.84,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s14_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -5.67,
+    "lufs": -23.99,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s15_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.44,
+    "lufs": -24.72,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_insect_spawn_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 729,
+    "max_duration_ms": 800,
+    "peakDbtp": -3.58,
+    "leading_silence_ms": 3.76,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_insect_spawn_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 734,
+    "max_duration_ms": 800,
+    "peakDbtp": -2.05,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_insect_attack_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 574,
+    "max_duration_ms": 650,
+    "peakDbtp": -3.78,
+    "leading_silence_ms": 1.59,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_insect_attack_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 586,
+    "max_duration_ms": 650,
+    "peakDbtp": -3.55,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_insect_hurt_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 440,
+    "max_duration_ms": 500,
+    "peakDbtp": -3.99,
+    "leading_silence_ms": 4.65,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_insect_hurt_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 443,
+    "max_duration_ms": 500,
+    "peakDbtp": -3.58,
+    "leading_silence_ms": 0.23,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_insect_death_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 683,
+    "max_duration_ms": 750,
+    "peakDbtp": -3.69,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_insect_death_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 391,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.4,
+    "leading_silence_ms": 5.74,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_jelly_spawn_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 741,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.37,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_jelly_spawn_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 398,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.37,
+    "leading_silence_ms": 3.27,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_jelly_attack_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 592,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.41,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_jelly_attack_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 603,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.63,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_jelly_hurt_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 440,
+    "max_duration_ms": 500,
+    "peakDbtp": -4.19,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_jelly_hurt_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 451,
+    "max_duration_ms": 500,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_jelly_death_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 697,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.6,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_jelly_death_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 230,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.42,
+    "leading_silence_ms": 0.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ember_spawn_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 702,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.44,
+    "leading_silence_ms": 8.12,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ember_spawn_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 739,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.15,
+    "leading_silence_ms": 1.68,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ember_attack_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 604,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.61,
+    "leading_silence_ms": 0.41,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ember_attack_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 570,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.2,
+    "leading_silence_ms": 0.45,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ember_hurt_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 442,
+    "max_duration_ms": 500,
+    "peakDbtp": -4.6,
+    "leading_silence_ms": 1.95,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ember_hurt_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 379,
+    "max_duration_ms": 500,
+    "peakDbtp": -3.47,
+    "leading_silence_ms": 2.04,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ember_death_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 659,
+    "max_duration_ms": 750,
+    "peakDbtp": -3.64,
+    "leading_silence_ms": 1.5,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ember_death_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 648,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.24,
+    "leading_silence_ms": 10.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ice_spawn_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 741,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 0.43,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ice_spawn_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 251,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.42,
+    "leading_silence_ms": 0.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ice_attack_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 603,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.07,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ice_attack_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 600,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.24,
+    "leading_silence_ms": 0.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ice_hurt_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 452,
+    "max_duration_ms": 500,
+    "peakDbtp": -3.69,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ice_hurt_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 440,
+    "max_duration_ms": 500,
+    "peakDbtp": -4.18,
+    "leading_silence_ms": 0.52,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ice_death_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 586,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.17,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_ice_death_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 508,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.41,
+    "leading_silence_ms": 0.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_plant_spawn_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 752,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.21,
+    "leading_silence_ms": 0.29,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_plant_spawn_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 654,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.31,
+    "leading_silence_ms": 2.31,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_plant_attack_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 569,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.41,
+    "leading_silence_ms": 0.29,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_plant_attack_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 461,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.13,
+    "leading_silence_ms": 0.45,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_plant_hurt_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 344,
+    "max_duration_ms": 500,
+    "peakDbtp": -4.3,
+    "leading_silence_ms": 0.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_plant_hurt_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 437,
+    "max_duration_ms": 500,
+    "peakDbtp": -3.7,
+    "leading_silence_ms": 0.59,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_plant_death_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 542,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.41,
+    "leading_silence_ms": 0.93,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_plant_death_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 569,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.63,
+    "leading_silence_ms": 0.52,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_stone_spawn_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 732,
+    "max_duration_ms": 800,
+    "peakDbtp": -3.27,
+    "leading_silence_ms": 0.61,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_stone_spawn_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 737,
+    "max_duration_ms": 800,
+    "peakDbtp": -5.64,
+    "leading_silence_ms": 0.63,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_stone_attack_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 579,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.56,
+    "leading_silence_ms": 1.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_stone_attack_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 588,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.14,
+    "leading_silence_ms": 0.11,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_stone_hurt_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 436,
+    "max_duration_ms": 500,
+    "peakDbtp": -3.4,
+    "leading_silence_ms": 3.38,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_stone_hurt_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 439,
+    "max_duration_ms": 500,
+    "peakDbtp": -4.4,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_stone_death_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 619,
+    "max_duration_ms": 750,
+    "peakDbtp": -3.91,
+    "leading_silence_ms": 0.68,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_stone_death_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 520,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 0.11,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_crystal_spawn_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 646,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.43,
+    "leading_silence_ms": 1.9,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_crystal_spawn_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 740,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.89,
+    "leading_silence_ms": 1.47,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_crystal_attack_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 566,
+    "max_duration_ms": 650,
+    "peakDbtp": -4.21,
+    "leading_silence_ms": 1.59,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_crystal_attack_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 588,
+    "max_duration_ms": 650,
+    "peakDbtp": -3.63,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_crystal_hurt_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 436,
+    "max_duration_ms": 500,
+    "peakDbtp": -3.96,
+    "leading_silence_ms": 0.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_crystal_hurt_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 444,
+    "max_duration_ms": 500,
+    "peakDbtp": -3.84,
+    "leading_silence_ms": 0.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_crystal_death_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 558,
+    "max_duration_ms": 750,
+    "peakDbtp": -3.19,
+    "leading_silence_ms": 0.2,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_crystal_death_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 681,
+    "max_duration_ms": 750,
+    "peakDbtp": -3.79,
+    "leading_silence_ms": 0.75,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_shadow_spawn_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 749,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.42,
+    "leading_silence_ms": 6.89,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_shadow_spawn_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 720,
+    "max_duration_ms": 800,
+    "peakDbtp": -4.33,
+    "leading_silence_ms": 1.2,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_shadow_attack_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 597,
+    "max_duration_ms": 650,
+    "peakDbtp": -5.14,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_shadow_attack_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 604,
+    "max_duration_ms": 650,
+    "peakDbtp": -3.15,
+    "leading_silence_ms": 0.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_shadow_hurt_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 450,
+    "max_duration_ms": 500,
+    "peakDbtp": -2.51,
+    "leading_silence_ms": 0.02,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_shadow_hurt_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 440,
+    "max_duration_ms": 500,
+    "peakDbtp": -4.34,
+    "leading_silence_ms": 0.16,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_shadow_death_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 680,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.26,
+    "leading_silence_ms": 0.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_monster_shadow_death_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 700,
+    "max_duration_ms": 750,
+    "peakDbtp": -4.42,
+    "leading_silence_ms": 0.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_ruby_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1758,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.59,
+    "leading_silence_ms": 8.03,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_ruby_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 980,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.7,
+    "leading_silence_ms": 9.14,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_ruby_reaction_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1707,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.59,
+    "leading_silence_ms": 14.65,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_ruby_reaction_4",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1277,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.64,
+    "leading_silence_ms": 9.27,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_ruby_reaction_5",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1950,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.63,
+    "leading_silence_ms": 0.29,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_ruby_reaction_6",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1155,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.61,
+    "leading_silence_ms": 10.2,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_strawberry_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1981,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.64,
+    "leading_silence_ms": 3.76,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_strawberry_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1906,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.62,
+    "leading_silence_ms": 10.41,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_strawberry_reaction_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1114,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.59,
+    "leading_silence_ms": 1.52,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_strawberry_reaction_4",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1621,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.59,
+    "leading_silence_ms": 0.45,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_strawberry_reaction_5",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1725,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.65,
+    "leading_silence_ms": 14.08,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_strawberry_reaction_6",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1116,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.6,
+    "leading_silence_ms": 9.84,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_mint_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1565,
+    "max_duration_ms": 3800,
+    "peakDbtp": -3.07,
+    "leading_silence_ms": 10.05,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_mint_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1418,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.64,
+    "leading_silence_ms": 8.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_mint_reaction_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1277,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.59,
+    "leading_silence_ms": 0.07,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_mint_reaction_4",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1646,
+    "max_duration_ms": 3800,
+    "peakDbtp": -1.98,
+    "leading_silence_ms": 6.37,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_mint_reaction_5",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1524,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.58,
+    "leading_silence_ms": 37.19,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_mint_reaction_6",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1791,
+    "max_duration_ms": 3800,
+    "peakDbtp": -3.09,
+    "leading_silence_ms": 15.37,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_cocoa_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2044,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.62,
+    "leading_silence_ms": 11.81,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_cocoa_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 529,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.63,
+    "leading_silence_ms": 33.08,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_cocoa_reaction_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2515,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.64,
+    "leading_silence_ms": 10.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_cocoa_reaction_4",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1092,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.63,
+    "leading_silence_ms": 10.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_cocoa_reaction_5",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2459,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.64,
+    "leading_silence_ms": 9.89,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_cocoa_reaction_6",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2078,
+    "max_duration_ms": 3800,
+    "peakDbtp": -3.12,
+    "leading_silence_ms": 10.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_taro_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1342,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.59,
+    "leading_silence_ms": 8.62,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_taro_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1425,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.54,
+    "leading_silence_ms": 1.11,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_taro_reaction_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1092,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.66,
+    "leading_silence_ms": 1.43,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_taro_reaction_4",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 702,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.67,
+    "leading_silence_ms": 7.66,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_taro_reaction_5",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1331,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.61,
+    "leading_silence_ms": 8.3,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_taro_reaction_6",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1031,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.65,
+    "leading_silence_ms": 0.61,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_yuzu_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1455,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.64,
+    "leading_silence_ms": 15.51,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_yuzu_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1359,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.63,
+    "leading_silence_ms": 9.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_yuzu_reaction_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1281,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.65,
+    "leading_silence_ms": 27.35,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_yuzu_reaction_4",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1418,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.69,
+    "leading_silence_ms": 0.63,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_yuzu_reaction_5",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1422,
+    "max_duration_ms": 3800,
+    "peakDbtp": -3.01,
+    "leading_silence_ms": 10.95,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_yuzu_reaction_6",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1009,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.57,
+    "leading_silence_ms": 8.87,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_sesame_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 3445,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.67,
+    "leading_silence_ms": 12.74,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_sesame_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2286,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.63,
+    "leading_silence_ms": 11.54,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_sesame_reaction_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 3044,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.6,
+    "leading_silence_ms": 9.41,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_sesame_reaction_4",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2604,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.22,
+    "leading_silence_ms": 7.73,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_sesame_reaction_5",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2554,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.71,
+    "leading_silence_ms": 3.4,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_sesame_reaction_6",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1912,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.56,
+    "leading_silence_ms": 13.31,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_pomelo_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2210,
+    "max_duration_ms": 3800,
+    "peakDbtp": -3.02,
+    "leading_silence_ms": 10.07,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_pomelo_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2270,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.67,
+    "leading_silence_ms": 1.22,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_lime_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1564,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.58,
+    "leading_silence_ms": 8.82,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_lime_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 1381,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.61,
+    "leading_silence_ms": 9.09,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_bloodorange_reaction_1",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2276,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.65,
+    "leading_silence_ms": 0.18,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "vo_a23_bloodorange_reaction_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 2063,
+    "max_duration_ms": 3800,
+    "peakDbtp": -2.62,
+    "leading_silence_ms": 0.45,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "leadingSilence": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s01_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.4,
+    "lufs": -24.42,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s01_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.5,
+    "lufs": -25.56,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s02_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.38,
+    "lufs": -23.75,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s02_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.37,
+    "lufs": -25.28,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s03_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -3.2,
+    "lufs": -23.99,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s03_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.5,
+    "lufs": -24.39,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s04_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.4,
+    "lufs": -24.6,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s04_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -5.1,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s05_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.4,
+    "lufs": -25.13,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s05_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.75,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s06_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.41,
+    "lufs": -25.37,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s06_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -8.6,
+    "lufs": -23.96,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s07_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -5.59,
+    "lufs": -23.99,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s07_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -3.22,
+    "lufs": -23.98,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s08_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.97,
+    "lufs": -24.26,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s08_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.61,
+    "lufs": -24.01,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s09_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.51,
+    "lufs": -25.74,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s09_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -5.25,
+    "lufs": -23.99,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s10_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.59,
+    "lufs": -25.91,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s10_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.72,
+    "lufs": -24.01,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s11_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.41,
+    "lufs": -24.25,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s11_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.13,
+    "lufs": -23.99,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s12_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.87,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s12_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.56,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s13_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -3.69,
+    "lufs": -24.01,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s13_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.65,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s14_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -2.64,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s14_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -4.57,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s15_2",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -1.4,
+    "lufs": -25.49,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_ambience_s15_3",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 89760,
+    "peakDbtp": -3.49,
+    "lufs": -24.0,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "nonSilent": true,
+      "seam": true,
+      "loudness": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s01",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -4.67,
+    "lufs": -24.87,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s02",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -3.21,
+    "lufs": -24.23,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s03",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -4.58,
+    "lufs": -24.63,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s04",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -6.52,
+    "lufs": -24.11,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s05",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -6.02,
+    "lufs": -23.86,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s06",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -4.32,
+    "lufs": -24.13,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s07",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -4.52,
+    "lufs": -24.38,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s08",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -2.44,
+    "lufs": -24.62,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s09",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -3.64,
+    "lufs": -24.95,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s10",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -5.67,
+    "lufs": -24.06,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s11",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -4.56,
+    "lufs": -24.52,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s12",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -9.15,
+    "lufs": -24.71,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s13",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -7.7,
+    "lufs": -24.49,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s14",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -8.93,
+    "lufs": -24.83,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  },
+  {
+    "key": "sfx_a23_boss_ambience_s15",
+    "passed": true,
+    "reason": "pass",
+    "duration_ms": 29920,
+    "peakDbtp": -6.33,
+    "lufs": -24.93,
+    "checks": {
+      "format": true,
+      "duration": true,
+      "peak": true,
+      "loudness": true,
+      "seam": true,
+      "nonSilent": true
+    }
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "initial_screenshot_balance": 53036,
+  "spending_ceiling": 51510,
+  "credits_recorded": 51504.0,
+  "estimated_remaining": 1532.0,
+  "balance_verified": false,
+  "balance_note": "The API key lacks user_read; remaining balance is estimated from the owner screenshot and provider character-cost headers. No billing or overage settings changed.",
+  "delivered": 264,
+  "runtime_files": 222,
+  "source_only_ambience": 42,
+  "missing": []
+}

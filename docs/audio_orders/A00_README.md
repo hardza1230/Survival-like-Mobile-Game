@@ -26,6 +26,7 @@
 | `A19_EXPEDITION_SFX.md` | Temple Expedition: SFX17 + music2 + saved Ruby4 | 23 | 🟢 ผูกแล้ว v8.2.34 · รอฟังบนมือถือ |
 | `A20_RUBY_STAGE_ENTRY.md` | ม่านเข้าด่าน: SFX 7 (ม่าน/เดินทาง/สติงเกอร์ 3 บท + บอส) + Ruby แนะนำด่าน 15 + เล่นซ้ำ 4 | 26 | ✅ ผูกแล้ว v8.2.84 (ส่งครบ 26) · รอ QA มือถือ |
 | `A22_BOSS_TWISTS_ROOT_RIFT.md` | ลูกเล่นบอส 5 + รอด · Crown Root (มุด/เตือน/พุ่ง/หินแตก/Perfect/combo/ตีหัว/ระเบิด) · Seed Rift เหตุการณ์ 4 · Ruby 8 | 28 | 🟢 ผูกแล้ว v8.2.87 · รอฟังบนมือถือ |
+| `A23_LIVING_BATTLEFIELD.md` | Combat Patterns, side events, 15 stage ambiences, monster families, saved hero/Ruby/companion reactions and boss room ambience | 264 | 🟢 ผูก 222 ใน v8.3.5 · อีก 42 เป็นคลังสำรอง · รอฟังบนมือถือ |
 
 | `A21_COMBAT_ATTACK_IMPACTS.md` | เสียงโจมตีประจำฮีโร่ 45 + เสียงกระทบวัสดุ/คริติคอล 24 · variations | 69 | ✅ ผูกแล้ว v8.2.85 · รอฟังบนมือถือ |
 
