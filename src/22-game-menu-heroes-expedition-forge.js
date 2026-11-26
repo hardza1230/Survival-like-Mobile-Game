@@ -1586,7 +1586,7 @@
     Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
     this.boss=null; if(this.bossUI)this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
-    this.clearChapterCombatWave();
+    this.clearChapterCombatWave(true);
     this.clearFoes(); this.clearPickups(true); this.clearExitPortal();this.clearWaveObjective(); this.bossTwistEnd?.(false); this.seedRiftEventEnd?.(false);   /* v8.2.86 */this.clearStageProps(); if(this.pipG)this.pipG.clear();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});
     this.showMenu();

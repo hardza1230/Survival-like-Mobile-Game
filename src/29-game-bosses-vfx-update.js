@@ -1096,7 +1096,7 @@
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){this.clearChapterCombatWave?.();this.clearBossStory?.();this.clearSesRune?.(); this.clearTaroCombat?.();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); if(this.state==='dead')return; Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.cancelBeat();
+  die(){this.clearChapterCombatWave?.(true);this.clearBossStory?.();this.clearSesRune?.(); this.clearTaroCombat?.();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); if(this.state==='dead')return; Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.cancelBeat();
     // v5.30 🗿 Ancient Guard: ตายครั้งแรกของด่าน = รอด 1 HP + อมตะ 3 วิ
     if(Save.ancientHas('ancientGuard')&&!this._agUsed&&!this._inTutorial){ this._agUsed=true; this.player.hp=1; if(this.player.body)this.player.body.enable=true; this.player.iframe=3; this.screenFlash(0xc7a6ff,0.45,380); this.showBanner('🗿 Ancient Guard!','The temple shields you · 3s invulnerable',1600); return; }
     this.clearSugarCoins();

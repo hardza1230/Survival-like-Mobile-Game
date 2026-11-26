@@ -1,4 +1,5 @@
 const CHANGELOG = [
+  {v:'8.3.12',date:'2026-11-26',title:'Chapter 1: a new fight every wave',items:['Every Chapter 1 wave brings a named combat situation with a tip on how to beat it','Beat a situation’s goal for a burst of EXP','Side events wait on the map all stage; walk onto one only if you want to']},
   {v:'8.3.11',date:'2026-11-26',title:'Behind the scenes: tidier game code',items:['The game code is now organized in smaller files so updates can ship faster']},
   {v:'8.3.10',date:'2026-11-26',title:'Shorter Chapter 1 waves and stage preview cards',items:['Chapter 1 waves are shorter','Side events only appear after you have met them in their own stage','Cards before each Chapter 1 stage show what you will face']},
   {v:'8.3.9',date:'2026-11-26',title:'Store test APK finds new versions',items:['Mochi Store Test checks the live version and shows the download popup when newer','Later hides it for the day']},

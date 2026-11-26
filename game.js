@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.11';
+const GAME_VERSION = '8.3.12';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -96,10 +96,47 @@ const C1_COMBAT_PATTERNS={
 const C1_WAVE_SEC=[24,35,0,80,45],C1_RECOVERY_SEC=20;
 // v8.3.10 เจ้าของ: ภารกิจแทรกโผล่เฉพาะที่เคยเจอ · home = ด่านที่ภารกิจเต็มอยู่ (C1-2 Hunger’s Mouth · C1-3 Grandma’s Pot · C1-4 Frozen Pantry)
 const C1_SIDE_EVENTS=[
+  {name:'Hunger Herald',home:0,key:'hh_gate',icon:'📯',color:0xff8fb1,types:['fast','basic','basic','dasher'],reward:22},
   {name:'Hunger’s Mouth',home:1,key:'hm_hand',icon:'✦',color:0xbc89ff,types:['fast','fast','dasher'],reward:24},
+  {name:'Grandma’s Pot',home:2,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26},
   {name:'Frozen Pantry',home:3,key:'fp_jar',icon:'❄',color:0x9fe0ff,types:['tank','basic','basic'],reward:28},
-  {name:'Grandma’s Pot',home:2,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26}
+  {name:'Grandma’s Golem',home:4,key:'gg_oven',icon:'🗿',color:0xf2b06b,types:['tank','tank','fast'],reward:30}
 ];
+/* v8.3.12 เจ้าของ: ภารกิจหลัก C1 = สถานการณ์การต่อสู้ทุกเวฟ (เวฟ 1,2,4,5 · เวฟ 3 = มินิบอส) · pattern = รูปแบบศัตรู · goal = เป้าโบนัส EXP
+   goal 'leader' = ล้มหัวหน้า · 'pack' = ล้มทั้งกลุ่มภายใน C1_SIT_SEC · 'dodge' = ไม่โดนพื้นอันตรายจนจบ */
+const C1_SITUATIONS=[
+  [{name:'Tunnel Ambush',pattern:'Ambush',hint:'Ants burst from tunnels around you — break out of the ring',goal:'pack'},
+   {name:'Soldier Line',pattern:'Fortress',hint:'Shields in front, spitters behind — go around the line',goal:'pack'},
+   {name:'Spitter Barrage',pattern:'Barrage',hint:'Spitters fire from range — close in and take them out',goal:'pack'},
+   {name:'Colony Swarm',pattern:'Stampede',hint:'The colony charges in a line — dash through the gap',goal:'pack'}],
+  [{name:'Pipe Burst',pattern:'Pincer',hint:'They pour from pipes on both sides — don’t get caught between',goal:'pack'},
+   {name:'Clog Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Sewage Shift',pattern:'Hazard Shift',hint:'Toxic sludge drifts across the floor — keep moving',goal:'dodge'},
+   {name:'Flood Swarm',pattern:'Last Stand',hint:'A flood of monsters — stay at the edge of the crowd',goal:'pack'}],
+  [{name:'Hunter Pack',pattern:'Hunter Pack',hint:'Fast hunters chase you — turn and fight, don’t run straight',goal:'pack'},
+   {name:'Furnace Barrage',pattern:'Barrage',hint:'Burners fire from range — close in and take them out',goal:'pack'},
+   {name:'Pan Fortress',pattern:'Fortress',hint:'Heavy pans block the way — circle behind them',goal:'pack'},
+   {name:'Heat Rush',pattern:'Stampede',hint:'A rush of hot mochi charges — dash through the gap',goal:'pack'}],
+  [{name:'Ice Squad Commander',pattern:'Commander',hint:'The captain speeds up its squad — defeat it first',goal:'leader'},
+   {name:'Frozen Fortress',pattern:'Fortress',hint:'Frozen guards block the way — circle behind them',goal:'pack'},
+   {name:'Ice Floor Shift',pattern:'Hazard Shift',hint:'Ice drifts across the floor — keep moving',goal:'dodge'},
+   {name:'Frost Pincer',pattern:'Pincer',hint:'Squads close in from both sides — break out to one side',goal:'pack'}],
+  [{name:'Banquet Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Oven Barrage',pattern:'Barrage',hint:'Oven guards fire from range — close in and take them out',goal:'pack'},
+   {name:'Crumb Shift',pattern:'Hazard Shift',hint:'Burning crumbs drift across the floor — keep moving',goal:'dodge'},
+   {name:'Last Stand',pattern:'Last Stand',hint:'The Hunger throws everything — stay at the edge of the crowd',goal:'pack'}]
+];
+const C1_SIT_SEC=20,C1_SIT_XP=.5;
+const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺'};   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
+/* v8.3.12 เจ้าของ: Combat Director เลือก pattern ตาม เอกลักษณ์ด่าน × ช่วงเวลา × จำนวนศัตรูในสนาม (ไม่สุ่มลอย ๆ) · น้ำหนักเอกลักษณ์ด่าน (ไม่มี = 1) */
+const C1_STAGE_PATTERN_WEIGHT=[
+  {Ambush:2.2,Stampede:1.8,'Hunter Pack':1.3},
+  {Pincer:2.2,Commander:1.8,'Hazard Shift':1.4},
+  {'Hunter Pack':2,Barrage:1.8,Fortress:1.5},
+  {Commander:2,Fortress:1.8,'Hazard Shift':1.6},
+  {Commander:1.6,Barrage:1.5,'Hazard Shift':1.5,'Last Stand':1.8}
+];
+const C1_HEAVY_PATTERNS=['Commander','Fortress','Pincer','Last Stand'],C1_FIELD_FULL=.7,C1_FIELD_EMPTY=.3;
 // v7.9.50 Card types unlock stage by stage in Story (owner: reveal card types gradually, as part of the tutorial) · value = stage index where the type first appears
 /* v7.9.86 เจ้าของ: มอน/บอส/มินิบอสห้ามเกิดนอกแมพ · จุดที่อยู่นอกแมพ → ย้ายไปกลางแมพ (สุ่มรอบ ๆ กลางเล็กน้อย) */
 function inMapPt(x,y,m=80){ const L=WORLD/2-m; return [Math.max(-L,Math.min(L,x)),Math.max(-L,Math.min(L,y))]; }   // v8.1.105 เจ้าของ: มอนโผล่กลางจอ — เดิมจุดนอกแมพถูกสุ่มไปใกล้กลางแมพ → ตอนนี้ดันเข้าขอบแมพแทน
@@ -109,6 +146,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.3.12',date:'2026-11-26',title:'Chapter 1: a new fight every wave',items:['Every Chapter 1 wave brings a named combat situation with a tip on how to beat it','Beat a situation’s goal for a burst of EXP','Side events wait on the map all stage; walk onto one only if you want to']},
   {v:'8.3.11',date:'2026-11-26',title:'Behind the scenes: tidier game code',items:['The game code is now organized in smaller files so updates can ship faster']},
   {v:'8.3.10',date:'2026-11-26',title:'Shorter Chapter 1 waves and stage preview cards',items:['Chapter 1 waves are shorter','Side events only appear after you have met them in their own stage','Cards before each Chapter 1 stage show what you will face']},
   {v:'8.3.9',date:'2026-11-26',title:'Store test APK finds new versions',items:['Mochi Store Test checks the live version and shows the download popup when newer','Later hides it for the day']},
@@ -15589,7 +15627,7 @@ class Game extends Phaser.Scene {
     Save.addSugar(this.sugarStage); this.gainCharExp(Math.floor(this.kills*0.5)); this.sugarStage=0;
     this.boss=null; if(this.bossUI)this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e){ if(e._aura){e._aura.destroy();e._aura=null;} e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
-    this.clearChapterCombatWave();
+    this.clearChapterCombatWave(true);
     this.clearFoes(); this.clearPickups(true); this.clearExitPortal();this.clearWaveObjective(); this.bossTwistEnd?.(false); this.seedRiftEventEnd?.(false);   /* v8.2.86 */this.clearStageProps(); if(this.pipG)this.pipG.clear();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});
     this.showMenu();
@@ -15754,7 +15792,7 @@ class Game extends Phaser.Scene {
   getPowerGuide(stageIndex){
     const st=STAGES[stageIndex]||STAGES[0],rating=Save.power(this.character),recommended=stageRecommendedPower(STAGES.indexOf(st)),ratio=rating/recommended;
     // v6.55.17: ช่วยเฉพาะด่าน 1-2 · ด่าน 3+ = ของจริง ไม่ผ่อน และพลังเกินแนะนำ → ศัตรูถึกขึ้น (มีเพดาน)
-    const gap=stageIndex<2?Phaser.Math.Clamp(1-ratio,0,0.60):0,assist=gap*0.32,over=stageIndex>=2?Math.max(0,ratio-1):0;
+    const gap=stageIndex<2?Phaser.Math.Clamp(1-ratio,0,0.60):0,assist=gap*0.32,over=stageIndex>=2&&!this._v83Run?Math.max(0,ratio-1):0;   /* v8.3.12 เจ้าของ: C1 ต่อเนื่อง ไม่เพิ่มเลือด/ดาเมจศัตรูเพราะพลังผู้เล่นเกินแนะนำ */
     return{rating,recommended,ratio,enemyHp:(1-assist)*(1+Math.min(0.35,over*0.25)),enemyDmg:(1-assist*0.78)*(1+Math.min(0.20,over*0.15)),reward:1+gap*0.50,label:ratio>=1.15?'Above recommended':ratio>=0.90?'Ready':ratio>=0.70?'Challenging':'Underpowered'};
   }
   clearChapterDepth(){
@@ -15864,7 +15902,7 @@ class Game extends Phaser.Scene {
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
   startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._qfRun={};this._a23AudioAt=0;this._holdFire=false;this.time?.delayedCall?.(0,()=>this.stageMood?.(this.recipeMode||this.riftMode?null:i));this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
-    this.clearChapterCombatWave();
+    this.clearChapterCombatWave(true);
     this._c1Combat=null;
     this._v83Run=false;
     this._a22Said={};
@@ -15906,6 +15944,7 @@ class Game extends Phaser.Scene {
     this._v83Run=i>=0&&i<5&&!this.riftMode&&!this._inTutorial&&!this.recipeMode&&!this.bossRush
       &&(typeof window==='undefined'||new URLSearchParams(window.location.search).get('combat83')!=='0');
     if(this._v83Run){
+      this._powerGuide=this.getPowerGuide(i);   /* v8.3.12 คิดใหม่หลังรู้ว่าเป็น C1 ต่อเนื่อง (ไม่สเกลตามพลังผู้เล่น) */
       this._c1Combat={deck:this.c1SideDeck(i),offered:new Set(),loot:new Map()};
       this._missionDeal=this.c1PreviewDeal?.(i)||null;this.updateWaveText();
     }
@@ -16470,9 +16509,10 @@ class Game extends Phaser.Scene {
     const st=STAGES[this.stageIndex],p=this.waveProfile(w); this._waveTimed=false; this._goldWave=false; this._crownCurse=null;
     if(this._v83Run&&w!==st.miniAt){
       const d=this._c1Combat;
-      if(d){d.delay=3;d.phase=null;d.patterns=[];d.nextEvent=w===1||w===3?4+Math.random()*5:null;}
+      if(d){d.delay=3;d.phase=null;d.patterns=[];}
       this.mode='wave';this.clearWaveObjective();this.startSurvivalWave(w,!!seamless);
       this.waveDur=this.waveTimer=(C1_WAVE_SEC[w]||45);
+      this.startChapterSituationWave?.(w);   /* v8.3.12 ภารกิจหลัก = สถานการณ์การต่อสู้ทุกเวฟ */
       this.updateWaveText();return;
     }
     if(w===st.miniAt){this.mode='miniWarning';this.setupSpawnRates(w);this.updateWaveText();
@@ -17668,7 +17708,7 @@ class Game extends Phaser.Scene {
     const L=this.camUI(this.add.container(0,0).setDepth(119)); L.setScrollFactor?.(1); this._dealL=L; this.physics.pause(); const prevState=this.state; this.state='cinematic';
     const dim=this.add.rectangle(0,0,W,H,0x0b0612,.55).setOrigin(0); L.add(dim);
     const gap=8,cw=Math.min(66,(W-28-gap*(n-1))/n),chh=Math.round(cw*1.42),cy=Math.round(H*.56),x0=W/2-((cw+gap)*n-gap)/2+cw/2,P=i=>x0+i*(cw+gap);
-    const cap=this.add.text(W/2,cy-chh/2-26,deal.preview?'In this stage':'Missions in this stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a',stroke:'#24172c',strokeThickness:4}).setOrigin(.5).setAlpha(0); L.add(cap);
+    const cap=this.add.text(W/2,cy-chh/2-26,deal.preview?'In this stage'+(deal.side?.length?'\nSide events: '+deal.side.join(' · '):''):'Missions in this stage',{align:'center',fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a',stroke:'#24172c',strokeThickness:4}).setOrigin(.5).setAlpha(0); L.add(cap);
     const mk=(i)=>{ const c=this.add.container(W/2,cy);
       if(this.realTex?.('cb93_back')&&this.add.image){
         const back=this.add.image(0,0,'cb93_back').setDisplaySize(cw,chh);
@@ -18602,12 +18642,14 @@ class Game extends Phaser.Scene {
     return points;
   }
   /* v8.3.10 เจ้าของ: ภารกิจแทรกเฉพาะที่เคยเจอ (home ≤ ด่านนี้) · ของด่านนี้มาก่อน แล้วสุ่มที่เหลือ */
-  c1SideDeck(i){const own=C1_SIDE_EVENTS.filter(e=>e.home===i),past=Phaser.Utils.Array.Shuffle(C1_SIDE_EVENTS.filter(e=>e.home<i));return own.concat(past);}
+  c1SideDeck(i){const own=C1_SIDE_EVENTS.filter(e=>e.home===i),past=Phaser.Utils.Array.Shuffle(C1_SIDE_EVENTS.filter(e=>e.home<i));return own.concat(past).slice(0,2);}   /* v8.3.12 ของด่านนี้ 1 + ที่เคยเจอ 1 */
   /* v8.3.10 เจ้าของ: แจกไพ่ก่อนด่าน C1 แบบใหม่ = บอกเฉย ๆ ว่าแต่ละเวฟเจออะไร (ไม่มี Reroll) · ภารกิจแทรกโผล่ในเวฟ 2 และ 4 */
-  c1PreviewDeal(i){const st=STAGES[i];if(!st)return null;const deck=this._c1Combat?.deck||[],labels={},waves={},slots=[];
-    const base=[{name:'Warm-up',emoji:'🌱'},{name:'Pressure',emoji:'⚔️'},null,{name:'Escalation',emoji:'🔥'},{name:'Swarm',emoji:'🌊'}];
-    let k=0;for(let w=0;w<(st.waves||5);w++){if(w===st.miniAt)continue;slots.push(w);waves[w]='_c1';const ev=(w===1||w===3)?deck[k++]:null;if(ev&&this._c1Combat)(this._c1Combat.plan=this._c1Combat.plan||{})[w]=ev;labels[w]=ev?{name:ev.name,emoji:ev.icon,event:true}:(base[w]||{name:'Combat',emoji:'⚔️'});}
-    return {waves,slots,lead:null,plan:true,preview:true,labels};}
+  /* v8.3.12 เจ้าของ: การ์ดก่อนด่าน = ชื่อสถานการณ์ของแต่ละเวฟ + ภารกิจรองที่มีในแมพ (ไม่มี Reroll) */
+  c1PreviewDeal(i){const st=STAGES[i];if(!st)return null;const sits=C1_SITUATIONS[i]||[],labels={},waves={},slots=[];
+    let k=0;for(let w=0;w<(st.waves||5);w++){if(w===st.miniAt)continue;slots.push(w);waves[w]='_c1';const sit=sits[k++];labels[w]=sit?{name:sit.name,emoji:C1_SIT_EMOJI[sit.pattern]||'⚔️'}:{name:'Combat',emoji:'⚔️'};}
+    const side=(this._c1Combat?.deck||[]).map(e=>e.name);
+    return {waves,slots,lead:null,plan:true,preview:true,labels,side};}
+  c1SituationFor(w){const st=STAGES[this.stageIndex];if(!st||w===st.miniAt)return null;const order=[];for(let k=0;k<(st.waves||5);k++)if(k!==st.miniAt)order.push(k);return (C1_SITUATIONS[this.stageIndex]||[])[order.indexOf(w)]||null;}
   chapterCombatPhase(){
     if(this.waveIndex===0)return 'warm';
     if(this.waveIndex===1)return 'pressure';
@@ -18631,14 +18673,8 @@ class Game extends Phaser.Scene {
     }
     for(const [foe,id] of d.loot)if(!foe.active||foe._c1SpawnId!==id)d.loot.delete(foe);
     if(d.event)this.tickChapterSideEvent(d,dt);
-    if(d.nextEvent!=null&&!d.offered.has(this.waveIndex)&&!d.event&&!d.hazard&&this.waveTimer>16){
-      d.nextEvent-=dt;
-      const planned=d.plan?d.plan[this.waveIndex]:d.deck[0];   /* v8.3.10 เวฟตรงกับการ์ดที่แจกก่อนด่าน */
-      if(d.nextEvent<=0){
-        d.offered.add(this.waveIndex);
-        if(planned){if(!d.plan)d.deck.shift();this.startChapterSideEvent(d,planned);}
-      }
-    }
+    else this.tickChapterSideObjects(d);   /* v8.3.12 ภารกิจรอง = วัตถุในแมพทั้งด่าน · แตะเพื่อเริ่ม */
+    this.tickChapterSituation(d,dt);
     const phase=this.chapterCombatPhase();
     if(d.phase!==phase){
       d.phase=phase;
@@ -18648,20 +18684,68 @@ class Game extends Phaser.Scene {
     if(d.delay>0||d.event||d.hazard||d.route||this.waveTimer<4)return;
     const room=Math.min(this.maxLive,this.storyLiveCap())-this.enemies.countActive(true);
     if(room<3){d.delay=1;return;}
-    if(!d.patterns.length){
-      const minimum={Commander:1,Fortress:1,'Hazard Shift':2};
-      d.patterns=Phaser.Utils.Array.Shuffle(C1_COMBAT_PATTERNS[phase].filter(name=>this.stageIndex>=(minimum[name]||0)));
-    }
-    const available=name=>!(name==='Commander'&&d.command);
-    let candidate=d.patterns.findIndex(name=>name!==d.last&&available(name));
-    if(candidate<0)candidate=d.patterns.findIndex(available);
-    if(candidate<0){d.patterns=[];d.delay=3;return;}
-    const pattern=d.patterns.splice(candidate,1)[0];
+    if(d.sit&&d.sit.state==='pending')return;   /* รอให้สถานการณ์หลักของเวฟเริ่มก่อน */
+    const pattern=this.chapterCombatPick(d,phase,room);
+    if(!pattern){d.delay=2;return;}
     this.spawnChapterCombatPattern(d,pattern,room);
-    d.last=pattern;
+    d.recent=[pattern,...(d.recent||[])].slice(0,2);d.last=pattern;
     d.delay=7+Math.random()*3;
   }
-  spawnChapterCombatPattern(d,pattern,room){
+  /* v8.3.12 เจ้าของ: เลือก pattern ตามเงื่อนไข ไม่สุ่มลอย ๆ · คะแนน = เอกลักษณ์ด่าน × ช่วงเวลาในเวฟ × จำนวนศัตรูในสนาม · ห้ามซ้ำ 2 ครั้งล่าสุด · สุ่มเฉพาะตอนคะแนนเท่ากัน */
+  chapterCombatPatternScore(name,phase,fill,late){
+    const minimum={Commander:1,Fortress:1,'Hazard Shift':2};if(this.stageIndex<(minimum[name]||0))return 0;
+    if(!(C1_COMBAT_PATTERNS[phase]||[]).includes(name))return 0;
+    const identity=(C1_STAGE_PATTERN_WEIGHT[this.stageIndex]||{})[name]||1,heavy=C1_HEAVY_PATTERNS.includes(name);
+    const field=fill>=C1_FIELD_FULL?(heavy?.15:1):fill<=C1_FIELD_EMPTY?(heavy?1.5:.8):1;
+    const time=heavy?(late?1.3:.8):(late?.9:1.15);
+    return identity*field*time;
+  }
+  chapterCombatPick(d,phase,room){
+    const cap=Math.max(1,Math.min(this.maxLive,this.storyLiveCap())),fill=1-room/cap,dur=this.waveDur||1,late=(this.waveTimer||0)<dur*.5;
+    const recent=d.recent||[],names=[...new Set(Object.values(C1_COMBAT_PATTERNS).flat())];
+    let best=0,pick=[];
+    for(const name of names){if(recent.includes(name)||(name==='Commander'&&d.command))continue;const v=this.chapterCombatPatternScore(name,phase,fill,late);if(v<=0)continue;
+      if(v>best+1e-9){best=v;pick=[name];}else if(Math.abs(v-best)<=1e-9)pick.push(name);}
+    if(!pick.length)return null;
+    return pick[Math.floor(Math.random()*pick.length)];
+  }
+  /* v8.3.12 เจ้าของ: ภารกิจหลัก = สถานการณ์การต่อสู้ทุกเวฟ · เริ่มหลังต้นเวฟ 2 วิ (เวฟ 4 รอช่วงพักจบ) · ทำเป้าได้ = EXP burst */
+  startChapterSituationWave(w){const d=this._c1Combat;if(!d)return;const def=this.c1SituationFor(w);d.sit=def?{def,wave:w,state:'pending',delay:2,id:(d.sitN=(d.sitN||0)+1),marks:new Map(),left:C1_SIT_SEC,hit:false}:null;}
+  tickChapterSituation(d,dt){
+    const S=d.sit;if(!S||S.wave!==this.waveIndex)return;
+    if(S.state==='pending'){
+      if(this.waveIndex===3&&this.waveTimer>C1_WAVE_SEC[3]-C1_RECOVERY_SEC)return;
+      S.delay-=dt;if(S.delay>0||d.hazard||d.route)return;
+      const room=Math.min(this.maxLive,this.storyLiveCap())-this.enemies.countActive(true);if(room<3)return;
+      S.state='active';
+      this.showBanner?.('⚔️ '+S.def.name,S.def.hint,3000);
+      this.spawnChapterCombatPattern(d,S.def.pattern,Math.max(room,5),S);
+      d.recent=[S.def.pattern,...(d.recent||[])].slice(0,2);d.last=S.def.pattern;d.delay=Math.max(d.delay||0,8);
+      if(S.def.goal==='leader'&&d.command)S.leaderId=d.command.id;
+      return;
+    }
+    if(S.state!=='active')return;
+    S.left-=dt;
+    let done=false;
+    if(S.def.goal==='pack'){for(const [foe,id] of S.marks)if(!foe.active||foe._c1SpawnId!==id)S.marks.delete(foe);done=S.marks.size===0;}
+    else if(S.def.goal==='leader')done=!d.command||d.command.id!==S.leaderId;
+    else if(S.def.goal==='dodge'){if(S.hit){this.endChapterSituation(d,false);return;}done=!d.hazard;}
+    if(done){this.endChapterSituation(d,true);return;}
+    if(S.left<=0){this.endChapterSituation(d,false);return;}
+    if(!d.event){const what=S.def.goal==='pack'?S.marks.size+' left':S.def.goal==='leader'?'Defeat the leader':'Don’t get hit';
+      this.waveObjTxt?.setText(S.def.name+' · '+what+' · '+Math.ceil(S.left)+'s').setVisible(true).setColor('#ffe9bd');this.waveObjBg?.setVisible(true);this.waveObjBar?.setVisible(false);}
+  }
+  endChapterSituation(d,success){
+    const S=d.sit;if(!S||S.state!=='active')return;S.state=success?'won':'lost';
+    if(!d.event)for(const o of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])o?.setVisible(false);
+    const P=this.player;if(!P)return;
+    if(success){
+      const total=Math.max(4,Math.round(storyXpNext(this.level||1)*C1_SIT_XP)),n=6;
+      for(let i=0;i<n;i++){const a=i*TAU/n;this.dropOrb?.(P.x+Math.cos(a)*70,P.y+Math.sin(a)*70,Math.max(1,Math.round(total/n)));}
+      this.floatText?.(P.x,P.y-60,S.def.name+' cleared · EXP burst!',0x9fffb0);Sfx.clear?.();
+    }else this.floatText?.(P.x,P.y-60,S.def.name+' passed',0xcfc6dc);
+  }
+  spawnChapterCombatPattern(d,pattern,room,sit){
     const audioPattern=pattern.toLowerCase().replace(/ /g,'_'),player=this.player,epoch=this._artEpoch;
     this.a23Cue?.('pattern_'+audioPattern+'_warning',.29,2);
     for(const [delay,action] of [[250,'arrival'],[4800,'release']])this.time?.delayedCall?.(delay,()=>{if(this.state==='play'&&this.player===player&&this._artEpoch===epoch)this.a23Cue?.('pattern_'+audioPattern+'_'+action,.18,2);});
@@ -18679,6 +18763,7 @@ class Game extends Phaser.Scene {
       const enemy=p.type==='elite'?this.spawnElite(false,false,point):this.spawnEnemy(p.type,point.angle,point.distance,true);
       if(!enemy)continue;
       const id=enemy._c1SpawnId;
+      if(sit&&sit.def.goal==='pack')sit.marks.set(enemy,id);
       if(p.type==='elite'){
         this.spawnRise(enemy,point.x,point.y,true);
         leader=enemy;
@@ -18695,7 +18780,7 @@ class Game extends Phaser.Scene {
     }
     if(leader)d.command={leader,id:leader._c1SpawnId,followers};
     if(routes.length)d.route={left:5.8,entries:routes};
-    if(pattern==='Hazard Shift')this.startChapterCombatHazard(d,angle);
+    if(pattern==='Hazard Shift')this.startChapterCombatHazard(d,angle,sit?.def?.hint);
     if(pattern==='Loot Rush'||pattern==='Last Stand')this.floatText?.(ox,oy-58,pattern,0xffd166);
   }
   clearChapterCombatRoute(d){
@@ -18708,7 +18793,7 @@ class Game extends Phaser.Scene {
     for(const f of d.command?.followers||[])if(f.enemy._c1SpawnId===f.id)f.enemy.spd=f.speed;
     d.command=null;
   }
-  startChapterCombatHazard(d,angle){
+  startChapterCombatHazard(d,angle,text){
     const P=this.player,c=Math.cos(angle),s=Math.sin(angle);
     const circles=[-1,1].map(k=>{
       const [x,y]=inMapPt(P.x+k*(c*150-s*104),P.y+k*(s*150+c*104));
@@ -18716,7 +18801,7 @@ class Game extends Phaser.Scene {
         .setStrokeStyle(2,0xcaeeff,.85).setDepth(-990))};
     });
     d.hazard={left:6,cd:0,circles};
-    this.floatText?.(P.x,P.y-55,'Ice drifts across the floor',0xcaeeff);
+    this.floatText?.(P.x,P.y-55,text||'Ice drifts across the floor',0xcaeeff);
   }
   tickChapterCombatHazard(d,dt){
     const h=d.hazard;
@@ -18728,7 +18813,7 @@ class Game extends Phaser.Scene {
       ring.setPosition(...inMapPt(ring.x+vx*dt,ring.y+vy*dt));
       ring.setFillStyle(0x83c9fd,.28);
       if(h.cd<=0&&this.dist(this.player.x,this.player.y,ring.x,ring.y)<52){
-        h.cd=1.1;this.hurtPlayer?.(4+this.stageIndex);
+        h.cd=1.1;if(d.sit&&d.sit.state==='active'&&d.sit.def.goal==='dodge')d.sit.hit=true;this.hurtPlayer?.(4+this.stageIndex);
         if(this.state!=='play')return;
       }
     }
@@ -18737,8 +18822,24 @@ class Game extends Phaser.Scene {
     for(const q of d.hazard?.circles||[])q.ring.destroy();
     d.hazard=null;
   }
-  startChapterSideEvent(d,def){
-    const {x,y}=this.objectivePosition(0,1,95,132),active=d.event={
+  /* v8.3.12 เจ้าของ: ภารกิจรอง = วัตถุอยู่ในแมพตั้งแต่ต้นจนจบด่าน · เดินไปแตะ = เริ่ม · ไม่แตะ = ไม่มีโทษ · ทำได้ทีละอัน */
+  placeChapterSideObjects(d){
+    d.objects=[];const list=d.deck||[];
+    list.forEach((def,k)=>{const {x,y}=this.objectivePosition(k,list.length,300,520),visuals=[];
+      visuals.push(this.camWorld(this.add.circle(x,y,58,def.color,.08).setStrokeStyle(3,def.color,.7).setDepth(-989)));
+      const art=this.artSpr?.(def.key,x,y+22,72,0,{sig:false,depth:y+3});
+      visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
+      visuals.push(this.camWorld(this.add.text(x,y-70,def.icon+' '+def.name+'\nTouch to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',align:'center',stroke:'#171321',strokeThickness:4}).setOrigin(.5).setDepth(90010)));
+      d.objects.push({def,x,y,visuals,done:false});});
+  }
+  tickChapterSideObjects(d){
+    if(!d.objects)this.placeChapterSideObjects(d);
+    const P=this.player;if(!P)return;
+    for(const o of d.objects){if(o.done)continue;if(this.dist(P.x,P.y,o.x,o.y)<60){o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);return;}}
+  }
+  clearChapterSideObjects(d){for(const o of d?.objects||[])for(const v of o.visuals)v.destroy();if(d)d.objects=null;}
+  startChapterSideEvent(d,def,pos){
+    const {x,y}=pos||this.objectivePosition(0,1,95,132),active=d.event={
       def,x,y,left:20,hold:0,spawned:0,spawnDelay:.25,progress:0,targets:new Map(),visuals:[]
     };
     active.visuals.push(this.camWorld(this.add.circle(x,y,58,def.color,.10)
@@ -18806,10 +18907,13 @@ class Game extends Phaser.Scene {
       this.floatText?.(this.player.x,this.player.y-55,'+'+e.def.reward+' Sugar',0xffe08a);
     }
   }
-  clearChapterCombatWave(){
+  clearChapterCombatWave(all){
     const d=this._c1Combat;
     if(!d)return;
     this.endChapterSideEvent(d,false,true);
+    if(d.sit&&d.sit.state!=='won'){d.sit.state='lost';for(const o of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])o?.setVisible(false);}
+    d.sit=null;
+    if(all)this.clearChapterSideObjects(d);   /* v8.3.12 วัตถุภารกิจรองอยู่ข้ามเวฟ · ลบเมื่อจบ/ออกด่าน */
     this.clearChapterCombatRoute(d);
     this.clearChapterCombatCommand(d);
     this.clearChapterCombatHazard(d);
@@ -18885,7 +18989,8 @@ class Game extends Phaser.Scene {
     if(this.mode!=='boss'){ this._bossMsnTried=false; this._twistN=0; if(this._twist)this.bossTwistEnd?.(false); if(this._stack&&this._stack.boss)this.stackEnd?.(true); }
   }
   // HP บอสไต่ตามเลเวลในรันและ Power Guide แบบอ่อน ๆ เท่านั้น ไม่สเกลตาม rank Fullจน progression ไร้ความหมาย
-  bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);return Math.min(3.0,(1+Math.max(0,(this.level||1)-1)*(this.usesStoryBudget?.()?0.025:0.055))*pg.enemyHp); }
+  bossHpMul(){const pg=this._powerGuide||this.getPowerGuide(this.stageIndex);if(this._v83Run)return Math.min(3.0,pg.enemyHp);   /* v8.3.12 เจ้าของ: C1 ไม่เพิ่มเลือดบอสตามเลเวล/บิลด์ผู้เล่น */
+    return Math.min(3.0,(1+Math.max(0,(this.level||1)-1)*(this.usesStoryBudget?.()?0.025:0.055))*pg.enemyHp); }
   // ยิ่งฆ่ามอนในด่านเยอะ ศัตรู/บอสยิ่งถึกขึ้น (ทวีคูณ) — ทำให้เกมยากขึ้นเรื่อย ๆ ระหว่างด่าน
   killPowerMul(){ if(this.usesStoryBudget?.())return 1;return (1 + Math.min(1.8, (this.stageKills||0)*0.005)); }
   // ผ่อนความยากให้ผู้เล่นใหม่: Stage 1 + ช่วงต้นStage (ฆ่ายังน้อย) + ยังไม่จบ tutorial → มอนเลือดน้อยลง (แก้ feedback "~4 hits per enemy")
@@ -26403,7 +26508,7 @@ class Game extends Phaser.Scene {
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){this.clearChapterCombatWave?.();this.clearBossStory?.();this.clearSesRune?.(); this.clearTaroCombat?.();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); if(this.state==='dead')return; Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.cancelBeat();
+  die(){this.clearChapterCombatWave?.(true);this.clearBossStory?.();this.clearSesRune?.(); this.clearTaroCombat?.();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); if(this.state==='dead')return; Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.cancelBeat();
     // v5.30 🗿 Ancient Guard: ตายครั้งแรกของด่าน = รอด 1 HP + อมตะ 3 วิ
     if(Save.ancientHas('ancientGuard')&&!this._agUsed&&!this._inTutorial){ this._agUsed=true; this.player.hp=1; if(this.player.body)this.player.body.enable=true; this.player.iframe=3; this.screenFlash(0xc7a6ff,0.45,380); this.showBanner('🗿 Ancient Guard!','The temple shields you · 3s invulnerable',1600); return; }
     this.clearSugarCoins();

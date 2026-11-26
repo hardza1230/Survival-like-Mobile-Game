@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.11';
+const GAME_VERSION = '8.3.12';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -96,10 +96,47 @@ const C1_COMBAT_PATTERNS={
 const C1_WAVE_SEC=[24,35,0,80,45],C1_RECOVERY_SEC=20;
 // v8.3.10 เจ้าของ: ภารกิจแทรกโผล่เฉพาะที่เคยเจอ · home = ด่านที่ภารกิจเต็มอยู่ (C1-2 Hunger’s Mouth · C1-3 Grandma’s Pot · C1-4 Frozen Pantry)
 const C1_SIDE_EVENTS=[
+  {name:'Hunger Herald',home:0,key:'hh_gate',icon:'📯',color:0xff8fb1,types:['fast','basic','basic','dasher'],reward:22},
   {name:'Hunger’s Mouth',home:1,key:'hm_hand',icon:'✦',color:0xbc89ff,types:['fast','fast','dasher'],reward:24},
+  {name:'Grandma’s Pot',home:2,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26},
   {name:'Frozen Pantry',home:3,key:'fp_jar',icon:'❄',color:0x9fe0ff,types:['tank','basic','basic'],reward:28},
-  {name:'Grandma’s Pot',home:2,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26}
+  {name:'Grandma’s Golem',home:4,key:'gg_oven',icon:'🗿',color:0xf2b06b,types:['tank','tank','fast'],reward:30}
 ];
+/* v8.3.12 เจ้าของ: ภารกิจหลัก C1 = สถานการณ์การต่อสู้ทุกเวฟ (เวฟ 1,2,4,5 · เวฟ 3 = มินิบอส) · pattern = รูปแบบศัตรู · goal = เป้าโบนัส EXP
+   goal 'leader' = ล้มหัวหน้า · 'pack' = ล้มทั้งกลุ่มภายใน C1_SIT_SEC · 'dodge' = ไม่โดนพื้นอันตรายจนจบ */
+const C1_SITUATIONS=[
+  [{name:'Tunnel Ambush',pattern:'Ambush',hint:'Ants burst from tunnels around you — break out of the ring',goal:'pack'},
+   {name:'Soldier Line',pattern:'Fortress',hint:'Shields in front, spitters behind — go around the line',goal:'pack'},
+   {name:'Spitter Barrage',pattern:'Barrage',hint:'Spitters fire from range — close in and take them out',goal:'pack'},
+   {name:'Colony Swarm',pattern:'Stampede',hint:'The colony charges in a line — dash through the gap',goal:'pack'}],
+  [{name:'Pipe Burst',pattern:'Pincer',hint:'They pour from pipes on both sides — don’t get caught between',goal:'pack'},
+   {name:'Clog Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Sewage Shift',pattern:'Hazard Shift',hint:'Toxic sludge drifts across the floor — keep moving',goal:'dodge'},
+   {name:'Flood Swarm',pattern:'Last Stand',hint:'A flood of monsters — stay at the edge of the crowd',goal:'pack'}],
+  [{name:'Hunter Pack',pattern:'Hunter Pack',hint:'Fast hunters chase you — turn and fight, don’t run straight',goal:'pack'},
+   {name:'Furnace Barrage',pattern:'Barrage',hint:'Burners fire from range — close in and take them out',goal:'pack'},
+   {name:'Pan Fortress',pattern:'Fortress',hint:'Heavy pans block the way — circle behind them',goal:'pack'},
+   {name:'Heat Rush',pattern:'Stampede',hint:'A rush of hot mochi charges — dash through the gap',goal:'pack'}],
+  [{name:'Ice Squad Commander',pattern:'Commander',hint:'The captain speeds up its squad — defeat it first',goal:'leader'},
+   {name:'Frozen Fortress',pattern:'Fortress',hint:'Frozen guards block the way — circle behind them',goal:'pack'},
+   {name:'Ice Floor Shift',pattern:'Hazard Shift',hint:'Ice drifts across the floor — keep moving',goal:'dodge'},
+   {name:'Frost Pincer',pattern:'Pincer',hint:'Squads close in from both sides — break out to one side',goal:'pack'}],
+  [{name:'Banquet Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Oven Barrage',pattern:'Barrage',hint:'Oven guards fire from range — close in and take them out',goal:'pack'},
+   {name:'Crumb Shift',pattern:'Hazard Shift',hint:'Burning crumbs drift across the floor — keep moving',goal:'dodge'},
+   {name:'Last Stand',pattern:'Last Stand',hint:'The Hunger throws everything — stay at the edge of the crowd',goal:'pack'}]
+];
+const C1_SIT_SEC=20,C1_SIT_XP=.5;
+const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺'};   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
+/* v8.3.12 เจ้าของ: Combat Director เลือก pattern ตาม เอกลักษณ์ด่าน × ช่วงเวลา × จำนวนศัตรูในสนาม (ไม่สุ่มลอย ๆ) · น้ำหนักเอกลักษณ์ด่าน (ไม่มี = 1) */
+const C1_STAGE_PATTERN_WEIGHT=[
+  {Ambush:2.2,Stampede:1.8,'Hunter Pack':1.3},
+  {Pincer:2.2,Commander:1.8,'Hazard Shift':1.4},
+  {'Hunter Pack':2,Barrage:1.8,Fortress:1.5},
+  {Commander:2,Fortress:1.8,'Hazard Shift':1.6},
+  {Commander:1.6,Barrage:1.5,'Hazard Shift':1.5,'Last Stand':1.8}
+];
+const C1_HEAVY_PATTERNS=['Commander','Fortress','Pincer','Last Stand'],C1_FIELD_FULL=.7,C1_FIELD_EMPTY=.3;
 // v7.9.50 Card types unlock stage by stage in Story (owner: reveal card types gradually, as part of the tutorial) · value = stage index where the type first appears
 /* v7.9.86 เจ้าของ: มอน/บอส/มินิบอสห้ามเกิดนอกแมพ · จุดที่อยู่นอกแมพ → ย้ายไปกลางแมพ (สุ่มรอบ ๆ กลางเล็กน้อย) */
 function inMapPt(x,y,m=80){ const L=WORLD/2-m; return [Math.max(-L,Math.min(L,x)),Math.max(-L,Math.min(L,y))]; }   // v8.1.105 เจ้าของ: มอนโผล่กลางจอ — เดิมจุดนอกแมพถูกสุ่มไปใกล้กลางแมพ → ตอนนี้ดันเข้าขอบแมพแทน

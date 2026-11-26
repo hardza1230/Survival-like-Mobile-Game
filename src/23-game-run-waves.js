@@ -4,7 +4,7 @@
   getPowerGuide(stageIndex){
     const st=STAGES[stageIndex]||STAGES[0],rating=Save.power(this.character),recommended=stageRecommendedPower(STAGES.indexOf(st)),ratio=rating/recommended;
     // v6.55.17: ช่วยเฉพาะด่าน 1-2 · ด่าน 3+ = ของจริง ไม่ผ่อน และพลังเกินแนะนำ → ศัตรูถึกขึ้น (มีเพดาน)
-    const gap=stageIndex<2?Phaser.Math.Clamp(1-ratio,0,0.60):0,assist=gap*0.32,over=stageIndex>=2?Math.max(0,ratio-1):0;
+    const gap=stageIndex<2?Phaser.Math.Clamp(1-ratio,0,0.60):0,assist=gap*0.32,over=stageIndex>=2&&!this._v83Run?Math.max(0,ratio-1):0;   /* v8.3.12 เจ้าของ: C1 ต่อเนื่อง ไม่เพิ่มเลือด/ดาเมจศัตรูเพราะพลังผู้เล่นเกินแนะนำ */
     return{rating,recommended,ratio,enemyHp:(1-assist)*(1+Math.min(0.35,over*0.25)),enemyDmg:(1-assist*0.78)*(1+Math.min(0.20,over*0.15)),reward:1+gap*0.50,label:ratio>=1.15?'Above recommended':ratio>=0.90?'Ready':ratio>=0.70?'Challenging':'Underpowered'};
   }
   clearChapterDepth(){
@@ -114,7 +114,7 @@
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
   startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._qfRun={};this._a23AudioAt=0;this._holdFire=false;this.time?.delayedCall?.(0,()=>this.stageMood?.(this.recipeMode||this.riftMode?null:i));this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
-    this.clearChapterCombatWave();
+    this.clearChapterCombatWave(true);
     this._c1Combat=null;
     this._v83Run=false;
     this._a22Said={};
@@ -156,6 +156,7 @@
     this._v83Run=i>=0&&i<5&&!this.riftMode&&!this._inTutorial&&!this.recipeMode&&!this.bossRush
       &&(typeof window==='undefined'||new URLSearchParams(window.location.search).get('combat83')!=='0');
     if(this._v83Run){
+      this._powerGuide=this.getPowerGuide(i);   /* v8.3.12 คิดใหม่หลังรู้ว่าเป็น C1 ต่อเนื่อง (ไม่สเกลตามพลังผู้เล่น) */
       this._c1Combat={deck:this.c1SideDeck(i),offered:new Set(),loot:new Map()};
       this._missionDeal=this.c1PreviewDeal?.(i)||null;this.updateWaveText();
     }
@@ -720,9 +721,10 @@
     const st=STAGES[this.stageIndex],p=this.waveProfile(w); this._waveTimed=false; this._goldWave=false; this._crownCurse=null;
     if(this._v83Run&&w!==st.miniAt){
       const d=this._c1Combat;
-      if(d){d.delay=3;d.phase=null;d.patterns=[];d.nextEvent=w===1||w===3?4+Math.random()*5:null;}
+      if(d){d.delay=3;d.phase=null;d.patterns=[];}
       this.mode='wave';this.clearWaveObjective();this.startSurvivalWave(w,!!seamless);
       this.waveDur=this.waveTimer=(C1_WAVE_SEC[w]||45);
+      this.startChapterSituationWave?.(w);   /* v8.3.12 ภารกิจหลัก = สถานการณ์การต่อสู้ทุกเวฟ */
       this.updateWaveText();return;
     }
     if(w===st.miniAt){this.mode='miniWarning';this.setupSpawnRates(w);this.updateWaveText();
