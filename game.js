@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.8';
+const GAME_VERSION = '8.3.9';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -73,6 +73,8 @@ const CROSSROADS=[
 ];
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.8;   // v6.55.68 เจ้าของ: อมตะหลังโดนตีนานขึ้น (0.6→0.8)
+const STORE_APK_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/store-apk-latest/mochi-mayhem-store-test.apk', STORE_VERSION_URL = 'https://hardza1230.github.io/Survival-like-Mobile-Game/version.json';   // v8.3.9 Store-like test APK update check
+function verNewer(a,b){ const n=v=>String(v).split('.').map(x=>parseInt(x,10)||0),x=n(a),y=n(b); for(let k=0;k<3;k++)if((x[k]||0)!==(y[k]||0))return (x[k]||0)>(y[k]||0); return false; }
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง
 // v6.55.26: ดาเมจฐานฮีโร่ 90% → 100% (เลิกงง) · HP ศัตรูทุกตัว ×1/0.9 ให้ความยากเท่าเดิม
@@ -104,6 +106,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.3.9',date:'2026-11-26',title:'Store test APK finds new versions',items:['Mochi Store Test checks the live version and shows the download popup when newer','Later hides it for the day']},
   {v:'8.3.8',date:'2026-11-26',title:'ECRS app size: 188.3 → 175.7 MB',items:['Audio re-encoded: music 64k, voice 48k mono, SFX 64k mono (−11.7 MB)','17 unused art keys removed (−0.5 MB)','Store-like test APK release']},
   {v:'8.3.7',date:'2026-11-26',title:'Portrait layout and visible Chapter 1 waves',items:['Wide windows keep the same portrait layout as your phone.','Chapter 1 enemy packs arrive in view so you can see them coming and find a way around them.']},
   {v:'8.3.6',date:'2026-11-26',title:'Artwork ready before battle',items:['Battle waits for the selected hero and stage artwork before starting.','A new animated honey and jam portal accompanies stage loading.','Interrupted artwork downloads offer Try again or Back instead of starting with placeholder images.']},
@@ -22712,9 +22715,16 @@ class Game extends Phaser.Scene {
   async checkApkUpdate(){ try{
     if(!Cloud.native?.()||this._apkChecked)return; this._apkChecked=true;
     const App=window.Capacitor?.Plugins?.App; const info=App?await App.getInfo().catch(()=>null):null; const cur=(info&&info.version)||'0.0.0';
+    if(/\.store$/.test(info?.id||'')){ await this.checkStoreApkUpdate(); return; }   /* v8.3.9 Store-like test APK (bundled, no live update) → compare with the live web version */
     const n=v=>String(v).split('.').map(x=>parseInt(x,10)||0), a=n(cur), b=n(MIN_APK_VERSION); let older=false; for(let k=0;k<3;k++){ if((a[k]||0)!==(b[k]||0)){ older=(a[k]||0)<(b[k]||0); break; } }
     let skip=null; try{skip=localStorage.getItem('mochi_apk_skip');}catch(e){} if(!older||skip===MIN_APK_VERSION+'|'+new Date().toDateString())return;
     this.showApkUpdate(cur,MIN_APK_VERSION,APK_DOWNLOAD_URL); }catch(e){} }
+  /* v8.3.9 เจ้าของ: APK แบบ Play Store (appId .store) ไม่มี live update → ถาม version.json บนเว็บ ถ้าใหม่กว่า GAME_VERSION ขึ้นหน้าดาวน์โหลด (เล่นต่อได้ · Later = ไม่ถามซ้ำวันนี้) */
+  async checkStoreApkUpdate(){ try{
+    const r=await fetch(STORE_VERSION_URL+'?t='+Date.now(),{cache:'no-store'}); const j=r.ok?await r.json():null; const latest=j&&j.version; if(!latest)return;
+    if(!verNewer(latest,GAME_VERSION))return;
+    let skip=null; try{skip=localStorage.getItem('mochi_apk_skip');}catch(e){} if(skip===latest+'|'+new Date().toDateString())return;
+    const show=()=>{ if(this.state==='menu')this.showApkUpdate(GAME_VERSION,latest,STORE_APK_URL); else this.time.delayedCall(4000,show); }; show(); }catch(e){} }
   showApkUpdate(cur,latest,url){ if(this.state!=='menu')return; const w=this.W,h=this.H,ov=this.add.container(0,0).setDepth(9000);
     const sh=this.add.rectangle(0,0,w,h,0x0a0612,0.82).setOrigin(0),bw=Math.min(w-32,400),bh=210,bx=(w-bw)/2,by=(h-bh)/2,g=this.add.graphics();
     g.fillStyle(0x2a2038,1).fillRoundedRect(bx,by,bw,bh,18); g.lineStyle(2.5,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,18);
