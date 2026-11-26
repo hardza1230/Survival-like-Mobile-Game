@@ -1416,6 +1416,7 @@
   showMenu(){ try{ Tele.flush(); }catch(e){} this.lvlUp?.setVisible(false); this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); const _title=!window.__titleShown&&!window.__pendingMenu&&window.__pendingRun==null; window.__titleShown=true;   // v7.9.64 หน้าเปิดเกมครั้งแรกที่เข้าเมนูหลังเปิดแอป
     this.menuScreen=_title?'title':(window.__pendingMenu||'hub'); window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false);
     const rp=window.__pendingRun; window.__pendingRun=null; if(rp!=null){ this.time.delayedCall(60,()=>{ if(this.state==='menu')this.startRun(rp); }); return; }   // v7.9.45 Replay ตอนแพ้ = รีสตาร์ทฉากแล้วเริ่มด่านเดิมใหม่ (เดิมเรียก startRun ตรง ๆ ศัตรู/บอสเดิมค้างในสนาม)
+    if(this._isStoreApp)this.time?.delayedCall?.(800,()=>this.storeUpdateTick?.());   /* v8.3.14 กลับ Hub = เช็กอัปเดตแอป Store อีกครั้ง */
     if(_title)return;
     /* v7.9.80 เจ้าของ: เปิดหนังสือแค่ตอนเปิดเกม (หน้า TAP TO START) · กลับจากด่านไม่ต้องเปิดปก */ }   // v7.9.10 ใบ 28 เปิดปกหนังสือทุกครั้งที่เข้าเมนู (เปิดเกม/กลับจากด่าน)
   // หยุดชั่วคราว / เล่นต่อ

@@ -802,28 +802,40 @@
     this.tweens.add({targets:im,alpha:0,duration:250,ease:'Quad.in',onComplete:kill}); this.time.delayedCall(600,kill); }catch(e){} }
   // v6.88 แจ้งเตือน APK เก่า: เทียบ versionName ของแอป (App.getInfo) กับ GitHub Release ล่าสุด · เฉพาะในแอป · วันละครั้ง
   async checkApkUpdate(){ try{
-    if(!Cloud.native?.()||this._apkChecked)return; this._apkChecked=true;
+    if(!Cloud.native?.())return; if(this._apkChecked){ if(this._isStoreApp)this.storeUpdateTick(); return; } this._apkChecked=true;
     const App=window.Capacitor?.Plugins?.App; const info=App?await App.getInfo().catch(()=>null):null; const cur=(info&&info.version)||'0.0.0';
-    if(/\.store$/.test(info?.id||'')){ await this.checkStoreApkUpdate(); return; }   /* v8.3.9 Store-like test APK (bundled, no live update) → compare with the live web version */
+    if(/\.store$/.test(info?.id||'')){ this._isStoreApp=true; this.storeResumeHook(); await this.checkStoreApkUpdate(); return; }   /* v8.3.9 Store-like test APK (bundled, no live update) → compare with the live web version */
     const n=v=>String(v).split('.').map(x=>parseInt(x,10)||0), a=n(cur), b=n(MIN_APK_VERSION); let older=false; for(let k=0;k<3;k++){ if((a[k]||0)!==(b[k]||0)){ older=(a[k]||0)<(b[k]||0); break; } }
     let skip=null; try{skip=localStorage.getItem('mochi_apk_skip');}catch(e){} if(!older||skip===MIN_APK_VERSION+'|'+new Date().toDateString())return;
     this.showApkUpdate(cur,MIN_APK_VERSION,APK_DOWNLOAD_URL); }catch(e){} }
   /* v8.3.9 เจ้าของ: APK แบบ Play Store (appId .store) ไม่มี live update → ถาม version.json บนเว็บ ถ้าใหม่กว่า GAME_VERSION ขึ้นหน้าดาวน์โหลด (เล่นต่อได้ · Later = ไม่ถามซ้ำวันนี้) */
-  async checkStoreApkUpdate(){ try{
+  async checkStoreApkUpdate(){ try{ this._storeChkT=Date.now();
     const r=await fetch(STORE_VERSION_URL+'?t='+Date.now(),{cache:'no-store'}); const j=r.ok?await r.json():null; const latest=j&&j.version; if(!latest)return;
+    const changed=latest!==this._storeLatest; this._storeLatest=latest; if(changed&&this.state==='menu'&&this.menuScreen==='news')this.buildNews?.();
     if(!verNewer(latest,GAME_VERSION))return;
     let skip=null; try{skip=localStorage.getItem('mochi_apk_skip');}catch(e){} if(skip===latest+'|'+new Date().toDateString())return;
-    const show=()=>{ if(this.state==='menu')this.showApkUpdate(GAME_VERSION,latest,STORE_APK_URL); else this.time.delayedCall(4000,show); }; show(); }catch(e){} }
+    this._apkPending=latest; this.storeShowLoop(); }catch(e){} }
+  /* v8.3.14 หน้า Updates วาดใหม่เมื่อรู้เวอร์ชันล่าสุด · เจ้าของ: ป๊อปอัปอัปเดตหายเมื่อหน้าเมนูวาดใหม่/เปลี่ยนหน้า → วนเช็กทุก 1.5 วิ ถ้ายังไม่ได้กด Download/Later และอยู่หน้า Hub แต่ป๊อปอัปไม่อยู่ ให้ขึ้นใหม่ */
+  storeShowLoop(){ const tok=this._apkLoopTok=(this._apkLoopTok||0)+1;
+    const go=()=>{ if(tok!==this._apkLoopTok||!this._apkPending)return;
+      if(!(this._apkOv&&this._apkOv.active)&&this.state==='menu'&&(this.menuScreen||'hub')==='hub'&&!this._chestOpen)this.showApkUpdate(GAME_VERSION,this._apkPending,STORE_APK_URL);
+      this.time?.delayedCall?.(1500,go); }; go(); }
+  /* v8.3.14 เช็กซ้ำตอนกลับ Hub (ห่าง ≥60 วิ) และตอนกลับจากพื้นหลัง (ห่าง ≥5 วิ) · ถ้ามีเวอร์ชันรออยู่แล้วแค่ต่อวงป๊อปอัป */
+  storeUpdateTick(resume){ try{ if(!this._isStoreApp)return; if(Date.now()-(this._storeChkT||0)<(resume?5000:60000)){ if(this._apkPending)this.storeShowLoop(); return; } this.checkStoreApkUpdate(); }catch(e){} }
+  storeResumeHook(){ window.__storeScene=this; if(window.__storeResumeHook)return; window.__storeResumeHook=1;
+    const f=()=>{ try{ const g=window.__storeScene; if(g&&g.sys?.isActive?.()!==false)g.storeUpdateTick?.(true); }catch(e){} };
+    try{ window.Capacitor?.Plugins?.App?.addListener?.('appStateChange',st=>{ if(st&&st.isActive)f(); }); }catch(e){}
+    try{ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible')f(); }); }catch(e){} }
   showApkUpdate(cur,latest,url){ if(this.state!=='menu')return; const w=this.W,h=this.H,ov=this.add.container(0,0).setDepth(9000);
     const sh=this.add.rectangle(0,0,w,h,0x0a0612,0.82).setOrigin(0),bw=Math.min(w-32,400),bh=210,bx=(w-bw)/2,by=(h-bh)/2,g=this.add.graphics();
     g.fillStyle(0x2a2038,1).fillRoundedRect(bx,by,bw,bh,18); g.lineStyle(2.5,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,18);
     const t=this.add.text(w/2,by+26,'📲 New app version',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffe08a'}).setOrigin(0.5);
     const d=this.add.text(w/2,by+62,'Your app is v'+cur+'. Version v'+latest+' is ready. Install it for the best loading speed and fixes. Your save is kept.',{fontFamily:'sans-serif',fontSize:'12px',color:'#e6dcf0',align:'center',wordWrap:{width:bw-36},lineSpacing:3}).setOrigin(0.5,0);
-    ov.add([sh,g,t,d]); this.menu.add(ov);
+    ov.add([sh,g,t,d]); this.menu.add(ov); this._apkOv=ov;
     const prev=this.tapZones; this.tapZones=[]; const close=()=>{ ov.destroy(); this.tapZones=prev; };
     const btn=(y,label,col,fn)=>{ const bg=this.add.graphics(); bg.fillStyle(col,1).fillRoundedRect(w/2-bw/2+24,y-20,bw-48,40,14); const tx=this.add.text(w/2,y,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0.5); ov.add([bg,tx]); this._zone(w/2-bw/2+24,y-20,bw-48,40,fn); };
-    btn(by+bh-72,'⬇ Download update',0x4fae6a,()=>{ try{ const B=window.Capacitor?.Plugins?.Browser; if(B)B.open({url}); else window.open(url,'_blank'); }catch(e){ try{window.open(url,'_blank');}catch(_){} } close(); });
-    btn(by+bh-26,'Later',0x5a4b75,()=>{ try{localStorage.setItem('mochi_apk_skip',latest+'|'+new Date().toDateString());}catch(e){} close(); }); Sfx.select&&Sfx.select(); }
+    btn(by+bh-72,'⬇ Download update',0x4fae6a,()=>{ try{ const B=window.Capacitor?.Plugins?.Browser; if(B)B.open({url}); else window.open(url,'_blank'); }catch(e){ try{window.open(url,'_blank');}catch(_){} } this._apkPending=null; close(); });
+    btn(by+bh-26,'Later',0x5a4b75,()=>{ this._apkPending=null; try{localStorage.setItem('mochi_apk_skip',latest+'|'+new Date().toDateString());}catch(e){} close(); }); Sfx.select&&Sfx.select(); }
   // v6.93 พื้นด่านเดิมเป็น TileSprite 4000×4000 (canvas 64MB) → ย่อเหลือ ~จอ + ลายพื้น 2 รอบ แล้วขยับตามกล้องทีละ "1 รอบลาย" (ลายพื้นยึดโลก ไม่เลื่อน)
   syncBgTile(){ const t=this.bgTile,fk=t&&t.displayTexture&&t.displayTexture.key,fr=t&&(t.displayFrame||t.frame); if(!t||!t.active||!fr||!t.displayTexture)return;
     if(!fk||fk.startsWith('__')||!this.textures.exists(fk)){ if(t.visible)t.setVisible(false); for(const im of this._bgImgs||[])if(im&&im.scene&&im.visible)im.setVisible(false); return; }   /* v8.1.119 เจ้าของ: lobby ตอนแรกเห็นพื้นตารางเขียว = ภาพพื้นยังไม่มา (displayTexture '__MISSING' = กรอบเขียว Phaser) → ไม่วาดพื้นจนกว่าภาพจริงมา */ const cam=this.cameras.main,v=cam.worldView; if(!v||!v.width)return;

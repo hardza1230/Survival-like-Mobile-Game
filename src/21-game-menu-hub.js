@@ -598,13 +598,16 @@
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Updates','screen_news');
     const w=this.W,h=this.H;
     const hs=this._hdrShift();
-    const cur=this.add.text(w/2,53+hs,'Current version v'+GAME_VERSION,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}).setOrigin(0.5);
+    /* v8.3.14 เจ้าของ: แอป Store รู้ว่ามีเวอร์ชันใหม่ → บอกในหน้านี้ + ปุ่มสีทองกระพริบ · ปุ่มโหลด APK แบบ Store (เดิมโหลด debug APK ผิดตัว) */
+    const st=!!this._isStoreApp,nv=st&&this._storeLatest&&verNewer(this._storeLatest,GAME_VERSION)?this._storeLatest:null; if(st)this.storeUpdateTick?.();
+    const cur=this.add.text(w/2,53+hs,'Current version v'+GAME_VERSION+(nv?'  ·  v'+nv+' available':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:nv?'#9dffc0':'#ffe08a'}).setOrigin(0.5);
     this.menu.add(cur);
     // ปุ่มดาวน์โหลด APK (เปิดหน้า releases ในเบราว์เซอร์)
     const dlW=Math.min(w-40,250),dx=w/2-dlW/2,dy=65+hs,dlH=34;
-    const dg=this.add.graphics(); dg.fillStyle(COLORS.mint,1); dg.fillRoundedRect(dx,dy,dlW,dlH,11); dg.lineStyle(2,0xffffff,0.3); dg.strokeRoundedRect(dx,dy,dlW,dlH,11);
-    const dt=this.add.text(w/2,dy+dlH/2,'📥 Download latest APK',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#12331f'}).setOrigin(0.5);
-    this.menu.add([dg,dt]); this._zone(dx,dy,dlW,dlH,()=>{ try{ window.open(RELEASES_URL,'_blank'); }catch(e){} });
+    const dg=this.add.graphics(); dg.fillStyle(nv?0xffd166:COLORS.mint,1); dg.fillRoundedRect(dx,dy,dlW,dlH,11); dg.lineStyle(nv?3:2,0xffffff,nv?0.85:0.3); dg.strokeRoundedRect(dx,dy,dlW,dlH,11);
+    const dt=this.add.text(w/2,dy+dlH/2,nv?'📥 Download v'+nv+' now':'📥 Download latest APK',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:nv?'#3a2600':'#12331f'}).setOrigin(0.5);
+    this.menu.add([dg,dt]); if(nv&&this.tweens)this.tweens.add({targets:[dg,dt],alpha:.6,duration:650,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const dlUrl=st?STORE_APK_URL:RELEASES_URL; this._zone(dx,dy,dlW,dlH,()=>{ try{ const B=window.Capacitor?.Plugins?.Browser; if(B)B.open({url:dlUrl}); else window.open(dlUrl,'_blank'); }catch(e){ try{window.open(dlUrl,'_blank');}catch(_){} } });
     const portrait=w<=h, cols=portrait?1:3, gap=portrait?8:9, y=portrait?116+hs:110;
     const cw=portrait?w-28:(w-28-gap*2)/3;
     // v4.52: แบ่งหน้าดู CHANGELOG ทั้งหมดย้อนหลังได้ (เดิมโชว์แค่ 3 อันล่าสุด) — 3 การ์ด/หน้า + ปุ่ม ‹ › เลื่อน

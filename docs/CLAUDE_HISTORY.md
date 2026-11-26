@@ -4890,3 +4890,28 @@ The canvas and stage loader now share a portrait frame on wide or square display
 - `bump-version.mjs` now edits `src/00-config.js` (GAME_VERSION) + `src/01-changelog.js` (CHANGELOG) and rebuilds.
 - `game.js` stays committed, so all 260+ tests, pack scripts, compress-assets and asset scans read it unchanged.
 - Docs: CLAUDE.md §3, wire-art + release skills, HANDOFF.
+
+# Delivery: v8.3.12 — Chapter 1: combat situations every wave, opt-in side events, smarter Combat Director
+
+- **Main missions = combat situations (owner):** every C1 wave (1, 2, 4, 5) has a named situation with a banner hint (`C1_SITUATIONS`, 5 stages × 4).
+  - Situations include C1-1 Tunnel Ambush / Soldier Line / Spitter Barrage / Colony Swarm, C1-2 Pipe Burst / Clog Commander / Sewage Shift / Flood Swarm, etc.
+  - It starts 2 s into the wave (wave 4: after the 20 s recovery).
+  - Goal within `C1_SIT_SEC` 20 s: `pack` = defeat the marked group · `leader` = defeat the commander · `dodge` = no hazard hit.
+  - Meeting the goal gives an **EXP burst** (50% of the next level, 6 orbs). Missing it just passes.
+- **Side missions = map objects for the whole stage:**
+  - Each stage has its own event plus 1 met earlier (C1-1 has Hunger Herald only). New short versions: Hunger Herald (C1-1) and Grandma’s Golem (C1-5).
+  - Walk onto an object to start it. Ignoring it has no penalty. One at a time.
+  - The Director pauses spawns while one runs. The timed auto-start is gone.
+  - Objects stay across waves and are cleared on stage start, menu and death.
+- **Combat Director picks by conditions:** `chapterCombatPick` scores stage identity (`C1_STAGE_PATTERN_WEIGHT`) × time in wave (heavy late) × field fill.
+  - ≥70% live cap → heavy patterns ×0.15 · ≤30% → heavy ×1.5.
+  - The last 2 patterns never repeat. Random only on ties.
+- **No HP scaling from player power in C1 continuous combat:**
+  - The `getPowerGuide` "over recommended" bonus (enemy HP/dmg) is off.
+  - `bossHpMul` ignores player level.
+  - Other modes keep their rule.
+- **Card before the stage:** shows each wave’s situation name + "Side events: …".
+- Test `tests/c1-situations-8312.test.cjs`. Headless:
+  - C1-1: situations won/lost, Herald started by touch.
+  - C1-4: leader/pack/dodge all won, 2 side objects.
+  - No errors.
