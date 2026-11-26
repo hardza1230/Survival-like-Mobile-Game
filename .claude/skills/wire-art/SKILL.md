@@ -67,6 +67,8 @@ The pack step decides the shipped size, so every pack script follows these numbe
 
 ## 3. Register keys in game.js
 
+> v8.3.11: game code lives in `src/NN-*.js` (`src/README.md`). Edit the src part, e.g. `src/03-assets-images.js` (`ASSET_IMAGES`) / `src/04-assets-sheets-fx.js` (`ASSET_SHEETS`, `ASSET_FX`) / `src/05-assets-audio-loading.js` (`ASSET_AUDIO`, `artClass`), then `npm run build:game`. Never edit `game.js` directly.
+
 - `ASSET_IMAGES.key:'assets/art/<batch>/key.webp'` for stills; `ASSET_SHEETS` for square
   character sheets (`{url,frame,anim}`); `ASSET_FX` for flipbooks
   (`{url,fw,fh,frames,rate,anchor[,loop,fill]}`); `TEMPLE_UI.key:[cellW,cellH,cols,nineSlice]`

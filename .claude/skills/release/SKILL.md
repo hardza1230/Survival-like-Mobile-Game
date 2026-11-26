@@ -12,6 +12,8 @@ description: >
 
 # Release a version (Mochi Mayhem)
 
+> v8.3.11: code is edited in `src/NN-*.js`; `game.js` is generated (`npm run build:game`). `bump-version.mjs` edits the src parts and rebuilds. Checks fail when `game.js` ≠ `src/`.
+
 The owner checks every release on the phone by the version number, so a release is only
 done when the live game shows the new `GAME_VERSION`. Talk to the owner in Thai; every
 in-game string (CHANGELOG included) is English with the ’ apostrophe inside '…' literals.

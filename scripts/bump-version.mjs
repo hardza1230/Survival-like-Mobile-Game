@@ -13,15 +13,21 @@ const esc = s => s.replace(/\\/g, '\\\\').replace(/'/g, '’');
 if (/[฀-๿]/.test(title + items)) { console.error('changelog text must be English'); process.exit(1); }
 // v8.2.15 owner: News showed "a" for ten updates — items must be real player-facing sentences
 if (items.split('|').some(s => s.trim().length < 12)) { console.error('each changelog item must be a real sentence (≥ 12 chars) — the News screen shows them to players'); process.exit(1); }
-let g = fs.readFileSync('game.js', 'utf8');
+// v8.3.11 game code is split into src/NN-*.js → edit the parts, then rebuild game.js (scripts/build-game.mjs)
+import { execFileSync } from 'node:child_process';
+const partOf = re => { const f = fs.readdirSync('src').filter(n => /^\d\d-[\w-]+\.js$/.test(n)).sort().find(n => re.test(fs.readFileSync('src/' + n, 'utf8'))); if (!f) throw Error('src part not found for ' + re); return 'src/' + f; };
+const vFile = partOf(/const GAME_VERSION = '/), cFile = partOf(/const CHANGELOG = \[\n/);
+let g = fs.readFileSync(vFile, 'utf8');
 const cur = g.match(/const GAME_VERSION = '(\d+)\.(\d+)\.(\d+)';/); if (!cur) throw Error('GAME_VERSION not found');
 const next = `${cur[1]}.${cur[2]}.${+cur[3] + 1}`, after = `${cur[1]}.${cur[2]}.${+cur[3] + 2}`;
 const date = new Date().toISOString().slice(0, 10);
 g = g.replace(cur[0], `const GAME_VERSION = '${next}';`);
+fs.writeFileSync(vFile, g); g = fs.readFileSync(cFile, 'utf8');
 const list = items.split('|').map(s => `'${esc(s.trim())}'`).join(',');
 if (!g.includes('const CHANGELOG = [\n')) throw Error('CHANGELOG not found');
 g = g.replace('const CHANGELOG = [\n', `const CHANGELOG = [\n  {v:'${next}',date:'${date}',title:'${esc(title)}',items:[${list}]},\n`);
-fs.writeFileSync('game.js', g);
+fs.writeFileSync(cFile, g);
+execFileSync(process.execPath, ['scripts/build-game.mjs'], { stdio: 'inherit' });
 // v8.2.19: full release notes live in docs/DELIVERIES.md (Latest + Previous); CLAUDE.md keeps one short line (shorter context every session)
 let c = fs.readFileSync('CLAUDE.md', 'utf8');
 c = c.replace(/Current release: \*\*[\d.]+\*\*\. Next release:\s*[\d.]+\./, `Current release: **${next}**. Next release:${after}.`);

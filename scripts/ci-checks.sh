@@ -8,6 +8,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 mode="${1:-all}"
 build(){
+  node scripts/build-game.mjs --check   # v8.3.11 game.js must equal src/ (edit src/NN-*.js, then npm run build:game)
   node scripts/build-www.mjs
   node scripts/check-app-size.mjs   # v8.2.26 shipped app must stay < 190 MB
   for r in forge lobby ruby-story sesame-rune mint-vfx battle-vfx boss-vfx boss-body boss-shot battle-hud; do node "scripts/build-$r-review.mjs"; done

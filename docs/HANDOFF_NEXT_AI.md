@@ -204,7 +204,7 @@ VFX art batch 3 is integrated too: purple Void Pull, jam Relic and Great Hunger 
 
 VFX art batches 1 and 2 are integrated: Mint shards/shatter/Gale; Strawberry charge/wind; shield bubble. See assets/incoming/vfx_mint/NEXT_BATCHES.md for batches 3–5. Preserve existing combat timing/colliders. Review on phone; automated cleanup/pooling/shield tests and web build pass.
 
-Source of truth: the latest branch/game.js, not historical task/version entries below. Work continued from v6.55.5 (6a36a21).
+Source of truth: the latest branch/src/ (game.js is generated from src/NN-*.js since v8.3.11 — see src/README.md), not historical task/version entries below. Work continued from v6.55.5 (6a36a21).
 
 Implemented: painted Strawberry/Momo Sniper projectile for automatic shots and charged Unique; Boss Loot/Mystery card lifecycle cleanup including cancelled reveals and duplicate Keep guard; Mint Piercer damage 1.60 → 1.75. New VFX retains the original projectile collider and is cleaned on pool reuse/expiry/stage exit.
 

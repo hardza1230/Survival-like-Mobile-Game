@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.3.10**. Next release:8.3.11. Fetch the deploy branch before new work.
+Current release: **8.3.11**. Next release:8.3.12. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.3.10 — Shorter Chapter 1 waves, preview cards, side events you have met** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.11 — game.js split into src/ (23 parts)** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -16,12 +16,12 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - เสียง: ใช้ ElevenLabs ตามใบสั่งเสียง (v8.0.38–39 เจ้าของสั่ง ห้ามใช้เสียงสร้างด้วยโค้ด/Runway แทน)
 
 ## 3. โครงไฟล์
-- `index.html` (โหลด phaser + game.js) · `game.js` = โค้ดเกมทั้งหมด (~25.5k บรรทัด · 22 พ.ย.) · `phaser.min.js` 3.80.1
+- `index.html` (โหลด phaser + game.js) · **โค้ดเกมอยู่ใน `src/NN-*.js` (23 ไฟล์ · v8.3.11 · แผนที่ไฟล์ `src/README.md`) — แก้ที่ src เท่านั้น แล้ว `npm run build:game`** · `game.js` = ไฟล์ที่สร้างจาก src (commit ไว้ · ห้ามแก้ตรง · check/CI/hook ล้มถ้าไม่ตรง) · `phaser.min.js` 3.80.1
 - `assets/` รูป/เสียงจริง · คีย์อยู่ใน `ASSET_IMAGES` / `ASSET_SHEETS` / `ASSET_FX` / `ASSET_AUDIO` / `TEMPLE_UI` (URL ต้องเป็น literal `'assets/…'` เพราะ build-www คัดลอกเฉพาะที่เจอ) · อาร์ตเข้า `assets/incoming/<batch>/` → pack script `scripts/pack-*.py` → `assets/art/<batch>/` (ใช้ skill wire-art)
 - โหลดอาร์ตใหม่แบบ lazy เสมอ (stage/menu/hero) ห้าม boot — งบ GPU บูตเต็ม ~300 MB
 - **ขนาดแอป (Google Play ไฟล์หลัก ≤ 200 MB):** ทั้งเกมที่ส่งไปต้อง < 190 MB · มาตรฐานแพ็ก (skill wire-art §2b): WebP q80 (q75 ถ้า >150 KB) · ความละเอียด ≤ 2× ขนาดบนจอ · เพลง 64k · เสียงพูด 48k โมโน · SFX 64k โมโน (v8.3.8 ECRS) · ตรวจด้วย `python3 scripts/compress-assets.py --dry` · หน้า `*-review.*` ไม่ใส่ในแอป (android.yml / release-aab.yml ลบก่อน sync)
 - `docs/art_orders/` ใบสั่งอาร์ต (README = ตารางสถานะ) · `docs/audio_orders/` ใบสั่งเสียง · `docs/LORE.md`/`STORY_CANON.md` เนื้อเรื่อง · `docs/HANDOFF_NEXT_AI.md`
-- `tests/*.cjs` (method-extract vm tests; เมธอดใหม่ต้องเพิ่มในรายการ extract ของเทสที่เกี่ยว) · `npm run check` รวมทุกเทส
+- `tests/*.cjs` (method-extract vm tests อ่าน game.js ที่สร้างแล้ว; เมธอดใหม่ต้องเพิ่มในรายการ extract ของเทสที่เกี่ยว) · `npm run check` รวมทุกเทส
 - Build: `scripts/build-www.mjs` → www/ (esbuild minify) · `.github/workflows/pages.yml` deploy GitHub Pages (live update ของ debug APK ผ่าน `server.url`) · `android.yml` debug APK (live update) + job `store` = **APK แบบแอป Play Store** (ฝังไฟล์ในแอป ไม่มี live update · appId `.store` ติดตั้งคู่กันได้ · release `store-apk-latest`) · เจ้าของใช้ตัวนี้ตรวจว่าอาร์ตจริงมีครบ (เห็นภาพสำรอง = ไม่มีอาร์ตจริง) · `release-aab.yml` signed AAB (`docs/RELEASE_SIGNING.md`)
 - โน้ตเทคนิคยุคแรก (VFX flipbook, การตัด sprite, raw assets) อยู่ใน `docs/CLAUDE_HISTORY.md`
 
