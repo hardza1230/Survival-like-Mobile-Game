@@ -1,9 +1,9 @@
 // Experimental pure timeline; not wired into the Phaser runtime.
 'use strict';
 const PHASES=Object.freeze([
-  {id:'warmup',seconds:30},{id:'pressure',seconds:45},
-  {id:'mini',seconds:null},{id:'recovery',seconds:30},
-  {id:'escalation',seconds:75},{id:'swarm',seconds:60},
+  {id:'warmup',seconds:24},{id:'pressure',seconds:35},
+  {id:'mini',seconds:null},{id:'recovery',seconds:20},
+  {id:'escalation',seconds:60},{id:'swarm',seconds:45},
   {id:'boss',seconds:null}
 ].map(Object.freeze));
 function enabled(o={}) {

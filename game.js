@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.9';
+const GAME_VERSION = '8.3.10';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -92,10 +92,13 @@ const C1_COMBAT_PATTERNS={
   escalation:['Barrage','Fortress','Commander','Hazard Shift','Stampede'],
   swarm:['Last Stand','Pincer','Ambush']
 };
+// v8.3.10 เจ้าของ: เวฟ C1 สั้นลง (เดิม 30/45/–/105/60 วิ) · ช่วงพักต้นเวฟ 4 (เดิม 30 วิ)
+const C1_WAVE_SEC=[24,35,0,80,45],C1_RECOVERY_SEC=20;
+// v8.3.10 เจ้าของ: ภารกิจแทรกโผล่เฉพาะที่เคยเจอ · home = ด่านที่ภารกิจเต็มอยู่ (C1-2 Hunger’s Mouth · C1-3 Grandma’s Pot · C1-4 Frozen Pantry)
 const C1_SIDE_EVENTS=[
-  {name:'Hunger’s Mouth',key:'hm_hand',icon:'✦',color:0xbc89ff,types:['fast','fast','dasher'],reward:24},
-  {name:'Frozen Pantry',key:'fp_jar',icon:'❄',color:0x9fe0ff,types:['tank','basic','basic'],reward:28},
-  {name:'Grandma’s Pot',key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26}
+  {name:'Hunger’s Mouth',home:1,key:'hm_hand',icon:'✦',color:0xbc89ff,types:['fast','fast','dasher'],reward:24},
+  {name:'Frozen Pantry',home:3,key:'fp_jar',icon:'❄',color:0x9fe0ff,types:['tank','basic','basic'],reward:28},
+  {name:'Grandma’s Pot',home:2,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26}
 ];
 // v7.9.50 Card types unlock stage by stage in Story (owner: reveal card types gradually, as part of the tutorial) · value = stage index where the type first appears
 /* v7.9.86 เจ้าของ: มอน/บอส/มินิบอสห้ามเกิดนอกแมพ · จุดที่อยู่นอกแมพ → ย้ายไปกลางแมพ (สุ่มรอบ ๆ กลางเล็กน้อย) */
@@ -106,6 +109,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.3.10',date:'2026-11-26',title:'Shorter Chapter 1 waves and stage preview cards',items:['Chapter 1 waves are shorter','Side events only appear after you have met them in their own stage','Cards before each Chapter 1 stage show what you will face']},
   {v:'8.3.9',date:'2026-11-26',title:'Store test APK finds new versions',items:['Mochi Store Test checks the live version and shows the download popup when newer','Later hides it for the day']},
   {v:'8.3.8',date:'2026-11-26',title:'ECRS app size: 188.3 → 175.7 MB',items:['Audio re-encoded: music 64k, voice 48k mono, SFX 64k mono (−11.7 MB)','17 unused art keys removed (−0.5 MB)','Store-like test APK release']},
   {v:'8.3.7',date:'2026-11-26',title:'Portrait layout and visible Chapter 1 waves',items:['Wide windows keep the same portrait layout as your phone.','Chapter 1 enemy packs arrive in view so you can see them coming and find a way around them.']},
@@ -15901,8 +15905,8 @@ class Game extends Phaser.Scene {
     this._v83Run=i>=0&&i<5&&!this.riftMode&&!this._inTutorial&&!this.recipeMode&&!this.bossRush
       &&(typeof window==='undefined'||new URLSearchParams(window.location.search).get('combat83')!=='0');
     if(this._v83Run){
-      this._c1Combat={deck:Phaser.Utils.Array.Shuffle(C1_SIDE_EVENTS.slice()),offered:new Set(),loot:new Map()};
-      this._missionDeal=null;this.updateWaveText();
+      this._c1Combat={deck:this.c1SideDeck(i),offered:new Set(),loot:new Map()};
+      this._missionDeal=this.c1PreviewDeal?.(i)||null;this.updateWaveText();
     }
     else this._missionDeal=MISSION_DECK&&!this.riftMode&&!this._inTutorial?this.missionDeckDeal?.():null;   /* v8.2.6 สำรับภารกิจ + แจกไพ่ */
     if(this._missionDeal)this.time.delayedCall(700,()=>{ if(this._busy())this.missionDealShow(this._missionDeal,()=>{ if(this._busy())this.startWave(0); }); });
@@ -16106,7 +16110,7 @@ class Game extends Phaser.Scene {
     g.lineStyle(1,0x9ed5ea,.36).strokeRoundedRect(x+.5,y+.5,width-1,31,8);
     const remaining=Math.max(0,this.waveTimer||0);
     const step=this.mode==='bossWarning'||this.mode==='bossIntro'?6:
-      this.waveIndex===3?(remaining>75?3:4):this.waveIndex===4?5:this.waveIndex;
+      this.waveIndex===3?(remaining>C1_WAVE_SEC[3]-C1_RECOVERY_SEC?3:4):this.waveIndex===4?5:this.waveIndex;
     const gap=4,segment=(width-28-gap*6)/7;
     for(let i=0;i<7;i++){
       const tone=i<step?0x7dbea9:i===step?0xbfeaff:0x3f556b;
@@ -16115,9 +16119,9 @@ class Game extends Phaser.Scene {
   }
   continuousCombatWaveText(){
     const remaining=Math.max(0,this.waveTimer||0);
-    const recovering=this.waveIndex===3&&remaining>75;
+    const recovering=this.waveIndex===3&&remaining>C1_WAVE_SEC[3]-C1_RECOVERY_SEC;
     const phase=recovering?'Recovery':(['Warm-up','Pressure','Miniboss','Escalation','Swarm'][this.waveIndex]||'Combat');
-    return phase+' · '+Math.ceil(remaining-(recovering?75:0))+'s';
+    return phase+' · '+Math.ceil(remaining-(recovering?C1_WAVE_SEC[3]-C1_RECOVERY_SEC:0))+'s';
   }
   updateWaveText(){
     const st=STAGES[this.stageIndex]; if(!st)return;
@@ -16465,9 +16469,9 @@ class Game extends Phaser.Scene {
     const st=STAGES[this.stageIndex],p=this.waveProfile(w); this._waveTimed=false; this._goldWave=false; this._crownCurse=null;
     if(this._v83Run&&w!==st.miniAt){
       const d=this._c1Combat;
-      if(d){d.delay=3;d.phase=null;d.patterns=[];d.nextEvent=w===1||w===3?5+Math.random()*8:null;}
+      if(d){d.delay=3;d.phase=null;d.patterns=[];d.nextEvent=w===1||w===3?4+Math.random()*5:null;}
       this.mode='wave';this.clearWaveObjective();this.startSurvivalWave(w,!!seamless);
-      this.waveDur=this.waveTimer=([30,45,0,105,60][w]||60);
+      this.waveDur=this.waveTimer=(C1_WAVE_SEC[w]||45);
       this.updateWaveText();return;
     }
     if(w===st.miniAt){this.mode='miniWarning';this.setupSpawnRates(w);this.updateWaveText();
@@ -16699,7 +16703,7 @@ class Game extends Phaser.Scene {
   setupWaveObjective(w,p){
     this.stackEnd?.(false); this._stackTried=false;
     this.clearWaveObjective();
-    const dealT=!(p&&p.forceType)&&this._missionDeal&&!this.recipeMode&&!this.riftMode&&!this.bossRush?this._missionDeal.waves[w]:null;
+    const dealT=!(p&&p.forceType)&&this._missionDeal&&!this._missionDeal.preview&&!this.recipeMode&&!this.riftMode&&!this.bossRush?this._missionDeal.waves[w]:null;
     const planned=dealT?(this._missionDeal.plan?earlyWaveMission(this.stageIndex,w):null):(!this.recipeMode&&!this.riftMode&&!MISSION_DECK?earlyWaveMission(this.stageIndex,w):null);
     if(!(p&&p.forceType)&&!dealT&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=this.c1FirstPool(Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture']);this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());if(st&&st.lead&&!this._leadUsed){ const b=this._waveObjectiveBag,i=b.indexOf(st.lead); if(i>=0){ b.splice(i,1); b.push(st.lead); this._leadUsed=true; } }}   /* v8.1.82 ภารกิจ League ประจำด่านมาก่อน */
     if(!(p&&p.forceType)&&!dealT&&!planned&&this._waveObjectiveBag&&!this._waveObjectiveBag._roamed){ this._waveObjectiveBag._roamed=true; this.missionRoamBag?.(this._waveObjectiveBag); }
@@ -17663,7 +17667,7 @@ class Game extends Phaser.Scene {
     const L=this.camUI(this.add.container(0,0).setDepth(119)); L.setScrollFactor?.(1); this._dealL=L; this.physics.pause(); const prevState=this.state; this.state='cinematic';
     const dim=this.add.rectangle(0,0,W,H,0x0b0612,.55).setOrigin(0); L.add(dim);
     const gap=8,cw=Math.min(66,(W-28-gap*(n-1))/n),chh=Math.round(cw*1.42),cy=Math.round(H*.56),x0=W/2-((cw+gap)*n-gap)/2+cw/2,P=i=>x0+i*(cw+gap);
-    const cap=this.add.text(W/2,cy-chh/2-26,'Missions in this stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a',stroke:'#24172c',strokeThickness:4}).setOrigin(.5).setAlpha(0); L.add(cap);
+    const cap=this.add.text(W/2,cy-chh/2-26,deal.preview?'In this stage':'Missions in this stage',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a',stroke:'#24172c',strokeThickness:4}).setOrigin(.5).setAlpha(0); L.add(cap);
     const mk=(i)=>{ const c=this.add.container(W/2,cy);
       if(this.realTex?.('cb93_back')&&this.add.image){
         const back=this.add.image(0,0,'cb93_back').setDisplaySize(cw,chh);
@@ -17671,13 +17675,13 @@ class Game extends Phaser.Scene {
       }
       const g=this.add.graphics(); g.fillStyle(0x2b1d3d,1).fillRoundedRect(-cw/2,-chh/2,cw,chh,8); g.lineStyle(2,0xc9a3ff,.9).strokeRoundedRect(-cw/2,-chh/2,cw,chh,8); g.lineStyle(1,0xc9a3ff,.35).strokeRoundedRect(-cw/2+5,-chh/2+5,cw-10,chh-10,5);
       const bk=this.add.text(0,0,'🍡',{fontSize:Math.round(cw*.42)+'px'}).setOrigin(.5); c.add([g,bk]); c._back=[g,bk]; L.add(c); return c; };
-    const face=(c,i)=>{ const w=i,isBoss=w===n-1,isMini=w===st.miniAt||isBoss,t=isBoss?null:deal.waves[w],o=t&&WAVE_OBJECTIVES[t]||{},sig=!isMini&&t&&t===deal.lead,col=isBoss?0xff3b3b:isMini?0xff5c8a:sig?0xffd166:0x8fd9ff,g=this.add.graphics();
+    const face=(c,i)=>{ const w=i,isBoss=w===n-1,isMini=w===st.miniAt||isBoss,t=isBoss?null:deal.waves[w],lab=!isMini&&deal.labels?.[w],o=lab||t&&WAVE_OBJECTIVES[t]||{},sig=!isMini&&(lab?!!lab.event:t&&t===deal.lead),col=isBoss?0xff3b3b:isMini?0xff5c8a:sig?0xffd166:0x8fd9ff,g=this.add.graphics();
       g.fillStyle(isBoss?0x420d12:isMini?0x3a1424:0x241a33,1).fillRoundedRect(-cw/2,-chh/2,cw,chh,8); g.fillStyle(col,.16).fillRoundedRect(-cw/2+3,-chh/2+3,cw-6,chh-6,6); g.lineStyle(sig?3:2,col,1).strokeRoundedRect(-cw/2,-chh/2,cw,chh,8);
       const num=this.add.text(-cw/2+5,-chh/2+3,String(w+1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#d8cce0'}).setOrigin(0,0);
       const fi=MC86_ORDER.indexOf(isBoss?'boss':isMini?'miniboss':t),em=fi>=0&&this.realTex?.('mc86_faces')&&this.add.image?this.add.image(0,-chh*.1,'mc86_faces',fi).setDisplaySize(cw*.86,cw*.86):this.add.text(0,-chh*.1,isBoss?'👑':isMini?'💀':(o.emoji||'✨'),{fontSize:Math.round(cw*.42)+'px'}).setOrigin(.5);   /* v8.2.24 ใบ 86 ภาพหน้าการ์ด (ไม่มีภาพ = อีโมจิเดิม) */
       const nm=this.add.text(0,chh*.2,isBoss?'Boss':isMini?'Miniboss':(o.name||''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(cw<56?7:8)+'px',color:'#ffffff',align:'center',wordWrap:{width:cw-6},lineSpacing:-2}).setOrigin(.5,0);
       const parts=[g,num,em,nm]; if(sig){ const r=this.add.text(0,-chh/2-1,'STAGE',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#24172c',backgroundColor:'#ffd166',padding:{x:3,y:1}}).setOrigin(.5); parts.push(r); }
-      if(!isMini&&t&&!log[t]){ const nw=this.add.text(cw/2-2,-chh/2+2,'NEW',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ffffff',backgroundColor:'#ff4d8f',padding:{x:2,y:1}}).setOrigin(1,0); parts.push(nw); }
+      if(!isMini&&t&&!lab&&!log[t]){ const nw=this.add.text(cw/2-2,-chh/2+2,'NEW',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ffffff',backgroundColor:'#ff4d8f',padding:{x:2,y:1}}).setOrigin(1,0); parts.push(nw); }
       parts.forEach(q=>q.setVisible(false)); c.add(parts); c._face=parts; c._sig=sig; };
     const cards=[]; for(let i=0;i<n;i++){ const c=mk(i); c.x=W/2+(i-n/2)*1.5; c.y=cy-i*1.5; face(c,i); cards.push(c); }
     let fin=false; const tw=(o)=>this.tweens.add(o),T=(ms,f)=>this.time.delayedCall(ms,()=>{ if(!fin&&!hold)f(); });
@@ -18596,10 +18600,17 @@ class Game extends Phaser.Scene {
     }
     return points;
   }
+  /* v8.3.10 เจ้าของ: ภารกิจแทรกเฉพาะที่เคยเจอ (home ≤ ด่านนี้) · ของด่านนี้มาก่อน แล้วสุ่มที่เหลือ */
+  c1SideDeck(i){const own=C1_SIDE_EVENTS.filter(e=>e.home===i),past=Phaser.Utils.Array.Shuffle(C1_SIDE_EVENTS.filter(e=>e.home<i));return own.concat(past);}
+  /* v8.3.10 เจ้าของ: แจกไพ่ก่อนด่าน C1 แบบใหม่ = บอกเฉย ๆ ว่าแต่ละเวฟเจออะไร (ไม่มี Reroll) · ภารกิจแทรกโผล่ในเวฟ 2 และ 4 */
+  c1PreviewDeal(i){const st=STAGES[i];if(!st)return null;const deck=this._c1Combat?.deck||[],labels={},waves={},slots=[];
+    const base=[{name:'Warm-up',emoji:'🌱'},{name:'Pressure',emoji:'⚔️'},null,{name:'Escalation',emoji:'🔥'},{name:'Swarm',emoji:'🌊'}];
+    let k=0;for(let w=0;w<(st.waves||5);w++){if(w===st.miniAt)continue;slots.push(w);waves[w]='_c1';const ev=(w===1||w===3)?deck[k++]:null;if(ev&&this._c1Combat)(this._c1Combat.plan=this._c1Combat.plan||{})[w]=ev;labels[w]=ev?{name:ev.name,emoji:ev.icon,event:true}:(base[w]||{name:'Combat',emoji:'⚔️'});}
+    return {waves,slots,lead:null,plan:true,preview:true,labels};}
   chapterCombatPhase(){
     if(this.waveIndex===0)return 'warm';
     if(this.waveIndex===1)return 'pressure';
-    if(this.waveIndex===3)return this.waveTimer>75?'recovery':'escalation';
+    if(this.waveIndex===3)return this.waveTimer>C1_WAVE_SEC[3]-C1_RECOVERY_SEC?'recovery':'escalation';
     return 'swarm';
   }
   tickChapterCombat(dt){
@@ -18619,11 +18630,12 @@ class Game extends Phaser.Scene {
     }
     for(const [foe,id] of d.loot)if(!foe.active||foe._c1SpawnId!==id)d.loot.delete(foe);
     if(d.event)this.tickChapterSideEvent(d,dt);
-    if(d.nextEvent!=null&&!d.offered.has(this.waveIndex)&&!d.event&&!d.hazard&&this.waveTimer>22){
+    if(d.nextEvent!=null&&!d.offered.has(this.waveIndex)&&!d.event&&!d.hazard&&this.waveTimer>16){
       d.nextEvent-=dt;
-      if(d.nextEvent<=0&&d.deck.length){
+      const planned=d.plan?d.plan[this.waveIndex]:d.deck[0];   /* v8.3.10 เวฟตรงกับการ์ดที่แจกก่อนด่าน */
+      if(d.nextEvent<=0){
         d.offered.add(this.waveIndex);
-        this.startChapterSideEvent(d,d.deck.shift());
+        if(planned){if(!d.plan)d.deck.shift();this.startChapterSideEvent(d,planned);}
       }
     }
     const phase=this.chapterCombatPhase();

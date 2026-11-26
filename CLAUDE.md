@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.3.9**. Next release:8.3.10. Fetch the deploy branch before new work.
+Current release: **8.3.10**. Next release:8.3.11. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.3.9 — Store test APK finds new versions** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.10 — Shorter Chapter 1 waves, preview cards, side events you have met** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

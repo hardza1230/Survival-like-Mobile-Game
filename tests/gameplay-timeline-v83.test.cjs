@@ -7,11 +7,11 @@ for(const k of ['tutorial','recipe','rift','bossRush','replay'])assert.equal(ena
 for(let i=0;i<5;i++)assert.equal(enabled({stageIndex:i,flag:true}),true);
 for(const i of [-1,5,9])assert.equal(enabled({stageIndex:i,flag:true}),false);
 let s=initial();assert.equal(advance(s,99,{playing:false}),s);
-s=advance(s,30);assert.equal(PHASES[s.index].id,'pressure');
-s=advance(s,45);assert.equal(PHASES[s.index].id,'mini');
+s=advance(s,24);assert.equal(PHASES[s.index].id,'pressure');
+s=advance(s,35);assert.equal(PHASES[s.index].id,'mini');
 s=advance(s,100);assert.equal(PHASES[s.index].id,'mini');
 s=advance(s,0,{bossDefeated:true});assert.equal(PHASES[s.index].id,'recovery');
-for(const dt of [30,75,60])s=advance(s,dt);
+for(const dt of [20,60,45])s=advance(s,dt);
 assert.equal(PHASES[s.index].id,'boss');assert.equal(s.done,false);
 s=advance(s,0,{bossDefeated:true});assert.equal(s.done,true);
 assert.equal(advance(s,10),s);
@@ -29,13 +29,13 @@ function method(name){
 }
 const names=['continuousCombatWaveText','settleStoryBudget','onWaveCleared'];
 const Runtime=vm.runInNewContext('class Runtime{'+names.map(method).join('\n')+'\n}\nRuntime',{
- STAGES:[null,null,null,{waves:5}],
+ STAGES:[null,null,null,{waves:5}],C1_WAVE_SEC:[24,35,0,80,45],C1_RECOVERY_SEC:20,   // v8.3.10 shorter waves
  Sfx:{bgmIntense(){},playStageBgm(){}}
 });
 function runtime(){
  const run=new Runtime();
  Object.assign(run,{
-  _v83Run:true,_lootTok:3,stageIndex:3,waveIndex:3,waveTimer:105,bossUI:[],events:[],xp:0,
+  _v83Run:true,_lootTok:3,stageIndex:3,waveIndex:3,waveTimer:80,bossUI:[],events:[],xp:0,
   _storyBudget:{reward:72,questPaid:20,paid:40},
   usesStoryBudget(){return true;},gainXp(n){this.xp+=n;},
   clearWaveObjective(){},scheduleStageEvent(delay,mode,fn){this.events.push({delay,mode,fn});},
@@ -44,9 +44,9 @@ function runtime(){
  return run;
 }
 const active=runtime();
-assert.equal(active.continuousCombatWaveText(),'Recovery \u00b7 30s');
-active.waveTimer=75;
-assert.equal(active.continuousCombatWaveText(),'Escalation \u00b7 75s');
+assert.equal(active.continuousCombatWaveText(),'Recovery \u00b7 20s');
+active.waveTimer=60;
+assert.equal(active.continuousCombatWaveText(),'Escalation \u00b7 60s');
 active.onWaveCleared(true,false);
 assert.equal(active.xp,52);
 assert.equal(active._storyBudget.paid,92);
