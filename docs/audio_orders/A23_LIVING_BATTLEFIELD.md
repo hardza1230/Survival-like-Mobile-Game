@@ -41,3 +41,5 @@ The API key does not allow `user_read`, so current balance cannot be verified. R
 ## ส่งมอบ
 
 26 พ.ย. 2026 · ส่งครบ 264 ไฟล์ ไม่มีไฟล์ขาด · ตรวจขนาด/รูปแบบ/ความยาว/ความดัง/ความเงียบต้นเสียงและรอยต่อลูปผ่าน · ผูก 222 ไฟล์ใน v8.3.5 อีก 42 ไฟล์เก็บสำรองใน incoming · ใช้ 51,504 เครดิต เหลือประมาณ 1,532 จากภาพตั้งต้น · รอเจ้าของฟังบนมือถือ
+
+ยืนยันการปล่อย v8.3.5 แล้ว · commit `50c3e335` · [Pages deploy + visual ผ่าน](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/45728918915) · [Android APK ผ่าน](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/45728918910) · 262 package checks + 11 browser checks ผ่าน · แอป 188.2 MB · ตรวจเวอร์ชันสดและ SHA-256 เสียงตัวแทน 9 ไฟล์ตรงกับ runtime
