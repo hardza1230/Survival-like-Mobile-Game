@@ -487,53 +487,69 @@
     const t=this.add.text(x+(TEMPLE_UI[key][3]?.[0]||60)*(p._tuK||.4)+4,y+7,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color,stroke:'#3a0d22',strokeThickness:2}).setOrigin(0,0.5); this.menu.add([p,t]);
     if(this.tuHas('perk_tier_line')){ const lw=x+w-(x+bw+4); if(lw>20)this.menu.add(this.tuImg('perk_tier_line',0,x+bw+4,y+7,lw,6).setOrigin(0,0.5)); }
     return true; }
+  /* v8.3.15 เจ้าของ: หน้า Rank Rewards วาดด้วยโค้ดทั้งหมด (เลิกใช้การ์ด/ป้าย/ไอคอนจากรูป) + VFX · เอาส่วน Ancient ออก · ตำแหน่งการ์ด/ปุ่มกดเหมือนเดิม
+     VFX: เลือกแล้ว = ขอบเรืองแสง + ประกายวิ่งรอบการ์ด · กดเลือก = การ์ดเด้ง + ระเบิดประกาย · ยศที่ยังไม่เลือก = กระพริบทอง · ยศล็อก = หมอกม่วง + โซ่ + กุญแจ */
   buildRankPerks(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Rank Rewards',ASSET_IMAGES.screen_temple_perks?'screen_temple_perks':'screen_weave_perks');   // v7.8.49 B1
-    const w=this.W,h=this.H;
-    // v8.0.22 Rank Rewards: ทุกยศ 1–5 เลือก 1 จาก 2 (เปลี่ยนได้ฟรี) · โบนัส Sugar/สกุลเงินตามยศอัตโนมัติ
-    const rank=Save.data.rank||0,rb=rankAutoBonus(rank),hs=this._hdrShift(),art=this.tuHas('perk_card_sheet'),gap=7,cardW=(w-28-gap)/2;
-    const fitH=(h-hs-300)/3,aFit=art?Math.max(46,Math.min(62,fitH-40)):58;
-    const hd=this.add.text(w/2,56+hs,'Rank '+rank+'  ·  auto bonus +'+Math.round(rb.sugar*100)+'% Sugar · +'+Math.round(rb.cur*100)+'% crafting currency',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',stroke:art?'#1d0f16':undefined,strokeThickness:art?3:0}).setOrigin(0.5);
-    const sub=this.add.text(w/2,72+hs,'Each new Rank lets you pick 1 of 2 rewards · tap the other one any time to switch',{fontFamily:'NunitoUI, sans-serif',fontSize:'10.5px',color:art?'#e2d6ee':'#b7abc9'}).setOrigin(0.5);
-    if(hd.width>w-20)hd.setScale((w-20)/hd.width); if(sub.width>w-16)sub.setScale((w-16)/sub.width); this.menu.add([hd,sub]);
-    let y=86+hs; const rowH=Math.max(50,Math.min(60,(h-hs-86-3*aFit-70)/RANK_REWARDS.length-16));
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Rank Rewards',ASSET_IMAGES.screen_temple_perks?'screen_temple_perks':'screen_weave_perks');
+    for(const t of this._rrTw||[]){ try{ t.remove?.(); }catch(e){} } this._rrTw=[];
+    const TW=(c,host)=>{ if(!this.tweens)return null; const h0=host||(Array.isArray(c.targets)?c.targets[0]:c.targets),up=c.onUpdate; let t=null;
+      c.onUpdate=(...a)=>{ if(h0&&!h0.scene){ try{ t&&t.remove(); }catch(e){} return; } up&&up(...a); };
+      t=c.targets?this.tweens.add(c):this.tweens.addCounter?.(c); if(t)this._rrTw.push(t); return t; };
+    const w=this.W,h=this.H,F='NunitoUI, sans-serif',add=o=>{ this.menu.add(o); return o; };
+    const rank=Save.data.rank||0,rb=rankAutoBonus(rank),hs=this._hdrShift(),gap=7,cardW=(w-28-gap)/2,burst=this._rrBurst; this._rrBurst=null;
+    const hd=add(this.add.text(w/2,56+hs,'Rank '+rank+'  ·  auto bonus +'+Math.round(rb.sugar*100)+'% Sugar · +'+Math.round(rb.cur*100)+'% crafting currency',{fontFamily:F,fontStyle:'bold',fontSize:'11px',color:'#ffd166',stroke:'#1d0f16',strokeThickness:3}).setOrigin(0.5));
+    const sub=add(this.add.text(w/2,72+hs,'Each new Rank lets you pick 1 of 2 rewards · tap the other one any time to switch',{fontFamily:F,fontSize:'10.5px',color:'#e2d6ee',stroke:'#1d0f16',strokeThickness:2}).setOrigin(0.5));
+    if(hd.width>w-20)hd.setScale((w-20)/hd.width); if(sub.width>w-16)sub.setScale((w-16)/sub.width);
+    let y=88+hs; const rowH=Math.max(52,Math.min(72,(h-hs-88-24)/RANK_REWARDS.length-26));
+    // ป้าย RANK: ริบบิ้น + อัญมณีซ้าย + หัวลูกศร + เส้นยาวถึงขอบขวา
+    const banner=(y,label,st)=>{ const col=st==='lock'?0x5a4372:st==='pick'?0xe0a23a:0xc8406f,lite=st==='lock'?0x9a86b8:st==='pick'?0xffe08a:0xff9ec4,x=14,bw=Math.min(w-90,label.length*6.3+46),g=add(this.add.graphics());
+      g.fillStyle(0x000000,.35).fillRoundedRect(x+11,y+2,bw-10,16,3); g.fillStyle(col,1).fillRoundedRect(x+10,y,bw-10,16,3).fillTriangle(x+bw-1,y,x+bw+10,y+8,x+bw-1,y+16);
+      g.fillStyle(0xffffff,.2).fillRect(x+14,y+2,bw-16,5); g.lineStyle(1,lite,.9).strokeRoundedRect(x+10,y,bw-10,16,3);
+      g.lineStyle(1.5,lite,.55).lineBetween(x+bw+14,y+8,w-22,y+8); g.fillStyle(lite,.9).fillPoints([{x:w-22,y:y+4},{x:w-18,y:y+8},{x:w-22,y:y+12},{x:w-26,y:y+8}],true);
+      g.fillStyle(lite,1).fillPoints([{x:x+10,y:y-1},{x:x+19,y:y+8},{x:x+10,y:y+17},{x:x+1,y:y+8}],true); g.lineStyle(1.2,0xffffff,.8).strokePoints([{x:x+10,y:y-1},{x:x+19,y:y+8},{x:x+10,y:y+17},{x:x+1,y:y+8}],true,true); g.fillStyle(0xffffff,.85).fillCircle(x+10,y+8,2);
+      const t=add(this.add.text(x+26,y+8,label,{fontFamily:F,fontStyle:'bold',fontSize:'10.5px',color:st==='lock'?'#d8cce6':'#ffffff',stroke:'#2a0b1c',strokeThickness:2}).setOrigin(0,0.5));
+      if(st==='pick'){ const gl=add(this.add.graphics()); gl.lineStyle(4,0xffe08a,.6).strokeRoundedRect(x+8,y-2,bw-6,20,4); TW({targets:gl,alpha:{from:1,to:.1},yoyo:true,repeat:-1,duration:650,ease:'Sine.inOut'}); TW({targets:t,alpha:{from:1,to:.65},yoyo:true,repeat:-1,duration:650,ease:'Sine.inOut'}); } };
+    // ประกายดาว 4 แฉก
+    const star=(c,r)=>{ const g=this.add.graphics(); g.fillStyle(c,1).fillPoints([{x:0,y:-r},{x:r*.28,y:-r*.28},{x:r,y:0},{x:r*.28,y:r*.28},{x:0,y:r},{x:-r*.28,y:r*.28},{x:-r,y:0},{x:-r*.28,y:-r*.28}],true); g.fillStyle(0xffffff,.9).fillCircle(0,0,r*.25); return g; };
+    // จุดบนเส้นขอบการ์ด (u = 0..1 รอบเดียว)
+    const edge=(x,y,cw,ch,u)=>{ const P=2*(cw+ch); let d=((u%1)+1)%1*P; if(d<cw)return {x:x+d,y}; d-=cw; if(d<ch)return {x:x+cw,y:y+d}; d-=ch; if(d<cw)return {x:x+cw-d,y:y+ch}; d-=cw; return {x,y:y+ch-d}; };
+    const padlock=(cx,cy,s,a)=>{ const g=add(this.add.graphics()); g.lineStyle(2*s,0xc9b8e0,a).beginPath(); g.arc(cx,cy-3*s,4*s,Math.PI,0,false); g.strokePath(); g.fillStyle(0x9d8ab8,a).fillRoundedRect(cx-6*s,cy-3*s,12*s,9*s,2*s); g.fillStyle(0x2a2038,a).fillCircle(cx,cy+1*s,1.6*s).fillRect(cx-.6*s,cy+1*s,1.2*s,3*s); return g; };
+    const chain=(x0,x1,yy,a)=>{ const g=add(this.add.graphics()); let i=0; for(let x=x0;x<x1-6;x+=9,i++){ if(i%2)g.lineStyle(2,0x8f7fa8,a).lineBetween(x+1,yy,x+8,yy); else { g.lineStyle(1.6,0xb3a3cc,a).strokeEllipse(x+4.5,yy,10,5.5); } } return g; };
     RANK_REWARDS.forEach(row=>{ const open=rank>=row.r,pick=Save.rankPick(row.r);
       const lbl=open?(pick?'RANK '+row.r:'RANK '+row.r+' · CHOOSE ONE'):'RANK '+row.r+' · 🔒 WEAVE UP TO RANK '+row.r;
-      if(!this.tuHeader('perk_tier_banner',14,y,w-28,lbl,open?'#fff0e0':'#c9bcd6'))this.menu.add(this.add.text(14,y,lbl,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:open?'#ffd9a8':'#c3b8d0'}).setOrigin(0,0));
-      if(open&&!pick)this.drawBadgeDot(this.menu,w-20,y+6);
-      y+=art?17:14;
-      row.opts.forEach((o,i)=>{ const x=14+i*(cardW+gap),on=pick===o.id,cp=art?this.tuPanel('perk_card_sheet',!open?2:(on?1:0),x,y,cardW,rowH):null;
-        let g=cp; if(!cp){ g=this.add.graphics(); g.fillStyle(open?0x2c2338:0x201a28,1); g.fillRoundedRect(x,y,cardW,rowH,10); g.lineStyle(2,on?0x8bd3a0:(open?0x6a5b86:0x352b40),0.9); g.strokeRoundedRect(x,y,cardW,rowH,10); }
-        else if(on){ const gl=this.add.graphics(); gl.lineStyle(2.5,0x8bffb4,.9).strokeRoundedRect(x+2,y+2,cardW-4,rowH-4,9); this.menu.add(gl); }
-        else if(open&&!pick){ const gl=this.add.graphics(); gl.lineStyle(2,0xffe08a,.75).strokeRoundedRect(x+2,y+2,cardW-4,rowH-4,9); this.menu.add(gl); this.tweens.add({targets:gl,alpha:{from:.9,to:.25},yoyo:true,repeat:-1,duration:700}); }
-        const em=this.menuArtIcon?.('rank_reward_icons',(row.r-1)*2+i,x+22,y+rowH/2,34)?.setAlpha(open?1:.4)||(this.textures.exists('perk_'+o.id)?this.add.image(x+22,y+rowH/2,'perk_'+o.id).setDisplaySize(26,26):this.add.text(x+22,y+rowH/2,o.emoji,{fontSize:'20px'}).setOrigin(0.5)).setAlpha(open?1:.4);
-        const nm=this.add.text(x+42,y+rowH*.32,o.name+(on?'  ✓':''),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#a8ffc8':(open?'#ffffff':'#c3b8d0')}).setOrigin(0,0.5);
-        const ds=this.add.text(x+42,y+rowH*.64,o.desc,{fontFamily:'NunitoUI, sans-serif',fontSize:'10.5px',color:open?'#d6cae4':'#c3b8d0',wordWrap:{width:cardW-50}}).setOrigin(0,0.5);
-        if(nm.width>cardW-50)nm.setScale((cardW-50)/nm.width);
-        this.menu.add([g,em,nm,ds]);
-        if(open&&!on)this._zone(x,y,cardW,rowH,()=>{ if(Save.setRankPick(row.r,o.id)){ Sfx.menuCue?.('rank_pick',.4)||Sfx.progress('perk'); if(this.tuSparkle)this.tuSparkle(x+cardW/2,y+rowH/2,44); this.menuToast?.((pick?'🔄 Switched to ':'✨ ')+o.name,'#ffe08a'); } this.buildRankPerks(); });
-        else if(!open)this._zone(x,y,cardW,rowH,()=>{ Sfx.select&&Sfx.select(); this.menuToast?.('🔒 Weave Up to Rank '+row.r+' to unlock','#ffb4c7'); });
+      banner(y,lbl,!open?'lock':(pick?'on':'pick')); if(open&&!pick)this.drawBadgeDot(this.menu,w-20,y+6);
+      y+=22;
+      row.opts.forEach((o,i)=>{ const x=14+i*(cardW+gap),on=pick===o.id,st=!open?'lock':on?'on':(!pick?'pick':'open'),cx=x+cardW/2,cy=y+rowH/2,cw=cardW,ch=rowH;
+        const bd=st==='on'?0xffd38a:st==='pick'?0xffe08a:st==='open'?0x8f7ab8:0x3d3150;
+        if(st==='on'){ const gl=add(this.add.graphics()); gl.lineStyle(8,0x8bffb4,.22).strokeRoundedRect(x-2,y-2,cw+4,ch+4,13); gl.lineStyle(4,0xfff0b0,.4).strokeRoundedRect(x-1,y-1,cw+2,ch+2,12); TW({targets:gl,alpha:{from:1,to:.35},yoyo:true,repeat:-1,duration:1100,ease:'Sine.inOut'}); }
+        const box=add(this.add.container(cx,cy)),g=this.add.graphics(); box.add(g);
+        g.fillStyle(0x000000,.38).fillRoundedRect(-cw/2+2,-ch/2+3,cw,ch,11);
+        g.fillStyle(st==='on'?0x5a1a3e:st==='lock'?0x1a1424:0x261d36,st==='lock'?.94:.97).fillRoundedRect(-cw/2,-ch/2,cw,ch,11);
+        g.fillStyle(st==='on'?0x9a2f66:0x3a2e52,st==='on'?.55:.35).fillRoundedRect(-cw/2+3,-ch/2+3,cw-6,ch*.42,{tl:9,tr:9,bl:3,br:3});
+        g.lineStyle(st==='on'?2.5:1.6,bd,st==='lock'?.8:1).strokeRoundedRect(-cw/2,-ch/2,cw,ch,11); g.lineStyle(1,0xffffff,st==='lock'?.05:.12).strokeRoundedRect(-cw/2+4,-ch/2+4,cw-8,ch-8,8);
+        for(const [sx,sy] of [[-1,-1],[1,-1],[-1,1],[1,1]]){ const px=sx*(cw/2-7),py=sy*(ch/2-7); g.fillStyle(bd,st==='lock'?.6:1).fillPoints([{x:px,y:py-3.5},{x:px+3.5,y:py},{x:px,y:py+3.5},{x:px-3.5,y:py}],true); }
+        const mx=-cw/2+24; g.fillStyle(st==='on'?0x3a0f28:0x1a1426,1).fillCircle(mx,0,15); g.lineStyle(2,bd,st==='lock'?.6:1).strokeCircle(mx,0,15); g.lineStyle(1,0xffffff,.18).strokeCircle(mx,0,11.5);
+        const em=this.add.text(mx,0,o.emoji||'✦',{fontSize:'15px'}).setOrigin(0.5).setAlpha(open?1:.35); box.add(em);
+        const nm=this.add.text(-cw/2+46,-ch*.18,o.name+(on?'  ✓':''),{fontFamily:F,fontStyle:'bold',fontSize:'11.5px',color:on?'#a8ffc8':(open?'#ffffff':'#b9adc9'),stroke:'#1a0d18',strokeThickness:2}).setOrigin(0,0.5);
+        const ds=this.add.text(-cw/2+46,ch*.18,o.desc,{fontFamily:F,fontSize:'10.5px',color:open?'#e2d6ee':'#a99dba',wordWrap:{width:cw-54}}).setOrigin(0,0.5);
+        if(nm.width>cw-54)nm.setScale((cw-54)/nm.width); if(ds.height>ch*.55)ds.setScale(Math.max(.75,ch*.55/ds.height)); box.add([nm,ds]);
+        if(st==='on'){ // ประกายวิ่งรอบขอบ 2 ดวง
+          for(const off of [0,.5]){ const sp=add(star(0xfff3b0,4.5)),host={v:0}; const put=u=>{ const q=edge(x+2,y+2,cw-4,ch-4,u+off); sp.setPosition(q.x,q.y); }; put(0);
+            TW({from:0,to:1,duration:2800,repeat:-1,onUpdate:tw=>{ put(tw.getValue?tw.getValue():0); sp.setAngle((sp.angle||0)+4); }},sp); TW({targets:sp,scale:{from:.7,to:1.25},yoyo:true,repeat:-1,duration:420}); } }
+        else if(st==='pick'){ const gl=add(this.add.graphics()); gl.lineStyle(2.5,0xffe08a,.9).strokeRoundedRect(x+2,y+2,cw-4,ch-4,9); gl.lineStyle(6,0xffd166,.25).strokeRoundedRect(x,y,cw,ch,11); TW({targets:gl,alpha:{from:1,to:.15},yoyo:true,repeat:-1,duration:650,ease:'Sine.inOut'}); }
+        else if(st==='lock'){ // หมอกม่วงลอย + โซ่ล่าง + กุญแจที่เหรียญ
+          for(let k=0;k<3;k++){ const fg=add(this.add.graphics()); fg.fillStyle(0x8a5cc8,.11).fillEllipse(0,0,cw*.42,ch*.7); fg.fillStyle(0xb48cf0,.07).fillEllipse(0,0,cw*.26,ch*.42); fg.setPosition(x+cw*(.22+.28*k),y+ch*.5);
+            TW({targets:fg,x:fg.x+cw*(k%2?-.12:.12),alpha:{from:.5,to:1},yoyo:true,repeat:-1,duration:2600+k*700,ease:'Sine.inOut'}); }
+          chain(x+8,x+cw-8,y+ch-6,.55); padlock(x+cw-16,y+15,1,.85); padlock(x+24+9,y+ch/2+8,.75,.95); }
+        if(burst&&burst.r===row.r&&burst.id===o.id){ box.setScale(1.14,.86); TW({targets:box,scaleX:1,scaleY:1,duration:420,ease:'Back.easeOut'});
+          const ring=add(this.add.graphics().setPosition(cx,cy)); ring.lineStyle(3,0xfff0b0,1).strokeRoundedRect(-cw/2,-ch/2,cw,ch,11); TW({targets:ring,scaleX:1.18,scaleY:1.45,alpha:0,duration:520,ease:'Cubic.easeOut',onComplete:()=>ring.destroy()});
+          const cols=[0xffe08a,0x8bffb4,0xff9ec4,0xffffff];
+          for(let k=0;k<16;k++){ const a=Math.PI*2*k/16+Math.random()*.3,d=38+Math.random()*48,p=add(star(cols[k%4],3+Math.random()*3)); p.setPosition(cx,cy);
+            TW({targets:p,x:cx+Math.cos(a)*d*1.4,y:cy+Math.sin(a)*d*.8,scale:.2,alpha:0,angle:180,duration:520+Math.random()*260,ease:'Cubic.easeOut',onComplete:()=>p.destroy()}); } }
+        if(open&&!on)this._zone(x,y,cw,ch,()=>{ if(Save.setRankPick(row.r,o.id)){ Sfx.menuCue?.('rank_pick',.4)||Sfx.progress('perk'); this._rrBurst={r:row.r,id:o.id}; this.menuToast?.((pick?'🔄 Switched to ':'✨ ')+o.name,'#ffe08a'); } this.buildRankPerks(); });
+        else if(!open)this._zone(x,y,cw,ch,()=>{ Sfx.select&&Sfx.select(); this.menuToast?.('🔒 Weave Up to Rank '+row.r+' to unlock','#ffb4c7'); });
       });
       y+=rowH+8; });
-    // v5.30 🗿 ANCIENT: Perk ลับจากใต้วิหาร (ใช้คัมภีร์ 4 ชิ้น/ตัว) · v7.8.49 มีรูป = 2 คอลัมน์ (เหรียญซ้ายกินที่)
-    { const sc=Save.threads(),aArt=this.tuHas('perk_ancient_card_sheet');
-      if(!this.tuHeader('perk_ancient_banner',14,y,w*.7,'ANCIENT · from the Temple Depths','#f3e0ff'))this.menu.add(this.add.text(14,y,'ANCIENT · from the Temple Depths',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#e0b0ff'}).setOrigin(0,0));
-      const scTxt=sc+' ('+ANCIENT_THREAD_COST+' per perk)',chW=scTxt.length*5.2+30,chip=this.tuPanel('perk_scroll_chip',0,w-14-chW,y-3,chW,19);   // B13 + B14
-      if(chip){ this.menu.add(chip); this.menu.add(this.add.text(w-14-chW+chip._tuK*25,y+6.5,'🧶',{fontSize:'11px'}).setOrigin(0.5)); this.menu.add(this.add.text(w-20,y+6.5,scTxt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#e2d6ee'}).setOrigin(1,0.5)); }
-      else this.menu.add(this.add.text(w-14,y,'🧶 '+scTxt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#c3b8d0'}).setOrigin(1,0));
-      y+=aArt?19:15;
-      const aCols=2,aW=aArt?(w-28-gap)/2:cardW,aH=aArt?aFit:58;
-      ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%aCols)*(aW+gap),yy=y+Math.floor(i/aCols)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=ANCIENT_THREAD_COST;
-        const ap=aArt?this.tuPanel('perk_ancient_card_sheet',own?2:(can?1:0),x,yy,aW,aH):null,ak=ap?ap._tuK:0;   // B12
-        let g=ap; if(!ap){ g=this.add.graphics(); g.fillStyle(own?0x2e2440:0x201a28,1); g.fillRoundedRect(x,yy,aW,aH,10); g.lineStyle(2,own?0xc7a6ff:(can?0xffd166:0x352b40),0.9); g.strokeRoundedRect(x,yy,aW,aH,10); }
-        const icx=ap?x+50*ak:x+16,icy=ap?yy+aH*.45:yy+17,isz=ap?Math.min(34,58*ak):22,tx=ap?x+100*ak+4:x+30;
-        const icon=this.textures.exists('perk_'+pk.id)?this.add.image(icx,icy,'perk_'+pk.id).setDisplaySize(isz,isz):this.add.text(icx,icy,pk.emoji,{fontSize:ap?'20px':'16px'}).setOrigin(0.5); icon.setAlpha(own||can?1:0.45);
-        const nm=this.add.text(tx,yy+(ap?9:10),pk.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:ap?'11px':'10.5px',color:own?'#fff3c8':'#efe4fa',wordWrap:{width:ap?x+aW-tx-8:aW-34}}).setOrigin(0,0);
-        const lockA=ap&&!own&&!can&&this.tuHas('ui_lock_icon');
-        const ds=this.add.text(ap?tx:x+6,ap?yy+24:yy+31,own?'✓ '+pk.desc:(can?'Tap to unlock · '+pk.desc:(lockA?'':'🔒 ')+pk.desc),{fontFamily:'NunitoUI, sans-serif',fontSize:ap?'7.5px':'6.8px',color:own?'#e6d6ff':(ap?'#cfc3dc':'#c3b8d0'),wordWrap:{width:ap?x+aW-tx-8:aW-10}}).setOrigin(0,0);
-        this.menu.add([g,icon,nm,ds]); if(lockA)this.menu.add(this.tuImg('ui_lock_icon',0,x+16*ak,yy+aH*.8,11,11));
-        if(can)this._zone(x,yy,aW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.progress('ancient'); if(this.tuSparkle)this.tuSparkle(x+aW/2,yy+aH/2,44); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });
-      y+=Math.ceil(ANCIENT_PERKS.length/aCols)*(aH+6)+6; }
     this.menu.setVisible(true);
   }
   /* v7.9.10 ใบ 27 ชุดสมุด (Equipment + Forge) · this._jrSkin ตั้งตอนสร้างหน้า · ยังโหลดไม่ครบ = ธีมม่วงเดิม */

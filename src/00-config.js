@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.14';
+const GAME_VERSION = '8.3.15';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -74,6 +74,7 @@ const CROSSROADS=[
 // v4.89.1: เวลาอมตะหลังโดนตี ×0.6 (เจ้าของ: อยากให้โดนตีถี่ขึ้น) · ชน 0.6→0.36s · กระสุน 0.5→0.3s
 const HURT_IFRAME_MUL = 0.8;   // v6.55.68 เจ้าของ: อมตะหลังโดนตีนานขึ้น (0.6→0.8)
 const STORE_APK_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/store-apk-latest/mochi-mayhem-store-test.apk', STORE_VERSION_URL = 'https://hardza1230.github.io/Survival-like-Mobile-Game/version.json';   // v8.3.9 Store-like test APK update check
+const COUNTER_STUN_SEC = 2;   /* v8.3.15 เจ้าของ: เตะของใส่บอส = บอสสตั้น 2 วิ (เดิม 1.2) */
 function verNewer(a,b){ const n=v=>String(v).split('.').map(x=>parseInt(x,10)||0),x=n(a),y=n(b); for(let k=0;k<3;k++)if((x[k]||0)!==(y[k]||0))return (x[k]||0)>(y[k]||0); return false; }
 const RELEASES_URL = 'https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk';
 // v6.55.17: HP บอส/มินิ ด่าน 3-5 (Chapter 1) ของจริง

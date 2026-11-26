@@ -1242,7 +1242,7 @@
   hiveRush(b){ const passes=b.phase3?5:b.phase2?4:3,warn=b.phase3?820:b.phase2?900:1000,vw=this.arenaVw(),off=Math.min(vw*.62,560),sp=b.phase3?1250:1100;
     b._arenaBusy=true; this.hornetQueenPose?.(b,2,1200); this.showBanner('🐝 Hive Rush','She rushes across the screen — move up or down out of her lane!',1100);
     let side=b.x<this.player.x?-1:1; const step=i=>{ if(!b.active||this.state==='dead'){b._arenaBusy=false;return;} if(i>=passes){ b._arenaBusy=false; b.knock=0; b.atkCd=1.4;
-        const c=this.spawnCounter(b,this.player.x+Phaser.Math.Between(-90,90),this.player.y+Phaser.Math.Between(-70,70),{emoji:'🍯',tint:0xffc23a,onHit:bb=>{this.bossPctHit(bb,.03);this.bossStun(bb,1.2,'Sticky!');if(!bb._sticky){bb._sticky=true;bb.spd*=.6;this.time.delayedCall(3200,()=>{if(bb.active){bb.spd/=.6;bb._sticky=false;}});}}});
+        const c=this.spawnCounter(b,this.player.x+Phaser.Math.Between(-90,90),this.player.y+Phaser.Math.Between(-70,70),{emoji:'🍯',tint:0xffc23a,onHit:bb=>{this.bossPctHit(bb,.03);this.bossStun(bb,COUNTER_STUN_SEC,'Sticky!');if(!bb._sticky){bb._sticky=true;bb.spd*=.6;this.time.delayedCall(3200,()=>{if(bb.active){bb.spd/=.6;bb._sticky=false;}});}}});
         if(c)this.showBanner('🍯 Royal Jelly','Dash into the jelly to kick it back at the Queen!',1000); return; }
       const py=this.player.y,tx=this.player.x+side*off; b.knock=9; b.setVelocity(0,0);
       this.tweens.add({targets:b,x:tx,y:py,duration:360,ease:'Sine.inOut',onUpdate:()=>b.body?.reset(b.x,b.y),onComplete:()=>{ if(!b.active)return;

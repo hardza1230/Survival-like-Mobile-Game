@@ -253,7 +253,7 @@ const Save = {
   frRemove(slot,k){ const r=this.frRecipes()[slot]; if(!r||!r[k])return false; if((this.data.sugar||0)<FR_SWAP_SUGAR)return 'sugar'; this.data.sugar-=FR_SWAP_SUGAR; this.frAddPart(r[k],1); r[k]=null; this.save(); return true; },
   frResetRecipes(){ const rs=this.frRecipes();if(!rs.some(r=>r.t||r.e||r.m)||this.threads()<this.kitchenResetCost())return false;
     this.data.threads-=this.kitchenResetCost();const p=this.frParts();for(const r of rs){for(const k of ['t','e','m']){if(r[k]){p[r[k]]=(p[r[k]]||0)+1;r[k]=null;}}}this.save();return true; },
-  ancientHas(id){ return !!(this.data.ancient||{})[id]; },
+  ancientHas(id){ return false; },   /* v8.3.15 เจ้าของ: เอา Ancient Perks ออกจากเกม (ไม่มีผล · ไม่คืน Thread · ข้อมูลเซฟเดิมเก็บไว้เฉย ๆ) */
   unlockAncient(id){ if(this.ancientHas(id)||!ANCIENT_PERKS.find(p=>p.id===id)||!this.spendThreads(ANCIENT_THREAD_COST))return false; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
   // v8.0.22 Special Cores ซื้อไม่ได้แล้ว (คืน Thread ตอนโหลดเซฟ · ดู _rrMig)
   talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*WEAVE_COST_MUL*Math.pow(WEAVE_LV_GROWTH,lvl)*(1+rank)*Math.pow(1.25,rank)); },   // v6.90 เจ้าของ: แพงขึ้นทั้งหมด ×3 + โตตามเลเวล ×1.8/ขั้น (เดิม ×(lvl+1))   // v6.68: 1.15→1.25 per rank (Sugar upgrades nerfed)   // 🍬 Sugar · v6.55.28: (1+rank)×1.15^rank (เดิม 1+0.8·rank) ยศ 5 รวม ×1.7, ยศ 10 ×2.9

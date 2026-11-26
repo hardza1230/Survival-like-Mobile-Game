@@ -1000,28 +1000,28 @@ function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,'')),m
 // v7.5 Daily Quests (เจ้าของ: แบบเกมทั่วไป) — ภารกิจ 5 ข้อ/วัน ข้อละ 20 แต้ม · แต้มสะสมเปิดกล่อง 40 / 70 / 100 (ครบทุกข้อ = กล่องใหญ่)
 // v8.0.20 เจ้าของ: Daily ใหม่ — 10 ข้อ/วัน (ง่าย 4 · กลาง 4 · ท้าทาย 2) · กล่อง 3/6/8 ข้อ · เปลี่ยนภารกิจฟรีวันละ 1 · Weekly 7 ช่อง (วันที่ทำครบ 8) → หีบทอง
 // k = ชนิดที่ DailyQ.tick(k) นับ · b = ระดับ 0 ง่าย 1 กลาง 2 ท้าทาย · req = ต้องผ่านด่านนั้นก่อน
-const DQ_POOL=[
-  {id:'e_kills',k:'kills',b:0,emoji:'⚔️',name:'Defeat 120 enemies',target:120,go:'stage'},
-  {id:'e_cards',k:'cards',b:0,emoji:'🃏',name:'Pick 10 level-up cards',target:10,go:'stage'},
-  {id:'e_unique',k:'unique',b:0,emoji:'⭐',name:'Use your Unique 8 times',target:8,go:'stage'},
-  {id:'e_dash',k:'dash',b:0,emoji:'💨',name:'Dash 25 times',target:25,go:'stage'},
-  {id:'e_obj',k:'objective',b:0,emoji:'🎯',name:'Finish 2 wave missions',target:2,go:'stage'},
-  {id:'e_sugar',k:'sugar',b:0,emoji:'🍬',name:'Earn 400 Sugar',target:400,go:'stage'},
+const DQ_POOL=[   /* v8.3.15 เจ้าของ: Daily ง่ายไป → เป้าทุกข้อ ×1.5 (ข้อที่นับ 1 ครั้งคงเดิม) */
+  {id:'e_kills',k:'kills',b:0,emoji:'⚔️',name:'Defeat 180 enemies',target:180,go:'stage'},
+  {id:'e_cards',k:'cards',b:0,emoji:'🃏',name:'Pick 15 level-up cards',target:15,go:'stage'},
+  {id:'e_unique',k:'unique',b:0,emoji:'⭐',name:'Use your Unique 12 times',target:12,go:'stage'},
+  {id:'e_dash',k:'dash',b:0,emoji:'💨',name:'Dash 38 times',target:38,go:'stage'},
+  {id:'e_obj',k:'objective',b:0,emoji:'🎯',name:'Finish 3 wave missions',target:3,go:'stage'},
+  {id:'e_sugar',k:'sugar',b:0,emoji:'🍬',name:'Earn 600 Sugar',target:600,go:'stage'},
   {id:'e_clear',k:'clear',b:0,emoji:'🏁',name:'Clear a stage',target:1,go:'stage'},
   {id:'e_chest',k:'chest',b:0,emoji:'🧰',name:'Open a chest in the Bazaar',target:1,go:'bazaar',req:0},
-  {id:'m_kills',k:'kills',b:1,emoji:'⚔️',name:'Defeat 350 enemies',target:350,go:'stage'},
-  {id:'m_elite',k:'elite',b:1,emoji:'💀',name:'Defeat 3 elites or minibosses',target:3,go:'stage'},
-  {id:'m_kick',k:'kick',b:1,emoji:'🦶',name:'Kick 3 objects into a boss',target:3,go:'stage'},
+  {id:'m_kills',k:'kills',b:1,emoji:'⚔️',name:'Defeat 525 enemies',target:525,go:'stage'},
+  {id:'m_elite',k:'elite',b:1,emoji:'💀',name:'Defeat 5 elites or minibosses',target:5,go:'stage'},
+  {id:'m_kick',k:'kick',b:1,emoji:'🦶',name:'Kick 5 objects into a boss',target:5,go:'stage'},
   {id:'m_boss',k:'boss',b:1,emoji:'👑',name:'Defeat a stage boss',target:1,go:'stage'},
-  {id:'m_clear',k:'clear',b:1,emoji:'🏁',name:'Clear 2 stages',target:2,go:'stage'},
-  {id:'m_obj',k:'objective',b:1,emoji:'🎯',name:'Finish 5 wave missions',target:5,go:'stage'},
-  {id:'m_salv',k:'shards',b:1,emoji:'♻️',name:'Salvage gear for 20 Thread',target:20,go:'gear',req:0},
-  {id:'m_dig',k:'dig',b:1,emoji:'⚔️',name:'Defeat 30 Expedition foes',target:30,go:'dig',req:4},   // v8.0.86 Depths เปิดหลังจบบท 1
+  {id:'m_clear',k:'clear',b:1,emoji:'🏁',name:'Clear 3 stages',target:3,go:'stage'},
+  {id:'m_obj',k:'objective',b:1,emoji:'🎯',name:'Finish 8 wave missions',target:8,go:'stage'},
+  {id:'m_salv',k:'shards',b:1,emoji:'♻️',name:'Salvage gear for 30 Thread',target:30,go:'gear',req:0},
+  {id:'m_dig',k:'dig',b:1,emoji:'⚔️',name:'Defeat 45 Expedition foes',target:45,go:'dig',req:4},   // v8.0.86 Depths เปิดหลังจบบท 1
   {id:'h_star',k:'star3',b:2,emoji:'🌟',name:'Get all 3 stars in a stage',target:1,go:'stage'},
-  {id:'h_boss',k:'boss',b:2,emoji:'👑',name:'Defeat 3 stage bosses',target:3,go:'stage'},
-  {id:'h_kills',k:'kills',b:2,emoji:'⚔️',name:'Defeat 900 enemies',target:900,go:'stage'},
-  {id:'h_kick',k:'kick',b:2,emoji:'🦶',name:'Kick 8 objects into bosses',target:8,go:'stage'},
-  {id:'h_clear',k:'clear',b:2,emoji:'🏁',name:'Clear 4 stages',target:4,go:'stage'},
+  {id:'h_boss',k:'boss',b:2,emoji:'👑',name:'Defeat 5 stage bosses',target:5,go:'stage'},
+  {id:'h_kills',k:'kills',b:2,emoji:'⚔️',name:'Defeat 1350 enemies',target:1350,go:'stage'},
+  {id:'h_kick',k:'kick',b:2,emoji:'🦶',name:'Kick 12 objects into bosses',target:12,go:'stage'},
+  {id:'h_clear',k:'clear',b:2,emoji:'🏁',name:'Clear 6 stages',target:6,go:'stage'},
 ];
 const DQ_BAND=[{n:4,name:'Easy',col:0x7fe3a8},{n:4,name:'Medium',col:0xffcf5a},{n:2,name:'Hard',col:0xff7a8a}];
 const DQ_BOXES=[{n:3,art:'chest_badge_bronze',name:'Small Box'},{n:6,art:'chest_badge_silver',name:'Big Box'},{n:8,art:'chest_badge_gold',name:'Grand Box'}];

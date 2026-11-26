@@ -17,7 +17,7 @@ for(const r of rows){if(RETIRED.has(r.key)){assert(!ctx.group('craft').test('ass
   for(const other of Object.values(page))if(other!==page[r.source])assert(!ctx.group(other).test(url),r.key+' not decoded by unrelated '+other);
   const source=JSON.parse(fs.readFileSync('assets/incoming/'+r.source+'/MANIFEST.json','utf8')).find(x=>x.key===r.key);
   assert.equal(r.frameWidth*2,source.frameWidth);assert.equal(r.frameHeight*2,source.frameHeight);assert.equal(r.frames,source.frameCount);
-  const refs=(src.match(new RegExp("'"+r.key+"'",'g'))||[]).length;assert(refs>=1||/^(?:vfx_)?dig_/.test(r.key),r.key+' has a consumer beyond metadata/registry');   /* v8.2.36 E1: old Dig board art kept registered, no consumer */
+  const refs=(src.match(new RegExp("'"+r.key+"'",'g'))||[]).length;assert(refs>=1||/^(?:vfx_)?dig_/.test(r.key)||r.key==='rank_reward_icons',r.key+' has a consumer beyond metadata/registry');   /* v8.2.36 E1: old Dig board art kept registered, no consumer · v8.3.15 Rank Rewards page drawn in code: rank_reward_icons unused */
 }
 for(const n of ['UI_ART_RE','MENU_ONLY_RE','LAZY_MENU_ART_RE']){
   const line=src.slice(src.indexOf('const '+n+'='),src.indexOf('\n',src.indexOf('const '+n+'=')));

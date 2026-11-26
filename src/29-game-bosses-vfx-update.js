@@ -10,7 +10,7 @@
           if(t>=chase+lock){ ev.remove(false); sh.forEach(s=>{ const real=s._real; if(real)this.bossSig?.('01_burrow_burst',s.x,s.y-10,180,{depth:s.y+2}); this.vfxHitRing?.(s.x,s.y,real?0x75ff4b:0x8a9a7a,real); if(real){ b.setPosition(s.x,s.y); if(b.body){b.body.enable=true;b.body.reset(s.x,s.y);} this.arenaHurt(hd,s.x,s.y,78); this.bossNovaWave?.(s.x,s.y,170,Math.round(hd*.6),120); this.screenShake?.(300,.016); }
               else this.arenaHurt(Math.round(hd*.4),s.x,s.y,60); s.destroy(); });
             this.tweens.add({targets:b,alpha:1,scale:b.scale/.6,duration:260}); b.knock=.6; b._arenaBusy=false; b.atkCd=1.6;
-            this.spawnCounter(b,b.x+Phaser.Math.Between(-110,110),b.y+Phaser.Math.Between(60,120),{key:this.counterArt(b)||'nest_eggs',emoji:'🥚',tint:0x75ff4b,onHit:bb=>{this.bossPctHit(bb,.04);this.bossStun(bb,1.2,'Acid splash!');}}); } }}); }});
+            this.spawnCounter(b,b.x+Phaser.Math.Between(-110,110),b.y+Phaser.Math.Between(60,120),{key:this.counterArt(b)||'nest_eggs',emoji:'🥚',tint:0x75ff4b,onHit:bb=>{this.bossPctHit(bb,.04);this.bossStun(bb,COUNTER_STUN_SEC,'Acid splash!');}}); } }}); }});
     b.atkCd=99; }
   // C1-5 Great Hunger · Feast: ดูดเข้าปาก 4 วิ + จานลอยเข้าปาก (ถึงปาก = บอสฟื้น 3%) · Dash เตะจาน = บอสสำลัก
   hungerFeast(b){ const n=b.phase2?5:4,pull=b.phase3?195:b.phase2?175:150; b._arenaBusy=true;
@@ -19,7 +19,7 @@
     for(let i=0;i<n;i++){ const a=i*TAU/n+Math.random()*.4,r=Math.min(this.arenaVw()*.45,400);
       this.spawnCounter(b,b.x+Math.cos(a)*r,b.y+Math.sin(a)*r,{emoji:['🍰','🍗','🍩','🍮','🥧'][i%5],frame:i%5,tint:0xffb36b,drift:62+i*6,
         onArrive:bb=>{ if(!bb.active)return; const h=Math.round(bb.maxhp*.03); bb.hp=Math.min(bb.maxhp,bb.hp+h); this.popDmg?.('+3% HP',bb.x,bb.y-70,false); this.vfxHitRing?.(bb.x,bb.y,0x6dffb4,false); },
-        onHit:bb=>{ this.bossPctHit(bb,.03); this.bossStun(bb,1.2,'Choking!'); this.drainPull=null; }}); }
+        onHit:bb=>{ this.bossPctHit(bb,.03); this.bossStun(bb,COUNTER_STUN_SEC,'Choking!'); this.drainPull=null; }}); }
     this.time.delayedCall(4400,()=>{ b._arenaBusy=false; }); b.atkCd=4.6; }
   /* v7.9.15 กลไกสนามที่เหลือ (docs/BOSS_ARENA_MECHANICS.md) · เครื่องมือกลาง: arenaTick / Sweep / Grid / Rings / Hands / Fog / Pillars / Pods / Decoys */
   arenaDmg(b,mul=1){ return Math.round((16+this.stageIndex*6)*(b.isBoss?1:.9)*(b._pinnacleArt||this._pinnacleRun?1.15:1)*mul); }
@@ -110,7 +110,7 @@
     const cbS=this.codeBubbleOn?.();
     if(!had&&(cbS||this.bpAnim?.('vfx_b06_pod_shield'))){ const sk=cbS?'code_bubble':(this.battleOutlineKey?.('vfx_b06_pod_shield')||'vfx_b06_pod_shield'),sd=this.arenaFx(this.camWorld(cbS?this.add.image(b.x,b.y,sk).setTint(0xc8ffd0).setAlpha(.9):this.add.sprite(b.x,b.y,sk,0)).setDepth((b.depth||0)+1));if(!cbS){sd.play(sk);this.battleOutlineTrack?.(sd,'vfx_b06_pod_shield',sk,null,true);} this.arenaTick(()=>{ if(!sd.active)return false; if(!b.active||!(b._podShield>0)){ this.tweens.add({targets:sd,alpha:0,scale:sd.scale*1.3,duration:240,onComplete:()=>sd.destroy()}); return false; } const D=Math.max(150,(b.displayWidth||120)*1.35); sd.setPosition(b.x,b.y).setDisplaySize(D,D).setDepth((b.depth||0)+1); return true; }); }   /* v8.0.21 ใบ 48 A6 */
     for(let i=0;i<n;i++){ const a=i*TAU/n+Math.random()*.5,x=b.x+Math.cos(a)*170,y=b.y+Math.sin(a)*170;
-      const c=this.spawnCounter(b,x,y,{emoji,tint,life,onHit:bb=>{ bb._podShield=Math.max(0,(bb._podShield||0)-1); this.bossPctHit(bb,.02); if(!bb._podShield){Sfx.orderCue?.('arena_shield_break',.4,.4);Sfx.eventLoopStop?.('arena_pod_shield'); this.bossStun(bb,1.2,'Shield broken!'); } }});
+      const c=this.spawnCounter(b,x,y,{emoji,tint,life,onHit:bb=>{ bb._podShield=Math.max(0,(bb._podShield||0)-1); this.bossPctHit(bb,.02); if(!bb._podShield){Sfx.orderCue?.('arena_shield_break',.4,.4);Sfx.eventLoopStop?.('arena_pod_shield'); this.bossStun(bb,COUNTER_STUN_SEC,'Shield broken!'); } }});
       if(!c)b._podShield=Math.max(0,b._podShield-1); }
     this.time.delayedCall(life*1000+200,()=>{ if(b.active&&b._podShield>0){ b._podShield=0; this.bossNovaWave?.(b.x,b.y,240,this.arenaDmg(b),0); } }); }
   // T5 Decoys: บอสหายเป็น 3 ร่าง ร่างจริงหยดน้ำหวาน · ร่างหลอกยิงได้แต่ตีไม่เข้า
@@ -125,7 +125,7 @@
     return dur; }
   // แต่ละบอส: เลือกกลไกตามด่าน · คืนเวลาที่ใช้ (ms) · ใช้ร่วม Counter Object จากตัวนำร่อง
   arenaMech(b){ const si=this.stageIndex,pin=!!(b._pinnacleArt||this._pinnacleRun),p2=!!b.phase2,p3=!!b.phase3; b._arenaBusy=true; let ms=3000;
-    const banner=(n,h)=>this.showBanner(n,h,1100),counter=(emoji,tint,label,pct=.03)=>this.time.delayedCall(Math.max(600,ms-400),()=>{ if(b.active)this.spawnCounter(b,this.player.x+Phaser.Math.Between(-100,100),this.player.y+Phaser.Math.Between(-80,80),{emoji,tint,onHit:bb=>{this.bossPctHit(bb,pct);this.bossStun(bb,1.2,label);}}); });
+    const banner=(n,h)=>this.showBanner(n,h,1100),counter=(emoji,tint,label,pct=.03)=>this.time.delayedCall(Math.max(600,ms-400),()=>{ if(b.active)this.spawnCounter(b,this.player.x+Phaser.Math.Between(-100,100),this.player.y+Phaser.Math.Between(-80,80),{emoji,tint,onHit:bb=>{this.bossPctHit(bb,pct);this.bossStun(bb,COUNTER_STUN_SEC,label);}}); });
     const pick=a=>Phaser.Utils.Array.GetRandom(a);
     if(pin){ const m=pick(p3?['jaws','tongue','jaws']:['jaws','tongue']);
       if(m==='jaws'){ banner('🦷 Closing Jaws','The teeth close in — stay inside the safe circle and slip through the gap!'); ms=this.arenaRings(b,{rings:p3?3:2,r0:300,shrink:3800,color:0xb46cff,art:'vfx_bpin_jaw_ring'}); }
@@ -143,7 +143,7 @@
       this.tweens.add({targets:half,fillAlpha:{from:.08,to:.35},duration:280,yoyo:true,repeat:5}); this.time.delayedCall(1900,()=>{ const hx=half.x,hw=half.width; half.destroy(); if(!b.active)return; Sfx.orderCue?.('arena_scythe',.4,.4);this.bossSig?.('11_scythe_cut',hx,V.cy,Math.max(260,hw*1.05),{h:Math.max(130,hw*.53),depth:9001}); const sx=this.player.x-b.x; this.screenShake?.(300,.016); this.screenFlash?.(0xffd166,.3,200); if(Math.sign(sx||1)===side)this.hurtPlayer(Math.round(this.arenaDmg(b)*1.4),side>0?0:Math.PI); }); ms=2300; counter('🌾',0xe0b04a,'Toppled!'); }
     else if(si===11){ banner('🥀 Hollow Husks','The Bloom splits into husks — only the one dripping nectar is real!'); ms=this.arenaDecoys(b,{}); counter('🍑',0xffb36b,'Revealed!',.04); }
     else if(si===12){ banner('🪞 Mirror Beams','Beams bounce between the mirrors — stay off the lines, or dash a mirror into the Gardener!'); const p=this.player,M=[];
-      for(let i=0;i<3;i++){ const a=Math.random()*TAU,x=p.x+Math.cos(a)*(120+i*50),y=p.y+Math.sin(a)*(100+i*40),c=this.spawnCounter(b,x,y,{emoji:'💎',tint:0xa8ecff,life:4,onHit:bb=>{this.bossPctHit(bb,.03);this.bossStun(bb,1.2,'Reflected!');}}); if(c)M.push(c); }
+      for(let i=0;i<3;i++){ const a=Math.random()*TAU,x=p.x+Math.cos(a)*(120+i*50),y=p.y+Math.sin(a)*(100+i*40),c=this.spawnCounter(b,x,y,{emoji:'💎',tint:0xa8ecff,life:4,onHit:bb=>{this.bossPctHit(bb,.03);this.bossStun(bb,COUNTER_STUN_SEC,'Reflected!');}}); if(c)M.push(c); }
       const g=this.arenaFx(this.camWorld(this.add.graphics().setDepth(9000))); let t=-1600,hit=false; const pts=()=>[{x:b.x,y:b.y},...M.filter(c=>!c.dead).map(c=>({x:c.x,y:c.y}))];
       const BA=this.bpAnim?.('vfx_b13_prism_beam')?(this.battleOutlineKey?.('vfx_b13_prism_beam')||'vfx_b13_prism_beam'):null,BS=[];   /* v7.9.29 ใบ 30 ลำแสงปริซึม */
       this.arenaTick(dt=>{ if(!g.active||!b.active){g.destroy?.();BS.forEach(q=>q.destroy());return false;} t+=dt*1000; const P=pts(); g.clear();

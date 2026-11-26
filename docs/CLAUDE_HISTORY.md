@@ -4915,3 +4915,20 @@ The canvas and stage loader now share a portrait frame on wide or square display
   - C1-1: situations won/lost, Herald started by touch.
   - C1-4: leader/pack/dodge all won, 2 side objects.
   - No errors.
+
+# Delivery: v8.3.13 — Owner round: shorter waves, wider camera, smaller EXP gems, tap side events, first chest fixed
+
+- **C1 waves ≤ 30 s:** `C1_WAVE_SEC` 24/30/–/30/30. Recovery at the start of wave 4 is 8 s (`C1_RECOVERY_SEC`). The timeline model and test are synced.
+- **Camera sees 20% more:**
+  - `computeViewZoom` BASE 0.74 → 0.74/1.2.
+  - Boss/mini zoom-out is only 8% more than before (`0.58×1.2/1.08`, `0.68×1.2/1.08`).
+- **EXP gems and pickups 25% smaller** (`PICKUP_SIZE=.75` on `XP_ORB_PX` and `showPickupCue` incl. glow/ring).
+- **Slower late levels:** `storyXpNext` ×(1+2%/level above 10) → Lv 20 needs ~20% more (`XP_LATE_GROW`).
+- **Side events can be tapped:**
+  - Tapping within 84 px of the object starts it. Walking onto it still works.
+  - Label "Tap to start". The input listener is removed with the objects.
+- **First chest is fixed:** the very first chest/flavor box a player opens gives one Common item (`firstChestDone`). Owner: a Legend dropped during the tutorial.
+- **Lobby art after the tutorial:**
+  - `lobbyPreload` now runs on the tutorial-complete screen.
+  - The hero-card retry keeps polling while Ruby guide overlays are open, instead of giving up.
+- Tests updated: zoom asserts, story-budget level 18 → 17, timeline. Headless: tapping Hunger’s Mouth on C1-2 starts it, no errors.
