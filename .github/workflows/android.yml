@@ -106,3 +106,92 @@ jobs:
           make_latest: true
           overwrite_files: true
           files: mochi-mayhem-debug.apk
+
+  # Store-like APK: no live update — every image/sound is inside the APK, so what you see is what ships
+  store:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup Java (JDK 21)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          # ระบุ package เอง (เลี่ยง default 'tools' ที่ถูกถอดออกจาก cmdline-tools ใหม่ → build เดิมล้มที่ตรงนี้)
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+
+      # เก็บ debug signing key เดิมไว้ข้าม runner เพื่อให้ APK รุ่นถัดไปติดตั้งทับได้
+      - name: Restore stable debug signing key
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: mochi-mayhem-debug-signing-v1
+
+      - name: Install dependencies
+        run: npm install
+
+      # เหมือนแอป Play Store: ฝังไฟล์เกมในแอป ไม่โหลดผ่านเว็บ · แอป id แยก ติดตั้งคู่กับตัว live update ได้
+      - name: Bundle game files like the Play Store app
+        run: node scripts/set-store-test-app.mjs
+
+      - name: Assemble web assets (www/)
+        run: npm run build:www
+
+      - name: Drop dev review pages from the app (~34 MB, CI checks only)
+        run: rm -f www/*-review.html www/*-review.js
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Generate app icons (launcher + adaptive)
+        run: npx capacitor-assets generate --android --assetPath resources
+
+      - name: Force portrait and fullscreen
+        run: node scripts/set-android-landscape.mjs
+
+      # versionCode/versionName จาก GAME_VERSION (Play Store ต้องการ versionCode ที่เพิ่มขึ้นทุกครั้ง)
+      - name: Set app version from GAME_VERSION
+        run: node scripts/set-android-version.mjs
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build store-like APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Rename APK
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk mochi-mayhem-store-test.apk
+          echo "APK size: $(stat -c%s mochi-mayhem-store-test.apk) bytes"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochi-mayhem-store-test-apk
+          path: mochi-mayhem-store-test.apk
+          if-no-files-found: error
+
+      - name: Publish store-like APK
+        if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/claude/vampire-survival-mobile-game-yo9e8w'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: store-apk-latest
+          name: Mochi Mayhem (Store-like test APK)
+          prerelease: true
+          make_latest: false
+          target_commitish: ${{ github.sha }}
+          body: Game files bundled inside the app like the Play Store build (no live update). Built from ${{ github.sha }}.
+          files: mochi-mayhem-store-test.apk
+          overwrite_files: true
