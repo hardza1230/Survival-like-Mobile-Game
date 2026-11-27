@@ -639,7 +639,7 @@ class Game extends Phaser.Scene {
       g.lineStyle(30,0x9fe8ff,0.12+0.12*c); g.lineBetween(pl.x,pl.y,pl.x+ca*L,pl.y+sa*L); g.lineStyle(3,s.full?0xffffff:0x9fe8ff,0.7); g.lineBetween(pl.x,pl.y,pl.x+ca*L,pl.y+sa*L);
       g.fillStyle(0xffffff,0.8); g.fillCircle(pl.x+ca*L,pl.y+sa*L,6+c*4); if(s.aura&&s.aura.active)s.aura.setVisible(false); return; }
     if(s.blast){ const bm=this.blastMods(),R=300,h=bm.cone/2; if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('uq_shotgun_full',.55,.3)||Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }
-      g.clear(); {const a=this.snipeArt?.(s,'bpx_momo_aim_cone',pl.x,pl.y);if(a){a.setPosition(pl.x,pl.y).setRotation(s.ang).setScale(R/290,R*Math.sin(h)/124).setAlpha(.55+.4*c);if(s.full)a.setTint(0xffe9a8);else a.clearTint();if(s.aura&&s.aura.active)s.aura.setPosition(pl.x,pl.y-24).setAlpha(0.4+c*0.5).setRotation(t*1.2);return;}}
+      g.clear(); {const a=this.snipeArt?.(s,'bpx_momo_aim_cone',pl.x,pl.y);if(a){a.setOrigin(115/512,.5).setPosition(pl.x,pl.y).setRotation(s.ang).setScale(R/264,R*Math.sin(h)/124).setAlpha(.55+.4*c);if(s.full)a.setTint(0xffe9a8);else a.clearTint();if(s.aura&&s.aura.active)s.aura.setPosition(pl.x,pl.y-24).setAlpha(0.4+c*0.5).setRotation(t*1.2);return;}}
       g.fillStyle(s.full?0xffd166:0xff76a8,0.12+0.14*c); g.slice(pl.x,pl.y,R,s.ang-h,s.ang+h,false); g.fillPath();
       g.lineStyle(2,s.full?0xffd166:0xff9ec4,0.5+0.4*c); g.beginPath(); g.arc(pl.x,pl.y,R,s.ang-h,s.ang+h); g.strokePath();
       g.lineStyle(2,0xffffff,0.35); g.beginPath(); g.arc(pl.x,pl.y,120,s.ang-h,s.ang+h); g.strokePath();
@@ -827,7 +827,7 @@ class Game extends Phaser.Scene {
   releaseBerryBlast(ang,c){ this.heroScreenEffect?.(1.2); const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player,bm=this.blastMods(),basic=this.basicAttack;
     this.uniqueCd=this.uniqueCooldown(u);this.uqMutHook?.('blast',{ang});this.flashBtn(this.uniqueBtn);this.poseAttack(380);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this._mxSrc='unique';this.fireRecipes('unique');
     const pb=1+0.15*(((this.basicAttack&&this.basicAttack.lv)||{}).pointblank||0);
-    const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.uqReady?.('uq_shotgun_blast')&&Sfx.bp?.('uq_shotgun_blast',.75*Math.max(.7,mul),.1))||(Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */
+    const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */
       const R=300,h=bm.cone/2,unit=(14+ul*5)*dm*up*(0.7+0.3*c)*mul; let hits=0;
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const dx=e.x-pl.x,dy=e.y-pl.y,d=Math.hypot(dx,dy); if(d>R+(e.body?e.body.halfWidth:18))return;
         let da=Math.atan2(dy,dx)-ang; while(da>Math.PI)da-=Math.PI*2; while(da<-Math.PI)da+=Math.PI*2; if(Math.abs(da)>h&&d>40)return;

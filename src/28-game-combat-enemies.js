@@ -337,7 +337,6 @@
       {id:'heal',artKey:'heal',emoji:'❤️',name:'Heal 40%',w:6,color:0xff6f9d,give:()=>{const p=this.player,a=Math.round(p.maxhp*0.4);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);}},
       {id:'card',artKey:'prize_levelup',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
       {id:'thread',artKey:'prize_thread',name:'Weave Thread +'+(tier==='gold'?5:3),w:5,color:0xcaa4ff,give:()=>{Save.data.threads=Save.threads()+(tier==='gold'?5:3);Save.save();this.showBanner('Weave Thread gained','Use it in Flavor Weave Temple',1400);}},
-      {id:'shovel',artKey:'prize_shovel',name:'Shovels +'+(tier==='gold'?2:1),w:4,color:0xffd782,give:()=>{Save.addShovels(tier==='gold'?2:1);this.showBanner('Shovels gained','Explore Temple Depths',1400);}},
       {id:'recharge',artKey:'prize_recharge',name:'Unique ready + Heal 15%',w:4,color:0x8fe3df,give:()=>{this.uniqueCd=0;const p=this.player,a=Math.round(p.maxhp*0.15);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);this.showBanner('Unique ready','Your Unique skill can be used again',1400);}},
       {id:'jackpot',artKey:'prize_jackpot',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
     ];

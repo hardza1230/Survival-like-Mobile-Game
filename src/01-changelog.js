@@ -1,4 +1,5 @@
 const CHANGELOG = [
+  {v:'8.3.19',date:'2026-11-27',title:'Berry Blast fixes and easier side events',items:['Berry Blast has its firing sound back and the aim cone now starts at Strawberry','The mini-boss prize wheel no longer offers Shovels','Chapter 1 side events start when you walk onto them and keep going after the wave ends']},
   {v:'8.3.18',date:'2026-11-27',title:'Smoother app updates',items:['Future app updates install over the old app without removing it']},
   {v:'8.3.17',date:'2026-11-26',title:'A livelier stage loading screen',items:['The stage loading screen now has slow light rays, drifting mist in the stage’s colour and rising sparkles']},
   {v:'8.3.16',date:'2026-11-26',title:'Stage cards stay put and more sounds',items:['Tapping quickly no longer skips the cards before a Chapter 1 stage','Cocoa leaps, Rage charge, Pinball, Berry Blast and Yuzu crew hits have their own sounds']},

@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.18';
+const GAME_VERSION = '8.3.19';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -148,6 +148,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.19',date:'2026-11-27',title:'Berry Blast fixes and easier side events',items:['Berry Blast has its firing sound back and the aim cone now starts at Strawberry','The mini-boss prize wheel no longer offers Shovels','Chapter 1 side events start when you walk onto them and keep going after the wave ends']},
   {v:'8.3.18',date:'2026-11-27',title:'Smoother app updates',items:['Future app updates install over the old app without removing it']},
   {v:'8.3.17',date:'2026-11-26',title:'A livelier stage loading screen',items:['The stage loading screen now has slow light rays, drifting mist in the stage’s colour and rising sparkles']},
   {v:'8.3.16',date:'2026-11-26',title:'Stage cards stay put and more sounds',items:['Tapping quickly no longer skips the cards before a Chapter 1 stage','Cocoa leaps, Rage charge, Pinball, Berry Blast and Yuzu crew hits have their own sounds']},
@@ -10973,7 +10974,7 @@ class Game extends Phaser.Scene {
       g.lineStyle(30,0x9fe8ff,0.12+0.12*c); g.lineBetween(pl.x,pl.y,pl.x+ca*L,pl.y+sa*L); g.lineStyle(3,s.full?0xffffff:0x9fe8ff,0.7); g.lineBetween(pl.x,pl.y,pl.x+ca*L,pl.y+sa*L);
       g.fillStyle(0xffffff,0.8); g.fillCircle(pl.x+ca*L,pl.y+sa*L,6+c*4); if(s.aura&&s.aura.active)s.aura.setVisible(false); return; }
     if(s.blast){ const bm=this.blastMods(),R=300,h=bm.cone/2; if(c>=1&&!s.full){ s.full=true; Sfx.bp?.('uq_shotgun_full',.55,.3)||Sfx.bp?.('shared_unique_charge_full',.55,.3)||(Sfx.beatFx&&Sfx.beatFx('cue')); }
-      g.clear(); {const a=this.snipeArt?.(s,'bpx_momo_aim_cone',pl.x,pl.y);if(a){a.setPosition(pl.x,pl.y).setRotation(s.ang).setScale(R/290,R*Math.sin(h)/124).setAlpha(.55+.4*c);if(s.full)a.setTint(0xffe9a8);else a.clearTint();if(s.aura&&s.aura.active)s.aura.setPosition(pl.x,pl.y-24).setAlpha(0.4+c*0.5).setRotation(t*1.2);return;}}
+      g.clear(); {const a=this.snipeArt?.(s,'bpx_momo_aim_cone',pl.x,pl.y);if(a){a.setOrigin(115/512,.5).setPosition(pl.x,pl.y).setRotation(s.ang).setScale(R/264,R*Math.sin(h)/124).setAlpha(.55+.4*c);if(s.full)a.setTint(0xffe9a8);else a.clearTint();if(s.aura&&s.aura.active)s.aura.setPosition(pl.x,pl.y-24).setAlpha(0.4+c*0.5).setRotation(t*1.2);return;}}
       g.fillStyle(s.full?0xffd166:0xff76a8,0.12+0.14*c); g.slice(pl.x,pl.y,R,s.ang-h,s.ang+h,false); g.fillPath();
       g.lineStyle(2,s.full?0xffd166:0xff9ec4,0.5+0.4*c); g.beginPath(); g.arc(pl.x,pl.y,R,s.ang-h,s.ang+h); g.strokePath();
       g.lineStyle(2,0xffffff,0.35); g.beginPath(); g.arc(pl.x,pl.y,120,s.ang-h,s.ang+h); g.strokePath();
@@ -11161,7 +11162,7 @@ class Game extends Phaser.Scene {
   releaseBerryBlast(ang,c){ this.heroScreenEffect?.(1.2); const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player,bm=this.blastMods(),basic=this.basicAttack;
     this.uniqueCd=this.uniqueCooldown(u);this.uqMutHook?.('blast',{ang});this.flashBtn(this.uniqueBtn);this.poseAttack(380);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this._mxSrc='unique';this.fireRecipes('unique');
     const pb=1+0.15*(((this.basicAttack&&this.basicAttack.lv)||{}).pointblank||0);
-    const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.uqReady?.('uq_shotgun_blast')&&Sfx.bp?.('uq_shotgun_blast',.75*Math.max(.7,mul),.1))||(Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */
+    const fire=(mul)=>{ if(this.state!=='play')return; try{ (Sfx.bp?.('uq_sniper_fire',.8*Math.max(.7,mul),.1,.85)&&Sfx.uqReady?.('uq_sniper_fire'))||(Sfx.boom&&Sfx.boom()); }catch(e){}   /* v6.82.2 ใช้เสียงสไนเปอร์ (เจ้าของเลือก) เล่นก่อน VFX */
       const R=300,h=bm.cone/2,unit=(14+ul*5)*dm*up*(0.7+0.3*c)*mul; let hits=0;
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const dx=e.x-pl.x,dy=e.y-pl.y,d=Math.hypot(dx,dy); if(d>R+(e.body?e.body.halfWidth:18))return;
         let da=Math.atan2(dy,dx)-ang; while(da>Math.PI)da-=Math.PI*2; while(da<-Math.PI)da+=Math.PI*2; if(Math.abs(da)>h&&d>40)return;
@@ -18857,14 +18858,10 @@ class Game extends Phaser.Scene {
   placeChapterSideObjects(d){
     d.objects=[];const list=d.deck||[];
     list.forEach((def,k)=>{const {x,y}=this.objectivePosition(k,list.length,300,520),visuals=[];
-      visuals.push(this.camWorld(this.add.circle(x,y,58,def.color,.08).setStrokeStyle(3,def.color,.7).setDepth(-989)));
-      const art=this.artSpr?.(def.key,x,y+22,72,0,{sig:false,depth:y+3});
+      const art=this.artSpr?.(def.key,x,y+22,72,0,{sig:false,depth:y+3});   /* v8.3.19 เจ้าของ: เอาวงกลมสีออก · ไม่ต้องแตะ เดินไปเหยียบวัตถุ = เริ่ม */
       visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
-      visuals.push(this.camWorld(this.add.text(x,y-70,def.icon+' '+def.name+'\nTap to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',align:'center',stroke:'#171321',strokeThickness:4}).setOrigin(.5).setDepth(90010)));
+      visuals.push(this.camWorld(this.add.text(x,y-70,def.icon+' '+def.name+'\nWalk here to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',align:'center',stroke:'#171321',strokeThickness:4}).setOrigin(.5).setDepth(90010)));
       d.objects.push({def,x,y,visuals,done:false});});
-    /* v8.3.13 เจ้าของ: กดที่วัตถุเพื่อเริ่ม (เดิมต้องเดินไปทับ) · ยังเดินไปทับได้เหมือนเดิม */
-    if(this.input&&!this._c1SideTap){this._c1SideTap=p=>{const D=this._c1Combat;if(!D||D.event||!D.objects||this.state!=='play')return;const cam=this.cameras?.main,wp=cam?.getWorldPoint?cam.getWorldPoint(p.x,p.y):{x:p.worldX,y:p.worldY};
-      for(const o of D.objects){if(o.done)continue;if(this.dist(wp.x,wp.y,o.x,o.y)<84){this.chapterSideObjectStart(D,o);return;}}};this.input.on('pointerdown',this._c1SideTap);}
   }
   chapterSideObjectStart(d,o){o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
   tickChapterSideObjects(d){
@@ -18877,8 +18874,8 @@ class Game extends Phaser.Scene {
     const {x,y}=pos||this.objectivePosition(0,1,95,132),active=d.event={
       def,x,y,left:20,hold:0,spawned:0,spawnDelay:.25,progress:0,targets:new Map(),visuals:[]
     };
-    active.visuals.push(this.camWorld(this.add.circle(x,y,58,def.color,.10)
-      .setStrokeStyle(3,def.color,.85).setDepth(-989)));
+    if(def.hold)active.visuals.push(this.camWorld(this.add.circle(x,y,58,def.color,.10)
+      .setStrokeStyle(3,def.color,.85).setDepth(-989)));   /* v8.3.19 วงกลมเหลือเฉพาะภารกิจยืนเฝ้า (บอกพื้นที่) */
     const art=this.artSpr(def.key,x,y+22,72,0,{sig:false,depth:y+3});
     active.visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
     this.vfxHitRing?.(x,y,def.color,true);
@@ -18945,7 +18942,7 @@ class Game extends Phaser.Scene {
   clearChapterCombatWave(all){
     const d=this._c1Combat;
     if(!d)return;
-    this.endChapterSideEvent(d,false,true);
+    if(all)this.endChapterSideEvent(d,false,true);   /* v8.3.19 เจ้าของ: วัตถุโผล่แล้วหายไปเอง = เวฟจบตัดภารกิจรองทิ้ง → ทำต่อข้ามเวฟได้ จบเมื่อหมดเวลา/ออกด่าน */
     if(d.sit&&d.sit.state!=='won'){d.sit.state='lost';for(const o of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])o?.setVisible(false);}
     d.sit=null;
     if(all)this.clearChapterSideObjects(d);   /* v8.3.12 วัตถุภารกิจรองอยู่ข้ามเวฟ · ลบเมื่อจบ/ออกด่าน */
@@ -24543,7 +24540,6 @@ class Game extends Phaser.Scene {
       {id:'heal',artKey:'heal',emoji:'❤️',name:'Heal 40%',w:6,color:0xff6f9d,give:()=>{const p=this.player,a=Math.round(p.maxhp*0.4);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);}},
       {id:'card',artKey:'prize_levelup',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
       {id:'thread',artKey:'prize_thread',name:'Weave Thread +'+(tier==='gold'?5:3),w:5,color:0xcaa4ff,give:()=>{Save.data.threads=Save.threads()+(tier==='gold'?5:3);Save.save();this.showBanner('Weave Thread gained','Use it in Flavor Weave Temple',1400);}},
-      {id:'shovel',artKey:'prize_shovel',name:'Shovels +'+(tier==='gold'?2:1),w:4,color:0xffd782,give:()=>{Save.addShovels(tier==='gold'?2:1);this.showBanner('Shovels gained','Explore Temple Depths',1400);}},
       {id:'recharge',artKey:'prize_recharge',name:'Unique ready + Heal 15%',w:4,color:0x8fe3df,give:()=>{this.uniqueCd=0;const p=this.player,a=Math.round(p.maxhp*0.15);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);this.showBanner('Unique ready','Your Unique skill can be used again',1400);}},
       {id:'jackpot',artKey:'prize_jackpot',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
     ];

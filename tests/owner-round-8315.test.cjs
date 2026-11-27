@@ -15,4 +15,9 @@ assert(/_rrBurst/.test(body)&&/padlock/.test(body)&&/edge\(/.test(body),'Rank Re
 // v8.3.16: C1 preview cards cannot be skipped by rapid taps; silent SFX wired
 for(const k of ['cocoa_titan_leap','cocoa_flicker_step','cocoa_rage_charge','strawberry_pinball_cast','uq_shotgun_blast','uq_yuzu_crew_hit'])assert(s.includes("Sfx.bp?.('"+k+"'")||s.includes("'cocoa_titan_leap':'cocoa_flicker_step'"),k+' has a play site');
 assert(s.includes("deal.preview?dealAllShown:350"),'preview deal waits for every card before a tap skips');
+// v8.3.19: Berry Blast sound back, aim cone apex on the hero, C1 side objects walk-to-start without circles, events survive wave ends
+assert(!s.includes("Sfx.uqReady?.('uq_shotgun_blast')"),'Berry Blast uses the original sniper fire sound');
+assert(s.includes("a.setOrigin(115/512,.5).setPosition(pl.x,pl.y).setRotation(s.ang).setScale(R/264"),'aim cone starts at the hero');
+assert(!s.includes('_c1SideTap=p=>')&&s.includes("'\\nWalk here to start'"),'no tap start on C1 side objects');
+assert(s.includes('if(all)this.endChapterSideEvent(d,false,true);'),'a running side event is not cut at wave end');
 console.log('Owner round 8.3.15: stun 2 s, Daily ×1.5, Ancient off, code-drawn Rank Rewards passed');
