@@ -39,6 +39,12 @@ if (existsSync(join(root, 'download.html'))) {
   console.log('copied download.html');
 }
 
+// v8.3.21 เจ้าของ: สรุปภารกิจเป็นหน้าเว็บแยก → /missions-review.html (ชื่อ *-review = ไม่ใส่ในแอป · android.yml ลบออก)
+if (existsSync(join(root, 'docs/MISSIONS_OVERVIEW.html'))) {
+  copyFileSync(join(root, 'docs/MISSIONS_OVERVIEW.html'), join(www, 'missions-review.html'));
+  console.log('copied missions-review.html');
+}
+
 // privacy.html: นโยบายความเป็นส่วนตัว (บังคับสำหรับ Play Store) — เสิร์ฟที่ /privacy.html
 if (existsSync(join(root, 'privacy.html'))) {
   copyFileSync(join(root, 'privacy.html'), join(www, 'privacy.html'));

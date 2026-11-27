@@ -175,6 +175,7 @@ const COSMETICS=[
   {id:'pop_heart',slot:'pop',name:'Heart Pop',price:300,col:0xff8fb5,icon:['cos_icons2',9]},
   {id:'pop_sprinkle',slot:'pop',name:'Sprinkle Pop',price:300,col:0xa8f0d0,icon:['cos_icons2',10]},
   {id:'pop_star',slot:'pop',name:'Star Pop',price:300,col:0xffe08a,icon:['cos_icons2',11]}];
+const COS_ACC_ICONS=['trail_heart','trail_star','trail_sugar','trail_note','trail_bubble','trail_flower','trail_mint','dash_bubble','dash_confetti','dash_cream','dash_caramel','pop_heart','pop_sprinkle','pop_star','pop_berry','pet_fox'];   // v8.3.21 cos_accessories_paint cell order
 const COS_LOBBY_MAX=1.6;   // v8.1.58 เจ้าของ: Lobby ขยายภาพเล็กเกิน ~3 เท่า → แตก · จำกัดไม่เกิน 1.6 เท่าของต้นฉบับ
 /* v8.1.70 เจ้าของ: ปีก/ฮาโล/วงใต้เท้า แปะตัวแล้วดูลอย → เลิกขายแยก (คืนด้ายเต็มราคา) · ขายเป็นสกินเต็มตัวแทน (ใบ 69) */
 const COS_RETIRED=['halo','aura'];   // v8.2.2 เจ้าของ: ปีกกลับมาขายแยกใน Wardrobe (halo/aura ยังเลิกขาย)

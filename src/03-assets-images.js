@@ -692,6 +692,15 @@ const ASSET_IMAGES = {
   hr_ic_blossom:'assets/art/hero_roster_ui/ic_blossom.webp',
   hr_ic_candy:'assets/art/hero_roster_ui/ic_candy.webp',
   hr_ic_flower:'assets/art/hero_roster_ui/ic_flower.webp',
+  // v8.3.21 painted wing shop icons (lazy: Wardrobe)
+  cos_wing_cream_paint:'assets/art/wardrobe_wings/cos_wing_cream_paint.webp',
+  cos_wing_sugar_paint:'assets/art/wardrobe_wings/cos_wing_sugar_paint.webp',
+  cos_wing_ruby_paint:'assets/art/wardrobe_wings/cos_wing_ruby_paint.webp',
+  cos_wing_rainbow_paint:'assets/art/wardrobe_wings/cos_wing_rainbow_paint.webp',
+  cos_wing_butterfly_paint:'assets/art/wardrobe_wings/cos_wing_butterfly_paint.webp',
+  cos_wing_honeycomb_paint:'assets/art/wardrobe_wings/cos_wing_honeycomb_paint.webp',
+  cos_wing_matcha_paint:'assets/art/wardrobe_wings/cos_wing_matcha_paint.webp',
+  cos_wing_midnight_paint:'assets/art/wardrobe_wings/cos_wing_midnight_paint.webp',
   skin_banner69:'assets/art/cosmetics/skin_banner69.webp',   // v8.1.73 ใบ 69 แบนเนอร์สกิน Festival (โหลดตอนเปิด Wardrobe)
   roster_momo:'assets/art/hero_roster/momo.webp',roster_mint:'assets/art/hero_roster/mint.webp',roster_cocoa:'assets/art/hero_roster/cocoa.webp',roster_taro:'assets/art/hero_roster/taro.webp',roster_yuzu:'assets/art/hero_roster/yuzu.webp',roster_sesame:'assets/art/hero_roster/sesame.webp',
   card_momo:'assets/character_cards/card_momo.webp', card_mint:'assets/character_cards/card_mint_frostleaf.webp',

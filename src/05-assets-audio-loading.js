@@ -1126,7 +1126,7 @@ function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('sg92_')||k==='sg_new_primary')return 'momo'; if(k.startsWith('ic_ses811_'))return 'sesame'; if(/^ses_(rune_btn|orb_[pmb]|spell_icons|cast_[pmb]{3}|talent_icons)$/.test(k))return 'sesame'; if(k.startsWith('minion_')||k.startsWith('yz_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:art\/(?:menu74|patrol70|atlas89|expedition91)\/|art\/menu_(?:screens|stage_cards)\/|incoming\/|art\/(?:menu_orders|login30|cosmetics|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/|art\/skins69\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:art\/(?:menu74|patrol70|atlas89|expedition91)\/|art\/menu_(?:screens|stage_cards)\/|incoming\/|art\/(?:menu_orders|login30|cosmetics|wardrobe_wings|wardrobe_motion|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/|art\/skins69\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)

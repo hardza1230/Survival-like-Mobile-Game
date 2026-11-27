@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.20';
+const GAME_VERSION = '8.3.21';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -148,6 +148,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.21',date:'2026-11-27',title:'Animated Wardrobe',items:['Wings, pets, trails, dashes and pops now use new animated artwork','Wardrobe shop icons are freshly painted']},
   {v:'8.3.20',date:'2026-11-27',title:'No more Shovels',items:['Shovels are gone from every reward','Chapter 1 side objects sit in the stage with no label — walk onto one to start it']},
   {v:'8.3.19',date:'2026-11-27',title:'Berry Blast fixes and easier side events',items:['Berry Blast has its firing sound back and the aim cone now starts at Strawberry','The mini-boss prize wheel no longer offers Shovels','Chapter 1 side events start when you walk onto them and keep going after the wave ends']},
   {v:'8.3.18',date:'2026-11-27',title:'Smoother app updates',items:['Future app updates install over the old app without removing it']},
@@ -2689,6 +2690,15 @@ const ASSET_IMAGES = {
   hr_ic_blossom:'assets/art/hero_roster_ui/ic_blossom.webp',
   hr_ic_candy:'assets/art/hero_roster_ui/ic_candy.webp',
   hr_ic_flower:'assets/art/hero_roster_ui/ic_flower.webp',
+  // v8.3.21 painted wing shop icons (lazy: Wardrobe)
+  cos_wing_cream_paint:'assets/art/wardrobe_wings/cos_wing_cream_paint.webp',
+  cos_wing_sugar_paint:'assets/art/wardrobe_wings/cos_wing_sugar_paint.webp',
+  cos_wing_ruby_paint:'assets/art/wardrobe_wings/cos_wing_ruby_paint.webp',
+  cos_wing_rainbow_paint:'assets/art/wardrobe_wings/cos_wing_rainbow_paint.webp',
+  cos_wing_butterfly_paint:'assets/art/wardrobe_wings/cos_wing_butterfly_paint.webp',
+  cos_wing_honeycomb_paint:'assets/art/wardrobe_wings/cos_wing_honeycomb_paint.webp',
+  cos_wing_matcha_paint:'assets/art/wardrobe_wings/cos_wing_matcha_paint.webp',
+  cos_wing_midnight_paint:'assets/art/wardrobe_wings/cos_wing_midnight_paint.webp',
   skin_banner69:'assets/art/cosmetics/skin_banner69.webp',   // v8.1.73 ใบ 69 แบนเนอร์สกิน Festival (โหลดตอนเปิด Wardrobe)
   roster_momo:'assets/art/hero_roster/momo.webp',roster_mint:'assets/art/hero_roster/mint.webp',roster_cocoa:'assets/art/hero_roster/cocoa.webp',roster_taro:'assets/art/hero_roster/taro.webp',roster_yuzu:'assets/art/hero_roster/yuzu.webp',roster_sesame:'assets/art/hero_roster/sesame.webp',
   card_momo:'assets/character_cards/card_momo.webp', card_mint:'assets/character_cards/card_mint_frostleaf.webp',
@@ -3788,6 +3798,32 @@ const ASSET_FX = {
   cos_pet_bunny:{url:'assets/art/cosmetics/cos_pet_bunny.webp',fw:96,fh:96,frames:6,rate:8,anchor:'center',loop:true},
   cos_pet_jelly:{url:'assets/art/cosmetics/cos_pet_jelly.webp',fw:96,fh:96,frames:6,rate:8,anchor:'center',loop:true},
   cos_trail2:{url:'assets/art/cosmetics/cos_trail2.webp',fw:48,fh:48,frames:3,rate:8,anchor:'center',loop:false},
+  // v8.3.21 Wardrobe motion sheets (commit 58416b67 · 8 frames 4×2 · lazy: Wardrobe/Lobby/worn items at stage start · ox/oy = anchor)
+  cos_wing_cream_motion:{url:'assets/art/wardrobe_motion/cos_wing_cream_motion.webp',fw:320,fh:288,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5972},
+  cos_wing_sugar_motion:{url:'assets/art/wardrobe_motion/cos_wing_sugar_motion.webp',fw:320,fh:288,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5972},
+  cos_wing_ruby_motion:{url:'assets/art/wardrobe_motion/cos_wing_ruby_motion.webp',fw:320,fh:288,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5972},
+  cos_wing_rainbow_motion:{url:'assets/art/wardrobe_motion/cos_wing_rainbow_motion.webp',fw:320,fh:288,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5972},
+  cos_wing_butterfly_motion:{url:'assets/art/wardrobe_motion/cos_wing_butterfly_motion.webp',fw:320,fh:288,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5972},
+  cos_wing_honeycomb_motion:{url:'assets/art/wardrobe_motion/cos_wing_honeycomb_motion.webp',fw:320,fh:288,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5972},
+  cos_wing_matcha_motion:{url:'assets/art/wardrobe_motion/cos_wing_matcha_motion.webp',fw:320,fh:288,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5972},
+  cos_wing_midnight_motion:{url:'assets/art/wardrobe_motion/cos_wing_midnight_motion.webp',fw:320,fh:288,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5972},
+  cos_trail_heart_motion:{url:'assets/art/wardrobe_motion/cos_trail_heart_motion.webp',fw:144,fh:144,frames:8,rate:14,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_trail_star_motion:{url:'assets/art/wardrobe_motion/cos_trail_star_motion.webp',fw:144,fh:144,frames:8,rate:14,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_trail_sugar_motion:{url:'assets/art/wardrobe_motion/cos_trail_sugar_motion.webp',fw:144,fh:144,frames:8,rate:14,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_trail_note_motion:{url:'assets/art/wardrobe_motion/cos_trail_note_motion.webp',fw:144,fh:144,frames:8,rate:14,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_trail_bubble_motion:{url:'assets/art/wardrobe_motion/cos_trail_bubble_motion.webp',fw:144,fh:144,frames:8,rate:14,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_trail_flower_motion:{url:'assets/art/wardrobe_motion/cos_trail_flower_motion.webp',fw:144,fh:144,frames:8,rate:14,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_trail_mint_motion:{url:'assets/art/wardrobe_motion/cos_trail_mint_motion.webp',fw:144,fh:144,frames:8,rate:14,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_dash_bubble_motion:{url:'assets/art/wardrobe_motion/cos_dash_bubble_motion.webp',fw:144,fh:144,frames:8,rate:20,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_dash_confetti_motion:{url:'assets/art/wardrobe_motion/cos_dash_confetti_motion.webp',fw:144,fh:144,frames:8,rate:20,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_dash_cream_motion:{url:'assets/art/wardrobe_motion/cos_dash_cream_motion.webp',fw:144,fh:144,frames:8,rate:20,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_dash_caramel_motion:{url:'assets/art/wardrobe_motion/cos_dash_caramel_motion.webp',fw:144,fh:144,frames:8,rate:20,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_pop_heart_motion:{url:'assets/art/wardrobe_motion/cos_pop_heart_motion.webp',fw:144,fh:144,frames:8,rate:18,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_pop_sprinkle_motion:{url:'assets/art/wardrobe_motion/cos_pop_sprinkle_motion.webp',fw:144,fh:144,frames:8,rate:18,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_pop_star_motion:{url:'assets/art/wardrobe_motion/cos_pop_star_motion.webp',fw:144,fh:144,frames:8,rate:18,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_pop_berry_motion:{url:'assets/art/wardrobe_motion/cos_pop_berry_motion.webp',fw:144,fh:144,frames:8,rate:18,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
+  cos_pet_fox_motion:{url:'assets/art/wardrobe_motion/cos_pet_fox_motion.webp',fw:144,fh:144,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5000},
+  cos_accessories_paint:{url:'assets/art/cosmetics/cos_accessories_paint.webp',fw:144,fh:144,frames:16,rate:8,anchor:'center',loop:false},   // v8.3.21 shop icons: trails, dashes, pops, fox
   cos_icons2:{url:'assets/art/cosmetics/cos_icons2.webp',fw:128,fh:128,frames:19,rate:8,anchor:'center',loop:false},
   bshot_anim817_01:{url:'assets/art/boss_shots817/bshot_anim817_01.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
   bshot_anim817_02:{url:'assets/art/boss-motion-phase5d/bshot_anim817_02.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},
@@ -5464,7 +5500,7 @@ function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('sg92_')||k==='sg_new_primary')return 'momo'; if(k.startsWith('ic_ses811_'))return 'sesame'; if(/^ses_(rune_btn|orb_[pmb]|spell_icons|cast_[pmb]{3}|talent_icons)$/.test(k))return 'sesame'; if(k.startsWith('minion_')||k.startsWith('yz_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:art\/(?:menu74|patrol70|atlas89|expedition91)\/|art\/menu_(?:screens|stage_cards)\/|incoming\/|art\/(?:menu_orders|login30|cosmetics|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/|art\/skins69\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:art\/(?:menu74|patrol70|atlas89|expedition91)\/|art\/menu_(?:screens|stage_cards)\/|incoming\/|art\/(?:menu_orders|login30|cosmetics|wardrobe_wings|wardrobe_motion|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/|art\/skins69\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
@@ -7323,6 +7359,7 @@ const COSMETICS=[
   {id:'pop_heart',slot:'pop',name:'Heart Pop',price:300,col:0xff8fb5,icon:['cos_icons2',9]},
   {id:'pop_sprinkle',slot:'pop',name:'Sprinkle Pop',price:300,col:0xa8f0d0,icon:['cos_icons2',10]},
   {id:'pop_star',slot:'pop',name:'Star Pop',price:300,col:0xffe08a,icon:['cos_icons2',11]}];
+const COS_ACC_ICONS=['trail_heart','trail_star','trail_sugar','trail_note','trail_bubble','trail_flower','trail_mint','dash_bubble','dash_confetti','dash_cream','dash_caramel','pop_heart','pop_sprinkle','pop_star','pop_berry','pet_fox'];   // v8.3.21 cos_accessories_paint cell order
 const COS_LOBBY_MAX=1.6;   // v8.1.58 เจ้าของ: Lobby ขยายภาพเล็กเกิน ~3 เท่า → แตก · จำกัดไม่เกิน 1.6 เท่าของต้นฉบับ
 /* v8.1.70 เจ้าของ: ปีก/ฮาโล/วงใต้เท้า แปะตัวแล้วดูลอย → เลิกขายแยก (คืนด้ายเต็มราคา) · ขายเป็นสกินเต็มตัวแทน (ใบ 69) */
 const COS_RETIRED=['halo','aura'];   // v8.2.2 เจ้าของ: ปีกกลับมาขายแยกใน Wardrobe (halo/aura ยังเลิกขาย)
@@ -15171,7 +15208,7 @@ class Game extends Phaser.Scene {
       g.lineStyle(2,0xffd166,.85).strokeRoundedRect(px,top,pw,sh,20).lineStyle(1,0xffffff,.18).strokeRoundedRect(px+5,top+5,pw-10,sh-10,16); this.menu.add(g);
       const ban=isSkin&&!pSkin&&this.realTex?.('skin_banner69'); if(ban){ const bi=this.add.image(cx,top+sh/2,'skin_banner69'),sc=Math.max((pw-8)/bi.width,(sh-8)/bi.height); bi.setScale(sc).setCrop((bi.width-(pw-8)/sc)/2,(bi.height-(sh-8)/sc)/2,(pw-8)/sc,(sh-8)/sc); this.menu.add(bi); }   /* v8.1.73 ใบ 69 F */
       const ov={}; if(prev)ov[prev.slot]=prev; if(!ban)this.cosEnsurePrev?.(prev); if(!ban)this.lobbyCos?.(cx,top+sh-24,sh*.74,ov,'wardrobe'); if(!ban)this.wardHero?.(cx,top+sh-24,sh*.74,isSkin?(pSkin||Cos.skin(wHero)||null):undefined);
-      if(prev&&['dash','pop','trail'].includes(prev.slot)){ const ik=prev.icon[0]; if(this.realTex?.(ik)){ const o=this.add.image(cx+sh*.42,top+sh*.42,ik,prev.icon[1]).setDisplaySize(64,64); const t=Cos.tint(prev); if(t!=null&&Cos.owns(prev.id))o.setTint(t); this.menu.add(o); this.tweens?.add({targets:o,y:o.y-6,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'}); } T(cx+sh*.42,top+sh*.42+42,prev.slot==='pop'?'On every kill':prev.slot==='dash'?'When you dash':'While you walk',9,'#e8d8ff'); }
+      if(prev&&['dash','pop','trail'].includes(prev.slot)){ const pi=this.cosIcon(prev),ik=pi[0]; if(this.realTex?.(ik)){ const o=this.add.image(cx+sh*.42,top+sh*.42,ik,pi[1]).setDisplaySize(64,64); const t=Cos.tint(prev); if(t!=null&&Cos.owns(prev.id))o.setTint(t); this.menu.add(o); this.tweens?.add({targets:o,y:o.y-6,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'}); } T(cx+sh*.42,top+sh*.42+42,prev.slot==='pop'?'On every kill':prev.slot==='dash'?'When you dash':'While you walk',9,'#e8d8ff'); }
       // ด้าย + ปุ่มเติม
       const tw=118,tx=px+10,ty=top+10,tg=this.add.graphics(); tg.fillStyle(0x140c1c,.85).fillRoundedRect(tx,ty,tw,26,13).lineStyle(1.5,0xffb0d8,.9).strokeRoundedRect(tx,ty,tw,26,13).fillStyle(0xff7ab8,1).fillCircle(tx+tw-13,ty+13,10); this.menu.add(tg);
       T(tx+10,ty+13,'🧶 '+Save.threads(),12,'#ffe0f0',0); T(tx+tw-13,ty+12,'+',16,'#ffffff');
@@ -15189,7 +15226,7 @@ class Game extends Phaser.Scene {
       g.fillStyle(0x000000,.3).fillRoundedRect(x+2,yy+4,cw,ch,14).fillStyle(0x251b31,.97).fillRoundedRect(x,yy,cw,ch,14).fillStyle(col,.16).fillRoundedRect(x,yy,cw,ch-46,{tl:14,tr:14,bl:0,br:0});
       for(let k=6;k>=1;k--)g.fillStyle(col,.05).fillCircle(x+cw/2,yy+(ch-38)/2+2,cw*.36*k/6);
       g.lineStyle(sel?3:1.5,sel?0xffd166:on?0x7fe3a8:col,sel?1:.8).strokeRoundedRect(x,yy,cw,ch,14); this.menu.add(g);
-      const iy=yy+(ch-38)/2+2,isz=Math.min(cw*.62,ch-52); if(this.realTex?.(c.icon[0])){ const o=this.add.image(x+cw/2,iy,c.icon[0],c.icon[1]).setDisplaySize(isz,isz); const t=own?Cos.tint(c):null; if(t!=null)o.setTint(t); this.menu.add(o); if(sel)this.tweens?.add({targets:o,y:o.y-4,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+      const iy=yy+(ch-38)/2+2,isz=Math.min(cw*.62,ch-52),ci=this.cosIcon(c); if(this.realTex?.(ci[0])){ const o=this.add.image(x+cw/2,iy,ci[0],ci[1]).setDisplaySize(isz,isz); const t=own?Cos.tint(c):null; if(t!=null)o.setTint(t); this.menu.add(o); if(sel)this.tweens?.add({targets:o,y:o.y-4,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
       else { this.menu.add(this.add.circle(x+cw/2,iy,isz*.36,col,1).setStrokeStyle(2,0xffffff,.8)); if(c.emoji)T(x+cw/2,iy,c.emoji,Math.round(isz*.4),'#fff'); }
       const nm=T(x+cw/2,yy+ch-36,c.name.replace(/ (Wings|Ring|Halo|Trail)$/,''),10,'#fff0dc'); nm.setWordWrapWidth?.(cw-8); if(nm.width>cw-8)nm.setScale((cw-8)/nm.width);
       if(on||own){ const lb=on?'WEARING':'OWNED',bc=on?0x3fbf7f:0x6a5a86,bw=on?60:50,bg=this.add.graphics(); bg.fillStyle(bc,1).fillRoundedRect(x+cw-bw-4,yy+5,bw,16,8); this.menu.add(bg); T(x+cw-bw/2-4,yy+13,lb,8,'#ffffff'); T(x+cw/2,yy+ch-14,'🎨 '+COS_DYES[Cos.dye(c.id)][0],10,'#ffd9a8'); }
@@ -15243,7 +15280,7 @@ class Game extends Phaser.Scene {
     else { this.skinLoad?.(hk); o=this.add.text(x,footY-hh/2,'🍡',{fontSize:Math.round(hh*.4)+'px'}).setOrigin(.5); }
     if(o)this.menu.add(o); if(this._cosLobbyHalo&&this.menuScreen==='wardrobe')this.lobbyCosHalo(); }
   // ลองของที่ยังไม่ซื้อ: โหลดภาพของชิ้นนั้นก่อน
-  cosEnsurePrev(c){ if(!c||!this.ensureGroup||typeof ASSET_FX==='undefined')return; const k=c.tk||('cos_'+c.id); if(!ASSET_FX[k]||this.realTex?.(k)||(this._cosTried&&this._cosTried.has(k))||this._cosPrevLoad===k)return; this._cosPrevLoad=k;
+  cosEnsurePrev(c){ if(!c||!this.ensureGroup||typeof ASSET_FX==='undefined')return; const k=this.cosArtKey(c); if(!ASSET_FX[k]||this.realTex?.(k)||(this._cosTried&&this._cosTried.has(k))||this._cosPrevLoad===k)return; this._cosPrevLoad=k;
     try{ this.ensureGroup(q=>q===k,()=>{ this._cosPrevLoad=null; if(!this.realTex?.(k))(this._cosTried||(this._cosTried=new Set())).add(k); if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){ this._cosPrevLoad=null; } }
   /* v8.1.70 Sweep: ปุ่มบนการ์ดด่าน 3 ดาว · รับ 50% ของ Sugar ที่เคยได้จริง + EXP ฮีโร่ที่เลือก · วันละ 5 ครั้ง */
   sweepBtn(rx,by,si){ const left=sweepLeft(),bw=78,bh=24,x=rx-bw,y=by-bh,g=this.add.graphics(); g.fillStyle(left?0x2f9a66:0x4a4059,1).fillRoundedRect(x,y,bw,bh,12).lineStyle(1.5,left?0xa8ffcf:0x7a6d8a,1).strokeRoundedRect(x,y,bw,bh,12); this.menu.add(g);
@@ -15294,7 +15331,8 @@ class Game extends Phaser.Scene {
   cosFollow(st,x0,y0,sx,sy){ const L=this._cosAttach; if(!L||!L.length)return; const t=st.t; this._cosAttach=L.filter(q=>q.o&&q.o.active);
     for(const q of this._cosAttach){ const h=q.h,dx=st.amp*(h*h*4.2*Math.sin(t*1.15)+h*h*h*1.6*Math.sin(t*3.3+h*5))+(st.lean||0)*h; q.o.x=x0+(q.bx-x0)*sx+dx; q.o.y=y0-st.hop-(y0-q.by)*sy+(q.bob?Math.sin(t*1.6+q.ph)*q.bob:0); if(st.spin)q.o.rotation=st.spin*(q.h>.2?1:0); } }
   lobbyCos(x,footY,hh,ov,scr){ if(typeof Cos==='undefined'||!Save.data)return; scr=scr||'hub'; this._cosAttach=[]; if(this.cosEnsure(()=>{ if(this.state==='menu'&&this.menuScreen===scr)this.buildMenuScreen(); }))return; const E=sl=>ov&&(sl in ov)?ov[sl]:Cos.equipped(sl),wg=E('wings'),pt=E('pet'),tr=E('trail'),hl=E('halo'),au=E('aura'),A=this.cosAnchor(x,footY,hh);
-    const sp=(c,px,py,sz,fs)=>{ let k='cos_'+c.id; const hd=k+'_hd'; if(typeof ASSET_FX!=='undefined'&&ASSET_FX[hd]){ if(this.realTex?.(hd)){ k=hd; fs=ASSET_FX[hd].fw||fs; } else this.skinLoad?.(hd); }   /* v8.1.70 สัตว์เลี้ยง HD (ใบ 69 G) ใน Lobby ไม่ต้องขยาย */
+    const sp=(c,px,py,sz,fs)=>{ const pk=this.cosPick(c); if(pk&&pk.motion){ const o=this.add.sprite(px,py,pk.k).setOrigin(pk.fx.ox??.5,pk.fx.oy??.5).setScale(Math.min(sz/pk.fx.fh,1)); if(this.bpAnim?.(pk.k))o.play(pk.k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; } if(!pk)this.cosEnsurePrev?.(c);   /* v8.3.21 motion art */
+      let k='cos_'+c.id; const hd=k+'_hd'; if(typeof ASSET_FX!=='undefined'&&ASSET_FX[hd]){ if(this.realTex?.(hd)){ k=hd; fs=ASSET_FX[hd].fw||fs; } else this.skinLoad?.(hd); }   /* v8.1.70 สัตว์เลี้ยง HD (ใบ 69 G) ใน Lobby ไม่ต้องขยาย */
       if(!this.realTex?.(k))return null; const o=this.add.sprite(px,py,k).setScale(Math.min(sz/fs,k===hd?1:COS_LOBBY_MAX)); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
     if(au){ let o=sp(au,x,A.feet-2,hh*.9,160); if(!o){ o=this.add.graphics(); const r=hh*.45; o.lineStyle(3,Cos.col(au),.6).strokeEllipse(0,0,r*2,r*.6).fillStyle(Cos.col(au),.14).fillEllipse(0,0,r*2,r*.6); o.setPosition(x,A.feet-2); } this.menu.add(o); this.tweens?.add({targets:o,alpha:.55,duration:1200,yoyo:true,repeat:-1}); }
     if(wg){ let o=sp(wg,A.back.x,A.back.y,hh*.95,128); if(!o){ o=this.add.graphics(); const r=hh*.2,col=Cos.col(wg); o.fillStyle(col,.85).fillEllipse(-r*.75,0,r*1.1,r*1.6).fillEllipse(r*.75,0,r*1.1,r*1.6).lineStyle(2,0xffffff,.6).strokeEllipse(-r*.75,0,r*1.1,r*1.6).strokeEllipse(r*.75,0,r*1.1,r*1.6); o.setPosition(A.back.x,A.back.y); }
@@ -15302,7 +15340,7 @@ class Game extends Phaser.Scene {
     if(pt){ const px=A.hx+hh*.4,py=A.hy+hh*.06; let o=sp(pt,px,py,hh*.3,96); if(o)o.setFlipX?.(true); else o=this.add.text(px,py,pt.emoji,{fontSize:Math.round(hh*.16)+'px'}).setOrigin(.5);
       this.menu.add(o); this.cosAttach(o,footY,hh,7); }
     if(hl){ this._cosLobbyHalo={x:A.hx,y:A.top-hh*.025,hh,c:hl,footY}; if(scr==='hub'){ const zs=this.tapZones; this.time?.delayedCall?.(0,()=>{ if(this.state==='menu'&&this.menuScreen==='hub'&&this.tapZones===zs)this.lobbyCosHalo(); else this._cosLobbyHalo=null; }); } }
-    if(tr)this.hubEvery?.(450,300,()=>{ const sx=x+(Math.random()-.5)*hh*.5,sy=A.feet-2,o=this.realTex?.(tr.tk)?this.add.image(sx,sy,tr.tk,tr.tf).setScale(.4):this.add.circle(sx,sy,4,Cos.col(tr),.9); const t=Cos.tint(tr); if(t!=null&&o.setTint)o.setTint(t);
+    if(tr)this.hubEvery?.(450,300,()=>{ const sx=x+(Math.random()-.5)*hh*.5,sy=A.feet-2,tm='cos_'+tr.id+'_motion',o=this.realTex?.(tm)?this.add.sprite(sx,sy,tm).setScale(.4*48/ASSET_FX[tm].fw):this.realTex?.(tr.tk)?this.add.image(sx,sy,tr.tk,tr.tf).setScale(.4):this.add.circle(sx,sy,4,Cos.col(tr),.9); if(o.anims&&this.realTex?.(tm)&&this.bpAnim?.(tm))o.play(tm); const t=Cos.tint(tr); if(t!=null&&o.setTint)o.setTint(t);
       this.menu.add(o); this.tweens?.add({targets:o,y:sy-hh*.25,alpha:0,duration:1200,onComplete:()=>o.destroy()}); }); }
   lobbyCosHalo(){ const h=this._cosLobbyHalo; this._cosLobbyHalo=null; if(!h)return; let o; const k='cos_'+h.c.id; if(this.realTex?.(k)){ o=this.add.sprite(h.x,h.y,k).setScale(Math.min(h.hh*.42/96,COS_LOBBY_MAX)); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(h.c); if(t!=null)o.setTint(t); } else { o=this.add.graphics(); const r=h.hh*.17; o.lineStyle(5,Cos.col(h.c),.95).strokeEllipse(0,0,r*2,r*.6).lineStyle(2,0xffffff,.8).strokeEllipse(0,-1,r*1.6,r*.45); o.setPosition(h.x,h.y); }
     this.menu.add(o); this.cosAttach(o,h.footY,h.hh,3); }
@@ -15314,27 +15352,32 @@ class Game extends Phaser.Scene {
     btn(x+10,by,hw,hh,ct?0xe0558f:0x4a3a55,ct?0xffd166:0x7a6a88,'🧶 '+price,()=>{ if(!ct){ Sfx.error?.(); this.menuToast?.('🧶 Need '+(price-Save.threads())+' more Thread','#ffb3c8'); return; } buy('thread'); },tag);
     btn(x+20+hw,by,hw,hh,cl?0xd0569e:0x4a3a55,cl?0xffb8e8:0x7a6a88,'🍭 '+price,()=>{ if(!cl){ Sfx.error?.(); this.menuToast?.('🍭 Need '+(price-L)+' more Lollipops','#ffb3c8'); return; } buy('lolli'); },tag+'_lolli');
     return true; }
-  loadCosArt(){ if(!this._skinBan&&this.ensureGroup&&typeof ASSET_IMAGES!=='undefined'&&ASSET_IMAGES.skin_banner69&&!this.realTex?.('skin_banner69')){ this._skinBan=true; try{ this.ensureGroup(k=>k==='skin_banner69',()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true}); }catch(e){} }
+  loadCosArt(){ if(!this._cosPaint&&this.ensureGroup&&typeof ASSET_FX!=='undefined'&&ASSET_FX.cos_accessories_paint&&!this.realTex?.('cos_accessories_paint')){ this._cosPaint=true; try{ this.ensureGroup(k=>/^(cos_wing_\w+_paint|cos_accessories_paint)$/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){} }   /* v8.3.21 ไอคอนร้านแบบใหม่ */
+    if(!this._skinBan&&this.ensureGroup&&typeof ASSET_IMAGES!=='undefined'&&ASSET_IMAGES.skin_banner69&&!this.realTex?.('skin_banner69')){ this._skinBan=true; try{ this.ensureGroup(k=>k==='skin_banner69',()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true}); }catch(e){} }
     if(this._cosArt||!this.ensureGroup||typeof ASSET_FX==='undefined'||!(ASSET_FX.cos_icons||ASSET_FX.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_FX.cos_icons2||this.realTex?.('cos_icons2'))&&(!ASSET_FX.skin_icons69||this.realTex?.('skin_icons69')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^(cos_icons|skin_icons69)/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){} }
   /* ในด่าน: ปีกหลังตัว · สัตว์เลี้ยงลอยตาม · หางประกายตอนเดิน (ไม่มีภาพ = วาดด้วยโค้ด) */
-  cosWornKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(c)out.push(c.tk||('cos_'+c.id)); } return out; }
-  cosNeedKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(!c)continue; const k=c.tk||('cos_'+c.id); if(ASSET_FX[k]&&!this.realTex?.(k)&&!(this._cosTried&&this._cosTried.has(k)))out.push(k); } return out; }
+  /* v8.3.21 Wardrobe motion art (8 เฟรม) มาก่อน → ภาพเดิม → วาดด้วยโค้ด · cosArtKey = คีย์ที่ควรโหลด · cosPick = คีย์ที่โหลดแล้ว */
+  cosArtKey(c){ if(!c)return null; const m='cos_'+c.id+'_motion',old=c.tk||('cos_'+c.id); return typeof ASSET_FX!=='undefined'&&ASSET_FX[m]&&!(this._cosTried&&this._cosTried.has(m))?m:old; }
+  cosPick(c){ if(!c)return null; const m='cos_'+c.id+'_motion',old=c.tk||('cos_'+c.id); if(this.realTex?.(m))return {k:m,fx:ASSET_FX[m],motion:true}; if(this.realTex?.(old))return {k:old,fx:typeof ASSET_FX!=='undefined'?ASSET_FX[old]:null,motion:false}; return null; }
+  cosIcon(c){ if(!c)return null; if(c.slot==='wings'){ const k='cos_'+c.id+'_paint'; if(this.realTex?.(k))return [k,undefined]; } else { const i=COS_ACC_ICONS.indexOf(c.id); if(i>=0&&this.realTex?.('cos_accessories_paint'))return ['cos_accessories_paint',i]; } return c.icon; }
+  cosWornKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(c)out.push(this.cosArtKey(c)); } return out; }
+  cosNeedKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(!c)continue; const k=this.cosArtKey(c); if(ASSET_FX[k]&&!this.realTex?.(k)&&!(this._cosTried&&this._cosTried.has(k)))out.push(k); } return out; }
   cosEnsure(after){ const need=this.cosNeedKeys(); if(!need.length||!this.ensureGroup)return false; if(this._cosLoading){ (this._cosWait||(this._cosWait=[])).push(after); return true; }   /* v8.1.67 กำลังโหลดอยู่ = เข้าคิวรอ (เดิมเข้าด่านเร็วได้ภาพแทน) */ this._cosLoading=true; (this._cosTried||(this._cosTried=new Set())); try{ this.ensureGroup(k=>need.includes(k),()=>{ this._cosLoading=false; need.forEach(k=>{ if(!this.realTex?.(k))this._cosTried.add(k); }); after&&after(); const q=this._cosWait||[]; this._cosWait=[]; q.forEach(f=>{ try{ f&&f(); }catch(e){} }); },{all:true,quiet:true,fx:true}); }catch(e){ this._cosLoading=false; return false; } return true; }
   cosSetup(){ if(this.state==='play'&&this.cosEnsure(()=>{ if(this.state==='play')this.cosSetup(); }))return; (this._cosObjs||[]).forEach(o=>o?.destroy?.()); this._cosObjs=[]; this._cosW=this._cosP=this._cosH=this._cosA=null; this._cosDashSeen=undefined; const p=this.player; if(!p||typeof Cos==='undefined'||!Save.data)return;
     const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'); this._cosTrail=Cos.equipped('trail'); this._cosDash=Cos.equipped('dash'); this._cosPop=Cos.equipped('pop');
-    const add=o=>{ this.camWorld(o); this._cosObjs.push(o); return o; },sp=(c,sc)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(p.x,p.y,k).setScale(sc); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
-    if(wg){ let o=sp(wg,.45); if(!o){ const col=Cos.col(wg); o=this.add.graphics(); o.fillStyle(col,.85).fillEllipse(-14,-4,24,34).fillEllipse(14,-4,24,34).lineStyle(2,0xffffff,.6).strokeEllipse(-14,-4,24,34).strokeEllipse(14,-4,24,34); } this._cosW=add(o); }
-    if(pt){ let o=sp(pt,.4); if(!o)o=this.add.text(p.x,p.y,pt.emoji,{fontSize:'22px'}).setOrigin(.5); this._cosP=add(o); }
+    const add=o=>{ this.camWorld(o); this._cosObjs.push(o); return o; },sp=(c,sc,base)=>{ const pk=this.cosPick(c); if(!pk)return null; const k=pk.k; if(pk.motion){ sc=sc*(base||pk.fx.fh)/pk.fx.fh; } const o=this.add.sprite(p.x,p.y,k).setScale(sc); o._cosB=sc; if(pk.motion)o.setOrigin(pk.fx.ox??.5,pk.fx.oy??.5); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
+    if(wg){ let o=sp(wg,.45,128); if(!o){ const col=Cos.col(wg); o=this.add.graphics(); o.fillStyle(col,.85).fillEllipse(-14,-4,24,34).fillEllipse(14,-4,24,34).lineStyle(2,0xffffff,.6).strokeEllipse(-14,-4,24,34).strokeEllipse(14,-4,24,34); } this._cosW=add(o); }
+    if(pt){ let o=sp(pt,.4,96); if(!o)o=this.add.text(p.x,p.y,pt.emoji,{fontSize:'22px'}).setOrigin(.5); this._cosP=add(o); }
     if(hl){ let o=sp(hl,.42); if(!o){ o=this.add.graphics(); o.lineStyle(4,Cos.col(hl),.95).strokeEllipse(0,0,30,10).lineStyle(1.5,0xffffff,.8).strokeEllipse(0,-1,24,7); } this._cosH=add(o); }
     if(au){ let o=sp(au,.44); if(!o){ o=this.add.graphics(); o.lineStyle(3,Cos.col(au),.6).strokeEllipse(0,0,64,24).fillStyle(Cos.col(au),.14).fillEllipse(0,0,64,24); } this._cosA=add(o); } this._cosT=0; }
   tickCos(dt){ const p=this.player; if(!p?.active)return; this._cosT=(this._cosT||0)+dt; const hh=p.displayHeight||48;
-    const W=this._cosW; if(W?.active){ W.setPosition(p.x,p.y-hh*.12); W.setDepth((p.depth||5)-2); const b=W.setFrame?.45:1; W.setScale?.(b*(1+Math.sin(this._cosT*8)*.06),b); if(W.setFlipX)W.setFlipX(!!p.flipX); }
+    const W=this._cosW; if(W?.active){ W.setPosition(p.x,p.y-hh*.12); W.setDepth((p.depth||5)-2); const b=W.setFrame?(W._cosB||.45):1; W.setScale?.(b*(1+Math.sin(this._cosT*8)*.06),b); if(W.setFlipX)W.setFlipX(!!p.flipX); }
     const H=this._cosH; if(H?.active){ H.setPosition(p.x,p.y-hh*.95+Math.sin(this._cosT*3)*2); H.setDepth((p.depth||5)+.02); }
     const A=this._cosA; if(A?.active){ A.setPosition(p.x,p.y+hh*.42); A.setDepth((p.depth||5)-3); if(!A.setFrame)A.rotation=0; A.setAlpha(.75+Math.sin(this._cosT*2)*.15); }
     if(this._lastDashAt!==this._cosDashSeen){ if(this._cosDashSeen!==undefined&&this._lastDashAt!=null)this.cosDashFx(); this._cosDashSeen=this._lastDashAt; }   // doDash ล็อกด้วยเทส → ตรวจจากเวลาพุ่งล่าสุด
     const P=this._cosP; if(P?.active){ const tx=p.x+(p.flipX?28:-28),ty=p.y-34+Math.sin(this._cosT*3)*5,k=Math.min(1,dt*5); P.x+=(tx-P.x)*k; P.y+=(ty-P.y)*k; P.setDepth((p.depth||5)+.01); P.setFlipX?.(P.x>p.x); }
-    const T=this._cosTrail; if(T&&(this.moveDir?.lengthSq?.()||0)>.04){ this._cosTA=(this._cosTA||0)+dt; if(this._cosTA>=.12){ this._cosTA=0; if((typeof PERF!=='undefined'&&PERF.lvl>=2))return; const o=this.realTex?.(T.tk)?this.add.image(p.x,p.y+14,T.tk,T.tf).setScale(.35):this.add.circle(p.x,p.y+14,4,Cos.col(T),.85); const t=Cos.tint(T); if(t!=null&&o.setTint)o.setTint(t); o.setDepth((p.depth||5)-.02); this.camWorld(o); this.tweens.add({targets:o,alpha:0,scale:(o.scale||1)*.4,y:o.y-10,duration:520,onComplete:()=>o.destroy()}); } } }
-  cosDashFx(){ const c=this._cosDash,p=this.player; if(!c||!p?.active)return; Sfx.orderCue?.(c.id.replace('dash_','cos_dash_'),.3,.2); if(typeof PERF!=='undefined'&&PERF.lvl>=2)return; const k='cos_'+c.id; if(this.realTex?.(k)&&this.heroFx?.(k,p.x,p.y,64,{tint:Cos.tint(c)}))return; this.burst?.(p.x,p.y,Cos.col(c)); }
+    const T=this._cosTrail; if(T&&(this.moveDir?.lengthSq?.()||0)>.04){ this._cosTA=(this._cosTA||0)+dt; if(this._cosTA>=.12){ this._cosTA=0; if((typeof PERF!=='undefined'&&PERF.lvl>=2))return; const tm='cos_'+T.id+'_motion',o=this.realTex?.(tm)?this.add.sprite(p.x,p.y+14,tm).setScale(.35*48/ASSET_FX[tm].fw):this.realTex?.(T.tk)?this.add.image(p.x,p.y+14,T.tk,T.tf).setScale(.35):this.add.circle(p.x,p.y+14,4,Cos.col(T),.85); if(o.anims&&this.realTex?.(tm)&&this.bpAnim?.(tm))o.play(tm);   /* v8.3.21 motion trail */ const t=Cos.tint(T); if(t!=null&&o.setTint)o.setTint(t); o.setDepth((p.depth||5)-.02); this.camWorld(o); this.tweens.add({targets:o,alpha:0,scale:(o.scale||1)*.4,y:o.y-10,duration:520,onComplete:()=>o.destroy()}); } } }
+  cosDashFx(){ const c=this._cosDash,p=this.player; if(!c||!p?.active)return; Sfx.orderCue?.(c.id.replace('dash_','cos_dash_'),.3,.2); if(typeof PERF!=='undefined'&&PERF.lvl>=2)return; const m='cos_'+c.id+'_motion'; if(this.realTex?.(m)&&this.heroFx?.(m,p.x,p.y,72,{tint:Cos.tint(c)}))return; const k='cos_'+c.id; if(this.realTex?.(k)&&this.heroFx?.(k,p.x,p.y,64,{tint:Cos.tint(c)}))return; this.burst?.(p.x,p.y,Cos.col(c)); }
   bazaarBuyGear(id,key,cost){ const it=GEAR_ALL.find(g=>g.id===id);if(!it)return; cost=cost||GEAR_BUY[it.tier]||200;
     if(key&&(Save.data.bazaarBought||[]).includes(key))return;
     if(!Save.spend(cost)){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300);return;}
@@ -26189,7 +26232,7 @@ class Game extends Phaser.Scene {
   mochiPop(e){ if((typeof PERF!=='undefined'&&PERF.lvl>=2)||!e?.texture||(this._popN||0)>=18)return; const P=this._popPool||(this._popPool=[]); let g=P.pop(); while(g&&!g.scene)g=P.pop();
     const sx=Math.abs(e.scaleX||1),sy=Math.abs(e.scaleY||1); if(g)g.setActive(true).setVisible(true).setTexture(e.texture.key,e.frame?.name).setPosition(e.x,e.y).setAlpha(1).setRotation(0); else g=this.camWorld(this.add.image(e.x,e.y,e.texture.key,e.frame?.name));
     g.setFlipX(!!e.flipX).setOrigin(e.originX??.5,e.originY??.5).setDepth(e.depth||e.y).setScale(sx,sy).setTintFill?.(0xffffff); this._popN=(this._popN||0)+1;
-    const pc=this._cosPop; if(pc){ const pk='cos_'+pc.id; if(!(this.realTex?.(pk)&&this.heroFx?.(pk,e.x,e.y,40,{tint:Cos.tint(pc)})))this.burst?.(e.x,e.y,Cos.col(pc)); }
+    const pc=this._cosPop; if(pc){ const pm='cos_'+pc.id+'_motion',pk='cos_'+pc.id; if(!(this.realTex?.(pm)&&this.heroFx?.(pm,e.x,e.y,48,{tint:Cos.tint(pc)}))&&!(this.realTex?.(pk)&&this.heroFx?.(pk,e.x,e.y,40,{tint:Cos.tint(pc)})))this.burst?.(e.x,e.y,Cos.col(pc)); }
     this.tweens.add({targets:g,scaleX:sx*1.28,scaleY:sy*.62,alpha:.85,duration:90,ease:'Quad.out',onComplete:()=>{ g.clearTint?.(); this.tweens.add({targets:g,scaleX:sx*.2,scaleY:sy*1.15,alpha:0,duration:170,ease:'Quad.in',onComplete:()=>{ this._popN=Math.max(0,(this._popN||1)-1); if(!g.scene)return; if(P.length<24){g.setVisible(false).setActive(false);P.push(g);} else g.destroy(); }}); }}); }
   /* v8.1.128 เจ้าของ (ชุดขัดเกลาภาพ 1): วาบขาวตอนโดนตี · จำกัด 1 ครั้ง/0.3 วิ/ตัว (เดิมเอาออกเพราะโดนรัวแล้วขาวค้างจนมองไม่เห็นตัว) · 55 ms แล้วคืนสีเดิม */
   hitFlash(e){ if(!e||!e.active||!e.setTintFill||e._timeStop||e.frozen>0||(Save.data?.settings?.vfx??1)===0)return; const now=this.time?.now||0; if(now-(e._flAt||0)<(e.isBoss||e.isMini?650:300))return; e._flAt=now;
