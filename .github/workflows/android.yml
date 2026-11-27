@@ -45,12 +45,6 @@ jobs:
           # ระบุ package เอง (เลี่ยง default 'tools' ที่ถูกถอดออกจาก cmdline-tools ใหม่ → build เดิมล้มที่ตรงนี้)
           packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
 
-      # เก็บ debug signing key เดิมไว้ข้าม runner เพื่อให้ APK รุ่นถัดไปติดตั้งทับได้
-      - name: Restore stable debug signing key
-        uses: actions/cache@v4
-        with:
-          path: ~/.android/debug.keystore
-          key: mochi-mayhem-debug-signing-v1
 
       - name: Install dependencies
         run: npm install
@@ -83,7 +77,7 @@ jobs:
 
       # v8.2.60 ล็อกอิน Google แบบ native ต้องใช้ SHA-1 นี้สร้าง OAuth client ประเภท Android
       - name: Print debug signing SHA-1
-        run: keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -storepass android | openssl dgst -sha1 -c || true
+        run: keytool -exportcert -alias androiddebugkey -keystore android-signing/ci-debug.keystore -storepass android | openssl dgst -sha1 -c || true
 
       - name: Rename APK
         run: cp android/app/build/outputs/apk/debug/app-debug.apk mochi-mayhem-debug.apk
@@ -132,12 +126,6 @@ jobs:
           # ระบุ package เอง (เลี่ยง default 'tools' ที่ถูกถอดออกจาก cmdline-tools ใหม่ → build เดิมล้มที่ตรงนี้)
           packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
 
-      # เก็บ debug signing key เดิมไว้ข้าม runner เพื่อให้ APK รุ่นถัดไปติดตั้งทับได้
-      - name: Restore stable debug signing key
-        uses: actions/cache@v4
-        with:
-          path: ~/.android/debug.keystore
-          key: mochi-mayhem-debug-signing-v1
 
       - name: Install dependencies
         run: npm install
@@ -171,6 +159,9 @@ jobs:
       - name: Build store-like APK
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
+
+      - name: Print store signing SHA-1 (fixed key, same every build)
+        run: keytool -exportcert -alias androiddebugkey -keystore android-signing/ci-debug.keystore -storepass android | openssl dgst -sha1 -c
 
       - name: Rename APK
         run: |

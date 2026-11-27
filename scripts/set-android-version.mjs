@@ -17,5 +17,19 @@ const p = 'android/app/build.gradle';
 let g = fs.readFileSync(p, 'utf8');
 if (!/versionCode\s+\d+/.test(g) || !/versionName\s+"[^"]*"/.test(g)) throw new Error('versionCode/versionName not found in ' + p);
 g = g.replace(/versionCode\s+\d+/, `versionCode ${versionCode}`).replace(/versionName\s+"[^"]*"/, `versionName "${versionName}"`);
+// v8.3.18 เจ้าของ: ติดตั้ง APK ทับไม่ได้ ("แพ็กเกจขัดแย้ง") — CI เดิมได้ debug key ใหม่ทุกครั้ง (cache หาไฟล์ไม่เจอ)
+// → เซ็นด้วย key ทดสอบตัวเดียวถาวรใน repo (android-signing/ci-debug.keystore · ไม่ใช่ key ของ Play Store)
+if (fs.existsSync('android-signing/ci-debug.keystore') && !g.includes('ci-debug.keystore')) {
+  g = g.replace(/android\s*\{/, `android {
+    signingConfigs {
+        debug {
+            storeFile file("\${rootDir}/../android-signing/ci-debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }`);
+  if (!g.includes('ci-debug.keystore')) throw new Error('could not add the fixed debug signing config to ' + p);
+}
 fs.writeFileSync(p, g);
 console.log(`android version set: versionCode ${versionCode}, versionName ${versionName}`);

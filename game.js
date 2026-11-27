@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.17';
+const GAME_VERSION = '8.3.18';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -148,6 +148,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.18',date:'2026-11-27',title:'Smoother app updates',items:['Future app updates install over the old app without removing it']},
   {v:'8.3.17',date:'2026-11-26',title:'A livelier stage loading screen',items:['The stage loading screen now has slow light rays, drifting mist in the stage’s colour and rising sparkles']},
   {v:'8.3.16',date:'2026-11-26',title:'Stage cards stay put and more sounds',items:['Tapping quickly no longer skips the cards before a Chapter 1 stage','Cocoa leaps, Rage charge, Pinball, Berry Blast and Yuzu crew hits have their own sounds']},
   {v:'8.3.15',date:'2026-11-26',title:'Harder dailies and a new Rank Rewards look',items:['Kicking a glowing object into a boss now stuns it for 2 seconds','Daily quests ask for about 50% more','Ancient perks are gone from Rank Rewards','Rank Rewards has a new look with glowing cards and sparkles when you pick']},
