@@ -244,7 +244,7 @@ class Game extends Phaser.Scene {
     if((this.character||Save.data.character)==='mint')keys.push('fx_mint_dash_shard','fx_mint_snowstorm');
     keys.push(...Object.keys(ASSET_FX).filter(k=>k.startsWith('st_')),'st_icons');   // v8.0.85 ใบ 62 สถานะติดตัว ทุกด่านใช้ร่วม (≈3.8 MiB)
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
-    if(idx>=0&&idx<5&&typeof C1_SIDE_EVENTS!=='undefined')keys.push(...C1_SIDE_EVENTS.map(e=>e.key));
+    if(idx>=0&&idx<15&&typeof C1_SIDE_EVENTS!=='undefined')keys.push(...C1_SIDE_EVENTS.map(e=>e.key));
     keys.push(...(this.missionArtKeys?.(idx)||[])); keys.push('cb93_back','cb93_back_shine');   /* v8.1.93 อาร์ตภารกิจ */
     { const hh=this.character||Save.data.character; keys.push('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow',...((typeof BASIC_PATHS!=='undefined'&&BASIC_PATHS[hh])||[]).map(p=>'pathuq82_'+hh+'_'+p.id)); }   /* v8.1.146 Build Path art = order 82 (order-80 path cards no longer loaded: flip layout off since v8.1.144) */   /* v8.1.137 ใบ 80 */
     { const hh=this.character||Save.data.character; keys.push(...Object.keys(ASSET_FX).filter(k=>k.startsWith('ev90_')),...Object.keys(ASSET_IMAGES).filter(k=>/^(?:relic|trade)_/.test(k)&&/relics8[18]\//.test(ASSET_IMAGES[k])),...(((typeof MODIFIERS!=='undefined'&&MODIFIERS[hh])||[]).map(m=>'mod_'+m.id.slice(2)))); }   /* v8.1.151 ใบ 81: Relic 8 + Trade-off 5 + Modifier ของฮีโร่ที่เล่น 6 (~1.2 MB GPU) */

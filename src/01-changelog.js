@@ -1,4 +1,5 @@
 const CHANGELOG = [
+  {v:'8.3.23',date:'2026-11-27',title:'Combat Situations everywhere',items:['Every Chapter 2 and 3 wave is now a named combat situation','New situations: Spore Bloom, Splitters, Elite Duo, Sniper Nest, Shield Carrier and Shrinking Arena']},
   {v:'8.3.22',date:'2026-11-27',title:'New Wardrobe items',items:['New in the Wardrobe: Honeycomb, Matcha and Midnight Wings, Pudding Fox, Mint Leaf Trail, Caramel Dash and Berry Pop']},
   {v:'8.3.21',date:'2026-11-27',title:'Animated Wardrobe',items:['Wings, pets, trails, dashes and pops now use new animated artwork','Wardrobe shop icons are freshly painted']},
   {v:'8.3.20',date:'2026-11-27',title:'No more Shovels',items:['Shovels are gone from every reward','Chapter 1 side objects sit in the stage with no label — walk onto one to start it']},

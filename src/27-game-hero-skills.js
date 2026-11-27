@@ -2081,7 +2081,7 @@
     if(b.dragon)this.infusionOnHit(e,d,'spicy');
     if(b.lastMul&&(b.bounce||0)===0&&b._bounced)d*=1+b.lastMul;
     return d; }
-  damage(e,amount,x,y,sesameOrbDamage){ if(!e.active)return;if(e._emergeUntil&&(this.time?.now||0)<e._emergeUntil)return;if(e._hhShell>0&&this.hhShellBlock?.(e))return;if(this.isSesRune?.())amount*=sesameOrbDamage??this.sesRuneStats().damage;const taroDirect=this.taroTakeDirect?.(e);
+  damage(e,amount,x,y,sesameOrbDamage){ if(!e.active)return;if(e._c1Dr)amount*=e._c1Dr;   /* v8.3.23 Shield Carrier / Elite Duo */if(e._emergeUntil&&(this.time?.now||0)<e._emergeUntil)return;if(e._hhShell>0&&this.hhShellBlock?.(e))return;if(this.isSesRune?.())amount*=sesameOrbDamage??this.sesRuneStats().damage;const taroDirect=this.taroTakeDirect?.(e);
     // Phase Gate: Lockedดาเมจทันทีที่ชนเส้นเลือด และInvincibleจนแอนิเมชันเปลี่ยนเฟสจบ
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;

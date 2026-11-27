@@ -11,9 +11,9 @@ vm.runInContext(consts.replace(/^const /gm,'var ')+'\nclass G{'+['c1SideDeck','c
 const {C1_SITUATIONS,C1_SIDE_EVENTS,C1_COMBAT_PATTERNS}=ctx;
 // every C1 stage: 4 situations (waves 1,2,4,5), valid patterns + goals, readable hint
 const formation=method('chapterCombatFormation');
-assert.equal(C1_SITUATIONS.length,5);
+assert.equal(C1_SITUATIONS.length,15);   /* v8.3.23 all 15 story stages */
 for(const row of C1_SITUATIONS){assert.equal(row.length,4);for(const x of row){assert(['pack','leader','dodge'].includes(x.goal),x.name);assert(x.hint.length>12&&!/[฀-๿]/.test(x.hint+x.name));
-  assert(x.pattern==='Last Stand'||formation.includes("'"+x.pattern+"'"),x.pattern);if(x.goal==='leader')assert.equal(x.pattern,'Commander');if(x.goal==='dodge')assert.equal(x.pattern,'Hazard Shift');}}
+  assert(x.pattern==='Last Stand'||formation.includes("'"+x.pattern+"'"),x.pattern);if(x.goal==='leader')assert(['Commander','Shield Carrier'].includes(x.pattern),x.pattern);if(x.goal==='dodge')assert.equal(x.pattern,'Hazard Shift');}}
 const g=new ctx.G();g.stageIndex=0;
 // side objects: own stage + 1 met before (C1-1 only its own)
 let deck=g.c1SideDeck(0);assert.equal(JSON.stringify(deck.map(e=>e.name)),'["Hunger Herald"]');

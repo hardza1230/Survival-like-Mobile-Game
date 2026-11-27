@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.22';
+const GAME_VERSION = '8.3.23';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -88,10 +88,10 @@ const STORY_WAVE_PLAN=[
 // Chapter 1 first-clear director. Each phase grows its pattern pool across the chapter.
 const C1_COMBAT_PATTERNS={
   warm:['Ambush','Stampede'],
-  pressure:['Pincer','Hunter Pack','Commander','Barrage'],
+  pressure:['Pincer','Hunter Pack','Commander','Barrage','Spore Bloom','Splitters','Sniper Nest'],
   recovery:['Loot Rush'],
-  escalation:['Barrage','Fortress','Commander','Hazard Shift','Stampede'],
-  swarm:['Last Stand','Pincer','Ambush']
+  escalation:['Barrage','Fortress','Commander','Hazard Shift','Stampede','Shield Carrier','Elite Duo','Spore Bloom'],
+  swarm:['Last Stand','Pincer','Ambush','Shrinking Arena','Splitters']
 };
 // v8.3.10 เจ้าของ: เวฟ C1 สั้นลง (เดิม 30/45/–/105/60 วิ) · ช่วงพักต้นเวฟ 4 (เดิม 30 วิ)
 const C1_WAVE_SEC=[24,30,0,30,30],C1_RECOVERY_SEC=8;   // v8.3.13 เจ้าของ: ทุกเวฟไม่เกิน 30 วิ
@@ -125,19 +125,62 @@ const C1_SITUATIONS=[
   [{name:'Banquet Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
    {name:'Oven Barrage',pattern:'Barrage',hint:'Oven guards fire from range — close in and take them out',goal:'pack'},
    {name:'Crumb Shift',pattern:'Hazard Shift',hint:'Burning crumbs drift across the floor — keep moving',goal:'dodge'},
-   {name:'Last Stand',pattern:'Last Stand',hint:'The Hunger throws everything — stay at the edge of the crowd',goal:'pack'}]
+   {name:'Last Stand',pattern:'Last Stand',hint:'The Hunger throws everything — stay at the edge of the crowd',goal:'pack'}],
+  /* v8.3.23 เจ้าของ: Combat Situations ขยายไป C2–C3 (ด่าน 6–15) + pattern ใหม่ Spore Bloom · Splitters · Sniper Nest · Shield Carrier · Elite Duo · Shrinking Arena */
+  [{name:'Canopy Ambush',pattern:'Ambush',hint:'Vines drop monsters all around you — break out of the ring',goal:'pack'},
+   {name:'Splitter Brew',pattern:'Splitters',hint:'Big fermented blobs split in two when they pop — finish the small ones too',goal:'pack'},
+   {name:'Sap Shift',pattern:'Hazard Shift',hint:'Sticky sap drifts across the floor — keep moving',goal:'dodge'},
+   {name:'Canopy Last Stand',pattern:'Last Stand',hint:'The canopy empties out — stay at the edge of the crowd',goal:'pack'}],
+  [{name:'Spore Bloom',pattern:'Spore Bloom',hint:'Fallen mushrooms burst after 2 seconds — lure the pack into the blast',goal:'pack'},
+   {name:'Marsh Pincer',pattern:'Pincer',hint:'They close in from both sides — break out to one side',goal:'pack'},
+   {name:'Fungus Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Spore Storm',pattern:'Spore Bloom',hint:'Every fallen mochi leaves a spore — keep the crowd on top of them',goal:'pack'}],
+  [{name:'Hive Splitters',pattern:'Splitters',hint:'Fat drones split when they pop — sweep up the little ones',goal:'pack'},
+   {name:'Drone Stampede',pattern:'Stampede',hint:'Drones charge in a line — dash through the gap',goal:'pack'},
+   {name:'Royal Guards',pattern:'Elite Duo',hint:'Two elites guard each other when close — pull them apart',goal:'pack'},
+   {name:'Swarm of the Hive',pattern:'Last Stand',hint:'The whole hive pours out — stay at the edge of the crowd',goal:'pack'}],
+  [{name:'Season Pincer',pattern:'Pincer',hint:'Squads close in from both sides — break out to one side',goal:'pack'},
+   {name:'Frost Fortress',pattern:'Fortress',hint:'Frozen guards block the way — circle behind them',goal:'pack'},
+   {name:'Season Twins',pattern:'Elite Duo',hint:'Two elites share their strength when close — split them up',goal:'pack'},
+   {name:'Season Shift',pattern:'Hazard Shift',hint:'The weather sweeps the floor — keep moving',goal:'dodge'}],
+  [{name:'Root Ambush',pattern:'Ambush',hint:'Roots burst up around you — break out of the ring',goal:'pack'},
+   {name:'Thorn Fortress',pattern:'Fortress',hint:'Thorny guards hold the line — circle behind them',goal:'pack'},
+   {name:'Root Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Throne Last Stand',pattern:'Last Stand',hint:'The throne calls everyone — stay at the edge of the crowd',goal:'pack'}],
+  [{name:'Ash Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
+   {name:'Ember Hunters',pattern:'Hunter Pack',hint:'Fast hunters chase you — turn and fight, don’t run straight',goal:'pack'},
+   {name:'Ash Shield',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
+   {name:'Closing Embers',pattern:'Shrinking Arena',hint:'The safe ground shrinks — clear the pack before the embers close in',goal:'pack'}],
+  [{name:'Orchard Ambush',pattern:'Ambush',hint:'Fruit monsters drop from the trees — break out of the ring',goal:'pack'},
+   {name:'Seed Splitters',pattern:'Splitters',hint:'Big seeds split in two when they pop — finish the small ones too',goal:'pack'},
+   {name:'Orchard Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
+   {name:'Harvest Stampede',pattern:'Stampede',hint:'A rush of fruit charges — dash through the gap',goal:'pack'}],
+  [{name:'Glass Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind glass thorns — go around, don’t touch them',goal:'pack'},
+   {name:'Shard Shield',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
+   {name:'Prism Pincer',pattern:'Pincer',hint:'They close in from both sides — break out to one side',goal:'pack'},
+   {name:'Glass Collapse',pattern:'Shrinking Arena',hint:'The floor cracks inward — clear the pack before it closes',goal:'pack'}],
+  [{name:'Vault Guard',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
+   {name:'Vault Fortress',pattern:'Fortress',hint:'Heavy wardens block the way — circle behind them',goal:'pack'},
+   {name:'Vault Wardens',pattern:'Elite Duo',hint:'Two elites guard each other when close — pull them apart',goal:'pack'},
+   {name:'Vault Barrage',pattern:'Barrage',hint:'Guards fire from range — close in and take them out',goal:'pack'}],
+  [{name:'First Seed Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Last Seed Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
+   {name:'Shrinking Throne',pattern:'Shrinking Arena',hint:'The safe ground shrinks — clear the pack before it closes',goal:'pack'},
+   {name:'Final Stand',pattern:'Last Stand',hint:'Everything comes at once — stay at the edge of the crowd',goal:'pack'}]
 ];
 const C1_SIT_SEC=20,C1_SIT_XP=.5;
-const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺'};   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
+const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺','Spore Bloom':'🍄','Splitters':'🫧','Sniper Nest':'🏹','Shield Carrier':'🛡️','Elite Duo':'👥','Shrinking Arena':'⭕'};   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
 /* v8.3.12 เจ้าของ: Combat Director เลือก pattern ตาม เอกลักษณ์ด่าน × ช่วงเวลา × จำนวนศัตรูในสนาม (ไม่สุ่มลอย ๆ) · น้ำหนักเอกลักษณ์ด่าน (ไม่มี = 1) */
 const C1_STAGE_PATTERN_WEIGHT=[
   {Ambush:2.2,Stampede:1.8,'Hunter Pack':1.3},
   {Pincer:2.2,Commander:1.8,'Hazard Shift':1.4},
   {'Hunter Pack':2,Barrage:1.8,Fortress:1.5},
   {Commander:2,Fortress:1.8,'Hazard Shift':1.6},
-  {Commander:1.6,Barrage:1.5,'Hazard Shift':1.5,'Last Stand':1.8}
+  {Commander:1.6,Barrage:1.5,'Hazard Shift':1.5,'Last Stand':1.8},
+  {Ambush:1.8,Splitters:2,'Hazard Shift':1.4},{'Spore Bloom':2.2,Pincer:1.6,Commander:1.4},{Splitters:2,Stampede:1.8,'Elite Duo':1.5},{Pincer:1.8,Fortress:1.6,'Elite Duo':1.6},{Ambush:1.8,Fortress:1.8,Commander:1.5},
+  {'Sniper Nest':2,'Hunter Pack':1.6,'Shield Carrier':1.5},{Ambush:1.6,Splitters:1.8,'Sniper Nest':1.6},{'Sniper Nest':2,'Shield Carrier':1.8,'Shrinking Arena':1.4},{'Shield Carrier':2,Fortress:1.6,'Elite Duo':1.6},{Commander:1.6,'Sniper Nest':1.6,'Shrinking Arena':1.6,'Last Stand':1.8}
 ];
-const C1_HEAVY_PATTERNS=['Commander','Fortress','Pincer','Last Stand'],C1_FIELD_FULL=.7,C1_FIELD_EMPTY=.3;
+const C1_HEAVY_PATTERNS=['Commander','Fortress','Pincer','Last Stand','Shield Carrier','Elite Duo','Shrinking Arena'],C1_PATTERN_FROM={Commander:1,Fortress:1,'Hazard Shift':2,'Spore Bloom':5,Splitters:5,'Elite Duo':5,'Sniper Nest':10,'Shield Carrier':10,'Shrinking Arena':10},C1_FIELD_FULL=.7,C1_FIELD_EMPTY=.3;
 // v7.9.50 Card types unlock stage by stage in Story (owner: reveal card types gradually, as part of the tutorial) · value = stage index where the type first appears
 /* v7.9.86 เจ้าของ: มอน/บอส/มินิบอสห้ามเกิดนอกแมพ · จุดที่อยู่นอกแมพ → ย้ายไปกลางแมพ (สุ่มรอบ ๆ กลางเล็กน้อย) */
 function inMapPt(x,y,m=80){ const L=WORLD/2-m; return [Math.max(-L,Math.min(L,x)),Math.max(-L,Math.min(L,y))]; }   // v8.1.105 เจ้าของ: มอนโผล่กลางจอ — เดิมจุดนอกแมพถูกสุ่มไปใกล้กลางแมพ → ตอนนี้ดันเข้าขอบแมพแทน

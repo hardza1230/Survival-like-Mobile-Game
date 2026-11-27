@@ -153,7 +153,7 @@
       this.time.delayedCall(1400,()=>{ if(!this._busy())return; this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); }); return; }
     if(this.recipeMode){ this.startRecipeRun(st); return; }
     if(this.usesReplaySurvival()){this.startReplayRun(st);return;}
-    this._v83Run=i>=0&&i<5&&!this.riftMode&&!this._inTutorial&&!this.recipeMode&&!this.bossRush
+    this._v83Run=i>=0&&i<15&&!this.riftMode&&!this._inTutorial&&!this.recipeMode&&!this.bossRush
       &&(typeof window==='undefined'||new URLSearchParams(window.location.search).get('combat83')!=='0');
     if(this._v83Run){
       this._powerGuide=this.getPowerGuide(i);   /* v8.3.12 คิดใหม่หลังรู้ว่าเป็น C1 ต่อเนื่อง (ไม่สเกลตามพลังผู้เล่น) */

@@ -1229,6 +1229,12 @@
       else if(pattern==='Fortress')add(r+(i%2===0?0:72),(Math.floor(i/2)-1)*76,i%2===0?'tank':i===1?'shooter':'basic');
       else if(pattern==='Hazard Shift')add(side*r,(Math.floor(i/2)-1)*64,'fast');
       else if(pattern==='Loot Rush')add(r+(i%2)*45,(i-(n-1)/2)*56);
+      else if(pattern==='Splitters')add(r+row*60,col*66,'tank');
+      else if(pattern==='Spore Bloom')add(r+row*50,col*58,i%2?'fast':'basic');
+      else if(pattern==='Sniper Nest')add(r+90+(i>=3?50:0),(i%3-1)*70,i<3?'shooter':'basic');
+      else if(pattern==='Shield Carrier')add(r+(i===0?40:0),i===0?0:(i%2?1:-1)*Math.ceil(i/2)*52,i===0?'tank':'basic');
+      else if(pattern==='Elite Duo')add(r,(i?1:-1)*90,'elite');
+      else if(pattern==='Shrinking Arena'){const a=i*TAU/n;add(Math.cos(a)*r*.8,Math.sin(a)*r*.8,i%3===0?'fast':'basic');}
       else add(side*(r+Math.floor(i/2)*36),side*(Math.floor(i/2)-1)*50,i%3===0?'fast':'basic');
     }
     return points;
@@ -1260,10 +1266,12 @@
       const {leader,id,followers}=d.command;
       if(!leader.active||leader._c1SpawnId!==id)this.clearChapterCombatCommand(d);
       else for(const f of followers)if(f.enemy.active&&f.enemy._c1SpawnId===f.id){
-        f.enemy.spd=this.dist(f.enemy.x,f.enemy.y,leader.x,leader.y)<240?f.speed*1.22:f.speed;
+        if(d.command.shield){f.enemy._c1Dr=.5;f.enemy.setTint?.(0x9fd0ff);}   /* v8.3.23 Shield Carrier: ลูกทีมรับดาเมจครึ่งเดียวจนกว่าตัวถือโล่ล้ม */
+        else f.enemy.spd=this.dist(f.enemy.x,f.enemy.y,leader.x,leader.y)<240?f.speed*1.22:f.speed;
       }
     }
     for(const [foe,id] of d.loot)if(!foe.active||foe._c1SpawnId!==id)d.loot.delete(foe);
+    this.tickChapterNewPatterns(d,dt);   /* v8.3.23 */
     if(d.event)this.tickChapterSideEvent(d,dt);
     else this.tickChapterSideObjects(d);   /* v8.3.12 ภารกิจรอง = วัตถุในแมพทั้งด่าน · แตะเพื่อเริ่ม */
     this.tickChapterSituation(d,dt);
@@ -1273,7 +1281,7 @@
       d.patterns=[];
     }
     d.delay-=dt;
-    if(d.delay>0||d.event||d.hazard||d.route||this.waveTimer<4)return;
+    if(d.delay>0||d.event||d.hazard||d.route||d.arena||d.wall||this.waveTimer<4)return;
     const room=Math.min(this.maxLive,this.storyLiveCap())-this.enemies.countActive(true);
     if(room<3){d.delay=1;return;}
     if(d.sit&&d.sit.state==='pending')return;   /* รอให้สถานการณ์หลักของเวฟเริ่มก่อน */
@@ -1285,7 +1293,7 @@
   }
   /* v8.3.12 เจ้าของ: เลือก pattern ตามเงื่อนไข ไม่สุ่มลอย ๆ · คะแนน = เอกลักษณ์ด่าน × ช่วงเวลาในเวฟ × จำนวนศัตรูในสนาม · ห้ามซ้ำ 2 ครั้งล่าสุด · สุ่มเฉพาะตอนคะแนนเท่ากัน */
   chapterCombatPatternScore(name,phase,fill,late){
-    const minimum={Commander:1,Fortress:1,'Hazard Shift':2};if(this.stageIndex<(minimum[name]||0))return 0;
+    const minimum=C1_PATTERN_FROM;if(this.stageIndex<(minimum[name]||0))return 0;   /* v8.3.23 pattern ใหม่เปิดตั้งแต่ C2 / C3 */
     if(!(C1_COMBAT_PATTERNS[phase]||[]).includes(name))return 0;
     const identity=(C1_STAGE_PATTERN_WEIGHT[this.stageIndex]||{})[name]||1,heavy=C1_HEAVY_PATTERNS.includes(name);
     const field=fill>=C1_FIELD_FULL?(heavy?.15:1):fill<=C1_FIELD_EMPTY?(heavy?1.5:.8):1;
@@ -1345,9 +1353,9 @@
     const P=this.player,angle=Math.random()*TAU,c=Math.cos(angle),s=Math.sin(angle);
     const r=Math.max(210,Math.min(330,this.W/(this.viewZoom||1)*.66));
     const [ox,oy]=[P.x,P.y];
-    const n=Math.min(room,pattern==='Last Stand'?7:pattern==='Loot Rush'?4:5);
+    const n=pattern==='Elite Duo'?2:Math.min(room,pattern==='Last Stand'?7:pattern==='Loot Rush'?4:pattern==='Splitters'?3:pattern==='Shrinking Arena'?6:5);
     const points=this.chapterCombatFormation(pattern,n,r),followers=[],routes=[];
-    let leader=null;
+    let leader=null;const duo=[];
     for(const p of points){
       const dx=p.x*c-p.y*s,dy=p.x*s+p.y*c;
       const point=this.chapterVisibleSpawn(Math.atan2(dy,dx),Math.hypot(dx,dy));
@@ -1358,8 +1366,12 @@
       if(sit&&sit.def.goal==='pack')sit.marks.set(enemy,id);
       if(p.type==='elite'){
         this.spawnRise(enemy,point.x,point.y,true);
-        leader=enemy;
-      }else if(pattern==='Commander')followers.push({enemy,id,speed:enemy.spd});
+        if(pattern==='Elite Duo')duo.push({enemy,id});else leader=enemy;
+      }else if(pattern==='Commander'||(pattern==='Shield Carrier'&&p.type!=='tank'))followers.push({enemy,id,speed:enemy.spd});
+      if(pattern==='Shield Carrier'&&p.type==='tank'&&!leader){leader=enemy;enemy.hp*=1.4;enemy.maxhp=enemy.hp;}
+      if(pattern==='Splitters'){enemy._c1Split=id;enemy.hp*=1.2;enemy.maxhp=enemy.hp;}
+      if(pattern==='Spore Bloom')enemy._c1Spore=id;
+      if(pattern==='Sniper Nest'&&enemy.shooter){enemy.shootCd=1.4;enemy.spd*=.35;}
       if(pattern==='Stampede'){
         const [x,y]=inMapPt(ox-r*c-p.y*s,oy-r*s+p.y*c);
         const target={x,y};enemy._goTo=target;routes.push({enemy,id,target});
@@ -1370,7 +1382,10 @@
         d.loot.set(enemy,id);
       }
     }
-    if(leader)d.command={leader,id:leader._c1SpawnId,followers};
+    if(leader)d.command={leader,id:leader._c1SpawnId,followers,shield:pattern==='Shield Carrier'};
+    if(duo.length===2)d.duo=duo;
+    if(pattern==='Sniper Nest')this.startChapterThornWall(d,angle,r);
+    if(pattern==='Shrinking Arena')this.startChapterArena(d);
     if(routes.length)d.route={left:5.8,entries:routes};
     if(pattern==='Hazard Shift')this.startChapterCombatHazard(d,angle,sit?.def?.hint);
     if(pattern==='Loot Rush'||pattern==='Last Stand')this.floatText?.(ox,oy-58,pattern,0xffd166);
@@ -1382,7 +1397,7 @@
     d.route=null;
   }
   clearChapterCombatCommand(d){
-    for(const f of d.command?.followers||[])if(f.enemy._c1SpawnId===f.id)f.enemy.spd=f.speed;
+    for(const f of d.command?.followers||[])if(f.enemy._c1SpawnId===f.id){f.enemy.spd=f.speed;if(f.enemy._c1Dr){f.enemy._c1Dr=0;f.enemy.clearTint?.();}}
     d.command=null;
   }
   startChapterCombatHazard(d,angle,text){
@@ -1410,6 +1425,32 @@
       }
     }
   }
+  /* ===== v8.3.23 เจ้าของ: Combat Situation แบบใหม่สำหรับ C2–C3 ===== */
+  chapterNewPatternKill(d,e){ if(!e)return; const P=this.player; if(!P)return;
+    if(e._c1Split&&e._c1Split===e._c1SpawnId){ e._c1Split=0; const S=d.sit&&d.sit.state==='active'&&d.sit.def.pattern==='Splitters'?d.sit:null;
+      for(const k of [-1,1]){ const x=e.x+k*26,y=e.y,ang=Math.atan2(y-P.y,x-P.x),dist=Math.max(70,Math.hypot(x-P.x,y-P.y)),c=this.spawnEnemy('fast',ang,dist,true); if(!c)continue; c.hp*=.55;c.maxhp=c.hp;c.setScale?.((c.scaleX||1)*.8); if(S)S.marks.set(c,c._c1SpawnId); }
+      this.vfxHitRing?.(e.x,e.y,0xc9a3ff,false); }
+    if(e._c1Spore&&e._c1Spore===e._c1SpawnId){ e._c1Spore=0; const L=d.spores||(d.spores=[]); if(L.length>=8)return; const g=this.camWorld(this.add.circle(e.x,e.y,16,0xb48cff,.55).setStrokeStyle(3,0xe0c8ff,.9).setDepth(-980)); L.push({x:e.x,y:e.y,t:2,g}); this.tweens?.add({targets:g,scale:{from:.6,to:1.6},duration:2000,ease:'Sine.in'}); } }
+  tickChapterNewPatterns(d,dt){ const P=this.player; if(!P)return;
+    if(d.spores){ for(const s of d.spores){ s.t-=dt; if(s.t>0)continue; s.done=true; s.g?.destroy?.(); this.vfxHitRing?.(s.x,s.y,0xb48cff,true); const pw=(10+this.stageIndex*2)*(P.dmgMul||1);
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&this.dist(e.x,e.y,s.x,s.y)<80)this.damage(e,pw*3,e.x,e.y); });
+        if(this.dist(P.x,P.y,s.x,s.y)<62)this.hurtPlayer?.(3+this.stageIndex,s.x,s.y); }
+      d.spores=d.spores.filter(s=>!s.done); if(!d.spores.length)d.spores=null; }
+    if(d.duo){ const [a,b]=d.duo; const live=q=>q.enemy.active&&q.enemy._c1SpawnId===q.id; if(!live(a)||!live(b)){ for(const q of d.duo)if(live(q)){ q.enemy._c1Dr=0; q.enemy.clearTint?.(); } d.duo=null; }
+      else { const near=this.dist(a.enemy.x,a.enemy.y,b.enemy.x,b.enemy.y)<260; for(const q of d.duo){ q.enemy._c1Dr=near?.5:0; if(near)q.enemy.setTint?.(0xffd166); else q.enemy.clearTint?.(); } } }
+    if(d.wall){ const W=d.wall; W.left-=dt; W.cd-=dt; if(W.left<=0){ this.clearChapterThornWall(d); }
+      else if(W.cd<=0){ const t=Math.max(0,Math.min(1,((P.x-W.x1)*(W.x2-W.x1)+(P.y-W.y1)*(W.y2-W.y1))/W.len2)),qx=W.x1+(W.x2-W.x1)*t,qy=W.y1+(W.y2-W.y1)*t; if(Math.hypot(P.x-qx,P.y-qy)<22){ W.cd=.8; this.hurtPlayer?.(3+this.stageIndex,qx,qy); } } }
+    if(d.arena){ const A=d.arena; A.left-=dt; A.r=Math.max(A.rMin,A.r-(A.r0-A.rMin)/14*dt); A.g?.clear?.(); A.g?.lineStyle?.(6,0x9b5cff,.75)?.strokeCircle?.(A.x,A.y,A.r); A.g?.lineStyle?.(18,0x9b5cff,.14)?.strokeCircle?.(A.x,A.y,A.r+12);
+      A.cd-=dt; if(this.dist(P.x,P.y,A.x,A.y)>A.r&&A.cd<=0){ A.cd=1; this.hurtPlayer?.(4+this.stageIndex,P.x,P.y); this.floatText?.(P.x,P.y-50,'Back inside!',0xc9a3ff); }
+      const S=d.sit; if(A.left<=0||(S&&S.def.pattern==='Shrinking Arena'&&S.state!=='active'&&S.state!=='pending'))this.clearChapterArena(d); } }
+  startChapterThornWall(d,angle,r){ if(d.wall)return; const P=this.player,c=Math.cos(angle),s=Math.sin(angle),cx=P.x+c*(r+30),cy=P.y+s*(r+30),half=150,[x1,y1]=inMapPt(cx-s*half,cy+c*half),[x2,y2]=inMapPt(cx+s*half,cy-c*half);
+    const g=this.camWorld(this.add.graphics().setDepth(-985)); g.lineStyle(10,0x5b3a2a,.9).lineBetween(x1,y1,x2,y2); g.lineStyle(3,0x9fdc6a,.9).lineBetween(x1,y1,x2,y2);
+    for(let k=0;k<=12;k++){ const x=x1+(x2-x1)*k/12,y=y1+(y2-y1)*k/12; g.fillStyle(0x7a4a30,1).fillTriangle(x-6,y+4,x+6,y+4,x,y-12); }
+    d.wall={x1,y1,x2,y2,len2:Math.max(1,(x2-x1)**2+(y2-y1)**2),left:20,cd:0,g}; }
+  clearChapterThornWall(d){ d.wall?.g?.destroy?.(); d.wall=null; }
+  startChapterArena(d){ if(d.arena)return; const P=this.player,r0=Math.max(380,Math.min(460,this.W/(this.viewZoom||1)*.6)); d.arena={x:P.x,y:P.y,r0,r:r0,rMin:190,left:22,cd:1,g:this.camWorld(this.add.graphics().setDepth(-984))}; }
+  clearChapterArena(d){ d.arena?.g?.destroy?.(); d.arena=null; }
+  clearChapterNewPatterns(d){ for(const s of d.spores||[])s.g?.destroy?.(); d.spores=null; if(d.duo){ for(const q of d.duo)if(q.enemy.active){ q.enemy._c1Dr=0; q.enemy.clearTint?.(); } d.duo=null; } this.clearChapterThornWall(d); this.clearChapterArena(d); }
   clearChapterCombatHazard(d){
     for(const q of d.hazard?.circles||[])q.ring.destroy();
     d.hazard=null;
@@ -1475,6 +1516,7 @@
   chapterCombatKill(enemy){
     const d=this._c1Combat;
     if(!d)return;
+    this.chapterNewPatternKill(d,enemy);   /* v8.3.23 Splitters / Spore Bloom */
     if(d.loot.has(enemy)){
       const id=d.loot.get(enemy);d.loot.delete(enemy);
       if(id===enemy._c1SpawnId)this.spawnSugarCoins(3,enemy);
@@ -1508,6 +1550,7 @@
     this.clearChapterCombatRoute(d);
     this.clearChapterCombatCommand(d);
     this.clearChapterCombatHazard(d);
+    this.clearChapterNewPatterns(d);
     d.loot.clear();
   }
   tickA23Audio(){

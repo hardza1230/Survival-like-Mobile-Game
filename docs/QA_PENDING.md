@@ -1,6 +1,7 @@
 # รอ QA บนมือถือ (รายเวอร์ชัน · ใหม่สุดก่อน)
 
 ## รอ QA (AI เพิ่ม · เจ้าของเทสแล้วลบ)
+- v8.3.23 C2–C3 รอบแรก: ทุกเวฟมีชื่อสถานการณ์ + คำใบ้ · ลอง Spore Bloom (C2-2), Splitters (C2-1/C2-3), Elite Duo (C2-3/C2-4), Sniper Nest + กำแพงหนาม (C3-1), Shield Carrier (C3-1/C3-3), Shrinking Arena (C3-1/C3-5) · ดูบาลานซ์/ความยาก
 - v8.3.22 Wardrobe มีของใหม่ 7 ชิ้น: ปีก Honeycomb/Matcha/Midnight (450) · Pudding Fox (300) · Mint Leaf Trail (150) · Caramel Dash (250) · Berry Pop (300) · ซื้อแล้วใส่ดูใน Lobby/ในด่าน
 - v8.3.21 Wardrobe: ปีก 5 แบบ/สัตว์เลี้ยง/หาง/Dash/Pop ขยับ 8 เฟรม · ไอคอนร้านใหม่ · ดูใน Lobby และในด่าน (ขนาดปีกพอดีไหม · FPS)
 - v8.3.20 ไม่มี Shovels ในรางวัลใด ๆ (จบด่าน, วงล้อ, Daily box, Awards, มินิบอส, ทิวทอเรียล) · วัตถุภารกิจรอง C1 ไม่มีป้าย เดินไปเหยียบ = เริ่ม

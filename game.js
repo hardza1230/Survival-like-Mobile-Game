@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.22';
+const GAME_VERSION = '8.3.23';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -88,10 +88,10 @@ const STORY_WAVE_PLAN=[
 // Chapter 1 first-clear director. Each phase grows its pattern pool across the chapter.
 const C1_COMBAT_PATTERNS={
   warm:['Ambush','Stampede'],
-  pressure:['Pincer','Hunter Pack','Commander','Barrage'],
+  pressure:['Pincer','Hunter Pack','Commander','Barrage','Spore Bloom','Splitters','Sniper Nest'],
   recovery:['Loot Rush'],
-  escalation:['Barrage','Fortress','Commander','Hazard Shift','Stampede'],
-  swarm:['Last Stand','Pincer','Ambush']
+  escalation:['Barrage','Fortress','Commander','Hazard Shift','Stampede','Shield Carrier','Elite Duo','Spore Bloom'],
+  swarm:['Last Stand','Pincer','Ambush','Shrinking Arena','Splitters']
 };
 // v8.3.10 เจ้าของ: เวฟ C1 สั้นลง (เดิม 30/45/–/105/60 วิ) · ช่วงพักต้นเวฟ 4 (เดิม 30 วิ)
 const C1_WAVE_SEC=[24,30,0,30,30],C1_RECOVERY_SEC=8;   // v8.3.13 เจ้าของ: ทุกเวฟไม่เกิน 30 วิ
@@ -125,19 +125,62 @@ const C1_SITUATIONS=[
   [{name:'Banquet Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
    {name:'Oven Barrage',pattern:'Barrage',hint:'Oven guards fire from range — close in and take them out',goal:'pack'},
    {name:'Crumb Shift',pattern:'Hazard Shift',hint:'Burning crumbs drift across the floor — keep moving',goal:'dodge'},
-   {name:'Last Stand',pattern:'Last Stand',hint:'The Hunger throws everything — stay at the edge of the crowd',goal:'pack'}]
+   {name:'Last Stand',pattern:'Last Stand',hint:'The Hunger throws everything — stay at the edge of the crowd',goal:'pack'}],
+  /* v8.3.23 เจ้าของ: Combat Situations ขยายไป C2–C3 (ด่าน 6–15) + pattern ใหม่ Spore Bloom · Splitters · Sniper Nest · Shield Carrier · Elite Duo · Shrinking Arena */
+  [{name:'Canopy Ambush',pattern:'Ambush',hint:'Vines drop monsters all around you — break out of the ring',goal:'pack'},
+   {name:'Splitter Brew',pattern:'Splitters',hint:'Big fermented blobs split in two when they pop — finish the small ones too',goal:'pack'},
+   {name:'Sap Shift',pattern:'Hazard Shift',hint:'Sticky sap drifts across the floor — keep moving',goal:'dodge'},
+   {name:'Canopy Last Stand',pattern:'Last Stand',hint:'The canopy empties out — stay at the edge of the crowd',goal:'pack'}],
+  [{name:'Spore Bloom',pattern:'Spore Bloom',hint:'Fallen mushrooms burst after 2 seconds — lure the pack into the blast',goal:'pack'},
+   {name:'Marsh Pincer',pattern:'Pincer',hint:'They close in from both sides — break out to one side',goal:'pack'},
+   {name:'Fungus Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Spore Storm',pattern:'Spore Bloom',hint:'Every fallen mochi leaves a spore — keep the crowd on top of them',goal:'pack'}],
+  [{name:'Hive Splitters',pattern:'Splitters',hint:'Fat drones split when they pop — sweep up the little ones',goal:'pack'},
+   {name:'Drone Stampede',pattern:'Stampede',hint:'Drones charge in a line — dash through the gap',goal:'pack'},
+   {name:'Royal Guards',pattern:'Elite Duo',hint:'Two elites guard each other when close — pull them apart',goal:'pack'},
+   {name:'Swarm of the Hive',pattern:'Last Stand',hint:'The whole hive pours out — stay at the edge of the crowd',goal:'pack'}],
+  [{name:'Season Pincer',pattern:'Pincer',hint:'Squads close in from both sides — break out to one side',goal:'pack'},
+   {name:'Frost Fortress',pattern:'Fortress',hint:'Frozen guards block the way — circle behind them',goal:'pack'},
+   {name:'Season Twins',pattern:'Elite Duo',hint:'Two elites share their strength when close — split them up',goal:'pack'},
+   {name:'Season Shift',pattern:'Hazard Shift',hint:'The weather sweeps the floor — keep moving',goal:'dodge'}],
+  [{name:'Root Ambush',pattern:'Ambush',hint:'Roots burst up around you — break out of the ring',goal:'pack'},
+   {name:'Thorn Fortress',pattern:'Fortress',hint:'Thorny guards hold the line — circle behind them',goal:'pack'},
+   {name:'Root Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Throne Last Stand',pattern:'Last Stand',hint:'The throne calls everyone — stay at the edge of the crowd',goal:'pack'}],
+  [{name:'Ash Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
+   {name:'Ember Hunters',pattern:'Hunter Pack',hint:'Fast hunters chase you — turn and fight, don’t run straight',goal:'pack'},
+   {name:'Ash Shield',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
+   {name:'Closing Embers',pattern:'Shrinking Arena',hint:'The safe ground shrinks — clear the pack before the embers close in',goal:'pack'}],
+  [{name:'Orchard Ambush',pattern:'Ambush',hint:'Fruit monsters drop from the trees — break out of the ring',goal:'pack'},
+   {name:'Seed Splitters',pattern:'Splitters',hint:'Big seeds split in two when they pop — finish the small ones too',goal:'pack'},
+   {name:'Orchard Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
+   {name:'Harvest Stampede',pattern:'Stampede',hint:'A rush of fruit charges — dash through the gap',goal:'pack'}],
+  [{name:'Glass Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind glass thorns — go around, don’t touch them',goal:'pack'},
+   {name:'Shard Shield',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
+   {name:'Prism Pincer',pattern:'Pincer',hint:'They close in from both sides — break out to one side',goal:'pack'},
+   {name:'Glass Collapse',pattern:'Shrinking Arena',hint:'The floor cracks inward — clear the pack before it closes',goal:'pack'}],
+  [{name:'Vault Guard',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
+   {name:'Vault Fortress',pattern:'Fortress',hint:'Heavy wardens block the way — circle behind them',goal:'pack'},
+   {name:'Vault Wardens',pattern:'Elite Duo',hint:'Two elites guard each other when close — pull them apart',goal:'pack'},
+   {name:'Vault Barrage',pattern:'Barrage',hint:'Guards fire from range — close in and take them out',goal:'pack'}],
+  [{name:'First Seed Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Last Seed Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
+   {name:'Shrinking Throne',pattern:'Shrinking Arena',hint:'The safe ground shrinks — clear the pack before it closes',goal:'pack'},
+   {name:'Final Stand',pattern:'Last Stand',hint:'Everything comes at once — stay at the edge of the crowd',goal:'pack'}]
 ];
 const C1_SIT_SEC=20,C1_SIT_XP=.5;
-const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺'};   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
+const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺','Spore Bloom':'🍄','Splitters':'🫧','Sniper Nest':'🏹','Shield Carrier':'🛡️','Elite Duo':'👥','Shrinking Arena':'⭕'};   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
 /* v8.3.12 เจ้าของ: Combat Director เลือก pattern ตาม เอกลักษณ์ด่าน × ช่วงเวลา × จำนวนศัตรูในสนาม (ไม่สุ่มลอย ๆ) · น้ำหนักเอกลักษณ์ด่าน (ไม่มี = 1) */
 const C1_STAGE_PATTERN_WEIGHT=[
   {Ambush:2.2,Stampede:1.8,'Hunter Pack':1.3},
   {Pincer:2.2,Commander:1.8,'Hazard Shift':1.4},
   {'Hunter Pack':2,Barrage:1.8,Fortress:1.5},
   {Commander:2,Fortress:1.8,'Hazard Shift':1.6},
-  {Commander:1.6,Barrage:1.5,'Hazard Shift':1.5,'Last Stand':1.8}
+  {Commander:1.6,Barrage:1.5,'Hazard Shift':1.5,'Last Stand':1.8},
+  {Ambush:1.8,Splitters:2,'Hazard Shift':1.4},{'Spore Bloom':2.2,Pincer:1.6,Commander:1.4},{Splitters:2,Stampede:1.8,'Elite Duo':1.5},{Pincer:1.8,Fortress:1.6,'Elite Duo':1.6},{Ambush:1.8,Fortress:1.8,Commander:1.5},
+  {'Sniper Nest':2,'Hunter Pack':1.6,'Shield Carrier':1.5},{Ambush:1.6,Splitters:1.8,'Sniper Nest':1.6},{'Sniper Nest':2,'Shield Carrier':1.8,'Shrinking Arena':1.4},{'Shield Carrier':2,Fortress:1.6,'Elite Duo':1.6},{Commander:1.6,'Sniper Nest':1.6,'Shrinking Arena':1.6,'Last Stand':1.8}
 ];
-const C1_HEAVY_PATTERNS=['Commander','Fortress','Pincer','Last Stand'],C1_FIELD_FULL=.7,C1_FIELD_EMPTY=.3;
+const C1_HEAVY_PATTERNS=['Commander','Fortress','Pincer','Last Stand','Shield Carrier','Elite Duo','Shrinking Arena'],C1_PATTERN_FROM={Commander:1,Fortress:1,'Hazard Shift':2,'Spore Bloom':5,Splitters:5,'Elite Duo':5,'Sniper Nest':10,'Shield Carrier':10,'Shrinking Arena':10},C1_FIELD_FULL=.7,C1_FIELD_EMPTY=.3;
 // v7.9.50 Card types unlock stage by stage in Story (owner: reveal card types gradually, as part of the tutorial) · value = stage index where the type first appears
 /* v7.9.86 เจ้าของ: มอน/บอส/มินิบอสห้ามเกิดนอกแมพ · จุดที่อยู่นอกแมพ → ย้ายไปกลางแมพ (สุ่มรอบ ๆ กลางเล็กน้อย) */
 function inMapPt(x,y,m=80){ const L=WORLD/2-m; return [Math.max(-L,Math.min(L,x)),Math.max(-L,Math.min(L,y))]; }   // v8.1.105 เจ้าของ: มอนโผล่กลางจอ — เดิมจุดนอกแมพถูกสุ่มไปใกล้กลางแมพ → ตอนนี้ดันเข้าขอบแมพแทน
@@ -148,6 +191,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.23',date:'2026-11-27',title:'Combat Situations everywhere',items:['Every Chapter 2 and 3 wave is now a named combat situation','New situations: Spore Bloom, Splitters, Elite Duo, Sniper Nest, Shield Carrier and Shrinking Arena']},
   {v:'8.3.22',date:'2026-11-27',title:'New Wardrobe items',items:['New in the Wardrobe: Honeycomb, Matcha and Midnight Wings, Pudding Fox, Mint Leaf Trail, Caramel Dash and Berry Pop']},
   {v:'8.3.21',date:'2026-11-27',title:'Animated Wardrobe',items:['Wings, pets, trails, dashes and pops now use new animated artwork','Wardrobe shop icons are freshly painted']},
   {v:'8.3.20',date:'2026-11-27',title:'No more Shovels',items:['Shovels are gone from every reward','Chapter 1 side objects sit in the stage with no label — walk onto one to start it']},
@@ -10625,7 +10669,7 @@ class Game extends Phaser.Scene {
     if((this.character||Save.data.character)==='mint')keys.push('fx_mint_dash_shard','fx_mint_snowstorm');
     keys.push(...Object.keys(ASSET_FX).filter(k=>k.startsWith('st_')),'st_icons');   // v8.0.85 ใบ 62 สถานะติดตัว ทุกด่านใช้ร่วม (≈3.8 MiB)
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
-    if(idx>=0&&idx<5&&typeof C1_SIDE_EVENTS!=='undefined')keys.push(...C1_SIDE_EVENTS.map(e=>e.key));
+    if(idx>=0&&idx<15&&typeof C1_SIDE_EVENTS!=='undefined')keys.push(...C1_SIDE_EVENTS.map(e=>e.key));
     keys.push(...(this.missionArtKeys?.(idx)||[])); keys.push('cb93_back','cb93_back_shine');   /* v8.1.93 อาร์ตภารกิจ */
     { const hh=this.character||Save.data.character; keys.push('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow',...((typeof BASIC_PATHS!=='undefined'&&BASIC_PATHS[hh])||[]).map(p=>'pathuq82_'+hh+'_'+p.id)); }   /* v8.1.146 Build Path art = order 82 (order-80 path cards no longer loaded: flip layout off since v8.1.144) */   /* v8.1.137 ใบ 80 */
     { const hh=this.character||Save.data.character; keys.push(...Object.keys(ASSET_FX).filter(k=>k.startsWith('ev90_')),...Object.keys(ASSET_IMAGES).filter(k=>/^(?:relic|trade)_/.test(k)&&/relics8[18]\//.test(ASSET_IMAGES[k])),...(((typeof MODIFIERS!=='undefined'&&MODIFIERS[hh])||[]).map(m=>'mod_'+m.id.slice(2)))); }   /* v8.1.151 ใบ 81: Relic 8 + Trade-off 5 + Modifier ของฮีโร่ที่เล่น 6 (~1.2 MB GPU) */
@@ -16023,7 +16067,7 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(1400,()=>{ if(!this._busy())return; this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); }); return; }
     if(this.recipeMode){ this.startRecipeRun(st); return; }
     if(this.usesReplaySurvival()){this.startReplayRun(st);return;}
-    this._v83Run=i>=0&&i<5&&!this.riftMode&&!this._inTutorial&&!this.recipeMode&&!this.bossRush
+    this._v83Run=i>=0&&i<15&&!this.riftMode&&!this._inTutorial&&!this.recipeMode&&!this.bossRush
       &&(typeof window==='undefined'||new URLSearchParams(window.location.search).get('combat83')!=='0');
     if(this._v83Run){
       this._powerGuide=this.getPowerGuide(i);   /* v8.3.12 คิดใหม่หลังรู้ว่าเป็น C1 ต่อเนื่อง (ไม่สเกลตามพลังผู้เล่น) */
@@ -18720,6 +18764,12 @@ class Game extends Phaser.Scene {
       else if(pattern==='Fortress')add(r+(i%2===0?0:72),(Math.floor(i/2)-1)*76,i%2===0?'tank':i===1?'shooter':'basic');
       else if(pattern==='Hazard Shift')add(side*r,(Math.floor(i/2)-1)*64,'fast');
       else if(pattern==='Loot Rush')add(r+(i%2)*45,(i-(n-1)/2)*56);
+      else if(pattern==='Splitters')add(r+row*60,col*66,'tank');
+      else if(pattern==='Spore Bloom')add(r+row*50,col*58,i%2?'fast':'basic');
+      else if(pattern==='Sniper Nest')add(r+90+(i>=3?50:0),(i%3-1)*70,i<3?'shooter':'basic');
+      else if(pattern==='Shield Carrier')add(r+(i===0?40:0),i===0?0:(i%2?1:-1)*Math.ceil(i/2)*52,i===0?'tank':'basic');
+      else if(pattern==='Elite Duo')add(r,(i?1:-1)*90,'elite');
+      else if(pattern==='Shrinking Arena'){const a=i*TAU/n;add(Math.cos(a)*r*.8,Math.sin(a)*r*.8,i%3===0?'fast':'basic');}
       else add(side*(r+Math.floor(i/2)*36),side*(Math.floor(i/2)-1)*50,i%3===0?'fast':'basic');
     }
     return points;
@@ -18751,10 +18801,12 @@ class Game extends Phaser.Scene {
       const {leader,id,followers}=d.command;
       if(!leader.active||leader._c1SpawnId!==id)this.clearChapterCombatCommand(d);
       else for(const f of followers)if(f.enemy.active&&f.enemy._c1SpawnId===f.id){
-        f.enemy.spd=this.dist(f.enemy.x,f.enemy.y,leader.x,leader.y)<240?f.speed*1.22:f.speed;
+        if(d.command.shield){f.enemy._c1Dr=.5;f.enemy.setTint?.(0x9fd0ff);}   /* v8.3.23 Shield Carrier: ลูกทีมรับดาเมจครึ่งเดียวจนกว่าตัวถือโล่ล้ม */
+        else f.enemy.spd=this.dist(f.enemy.x,f.enemy.y,leader.x,leader.y)<240?f.speed*1.22:f.speed;
       }
     }
     for(const [foe,id] of d.loot)if(!foe.active||foe._c1SpawnId!==id)d.loot.delete(foe);
+    this.tickChapterNewPatterns(d,dt);   /* v8.3.23 */
     if(d.event)this.tickChapterSideEvent(d,dt);
     else this.tickChapterSideObjects(d);   /* v8.3.12 ภารกิจรอง = วัตถุในแมพทั้งด่าน · แตะเพื่อเริ่ม */
     this.tickChapterSituation(d,dt);
@@ -18764,7 +18816,7 @@ class Game extends Phaser.Scene {
       d.patterns=[];
     }
     d.delay-=dt;
-    if(d.delay>0||d.event||d.hazard||d.route||this.waveTimer<4)return;
+    if(d.delay>0||d.event||d.hazard||d.route||d.arena||d.wall||this.waveTimer<4)return;
     const room=Math.min(this.maxLive,this.storyLiveCap())-this.enemies.countActive(true);
     if(room<3){d.delay=1;return;}
     if(d.sit&&d.sit.state==='pending')return;   /* รอให้สถานการณ์หลักของเวฟเริ่มก่อน */
@@ -18776,7 +18828,7 @@ class Game extends Phaser.Scene {
   }
   /* v8.3.12 เจ้าของ: เลือก pattern ตามเงื่อนไข ไม่สุ่มลอย ๆ · คะแนน = เอกลักษณ์ด่าน × ช่วงเวลาในเวฟ × จำนวนศัตรูในสนาม · ห้ามซ้ำ 2 ครั้งล่าสุด · สุ่มเฉพาะตอนคะแนนเท่ากัน */
   chapterCombatPatternScore(name,phase,fill,late){
-    const minimum={Commander:1,Fortress:1,'Hazard Shift':2};if(this.stageIndex<(minimum[name]||0))return 0;
+    const minimum=C1_PATTERN_FROM;if(this.stageIndex<(minimum[name]||0))return 0;   /* v8.3.23 pattern ใหม่เปิดตั้งแต่ C2 / C3 */
     if(!(C1_COMBAT_PATTERNS[phase]||[]).includes(name))return 0;
     const identity=(C1_STAGE_PATTERN_WEIGHT[this.stageIndex]||{})[name]||1,heavy=C1_HEAVY_PATTERNS.includes(name);
     const field=fill>=C1_FIELD_FULL?(heavy?.15:1):fill<=C1_FIELD_EMPTY?(heavy?1.5:.8):1;
@@ -18836,9 +18888,9 @@ class Game extends Phaser.Scene {
     const P=this.player,angle=Math.random()*TAU,c=Math.cos(angle),s=Math.sin(angle);
     const r=Math.max(210,Math.min(330,this.W/(this.viewZoom||1)*.66));
     const [ox,oy]=[P.x,P.y];
-    const n=Math.min(room,pattern==='Last Stand'?7:pattern==='Loot Rush'?4:5);
+    const n=pattern==='Elite Duo'?2:Math.min(room,pattern==='Last Stand'?7:pattern==='Loot Rush'?4:pattern==='Splitters'?3:pattern==='Shrinking Arena'?6:5);
     const points=this.chapterCombatFormation(pattern,n,r),followers=[],routes=[];
-    let leader=null;
+    let leader=null;const duo=[];
     for(const p of points){
       const dx=p.x*c-p.y*s,dy=p.x*s+p.y*c;
       const point=this.chapterVisibleSpawn(Math.atan2(dy,dx),Math.hypot(dx,dy));
@@ -18849,8 +18901,12 @@ class Game extends Phaser.Scene {
       if(sit&&sit.def.goal==='pack')sit.marks.set(enemy,id);
       if(p.type==='elite'){
         this.spawnRise(enemy,point.x,point.y,true);
-        leader=enemy;
-      }else if(pattern==='Commander')followers.push({enemy,id,speed:enemy.spd});
+        if(pattern==='Elite Duo')duo.push({enemy,id});else leader=enemy;
+      }else if(pattern==='Commander'||(pattern==='Shield Carrier'&&p.type!=='tank'))followers.push({enemy,id,speed:enemy.spd});
+      if(pattern==='Shield Carrier'&&p.type==='tank'&&!leader){leader=enemy;enemy.hp*=1.4;enemy.maxhp=enemy.hp;}
+      if(pattern==='Splitters'){enemy._c1Split=id;enemy.hp*=1.2;enemy.maxhp=enemy.hp;}
+      if(pattern==='Spore Bloom')enemy._c1Spore=id;
+      if(pattern==='Sniper Nest'&&enemy.shooter){enemy.shootCd=1.4;enemy.spd*=.35;}
       if(pattern==='Stampede'){
         const [x,y]=inMapPt(ox-r*c-p.y*s,oy-r*s+p.y*c);
         const target={x,y};enemy._goTo=target;routes.push({enemy,id,target});
@@ -18861,7 +18917,10 @@ class Game extends Phaser.Scene {
         d.loot.set(enemy,id);
       }
     }
-    if(leader)d.command={leader,id:leader._c1SpawnId,followers};
+    if(leader)d.command={leader,id:leader._c1SpawnId,followers,shield:pattern==='Shield Carrier'};
+    if(duo.length===2)d.duo=duo;
+    if(pattern==='Sniper Nest')this.startChapterThornWall(d,angle,r);
+    if(pattern==='Shrinking Arena')this.startChapterArena(d);
     if(routes.length)d.route={left:5.8,entries:routes};
     if(pattern==='Hazard Shift')this.startChapterCombatHazard(d,angle,sit?.def?.hint);
     if(pattern==='Loot Rush'||pattern==='Last Stand')this.floatText?.(ox,oy-58,pattern,0xffd166);
@@ -18873,7 +18932,7 @@ class Game extends Phaser.Scene {
     d.route=null;
   }
   clearChapterCombatCommand(d){
-    for(const f of d.command?.followers||[])if(f.enemy._c1SpawnId===f.id)f.enemy.spd=f.speed;
+    for(const f of d.command?.followers||[])if(f.enemy._c1SpawnId===f.id){f.enemy.spd=f.speed;if(f.enemy._c1Dr){f.enemy._c1Dr=0;f.enemy.clearTint?.();}}
     d.command=null;
   }
   startChapterCombatHazard(d,angle,text){
@@ -18901,6 +18960,32 @@ class Game extends Phaser.Scene {
       }
     }
   }
+  /* ===== v8.3.23 เจ้าของ: Combat Situation แบบใหม่สำหรับ C2–C3 ===== */
+  chapterNewPatternKill(d,e){ if(!e)return; const P=this.player; if(!P)return;
+    if(e._c1Split&&e._c1Split===e._c1SpawnId){ e._c1Split=0; const S=d.sit&&d.sit.state==='active'&&d.sit.def.pattern==='Splitters'?d.sit:null;
+      for(const k of [-1,1]){ const x=e.x+k*26,y=e.y,ang=Math.atan2(y-P.y,x-P.x),dist=Math.max(70,Math.hypot(x-P.x,y-P.y)),c=this.spawnEnemy('fast',ang,dist,true); if(!c)continue; c.hp*=.55;c.maxhp=c.hp;c.setScale?.((c.scaleX||1)*.8); if(S)S.marks.set(c,c._c1SpawnId); }
+      this.vfxHitRing?.(e.x,e.y,0xc9a3ff,false); }
+    if(e._c1Spore&&e._c1Spore===e._c1SpawnId){ e._c1Spore=0; const L=d.spores||(d.spores=[]); if(L.length>=8)return; const g=this.camWorld(this.add.circle(e.x,e.y,16,0xb48cff,.55).setStrokeStyle(3,0xe0c8ff,.9).setDepth(-980)); L.push({x:e.x,y:e.y,t:2,g}); this.tweens?.add({targets:g,scale:{from:.6,to:1.6},duration:2000,ease:'Sine.in'}); } }
+  tickChapterNewPatterns(d,dt){ const P=this.player; if(!P)return;
+    if(d.spores){ for(const s of d.spores){ s.t-=dt; if(s.t>0)continue; s.done=true; s.g?.destroy?.(); this.vfxHitRing?.(s.x,s.y,0xb48cff,true); const pw=(10+this.stageIndex*2)*(P.dmgMul||1);
+        this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&this.dist(e.x,e.y,s.x,s.y)<80)this.damage(e,pw*3,e.x,e.y); });
+        if(this.dist(P.x,P.y,s.x,s.y)<62)this.hurtPlayer?.(3+this.stageIndex,s.x,s.y); }
+      d.spores=d.spores.filter(s=>!s.done); if(!d.spores.length)d.spores=null; }
+    if(d.duo){ const [a,b]=d.duo; const live=q=>q.enemy.active&&q.enemy._c1SpawnId===q.id; if(!live(a)||!live(b)){ for(const q of d.duo)if(live(q)){ q.enemy._c1Dr=0; q.enemy.clearTint?.(); } d.duo=null; }
+      else { const near=this.dist(a.enemy.x,a.enemy.y,b.enemy.x,b.enemy.y)<260; for(const q of d.duo){ q.enemy._c1Dr=near?.5:0; if(near)q.enemy.setTint?.(0xffd166); else q.enemy.clearTint?.(); } } }
+    if(d.wall){ const W=d.wall; W.left-=dt; W.cd-=dt; if(W.left<=0){ this.clearChapterThornWall(d); }
+      else if(W.cd<=0){ const t=Math.max(0,Math.min(1,((P.x-W.x1)*(W.x2-W.x1)+(P.y-W.y1)*(W.y2-W.y1))/W.len2)),qx=W.x1+(W.x2-W.x1)*t,qy=W.y1+(W.y2-W.y1)*t; if(Math.hypot(P.x-qx,P.y-qy)<22){ W.cd=.8; this.hurtPlayer?.(3+this.stageIndex,qx,qy); } } }
+    if(d.arena){ const A=d.arena; A.left-=dt; A.r=Math.max(A.rMin,A.r-(A.r0-A.rMin)/14*dt); A.g?.clear?.(); A.g?.lineStyle?.(6,0x9b5cff,.75)?.strokeCircle?.(A.x,A.y,A.r); A.g?.lineStyle?.(18,0x9b5cff,.14)?.strokeCircle?.(A.x,A.y,A.r+12);
+      A.cd-=dt; if(this.dist(P.x,P.y,A.x,A.y)>A.r&&A.cd<=0){ A.cd=1; this.hurtPlayer?.(4+this.stageIndex,P.x,P.y); this.floatText?.(P.x,P.y-50,'Back inside!',0xc9a3ff); }
+      const S=d.sit; if(A.left<=0||(S&&S.def.pattern==='Shrinking Arena'&&S.state!=='active'&&S.state!=='pending'))this.clearChapterArena(d); } }
+  startChapterThornWall(d,angle,r){ if(d.wall)return; const P=this.player,c=Math.cos(angle),s=Math.sin(angle),cx=P.x+c*(r+30),cy=P.y+s*(r+30),half=150,[x1,y1]=inMapPt(cx-s*half,cy+c*half),[x2,y2]=inMapPt(cx+s*half,cy-c*half);
+    const g=this.camWorld(this.add.graphics().setDepth(-985)); g.lineStyle(10,0x5b3a2a,.9).lineBetween(x1,y1,x2,y2); g.lineStyle(3,0x9fdc6a,.9).lineBetween(x1,y1,x2,y2);
+    for(let k=0;k<=12;k++){ const x=x1+(x2-x1)*k/12,y=y1+(y2-y1)*k/12; g.fillStyle(0x7a4a30,1).fillTriangle(x-6,y+4,x+6,y+4,x,y-12); }
+    d.wall={x1,y1,x2,y2,len2:Math.max(1,(x2-x1)**2+(y2-y1)**2),left:20,cd:0,g}; }
+  clearChapterThornWall(d){ d.wall?.g?.destroy?.(); d.wall=null; }
+  startChapterArena(d){ if(d.arena)return; const P=this.player,r0=Math.max(380,Math.min(460,this.W/(this.viewZoom||1)*.6)); d.arena={x:P.x,y:P.y,r0,r:r0,rMin:190,left:22,cd:1,g:this.camWorld(this.add.graphics().setDepth(-984))}; }
+  clearChapterArena(d){ d.arena?.g?.destroy?.(); d.arena=null; }
+  clearChapterNewPatterns(d){ for(const s of d.spores||[])s.g?.destroy?.(); d.spores=null; if(d.duo){ for(const q of d.duo)if(q.enemy.active){ q.enemy._c1Dr=0; q.enemy.clearTint?.(); } d.duo=null; } this.clearChapterThornWall(d); this.clearChapterArena(d); }
   clearChapterCombatHazard(d){
     for(const q of d.hazard?.circles||[])q.ring.destroy();
     d.hazard=null;
@@ -18966,6 +19051,7 @@ class Game extends Phaser.Scene {
   chapterCombatKill(enemy){
     const d=this._c1Combat;
     if(!d)return;
+    this.chapterNewPatternKill(d,enemy);   /* v8.3.23 Splitters / Spore Bloom */
     if(d.loot.has(enemy)){
       const id=d.loot.get(enemy);d.loot.delete(enemy);
       if(id===enemy._c1SpawnId)this.spawnSugarCoins(3,enemy);
@@ -18999,6 +19085,7 @@ class Game extends Phaser.Scene {
     this.clearChapterCombatRoute(d);
     this.clearChapterCombatCommand(d);
     this.clearChapterCombatHazard(d);
+    this.clearChapterNewPatterns(d);
     d.loot.clear();
   }
   tickA23Audio(){
@@ -24192,7 +24279,7 @@ class Game extends Phaser.Scene {
     if(b.dragon)this.infusionOnHit(e,d,'spicy');
     if(b.lastMul&&(b.bounce||0)===0&&b._bounced)d*=1+b.lastMul;
     return d; }
-  damage(e,amount,x,y,sesameOrbDamage){ if(!e.active)return;if(e._emergeUntil&&(this.time?.now||0)<e._emergeUntil)return;if(e._hhShell>0&&this.hhShellBlock?.(e))return;if(this.isSesRune?.())amount*=sesameOrbDamage??this.sesRuneStats().damage;const taroDirect=this.taroTakeDirect?.(e);
+  damage(e,amount,x,y,sesameOrbDamage){ if(!e.active)return;if(e._c1Dr)amount*=e._c1Dr;   /* v8.3.23 Shield Carrier / Elite Duo */if(e._emergeUntil&&(this.time?.now||0)<e._emergeUntil)return;if(e._hhShell>0&&this.hhShellBlock?.(e))return;if(this.isSesRune?.())amount*=sesameOrbDamage??this.sesRuneStats().damage;const taroDirect=this.taroTakeDirect?.(e);
     // Phase Gate: Lockedดาเมจทันทีที่ชนเส้นเลือด และInvincibleจนแอนิเมชันเปลี่ยนเฟสจบ
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;

@@ -10,6 +10,7 @@ on:
       - "game.js"
       - "src/**"
       - "index.html"
+      - "docs/MISSIONS_OVERVIEW.html"
       - "download.html"
       - "manifest.webmanifest"
       - "phaser.min.js"
