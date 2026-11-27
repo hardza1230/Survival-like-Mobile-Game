@@ -1266,7 +1266,7 @@
     return points;
   }
   /* v8.3.10 เจ้าของ: ภารกิจแทรกเฉพาะที่เคยเจอ (home ≤ ด่านนี้) · ของด่านนี้มาก่อน แล้วสุ่มที่เหลือ */
-  c1SideDeck(i){ if(i>=5&&typeof C2_SIDE_MISSIONS!=='undefined'){ const mk=m=>({...m,name:WAVE_OBJECTIVES[m.mission]?.name||m.mission,types:[]}),own=C2_SIDE_MISSIONS.filter(m=>m.home===i&&!m.generic).map(mk),rest=Phaser.Utils.Array.Shuffle(C2_SIDE_MISSIONS.filter(m=>m.home<=i&&!m.only&&!(m.home===i&&!m.generic)).map(mk)); return own.concat(rest).slice(0,2); }   /* v8.3.24 C2–C3 */
+  c1SideDeck(i){ if(i>=5&&typeof C2_SIDE_MISSIONS!=='undefined'){ const mk=m=>({...m,name:m.name||WAVE_OBJECTIVES[m.mission]?.name||m.mission,types:[]}),own=C2_SIDE_MISSIONS.filter(m=>m.home===i&&!m.generic).map(mk),rest=Phaser.Utils.Array.Shuffle(C2_SIDE_MISSIONS.filter(m=>m.home<=i&&!m.only&&!(m.home===i&&!m.generic)).map(mk)); return own.concat(rest).slice(0,2); }   /* v8.3.24 C2–C3 */
     return this.c1SideDeckC1(i); }
   c1SideDeckC1(i){const own=C1_SIDE_EVENTS.filter(e=>e.home===i),past=Phaser.Utils.Array.Shuffle(C1_SIDE_EVENTS.filter(e=>e.home<i));return own.concat(past).slice(0,2);}   /* v8.3.12 ของด่านนี้ 1 + ที่เคยเจอ 1 */
   /* v8.3.10 เจ้าของ: แจกไพ่ก่อนด่าน C1 แบบใหม่ = บอกเฉย ๆ ว่าแต่ละเวฟเจออะไร (ไม่มี Reroll) · ภารกิจแทรกโผล่ในเวฟ 2 และ 4 */
@@ -1456,13 +1456,65 @@
       }
     }
   }
+  /* ===== v8.3.27 เจ้าของ: Grandma’s Golem แบบ Metamorph ===== */
+  g2Inv(){ const d=Save.data; if(!Array.isArray(d.g2parts))d.g2parts=[]; return d.g2parts; }
+  g2OnKill(e){ const G=this._g2; if(!G||G.golem&&e===G.golem.e)return this.g2GolemDown(e); if(!G||e.isDummy)return; const si=this.stageIndex||0,rk=()=>G2_KINDS[Math.floor(Math.random()*G2_KINDS.length)].k;
+    if(e.isBoss){ for(let i=0;i<2;i++)this.g2Drop(e.x+(i?30:-30),e.y,G2_KINDS[si%5].k,3); } else if(e.isMini)this.g2Drop(e.x,e.y,rk(),2); else if(Math.random()<G2_DROP_MOB)this.g2Drop(e.x,e.y,rk(),1); }
+  g2Drop(x,y,k,t){ const G=this._g2; if(!G||G.picks.length>=10)return; const K=G2_KINDS.find(q=>q.k===k),col=t===3?0xffd166:t===2?0xc9a3ff:0xffffff,g=this.camWorld(this.add.circle(x,y,15,K.c,.35).setStrokeStyle(t>1?3:2,col,1).setDepth(y+2)),tx=this.camWorld(this.add.text(x,y,K.em,{fontSize:'16px'}).setOrigin(.5).setDepth(y+3));
+    this.tweens.add({targets:[g,tx],y:'-=6',duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); G.picks.push({x,y,k,t,g,tx,life:G2_PICK_LIFE}); }
+  g2Tick(dt){ const G=this._g2,P=this.player; if(!G||!P)return;
+    for(const q of G.picks){ q.life-=dt; if(this.dist(P.x,P.y,q.x,q.y)<G2_PICK_R){ q.got=true; const inv=this.g2Inv(); if(inv.length<G2_MAX_INV){ inv.push({k:q.k,t:q.t}); Save.save?.(); const K=G2_KINDS.find(z=>z.k===q.k); this.floatText?.(P.x,P.y-60,K.em+' '+G2_TIERS[q.t]+' '+K.name,q.t===3?0xffd166:0xe8dcff); Sfx.orderCue?.('lg_golem_part',.35,.15); } else this.floatText?.(P.x,P.y-60,'Golem bag full ('+G2_MAX_INV+')',0xcfc6dc); }
+      if(q.got||q.life<=0){ q.done=true; this.tweens.killTweensOf([q.g,q.tx]); q.g.destroy(); q.tx.destroy(); } }
+    G.picks=G.picks.filter(q=>!q.done);
+    const Q=G.golem; if(!Q)return; const e=Q.e; if(!e.active||e._g2Id!==Q.id){ G.golem=null; return; } const si=this.stageIndex||0,dm=Math.round(8+si*1.6);
+    for(const k of Q.kinds){ Q.cd[k]=(Q.cd[k]??2)-dt; if(Q.cd[k]>0)continue;
+      if(k==='acid'){ Q.cd[k]=3; const a0=Math.atan2(P.y-e.y,P.x-e.x); for(let i=-2;i<=2;i++)this.foeShot?.(e.x,e.y,a0+i*.18,240,dm,0x9dff45,.9); }
+      else if(k==='drain'){ Q.cd[k]=6; Q.pull=1.4; this.floatText?.(e.x,e.y-80,'🌀 Pull!',0x72e8d1); }
+      else if(k==='chili'){ Q.cd[k]=5; for(let i=0;i<3;i++){ const a=Math.random()*TAU; this.spawnHazard?.(P.x+Math.cos(a)*90,P.y+Math.sin(a)*90,56,dm+2,0xff8a5a); } }
+      else if(k==='frost'){ Q.cd[k]=4; const n=10,gap=Math.floor(Math.random()*n); for(let i=0;i<n;i++){ if(i===gap||i===(gap+1)%n)continue; const a=i*TAU/n; this.foeShot?.(e.x,e.y,a,200,dm,0x9fe0ff,.9); } }
+      else if(k==='oven'){ Q.cd[k]=5; this.spawnHazard?.(e.x,e.y,130,dm+4,0xd59cff); this.screenShake?.(90,.004); } }
+    if(Q.pull>0){ Q.pull-=dt; const a=Math.atan2(e.y-P.y,e.x-P.x); if(P.body&&!(this.dashTime>0)){ P.body.x+=Math.cos(a)*120*dt; P.body.y+=Math.sin(a)*120*dt; } }
+    Q.minT-=dt; if(Q.minT<=0){ Q.minT=6; let n=0; this.enemies.children.iterate(z=>{ if(z&&z.active&&z._g2Minion)n++; }); for(let i=0;i<2&&n<6;i++,n++){ const a=Math.random()*TAU,x=e.x+Math.cos(a)*70,y=e.y+Math.sin(a)*70,m=this.spawnEnemy(Q.minion,Math.atan2(y-P.y,x-P.x),Math.max(70,Math.hypot(x-P.x,y-P.y)),true); if(m){ m._g2Minion=true; m.setTint?.(Q.col); } } }
+    Q.lab?.setPosition(e.x,e.y-(e.displayHeight||80)*.7); }
+  g2OvenOpen(o){ const G=this._g2; if(!G||G.golem||G.popup)return; const inv=this.g2Inv(); if(!inv.length){ this.floatText?.(o.x,o.y-80,'Bring golem parts: monsters, minibosses and bosses drop them',0xffe08a); return; } if(!this.add?.container||!this.camUI)return;
+    G.popup=true; const W=this.W,H=this.H,prev=this.state,F='NunitoUI, sans-serif',L=this.camUI(this.add.container(0,0).setDepth(130)); L.setScrollFactor?.(1); this.physics?.pause?.(); this.state='cinematic';
+    L.add(this.add.rectangle(0,0,W,H,0x120a06,.78).setOrigin(0)); const pw=Math.min(W-24,380),ph=Math.min(H-120,470),px=(W-pw)/2,py=(H-ph)/2,bg=this.add.graphics(); bg.fillStyle(0x2a1a12,.98).fillRoundedRect(px,py,pw,ph,16).lineStyle(3,0xf2b06b,1).strokeRoundedRect(px,py,pw,ph,16); L.add(bg);
+    const T=(x,y,s,sz,col,o2)=>{ const t=this.add.text(x,y,s,{fontFamily:F,fontStyle:'bold',fontSize:sz+'px',color:col,align:'center',wordWrap:{width:pw-24}}).setOrigin(.5,o2??.5); L.add(t); return t; };
+    T(W/2,py+24,'🗿 Grandma’s Oven',18,'#ffe08a'); T(W/2,py+48,'Tap parts to fill 3 slots · most parts decide the monsters · every kind adds a boss skill',11,'#e8d8c8',0);
+    const slots=[],slotY=py+118,sw=70; const sel=[]; const counts=()=>{ const m={}; for(const p of inv){ const id=p.k+p.t; m[id]=(m[id]||0)+1; } for(const p of sel){ const id=p.k+p.t; m[id]--; } return m; };
+    for(let i=0;i<G2_SLOTS;i++){ const x=W/2+(i-1)*(sw+12),g=this.add.graphics(); g.fillStyle(0x140c08,1).fillRoundedRect(x-sw/2,slotY-sw/2,sw,sw,12).lineStyle(2,0xf2b06b,.8).strokeRoundedRect(x-sw/2,slotY-sw/2,sw,sw,12); L.add(g); const t=T(x,slotY,'+',26,'#8a6a50'); slots.push({x,y:slotY,t}); }
+    const info=T(W/2,slotY+58,'',11,'#ffd9a8',0); const chips=[]; let chipObjs=[];
+    const redraw=()=>{ slots.forEach((s,i)=>{ const p=sel[i],K=p&&G2_KINDS.find(z=>z.k===p.k); s.t.setText(K?K.em+'\n'+G2_TIERS[p.t]:'+').setFontSize(K?16:26).setColor(K?(p.t===3?'#ffd166':p.t===2?'#e0c8ff':'#ffffff'):'#8a6a50'); });
+      const pts=sel.reduce((a,p)=>a+p.t,0),mk={}; sel.forEach(p=>mk[p.k]=(mk[p.k]||0)+1); const top=Object.keys(mk).sort((a,b)=>mk[b]-mk[a])[0],K=top&&G2_KINDS.find(z=>z.k===top);
+      info.setText(sel.length?'Monsters: '+K.minion+' · Skills: '+[...new Set(sel.map(p=>G2_KINDS.find(z=>z.k===p.k).skill))].join(', ')+' · Power '+pts:'Empty oven');
+      for(const o of chipObjs)o.destroy(); chipObjs=[]; chips.length=0; const m=counts(),ids=Object.keys(m).filter(id=>m[id]>0); ids.forEach((id,j)=>{ const k=id.slice(0,-1),t=+id.slice(-1),K=G2_KINDS.find(z=>z.k===k),cols=4,cw=(pw-36)/cols,x=px+18+cw*(j%cols)+cw/2,y=py+232+Math.floor(j/cols)*64,g=this.add.graphics();
+        g.fillStyle(0x3a2618,1).fillRoundedRect(x-cw/2+4,y-26,cw-8,52,10).lineStyle(2,t===3?0xffd166:t===2?0xc9a3ff:0x8a6a50,1).strokeRoundedRect(x-cw/2+4,y-26,cw-8,52,10); const tx=this.add.text(x,y-6,K.em,{fontSize:'20px'}).setOrigin(.5),cn=this.add.text(x,y+15,G2_TIERS[t]+' ×'+m[id],{fontFamily:F,fontSize:'9.5px',color:'#ffe8d0'}).setOrigin(.5); L.add([g,tx,cn]); chipObjs.push(g,tx,cn); chips.push({x,y,w:cw-8,h:52,k,t}); }); };
+    const btn=(x,y,w,label,col)=>{ const g=this.add.graphics(); g.fillStyle(col,1).fillRoundedRect(x-w/2,y-20,w,40,12); L.add(g); T(x,y,label,14,'#ffffff'); return {x,y,w,h:40}; };
+    const bake=btn(W/2+70,py+ph-36,120,'🔥 Bake',0xc25a2a),later=btn(W/2-70,py+ph-36,110,'Later',0x5a4b75); redraw();
+    const close=()=>{ this.input?.off?.('pointerdown',onTap); L.destroy(); if(this.state==='cinematic')this.state=prev==='cinematic'?'play':prev; this.physics?.resume?.(); G.popup=false; };
+    const inside=(b,x,y)=>Math.abs(x-b.x)<=b.w/2&&Math.abs(y-b.y)<=(b.h||40)/2; const t0=this.time?.now||0;
+    const onTap=p0=>{ if(!p0||(this.time?.now||0)-t0<300)return; const k=(typeof RENDER_DPR!=='undefined'&&RENDER_DPR)||1,x=p0.x/k,y=p0.y/k;
+      if(inside(later,x,y)){ close(); return; }
+      if(inside(bake,x,y)){ if(!sel.length)return; for(const p of sel){ const i=inv.findIndex(q=>q.k===p.k&&q.t===p.t); if(i>=0)inv.splice(i,1); } Save.save?.(); close(); this.g2SpawnGolem(o,sel.slice()); return; }
+      for(let i=0;i<slots.length;i++)if(sel[i]&&Math.abs(x-slots[i].x)<=sw/2&&Math.abs(y-slots[i].y)<=sw/2){ sel.splice(i,1); redraw(); return; }
+      for(const c of chips)if(inside(c,x,y)&&sel.length<G2_SLOTS){ sel.push({k:c.k,t:c.t}); Sfx.select?.(); redraw(); return; } };
+    this.input?.on?.('pointerdown',onTap); }
+  g2SpawnGolem(o,sel){ const G=this._g2,P=this.player; if(!G||!P)return; const ang=Math.atan2(o.y-P.y,o.x-P.x),dist=Math.max(90,Math.hypot(o.x-P.x,o.y-P.y)),e=this.spawnEnemy('tank',ang,dist,true); if(!e){ this.floatText?.(o.x,o.y-80,'The oven is busy — try again',0xffe08a); for(const p of sel)this.g2Inv().push(p); return; }
+    const pts=sel.reduce((a,p)=>a+p.t,0),mk={}; sel.forEach(p=>mk[p.k]=(mk[p.k]||0)+1); const top=Object.keys(mk).sort((a,b)=>mk[b]-mk[a])[0],K=G2_KINDS.find(z=>z.k===top),kinds=[...new Set(sel.map(p=>p.k))];
+    e.maxhp=Math.round((e.maxhp||100)*(4+pts*1.2)); e.hp=e.maxhp; e.setScale?.((e.scaleX||1)*1.8); e.setTint?.(K.c); e.tintColor=K.c; this.artFollow?.(e,'gg_golem',160+pts*8); e._g2Id=(this._g2Seq=(this._g2Seq||0)+1);
+    const lab=this.camWorld(this.add.text(e.x,e.y-80,'🗿 Golem · '+kinds.map(k=>G2_KINDS.find(z=>z.k===k).em).join(''),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a',stroke:'#1a0f08',strokeThickness:3}).setOrigin(.5).setDepth(90020));
+    G.golem={e,id:e._g2Id,kinds,cd:{},minion:K.minion,col:K.c,minT:4,pts,lab,obj:o}; o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[];
+    this.vfxHitRing?.(o.x,o.y,0xf2b06b,true); this.screenShake?.(160,.008); Sfx.bossWarn?.(); this.showBanner?.('🗿 Grandma’s Golem','Baked with '+sel.length+' part'+(sel.length>1?'s':'')+' · '+kinds.map(k=>G2_KINDS.find(z=>z.k===k).skill).join(' · '),2200); }
+  g2GolemDown(e){ const G=this._g2,Q=G&&G.golem; if(!Q||e!==Q.e||e._g2Id!==Q.id)return; G.golem=null; Q.lab?.destroy?.(); const si=this.stageIndex||0,su=Math.round((10+si*3)*Q.pts); this.spawnSugarCoins?.(su,e); this.floatText?.(e.x,e.y-70,'🗿 Golem down · Sugar +'+su,0xffd166); this.screenFlash?.(0xffe08a,.22,240);
+    if(Q.pts>=6&&this.spawnLoot){ this._lootMinRare=true; try{ const g=this.spawnLoot(e.x,e.y,Q.pts>=8?3:2); if(g)this.lootHold?.(g,1600); }finally{ this._lootMinRare=false; } } }
+  g2Clear(){ const G=this._g2; if(!G)return; for(const q of G.picks||[]){ this.tweens?.killTweensOf?.([q.g,q.tx]); q.g?.destroy?.(); q.tx?.destroy?.(); } G.golem?.lab?.destroy?.(); this._g2=null; }
   /* ===== v8.3.23 เจ้าของ: Combat Situation แบบใหม่สำหรับ C2–C3 ===== */
-  chapterNewPatternKill(d,e){ if(!e)return; const P=this.player; if(!P)return;
+  chapterNewPatternKill(d,e){ if(!e)return; const P=this.player; if(!P)return; this.g2OnKill(e);
     if(e._c1Split&&e._c1Split===e._c1SpawnId){ e._c1Split=0; const S=d.sit&&d.sit.state==='active'&&d.sit.def.pattern==='Splitters'?d.sit:null;
       for(const k of [-1,1]){ const x=e.x+k*26,y=e.y,ang=Math.atan2(y-P.y,x-P.x),dist=Math.max(70,Math.hypot(x-P.x,y-P.y)),c=this.spawnEnemy('fast',ang,dist,true); if(!c)continue; c.hp*=.55;c.maxhp=c.hp;c.setScale?.((c.scaleX||1)*.8); if(S)S.marks.set(c,c._c1SpawnId); }
       this.vfxHitRing?.(e.x,e.y,0xc9a3ff,false); }
     if(e._c1Spore&&e._c1Spore===e._c1SpawnId){ e._c1Spore=0; const L=d.spores||(d.spores=[]); if(L.length>=8)return; const g=this.camWorld(this.add.circle(e.x,e.y,16,0xb48cff,.55).setStrokeStyle(3,0xe0c8ff,.9).setDepth(-980)); L.push({x:e.x,y:e.y,t:2,g}); this.tweens?.add({targets:g,scale:{from:.6,to:1.6},duration:2000,ease:'Sine.in'}); } }
-  tickChapterNewPatterns(d,dt){ const P=this.player; if(!P)return;
+  tickChapterNewPatterns(d,dt){ const P=this.player; if(!P)return; this.g2Tick(dt);
     if(d.spores){ for(const s of d.spores){ s.t-=dt; if(s.t>0)continue; s.done=true; s.g?.destroy?.(); this.vfxHitRing?.(s.x,s.y,0xb48cff,true); const pw=(10+this.stageIndex*2)*(P.dmgMul||1);
         this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&this.dist(e.x,e.y,s.x,s.y)<80)this.damage(e,pw*3,e.x,e.y); });
         if(this.dist(P.x,P.y,s.x,s.y)<62)this.hurtPlayer?.(3+this.stageIndex,s.x,s.y); }
@@ -1481,7 +1533,7 @@
   clearChapterThornWall(d){ d.wall?.g?.destroy?.(); d.wall=null; }
   startChapterArena(d){ if(d.arena)return; const P=this.player,r0=Math.max(380,Math.min(460,this.W/(this.viewZoom||1)*.6)); d.arena={x:P.x,y:P.y,r0,r:r0,rMin:190,left:22,cd:1,g:this.camWorld(this.add.graphics().setDepth(-984))}; }
   clearChapterArena(d){ d.arena?.g?.destroy?.(); d.arena=null; }
-  clearChapterNewPatterns(d){ for(const s of d.spores||[])s.g?.destroy?.(); d.spores=null; if(d.duo){ for(const q of d.duo)if(q.enemy.active){ q.enemy._c1Dr=0; q.enemy.clearTint?.(); } d.duo=null; } this.clearChapterThornWall(d); this.clearChapterArena(d); }
+  clearChapterNewPatterns(d){ if(this._g2&&d===this._c1Combat&&!d.objects)this.g2Clear(); for(const s of d.spores||[])s.g?.destroy?.(); d.spores=null; if(d.duo){ for(const q of d.duo)if(q.enemy.active){ q.enemy._c1Dr=0; q.enemy.clearTint?.(); } d.duo=null; } this.clearChapterThornWall(d); this.clearChapterArena(d); }
   clearChapterCombatHazard(d){
     for(const q of d.hazard?.circles||[])q.ring.destroy();
     d.hazard=null;
@@ -1492,17 +1544,19 @@
     list.forEach((def,k)=>{const {x,y}=this.objectivePosition(k,list.length,300,520),visuals=[];
       const art=this.artSpr?.(def.key,x,y+22,72,0,{sig:false,depth:y+3});   /* v8.3.19 เจ้าของ: เอาวงกลมสีออก · ไม่ต้องแตะ เดินไปเหยียบวัตถุ = เริ่ม */
       visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
-      d.objects.push({def,x,y,visuals,done:false});});
+      d.objects.push({def,x,y,visuals,done:false}); if(def.g2){ this._g2={x,y,obj:d.objects[d.objects.length-1],picks:[],golem:null}; } });
   }
-  chapterSideObjectStart(d,o){ if(o.def.mission){ if(this._stack)return; if(!this.stackStart?.(o.def.mission))return; o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
+  chapterSideObjectStart(d,o){ if(o.def.g2){ this.g2OvenOpen(o); return; }   /* v8.3.27 */
+    if(o.def.mission){ if(this._stack)return; if(!this.stackStart?.(o.def.mission))return; o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
     o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
   tickChapterSideObjects(d){
     if(!d.objects)this.placeChapterSideObjects(d);
     const P=this.player;if(!P)return;
+    for(const o of d.objects){ if(o.done||!o.def.g2)continue; const near=this.dist(P.x,P.y,o.x,o.y)<60; if(near&&!o._in){ o._in=true; this.chapterSideObjectStart(d,o); return; } if(!near)o._in=false; }
     if(this._stack)return;   /* v8.3.24 ทำได้ทีละอัน */
-    for(const o of d.objects){if(o.done)continue;if(this.dist(P.x,P.y,o.x,o.y)<60){this.chapterSideObjectStart(d,o);return;}}
+    for(const o of d.objects){if(o.done||o.def.g2)continue;if(this.dist(P.x,P.y,o.x,o.y)<60){this.chapterSideObjectStart(d,o);return;}}
   }
-  clearChapterSideObjects(d){for(const o of d?.objects||[])for(const v of o.visuals)v.destroy();if(d)d.objects=null;if(this._c1SideTap){this.input?.off?.('pointerdown',this._c1SideTap);this._c1SideTap=null;}}
+  clearChapterSideObjects(d){ this.g2Clear?.();for(const o of d?.objects||[])for(const v of o.visuals)v.destroy();if(d)d.objects=null;if(this._c1SideTap){this.input?.off?.('pointerdown',this._c1SideTap);this._c1SideTap=null;}}
   startChapterSideEvent(d,def,pos){
     const {x,y}=pos||this.objectivePosition(0,1,95,132),active=d.event={
       def,x,y,left:20,hold:0,spawned:0,spawnDelay:.25,progress:0,targets:new Map(),visuals:[]

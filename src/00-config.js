@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.26';
+const GAME_VERSION = '8.3.27';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -101,12 +101,18 @@ const C1_SIDE_EVENTS=[
   {name:'Hunger’s Mouth',home:1,key:'hm_hand',icon:'✦',color:0xbc89ff,types:['fast','fast','dasher'],reward:24},
   {name:'Grandma’s Pot',home:2,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26},
   {name:'Frozen Pantry',home:3,key:'fp_jar',icon:'❄',color:0x9fe0ff,types:['tank','basic','basic'],reward:28},
-  {name:'Grandma’s Golem',home:4,key:'gg_oven',icon:'🗿',color:0xf2b06b,types:['tank','tank','fast'],reward:30}
+  {name:'Grandma’s Golem',home:4,key:'gg_oven',icon:'🗿',color:0xf2b06b,types:['tank','tank','fast'],reward:30,g2:true}   // v8.3.27 = เตาโกเลมแบบใหม่ (Metamorph)
 ];
 /* v8.3.24 เจ้าของ: ภารกิจรอง C2–C3 = ภารกิจเต็มเดิม เดินไปเหยียบวัตถุ = เริ่ม (ระบบ side mission) · home = ด่านที่เจอครั้งแรก · generic = สุ่มได้ทุกด่านหลังจากนั้น
    Escort the Wisp = ภารกิจเฉพาะด่าน C2-1 (มีวัตถุในด่านนี้เท่านั้น) */
 const C1_POT_R=95;   // v8.3.25 เจ้าของ: วง Grandma’s Pot ใหญ่ขึ้น (เดิม 58)
+/* v8.3.27 เจ้าของ: Grandma’s Golem แบบ Metamorph · ชิ้นส่วน 5 ชนิด (จากบอส C1) × 3 ระดับ · ตกพื้น ไม่ดูดเข้าตัว · เก็บข้ามด่าน (สูงสุด 12)
+   ดรอป: มอน 3% ชิ้นธรรมดา · มินิบอส ชิ้นหายาก 1 · บอส ชิ้นระดับสูง 2 (ชนิดของบอสด่านนั้น) · เตา: popup ใส่ 3 ช่อง → อบ
+   ชนิดที่ใส่มากสุด = Monster ลูกน้อง (ยิง/เร็ว/พุ่ง/ถึก/ฝูง) · ทุกชนิดที่ใส่ = สกิลบอสของ Golem */
+const G2_KINDS=[{k:'acid',em:'🧪',name:'Acid Gland',boss:'Sour Ant Queen',skill:'spits acid volleys',minion:'shooter',c:0x9dff45},{k:'drain',em:'🌀',name:'Drain Core',boss:'Drain King',skill:'pulls you in',minion:'fast',c:0x72e8d1},{k:'chili',em:'🌶️',name:'Chili Heart',boss:'Chili Engine',skill:'leaves fire pools',minion:'dasher',c:0xff8a5a},{k:'frost',em:'❄️',name:'Frost Shard',boss:'Frost Warden',skill:'fires ice rings',minion:'tank',c:0x9fe0ff},{k:'oven',em:'🔥',name:'Oven Brick',boss:'Crown Oven',skill:'slams the ground',minion:'basic',c:0xd59cff}];
+const G2_TIERS=['','Common','Rare','Epic'],G2_DROP_MOB=.03,G2_SLOTS=3,G2_MAX_INV=12,G2_PICK_R=40,G2_PICK_LIFE=30;
 const C2_SIDE_MISSIONS=[
+  {g2:true,home:5,generic:true,mission:'',key:'gg_oven',icon:'🗿',color:0xf2b06b,name:'Grandma’s Golem'},
   {mission:'vaultAltar',home:13,only:true,key:'',icon:'🗝️',color:0xff8fb0},
   {mission:'purge',home:5,only:true,key:'',icon:'🕯️',color:0xffe08a},
   {mission:'hunt',home:5,generic:true,key:'',icon:'🎯',color:0xff8a5a},

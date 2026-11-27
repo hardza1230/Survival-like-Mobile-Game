@@ -21,8 +21,8 @@ deck=g.c1SideDeck(3);assert.equal(deck.length,2);assert.equal(deck[0].home,3);as
 for(let i=0;i<5;i++)for(const e of g.c1SideDeck(i))assert(e.home<=i,'only events met before');
 // v8.3.24 C2–C3 side objects start full missions; Escort only in C2-1
 if(typeof ctx.C2_SIDE_MISSIONS!=='undefined'||/C2_SIDE_MISSIONS/.test(consts)){ ctx.WAVE_OBJECTIVES=ctx.WAVE_OBJECTIVES||{};
-  let d5=g.c1SideDeck(5);assert.equal(d5[0].mission,'purge');assert.equal(d5.length,2);assert(['hunt','capture'].includes(d5[1].mission));
-  for(let i=6;i<15;i++){const dk=g.c1SideDeck(i);assert(dk.every(m=>m.mission&&m.mission!=='purge'),'Escort only in C2-1');}
+  let d5=g.c1SideDeck(5);assert.equal(d5[0].mission,'purge');assert.equal(d5.length,2);assert(['hunt','capture'].includes(d5[1].mission)||d5[1].g2);
+  for(let i=6;i<15;i++){const dk=g.c1SideDeck(i);assert(dk.every(m=>(m.mission||m.g2)&&m.mission!=='purge'),'Escort only in C2-1');}
   assert.equal(g.c1SideDeck(6)[0].mission,'cleanAir');assert.equal(g.c1SideDeck(7)[0].mission,'creepingRoots');assert.equal(g.c1SideDeck(11)[0].mission,'shakeTrees'); }
 // situation per wave, none on the miniboss wave
 assert.equal(g.c1SituationFor(0).name,'Tunnel Ambush');assert.equal(g.c1SituationFor(2),null);assert.equal(g.c1SituationFor(4).name,'Colony Swarm');
@@ -54,3 +54,10 @@ console.log('C1 situations: 5×4 combat situations, side objects (own + met), di
   A.ok(/const SEASON_ENV_FROM=9,SEASON_ENV_CHANCE=1,SEASON_ENV_EVERY=10;/.test(src)&&src.includes('  seasonEnvPick(i){')&&src.includes('this.seasonEnvPick?.(i);'),'season environment picked per continuous stage');
   A.ok(src.includes("if(S.def.pattern==='Root Lure'){ const K=!this._stack&&this.stackStart?.('breakRoots');"),'Root Lure starts Lure the Crown Root');
   A.equal((src.match(/pattern:'Root Lure'/g)||[]).length,4,'Root Lure in 4 stages from C2-5'); }
+// v8.3.27 Grandma's Golem (Metamorph)
+{ const src=require('fs').readFileSync('game.js','utf8'),A=require('assert');
+  A.ok(/G2_DROP_MOB=\.03,G2_SLOTS=3,G2_MAX_INV=12/.test(src),'approved defaults: 3% mob drop, 3 slots, bag 12');
+  A.ok(src.includes("if(e.isBoss){ for(let i=0;i<2;i++)this.g2Drop(")&&src.includes("else if(e.isMini)this.g2Drop(e.x,e.y,rk(),2);"),'boss drops 2 epic, miniboss 1 rare');
+  A.ok(src.includes('if(this.dist(P.x,P.y,q.x,q.y)<G2_PICK_R)')&&!/g2[^\n]*magnet/i.test(src),'parts stay on the ground until walked over');
+  A.ok(src.includes('  g2OvenOpen(o){')&&src.includes('  g2SpawnGolem(o,sel){')&&src.includes("{name:'Grandma’s Golem',home:4,key:'gg_oven',icon:'🗿',color:0xf2b06b,types:['tank','tank','fast'],reward:30,g2:true}"),'C1-5 oven opens the new golem popup');
+  A.ok(src.includes("{g2:true,home:5,generic:true"),'golem oven can appear as a C2–C3 side object'); }
