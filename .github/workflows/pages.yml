@@ -14,6 +14,7 @@ on:
       - "docs/HEROES_OVERVIEW.html"
       - "docs/ITEMS_OVERVIEW.html"
       - "docs/GARDEN_IDEAS.html"
+      - "docs/PLANS_GEAR_GARDEN.html"
       - "download.html"
       - "manifest.webmanifest"
       - "phaser.min.js"

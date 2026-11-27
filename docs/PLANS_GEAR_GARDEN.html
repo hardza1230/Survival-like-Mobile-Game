@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>แผน Gear และ Garden</title>
+<style>
+:root{--bg:#f7f3f8;--card:#fff;--ink:#2a2233;--mute:#6f6479;--line:#e6dcea;--a:#c8406f;--t1:#2f9a66;--t2:#c98a12;--t3:#8a4fd6;--c1:#2b7bd6;--chip:#f1e9f5;--keep:#2f9a66;--cut:#c43b3b;--move:#c98a12;--new:#2b7bd6;}
+@media (prefers-color-scheme:dark){:root{--bg:#17121c;--card:#231b2b;--ink:#efe6f5;--mute:#a99db6;--line:#3a2f45;--a:#ff8fb1;--t1:#6fdc9e;--t2:#ffcf5a;--t3:#c9a3ff;--c1:#8fc7ff;--chip:#2e2438;--keep:#6fdc9e;--cut:#ff7a7a;--move:#ffcf5a;--new:#8fc7ff;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:24px;margin:4px 0 2px}
+.sub{color:var(--mute);font-size:13px;margin-bottom:12px}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px}
+nav a{font-size:13px;padding:5px 10px;border-radius:999px;background:var(--chip);color:var(--ink);text-decoration:none;border:1px solid var(--line)}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 8px;margin:14px 0}
+section h2{font-size:18px;margin:2px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lead{color:var(--mute);font-size:13.5px;margin:0 0 10px}
+.tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.t1{background:var(--t1)}.t2{background:var(--t2)}.t3{background:var(--t3)}.c1{background:var(--c1)}.ax{background:var(--a)}
+.m{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0;background:var(--bg)}
+.m h3{font-size:15.5px;margin:0 0 4px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.poe{font-size:12px;font-weight:600;color:var(--a)}
+.st{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.keep{color:var(--keep)}.cut{color:var(--cut)}.move{color:var(--move)}.new{color:var(--new)}
+ol{margin:6px 0 6px 20px;padding:0}li{margin:2px 0}
+.plan{margin-top:6px;font-size:13.5px;border-left:3px solid var(--move);padding:4px 10px;background:var(--chip);border-radius:0 8px 8px 0}
+.plan.cut{border-color:var(--cut)}.plan.new{border-color:var(--new)}.plan.keep{border-color:var(--keep)}
+.plan b{color:var(--ink)}
+.note{font-size:12.5px;color:var(--mute);margin:8px 0}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:7px 8px;border-top:1px solid var(--line)}
+th{font-size:12px;color:var(--mute);font-weight:600;border-top:none}
+.log li{margin:4px 0}
+.good{border-left:3px solid var(--keep);padding:4px 10px;background:var(--chip);border-radius:0 8px 8px 0;font-size:13.5px;margin:6px 0}
+.badx{border-left:3px solid var(--cut);padding:4px 10px;background:var(--chip);border-radius:0 8px 8px 0;font-size:13.5px;margin:6px 0}
+</style>
+</head>
+<body><main>
+<h1>แผนรอบใหม่: Gear แบบ Archero 2 + Mochi Garden</h1>
+<div class="sub">ร่าง 27 พ.ย. 2026 · ตัวเลขทั้งหมดเป็นข้อเสนอ รอเจ้าของอนุมัติก่อนลงมือ</div>
+<nav><a href="#forge">⚒️ Gear / Forge</a><a href="#garden">🌸 Mochi Garden</a><a href="#order">ลำดับงาน</a></nav>
+<section id="forge"><h2>⚒️ Gear แบบ Archero 2 (แทนการคราฟ Forge)</h2>
+<p class="lead">หลักคิด: ไอเทมดรอปมาพร้อม Mod ครบตามระดับ · ผู้เล่นไม่ต้องเพิ่ม/ลบ/สุ่ม Mod เอง · ทำได้แค่ 2 อย่าง: <b>อัปเลเวล</b> และ <b>รวมของ 3 ชิ้น</b></p>
+<div class="m"><h3>1. ไอเทมดรอป</h3><ol>
+<li>จำนวน Mod ตามระดับเหมือนเดิม: Common 1 · Rare 2 · Epic 3 · Legend 3 · Mythic 4 · Ancient 5 · Divine 6</li>
+<li>tier ของ Mod ตาม Item Level ของด่าน (ด่านลึก = Mod ดีกว่า เหมือนเดิม)</li></ol></div>
+<div class="m"><h3>2. อัปเลเวล (แทนตีบวก)</h3>
+<div class="wrap"><table><tr><th>หัวข้อ</th><th>เดิม</th><th>ใหม่ (เสนอ)</th></tr><tr><td>ค่าใช้จ่าย</td><td>🧶 Thread</td><td>🍬 Sugar + 🟢 Twist Cream</td></tr><tr><td>โอกาสล้ม</td><td>+4 ขึ้นไปมีโอกาสลดขั้น</td><td><b>ไม่มีล้ม</b> สำเร็จทุกครั้ง</td></tr><tr><td>เลเวลสูงสุด</td><td>1/3/6/10 ตาม Item Level</td><td>ตามระดับ: Common 10 · Rare 15 · Epic 20 · Legend 25 · Mythic+ 30</td></tr><tr><td>ผลต่อเลเวล</td><td>ค่าหลักของไอเทม</td><td>ค่าหลัก <b>และค่า Mod ทุกแถว</b> +4% ต่อเลเวล (+10 = +40%)</td></tr><tr><td>ราคาเลเวล L→L+1</td><td>-</td><td>Sugar 40×(L+1) · Twist Cream 1 + ⌊L/3⌋ (เช่น +1 = 40🍬 1🟢 · +10 = 400🍬 4🟢 · +20 = 800🍬 7🟢)</td></tr></table></div></div>
+<div class="m"><h3>3. รวมของ (มีอยู่แล้ว ปรับให้ง่าย)</h3><ol>
+<li>ของช่องเดียวกัน ระดับเดียวกัน 3 ชิ้น → ระดับถัดไป (เหมือนเดิม)</li>
+<li><b>ได้ Mod แถวใหม่ 1 แถวสุ่มให้อัตโนมัติ</b> (เดิมต้องเลือกย้ายจากของที่ใช้รวม) · เลเวลอัปเกรดเก็บค่าสูงสุดไว้</li>
+<li>ปุ่ม "รวมอัตโนมัติ" รวมของซ้ำที่ไม่ได้สวม/ไม่ได้ล็อกทีเดียว</li></ol></div>
+<div class="m"><h3>4. ของเดิม / สกุลเงิน</h3><ol>
+<li>หน้า Affix Forge (เพิ่ม/ลบ/อัป Mod) ปิด · Mod ที่คราฟไว้แล้วในเซฟอยู่ครบ</li>
+<li>⭐ Star Sugar 1 → 🟢 Twist Cream 5 · 🖋️ Recipe Ink 1 → 🟢 Twist Cream 3 (แปลงอัตโนมัติครั้งเดียว · รางวัลภารกิจที่เคยให้สองสกุลนี้จะให้ Twist Cream แทนตามอัตรานี้)</li>
+<li>🧶 Thread ที่มีอยู่: ใช้ต่อกับระบบอื่น (Weave/Talent) · ตีบวกไม่ใช้แล้ว</li>
+<li>เลเวลตีบวกเดิมของไอเทม = เลเวลอัปเกรดใหม่ (ไม่หาย)</li></ol></div>
+<div class="good"><b>ได้</b><ul><li>เข้าใจทันที: ของดี → อัป → รวม</li><li>ไม่มีความเสี่ยงล้ม · ไม่ต้องอ่าน Mod 36 แบบ</li><li>Sugar มีที่ใช้ต่อเนื่อง</li></ul></div>
+<div class="badx"><b>เสีย / ความเสี่ยง</b><ul><li>เลือก Mod เองไม่ได้ → บิลด์เฉพาะทางทำได้ยากขึ้น (ต้องรอดรอป)</li><li>กระทบเซฟ สกุลเงิน หน้าอุปกรณ์ บทสอน และภารกิจรางวัล → งาน 2–3 รอบ ต้อง QA มือถือละเอียด</li><li>ค่าพลังเปลี่ยน (+4%/เลเวลกับ Mod) อาจต้องจูนบาลานซ์หลังลอง</li></ul></div></section><section id="garden"><h2>🌸 Mochi Garden (E+B) แทน Expedition</h2>
+<p class="lead">ส่งทีมฮีโร่เดินเก็บของในสวนตามเวลาจริง (ออฟไลน์ก็เดิน) · โมจิที่ช่วยไว้จากด่าน Story = ผู้ช่วยในสวน · เปิดที่เดิมของ Expedition (หลังผ่าน C1-5 · Activities)</p>
+<div class="m"><h3>Core loop</h3><ol>
+<li>เลือกเขตสวน → เลือกฮีโร่ 1–3 ตัว → เลือกเวลา 1 / 4 / 8 ชม.</li>
+<li>ระหว่างรอ: เปิดดูได้ เห็นทีมเดินในฉาก (อาร์ต Patrol) ตีมอนโมจิแตก ของเด้ง · ปิดแอปก็เดินต่อ</li>
+<li>ครบเวลา → จุดแดง → แตะเก็บ: Sugar · Twist Cream · กล่อง Gear (สุ่ม) · โปสการ์ดเรื่องสั้น (สุ่ม)</li>
+<li>ใช้ Sugar อัป "แคมป์" ของเขต → รางวัลมากขึ้น</li></ol></div>
+<div class="m"><h3>เขตสวน (ใช้ฉาก Patrol ใบ 70)</h3>
+<div class="wrap"><table><tr><th>เขต</th><th>เปิดเมื่อ</th><th>รางวัล/ชม. (เสนอ)</th></tr><tr><td>🍓 Pantry Path (ฉาก C1)</td><td>ผ่าน C1-5</td><td>Sugar 60 · Twist Cream 0.5</td></tr><tr><td>🌺 Ferment Garden (ฉาก C2)</td><td>ผ่าน C2-5</td><td>Sugar 100 · Twist Cream 1</td></tr><tr><td>🌟 Seed Grove (ฉาก C3)</td><td>ผ่าน C3-5</td><td>Sugar 150 · Twist Cream 1.5</td></tr></table></div>
+<p class="note">กล่อง Gear: 8% ต่อชั่วโมง (ระดับตามบทของเขต) · โปสการ์ด: 15% ต่อชั่วโมง · ทริป 8 ชม. +10% ทั้งหมด · ฮีโร่ในทีม +15% ต่อตัว (3 ตัว = +30%) · ฮีโร่ที่ไปสวนยังเล่นด่านได้ตามปกติ</p></div>
+<div class="m"><h3>ผู้ช่วยโมจิ (B)</h3><ol>
+<li>ผ่านด่าน Story 1 ด่าน = ช่วยโมจิ 1 ตัว (15 ตัว) · แต่ละตัวมีความถนัด: Sugar +5% / Twist Cream +5% / โอกาสกล่อง +2% / โปสการ์ด +5%</li>
+<li>วางผู้ช่วยในเขตได้ 2 ช่อง/เขต · ผู้ช่วยได้ EXP จากเวลาทริป · เลเวล 1–5 (โบนัส ×เลเวล)</li></ol></div>
+<div class="m"><h3>แคมป์ (อัปด้วย Sugar)</h3><div class="wrap"><table><tr><th>เลเวล</th><th>ราคา</th><th>ผล</th></tr><tr><td>1→2</td><td>500🍬</td><td>รางวัล +10%</td></tr><tr><td>2→3</td><td>1,500🍬</td><td>รางวัล +20% · ช่องผู้ช่วย 3</td></tr><tr><td>3→4</td><td>4,000🍬</td><td>รางวัล +30%</td></tr><tr><td>4→5</td><td>10,000🍬</td><td>รางวัล +45% · ทริป 12 ชม.</td></tr></table></div></div>
+<div class="m"><h3>อาร์ต</h3><ol>
+<li><b>ใช้ของเดิม:</b> ฉาก 3 เขต + มอนเดิน + เอฟเฟกต์แตก + ของเด้ง + หน้าจอโมจินอนหลับ (ใบ 70) · ฮีโร่เดิน (ชีตเดิม) · ไอคอนเป้/นาฬิกา/กล่อง (ใบ 91) · ไอเทม (ใบ 5)</li>
+<li><b>สั่งใหม่ (ใบ 97):</b> ผู้ช่วยโมจิ 15 ตัว (ภาพนิ่ง 128px) · โปสการ์ด 12 ใบ · ไอคอนแคมป์ 3 · ไอคอนแถว Garden 1 · ระหว่างรออาร์ตใช้อีโมจิ/ภาพสำรอง</li></ol></div>
+<div class="m"><h3>ของเดิม</h3><ol><li>Expedition (แตะตีไททัน) ปิด · Crumbs ที่เหลือแปลงเป็น Sugar 1:1 · ผู้ช่วย Expedition ที่ซื้อไว้ → นับเป็นฮีโร่ในทีมได้ทันที · Supplies ย้ายไปเป็นรางวัลสุ่มจากสวน</li></ol></div>
+<div class="good"><b>ได้</b><ul><li>Idle จริง ไม่ต้องแตะรัว ไม่ทับเกมหลัก</li><li>ใช้อาร์ตเดิม ~80% · ผูกกับ Story (ผู้ช่วย = โมจิที่ช่วยไว้)</li></ul></div>
+<div class="badx"><b>เสีย / ความเสี่ยง</b><ul><li>เป็นระบบใหม่ทั้งหน้า + เวลาออฟไลน์ → ต้องกันโกงเวลาเครื่อง (ใช้วิธีเดียวกับ Expedition เดิม)</li><li>เพิ่ม Sugar/Twist Cream เข้าเศรษฐกิจ → อาจต้องจูนหลัง Closed test</li><li>ทำพร้อม Forge ก่อน 13 ธ.ค. = งานหนัก แนะนำทำ Forge ก่อน แล้ว Garden ตาม</li></ul></div></section>
+<section id="order"><h2>ลำดับงานที่แนะนำ (ก่อน 13 ธ.ค.)</h2><ol>
+<li>v8.3.33–34: Gear อัปเลเวลแบบใหม่ + รวมของได้ Mod อัตโนมัติ + ปิด Forge + แปลงสกุลเงิน</li>
+<li>v8.3.35–37: Mochi Garden (ฉาก Patrol + ทริป + รางวัล + แคมป์) → ผู้ช่วยโมจิ · ใบสั่งอาร์ต 97</li>
+<li>เผื่อ 3–4 วันสุดท้ายแก้บั๊กจาก QA มือถือ</li></ol></section>
+</main></body></html>
