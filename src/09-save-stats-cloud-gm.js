@@ -45,7 +45,8 @@ const Save = {
     if(!this.data.gearAffix)this.data.gearAffix={};   // affix ต่อชิ้น (E: loot chase)
     if(!this.data.gearRarity)this.data.gearRarity={};   // rarity ที่คราฟต์ (common/magic/rare) ต่อชิ้น
     if(!this.data.currency)this.data.currency={};
-    if(forgeMigrate(this.data))gearMigrated=true;   // v6.79 D3 merge old stock   // 🧪 currency คราฟต์ (Phase 2)
+    if(forgeMigrate(this.data))gearMigrated=true;
+    if(typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE&&!this.data.gearSimple1){ const c=this.data.currency; for(const k in GEAR_CUR_TO_CREAM){ const v=c[k]||0; if(v>0){ c.transmute=(c.transmute||0)+v*GEAR_CUR_TO_CREAM[k]; c[k]=0; } } for(const it of this.data.gearItems||[]){ try{ if(it&&it.grade!=='start'&&GEAR_ALL.some(b=>b.id===it.baseId&&b.tier!=='start'))gearFillLines(it); }catch(e){} } this.data.gearSimple1=1; gearMigrated=true; }   /* v8.3.33 แปลงสกุลเงิน + เติม Mod ในแถวที่ว่าง (ครั้งเดียว) */   // v6.79 D3 merge old stock   // 🧪 currency คราฟต์ (Phase 2)
     if(this.data.ascension==null)this.data.ascension=0;
     if(!this.data.daily)this.data.daily={claimDay:'',streak:0,challengeDay:'',challengeDone:false};
     if(this.data.tutorialDone==null)this.data.tutorialDone=false;
@@ -210,7 +211,7 @@ const Save = {
   gearRarity(ref,baseTier){ const item=this.gearItem(ref); if(item)return item.craftState||baseDefaultRarity(item.grade||baseTier); const id=(this.gearBase(ref)||{}).id||ref; return (this.data.gearRarity&&this.data.gearRarity[id])||baseDefaultRarity(baseTier); },
   // 🧪 currency
   currency(k){ k=curKey(k); return (this.data.currency&&this.data.currency[k])||0; },
-  addCurrency(k,n){ k=curKey(k); if(!this.data.currency)this.data.currency={}; this.data.currency[k]=(this.data.currency[k]||0)+n; this.save(); },
+  addCurrency(k,n){ k=curKey(k); if(typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE&&GEAR_CUR_TO_CREAM[k]){ n=n*GEAR_CUR_TO_CREAM[k]; k='transmute'; }   /* v8.3.33 Star Sugar/Recipe Ink → Twist Cream */ if(!this.data.currency)this.data.currency={}; this.data.currency[k]=(this.data.currency[k]||0)+n; this.save(); },
   spendCurrency(k,n){ k=curKey(k); if((this.currency(k))>=n){ this.data.currency[k]-=n; this.save(); return true; } return false; },
   enhance(ref){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,lv=this.gearLv(ref);
     if(!item||!base||!base.enh||lv>=gearEnhanceCap(item))return {result:'capped',lv,cap:gearEnhanceCap(item)};
@@ -226,14 +227,20 @@ const Save = {
   mergeCanMain(item){const b=item&&GEAR_ALL.find(g=>g.id===item.baseId);return !!(b&&b.tier!=='start'&&!item.forgeChoice&&GRADE_NEXT[gearGrade(item)]&&(this.data.gearItems||[]).includes(item));},
   mergeFodder(main){if(!this.mergeCanMain(main))return [];const g=gearGrade(main);return (this.data.gearItems||[]).filter(x=>x&&x!==main&&x.slot===main.slot&&gearGrade(x)===g&&!x.locked&&!x.favorite&&!x.forgeChoice&&!this.isGearEquipped(x.uid)&&GEAR_ALL.some(b=>b.id===x.baseId&&b.tier!=='start'))
     .sort((a,b)=>((a.itemLevel||1)-(b.itemLevel||1))||((a.enhanceLv||0)-(b.enhanceLv||0))||((a.affixes||[]).length-(b.affixes||[]).length));},
-  mergeCarryOptions(main,fod){if(!main)return [];const res={baseId:main.baseId,slot:main.slot,grade:GRADE_NEXT[gearGrade(main)]||gearGrade(main),itemLevel:Math.max(main.itemLevel||1,...fod.map(f=>f.itemLevel||1)),affixes:main.affixes},cur=forgeLines(main),out=[];
+  mergeCarryOptions(main,fod){if(!main||(typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE))return [];const res={baseId:main.baseId,slot:main.slot,grade:GRADE_NEXT[gearGrade(main)]||gearGrade(main),itemLevel:Math.max(main.itemLevel||1,...fod.map(f=>f.itemLevel||1)),affixes:main.affixes},cur=forgeLines(main),out=[];
     const free=forgeLines(res).map((_,i)=>i).find(i=>!cur[i]&&forgeLineOpen(res,i));if(free==null)return [];for(const f of fod){forgeLines(f).forEach(a=>{const d=a&&affixDef(a.id);if(d&&!d.bad&&(!d.slots||d.slots.includes(main.slot)))out.push({uid:f.uid,id:a.id,line:free,a});});}   // v8.0.87 ไม่แบ่งหมวด: ย้ายไปแถวว่างแรก
     return out.sort((x,y)=>(x.a.t??10)-(y.a.t??10));},
   mergeGear(mainUid,fUids,carry){const main=this.gearItem(mainUid);if(!this.mergeCanMain(main)||!Array.isArray(fUids)||fUids.length!==2||fUids[0]===fUids[1])return null;const ok=this.mergeFodder(main),fod=fUids.map(u=>ok.find(x=>x.uid===u));if(fod.some(x=>!x))return null;
     const pick=carry&&this.mergeCarryOptions(main,fod).find(o=>o.uid===carry.uid&&o.id===carry.id),from=gearGrade(main);
     main.grade=GRADE_NEXT[from];delete main.crafts;delete main.forgeOffers;main.itemLevel=Math.max(main.itemLevel||1,...fod.map(f=>f.itemLevel||1));main.enhanceLv=Math.max(main.enhanceLv||0,...fod.map(f=>f.enhanceLv||0));
-    if(pick){const ls=forgeLines(main);ls[pick.line]=Object.assign({},pick.a);forgeSetLines(main,ls);}
+    if(pick){const ls=forgeLines(main);ls[pick.line]=Object.assign({},pick.a);forgeSetLines(main,ls);} if(typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE)gearFillLines(main);   /* v8.3.33 ระดับใหม่ = Mod แถวใหม่สุ่มให้ */
     const gone=new Set(fUids);this.data.gearItems=this.data.gearItems.filter(x=>!gone.has(x.uid));this.data.merges=(this.data.merges||0)+1;this.save();return {item:main,from,to:main.grade,carried:pick?pick.id:null};},
+  // v8.3.33 รวมอัตโนมัติ: ช่องเดียวกัน ระดับเดียวกัน ทีละ 3 ชิ้น (ตัวหลัก = ชิ้นที่สวมอยู่ หรือ iLv/เลเวลสูงสุด) · ไม่แตะของที่ล็อก/ชอบ/สวม (ยกเว้นเป็นตัวหลัก)
+  autoMergeAll(){let n=0,guard=0;const items=()=>this.data.gearItems||[];
+    for(const g of GRADE_ORDER){if(!GRADE_NEXT[g])continue;for(const slot of GEAR_SLOTS.map(x=>x.slot)){while(guard++<400){const pool=items().filter(x=>x&&x.slot===slot&&gearGrade(x)===g&&this.mergeCanMain(x));if(!pool.length)break;
+      const main=pool.find(x=>this.isGearEquipped(x.uid))||pool.filter(x=>!x.locked&&!x.favorite).sort((a,b)=>((b.itemLevel||1)-(a.itemLevel||1))||((b.enhanceLv||0)-(a.enhanceLv||0)))[0]||pool[0],fod=this.mergeFodder(main);if(fod.length<2)break;
+      const r=this.mergeGear(main.uid,[fod[0].uid,fod[1].uid],null);if(!r)break;n++;}}}
+    return n;},
   salvageGearInstance(uid){const item=this.gearItem(uid);if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='start'||this.isGearEquipped(uid))return null;const shards=gearDismantleValue(item),sugar=gearSellSugar(item);this.data.gearItems=this.data.gearItems.filter(x=>x&&x.uid!==uid);this.data.threads=(this.data.threads||0)+shards;this.data.sugar=(this.data.sugar||0)+sugar;this.save();(typeof DailyQ!=='undefined')&&DailyQ.tick('shards',shards);return {shards,sugar};},
   // ระบบยศ (prestige loop): rank ถาวร + เลเวลWaitบปัจจุบัน (0..TAL_MAX)
   talLvl(k){ return this.data.upgrades[k]||0; },

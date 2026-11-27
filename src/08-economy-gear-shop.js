@@ -103,8 +103,8 @@ const BOSS_NO_SHOT=new Set([0,3,6,10,14]);   // C1-1 Ant Empress · C1-4 Frost G
 const FEATURE_OPEN={patrol:3,dig:5,bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
 const FEAT_TAG={dig:'gActivity',bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
 const FEAT_ICON={dig:'tile_dig',rewards:'ic_side_daily',bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
-const FEAT_LINE={dig:'Expedition is open! Your heroes fight titans on their own, even while you’re away. Find it in Activities.',rewards:'Rewards is open! Your daily login gift, Daily Quests and Awards are all here.',bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
-const FEATURE_NAME={patrol:'🌙 Mochi Patrol',dig:'⚔️ Expedition',rewards:'🎁 Rewards',bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
+const FEAT_LINE={dig:'Expedition is open! Your heroes fight titans on their own, even while you’re away. Find it in Activities.',rewards:'Rewards is open! Your daily login gift, Daily Quests and Awards are all here.',bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'Gear Merge is open! Merge 3 items of the same slot and rarity for a higher rarity and a new mod. Upgrade gear with Sugar and Twist Cream.',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
+const FEATURE_NAME={patrol:'🌙 Mochi Patrol',dig:'⚔️ Expedition',rewards:'🎁 Rewards',bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🔗 Gear Merge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
 // v8.0.29 เจ้าของ: Recipe Book — การ์ดทุกใบของแต่ละ Build (การ์ดสาย + Unique Mutation) · เคยเลือก = ✓ · ครบสายได้ Thread
 const RECIPE_PATH_THREAD=30;
 function recipeCards(hero,pid){ const pt=(BASIC_PATHS[hero]||[]).find(x=>x.id===pid); if(!pt)return []; const L=(pt.upgrades||[]).map(u=>({id:u.id,name:u.name,emoji:u.emoji,iconKey:u.iconKey,desc:hero==='yuzu'?u.desc:u.headline||u.desc}));
@@ -276,7 +276,7 @@ const QUEST_TO_ACH={s1:'stage1',rank1:'bond',gear3:'gear3',s2:'stage2',s3:'stage
 const GEAR_ENH_MAX = 10;
 // โอกาสตีบวก lv->lv+1 · +0..+3 ปลอดภัย · +4 ขึ้นไปเสี่ยง: "แตก" (ขั้นลดลง 1, ไม่ต่ำกว่า +3) หรือ "ของหาย" (ไอเทมทำลายทิ้ง) · เพดาน +10
 // v4.35: destroy เริ่มมีตั้งแต่ +4 (น้อย ๆ) แล้วไต่ขึ้นเรื่อย ๆ — ยิ่ง +สูงยิ่งเสี่ยงของแตกหาย
-function enhanceOdds(lv){ if(lv<4)return{success:1,brk:0,destroy:0};
+function enhanceOdds(lv){ if(lv<4||(typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE))return{success:1,brk:0,destroy:0};
   const t={4:[0.76,0.24,0],5:[0.68,0.32,0],6:[0.58,0.42,0],7:[0.50,0.50,0],8:[0.42,0.58,0],9:[0.34,0.66,0]}[lv]||[0.34,0.66,0];   // v7.8.81 เจ้าของ: ตีบวกไม่ทำให้ของหายแล้ว (ล้ม = ลด 1 ขั้น ไม่ต่ำกว่า +3)
   return {success:t[0],brk:t[1],destroy:t[2]}; }
 function gearSellSugar(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.grade]||0)*6+Math.max(1,item.itemLevel||1)*2+Math.max(0,item.enhanceLv||0)*10;}
@@ -537,14 +537,18 @@ function forgeLines(item){const N=forgeLineCount(item),out=Array(N).fill(null),r
 function forgeSetLines(item,lines){item.affixes=lines.map((a,i)=>a?Object.assign({},a,{line:i}):null).filter(Boolean);item.forgeSchema=1;}
 // v8.0.32 เจ้าของ: รวมของ (หลัก + 2 ชิ้นช่อง/ระดับเดียวกัน → ระดับถัดไป) · ระดับต่อชิ้น = item.grade · ช่อง mod ตามระดับ (เพดาน iLv ยังอยู่)
 const RAR_LINES={start:0,common:1,rare:2,epic:3,legend:3,mythic:4,ancient:5,divine:6},GRADE_NEXT={common:'rare',rare:'epic',epic:'legend',legend:'mythic',mythic:'ancient',ancient:'divine'};
+/* v8.3.33 เจ้าของ 27 พ.ย.: Gear แบบ Archero 2 · Mod ติดมากับของ (ตามระดับ) · อัปเลเวล Sugar + Twist Cream ไม่มีล้ม · เลเวลละ +4% ค่าหลักและ Mod · รวม 3 ชิ้น = ระดับถัดไป + Mod แถวใหม่สุ่มให้ · ปิดหน้า Forge · Star Sugar 1→5 / Recipe Ink 1→3 Twist Cream */
+const GEAR_SIMPLE=true,GEAR_LV_CAP={start:10,common:10,rare:15,epic:20,legend:25,mythic:30,ancient:30,divine:30},GEAR_LV_PCT=.04,GEAR_CUR_TO_CREAM={starsugar:5,recipeink:3};
+function gearUpCost(lv){lv=Math.max(0,lv|0);return {sugar:40*(lv+1),cream:1+Math.floor(lv/3)};}
+function gearFillLines(item){if(!item)return 0;let n=0;for(let i=0;i<FORGE_MAX_LINES;i++){if(!forgeLineOpen(item,i)||forgeLines(item)[i])continue;let mod=null;try{mod=pickWeightedMod(forgePool(item,i));}catch(e){mod=null;}if(!mod)continue;const ls=forgeLines(item);ls[i]=Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1),{line:i});forgeSetLines(item,ls);n++;}return n;}
 const GRADE_ORDER=['start','common','rare','epic','legend','mythic','ancient','divine'],FORGE_MAX_LINES=6;function gradeRank(g){return Math.max(0,GRADE_ORDER.indexOf(g));}   // v8.0.87 เจ้าของ: เหนือ Legend อีก 3 ขั้น (Merge อย่างเดียว) +1 แถวต่อขั้น
 function gearGrade(item){const g=item&&item.grade;if(g&&RAR_LINES[g]!=null)return g;const b=item&&GEAR_ALL.find(x=>x.id===item.baseId);return (b&&b.tier)||'common';}
 // v8.0.83 แถวเปิดตามความหายากอย่างเดียว (iLv คุมแค่ดาว)
 function forgeLineOpen(item,line){if(!item||!Number.isInteger(line)||line<0||line>=6)return false;const n=(item.grade||GEAR_ALL.some(b=>b.id===item.baseId))?RAR_LINES[gearGrade(item)]:3;return line<(n==null?3:n)||!!forgeLines(item)[line];}
-function gearEnhanceCap(item){const l=Math.max(1,Number(item&&item.itemLevel)||1);return l<12?1:l<25?3:l<45?6:10;}   // v7.9.94 เจ้าของ: ของเลเวลต่ำตีบวกได้น้อยลง (เดิม 3/5/7/10)
+function gearEnhanceCap(item){if(GEAR_SIMPLE)return GEAR_LV_CAP[gearGrade(item)]||10;const l=Math.max(1,Number(item&&item.itemLevel)||1);return l<12?1:l<25?3:l<45?6:10;}   // v7.9.94 เจ้าของ: ของเลเวลต่ำตีบวกได้น้อยลง (เดิม 3/5/7/10)
 function gearEffectiveEnhance(item){return Math.min(gearEnhanceCap(item),Math.max(0,Math.floor(Number(item&&item.enhanceLv)||0)));}
 // Retain old rolls in saves; locked rows stay dormant until the item meets their level requirement.
-function gearActiveAffixes(item){return forgeLines(item).filter((a,i)=>a&&forgeLineOpen(item,i));}
+function gearActiveAffixes(item){const L=forgeLines(item).filter((a,i)=>a&&forgeLineOpen(item,i));if(!GEAR_SIMPLE)return L;const m=1+GEAR_LV_PCT*gearEffectiveEnhance(item);return m===1?L:L.map(a=>Object.assign({},a,{v:Math.round((a.v||0)*m*10)/10}));}   /* v8.3.33 เลเวลอัป +4%/ขั้นกับ Mod ทุกแถว */
 const FORGE_SLOT_ROWS={weapon:['power'],gloves:['power'],armor:['sustain'],boots:['play'],amulet:['sustain','play'],ring:['power','play']};   // v8.0.93 เจ้าของ: ชนิดไอเทมกำหนดกลุ่ม mod (อาวุธ/ถุงมือ=โจมตี · เกราะ=ป้องกัน · รองเท้า=เล่น/เคลื่อนที่ · สร้อย=ป้องกัน+เล่น · แหวน=โจมตี+เล่น)
 // v8.0.94 เจ้าของ: อาวุธ/ถุงมือ/เกราะ/รองเท้า สุ่มได้ 25 mod ต่อชนิด (เปิด mod ที่มีโค้ดอยู่แล้วแต่เดิมสุ่มไม่ได้)
 const FORGE_SLOT_POOL=(()=>{const W=[1,2,3,4,6,7,10,11,12,49,57,5,50,52,53,101,108,25,26,27,35,43,44,89,90];return{weapon:W,gloves:W,armor:[13,14,15,16,17,18,20,21,63,64,115,19,23,24,61,62,65,66,67,68,71,114,91,93,95],boots:[29,31,32,33,41,42,45,48,97,100,117,118,122,139,46,119,120,121,25,26,27,142,143,98,89],
@@ -636,7 +640,7 @@ function rollOneAffixLocked(mod,best,ilvl,lock){ if(!lock||lock.id!==mod.id)retu
   const band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; return {id:mod.id,t,v:band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)),t11:1,tierSchema:2}; }
 function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl,mod.tiers.length-1), band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v,t11:1,tierSchema:2}; }
 function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);return l<12?1:l<25?2:3;}   // iLv12 unlocks Sustain; iLv25 unlocks Play.
-function rollAffixes(baseTier,itemLevel=1,base=null){const L0=Math.max(1,Number(itemLevel)||1),n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel),L0<12?0:L0<25?1:L0<45?2:3,3),item={baseId:base&&base.id,slot:base&&base.slot||'weapon',grade:baseTier,itemLevel,affixes:[]};for(let line=0;line<n;line++){const mod=pickWeightedMod(forgePool(item,line));if(mod)item.affixes.push(Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),itemLevel),{line}));}return item.affixes;}
+function rollAffixes(baseTier,itemLevel=1,base=null){const L0=Math.max(1,Number(itemLevel)||1),n=GEAR_SIMPLE?Math.min(AFFIX_COUNT[baseTier]||0,3):Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel),L0<12?0:L0<25?1:L0<45?2:3,3),item={baseId:base&&base.id,slot:base&&base.slot||'weapon',grade:baseTier,itemLevel,affixes:[]};for(let line=0;line<n;line++){const mod=pickWeightedMod(forgePool(item,line));if(mod)item.affixes.push(Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),itemLevel),{line}));}return item.affixes;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
 function gearAffixName(baseName,affs){ return baseName;   // v7.8.94 เจ้าของ: ชื่อของ = ชื่อฐาน (mod อยู่ในรายการด้านล่างแล้ว)
   if(!affs||!affs.length)return baseName;
@@ -862,11 +866,11 @@ function currentRewardItemLevel(rng=Math.random){return rollItemLevel(rewardSour
 function gearBaseStats(item){
   const base=item&&GEAR_ALL.find(g=>g.id===item.baseId);if(!base||base.tier==='start')return{attackMin:0,attackMax:0,armor:0,hp:0,crit:0,critDmg:0,speed:0,dashCd:0,skillCd:0};
   const level=Math.max(1,Math.min(100,Number(item.itemLevel)||1)),quality=({common:1,rare:1.12,epic:1.24,legend:1.4,mythic:1.6,ancient:1.8,divine:2})[gearGrade(item)]||1;
-  let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=gearEffectiveEnhance(item),enhance=1+.12*el;   // +12% per effective enhancement; early gear obeys its iLv cap.
+  let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=gearEffectiveEnhance(item),enhance=1+(GEAR_SIMPLE?GEAR_LV_PCT:.12)*el;   // +12% per effective enhancement; early gear obeys its iLv cap.
   const attack=['weapon','ring'].includes(item.slot)?(()=>{const b0=(1+level*.10)*quality*variation*(item.slot==='weapon'?1:.35);return Math.max(1,Math.round(b0*enhance));})():0;
   const armor=item.slot==='armor'?Math.max(1,Math.round((2+level*.15)*quality*variation*enhance)):0;
   // v7.8.83 เฟส 2 (เจ้าของ): แต่ละช่องมีบทบาท · ถุงมือ=คริ · เกราะ=+HP · รองเท้า=วิ่ง+Dash · สร้อย=คูลดาวน์ · iLv1→100 · คูณคุณภาพ และตีบวก +5%/ขั้น
-  const f=(level-1)/99,uq=quality*(1+.05*el),r1=v=>Math.round(v*10)/10,role={hp:0,crit:0,critDmg:0,speed:0,dashCd:0,skillCd:0};
+  const f=(level-1)/99,uq=quality*(1+(GEAR_SIMPLE?GEAR_LV_PCT:.05)*el),r1=v=>Math.round(v*10)/10,role={hp:0,crit:0,critDmg:0,speed:0,dashCd:0,skillCd:0};
   if(item.slot==='gloves'){role.crit=r1((1+4*f)*uq);role.critDmg=r1((5+25*f)*uq);}
   if(item.slot==='armor')role.hp=Math.round((5+55*f)*quality*enhance);   /* 10→160 ตามตารางทำ Power +37% · 5→60 ใช้แทน Armor ที่รองเท้า/สร้อยเสียไป ≈ Power เท่าเดิม ±5% */
   if(item.slot==='boots'){role.speed=r1((3+5*f)*uq);role.dashCd=r1((2+6*f)*uq);}

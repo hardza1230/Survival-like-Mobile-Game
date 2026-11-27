@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.3.32**. Next release:8.3.33. Fetch the deploy branch before new work.
+Current release: **8.3.33**. Next release:8.3.34. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.3.32 — Story bosses keep their move gaps; smaller Mint Glacier Bloom** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.33 — Archero-style gear: mods included, Sugar upgrades, merge adds mods; Delve aggro by depth** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

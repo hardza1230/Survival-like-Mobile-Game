@@ -7,7 +7,8 @@ S.muted=true;S.equipment('equip');assert.equal(played.length,n);S.muted=false;S.
 context.window.__g.cache.audio.exists=()=>false;const notes=[];S.seq=v=>notes.push(v);S.equipment('dismantle');assert.equal(notes.at(-1).length,3);
 for(const name of ['equip','lock','unlock','enhance_success','enhance_break','enhance_destroy','dismantle','sell']){const f=fs.readFileSync(`assets/audio/sfx/gear/gear_${name}.wav`);assert.equal(f.toString('ascii',0,4),'RIFF');let peak=0;for(let i=44;i<f.length;i+=2)peak=Math.max(peak,Math.abs(f.readInt16LE(i)));assert(peak>0&&peak<32767);assert((f.length-44)/88200<=.33);assert(source.includes(`sfx_craft_gear_${name}:`));}
 // Execute the actual inventory enhancement callback, including rejected spending.
-const start=source.indexOf("can?()=>{ if(!afford){Sfx.error();"),finish=source.indexOf('this.buildMenuScreen(); }:null',start);
+const start=source.indexOf("can?()=>{ if(!afford){Sfx.error();this.showBanner('🧶 Not enough"),   // v8.3.33 legacy Thread path (GEAR_SIMPLE=false)
+finish=source.indexOf('this.buildMenuScreen(); }:null',start);
 const callback=source.slice(start+4,finish)+'this.buildMenuScreen(); }';
 for(const result of ['success','break','destroy','no_shards','stale_wallet']){
  const events=[];let spent=0;const limits=require('./forge-fixture.cjs').fixture().ctx;const c={lv:0,gearEnhanceCap:limits.gearEnhanceCap,gearEffectiveEnhance:limits.gearEffectiveEnhance,afford:result!=='no_shards',cost:10,selected:{uid:'gear'},Save:{gearItem:()=>({uid:'gear',itemLevel:55,enhanceLv:0}),spendShards:()=>{if(result==='stale_wallet')return false;spent+=10;return true;},enhance:()=>({result,lv:4})},Sfx:{error:()=>events.push('error'),equipmentEnhance:r=>events.push(r.result)}};vm.createContext(c);

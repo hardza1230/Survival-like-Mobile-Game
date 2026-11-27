@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.32';
+const GAME_VERSION = '8.3.33';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -113,6 +113,7 @@ const BOSS_RAGE_ON=false;
 const STAGE_AMBIENT_ON=false;
 /* v8.3.32 เจ้าของ 27 พ.ย.: บอส/มินิบอส Story ไม่เร่งคูลดาวน์ท่า (เดิม ×1.45 บอส · ×1.3 มินิ · เลือด <30% ×1.2) · Delve/Rift คงเดิม */
 const STORY_BOSS_AGGRO=1;
+const DELVE_AGGRO_STEP=.05,DELVE_AGGRO_MAX=1.6;   // v8.3.33 เจ้าของ: ความดุบอส Delve ชั้น 1 = ×1.0 · +0.05/ชั้น · สูงสุด ×1.6 (ชั้น 13+)
 /* v8.3.32 เจ้าของ: วง Glacier Bloom ของ Mint (กด Unique ค้าง) ย่อทั้งภาพและวงตี ×0.7 */
 const MINT_BLOOM_SCALE=.7;
 const C1_POT_R=95;   // v8.3.25 เจ้าของ: วง Grandma’s Pot ใหญ่ขึ้น (เดิม 58)
