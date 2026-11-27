@@ -55,6 +55,7 @@
 | 93 | `93_MISSION_CARD_BACK.md` | หลังการ์ดภารกิจ (ออกแบบใหม่ สวย ๆ ใช้ทุกใบ) · ประกายตอนพลิก | 3 | กลาง | 🟢 ผูกแล้ว v8.2.55 · รอ QA มือถือ |
 | 94 | `94_MISSION_ROOT_FOG_RIFT.md` | Lure the Crown Root (มุดดิน/รอยเตือน/รากพุ่ง/หินแตก/หัวรากมงกุฎ) · Clear the Fog (หมอก tile/กรงเล็บมืด/ขอบแสง) · Abyss Brute · Seed Rift เตือน · ป้าย Perfect/Combo | 14 | สูง | 🟢 ผูกแล้ว v8.2.86 · รอ QA มือถือ |
 | 95 | `95_BOSS_TWISTS.md` | ลูกเล่นบอส 5 แบบ: ราก · เมล็ด · ผลไม้ · มืด · เงาบอส + ไอคอน/แถบป้าย | 14 | สูง | 🟢 ผูกแล้ว v8.2.86 · รอ QA มือถือ |
+| 96 | `96_MISSION_PLAN_B.md` | ภารกิจรอบใหม่ช่วง B: วัตถุภารกิจรอง 5 · Wisp ดำบินเข้าจอ · รากงอก · Monster เงา · ชิ้นส่วน Golem 15 + popup เตา · (ไม่บังคับ) ฝุ่น Pot / วง Vault | 11 | สูง | 🟡 รออาร์ต (โค้ดพร้อม v8.3.28 ใช้อีโมจิ/โค้ดแทน) |
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 58 | `58_POWER_FAMILY_EXTRA.md` | ภาพประกอบการ์ดสรุป Weave/Equipment/Merge/Forge + ภาพหน้าว่าง 3 แบบ | 7 | เล็ก | 🟢 ผูกแล้ว v8.0.79 |
