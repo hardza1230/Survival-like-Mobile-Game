@@ -1,4 +1,5 @@
 const CHANGELOG = [
+  {v:'8.3.25',date:'2026-11-27',title:'Vault Altar choices and a bigger pot',items:['Vault Altar: step up to the altar and pick a curse while time stands still','Grandma’s Pot has a bigger ring with swirling dust']},
   {v:'8.3.24',date:'2026-11-27',title:'Side missions in Chapters 2 and 3',items:['Chapter 2 and 3 side missions wait on the map: walk onto one to start it','Escort the Wisp now belongs to the first Chapter 2 stage','Shake the Hollow Trees: bump a tree to shake it and monsters pour out']},
   {v:'8.3.23',date:'2026-11-27',title:'Combat Situations everywhere',items:['Every Chapter 2 and 3 wave is now a named combat situation','New situations: Spore Bloom, Splitters, Elite Duo, Sniper Nest, Shield Carrier and Shrinking Arena']},
   {v:'8.3.22',date:'2026-11-27',title:'New Wardrobe items',items:['New in the Wardrobe: Honeycomb, Matcha and Midnight Wings, Pudding Fox, Mint Leaf Trail, Caramel Dash and Berry Pop']},

@@ -974,11 +974,32 @@
   /* ===== v8.1.80 Ultimatum (Sugar Crown Trial) — แต่ละรอบ: เลือกคำสาป 1/3 (ซ้อนกัน) → ทำเป้ารอบ → รับของออก หรือ สู้ต่อ · แพ้ = ได้ครึ่งกอง ===== */
   ultPad(x,y,em,label,col){ const ci=(typeof ULT_CURSES!=='undefined'?ULT_CURSES.findIndex(c=>c.em===em):-1),pk=ci>=0&&ci<6?'ult_curse_pads':ci>=6?(this.realTex?.('ult85_curse_pads')?'ult85_curse_pads':null):(em==='🎁'||em==='⚔️')?'ult_choice_pads':null,   /* v8.2.23 ใบ 85 คำสาปช่อง 7–8 */   /* v8.2.19 คำสาปใหม่ (ช่อง 7–8) ยังไม่มีภาพ → แผ่นวาดด้วยโค้ด */pf=ci>=6?ci-6:ci>=0?ci:em==='⚔️'?1:0,art=pk&&this.artSpr(pk,x,y,100,pf,{depth:y-1});   /* v8.1.93 ใบ 74 */
     const ring=this.sigAdd(this.add.circle(x,y,50,col,art?.06:.2).setStrokeStyle(3,col,art?.4:.9).setDepth(y-2)),t=art||this.sigText(x,y-4,em,30),l=this.sigAdd(this.add.text(x,y+40,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffeef6',stroke:'#1a0f1e',strokeThickness:3,align:'center'}).setOrigin(.5).setDepth(y+6)); this.tweens.add({targets:ring,scale:{from:.94,to:1.06},duration:600,yoyo:true,repeat:-1}); return {x,y,objs:[ring,t,l]}; }
+  /* v8.3.25 popup เลือกคำสาปแบบ Ultimatum: หยุดเวลา (physics + state cinematic) · วงพิธีหมุน + จอขอบมืด · แตะการ์ด 1 ใน 3 */
+  ultCursePopup(o,S){ if(S.popupOn||!this.add?.container||!this.camUI)return; S.popupOn=true; const W=this.W,H=this.H,prev=this.state,F='NunitoUI, sans-serif',L=this.camUI(this.add.container(0,0).setDepth(130)); L.setScrollFactor?.(1); this.physics?.pause?.(); this.state='cinematic';
+    const dim=this.add.rectangle(0,0,W,H,0x0a0410,.72).setOrigin(0); L.add(dim); const vg=this.add.graphics(); for(let k=0;k<8;k++)vg.lineStyle(40,0x000000,.07).strokeRect(-20+k*6,-20+k*6,W+40-k*12,H+40-k*12); L.add(vg);
+    const cx=W/2,cy=H*.33,R=Math.min(W*.42,170),ring=this.add.container(cx,cy),rg=this.add.graphics(); rg.lineStyle(3,0xff8fb0,.85).strokeCircle(0,0,R).lineStyle(1.5,0xffd166,.6).strokeCircle(0,0,R*.82).lineStyle(1,0xff8fb0,.35).strokeCircle(0,0,R*1.12);
+    for(let i=0;i<12;i++){ const a=i*TAU/12; rg.fillStyle(0xffd166,.9).fillPoints([{x:Math.cos(a)*R,y:Math.sin(a)*R-6},{x:Math.cos(a)*R+5,y:Math.sin(a)*R},{x:Math.cos(a)*R,y:Math.sin(a)*R+6},{x:Math.cos(a)*R-5,y:Math.sin(a)*R}],true); }
+    for(let i=0;i<3;i++){ const a=i*TAU/3; rg.lineStyle(1.5,0xff8fb0,.5).lineBetween(Math.cos(a)*R*.82,Math.sin(a)*R*.82,Math.cos(a+TAU/3)*R*.82,Math.sin(a+TAU/3)*R*.82); }
+    ring.add(rg); L.add(ring); this.tweens.add({targets:ring,angle:360,duration:16000,repeat:-1}); this.tweens.add({targets:rg,alpha:{from:.55,to:1},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const glow=this.add.circle(cx,cy,R*.55,0xff5c8a,.16); L.add(glow); this.tweens.add({targets:glow,scale:{from:.85,to:1.15},alpha:{from:.1,to:.28},duration:1100,yoyo:true,repeat:-1});
+    L.add(this.add.text(cx,cy-12,'⚖️',{fontSize:'44px'}).setOrigin(.5)); L.add(this.add.text(cx,cy+34,'Vault Altar · Round '+S.r+'/'+S.rounds,{fontFamily:F,fontStyle:'bold',fontSize:'15px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5));
+    L.add(this.add.text(cx,cy+R+26,'Choose a curse · time is frozen',{fontFamily:F,fontSize:'12px',color:'#e6d6f0',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5));
+    const cw=Math.min(112,(W-40)/3),ch=128,y0=H*.64,zones=[];
+    S.offer.forEach((c,i)=>{ const x=W/2+(i-1)*(cw+10),win=Math.round((S.base||0)*(1+.5*S.r)*((S.mult||1)+c.v)),card=this.add.container(x,y0),g=this.add.graphics();
+      g.fillStyle(0x2a1030,.97).fillRoundedRect(-cw/2,-ch/2,cw,ch,12).lineStyle(2.5,0xff8fb0,1).strokeRoundedRect(-cw/2,-ch/2,cw,ch,12).lineStyle(1,0xffd166,.5).strokeRoundedRect(-cw/2+4,-ch/2+4,cw-8,ch-8,9);
+      card.add([g,this.add.text(0,-34,c.em,{fontSize:'30px'}).setOrigin(.5),this.add.text(0,4,c.name,{fontFamily:F,fontStyle:'bold',fontSize:'12px',color:'#ffffff',align:'center',wordWrap:{width:cw-12}}).setOrigin(.5),this.add.text(0,38,'Win: 🍬 +'+win,{fontFamily:F,fontSize:'11px',color:'#ffe08a'}).setOrigin(.5)]);
+      card.setScale(.6).setAlpha(0); L.add(card); this.tweens.add({targets:card,scale:1,alpha:1,duration:260,delay:120*i,ease:'Back.out'}); this.tweens.add({targets:g,alpha:{from:1,to:.75},duration:700,yoyo:true,repeat:-1,delay:400+i*150}); zones.push({x,y:y0,c,card}); });
+    try{ Sfx.bossWarn?.(); this.a12?.('tr_curse_pick',.35,.3); }catch(e){}
+    let done=false; const t0=this.time?.now||0,onTap=p0=>{ if(done||!p0)return; if((this.time?.now||0)-t0<450)return; const k=(typeof RENDER_DPR!=='undefined'&&RENDER_DPR)||1,px=p0.x/k,py=p0.y/k; const z=zones.find(z=>Math.abs(px-z.x)<=cw/2+6&&Math.abs(py-z.y)<=ch/2+6); if(!z)return; done=true; this.input?.off?.('pointerdown',onTap);
+      this.tweens.add({targets:z.card,scale:1.18,duration:160,yoyo:true}); this.screenFlash?.(0xff8fb0,.18,220);
+      this.time?.delayedCall?.(260,()=>{ L.destroy(); if(this.state==='cinematic')this.state=prev==='cinematic'?'play':prev; this.physics?.resume?.(); S.popupOn=false; S.offer=null; const go=()=>this.ultStartFight(o,S,z.c); if(o._stack&&this._stack?.o===o)this.stackRun(go); else go(); }); };
+    this.input?.on?.('pointerdown',onTap); }
   ultPadsClear(S){ for(const pd of S.pads||[])for(const q of pd.objs){ this.tweens.killTweensOf(q); q.destroy(); } S.pads=[]; }
   ultSetup(o,S,rounds){ const q=this.objectivePosition(0,1,170,240),si=this.stageIndex||0,tier=(this._recipe&&this._recipe.tier)||0; Object.assign(S,{x:q.x,y:q.y,rounds,r:0,curses:[],mult:1,pot:0,boxes:0,phase:'pick',pads:[],base:Math.round((10+3*Math.max(si,8)+tier*4)*(this.diffMul?.().reward||1))});
     S.altar=this.sigArt('ult_altar',0,q.x,q.y+44,110,'⚖️',46,q.y); S.ring=this.sigAdd(this.add.circle(q.x,q.y,230,0xffd166,.04).setStrokeStyle(3,0xffd166,.45).setDepth(q.y-4)); if(this.artSpr('ult_circle',q.x,q.y,470,0,{depth:q.y-3}))S.ring.setStrokeStyle(0); o._ocDone=true; this.ultNextPick(o,S); }
   ultNextPick(o,S){ S.r++; S.phase='pick'; this.ultPadsClear(S); o._ultSec=false; o.target=1; o.progress=0; o.name=(o.type==='ultimatum'?'Trial':'Vault Altar')+' · Round '+S.r+'/'+S.rounds; o.desc='Walk onto a curse stone — curses stack every round';
     const all=ULT_CURSES.filter(c=>!S.curses.includes(c.id)),pick=Phaser.Utils.Array.Shuffle(all.slice()).slice(0,3);
+    if(o.type==='vaultAltar'){ S.offer=pick; S.popup=S.r>1?'now':'near'; o.desc='Step up to the altar to choose a curse'; this.ultLadder(S); this.renderWaveObjectiveHUD?.(); return; }   /* v8.3.25 เจ้าของ: Vault Altar = popup เลือกคำสาป เวลาหยุด */
     pick.forEach((c,i)=>{ const a=-Math.PI/2+(i-1)*1.05,x=S.x+Math.cos(a)*165,y=S.y+Math.sin(a)*165+40,pd=this.ultPad(x,y,c.em,c.name+'\nWin: 🍬 +'+Math.round((S.base||0)*(1+.5*S.r)*((S.mult||1)+c.v)),0xff8fb0);   /* v8.2.27 เจ้าของ: บอก 🍬 ที่จะได้จริงแทน % */ pd.c=c; S.pads.push(pd); });
     this.showBanner?.('⚖️ Round '+S.r+'/'+S.rounds+' · choose a curse','Pot: 🍬 '+S.pot+(S.boxes?' · 🎁 ×'+S.boxes:''),1600); this.ultLadder(S); this.renderWaveObjectiveHUD?.(); }
   ultStartFight(o,S,c){ this.missionMusic?.('bgm_m_trial'); this.a12?.('tr_curse_pick',.45,.3); S.curses.push(c.id); S.mult+=c.v; if(c.id==='noheal')S.noHeal=true; this.ultPadsClear(S); const G=ULT_GOALS[(S.r+Math.floor(Math.random()*ULT_GOALS.length))%ULT_GOALS.length]; S.goal=G; S.phase='fight'; S.t=G==='slay'?28:22; S.kills=0; S.altHp=300; S.seeds=[]; S.cd={};
@@ -996,6 +1017,7 @@
     tick('ghosts',4.5,()=>{ const a=Math.atan2(p.vy||p.body?.velocity?.y||0,p.vx||p.body?.velocity?.x||1)+Math.PI,e=this.sigSpawnAt(p.x+Math.cos(a)*260,p.y+Math.sin(a)*260,false,'fast'); if(e){ e.setTint?.(0xe8e8ff); e.tintColor=0xe8e8ff; e.setAlpha?.(.7); } });   // v8.2.19 ผีหิวโผล่ข้างหลัง
     tick('quake',5,()=>{ const a=Math.random()*Math.PI,dm=Math.round(8+(this.stageIndex||0)*1.5); for(let k=-3;k<=3;k++)this.spawnHazard?.(p.x+Math.cos(a)*k*70,p.y+Math.sin(a)*k*70,46,dm,0xff8f4d); }); }   // v8.2.19 แนวแผ่นดินไหวผ่านตัว
   ultTick(dt,o,S){ const p=this.player; if(!p)return; S.t=(S.t||0);
+    if(S.phase==='pick'&&S.offer){ if(!S.popupOn&&(S.popup==='now'||this.dist(p.x,p.y,S.x,S.y)<150))this.ultCursePopup(o,S); return; }
     if(S.phase==='pick'){ for(const pd of S.pads)if(this.dist(p.x,p.y,pd.x,pd.y)<52){ this.ultStartFight(o,S,pd.c); break; } return; }
     if(S.phase==='decide'){ S.dt-=dt; const lab=S.pads[0]?.objs[2]; if(lab?.active)lab.setText('Take & leave\n'+Math.ceil(Math.max(0,S.dt))+'s'); for(const pd of S.pads)if(this.dist(p.x,p.y,pd.x,pd.y)<52){ if(pd.act==='take'){ this.a12?.('tr_take',.45,.3); this.artFx?.('vfx78_trial_take',pd.x,pd.y,160); this.ultFinish(o,S,'take'); } else{ this.a12?.('tr_risk',.45,.3); this.artFx?.('vfx78_trial_risk',pd.x,pd.y,160); this.ultNextPick(o,S); } return; } if(S.dt<=0)this.ultFinish(o,S,'take'); return; }
     if(S.phase!=='fight')return; S.t-=dt; this.ultCurseTick(dt,S); const G=S.goal,g=this.objNodeG; g?.clear();
@@ -1482,8 +1504,10 @@
     const {x,y}=pos||this.objectivePosition(0,1,95,132),active=d.event={
       def,x,y,left:20,hold:0,spawned:0,spawnDelay:.25,progress:0,targets:new Map(),visuals:[]
     };
-    if(def.hold)active.visuals.push(this.camWorld(this.add.circle(x,y,58,def.color,.10)
-      .setStrokeStyle(3,def.color,.85).setDepth(-989)));   /* v8.3.19 วงกลมเหลือเฉพาะภารกิจยืนเฝ้า (บอกพื้นที่) */
+    if(def.hold){ active.visuals.push(this.camWorld(this.add.circle(x,y,C1_POT_R,def.color,.10).setStrokeStyle(3,def.color,.85).setDepth(-989)));
+      /* v8.3.25 เจ้าของ: วงใหญ่ขึ้น + พายุฝุ่น/ควันหมุนในวง */
+      for(let k=0;k<12;k++){ const a=k*TAU/12,r=C1_POT_R*(.35+.55*((k*37)%10)/10),puff=this.camWorld(this.add.circle(x+Math.cos(a)*r,y+Math.sin(a)*r*.7,10+(k%3)*5,k%2?0xd8c0a0:0xf0e0c8,.32).setDepth(y+5)),host={a,r};
+        active.visuals.push(puff); this.tweens.add({targets:host,a:a+TAU,duration:2600+(k%4)*500,repeat:-1,onUpdate:()=>{ if(puff.active)puff.setPosition(x+Math.cos(host.a)*host.r,y+Math.sin(host.a)*host.r*.7); }}); this.tweens.add({targets:puff,alpha:{from:.15,to:.45},scale:{from:.8,to:1.3},duration:900+(k%3)*300,yoyo:true,repeat:-1}); puff.once?.('destroy',()=>{ this.tweens?.killTweensOf?.(host); this.tweens?.killTweensOf?.(puff); }); } }   /* v8.3.19 วงกลมเหลือเฉพาะภารกิจยืนเฝ้า (บอกพื้นที่) */
     const art=this.artSpr(def.key,x,y+22,72,0,{sig:false,depth:y+3});
     active.visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
     this.vfxHitRing?.(x,y,def.color,true);
@@ -1508,7 +1532,7 @@
       }
       e.spawnDelay=.45;
     }
-    if(def.hold&&this.dist(this.player.x,this.player.y,e.x,e.y)<58)e.hold=Math.min(def.hold,e.hold+dt);
+    if(def.hold&&this.dist(this.player.x,this.player.y,e.x,e.y)<C1_POT_R)e.hold=Math.min(def.hold,e.hold+dt);
     if(def.hold&&e.hold>=def.hold){this.endChapterSideEvent(d,true);return;}
     for(const [foe,mark] of e.targets){
       if(foe.active&&foe._c1SpawnId===mark.id)mark.marker.setPosition(foe.x,foe.y-foe.displayHeight*.6);

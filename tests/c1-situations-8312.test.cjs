@@ -44,3 +44,8 @@ assert(s.includes('this.startChapterSituationWave?.(w);'));assert(s.includes('el
 assert(!/d\.nextEvent=w===1\|\|w===3/.test(s),'side events no longer start on a timer');
 assert(s.includes("die(){this.clearChapterCombatWave?.(true);"),'objects cleaned on death');
 console.log('C1 situations: 5×4 combat situations, side objects (own + met), director identity/field/time pick, no power HP scaling passed');
+// v8.3.25 Vault Altar popup + bigger Pot ring
+{ const src=require('fs').readFileSync('game.js','utf8');
+  require('assert').ok(src.includes("if(o.type==='vaultAltar'){ S.offer=pick;")&&src.includes('  ultCursePopup(o,S){')&&src.includes("this.physics?.pause?.(); this.state='cinematic';"),'Vault Altar curse popup freezes time');
+  require('assert').ok(/const C1_POT_R=95;/.test(src)&&src.includes('<C1_POT_R)e.hold='),'Pot ring radius 95');
+  require('assert').ok(src.includes("{mission:'vaultAltar',home:13,only:true"),'Vault Altar is the C3-4 stage mission'); }
