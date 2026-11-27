@@ -18,5 +18,5 @@ assert(grab('bossTwistEnd').includes('e.spd=e._twistBuff'),'Frenzy Dark buff res
 assert(src.includes('/* v8.2.83 กล่อง Gear จากภารกิจบอส → รางวัลชนะบอส Ch2–3 */'),'gear box on boss kill');
 // loading cover
 assert(grab('stageLoadCover').includes("'stage_card_s'+String((idx|0)+1).padStart(2,'0')"),'stage card cover');
-assert(html.includes('stageCover:function(url,title)')&&html.includes('this._minUntil=performance.now()+800')&&html.includes("var wait=(this._minUntil||0)-performance.now();"),'loader cover + 0.8 s minimum');
+assert(html.includes('stageCover:function(url,title,tint)')&&html.includes('this._minUntil=performance.now()+800')&&html.includes("var wait=(this._minUntil||0)-performance.now();"),'loader cover + 0.8 s minimum');
 console.log('Events 8.2.83: Seed Rift random event, boss twists, stage loading cover passed');

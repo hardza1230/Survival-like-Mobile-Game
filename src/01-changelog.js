@@ -1,4 +1,5 @@
 const CHANGELOG = [
+  {v:'8.3.17',date:'2026-11-26',title:'A livelier stage loading screen',items:['The stage loading screen now has slow light rays, drifting mist in the stage’s colour and rising sparkles']},
   {v:'8.3.16',date:'2026-11-26',title:'Stage cards stay put and more sounds',items:['Tapping quickly no longer skips the cards before a Chapter 1 stage','Cocoa leaps, Rage charge, Pinball, Berry Blast and Yuzu crew hits have their own sounds']},
   {v:'8.3.15',date:'2026-11-26',title:'Harder dailies and a new Rank Rewards look',items:['Kicking a glowing object into a boss now stuns it for 2 seconds','Daily quests ask for about 50% more','Ancient perks are gone from Rank Rewards','Rank Rewards has a new look with glowing cards and sparkles when you pick']},
   {v:'8.3.14',date:'2026-11-26',title:'Update prompt in the store app',items:['The update prompt now comes back if it was closed by a screen change','The game checks for a new version when you return to the app or the Hub','The Updates page shows when a new version is ready and downloads the right app']},

@@ -212,7 +212,7 @@ class Game extends Phaser.Scene {
   texFreeForRun(idx){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),keep=idx==null?null:this.texStageKeep(idx);
     return this.texEvict((k,c)=>c==='menu'||(c==='hero'&&artHero(k)!==ch)||(c==='endgame'&&!eg)||(!!keep&&c==='stage'&&!keep.has(k)),null); }
   /* v8.2.82 เจ้าของ: เล่นไปสักพักเกมใช้ภาพสำรอง (หน่วยความจำเต็ม) → ก่อนโหลดด่านถัดไป คืนภาพของด่านอื่นที่ไม่ใช้ (เดิมสะสมทุกด่านที่เคยเล่น) */
-  stageLoadCover(idx){ try{ const k='stage_card_s'+String((idx|0)+1).padStart(2,'0'),u=ASSET_IMAGES[k],st=STAGES[idx]; if(u&&window.GameLoader?.stageCover)window.GameLoader.stageCover(verUrl(u),st?((st.emoji||'')+' '+(st.en||st.name||'')).trim():''); }catch(e){} }   /* v8.2.83 เจ้าของ: หน้าโหลดเข้าด่าน = ภาพปกด่าน (DOM ไม่กิน GPU ของเกม) + Tip */
+  stageLoadCover(idx){ try{ const k='stage_card_s'+String((idx|0)+1).padStart(2,'0'),u=ASSET_IMAGES[k],st=STAGES[idx]; if(u&&window.GameLoader?.stageCover)window.GameLoader.stageCover(verUrl(u),st?((st.emoji||'')+' '+(st.en||st.name||'')).trim():'',st?.tint); }catch(e){} }   /* v8.2.83 เจ้าของ: หน้าโหลดเข้าด่าน = ภาพปกด่าน (DOM ไม่กิน GPU ของเกม) + Tip */
   /* v8.2.85 A21: วัสดุของมอนสำหรับเสียงตีโดน (เดาจากชนิด/ด่าน · ไม่มีผลกับดาเมจ) */
   a21Mat(e){ if(!e)return 'mochi'; if(e.isElite||e.isMini||e._a21Armor||e.siege)return 'armor'; const si=this.stageIndex||0; return si===3?'ice':(si>=5&&si<=10)?'plant':(si===12||si===13||si===14)?'crystal':'mochi'; }
   texStageKeep(idx){return new Set(this.stageRequiredKeys(idx));}

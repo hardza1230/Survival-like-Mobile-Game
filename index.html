@@ -70,6 +70,25 @@
   #load-retry{background:#f1c86b!important;color:#342116!important;border-color:#ffdf8e!important;}
   @keyframes seed-portal{0.0%{background-position:0.0% 0%;}8.33333%{background-position:33.333333333333336% 0%;}16.66667%{background-position:66.66666666666667% 0%;}25.0%{background-position:100.0% 0%;}33.33333%{background-position:0.0% 50%;}41.66667%{background-position:33.333333333333336% 50%;}50.0%{background-position:66.66666666666667% 50%;}58.33333%{background-position:100.0% 50%;}66.66667%{background-position:0.0% 100%;}75.0%{background-position:33.333333333333336% 100%;}83.33333%{background-position:66.66666666666667% 100%;}91.66667%{background-position:100.0% 100%;}100%{background-position:0% 0%;}}
   @media(prefers-reduced-motion:reduce){#load-portal{animation:none;}}
+  /* v8.3.17 เจ้าของ: พื้นหลังหน้าโหลดเข้าด่านจืด → VFX ด้วย CSS ล้วน (ไม่กิน GPU เกม): แสงรัศมีหมุนหลังวงแหวน · หมอกสีตามด่าน (--fog จาก STAGES.tint) · ประกายลอยขึ้น */
+  #load-rays,#load-fog,#load-motes{display:none;position:absolute;pointer-events:none;}
+  #game-loader.stage-cover #load-rays,#game-loader.stage-cover #load-fog,#game-loader.stage-cover #load-motes{display:block;}
+  #load-rays{left:50%;top:42%;width:min(150vw,720px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,214,150,.22) 0deg 7deg,rgba(255,214,150,0) 7deg 30deg);-webkit-mask-image:radial-gradient(closest-side,#000 18%,rgba(0,0,0,.55) 45%,transparent 72%);mask-image:radial-gradient(closest-side,#000 18%,rgba(0,0,0,.55) 45%,transparent 72%);animation:load-rays-spin 26s linear infinite,load-rays-pulse 3.6s ease-in-out infinite;}
+  #load-rays::after{content:'';position:absolute;inset:30%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,170,200,.35),rgba(255,170,200,0));animation:load-rays-pulse 2.4s ease-in-out infinite reverse;}
+  #load-fog{inset:-10%;overflow:hidden;}
+  #load-fog i{position:absolute;width:90vmax;height:60vmax;border-radius:50%;background:radial-gradient(closest-side,var(--fog,rgba(143,199,255,.30)),transparent 70%);filter:blur(28px);opacity:.75;}
+  #load-fog i:nth-child(1){left:-40vmax;top:8%;animation:load-fog-a 15s ease-in-out infinite alternate;}
+  #load-fog i:nth-child(2){right:-45vmax;bottom:4%;animation:load-fog-b 19s ease-in-out infinite alternate;opacity:.6;}
+  #load-fog i:nth-child(3){left:10%;top:55%;width:70vmax;height:40vmax;animation:load-fog-a 23s ease-in-out infinite alternate-reverse;opacity:.45;}
+  #load-motes{inset:0;overflow:hidden;}
+  #load-motes b{position:absolute;bottom:-12px;border-radius:50%;background:radial-gradient(circle,#fff 0,var(--c,#ffd98a) 40%,transparent 70%);box-shadow:0 0 8px var(--c,#ffd98a);opacity:0;animation:load-mote var(--d,9s) linear var(--w,0s) infinite;}
+  @keyframes load-rays-spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+  @keyframes load-rays-pulse{0%,100%{opacity:.55;}50%{opacity:1;}}
+  @keyframes load-fog-a{from{transform:translateX(0) scale(1);}to{transform:translateX(38vmax) scale(1.15);}}
+  @keyframes load-fog-b{from{transform:translateX(0) scale(1.1);}to{transform:translateX(-34vmax) scale(.95);}}
+  @keyframes load-mote{0%{transform:translate(0,0) scale(.6);opacity:0;}12%{opacity:.95;}70%{opacity:.7;}100%{transform:translate(var(--x,0px),-105vh) scale(1.1);opacity:0;}}
+  @media(prefers-reduced-motion:reduce){#load-rays,#load-rays::after,#load-fog i,#load-motes b{animation:none;}#load-motes{display:none!important;}}
+
 </style>
 <script>
   window.GameLoader = {
@@ -89,7 +108,8 @@
     // แสงกลางจอเริ่มโผล่ (48% ของฉากเปิด) → เริ่มเพลงเมนูได้
     lightOn:function(){if(this._lightOn)return;this._lightOn=true;window.dispatchEvent(new Event('mochi-intro-light'));},
     skipIntro:function(){var root=document.getElementById('game-loader');if(this._introDone&&root&&root.classList.contains('opening'))this.finishIntro();},
-    stageCover:function(url,title){var root=document.getElementById('game-loader'),img=document.getElementById('load-cover-img'),tt=document.getElementById('load-cover-title');if(!root||!img)return;this._stageActive=!!url;if(url){img.src=url;root.classList.add('stage-cover');this._minUntil=performance.now()+800;}else root.classList.remove('stage-cover');if(tt)tt.textContent=title||'';},
+    _stageFx:function(root,tint){try{var t=typeof tint==='number'?tint:0x8fc7ff;root.style.setProperty('--fog','rgba('+((t>>16)&255)+','+((t>>8)&255)+','+(t&255)+',.34)');var m=document.getElementById('load-motes');if(!m||m.childNodes.length)return;var cols=['#ffd98a','#ff9ec4','#fff3c8','#c9a3ff'];for(var i=0;i<22;i++){var b=document.createElement('b'),sz=3+Math.random()*5;b.style.cssText='left:'+(Math.random()*100).toFixed(1)+'%;width:'+sz.toFixed(1)+'px;height:'+sz.toFixed(1)+'px;--c:'+cols[i%4]+';--d:'+(7+Math.random()*7).toFixed(1)+'s;--w:-'+(Math.random()*12).toFixed(1)+'s;--x:'+((Math.random()-.5)*80).toFixed(0)+'px';m.appendChild(b);}}catch(e){}},
+    stageCover:function(url,title,tint){var root=document.getElementById('game-loader'),img=document.getElementById('load-cover-img'),tt=document.getElementById('load-cover-title');if(!root||!img)return;this._stageActive=!!url;if(url){img.src=url;root.classList.add('stage-cover');this._stageFx(root,tint);this._minUntil=performance.now()+800;}else root.classList.remove('stage-cover');if(tt)tt.textContent=title||'';},
     clearError:function(){var root=document.getElementById('game-loader');if(root)root.classList.remove('load-error');for(var id of ['load-retry','load-back']){var button=document.getElementById(id);if(button)button.onclick=null;}},
     stageProgress:function(loaded,total,label){this.set(total?loaded/total:1,label);var pct=document.getElementById('load-percent');if(pct)pct.textContent=loaded+' / '+total+' artwork · '+Math.round(total?loaded/total*100:100)+'%';},
     error:function(message,retry,back){this.show('Waiting for artwork…');var root=document.getElementById('game-loader'),text=document.getElementById('load-error-text'),r=document.getElementById('load-retry'),b=document.getElementById('load-back'),me=this;if(root)root.classList.add('load-error');if(text)text.textContent=message;if(r)r.onclick=function(){me.clearError();retry();};if(b)b.onclick=function(){me.clearError();back();};r?.focus?.();},
@@ -178,7 +198,7 @@
     <div class="k-transition-light"></div><div class="k-menu-light"></div>
   </div>
   <button id="entry-skip" type="button" onclick="window.GameLoader.skipIntro()">Skip intro ›</button>
-  <div id="load-cover" aria-hidden="true"><img id="load-cover-img" alt=""><div id="load-portal"></div><div id="load-cover-title"></div></div>
+  <div id="load-cover" aria-hidden="true"><img id="load-cover-img" alt=""><div id="load-fog"><i></i><i></i><i></i></div><div id="load-rays"></div><div id="load-motes"></div><div id="load-portal"></div><div id="load-cover-title"></div></div>
   <div class="card">
     <div id="load-phase">Preparing stage artwork…</div>
     <div class="status" id="load-status">💡 Keep moving — standing still lets the swarm surround you.</div>

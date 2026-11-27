@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.16';
+const GAME_VERSION = '8.3.17';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -148,6 +148,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.17',date:'2026-11-26',title:'A livelier stage loading screen',items:['The stage loading screen now has slow light rays, drifting mist in the stage’s colour and rising sparkles']},
   {v:'8.3.16',date:'2026-11-26',title:'Stage cards stay put and more sounds',items:['Tapping quickly no longer skips the cards before a Chapter 1 stage','Cocoa leaps, Rage charge, Pinball, Berry Blast and Yuzu crew hits have their own sounds']},
   {v:'8.3.15',date:'2026-11-26',title:'Harder dailies and a new Rank Rewards look',items:['Kicking a glowing object into a boss now stuns it for 2 seconds','Daily quests ask for about 50% more','Ancient perks are gone from Rank Rewards','Rank Rewards has a new look with glowing cards and sparkles when you pick']},
   {v:'8.3.14',date:'2026-11-26',title:'Update prompt in the store app',items:['The update prompt now comes back if it was closed by a screen change','The game checks for a new version when you return to the app or the Hub','The Updates page shows when a new version is ready and downloads the right app']},
@@ -10544,7 +10545,7 @@ class Game extends Phaser.Scene {
   texFreeForRun(idx){ const ch=this.character||Save.data.character||'momo',eg=this.runArtEndgame(),keep=idx==null?null:this.texStageKeep(idx);
     return this.texEvict((k,c)=>c==='menu'||(c==='hero'&&artHero(k)!==ch)||(c==='endgame'&&!eg)||(!!keep&&c==='stage'&&!keep.has(k)),null); }
   /* v8.2.82 เจ้าของ: เล่นไปสักพักเกมใช้ภาพสำรอง (หน่วยความจำเต็ม) → ก่อนโหลดด่านถัดไป คืนภาพของด่านอื่นที่ไม่ใช้ (เดิมสะสมทุกด่านที่เคยเล่น) */
-  stageLoadCover(idx){ try{ const k='stage_card_s'+String((idx|0)+1).padStart(2,'0'),u=ASSET_IMAGES[k],st=STAGES[idx]; if(u&&window.GameLoader?.stageCover)window.GameLoader.stageCover(verUrl(u),st?((st.emoji||'')+' '+(st.en||st.name||'')).trim():''); }catch(e){} }   /* v8.2.83 เจ้าของ: หน้าโหลดเข้าด่าน = ภาพปกด่าน (DOM ไม่กิน GPU ของเกม) + Tip */
+  stageLoadCover(idx){ try{ const k='stage_card_s'+String((idx|0)+1).padStart(2,'0'),u=ASSET_IMAGES[k],st=STAGES[idx]; if(u&&window.GameLoader?.stageCover)window.GameLoader.stageCover(verUrl(u),st?((st.emoji||'')+' '+(st.en||st.name||'')).trim():'',st?.tint); }catch(e){} }   /* v8.2.83 เจ้าของ: หน้าโหลดเข้าด่าน = ภาพปกด่าน (DOM ไม่กิน GPU ของเกม) + Tip */
   /* v8.2.85 A21: วัสดุของมอนสำหรับเสียงตีโดน (เดาจากชนิด/ด่าน · ไม่มีผลกับดาเมจ) */
   a21Mat(e){ if(!e)return 'mochi'; if(e.isElite||e.isMini||e._a21Armor||e.siege)return 'armor'; const si=this.stageIndex||0; return si===3?'ice':(si>=5&&si<=10)?'plant':(si===12||si===13||si===14)?'crystal':'mochi'; }
   texStageKeep(idx){return new Set(this.stageRequiredKeys(idx));}
