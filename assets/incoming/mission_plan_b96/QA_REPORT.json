@@ -1,0 +1,15 @@
+[
+  {"key": "mo96_escort", "reason": "1 distinct nonempty frames; PNG32 transparent; minimum cell margin 13px", "pass": true},
+  {"key": "mo96_hunt", "reason": "1 distinct nonempty frames; PNG32 transparent; minimum cell margin 14px", "pass": true},
+  {"key": "mo96_crack", "reason": "1 distinct nonempty frames; PNG32 transparent; minimum cell margin 14px", "pass": true},
+  {"key": "mo96_fog_wisp", "reason": "1 distinct nonempty frames; PNG32 transparent; minimum cell margin 16px", "pass": true},
+  {"key": "mo96_roots_flower", "reason": "1 distinct nonempty frames; PNG32 transparent; minimum cell margin 14px", "pass": true},
+  {"key": "fx96_wisp_fly", "reason": "12 distinct nonempty frames; PNG32 black; minimum cell margin 10px", "pass": true},
+  {"key": "fx96_root_grow", "reason": "12 distinct nonempty frames; PNG32 transparent; minimum cell margin 4px", "pass": true},
+  {"key": "e96_shade_walk", "reason": "8 distinct nonempty frames; PNG32 transparent; minimum cell margin 10px", "pass": true},
+  {"key": "gp96_parts", "reason": "15 distinct nonempty frames; PNG32 transparent; minimum cell margin 10px", "pass": true},
+  {"key": "ui96_oven_panel", "reason": "1 distinct nonempty frames; PNG32 transparent; minimum cell margin 12px; four transparent 9-slice corners and opaque center", "pass": true},
+  {"key": "ui96_oven_slot", "reason": "1 distinct nonempty frames; PNG32 transparent; minimum cell margin 4px", "pass": true},
+  {"key": "fx96_pot_dust", "reason": "8 distinct nonempty frames; PNG32 black; minimum cell margin 35px", "pass": true},
+  {"key": "fx96_vault_ring", "reason": "1 distinct nonempty frames; PNG32 black; minimum cell margin 25px", "pass": true}
+]

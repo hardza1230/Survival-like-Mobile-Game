@@ -1,0 +1,246 @@
+[
+  {
+    "key": "mo96_escort",
+    "file": "mo96_escort.png",
+    "bytes": 34528,
+    "sha256": "35d3d3f495f3c7e9d5472c73f1218d5e719a68eb564cd4a944a1a0031dfb0048",
+    "width": 192,
+    "height": 192,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "bottom-center",
+    "background": "transparent",
+    "anchorPx": [
+      96,
+      176
+    ]
+  },
+  {
+    "key": "mo96_hunt",
+    "file": "mo96_hunt.png",
+    "bytes": 36139,
+    "sha256": "05627d7c8be20bd699eab311b9c495e01f3d222b92e3aab3e6ac89040d6077ac",
+    "width": 192,
+    "height": 192,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "bottom-center",
+    "background": "transparent",
+    "anchorPx": [
+      96,
+      176
+    ]
+  },
+  {
+    "key": "mo96_crack",
+    "file": "mo96_crack.png",
+    "bytes": 33980,
+    "sha256": "1da9beeb15f7af9fa86393b5c225b4e974d85522c3c43d15fd05a48ed3cbb133",
+    "width": 192,
+    "height": 192,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent",
+    "anchorPx": [
+      96,
+      96
+    ]
+  },
+  {
+    "key": "mo96_fog_wisp",
+    "file": "mo96_fog_wisp.png",
+    "bytes": 22621,
+    "sha256": "9b3996af6f8c7c68a31aee88ab06ced333e25d29e3824902fd89f473744229c3",
+    "width": 192,
+    "height": 192,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent",
+    "anchorPx": [
+      96,
+      96
+    ]
+  },
+  {
+    "key": "mo96_roots_flower",
+    "file": "mo96_roots_flower.png",
+    "bytes": 38349,
+    "sha256": "91f47ba59dfc641fccbb644e4a8e51c3d6d1eeb9687816ac0d7f7ff5d9bdde55",
+    "width": 192,
+    "height": 192,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "bottom-center",
+    "background": "transparent",
+    "anchorPx": [
+      96,
+      176
+    ]
+  },
+  {
+    "key": "fx96_wisp_fly",
+    "file": "fx96_wisp_fly.png",
+    "bytes": 168843,
+    "sha256": "a508dd6d018056270142d702f3662bf11d1aad05b1b3a25e1b5e1d12eb62c6dd",
+    "width": 1024,
+    "height": 768,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 12,
+    "columns": 4,
+    "loop": false,
+    "anchor": "center",
+    "background": "black",
+    "frameRate": 16
+  },
+  {
+    "key": "fx96_root_grow",
+    "file": "fx96_root_grow.png",
+    "bytes": 326461,
+    "sha256": "60dfbdb7417b8aa5cd203513cb489af8a5f9f2470d758c3993efeb9c747efc31",
+    "width": 1024,
+    "height": 768,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 12,
+    "columns": 4,
+    "loop": false,
+    "anchor": "bottom-center",
+    "background": "transparent",
+    "anchorPx": [
+      128,
+      176
+    ],
+    "frameRate": 16,
+    "holdLastFrame": true
+  },
+  {
+    "key": "e96_shade_walk",
+    "file": "e96_shade_walk.png",
+    "bytes": 90317,
+    "sha256": "d5a0c6f974534e7fbcb59756edfd61a4103c3bb62305fb25caa80577271af1df",
+    "width": 512,
+    "height": 256,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": "center",
+    "background": "transparent",
+    "frameRate": 9
+  },
+  {
+    "key": "gp96_parts",
+    "file": "gp96_parts.png",
+    "bytes": 296180,
+    "sha256": "d1ddfa96f6cd0719fedfa1221a4cadaa1d322f82556904d1aefc6e2da0038d7b",
+    "width": 640,
+    "height": 384,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 15,
+    "columns": 5,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent",
+    "frameOrder": {
+      "rows": [
+        "Common",
+        "Rare",
+        "Epic"
+      ],
+      "columns": [
+        "Acid Gland",
+        "Drain Core",
+        "Chili Heart",
+        "Frost Shard",
+        "Oven Brick"
+      ]
+    }
+  },
+  {
+    "key": "ui96_oven_panel",
+    "file": "ui96_oven_panel.png",
+    "bytes": 843415,
+    "sha256": "1d36f30a4d84d330723a439506ae5f3b441e37ae8ed202b377a4763e2f222eca",
+    "width": 760,
+    "height": 940,
+    "frameWidth": 760,
+    "frameHeight": 940,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent",
+    "nineSlice": {
+      "left": 100,
+      "right": 100,
+      "top": 105,
+      "bottom": 115
+    }
+  },
+  {
+    "key": "ui96_oven_slot",
+    "file": "ui96_oven_slot.png",
+    "bytes": 30597,
+    "sha256": "361bc45622ef271d8c9177353212fa589ce97c13e5a8917560b24090fcd62909",
+    "width": 140,
+    "height": 140,
+    "frameWidth": 140,
+    "frameHeight": 140,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "transparent"
+  },
+  {
+    "key": "fx96_pot_dust",
+    "file": "fx96_pot_dust.png",
+    "bytes": 295508,
+    "sha256": "1fbf761583a0c76c6c5d4d3931f57f514ecb90d6769091291bc7d72f63b72118",
+    "width": 1024,
+    "height": 512,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 8,
+    "columns": 4,
+    "loop": true,
+    "anchor": "center",
+    "background": "black",
+    "frameRate": 10
+  },
+  {
+    "key": "fx96_vault_ring",
+    "file": "fx96_vault_ring.png",
+    "bytes": 170715,
+    "sha256": "cdc163d1cf88c040a3f20e3befb60eb7f3ff33d68b67325432d8991524bf9b30",
+    "width": 512,
+    "height": 512,
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": "center",
+    "background": "black"
+  }
+]
