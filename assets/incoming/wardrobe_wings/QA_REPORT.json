@@ -1,0 +1,10 @@
+[
+  {"key": "cos_wing_cream_paint", "alpha": true, "minOpaqueMarginPx": 17, "bothPanels": true, "passed": true},
+  {"key": "cos_wing_sugar_paint", "alpha": true, "minOpaqueMarginPx": 15, "bothPanels": true, "passed": true},
+  {"key": "cos_wing_ruby_paint", "alpha": true, "minOpaqueMarginPx": 19, "bothPanels": true, "passed": true},
+  {"key": "cos_wing_rainbow_paint", "alpha": true, "minOpaqueMarginPx": 17, "bothPanels": true, "passed": true},
+  {"key": "cos_wing_butterfly_paint", "alpha": true, "minOpaqueMarginPx": 15, "bothPanels": true, "passed": true},
+  {"key": "cos_wing_honeycomb_paint", "alpha": true, "minOpaqueMarginPx": 15, "bothPanels": true, "passed": true},
+  {"key": "cos_wing_matcha_paint", "alpha": true, "minOpaqueMarginPx": 17, "bothPanels": true, "passed": true},
+  {"key": "cos_wing_midnight_paint", "alpha": true, "minOpaqueMarginPx": 19, "bothPanels": true, "passed": true}
+]

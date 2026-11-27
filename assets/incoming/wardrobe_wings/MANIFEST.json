@@ -1,0 +1,98 @@
+[
+  {
+    "key": "cos_wing_cream_paint",
+    "file": "assets/art/wardrobe_wings/cos_wing_cream_paint.webp",
+    "width": 288,
+    "height": 256,
+    "pivot": [
+      144,
+      154
+    ],
+    "bytes": 20468,
+    "sha256": "95cc123e0782363060d1ad13f36d5a024bad4c282f2a0b3d3e568c3b8298fa25"
+  },
+  {
+    "key": "cos_wing_sugar_paint",
+    "file": "assets/art/wardrobe_wings/cos_wing_sugar_paint.webp",
+    "width": 288,
+    "height": 256,
+    "pivot": [
+      144,
+      154
+    ],
+    "bytes": 25414,
+    "sha256": "5391537000a5655c8654d8da2ea13343d4a1d7ee02794c2b70b6e040f8c2fbdd"
+  },
+  {
+    "key": "cos_wing_ruby_paint",
+    "file": "assets/art/wardrobe_wings/cos_wing_ruby_paint.webp",
+    "width": 288,
+    "height": 256,
+    "pivot": [
+      144,
+      154
+    ],
+    "bytes": 19438,
+    "sha256": "2c353d2337e750d74a805033531573d16818c745e92e025b5479575275f74e70"
+  },
+  {
+    "key": "cos_wing_rainbow_paint",
+    "file": "assets/art/wardrobe_wings/cos_wing_rainbow_paint.webp",
+    "width": 288,
+    "height": 256,
+    "pivot": [
+      144,
+      154
+    ],
+    "bytes": 19492,
+    "sha256": "abce95a4037b50791e25753605a18c3e412ef9000b456b37c28b408882bdd9ff"
+  },
+  {
+    "key": "cos_wing_butterfly_paint",
+    "file": "assets/art/wardrobe_wings/cos_wing_butterfly_paint.webp",
+    "width": 288,
+    "height": 256,
+    "pivot": [
+      144,
+      154
+    ],
+    "bytes": 22712,
+    "sha256": "848946fdad4eadc75749e5b0e5ef37f99482efd4684e8f4021c49405413252be"
+  },
+  {
+    "key": "cos_wing_honeycomb_paint",
+    "file": "assets/art/wardrobe_wings/cos_wing_honeycomb_paint.webp",
+    "width": 288,
+    "height": 256,
+    "pivot": [
+      144,
+      154
+    ],
+    "bytes": 21060,
+    "sha256": "015248337cc535ad30656005a8d63a1e5ad3b0333418a1a43d110e5326211e41"
+  },
+  {
+    "key": "cos_wing_matcha_paint",
+    "file": "assets/art/wardrobe_wings/cos_wing_matcha_paint.webp",
+    "width": 288,
+    "height": 256,
+    "pivot": [
+      144,
+      154
+    ],
+    "bytes": 18166,
+    "sha256": "81cd0cbe07e2b3c842f850c6d322b28521be8431f79e0798d1c294a64753108d"
+  },
+  {
+    "key": "cos_wing_midnight_paint",
+    "file": "assets/art/wardrobe_wings/cos_wing_midnight_paint.webp",
+    "width": 288,
+    "height": 256,
+    "pivot": [
+      144,
+      154
+    ],
+    "bytes": 19542,
+    "sha256": "57f5907056084881bfbf265cfdcdaf9ec9ab4484ee86d30d3110358f2ba175dd"
+  }
+]

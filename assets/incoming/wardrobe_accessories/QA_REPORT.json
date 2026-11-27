@@ -1,0 +1,18 @@
+[
+  {"key": "trail_heart", "frame": 0, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "trail_star", "frame": 1, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "trail_sugar", "frame": 2, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "trail_note", "frame": 3, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "trail_bubble", "frame": 4, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "trail_flower", "frame": 5, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "trail_mint", "frame": 6, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "dash_bubble", "frame": 7, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "dash_confetti", "frame": 8, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "dash_cream", "frame": 9, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "dash_caramel", "frame": 10, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "pop_heart", "frame": 11, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "pop_sprinkle", "frame": 12, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "pop_star", "frame": 13, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "pop_berry", "frame": 14, "minMarginPx": 11, "alpha": true, "passed": true},
+  {"key": "pet_fox", "frame": 15, "minMarginPx": 11, "alpha": true, "passed": true}
+]

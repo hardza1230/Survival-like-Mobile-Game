@@ -1,0 +1,626 @@
+[
+  {
+    "key": "cos_wing_cream_motion",
+    "item": "wing_cream",
+    "slot": "wing",
+    "file": "assets/art/wardrobe_motion/cos_wing_cream_motion.webp",
+    "bytes": 122774,
+    "sha256": "3df4b0e882b902efa03bca2da0627d367918399b214e1d4e6daad5e29f873d6f",
+    "width": 1280,
+    "height": 576,
+    "frameWidth": 320,
+    "frameHeight": 288,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      160,
+      172
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": "assets/art/wardrobe_wings/cos_wing_cream_paint.webp"
+  },
+  {
+    "key": "cos_wing_sugar_motion",
+    "item": "wing_sugar",
+    "slot": "wing",
+    "file": "assets/art/wardrobe_motion/cos_wing_sugar_motion.webp",
+    "bytes": 129284,
+    "sha256": "52af89e9545241a5591ca0d4ce417436ccbac938770d97253a7819fc6740581f",
+    "width": 1280,
+    "height": 576,
+    "frameWidth": 320,
+    "frameHeight": 288,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      160,
+      172
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": "assets/art/wardrobe_wings/cos_wing_sugar_paint.webp"
+  },
+  {
+    "key": "cos_wing_ruby_motion",
+    "item": "wing_ruby",
+    "slot": "wing",
+    "file": "assets/art/wardrobe_motion/cos_wing_ruby_motion.webp",
+    "bytes": 115568,
+    "sha256": "2957e3b898493d823c91800c786c299b015b6f0a3a9873dc16b7e62f76329b65",
+    "width": 1280,
+    "height": 576,
+    "frameWidth": 320,
+    "frameHeight": 288,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      160,
+      172
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": "assets/art/wardrobe_wings/cos_wing_ruby_paint.webp"
+  },
+  {
+    "key": "cos_wing_rainbow_motion",
+    "item": "wing_rainbow",
+    "slot": "wing",
+    "file": "assets/art/wardrobe_motion/cos_wing_rainbow_motion.webp",
+    "bytes": 121630,
+    "sha256": "b981840ad57629feb2a07a5065525d32eb8eb1da1a1b8a50771ff844320c279c",
+    "width": 1280,
+    "height": 576,
+    "frameWidth": 320,
+    "frameHeight": 288,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      160,
+      172
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": "assets/art/wardrobe_wings/cos_wing_rainbow_paint.webp"
+  },
+  {
+    "key": "cos_wing_butterfly_motion",
+    "item": "wing_butterfly",
+    "slot": "wing",
+    "file": "assets/art/wardrobe_motion/cos_wing_butterfly_motion.webp",
+    "bytes": 129774,
+    "sha256": "6b53af38c8d34ebeb76e02d4e2c1a60dac500930ee293f2e99a4bfcbdc40dd70",
+    "width": 1280,
+    "height": 576,
+    "frameWidth": 320,
+    "frameHeight": 288,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      160,
+      172
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": "assets/art/wardrobe_wings/cos_wing_butterfly_paint.webp"
+  },
+  {
+    "key": "cos_wing_honeycomb_motion",
+    "item": "wing_honeycomb",
+    "slot": "wing",
+    "file": "assets/art/wardrobe_motion/cos_wing_honeycomb_motion.webp",
+    "bytes": 122246,
+    "sha256": "fbd7e094067e21f642928678a9f6c29a255ac063e6f4077a76336e9940a7e30a",
+    "width": 1280,
+    "height": 576,
+    "frameWidth": 320,
+    "frameHeight": 288,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      160,
+      172
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": "assets/art/wardrobe_wings/cos_wing_honeycomb_paint.webp"
+  },
+  {
+    "key": "cos_wing_matcha_motion",
+    "item": "wing_matcha",
+    "slot": "wing",
+    "file": "assets/art/wardrobe_motion/cos_wing_matcha_motion.webp",
+    "bytes": 115296,
+    "sha256": "bc1f7563c9c7df8001da5a5449974e13e7bac656b4878928ea6e6f8d960da1a6",
+    "width": 1280,
+    "height": 576,
+    "frameWidth": 320,
+    "frameHeight": 288,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      160,
+      172
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": "assets/art/wardrobe_wings/cos_wing_matcha_paint.webp"
+  },
+  {
+    "key": "cos_wing_midnight_motion",
+    "item": "wing_midnight",
+    "slot": "wing",
+    "file": "assets/art/wardrobe_motion/cos_wing_midnight_motion.webp",
+    "bytes": 126006,
+    "sha256": "acca3228181bd84548675011989cce90cb95dcb869b259138716c1d71614e6f2",
+    "width": 1280,
+    "height": 576,
+    "frameWidth": 320,
+    "frameHeight": 288,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      160,
+      172
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": "assets/art/wardrobe_wings/cos_wing_midnight_paint.webp"
+  },
+  {
+    "key": "cos_trail_heart_motion",
+    "item": "trail_heart",
+    "slot": "trail",
+    "file": "assets/art/wardrobe_motion/cos_trail_heart_motion.webp",
+    "bytes": 18840,
+    "sha256": "40e9d2b0cfe20ceaf949430223ef3461eddea50764112b4d3b72685604e0850f",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 14,
+    "loop": false,
+    "previewFrame": 1,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 0
+    }
+  },
+  {
+    "key": "cos_trail_star_motion",
+    "item": "trail_star",
+    "slot": "trail",
+    "file": "assets/art/wardrobe_motion/cos_trail_star_motion.webp",
+    "bytes": 19976,
+    "sha256": "8da4e7604e77c917cecbf4ad3b6e31788dd44cab4ba9560f759d95c9a36baecb",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 14,
+    "loop": false,
+    "previewFrame": 1,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 1
+    }
+  },
+  {
+    "key": "cos_trail_sugar_motion",
+    "item": "trail_sugar",
+    "slot": "trail",
+    "file": "assets/art/wardrobe_motion/cos_trail_sugar_motion.webp",
+    "bytes": 21102,
+    "sha256": "eb1eee0e021e6d8218f4ac0826b5f9796b66a60ce3f371d224ed4fef25887035",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 14,
+    "loop": false,
+    "previewFrame": 1,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 2
+    }
+  },
+  {
+    "key": "cos_trail_note_motion",
+    "item": "trail_note",
+    "slot": "trail",
+    "file": "assets/art/wardrobe_motion/cos_trail_note_motion.webp",
+    "bytes": 18016,
+    "sha256": "50d4724892e8f2bd5f0408d9f6145765ead7c6c34bb5c5dec7ba985741ca33fc",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 14,
+    "loop": false,
+    "previewFrame": 1,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 3
+    }
+  },
+  {
+    "key": "cos_trail_bubble_motion",
+    "item": "trail_bubble",
+    "slot": "trail",
+    "file": "assets/art/wardrobe_motion/cos_trail_bubble_motion.webp",
+    "bytes": 17470,
+    "sha256": "7df153b7be7ba7c6c7e63fe7fb0f363fd5ba002136497df5dedb757eaf0a4b44",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 14,
+    "loop": false,
+    "previewFrame": 1,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 4
+    }
+  },
+  {
+    "key": "cos_trail_flower_motion",
+    "item": "trail_flower",
+    "slot": "trail",
+    "file": "assets/art/wardrobe_motion/cos_trail_flower_motion.webp",
+    "bytes": 19294,
+    "sha256": "ad126be259f68f7aeb5251afd079ed38580974a04c1f79cd7cc8cffb800cc008",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 14,
+    "loop": false,
+    "previewFrame": 1,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 5
+    }
+  },
+  {
+    "key": "cos_trail_mint_motion",
+    "item": "trail_mint",
+    "slot": "trail",
+    "file": "assets/art/wardrobe_motion/cos_trail_mint_motion.webp",
+    "bytes": 15676,
+    "sha256": "ff4d72397c6acae786ed11f96c9d4dd60d758fd71dd5e32f476b3d9f443a8da2",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 14,
+    "loop": false,
+    "previewFrame": 1,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 6
+    }
+  },
+  {
+    "key": "cos_dash_bubble_motion",
+    "item": "dash_bubble",
+    "slot": "dash",
+    "file": "assets/art/wardrobe_motion/cos_dash_bubble_motion.webp",
+    "bytes": 25468,
+    "sha256": "dc0e5134dd7b6a033feee155a91ad1fcd28eabc1bee585f3103a01dc9bc75ab2",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 20,
+    "loop": false,
+    "previewFrame": 2,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 7
+    }
+  },
+  {
+    "key": "cos_dash_confetti_motion",
+    "item": "dash_confetti",
+    "slot": "dash",
+    "file": "assets/art/wardrobe_motion/cos_dash_confetti_motion.webp",
+    "bytes": 24150,
+    "sha256": "eebc59abd66d0be1a51705fb33344aea1ba5ec528d63a8d3090db16e7cfeb58e",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 20,
+    "loop": false,
+    "previewFrame": 2,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 8
+    }
+  },
+  {
+    "key": "cos_dash_cream_motion",
+    "item": "dash_cream",
+    "slot": "dash",
+    "file": "assets/art/wardrobe_motion/cos_dash_cream_motion.webp",
+    "bytes": 23456,
+    "sha256": "a3f638571939fd51b97e997ec3c2cebafbea00a2c9df346539034cf801b1b945",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 20,
+    "loop": false,
+    "previewFrame": 2,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 9
+    }
+  },
+  {
+    "key": "cos_dash_caramel_motion",
+    "item": "dash_caramel",
+    "slot": "dash",
+    "file": "assets/art/wardrobe_motion/cos_dash_caramel_motion.webp",
+    "bytes": 23542,
+    "sha256": "3dd5d3bb159781733cf8f592c11de479251b97d93a6d31318545f56c6300b256",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 20,
+    "loop": false,
+    "previewFrame": 2,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 10
+    }
+  },
+  {
+    "key": "cos_pop_heart_motion",
+    "item": "pop_heart",
+    "slot": "pop",
+    "file": "assets/art/wardrobe_motion/cos_pop_heart_motion.webp",
+    "bytes": 26182,
+    "sha256": "e171c23c890cb8110f8aade754d9b6ec86d52df531e788d6b76675f67f973336",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 18,
+    "loop": false,
+    "previewFrame": 2,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 11
+    }
+  },
+  {
+    "key": "cos_pop_sprinkle_motion",
+    "item": "pop_sprinkle",
+    "slot": "pop",
+    "file": "assets/art/wardrobe_motion/cos_pop_sprinkle_motion.webp",
+    "bytes": 33434,
+    "sha256": "cf3952363cc705abafde9ade41a516f8ac1e9593e7b8dc076ebf42143a1b735f",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 18,
+    "loop": false,
+    "previewFrame": 2,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 12
+    }
+  },
+  {
+    "key": "cos_pop_star_motion",
+    "item": "pop_star",
+    "slot": "pop",
+    "file": "assets/art/wardrobe_motion/cos_pop_star_motion.webp",
+    "bytes": 30776,
+    "sha256": "bac6e8360e0939bf00965a239449e21f3355adf5b6b9da0d01a22895f094ccc7",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 18,
+    "loop": false,
+    "previewFrame": 2,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 13
+    }
+  },
+  {
+    "key": "cos_pop_berry_motion",
+    "item": "pop_berry",
+    "slot": "pop",
+    "file": "assets/art/wardrobe_motion/cos_pop_berry_motion.webp",
+    "bytes": 37356,
+    "sha256": "8c0442600d53c1cb5c12b354a1a528f314127de8af93e7cd7d7c402d19f714cb",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 18,
+    "loop": false,
+    "previewFrame": 2,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 14
+    }
+  },
+  {
+    "key": "cos_pet_fox_motion",
+    "item": "pet_fox",
+    "slot": "pet",
+    "file": "assets/art/wardrobe_motion/cos_pet_fox_motion.webp",
+    "bytes": 32886,
+    "sha256": "3a8956103ab7e15da31fb21d1e15cb4ec0a8c55063ccf5c63484a6c0b37a4a58",
+    "width": 576,
+    "height": 288,
+    "frameWidth": 144,
+    "frameHeight": 144,
+    "frameCount": 8,
+    "columns": 4,
+    "rows": 2,
+    "anchor": [
+      72,
+      72
+    ],
+    "frameRate": 8,
+    "loop": true,
+    "previewFrame": 0,
+    "background": "transparent",
+    "source": {
+      "file": "assets/art/cosmetics/cos_accessories_paint.webp",
+      "frame": 15
+    }
+  }
+]
