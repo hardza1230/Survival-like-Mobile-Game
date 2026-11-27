@@ -13,8 +13,8 @@ const mk=(story=true)=>{const sc=new ctx.K();Object.assign(sc,{stageIndex:2,wave
 { const sc=mk(),o={type:'hunt',target:10,progress:6};sc.waveObjective=o;const su=sc.expireWaveObjective();assert.ok(su>0&&sc.sugarRun===su&&sc.burst===1&&o.done&&sc.mode==='waveclear','≥50% done = half reward');assert.deepStrictEqual(sc.settled,[true,false]); }
 { const sc=mk(),o={type:'hunt',target:10,progress:3};sc.waveObjective=o;assert.strictEqual(sc.expireWaveObjective(),0);assert.ok(!sc.burst&&sc.sugarRun===0&&sc.settled[1]===true,'<50% = no mission reward, partial EXP'); }
 const T=m('tickStage'),C=m('completeWaveObjective');
-assert.ok(T.includes("_timed=!this._replayMeter&&(!_obj||_obj.type==='survive'||!!this._waveTimed)"),'timed waves count down');
-assert.ok(T.includes('else if(_o)this.expireWaveObjective();')&&T.includes("else if(_o&&_o._timedGoal&&_o.type==='hungerHerald')this.hhFinish?.(_o,this._sig);"),'timer end: expire / Herald finish');
+assert.ok(T.includes("_timed=!this._replayMeter&&(this._v83Run||!_obj||_obj.type==='survive'||!!this._waveTimed)"),'timed waves count down');
+assert.ok(T.includes('else if(_o&&!(this._v83Mission&&this._v83Mission.o===_o))this.expireWaveObjective();')&&T.includes("else if(_o&&_o._timedGoal&&_o.type==='hungerHerald')this.hhFinish?.(_o,this._sig);"),'timer end: expire / Herald finish');
 assert.ok(C.includes('const _wrap=!!this._waveTimed&&this.waveTimer>WAVE_WRAP;')&&C.includes('const _sk=this._stack,_left=this.waveTimer;this.waveTimer=WAVE_WRAP;'),'finish early = wave wraps up in 8s');
 assert.ok(m('storyCanSpawn').includes('timedNeedsFoes'),'field does not empty while a timed wave runs');
 assert.ok(m('beginWave').includes('this.waveTimedSetup?.(o);'),'hooked at wave start');

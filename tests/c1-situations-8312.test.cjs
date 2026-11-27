@@ -52,7 +52,7 @@ console.log('C1 situations: 5×4 combat situations, side objects (own + met), di
 // v8.3.26 Seasonal Harvest environment event + Root Lure
 { const src=require('fs').readFileSync('game.js','utf8'),A=require('assert');
   A.ok(/const SEASON_ENV_FROM=9,SEASON_ENV_CHANCE=1,SEASON_ENV_EVERY=10;/.test(src)&&src.includes('  seasonEnvPick(i){')&&src.includes('this.seasonEnvPick?.(i);'),'season environment picked per continuous stage');
-  A.ok(src.includes("if(S.def.pattern==='Root Lure'){ const K=!this._stack&&this.stackStart?.('breakRoots');"),'Root Lure starts Lure the Crown Root');
+  A.ok(src.includes("if(S.def.pattern==='Root Lure'){ const K=!this._stack&&this.v83MissionStart?.('breakRoots');"),'Root Lure starts Lure the Crown Root');
   A.equal((src.match(/pattern:'Root Lure'/g)||[]).length,4,'Root Lure in 4 stages from C2-5'); }
 // v8.3.27 Grandma's Golem (Metamorph)
 { const src=require('fs').readFileSync('game.js','utf8'),A=require('assert');
@@ -61,3 +61,8 @@ console.log('C1 situations: 5×4 combat situations, side objects (own + met), di
   A.ok(src.includes('if(this.dist(P.x,P.y,q.x,q.y)<G2_PICK_R)')&&!/g2[^\n]*magnet/i.test(src),'parts stay on the ground until walked over');
   A.ok(src.includes('  g2OvenOpen(o){')&&src.includes('  g2SpawnGolem(o,sel){')&&src.includes("{name:'Grandma’s Golem',home:4,key:'gg_oven',icon:'🗿',color:0xf2b06b,types:['tank','tank','fast'],reward:30,g2:true}"),'C1-5 oven opens the new golem popup');
   A.ok(src.includes("{g2:true,home:5,generic:true"),'golem oven can appear as a C2–C3 side object'); }
+// v8.3.28 base missions (hunt/purge/capture/cleanAir/breakRoots) run as the main objective in continuous runs and persist across waves
+{ const src=require('fs').readFileSync('game.js','utf8'),A=require('assert');
+  A.ok(src.includes("const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission):this.v83MissionStart(o.def.mission)))return;"),'base missions are not sent to the side stack');
+  A.ok(src.includes("clearWaveObjective(force){const VM=this._v83Mission;if(!force&&VM&&this._v83Run&&this.waveObjective===VM.o&&!VM.o.done)return;"),'wave change keeps the running mission');
+  A.ok(src.includes('  tickV83Mission(){'),'mission expiry / boss end'); }

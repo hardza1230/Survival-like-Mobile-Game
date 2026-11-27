@@ -1,4 +1,5 @@
 const CHANGELOG = [
+  {v:'8.3.28',date:'2026-11-27',title:'Side missions fixed',items:['Escort, Hunt, Hunger Crack, Clear the Fog and Root Lure in Chapters 2–3 now play properly and carry on across waves','Clear the Fog now has shadow monsters lurking in the mist']},
   {v:'8.3.27',date:'2026-11-27',title:'Grandma’s Golem reborn',items:['Monsters, minibosses and bosses drop golem parts — walk over them to pick them up','Bring parts to Grandma’s oven, choose three and bake a golem with boss skills']},
   {v:'8.3.26',date:'2026-11-27',title:'Seasons and the Crown Root',items:['From Chapter 2 stage 5 on, one wave per stage may turn into a season with its own hazards','New Root Lure situation: bait the Crown Root into the anchor stones']},
   {v:'8.3.25',date:'2026-11-27',title:'Vault Altar choices and a bigger pot',items:['Vault Altar: step up to the altar and pick a curse while time stands still','Grandma’s Pot has a bigger ring with swirling dust']},

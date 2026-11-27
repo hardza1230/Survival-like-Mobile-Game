@@ -1089,6 +1089,7 @@
     }
     else if(o.type==='cleanAir'){
       this.tickCleanAir(dt);if(!this.waveObjective)return;
+      this.fogShadeTick?.(dt);   /* v8.3.27 เจ้าของ: Monster เงา (ย้ายจาก Mirror Path) = ศัตรูประจำ Clear the Fog */
     }
     else if(o.type==='breakRoots'&&this._lure){ this.tickCrownRoot(dt,o); if(!this.waveObjective)return; }
     else if(o.type==='defendNectar'){
@@ -1174,11 +1175,13 @@
     if(o.type==='fill'&&this.usesStoryBudget?.()){o.type='hunt';o.name='Elite Showdown';o.emoji='🎯';o.progress=0;o.target=1;o._huntPhase='elite';o._huntSpawnAt=this.time.now;o.desc='Defeat the marked Elite to finish this mission';this.renderWaveObjectiveHUD();this.showBanner('Step 2/2: Elite Showdown',o.desc,1800);return;}
     if(this.recipeMode&&this._recipeMission){ o.done=true; const bn=Math.round((20+((this._amapNode&&this._amapNode.d)||1)*4)*this.diffMul().reward); this.sugarStage+=bn; this.sugarRun+=bn; this.clearWaveObjective(); this._recipeMission.done=true; this._hunger+=this.recipeHungerGoal()*MISSION_HUNGER; this.showBanner('✅ Mission complete · Sugar +'+bn+' · Hunger +'+Math.round(MISSION_HUNGER*100)+'%',this._hunger>=this.recipeHungerGoal()?'The boss is coming':'Fill the Hunger Meter to call the boss',2000); if(!['capture','hunt','purge'].includes(o.type))Sfx.clear(); return; }
     if(this._replayMeter&&this._replayMission&&this._replayMission.o===o){ o.done=true; const m=this._replayMeter,bn=Math.round((10+this.stageIndex*3)*(this.diffMul?.().reward||1)); this.sugarStage+=bn; this.sugarRun+=bn; const _rb=this.objBonusPay?.(o,bn)||0; this.missionLootBurst?.(o,bn+_rb); const _rw=this.missionRewardGive?.(o); m.kills=Math.min(m.goal,m.kills+m.goal*.08); this.clearWaveObjective(); this._replayMission=null; m.nextBounty=m.time+50+Math.random()*20; if(!this.missionStamp?.(o,'⭐ BOUNTY COMPLETE','Sugar +'+(bn+_rb)+' · Stage progress +8%',_rw&&_rw.txt))this.showBanner('⭐ Bounty complete · Sugar +'+(bn+_rb),'Stage progress +8%',1800); if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); return; }   /* v8.1.75 Bounty ตอนเล่นซ้ำ */
+    if(this._v83Run&&this._v83Mission&&this._v83Mission.o===o){ const VM=this._v83Mission; o.done=true; VM.won=true; const bn=Math.round((8+this.stageIndex*3)*(this.diffMul?.().reward||1)*(this.maPay?.(o)||1)); this.sugarStage+=bn; this.sugarRun+=bn; this.missionLootBurst?.(o,bn); this.missionRewardGive?.(o); this.missionJuice?.(o); this.clearWaveObjective(true); if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); this.showBanner?.('✅ Side mission complete','Sugar +'+bn,1600); Sfx.orderCue?.('mission_tube_pop',.4,.5); return; }   /* v8.3.28 */
     o.done=true;const zoneObj=['purge','capture','cleanAir','breakRoots','defendNectar',...(typeof SIG_MISSIONS!=='undefined'?SIG_MISSIONS:[])].includes(o.type),bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(zoneObj?1.5:1)*(o._altarMul||1)*(o._ocMul||1)*(o._gold?GOLD_WAVE_MUL:1)*(this.rpMsnRw?.(o.type)||1)*(this.maPay?.(o)||1));this.sugarStage+=bonus;this.sugarRun+=bonus;const _ob=this.objBonusPay?.(o,bonus)||0;if(_ob)Sfx.orderCue?.('mission_bonus_get',.5,.3);if(!this._inTutorial)this.missionLootBurst?.(o,bonus+_ob);if(!this._inTutorial&&typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(o.type))this.leagueCurrencyDrop?.(o);   /* v8.0.18 เจ้าของ: ภารกิจคุ้มกัน/ยืนในวงได้ Sugar ×1.5 + ฟื้น HP 20% */ if(zoneObj&&this.player){const P=this.player,h=Math.round(P.maxhp*.2);P.hp=Math.min(P.maxhp,P.hp+h);this.floatText?.(P.x,P.y-70,'+'+h+' ❤️',0x6dffb4);}if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     if(!this._inTutorial){ this.missionJuice?.(o); this.doubleClearMark?.('main'); this.maEarn?.((1+(_ob?1:0))*(o._gold?2:1)); }
     const _rw=this._inTutorial?null:this.missionRewardGive?.(o),title=(_ob?'⭐ Bonus! · ':'✅ Objective Complete · ')+'Sugar +'+(bonus+_ob)+(zoneObj?' · ❤️ +20%':'');this.clearWaveObjective();const _wrap=!!this._waveTimed&&this.waveTimer>WAVE_WRAP;this._waveTimed=false;if(_wrap){this.rubyVoiceReact?.('early',900);const _sk=this._stack,_left=this.waveTimer;this.waveTimer=WAVE_WRAP;if(_sk&&!_sk.o.done)this.waveTimer=Math.max(WAVE_WRAP,Math.min(_sk.T,_left));}   /* v8.2.21 ภารกิจเสริมยังทำอยู่ → เวฟรอจนภารกิจเสริมหมดเวลา */else{this.mode='waveclear';this.waveTimer=0;if(this.usesStoryBudget?.()){this.clearFoes();this.clearEnemies();this.settleStoryBudget(true);}}{ const sub=_wrap?'Done early! The wave ends in '+WAVE_WRAP+'s':this.usesStoryBudget?.()?'Earned EXP collected + objective reward — choose upgrades':'Clear the remaining enemies to advance'; if(!this.missionStamp?.(o,_ob?'⭐ BONUS CLEAR!':'✅ MISSION COMPLETE','Sugar +'+(bonus+_ob)+(zoneObj?' · ❤️ +20%':'')+'\n'+sub,_rw&&_rw.txt))this.showBanner(title,sub,1500); }if(!['capture','hunt','purge'].includes(o.type))Sfx.clear();
   }
-  clearWaveObjective(){if(!this._stackSwap)this.missionMusicEnd?.(false);this.artFollowClear?.();this.sigClear?.();{ const o=this.waveObjective; if(o){ this.missionArmClear?.(o); if(o._oc){ for(const q of o._oc.objs||[]){ this.tweens?.killTweensOf?.(q); q.destroy?.(); } o._oc=null; } } }Sfx.eventLoopStop?.('event_capture_charge');if(this._wispSnd){this._wispSnd=false;Sfx.eventLoopStop?.('event_wisp_purify_charge');}this._pbTarget=null;this._pbShow=0;if(this.pbFx&&this.pbFx.scene)this.pbFx.clear();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(false);if(this.replayProgressFill)this.replayProgressFill.setVisible(false); if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
+  clearWaveObjective(force){const VM=this._v83Mission;if(!force&&VM&&this._v83Run&&this.waveObjective===VM.o&&!VM.o.done)return;   /* v8.3.28 ภารกิจรองแบบหลัก (Hunt/Escort/Crack/Fog/Crown Root) อยู่ข้ามเวฟ */
+    if(VM&&(force||VM.o.done||this.waveObjective===VM.o))this._v83Mission=null;if(!this._stackSwap)this.missionMusicEnd?.(false);this.artFollowClear?.();this.sigClear?.();{ const o=this.waveObjective; if(o){ this.missionArmClear?.(o); if(o._oc){ for(const q of o._oc.objs||[]){ this.tweens?.killTweensOf?.(q); q.destroy?.(); } o._oc=null; } } }Sfx.eventLoopStop?.('event_capture_charge');if(this._wispSnd){this._wispSnd=false;Sfx.eventLoopStop?.('event_wisp_purify_charge');}this._pbTarget=null;this._pbShow=0;if(this.pbFx&&this.pbFx.scene)this.pbFx.clear();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(false);if(this.replayProgressFill)this.replayProgressFill.setVisible(false); if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
     this.clearWaveEvent();
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
     if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;e._wispRaider=false;});
@@ -1347,7 +1350,7 @@
       const room=Math.min(this.maxLive,this.storyLiveCap())-this.enemies.countActive(true);if(room<3)return;
       S.state='active';
       this.showBanner?.('⚔️ '+S.def.name,S.def.hint,3000);
-      if(S.def.pattern==='Root Lure'){ const K=!this._stack&&this.stackStart?.('breakRoots'); if(K){ S.lure=K; S.left=(MISSION_WAVE_DUR.breakRoots||100); d.delay=Math.max(d.delay||0,8); return; } S.def={...S.def,pattern:'Commander',goal:'leader'}; }   /* v8.3.26 Root Lure = Lure the Crown Root แบบ situation · ภารกิจรองทำอยู่ = ใช้ Commander แทน */
+      if(S.def.pattern==='Root Lure'){ const K=!this._stack&&this.v83MissionStart?.('breakRoots'); if(K){ S.lure=K; S.left=(MISSION_WAVE_DUR.breakRoots||100); d.delay=Math.max(d.delay||0,8); return; } S.def={...S.def,pattern:'Commander',goal:'leader'}; }   /* v8.3.26 Root Lure = Lure the Crown Root แบบ situation · ภารกิจรองทำอยู่ = ใช้ Commander แทน */
       this.spawnChapterCombatPattern(d,S.def.pattern,Math.max(room,5),S);
       d.recent=[S.def.pattern,...(d.recent||[])].slice(0,2);d.last=S.def.pattern;d.delay=Math.max(d.delay||0,8);
       if(S.def.goal==='leader'&&d.command)S.leaderId=d.command.id;
@@ -1359,16 +1362,16 @@
     if(S.def.goal==='pack'){for(const [foe,id] of S.marks)if(!foe.active||foe._c1SpawnId!==id)S.marks.delete(foe);done=S.marks.size===0;}
     else if(S.def.goal==='leader')done=!d.command||d.command.id!==S.leaderId;
     else if(S.def.goal==='dodge'){if(S.hit){this.endChapterSituation(d,false);return;}done=!d.hazard;}
-    else if(S.def.goal==='lure'){ if(S.lure&&this._stack!==S.lure){ this.endChapterSituation(d,!!S.lure.o._won); return; } }
+    else if(S.def.goal==='lure'){ if(S.lure&&this._v83Mission!==S.lure){ this.endChapterSituation(d,!!S.lure.won); return; } }
     if(done){this.endChapterSituation(d,true);return;}
     if(S.left<=0){this.endChapterSituation(d,false);return;}
-    if(S.def.goal==='lure')return;   /* แถบ side mission แสดงความคืบหน้าแทน */
+    if(S.def.goal==='lure'||this._v83Mission)return;   /* แถบภารกิจแสดงความคืบหน้าแทน */
     if(!d.event){const what=S.def.goal==='pack'?S.marks.size+' left':S.def.goal==='leader'?'Defeat the leader':'Don’t get hit';
       this.waveObjTxt?.setText(S.def.name+' · '+what+' · '+Math.ceil(S.left)+'s').setVisible(true).setColor('#ffe9bd');this.waveObjBg?.setVisible(true);this.waveObjBar?.setVisible(false);}
   }
   endChapterSituation(d,success){
     const S=d.sit;if(!S||S.state!=='active')return;S.state=success?'won':'lost';
-    if(!d.event)for(const o of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])o?.setVisible(false);
+    if(!d.event&&!this._v83Mission)for(const o of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])o?.setVisible(false);
     const P=this.player;if(!P)return;
     if(success){
       const total=Math.max(4,Math.round(storyXpNext(this.level||1)*C1_SIT_XP)),n=6;
@@ -1456,6 +1459,14 @@
       }
     }
   }
+  /* v8.3.28 เริ่มภารกิจพื้นฐาน (ไม่ใช่ sig) เป็นภารกิจหลักของเวฟในโหมดต่อเนื่อง · หมดเวลา = หนีไป · บอสมา = จบ */
+  v83MissionStart(type){ if(!this._v83Run||this.waveObjective||this._v83Mission)return null; const dur=(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._); this.setupWaveObjective(Math.max(1,this.waveIndex||1),{dur,forceType:type}); const o=this.waveObjective; if(!o)return null;
+    const VM=this._v83Mission={o,type,until:(this.elapsed||0)+dur,won:false}; this.renderWaveObjectiveHUD?.(); this.showBanner?.('➕ '+(WAVE_OBJECTIVES[type]?.emoji||'')+' '+(WAVE_OBJECTIVES[type]?.name||type),Math.round(dur)+'s · '+(WAVE_OBJECTIVES[type]?.desc||''),2200); Sfx.orderCue?.('wave_start',.35,.6); return VM; }
+  tickV83Mission(){ const VM=this._v83Mission; if(!VM)return; if(this.waveObjective!==VM.o||VM.o.done){ if(this.waveObjective!==VM.o)this._v83Mission=null; return; }
+    if(['boss','bossWarning','reward'].includes(this.mode)||(this.elapsed||0)>=VM.until){ const gone=(this.elapsed||0)>=VM.until; this.clearWaveObjective(true); if(gone)this.floatText?.(this.player?.x||0,(this.player?.y||0)-80,'⌛ '+(WAVE_OBJECTIVES[VM.type]?.name||'Mission')+' slipped away',0xcfc6dc); } }
+  /* v8.3.27 Monster เงาในหมอก: ทุก 5 วิ เงา 2 ตัวโผล่จากหมอก (สูงสุด 6) · เร็วขึ้น 30% · สีมืดโปร่ง */
+  fogShadeTick(dt){ const P=this.player; if(!P)return; this._fogShadeT=(this._fogShadeT??3)-dt; if(this._fogShadeT>0)return; this._fogShadeT=5; let n=0; this.enemies.children.iterate(e=>{ if(e&&e.active&&e._fogShade)n++; });
+    for(let i=0;i<2&&n<6;i++,n++){ const a=Math.random()*TAU,e=this.spawnEnemy('fast',a,Math.max(this.W,this.H)/(this.viewZoom||1)*.45,true); if(!e)continue; e._fogShade=true; e.spd=(e.spd||100)*1.3; e.setTint?.(0x3a2a5a); e.tintColor=0x3a2a5a; e.setAlpha?.(.72); } }
   /* ===== v8.3.27 เจ้าของ: Grandma’s Golem แบบ Metamorph ===== */
   g2Inv(){ const d=Save.data; if(!Array.isArray(d.g2parts))d.g2parts=[]; return d.g2parts; }
   g2OnKill(e){ const G=this._g2; if(!G||G.golem&&e===G.golem.e)return this.g2GolemDown(e); if(!G||e.isDummy)return; const si=this.stageIndex||0,rk=()=>G2_KINDS[Math.floor(Math.random()*G2_KINDS.length)].k;
@@ -1514,7 +1525,7 @@
       for(const k of [-1,1]){ const x=e.x+k*26,y=e.y,ang=Math.atan2(y-P.y,x-P.x),dist=Math.max(70,Math.hypot(x-P.x,y-P.y)),c=this.spawnEnemy('fast',ang,dist,true); if(!c)continue; c.hp*=.55;c.maxhp=c.hp;c.setScale?.((c.scaleX||1)*.8); if(S)S.marks.set(c,c._c1SpawnId); }
       this.vfxHitRing?.(e.x,e.y,0xc9a3ff,false); }
     if(e._c1Spore&&e._c1Spore===e._c1SpawnId){ e._c1Spore=0; const L=d.spores||(d.spores=[]); if(L.length>=8)return; const g=this.camWorld(this.add.circle(e.x,e.y,16,0xb48cff,.55).setStrokeStyle(3,0xe0c8ff,.9).setDepth(-980)); L.push({x:e.x,y:e.y,t:2,g}); this.tweens?.add({targets:g,scale:{from:.6,to:1.6},duration:2000,ease:'Sine.in'}); } }
-  tickChapterNewPatterns(d,dt){ const P=this.player; if(!P)return; this.g2Tick(dt);
+  tickChapterNewPatterns(d,dt){ const P=this.player; if(!P)return; this.g2Tick(dt); this.tickV83Mission();
     if(d.spores){ for(const s of d.spores){ s.t-=dt; if(s.t>0)continue; s.done=true; s.g?.destroy?.(); this.vfxHitRing?.(s.x,s.y,0xb48cff,true); const pw=(10+this.stageIndex*2)*(P.dmgMul||1);
         this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&this.dist(e.x,e.y,s.x,s.y)<80)this.damage(e,pw*3,e.x,e.y); });
         if(this.dist(P.x,P.y,s.x,s.y)<62)this.hurtPlayer?.(3+this.stageIndex,s.x,s.y); }
@@ -1547,13 +1558,13 @@
       d.objects.push({def,x,y,visuals,done:false}); if(def.g2){ this._g2={x,y,obj:d.objects[d.objects.length-1],picks:[],golem:null}; } });
   }
   chapterSideObjectStart(d,o){ if(o.def.g2){ this.g2OvenOpen(o); return; }   /* v8.3.27 */
-    if(o.def.mission){ if(this._stack)return; if(!this.stackStart?.(o.def.mission))return; o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
+    if(o.def.mission){ if(this._stack||this._v83Mission)return; const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission):this.v83MissionStart(o.def.mission)))return;   /* v8.3.28 ภารกิจพื้นฐานเป็นภารกิจหลัก · sig เป็น side stack */ o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
     o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
   tickChapterSideObjects(d){
     if(!d.objects)this.placeChapterSideObjects(d);
     const P=this.player;if(!P)return;
     for(const o of d.objects){ if(o.done||!o.def.g2)continue; const near=this.dist(P.x,P.y,o.x,o.y)<60; if(near&&!o._in){ o._in=true; this.chapterSideObjectStart(d,o); return; } if(!near)o._in=false; }
-    if(this._stack)return;   /* v8.3.24 ทำได้ทีละอัน */
+    if(this._stack||this._v83Mission)return;   /* v8.3.24 ทำได้ทีละอัน */
     for(const o of d.objects){if(o.done||o.def.g2)continue;if(this.dist(P.x,P.y,o.x,o.y)<60){this.chapterSideObjectStart(d,o);return;}}
   }
   clearChapterSideObjects(d){ this.g2Clear?.();for(const o of d?.objects||[])for(const v of o.visuals)v.destroy();if(d)d.objects=null;if(this._c1SideTap){this.input?.off?.('pointerdown',this._c1SideTap);this._c1SideTap=null;}}
@@ -1633,7 +1644,7 @@
     const d=this._c1Combat;
     if(!d)return;
     if(all)this.endChapterSideEvent(d,false,true);   /* v8.3.19 เจ้าของ: วัตถุโผล่แล้วหายไปเอง = เวฟจบตัดภารกิจรองทิ้ง → ทำต่อข้ามเวฟได้ จบเมื่อหมดเวลา/ออกด่าน */
-    if(d.sit&&d.sit.state!=='won'){d.sit.state='lost';for(const o of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])o?.setVisible(false);}
+    if(d.sit&&d.sit.state!=='won'){d.sit.state='lost';if(!this._v83Mission)for(const o of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])o?.setVisible(false);}
     d.sit=null;
     if(all)this.clearChapterSideObjects(d);   /* v8.3.12 วัตถุภารกิจรองอยู่ข้ามเวฟ · ลบเมื่อจบ/ออกด่าน */
     this.clearChapterCombatRoute(d);
@@ -1664,7 +1675,7 @@
     if(this._inTutorial)return; this.tickA23Audio?.();this.goldShimTick?.();   // freeze เวลาระหว่างสอน — ไม่สปอน ไม่นับเวลา ไม่ขึ้นWave (สนามควบคุมโดย coach)
     if(this.mode==='wave'){
       if(!this._v83Run&&this.tickJackpotEvent(dt))return;
-      const _obj=this.waveObjective, _timed=!this._replayMeter&&(!_obj||_obj.type==='survive'||!!this._waveTimed);   // v8.2.20 เวฟภารกิจ Story นับเวลาด้วย (_waveTimed)   // นับถอยหลังเฉพาะเวฟ survive · เวฟภารกิจอื่นต้องเคลียร์ให้จบ (ไม่หมดเวลา)
+      const _obj=this.waveObjective, _timed=!this._replayMeter&&(this._v83Run||!_obj||_obj.type==='survive'||!!this._waveTimed);   /* v8.3.28 โหมดต่อเนื่อง: เวลาเวฟเดินเสมอ แม้มีภารกิจรองแบบหลักอยู่ */   // v8.2.20 เวฟภารกิจ Story นับเวลาด้วย (_waveTimed)   // นับถอยหลังเฉพาะเวฟ survive · เวฟภารกิจอื่นต้องเคลียร์ให้จบ (ไม่หมดเวลา)
       if(_timed)this.waveTimer-=dt;
       if(this._waveTimed&&!this._hurrySaid&&this.waveTimer>0&&this.waveTimer<=10&&this.waveObjective&&!this.waveObjective.done){ this._hurrySaid=true; this.rubyVoiceReact?.('hurry'); }   // v8.2.24 A16
       if(!this._replayMeter){if(this.stageIndex===8)this.tickSeasonArena(dt);if(this.stageIndex===9)this.tickRootThrone(dt);}this.tickWaveObjective(dt);this.stackTick?.(dt);this.tickSeasonEnv?.(dt);this.seedRiftEventTick?.(dt);
@@ -1687,9 +1698,9 @@
         if(this.usesStoryBudget?.()&&this._storyBudget&&!this.storyTimedSwarm())this.timeTxt.setText(this.timeTxt.text+' · Left '+Math.max(0,this._storyBudget.quota-this._storyBudget.spawned)); }
       if(_timed&&this.waveTimer<=0){
         const _o=this.waveObjective;
-        if(_o&&(_o.type==='survive'||!this._waveTimed))this.completeWaveObjective();   // survive ครบเวลา = สำเร็จ
+        if(_o&&!(this._v83Mission&&this._v83Mission.o===_o)&&(_o.type==='survive'||!this._waveTimed))this.completeWaveObjective();   /* v8.3.28 ภารกิจรองแบบหลักไม่จบตามเวลาเวฟ */   // survive ครบเวลา = สำเร็จ
         else if(_o&&_o._timedGoal&&_o.type==='hungerHerald')this.hhFinish?.(_o,this._sig);   // v8.2.20 Herald จบเมื่อหมดเวลา
-        else if(_o)this.expireWaveObjective();   // v8.2.20 หมดเวลา: ≥50% ได้ครึ่ง
+        else if(_o&&!(this._v83Mission&&this._v83Mission.o===_o))this.expireWaveObjective();   // v8.2.20 หมดเวลา: ≥50% ได้ครึ่ง
         else if(this._v83Run)this.onWaveCleared(true,false);
         else if(this.usesStoryBudget?.()&&!this._replayMeter){ this.clearFoes?.(); this.clearEnemies?.(); this.settleStoryBudget?.(true); this.mode='waveclear'; this.showBanner('🌊 Wave complete','Collect your EXP — next wave soon',1400); }
         else{this.mode='waveclear';this.showBanner('⏳ Time’s Up!','Clear all remaining enemies to advance',1800);}
