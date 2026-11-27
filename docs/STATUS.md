@@ -24,6 +24,7 @@
 - A14 เสียงเปิดกล่อง v8.1.147 · A12/A13/79/69 v8.1.108 · 70–78 v8.1.93–97 · 65 + A09 v8.1.43 · 61–63 v8.0.84–95 · 50–54 v8.0.34 · 36 Ruby v7.9.87
 
 ## ระบบที่ปิด/เลิกแล้ว (อย่าทำอาร์ต/เสียง/ฟีเจอร์ให้)
+- Temple Expedition → 🌸 Mochi Garden (v8.3.34 · `GARDEN_ON` · Crumbs = Sugar) · Affix Forge (คราฟ Mod) ปิด → Gear แบบ Archero 2 (v8.3.33 · `GEAR_SIMPLE`) · Boss Rage ปิด (v8.3.31) · เสียง Ambient ด่าน/บอส ปิด (v8.3.31)
 - Dig board + Mochi Patrol → Temple Expedition (v8.2.32 · โค้ดเก่าลบ v8.2.36)
 - Overcharge (ปิด v8.1.103 · ลบ v8.2.36 + v8.2.52)
 - Kitchen ซ่อน v8.2.52 (`KITCHEN_ON=false` · ตัดสินหลัง Closed test)
@@ -32,7 +33,7 @@
 - Boss Rush ซ่อน (v7.8.89) · Midnight Kitchen Endless เลิก (v6.80)
 
 ## รอเจ้าของตัดสินใจ
-- Expedition: Simplify แล้ว v8.2.61 · อยู่ใน Activities + จุดแดง v8.2.62 · แผนวางแผน/ทีม ดูหลัง Closed test (`docs/IDEAS.md`)
+- Mochi Garden: รออาร์ตใบ 97 · ตัวเลขรางวัลจูนหลัง Closed test (`docs/PLANS_GEAR_GARDEN.html`)
 - Seal the Seed Rift ให้สั้นลง (ดูหัวข้อด้านล่าง)
 - ECRS ข้อ E ถัดไป (`docs/ECRS.md`)
 - ล็อกอิน Google แบบ native: เจ้าของตั้ง OAuth client Android + ส่ง Web client ID (`docs/PLAY_CONSOLE_SETUP.md`)

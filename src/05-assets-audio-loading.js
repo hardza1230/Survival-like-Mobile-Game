@@ -1101,7 +1101,7 @@ const MENU_GROUPS=[
   [/^hub$/,/assets\/art\/(?:hub_reference|menu_buttons)\//],
   [/^(upgrade|perks)$/,/assets\/(?:art\/temple\/|ui\/temple\/|art\/icons\/|ui\/currency\/)/],
   [/^kitchen$/,/assets\/(?:art\/kitchen\/|art\/icons\/)/],
-  [/^dig$/,/assets\/art\/dig\//],
+  [/^dig$/,/assets\/art\/(?:dig|patrol70)\//],   // v8.3.34 Mochi Garden ใช้ฉาก Patrol ใบ 70
   [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
   [/^craft$/,/assets\/(?:gear\/|ui\/currency\/|art\/hero_roster_ui\/|art\/forge_ui\/|art\/journal\/)/],
   [/^(gear|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/|art\/hero_roster_ui\/|art\/journal\/)/],

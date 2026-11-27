@@ -309,9 +309,14 @@ const Save = {
   exp(){ const d=this.data; if(!d.exp||typeof d.exp!=='object')d.exp={s:1,k:0,best:1,crumbs:0,tap:1,help:{},at:Date.now(),farm:false,supply:null,daily:'',boss:{}}; const e=d.exp; if(!e.help)e.help={}; if(!e.boss)e.boss={};
     if(!e.mig){ e.mig=1; const dg=d.dig; if(dg&&dg.shovels>0){ e.crumbs+=dg.shovels*SHOVEL_CRUMBS; dg.shovels=0; } try{ if(this.minersCollect)this.minersCollect(); }catch(err){} }   /* ย้ายของเดิม: พลั่ว → Crumbs · ด้ายที่คนงานเก็บไว้ → รับเลย */
     return e; },
-  addCrumbs(n){ const e=this.exp(); e.crumbs=(e.crumbs||0)+Math.max(0,n||0); this.save(); },
+  addCrumbs(n){ if(typeof GARDEN_ON!=='undefined'&&GARDEN_ON){ this.addSugar(Math.max(0,Math.floor(n||0))); return; }   /* v8.3.34 Expedition ปิด → Crumbs = Sugar */ const e=this.exp(); e.crumbs=(e.crumbs||0)+Math.max(0,n||0); this.save(); },
   /* v8.2.62 จุดแดง Expedition: ไม่ได้เข้า ≥1 ชม. (มีของออฟไลน์รอ) หรือ Crumbs พออัปเกรด · แทน Daily chest ที่เลิกไป */
-  expReady(){ try{ if(typeof featureOpen==='function'&&!featureOpen('dig'))return false; const e=this.exp(); if(Date.now()-(e.at||0)>=3600e3)return true; if(e.crumbs>=expTapCost(e.tap||1))return true; const own=new Set((this.data.chars||[]).concat(this.data.character||'momo')); return EXP_HELPERS.some(h=>(h.id==='ruby'||own.has(h.id))&&e.crumbs>=expHelpCost(h,e.help[h.id]|0)); }catch(err){ return false; } },
+  garden(){ const d=this.data; if(!d.garden||typeof d.garden!=='object')d.garden={trips:{},camp:{},help:{},slots:{},cards:[]}; const g=d.garden; for(const k of ['trips','camp','help','slots'])if(!g[k]||typeof g[k]!=='object')g[k]={}; if(!Array.isArray(g.cards))g.cards=[]; return g; },   /* v8.3.34 Mochi Garden */
+  gardenMigrate(){ const d=this.data; if(d.gardenMig1)return; d.gardenMig1=1; const e=d.exp; if(e&&e.crumbs>0){ d.sugar=clampSugar((d.sugar||0)+Math.floor(e.crumbs)); e.crumbs=0; } this.save(); },   /* v8.3.34 Crumbs → Sugar 1:1 */
+  gardenHelpersOwned(){ const n=Math.min(GARDEN_HELPERS.length,typeof storyCleared==='function'?storyCleared():0); return GARDEN_HELPERS.slice(0,n); },
+  gardenTripLeft(z){ const t=this.garden().trips[z]; if(!t)return null; const now=Date.now(); if(now<t.start)t.start=now; return Math.max(0,t.start+t.h*3600e3-now); },
+  gardenReady(){ try{ if(typeof GARDEN_ON==='undefined'||!GARDEN_ON||(typeof featureOpen==='function'&&!featureOpen('dig')))return false; const g=this.garden(); return GARDEN_ZONES.some(z=>g.trips[z.id]&&this.gardenTripLeft(z.id)===0)||GARDEN_ZONES.some(z=>storyCleared()>=z.open&&!g.trips[z.id]); }catch(e){ return false; } },
+  expReady(){ if(typeof GARDEN_ON!=='undefined'&&GARDEN_ON)return this.gardenReady(); try{ if(typeof featureOpen==='function'&&!featureOpen('dig'))return false; const e=this.exp(); if(Date.now()-(e.at||0)>=3600e3)return true; if(e.crumbs>=expTapCost(e.tap||1))return true; const own=new Set((this.data.chars||[]).concat(this.data.character||'momo')); return EXP_HELPERS.some(h=>(h.id==='ruby'||own.has(h.id))&&e.crumbs>=expHelpCost(h,e.help[h.id]|0)); }catch(err){ return false; } },
   expDailyReady(){ if(typeof EXP_DAILY_ON!=='undefined'&&!EXP_DAILY_ON)return false; const e=this.exp(); return e.daily!==localDayKey(); },
   endgameUnlocked(){ return (this.data.ascension||0)>0||storyComplete(); },
   // Zone Modifiers ปลดล็อกเมื่อผ่านบอสจบ Chapter 1 (ด่าน 5 · index 4) = ผู้เล่นเรียนรู้เกมแล้ว

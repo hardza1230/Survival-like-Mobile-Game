@@ -31,6 +31,6 @@ assert(S.expDailyReady());assert(s.expDaily());assert(!S.expDailyReady());assert
 // supplies: one per run, applied then gone
 assert(s.expBuy('supply','hp'));assert(!s.expBuy('supply','xp'),'only one packed');s.player={maxhp:100,hp:50};s.time={delayedCall(){}};assert.strictEqual(s.expSupplyApply(),'hp');assert.strictEqual(s.player.maxhp,115);assert.strictEqual(e.supply,null);
 // wiring
-for(const h of ["buildDig(){ return this.buildExpedition();","this.expSupplyApply?.();","if(target==='dig')return featureOpen('dig')&&Save.expReady();","Defeat 30 Expedition foes","|dig)$/.test(s||'')?'|assets/art/patrol70/'","if(typeof EXP_ON!=='undefined'&&EXP_ON){ this.addCrumbs((n||0)*SHOVEL_CRUMBS); return; }"])assert(src.includes(h),h);
+for(const h of ["buildDig(){ if(typeof GARDEN_ON!=='undefined'&&GARDEN_ON)return this.buildGarden(); return this.buildExpedition();","this.expSupplyApply?.();","if(target==='dig')return featureOpen('dig')&&Save.expReady();","Defeat 30 Expedition foes","|dig)$/.test(s||'')?'|assets/art/patrol70/'","if(typeof EXP_ON!=='undefined'&&EXP_ON){ this.addCrumbs((n||0)*SHOVEL_CRUMBS); return; }"])assert(src.includes(h),h);
 assert(!src.includes("['patrol','🌙','Mochi Patrol'"),'Patrol row removed from Activities');
 console.log('Expedition 8.2.32: stages, boss timer/farm, first-clear rewards, helpers, offline 8h, daily chest, supplies, migration passed');

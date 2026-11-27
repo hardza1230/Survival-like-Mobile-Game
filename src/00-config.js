@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.33';
+const GAME_VERSION = '8.3.34';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -113,7 +113,16 @@ const BOSS_RAGE_ON=false;
 const STAGE_AMBIENT_ON=false;
 /* v8.3.32 เจ้าของ 27 พ.ย.: บอส/มินิบอส Story ไม่เร่งคูลดาวน์ท่า (เดิม ×1.45 บอส · ×1.3 มินิ · เลือด <30% ×1.2) · Delve/Rift คงเดิม */
 const STORY_BOSS_AGGRO=1;
-const DELVE_AGGRO_STEP=.05,DELVE_AGGRO_MAX=1.6;   // v8.3.33 เจ้าของ: ความดุบอส Delve ชั้น 1 = ×1.0 · +0.05/ชั้น · สูงสุด ×1.6 (ชั้น 13+)
+const DELVE_AGGRO_STEP=.05,DELVE_AGGRO_MAX=1.6;
+/* v8.3.34 เจ้าของ 27 พ.ย. (แผน E+B อนุมัติ): Mochi Garden แทน Expedition · ส่งฮีโร่ 1–3 ตัวเดินเก็บของ 1/4/8 ชม. (ออฟไลน์ก็เดิน) · 3 เขต (ฉาก Patrol ใบ 70)
+   ฮีโร่ +15%/ตัว · ทริป 8 ชม.+ +10% · กล่อง Gear 8%/ชม. · โปสการ์ด 15%/ชม. · โมจิผู้ช่วย 15 ตัว (ผ่านด่าน Story ละตัว) ช่อง 2 ต่อเขต · แคมป์ 5 เลเวล */
+const GARDEN_ON=true;
+const GARDEN_ZONES=[{id:'pantry',name:'Pantry Path',em:'🍓',ch:0,open:5,sugar:60,cream:.5},{id:'ferment',name:'Ferment Garden',em:'🌺',ch:1,open:10,sugar:100,cream:1},{id:'grove',name:'Seed Grove',em:'🌟',ch:2,open:15,sugar:150,cream:1.5}];
+const GARDEN_TRIP_H=[1,4,8],GARDEN_HERO_BONUS=.15,GARDEN_LONG_BONUS=.1,GARDEN_BOX_P=.08,GARDEN_CARD_P=.15,GARDEN_SLOTS=2;
+const GARDEN_CAMP=[{lv:1,bonus:0},{lv:2,cost:500,bonus:.1},{lv:3,cost:1500,bonus:.2,slots:3},{lv:4,cost:4000,bonus:.3},{lv:5,cost:10000,bonus:.45,long:12}];
+const GARDEN_HELPER_XP=[0,10,30,60,100],GARDEN_TRAITS=[{k:'sugar',em:'🍬',name:'Sugar',v:.05},{k:'cream',em:'🟢',name:'Twist Cream',v:.05},{k:'box',em:'🎁',name:'Gear box',v:.02},{k:'card',em:'💌',name:'Postcard',v:.05}];
+const GARDEN_HELPERS=['Pip','Bun','Dango','Kiki','Puff','Momi','Tofu','Nori','Yomo','Ume','Sakura','Kuri','Hana','Kinako','Mame'].map((name,i)=>({id:'h'+i,name,stage:i,trait:GARDEN_TRAITS[i%4]}));
+const GARDEN_CARDS=['Ruby naps in a teacup','Grandma’s old recipe tin','A sugar ant parade','Moonlit berry patch','The singing kettle','Frosting footprints','A lost mitten of Mint','Cocoa’s secret training spot','Taro chasing fireflies','Yuzu’s lemon boat','Sesame reading by candle','The first seed sprouts'].map((t,i)=>({id:'c'+i,t}));   // v8.3.33 เจ้าของ: ความดุบอส Delve ชั้น 1 = ×1.0 · +0.05/ชั้น · สูงสุด ×1.6 (ชั้น 13+)
 /* v8.3.32 เจ้าของ: วง Glacier Bloom ของ Mint (กด Unique ค้าง) ย่อทั้งภาพและวงตี ×0.7 */
 const MINT_BLOOM_SCALE=.7;
 const C1_POT_R=95;   // v8.3.25 เจ้าของ: วง Grandma’s Pot ใหญ่ขึ้น (เดิม 58)

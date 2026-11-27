@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.33';
+const GAME_VERSION = '8.3.34';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -113,7 +113,16 @@ const BOSS_RAGE_ON=false;
 const STAGE_AMBIENT_ON=false;
 /* v8.3.32 เจ้าของ 27 พ.ย.: บอส/มินิบอส Story ไม่เร่งคูลดาวน์ท่า (เดิม ×1.45 บอส · ×1.3 มินิ · เลือด <30% ×1.2) · Delve/Rift คงเดิม */
 const STORY_BOSS_AGGRO=1;
-const DELVE_AGGRO_STEP=.05,DELVE_AGGRO_MAX=1.6;   // v8.3.33 เจ้าของ: ความดุบอส Delve ชั้น 1 = ×1.0 · +0.05/ชั้น · สูงสุด ×1.6 (ชั้น 13+)
+const DELVE_AGGRO_STEP=.05,DELVE_AGGRO_MAX=1.6;
+/* v8.3.34 เจ้าของ 27 พ.ย. (แผน E+B อนุมัติ): Mochi Garden แทน Expedition · ส่งฮีโร่ 1–3 ตัวเดินเก็บของ 1/4/8 ชม. (ออฟไลน์ก็เดิน) · 3 เขต (ฉาก Patrol ใบ 70)
+   ฮีโร่ +15%/ตัว · ทริป 8 ชม.+ +10% · กล่อง Gear 8%/ชม. · โปสการ์ด 15%/ชม. · โมจิผู้ช่วย 15 ตัว (ผ่านด่าน Story ละตัว) ช่อง 2 ต่อเขต · แคมป์ 5 เลเวล */
+const GARDEN_ON=true;
+const GARDEN_ZONES=[{id:'pantry',name:'Pantry Path',em:'🍓',ch:0,open:5,sugar:60,cream:.5},{id:'ferment',name:'Ferment Garden',em:'🌺',ch:1,open:10,sugar:100,cream:1},{id:'grove',name:'Seed Grove',em:'🌟',ch:2,open:15,sugar:150,cream:1.5}];
+const GARDEN_TRIP_H=[1,4,8],GARDEN_HERO_BONUS=.15,GARDEN_LONG_BONUS=.1,GARDEN_BOX_P=.08,GARDEN_CARD_P=.15,GARDEN_SLOTS=2;
+const GARDEN_CAMP=[{lv:1,bonus:0},{lv:2,cost:500,bonus:.1},{lv:3,cost:1500,bonus:.2,slots:3},{lv:4,cost:4000,bonus:.3},{lv:5,cost:10000,bonus:.45,long:12}];
+const GARDEN_HELPER_XP=[0,10,30,60,100],GARDEN_TRAITS=[{k:'sugar',em:'🍬',name:'Sugar',v:.05},{k:'cream',em:'🟢',name:'Twist Cream',v:.05},{k:'box',em:'🎁',name:'Gear box',v:.02},{k:'card',em:'💌',name:'Postcard',v:.05}];
+const GARDEN_HELPERS=['Pip','Bun','Dango','Kiki','Puff','Momi','Tofu','Nori','Yomo','Ume','Sakura','Kuri','Hana','Kinako','Mame'].map((name,i)=>({id:'h'+i,name,stage:i,trait:GARDEN_TRAITS[i%4]}));
+const GARDEN_CARDS=['Ruby naps in a teacup','Grandma’s old recipe tin','A sugar ant parade','Moonlit berry patch','The singing kettle','Frosting footprints','A lost mitten of Mint','Cocoa’s secret training spot','Taro chasing fireflies','Yuzu’s lemon boat','Sesame reading by candle','The first seed sprouts'].map((t,i)=>({id:'c'+i,t}));   // v8.3.33 เจ้าของ: ความดุบอส Delve ชั้น 1 = ×1.0 · +0.05/ชั้น · สูงสุด ×1.6 (ชั้น 13+)
 /* v8.3.32 เจ้าของ: วง Glacier Bloom ของ Mint (กด Unique ค้าง) ย่อทั้งภาพและวงตี ×0.7 */
 const MINT_BLOOM_SCALE=.7;
 const C1_POT_R=95;   // v8.3.25 เจ้าของ: วง Grandma’s Pot ใหญ่ขึ้น (เดิม 58)
@@ -221,6 +230,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.34',date:'2026-11-27',title:'Mochi Garden replaces Expedition',items:['🌸 Mochi Garden: send 1–3 heroes on 1, 4 or 8 hour garden trips — they keep collecting while you are away','Trips bring back Sugar, Twist Cream, gear boxes and postcards','Every Story stage you clear rescues a mochi helper; place them in the garden for bonuses','Upgrade each zone’s camp with Sugar','Expedition Crumbs became Sugar']},
   {v:'8.3.33',date:'2026-11-27',title:'Archero-style gear: mods included, Sugar upgrades, merge adds mods; Delve aggro by depth',items:['Gear comes with its mods — no more crafting','⬆ Upgrade gear with Sugar and Twist Cream; it never fails and raises base stats and every mod by 4% per level','Merging 3 items of the same slot and rarity adds a new mod; ⚡ Auto merges them for you','Star Sugar and Recipe Ink become Twist Cream','Delve bosses act faster the deeper you go']},
   {v:'8.3.32',date:'2026-11-27',title:'Story bosses keep their move gaps; smaller Mint Glacier Bloom',items:['Story bosses and minibosses pause between moves as designed instead of chaining them','Mint’s Glacier Bloom ring is 30% smaller']},
   {v:'8.3.31',date:'2026-11-27',title:'Boss Rage off, single loading screen, no stage ambience, New Discovery fix',items:['Bosses no longer get tougher the more monsters you defeat (Boss Rage removed)','Entering a stage shows one loading screen, not a second one after picking your card','Stage background ambience removed','New Discovery after C1-2 shows each unlock once']},
@@ -5570,7 +5580,7 @@ const MENU_GROUPS=[
   [/^hub$/,/assets\/art\/(?:hub_reference|menu_buttons)\//],
   [/^(upgrade|perks)$/,/assets\/(?:art\/temple\/|ui\/temple\/|art\/icons\/|ui\/currency\/)/],
   [/^kitchen$/,/assets\/(?:art\/kitchen\/|art\/icons\/)/],
-  [/^dig$/,/assets\/art\/dig\//],
+  [/^dig$/,/assets\/art\/(?:dig|patrol70)\//],   // v8.3.34 Mochi Garden ใช้ฉาก Patrol ใบ 70
   [/^(atlas|recipes|rift|recipeprep|recipebag|egbuild|pact)$/,/assets\/(?:art\/delve\/|art\/pinnacle\/|art\/build_(?:paths|cards)\/|art\/biomes\/)/],
   [/^craft$/,/assets\/(?:gear\/|ui\/currency\/|art\/hero_roster_ui\/|art\/forge_ui\/|art\/journal\/)/],
   [/^(gear|bazaar|gearInbox|tradein|stats)$/,/assets\/(?:gear\/|ui\/currency\/|character_cards\/|art\/hero_roster_ui\/|art\/journal\/)/],
@@ -7382,8 +7392,8 @@ const BOSS_NO_SHOT=new Set([0,3,6,10,14]);   // C1-1 Ant Empress · C1-4 Frost G
 const FEATURE_OPEN={patrol:3,dig:5,bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
 const FEAT_TAG={dig:'gActivity',bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
 const FEAT_ICON={dig:'tile_dig',rewards:'ic_side_daily',bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
-const FEAT_LINE={dig:'Expedition is open! Your heroes fight titans on their own, even while you’re away. Find it in Activities.',rewards:'Rewards is open! Your daily login gift, Daily Quests and Awards are all here.',bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'Gear Merge is open! Merge 3 items of the same slot and rarity for a higher rarity and a new mod. Upgrade gear with Sugar and Twist Cream.',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
-const FEATURE_NAME={patrol:'🌙 Mochi Patrol',dig:'⚔️ Expedition',rewards:'🎁 Rewards',bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🔗 Gear Merge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
+const FEAT_LINE={dig:'Mochi Garden is open! Send heroes on garden trips — they keep collecting Sugar and Twist Cream while you’re away. Find it in Activities.',rewards:'Rewards is open! Your daily login gift, Daily Quests and Awards are all here.',bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'Gear Merge is open! Merge 3 items of the same slot and rarity for a higher rarity and a new mod. Upgrade gear with Sugar and Twist Cream.',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
+const FEATURE_NAME={patrol:'🌙 Mochi Patrol',dig:'🌸 Mochi Garden',rewards:'🎁 Rewards',bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🔗 Gear Merge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
 // v8.0.29 เจ้าของ: Recipe Book — การ์ดทุกใบของแต่ละ Build (การ์ดสาย + Unique Mutation) · เคยเลือก = ✓ · ครบสายได้ Thread
 const RECIPE_PATH_THREAD=30;
 function recipeCards(hero,pid){ const pt=(BASIC_PATHS[hero]||[]).find(x=>x.id===pid); if(!pt)return []; const L=(pt.upgrades||[]).map(u=>({id:u.id,name:u.name,emoji:u.emoji,iconKey:u.iconKey,desc:hero==='yuzu'?u.desc:u.headline||u.desc}));
@@ -7536,7 +7546,7 @@ const HUB_GROUPS = {
     ['bestiary','☷','Bestiary','Discoveries and Sugar'] ] },
   gActivity:{ title:'🎉 Activities', rows:[
     ['rewards','🎁','Rewards','Login gift, Daily Quests and Awards'],
-    ['dig','⚔️','Expedition','Heroes fight titans on their own · collect 🍪'],   /* v8.2.62 เจ้าของ: อยู่ลึกเกิน (Upgrade → Weave) → เพิ่มใน Activities · ปุ่มเดิมใน Weave ยังอยู่ */   // v8.0.75 เจ้าของ: แทน Daily + Achievements (ซ้ำกับปุ่ม Rewards)
+    ['dig','🌸','Mochi Garden','Send heroes on trips · collect while away'],   /* v8.2.62 เจ้าของ: อยู่ลึกเกิน (Upgrade → Weave) → เพิ่มใน Activities · ปุ่มเดิมใน Weave ยังอยู่ */   // v8.0.75 เจ้าของ: แทน Daily + Achievements (ซ้ำกับปุ่ม Rewards)
     ...(KITCHEN_ON?[['kitchen','🍳','Kitchen',FR_SIMPLE?'Pick a signature move for every run':'Recipes that power every run']]:[]),   /* v8.2.52 ECRS: ซ่อน */
     /* v8.2.32 Mochi Patrol → รวมเข้า Temple Expedition (Weave → Expedition) */
     /* v6.80 E2: Endgame (Endless/Ascension) entry removed */
@@ -7818,6 +7828,7 @@ function forgeSetLines(item,lines){item.affixes=lines.map((a,i)=>a?Object.assign
 const RAR_LINES={start:0,common:1,rare:2,epic:3,legend:3,mythic:4,ancient:5,divine:6},GRADE_NEXT={common:'rare',rare:'epic',epic:'legend',legend:'mythic',mythic:'ancient',ancient:'divine'};
 /* v8.3.33 เจ้าของ 27 พ.ย.: Gear แบบ Archero 2 · Mod ติดมากับของ (ตามระดับ) · อัปเลเวล Sugar + Twist Cream ไม่มีล้ม · เลเวลละ +4% ค่าหลักและ Mod · รวม 3 ชิ้น = ระดับถัดไป + Mod แถวใหม่สุ่มให้ · ปิดหน้า Forge · Star Sugar 1→5 / Recipe Ink 1→3 Twist Cream */
 const GEAR_SIMPLE=true,GEAR_LV_CAP={start:10,common:10,rare:15,epic:20,legend:25,mythic:30,ancient:30,divine:30},GEAR_LV_PCT=.04,GEAR_CUR_TO_CREAM={starsugar:5,recipeink:3};
+if(GEAR_SIMPLE&&typeof HUB_GROUPS!=='undefined'){ const G=HUB_GROUPS.gLoadout; G.rows=G.rows.filter(r=>r[0]!=='craft'); for(const sc of G.sections||[])sc[2]=sc[2].filter(t=>t[0]!=='craft'); }   /* v8.3.33 Forge ปิด */
 function gearUpCost(lv){lv=Math.max(0,lv|0);return {sugar:40*(lv+1),cream:1+Math.floor(lv/3)};}
 function gearFillLines(item){if(!item)return 0;let n=0;for(let i=0;i<FORGE_MAX_LINES;i++){if(!forgeLineOpen(item,i)||forgeLines(item)[i])continue;let mod=null;try{mod=pickWeightedMod(forgePool(item,i));}catch(e){mod=null;}if(!mod)continue;const ls=forgeLines(item);ls[i]=Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1),{line:i});forgeSetLines(item,ls);n++;}return n;}
 const GRADE_ORDER=['start','common','rare','epic','legend','mythic','ancient','divine'],FORGE_MAX_LINES=6;function gradeRank(g){return Math.max(0,GRADE_ORDER.indexOf(g));}   // v8.0.87 เจ้าของ: เหนือ Legend อีก 3 ขั้น (Merge อย่างเดียว) +1 แถวต่อขั้น
@@ -8722,9 +8733,14 @@ const Save = {
   exp(){ const d=this.data; if(!d.exp||typeof d.exp!=='object')d.exp={s:1,k:0,best:1,crumbs:0,tap:1,help:{},at:Date.now(),farm:false,supply:null,daily:'',boss:{}}; const e=d.exp; if(!e.help)e.help={}; if(!e.boss)e.boss={};
     if(!e.mig){ e.mig=1; const dg=d.dig; if(dg&&dg.shovels>0){ e.crumbs+=dg.shovels*SHOVEL_CRUMBS; dg.shovels=0; } try{ if(this.minersCollect)this.minersCollect(); }catch(err){} }   /* ย้ายของเดิม: พลั่ว → Crumbs · ด้ายที่คนงานเก็บไว้ → รับเลย */
     return e; },
-  addCrumbs(n){ const e=this.exp(); e.crumbs=(e.crumbs||0)+Math.max(0,n||0); this.save(); },
+  addCrumbs(n){ if(typeof GARDEN_ON!=='undefined'&&GARDEN_ON){ this.addSugar(Math.max(0,Math.floor(n||0))); return; }   /* v8.3.34 Expedition ปิด → Crumbs = Sugar */ const e=this.exp(); e.crumbs=(e.crumbs||0)+Math.max(0,n||0); this.save(); },
   /* v8.2.62 จุดแดง Expedition: ไม่ได้เข้า ≥1 ชม. (มีของออฟไลน์รอ) หรือ Crumbs พออัปเกรด · แทน Daily chest ที่เลิกไป */
-  expReady(){ try{ if(typeof featureOpen==='function'&&!featureOpen('dig'))return false; const e=this.exp(); if(Date.now()-(e.at||0)>=3600e3)return true; if(e.crumbs>=expTapCost(e.tap||1))return true; const own=new Set((this.data.chars||[]).concat(this.data.character||'momo')); return EXP_HELPERS.some(h=>(h.id==='ruby'||own.has(h.id))&&e.crumbs>=expHelpCost(h,e.help[h.id]|0)); }catch(err){ return false; } },
+  garden(){ const d=this.data; if(!d.garden||typeof d.garden!=='object')d.garden={trips:{},camp:{},help:{},slots:{},cards:[]}; const g=d.garden; for(const k of ['trips','camp','help','slots'])if(!g[k]||typeof g[k]!=='object')g[k]={}; if(!Array.isArray(g.cards))g.cards=[]; return g; },   /* v8.3.34 Mochi Garden */
+  gardenMigrate(){ const d=this.data; if(d.gardenMig1)return; d.gardenMig1=1; const e=d.exp; if(e&&e.crumbs>0){ d.sugar=clampSugar((d.sugar||0)+Math.floor(e.crumbs)); e.crumbs=0; } this.save(); },   /* v8.3.34 Crumbs → Sugar 1:1 */
+  gardenHelpersOwned(){ const n=Math.min(GARDEN_HELPERS.length,typeof storyCleared==='function'?storyCleared():0); return GARDEN_HELPERS.slice(0,n); },
+  gardenTripLeft(z){ const t=this.garden().trips[z]; if(!t)return null; const now=Date.now(); if(now<t.start)t.start=now; return Math.max(0,t.start+t.h*3600e3-now); },
+  gardenReady(){ try{ if(typeof GARDEN_ON==='undefined'||!GARDEN_ON||(typeof featureOpen==='function'&&!featureOpen('dig')))return false; const g=this.garden(); return GARDEN_ZONES.some(z=>g.trips[z.id]&&this.gardenTripLeft(z.id)===0)||GARDEN_ZONES.some(z=>storyCleared()>=z.open&&!g.trips[z.id]); }catch(e){ return false; } },
+  expReady(){ if(typeof GARDEN_ON!=='undefined'&&GARDEN_ON)return this.gardenReady(); try{ if(typeof featureOpen==='function'&&!featureOpen('dig'))return false; const e=this.exp(); if(Date.now()-(e.at||0)>=3600e3)return true; if(e.crumbs>=expTapCost(e.tap||1))return true; const own=new Set((this.data.chars||[]).concat(this.data.character||'momo')); return EXP_HELPERS.some(h=>(h.id==='ruby'||own.has(h.id))&&e.crumbs>=expHelpCost(h,e.help[h.id]|0)); }catch(err){ return false; } },
   expDailyReady(){ if(typeof EXP_DAILY_ON!=='undefined'&&!EXP_DAILY_ON)return false; const e=this.exp(); return e.daily!==localDayKey(); },
   endgameUnlocked(){ return (this.data.ascension||0)>0||storyComplete(); },
   // Zone Modifiers ปลดล็อกเมื่อผ่านบอสจบ Chapter 1 (ด่าน 5 · index 4) = ผู้เล่นเรียนรู้เกมแล้ว
@@ -14414,9 +14430,9 @@ class Game extends Phaser.Scene {
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
     const rpFree=Save.rankUnpicked(), rkW=portrait?Math.min(150,(w-40)/2):124,rkH=30,rkX=portrait?w/2-rkW-3:w-14-rkW,rkY=portrait?ry+32:44;   // v8.0.22 แท็บเหลือ 2 (Rank Rewards · Depths)
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
-    if(featureOpen('dig')){ const ex=Save.exp(),dx=portrait?w/2+3:rkX-rkW-8,glow=Save.expReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Expedition · '+ex.best,'tile_dig','#fff1d6');
+    if(featureOpen('dig')){ const ex=Save.exp(),dx=portrait?w/2+3:rkX-rkW-8,glow=Save.expReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,GARDEN_ON?'🌸 Mochi Garden':'Expedition · '+ex.best,'tile_dig','#fff1d6');
       if(art)this.menu.add(art); else { const g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
-      const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⚔️ Expedition · '+ex.best,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
+      const t2=this.add.text(dx+rkW/2,rkY+rkH/2,GARDEN_ON?'🌸 Mochi Garden':'⚔️ Expedition · '+ex.best,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
       this.menu.add([g2,t2]); this._smallBtnIcon(t2,'tile_dig'); }
       this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
       if(Save.expReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
@@ -14528,10 +14544,10 @@ class Game extends Phaser.Scene {
       if(allMax)pill(x+bw-110,y+rh2/2-17,98,34,'Weave',true,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion'); if(this.tuSparkle)this.tuSparkle(x+bw-61,y+rh2/2,72); if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5'); this.buildMenuScreen(); });
       y+=rh2+28; }
     this.pwSection('MORE',x+2,y-12);
-    { const tw=(bw-gap)/2,th=60,rpFree=Save.rankUnpicked(),dg=Save.dig(),tiles=[['perks','Rank Rewards',rpFree>0?rpFree+' new':'Rank perks','tile_perks','🏅',rpFree>0],featureOpen('dig')?['dig','Expedition','Best stage '+Save.exp().best,'tile_dig','⚔️',Save.expReady()]:['dig','Expedition','🔒 After Chapter 1','tile_dig','⚔️',false]];
+    { const tw=(bw-gap)/2,th=60,rpFree=Save.rankUnpicked(),dg=Save.dig(),tiles=[['perks','Rank Rewards',rpFree>0?rpFree+' new':'Rank perks','tile_perks','🏅',rpFree>0],featureOpen('dig')?['dig',GARDEN_ON?'Mochi Garden':'Expedition',GARDEN_ON?'Garden trips':'Best stage '+Save.exp().best,'tile_dig',GARDEN_ON?'🌸':'⚔️',Save.expReady()]:['dig',GARDEN_ON?'Mochi Garden':'Expedition','🔒 After Chapter 1','tile_dig',GARDEN_ON?'🌸':'⚔️',false]];
       tiles.forEach(([to,name,sub,ik,em,dot],i)=>{ const tx=x+i*(tw+gap); this.pwCard(tx,y,tw,th,false); if(this.textures.exists(ik))this.menu.add(this.add.image(tx+28,y+th/2,ik).setDisplaySize(38,38)); else T(tx+28,y+th/2,em,22,'#fff',false,.5);
         const nt=T(tx+54,y+22,name,13,'#fff1e7',true),st=T(tx+54,y+41,sub,11,'#cfc1d4',false); for(const o of [nt,st])if(o.width>tw-74)o.setScale((tw-74)/o.width); T(tx+tw-12,y+th/2,'›',18,'#cfc1d4',true,1);
-        if(dot&&this.drawBadgeDot)this.drawBadgeDot(this.menu,tx+tw-8,y+8); this._zone(tx,y,tw,th,()=>{ if(to==='dig'&&!featureOpen('dig')){ Sfx.error?.(); this.menuToast?.('🔒 Expedition opens after you clear Chapter 1','#ffd166'); return; } this.menuScreen=to; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='weave_'+to; }); }
+        if(dot&&this.drawBadgeDot)this.drawBadgeDot(this.menu,tx+tw-8,y+8); this._zone(tx,y,tw,th,()=>{ if(to==='dig'&&!featureOpen('dig')){ Sfx.error?.(); this.menuToast?.(GARDEN_ON?'🔒 Mochi Garden opens after you clear Chapter 1':'🔒 Expedition opens after you clear Chapter 1','#ffd166'); return; } this.menuScreen=to; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='weave_'+to; }); }
     if(this._coachSpot){ const sp=this._coachSpot; this._coachSpot=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); this._weaveSpotAt=Date.now(); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,this._weaveTour?'Step 3/5 · Tap a core to spend your Sugar':'Tap to upgrade this core!'); }
     this.menu.setVisible(true); return true; }
   // v8.0.22 buildSpecialCores ถูกรวมเข้า Rank Rewards (buildRankPerks)
@@ -14687,7 +14703,56 @@ class Game extends Phaser.Scene {
   expSupplyApply(){ if(typeof EXP_ON==='undefined'||!EXP_ON||this._inTutorial)return null; this.expSupplyRefill?.(); const e=Save.exp(),id=e.supply,p=this.player; if(!id||!p)return null; e.supply=null; Save.save();
     if(id==='shield')this._shield=Math.max(this._shield||0,1); else if(id==='xp')p.xpMul=(p.xpMul||1)*1.25; else if(id==='sugar')p.sugarFindMul=(p.sugarFindMul||1)*1.2; else if(id==='hp'){ p.maxhp=Math.round(p.maxhp*1.15); p.hp=p.maxhp; }
     const q=EXP_SUPPLIES.find(x=>x.id===id); if(q)this.time?.delayedCall?.(1600,()=>this.showBanner?.('🎒 Supply: '+q.em+' '+q.name,q.desc.replace('in your next stage','this stage').replace('your next stage','this stage'),1600)); return id; }
-  buildDig(){ return this.buildExpedition();   /* v8.2.36 E1: กระดานขุดเดิมลบแล้ว · หน้า dig = Temple Expedition */ }
+  /* v8.3.34 เจ้าของ 27 พ.ย.: 🌸 Mochi Garden (แทน Expedition) · เลือกเขต → ฮีโร่ 1–3 → เวลา → กลับมาเก็บ · ฉาก Patrol ใบ 70 · ผู้ช่วยโมจิจากด่าน Story · แคมป์ */
+  gardenZoneOpen(z){ return storyCleared()>=z.open; }
+  gardenCampInfo(z){ const g=Save.garden(),lv=Math.max(1,Math.min(GARDEN_CAMP.length,g.camp[z.id]||1)),cur=GARDEN_CAMP[lv-1],nx=GARDEN_CAMP[lv]||null; let slots=GARDEN_SLOTS,long=GARDEN_TRIP_H[GARDEN_TRIP_H.length-1]; for(const c of GARDEN_CAMP.slice(0,lv)){ if(c.slots)slots=c.slots; if(c.long)long=c.long; } return {lv,bonus:cur.bonus||0,next:nx,slots,long}; }
+  gardenBusyHeroes(){ const g=Save.garden(),out=new Set(); for(const k in g.trips)for(const h of (g.trips[k].heroes||[]))out.add(h); return out; }
+  gardenHelperLv(id){ const xp=(Save.garden().help[id]||0); let lv=1; GARDEN_HELPER_XP.forEach((t,i)=>{ if(xp>=t)lv=i+1; }); return lv; }
+  gardenAssigned(zid){ const g=Save.garden(),own=new Set(Save.gardenHelpersOwned().map(h=>h.id)); return (g.slots[zid]||[]).filter(id=>own.has(id)); }
+  gardenAssignNext(zid,slot){ const g=Save.garden(),own=Save.gardenHelpersOwned(),used=new Set(); for(const k in g.slots)if(k!==zid)(g.slots[k]||[]).forEach(id=>used.add(id)); const cur=(g.slots[zid]||[]).slice(); (cur).forEach((id,i)=>{ if(i!==slot)used.add(id); });
+    const free=own.filter(h=>!used.has(h.id)); if(!free.length){ Sfx.error?.(); this.menuToast?.('Clear more Story stages to rescue helpers','#ffd166'); return; } const at=free.findIndex(h=>h.id===cur[slot]),nx=free[(at+1)%free.length]; cur[slot]=nx.id; g.slots[zid]=cur; Save.save(); Sfx.select?.(); this.buildMenuScreen(); }
+  gardenMods(zid,heroes,help,h){ const camp=this.gardenCampInfo(GARDEN_ZONES.find(z=>z.id===zid)),m={sugar:0,cream:0,box:0,card:0}; for(const id of help||[]){ const hp=GARDEN_HELPERS.find(x=>x.id===id); if(hp)m[hp.trait.k]+=hp.trait.v*this.gardenHelperLv(id); }
+    const mul=(1+GARDEN_HERO_BONUS*Math.max(1,(heroes||[]).length))*(1+(h>=8?GARDEN_LONG_BONUS:0))*(1+camp.bonus); return {mul,m}; }
+  gardenEstimate(z,heroes,help,h){ const {mul,m}=this.gardenMods(z.id,heroes,help,h); return {sugar:Math.round(z.sugar*h*mul*(1+m.sugar)),cream:Math.round(z.cream*h*mul*(1+m.cream)*10)/10,box:Math.min(.95,GARDEN_BOX_P+m.box),card:Math.min(.95,GARDEN_CARD_P+m.card)}; }
+  gardenStart(z,heroes,h){ const g=Save.garden(); if(g.trips[z.id]||!heroes.length)return false; g.trips[z.id]={start:Date.now(),h,heroes:heroes.slice(0,3),help:this.gardenAssigned(z.id)}; Save.save(); Sfx.menuCue?.('miners_collect',.3)||Sfx.select?.(); this.showBanner?.(z.em+' '+z.name,heroes.length+' hero'+(heroes.length>1?'es':'')+' set off for '+h+'h',1500); return true; }
+  gardenCollect(z){ const g=Save.garden(),t=g.trips[z.id]; if(!t||Save.gardenTripLeft(z.id)>0)return null; const e=this.gardenEstimate(z,t.heroes,t.help,t.h);
+    let cream=Math.floor(e.cream); if(Math.random()<e.cream-cream)cream++; const got=['🍬 +'+e.sugar]; Save.addSugar(e.sugar); if(cream>0){ Save.addCurrency('transmute',cream); got.push('🟢 +'+cream); }
+    let boxes=0; for(let i=0;i<t.h;i++)if(Math.random()<e.box)boxes++; for(let i=0;i<boxes;i++){ const r=Math.random(),tier=r<.6?'common':r<.9?'rare':'epic',pool=GEAR_ALL.filter(b=>b.tier===tier&&!b.unique),b=pool[Math.floor(Math.random()*pool.length)]; if(b){ const il=rollItemLevel(Math.min(STAGES.length-1,z.ch*5+4),1); Save.receiveGearInstance(b.id,{isNew:true,itemLevel:il,chapter:itemChapterFromLevel(il)}); } } if(boxes)got.push('🎁 ×'+boxes);
+    let card=null; for(let i=0;i<t.h&&!card;i++)if(Math.random()<e.card){ const left=GARDEN_CARDS.filter(c=>!g.cards.includes(c.id)); if(left.length){ card=left[Math.floor(Math.random()*left.length)]; g.cards.push(card.id); } } if(card)got.push('💌 '+card.t);
+    for(const id of t.help||[])g.help[id]=(g.help[id]||0)+t.h; delete g.trips[z.id]; Save.save(); Sfx.menuCue?.('miners_collect',.4)||Sfx.clear?.(); this.showBanner?.('🌸 Back from '+z.name,got.join('  ·  '),2600); return got; }
+  gardenCampUp(z){ const c=this.gardenCampInfo(z); if(!c.next)return; if(!Save.spend(c.next.cost)){ Sfx.error?.(); this.menuToast?.('Need 🍬'+c.next.cost+' Sugar','#ff9bb5'); return; } Save.garden().camp[z.id]=c.lv+1; Save.save(); Sfx.select?.(); this.showBanner?.('⛺ Camp Lv '+(c.lv+1),z.name+' rewards +'+Math.round(c.next.bonus*100)+'%'+(c.next.slots?' · 3 helper slots':'')+(c.next.long?' · 12h trips':''),1600); this.buildMenuScreen(); }
+  buildGarden(){ Save.gardenMigrate?.(); if(this._patrolOn)this.patrolStop?.(); this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🌸 Mochi Garden','dig_bg',this._expFrom==='upgrade'?'upgrade':'gActivity'); const w=this.W,h=this.H,top=70+this._hdrShift(),g=Save.garden();
+    const T=(x,y,str,fs,col,ox=.5)=>{ const o=this.add.text(x,y,str,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:col,stroke:'#1a0f1e',strokeThickness:3,align:'center',wordWrap:{width:w-36}}).setOrigin(ox,.5); this.menu.add(o); return o; };
+    if(!GARDEN_ZONES.some(z=>z.id===this._gardenZ))this._gardenZ=GARDEN_ZONES[0].id; const z=GARDEN_ZONES.find(q=>q.id===this._gardenZ);
+    // แท็บเขต
+    const tw=(w-28-12)/3; GARDEN_ZONES.forEach((q,i)=>{ const x=14+i*(tw+6),open=this.gardenZoneOpen(q),done=g.trips[q.id]&&Save.gardenTripLeft(q.id)===0; this.heroButton(x,top,tw,30,(open?q.em:'🔒')+' '+q.name,open?()=>{ this._gardenZ=q.id; this._gardenPick=null; Sfx.select?.(); this.buildMenuScreen(); }:()=>{ Sfx.error?.(); this.menuToast?.('🔒 Opens after '+(q.open<=5?'Chapter 1':q.open<=10?'Chapter 2':'Chapter 3'),'#ffd166'); },{active:q.id===z.id,fontSize:11}); if(done&&this.drawBadgeDot)this.drawBadgeDot(this.menu,x+tw-6,top+6); });
+    // ฉาก
+    const sy=top+38,fh=Math.round(Math.max(200,Math.min(300,h*.32))),fx=10,fw=w-20,gy=sy+fh-26,trip=g.trips[z.id],left=trip?Save.gardenTripLeft(z.id):null;
+    if(!this.patrolScene?.(z.ch,fx,sy,fw,fh,gy)){ const gg=this.add.graphics(); gg.fillStyle(0x1d2a3a,.95).fillRoundedRect(fx,sy,fw,fh,20).fillStyle(0x2c3f2c,1).fillRoundedRect(fx,sy+fh*.62,fw,fh*.38,{tl:0,tr:0,bl:20,br:20}); this.menu.add(gg); }
+    if(trip){ (trip.heroes||[]).forEach((hc,i)=>{ const x=fx+fw*.22-i*34,k='char_'+hc; let o; if(this.textures.exists(k)){ o=this.add.sprite(x,gy+6,k,0).setOrigin(.5,1).setScale(Math.min(1,fh*.3/128)); } else o=T(x,gy-16,(CHARACTERS[hc]||{}).emoji||'🍡',26,'#fff'); this.menu.add(o); this.hubTween?.({targets:o,y:o.y-5,duration:260,yoyo:true,repeat:-1,delay:i*90}); });
+      if(left>0){ const spawn=()=>{ if(!this.menu||this.menuScreen!=='dig')return; const f=this.patrolFoe?.(z.ch,fx+fw-20,gy); if(!f)return; this.menu.add(f); this.hubTween?.({targets:f,x:fx+fw*.3,duration:2600,onComplete:()=>{ const fy=f.y-20; f.destroy(); this.patrolPop?.(fx+fw*.3,fy,0xffffff); if(this.textures.exists('pt_loot')){ const l=this.add.image(fx+fw*.3,fy,'pt_loot',Math.floor(Math.random()*3)).setScale(22/64); this.menu.add(l); this.hubTween?.({targets:l,y:fy-40,alpha:0,duration:700,onComplete:()=>l.destroy()}); } }}); }; spawn(); this.hubEvery?.(1900,600,spawn); } }
+    else if(this.textures.exists('pt_dim')){ const im=this.add.image(fx+fw/2,sy+fh*.42,'pt_dim').setDisplaySize(fh*.62,fh*.62).setAlpha(.9); this.menu.add(im); }
+    let y=sy+fh+14; const cx=w/2;
+    if(trip){ if(left>0){ const hh=Math.floor(left/3600e3),mm=Math.ceil((left%3600e3)/60000); T(cx,y,'⏳ '+(hh?hh+'h ':'')+mm+'m left',16,'#fff0b8'); y+=26; const e=this.gardenEstimate(z,trip.heroes,trip.help,trip.h); T(cx,y,'Bringing back about 🍬'+e.sugar+'  🟢'+e.cream+'  · 🎁 '+Math.round(e.box*100)+'%/h',12,'#cfc1d4'); y+=30; }
+      else { this.heroButton(30,y,w-60,46,'🎁 Collect',()=>{ this.gardenCollect(z); this.buildMenuScreen(); },{active:true,fontSize:17}); this.tapZones[this.tapZones.length-1].tag='garden_collect'; y+=58; } }
+    else { const own=[...new Set((Save.data.chars||[]).concat(Save.data.character||'momo'))].filter(c=>CHARACTERS[c]&&CHAR_ORDER.includes(c)),busy=this.gardenBusyHeroes(); if(!this._gardenPick)this._gardenPick=own.filter(c=>!busy.has(c)).slice(0,1); const pick=this._gardenPick;
+      T(cx,y,'Pick 1–3 heroes · each adds +'+Math.round(GARDEN_HERO_BONUS*100)+'%',12,'#cfc1d4'); y+=18; const cw=Math.min(58,(w-28)/Math.max(1,own.length)-6);
+      own.forEach((c,i)=>{ const x=cx-(own.length*(cw+6)-6)/2+i*(cw+6),on=pick.includes(c),b=busy.has(c),gr=this.add.graphics(); gr.fillStyle(on?0x4a3a1a:0x2c2338,b?.4:1).fillRoundedRect(x,y,cw,cw,12).lineStyle(2,on?0xffd166:0x4a4059,1).strokeRoundedRect(x,y,cw,cw,12); this.menu.add(gr); T(x+cw/2,y+cw/2,(CHARACTERS[c]||{}).emoji||'🍡',24,'#fff');
+        this._zone(x,y,cw,cw,()=>{ if(b){ Sfx.error?.(); this.menuToast?.('Already on a garden trip','#ffd166'); return; } const at=pick.indexOf(c); if(at>=0)pick.splice(at,1); else if(pick.length<3)pick.push(c); Sfx.select?.(); this.buildMenuScreen(); }); });
+      y+=cw+10; const camp=this.gardenCampInfo(z),hs=GARDEN_TRIP_H.concat(camp.long>8?[camp.long]:[]),bw=(w-28-(hs.length-1)*6)/hs.length; if(!hs.includes(this._gardenH))this._gardenH=hs[1]||hs[0];
+      hs.forEach((hh,i)=>{ this.heroButton(14+i*(bw+6),y,bw,32,hh+'h',()=>{ this._gardenH=hh; Sfx.select?.(); this.buildMenuScreen(); },{active:this._gardenH===hh,fontSize:13}); }); y+=40;
+      const e=this.gardenEstimate(z,pick,this.gardenAssigned(z.id),this._gardenH); T(cx,y,'About 🍬'+e.sugar+'  🟢'+e.cream+'  · 🎁 '+Math.round(e.box*100)+'%/h · 💌 '+Math.round(e.card*100)+'%/h',12,'#cfc1d4'); y+=22;
+      const can=this.gardenZoneOpen(z)&&pick.length>0; this.heroButton(30,y,w-60,44,'▶ Send to '+z.name,can?()=>{ if(this.gardenStart(z,pick,this._gardenH)){ this._gardenPick=null; this.buildMenuScreen(); } }:null,{active:can,disabled:!can,fontSize:15}); this.tapZones[this.tapZones.length-1].tag='garden_send'; y+=54; }
+    // ผู้ช่วย + แคมป์
+    const camp=this.gardenCampInfo(z),as=g.slots[z.id]||[],sw=Math.min(110,(w-28-(camp.slots-1)*6)/camp.slots);
+    T(14,y,'🐾 Helpers ('+Save.gardenHelpersOwned().length+'/'+GARDEN_HELPERS.length+' rescued)',12,'#ffe9bd',0); y+=16;
+    for(let i=0;i<camp.slots;i++){ const x=14+i*(sw+6),hp=GARDEN_HELPERS.find(q=>q.id===as[i])&&Save.gardenHelpersOwned().some(q=>q.id===as[i])?GARDEN_HELPERS.find(q=>q.id===as[i]):null,gr=this.add.graphics(); gr.fillStyle(0x2c2338,1).fillRoundedRect(x,y,sw,40,10).lineStyle(1.5,0x4a4059,1).strokeRoundedRect(x,y,sw,40,10); this.menu.add(gr);
+      T(x+sw/2,y+13,hp?hp.trait.em+' '+hp.name+' Lv'+this.gardenHelperLv(hp.id):'＋ Helper',11,hp?'#fff1d6':'#9d93aa'); if(hp)T(x+sw/2,y+29,'+'+Math.round(hp.trait.v*this.gardenHelperLv(hp.id)*100)+'% '+hp.trait.name,9,'#cfc1d4');
+      this._zone(x,y,sw,40,()=>this.gardenAssignNext(z.id,i)); }
+    y+=50; const nx=camp.next; this.heroButton(14,y,w-28,36,'⛺ Camp Lv '+camp.lv+' · +'+Math.round(camp.bonus*100)+'%'+(nx?'  →  Upgrade 🍬'+nx.cost:'  · Max'),nx?()=>this.gardenCampUp(z):null,{fontSize:12,disabled:!nx}); y+=44;
+    T(cx,y,'💌 Postcards '+g.cards.length+'/'+GARDEN_CARDS.length,11,'#cfc1d4');
+    this.menu.setVisible(true); }
+  buildDig(){ if(typeof GARDEN_ON!=='undefined'&&GARDEN_ON)return this.buildGarden(); return this.buildExpedition();   /* v8.2.36 E1: กระดานขุดเดิมลบแล้ว · หน้า dig = Temple Expedition */ }
   tuHeader(key,x,y,w,label,color){ const bw=Math.min(w*.7,Math.max(150,label.length*6.4+64)),p=this.tuPanel(key,0,x,y-2,bw,18); if(!p)return false;
     const t=this.add.text(x+(TEMPLE_UI[key][3]?.[0]||60)*(p._tuK||.4)+4,y+7,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color,stroke:'#3a0d22',strokeThickness:2}).setOrigin(0,0.5); this.menu.add([p,t]);
     if(this.tuHas('perk_tier_line')){ const lw=x+w-(x+bw+4); if(lw>20)this.menu.add(this.tuImg('perk_tier_line',0,x+bw+4,y+7,lw,6).setOrigin(0,0.5)); }

@@ -11,7 +11,7 @@ e.crumbs=1e6;assert(S.expReady(),'can upgrade → dot');
 e.crumbs=0;e.at=Date.now()-2*3600e3;assert(S.expReady(),'away ≥1h → dot');
 open=false;assert(!S.expReady(),'locked → no dot');
 // Activities row + nav badge + unlock text
-for(const h of["['dig','⚔️','Expedition','Heroes fight titans on their own · collect 🍪'],","if(t==='gActivity')return C('daily')||C('achievements')||C('dig');","FEAT_TAG={dig:'gActivity',","dig:'⚔️ Expedition',","if(target==='dig')return featureOpen('dig')&&Save.expReady();"])assert(src.includes(h),h);
+for(const h of["['dig','🌸','Mochi Garden','Send heroes on trips · collect while away'],","if(t==='gActivity')return C('daily')||C('achievements')||C('dig');","FEAT_TAG={dig:'gActivity',","dig:'🌸 Mochi Garden',","if(target==='dig')return featureOpen('dig')&&Save.expReady();"])assert(src.includes(h),h);
 assert(!/Depths is open|Use shovels/.test(src.slice(src.indexOf('const FEAT_LINE'),src.indexOf('\n',src.indexOf('const FEAT_LINE')))),'old Depths unlock text gone');
 const g=src.indexOf('gActivity:{ title:');assert(src.slice(g,src.indexOf('] },',g)).includes("['dig',"),'Expedition in Activities');
 console.log('Expedition findable 8.2.62: Activities row, red dot (away 1h / can upgrade), unlock text passed');
