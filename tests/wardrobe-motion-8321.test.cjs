@@ -19,4 +19,6 @@ assert.deepEqual([...g.cosIcon(c)],['cos_icons',0]);t.add('cos_wing_cream_paint'
 const d={id:'dash_cream',slot:'dash',icon:['cos_icons2',8]};assert.deepEqual([...g.cosIcon(d)],['cos_icons2',8]);t.add('cos_accessories_paint');assert.deepEqual([...g.cosIcon(d)],['cos_accessories_paint',9]);
 g._cosTried=new Set(['cos_wing_cream_motion']);assert.equal(g.cosArtKey(c),'cos_wing_cream','failed motion load falls back to the old sheet');
 assert(fs.readFileSync('scripts/build-www.mjs','utf8').includes("join(www, 'missions-review.html')"),'mission summary page on GitHub Pages, kept out of the app');
+const shop=s.slice(s.indexOf('const COSMETICS=['),s.indexOf('];',s.indexOf('const COSMETICS=[')));
+for(const [id,price] of [['wing_honeycomb',450],['wing_matcha',450],['wing_midnight',450],['trail_mint',150],['dash_caramel',250],['pop_berry',300],['pet_fox',300]]){assert(new RegExp("id:'"+id+"'[^}]*price:"+price+"[^}]*emoji:").test(shop),id+' in the shop at '+price);assert(mot.some(r=>r.key==='cos_'+id+'_motion'),id+' has motion art');}
 console.log('Wardrobe motion 8.3.21: 24 sheets + 8 wing icons + atlas, lazy, motion→old→code fallback, summary page passed');

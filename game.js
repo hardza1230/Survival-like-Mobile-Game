@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.21';
+const GAME_VERSION = '8.3.22';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -148,6 +148,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.22',date:'2026-11-27',title:'New Wardrobe items',items:['New in the Wardrobe: Honeycomb, Matcha and Midnight Wings, Pudding Fox, Mint Leaf Trail, Caramel Dash and Berry Pop']},
   {v:'8.3.21',date:'2026-11-27',title:'Animated Wardrobe',items:['Wings, pets, trails, dashes and pops now use new animated artwork','Wardrobe shop icons are freshly painted']},
   {v:'8.3.20',date:'2026-11-27',title:'No more Shovels',items:['Shovels are gone from every reward','Chapter 1 side objects sit in the stage with no label — walk onto one to start it']},
   {v:'8.3.19',date:'2026-11-27',title:'Berry Blast fixes and easier side events',items:['Berry Blast has its firing sound back and the aim cone now starts at Strawberry','The mini-boss prize wheel no longer offers Shovels','Chapter 1 side events start when you walk onto them and keep going after the wave ends']},
@@ -7336,17 +7337,22 @@ const COSMETICS=[
   {id:'wing_ruby',slot:'wings',name:'Ruby Jam Wings',price:450,col:0xff7a9a,icon:['cos_icons',2]},
   {id:'wing_rainbow',slot:'wings',name:'Rainbow Jelly Wings',price:450,col:0xc8b6ff,icon:['cos_icons2',12]},
   {id:'wing_butterfly',slot:'wings',name:'Macaron Butterfly Wings',price:450,col:0xffd0e8,icon:['cos_icons2',13]},
+  {id:'wing_honeycomb',slot:'wings',name:'Honeycomb Wings',price:450,col:0xffc94a,emoji:'🍯',icon:['cos_wing_honeycomb_paint']},   // v8.3.21 เจ้าของ: ของใหม่ 7 ชิ้น ราคาเท่าประเภทเดียวกัน
+  {id:'wing_matcha',slot:'wings',name:'Matcha Wings',price:450,col:0x9fd68a,emoji:'🍵',icon:['cos_wing_matcha_paint']},
+  {id:'wing_midnight',slot:'wings',name:'Midnight Wings',price:450,col:0x7a6ad8,emoji:'🌙',icon:['cos_wing_midnight_paint']},
   {id:'pet_mochi',slot:'pet',name:'Flying Mochi',price:300,col:0xffd6e8,emoji:'🍡',icon:['cos_icons',3]},
   {id:'pet_turtle',slot:'pet',name:'Macaron Turtle',price:300,col:0x9fe0b8,emoji:'🐢',icon:['cos_icons',4]},
   {id:'pet_bird',slot:'pet',name:'Cookie Bird',price:300,col:0xe0a860,emoji:'🐤',icon:['cos_icons',5]},
   {id:'pet_bunny',slot:'pet',name:'Balloon Bunny',price:300,col:0xfff0f6,emoji:'🐰',icon:['cos_icons2',14]},
   {id:'pet_jelly',slot:'pet',name:'Smiling Jelly',price:300,col:0x9fd8ff,emoji:'🫧',icon:['cos_icons2',15]},
+  {id:'pet_fox',slot:'pet',name:'Pudding Fox',price:300,col:0xffb36b,emoji:'🦊',icon:['cos_accessories_paint',15]},
   {id:'trail_heart',slot:'trail',name:'Heart Trail',price:150,col:0xff8fb5,tk:'cos_trail',tf:0,icon:['cos_icons',6]},
   {id:'trail_star',slot:'trail',name:'Star Trail',price:150,col:0xffe08a,tk:'cos_trail',tf:1,icon:['cos_icons',7]},
   {id:'trail_sugar',slot:'trail',name:'Sugar Sparkle Trail',price:150,col:0xffffff,tk:'cos_trail',tf:2,icon:['cos_icons',8]},
   {id:'trail_note',slot:'trail',name:'Music Note Trail',price:150,col:0xff9ed8,tk:'cos_trail2',tf:0,icon:['cos_icons2',16]},
   {id:'trail_bubble',slot:'trail',name:'Bubble Trail',price:150,col:0xbfe8ff,tk:'cos_trail2',tf:1,icon:['cos_icons2',17]},
   {id:'trail_flower',slot:'trail',name:'Little Flower Trail',price:150,col:0xfff08a,tk:'cos_trail2',tf:2,icon:['cos_icons2',18]},
+  {id:'trail_mint',slot:'trail',name:'Mint Leaf Trail',price:150,col:0x9ff0d0,emoji:'🌿',icon:['cos_accessories_paint',6]},
   {id:'halo_donut',slot:'halo',name:'Sprinkle Donut Halo',price:400,col:0xff9ec4,icon:['cos_icons2',0]},
   {id:'halo_crown',slot:'halo',name:'Sugar Glass Crown',price:400,col:0xffe08a,icon:['cos_icons2',1]},
   {id:'halo_cloud',slot:'halo',name:'Cotton Cloud Rainbow',price:400,col:0xdff4ff,icon:['cos_icons2',2]},
@@ -7356,9 +7362,11 @@ const COSMETICS=[
   {id:'dash_bubble',slot:'dash',name:'Bubble Dash',price:250,col:0xbfe8ff,icon:['cos_icons2',6]},
   {id:'dash_confetti',slot:'dash',name:'Confetti Dash',price:250,col:0xffd166,icon:['cos_icons2',7]},
   {id:'dash_cream',slot:'dash',name:'Whipped Cream Dash',price:250,col:0xfff4e0,icon:['cos_icons2',8]},
+  {id:'dash_caramel',slot:'dash',name:'Caramel Dash',price:250,col:0xd89a4a,emoji:'🍮',icon:['cos_accessories_paint',10]},
   {id:'pop_heart',slot:'pop',name:'Heart Pop',price:300,col:0xff8fb5,icon:['cos_icons2',9]},
   {id:'pop_sprinkle',slot:'pop',name:'Sprinkle Pop',price:300,col:0xa8f0d0,icon:['cos_icons2',10]},
-  {id:'pop_star',slot:'pop',name:'Star Pop',price:300,col:0xffe08a,icon:['cos_icons2',11]}];
+  {id:'pop_star',slot:'pop',name:'Star Pop',price:300,col:0xffe08a,icon:['cos_icons2',11]},
+  {id:'pop_berry',slot:'pop',name:'Berry Pop',price:300,col:0xff5c8a,emoji:'🍓',icon:['cos_accessories_paint',14]}];
 const COS_ACC_ICONS=['trail_heart','trail_star','trail_sugar','trail_note','trail_bubble','trail_flower','trail_mint','dash_bubble','dash_confetti','dash_cream','dash_caramel','pop_heart','pop_sprinkle','pop_star','pop_berry','pet_fox'];   // v8.3.21 cos_accessories_paint cell order
 const COS_LOBBY_MAX=1.6;   // v8.1.58 เจ้าของ: Lobby ขยายภาพเล็กเกิน ~3 เท่า → แตก · จำกัดไม่เกิน 1.6 เท่าของต้นฉบับ
 /* v8.1.70 เจ้าของ: ปีก/ฮาโล/วงใต้เท้า แปะตัวแล้วดูลอย → เลิกขายแยก (คืนด้ายเต็มราคา) · ขายเป็นสกินเต็มตัวแทน (ใบ 69) */
