@@ -18,6 +18,7 @@ assert(s.includes("deal.preview?dealAllShown:350"),'preview deal waits for every
 // v8.3.19: Berry Blast sound back, aim cone apex on the hero, C1 side objects walk-to-start without circles, events survive wave ends
 assert(!s.includes("Sfx.uqReady?.('uq_shotgun_blast')"),'Berry Blast uses the original sniper fire sound');
 assert(s.includes("a.setOrigin(115/512,.5).setPosition(pl.x,pl.y).setRotation(s.ang).setScale(R/264"),'aim cone starts at the hero');
-assert(!s.includes('_c1SideTap=p=>')&&s.includes("'\\nWalk here to start'"),'no tap start on C1 side objects');
+assert(!s.includes('_c1SideTap=p=>')&&!s.includes('Walk here to start'),'C1 side objects: no tap start and no label (v8.3.20)');
+assert(!/Save\.addShovels\((\d|n\)|sv|3\+)/.test(s)&&!s.includes("name:'Shovels'")&&!s.includes('Temple shovels')&&!/shovel:[1-9]/.test(s),'v8.3.20 no Shovels granted anywhere');
 assert(s.includes('if(all)this.endChapterSideEvent(d,false,true);'),'a running side event is not cut at wave end');
 console.log('Owner round 8.3.15: stun 2 s, Daily ×1.5, Ancient off, code-drawn Rank Rewards passed');

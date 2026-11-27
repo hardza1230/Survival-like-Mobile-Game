@@ -16,7 +16,7 @@ d.chars=[];const ch1=L.find(a=>a.id==='ch1');assert.equal(awReached(ch1,d),0);as
 d.stageStars={0:7,1:3};assert.equal(L.find(a=>a.id==='stars1').val(d),5);
 d.bestiary={boss0:2,mini1:3,e_basic:200};assert.equal(L.find(a=>a.id==='kills').val(d),205);assert.equal(L.find(a=>a.id==='bosses').val(d),2);assert.equal(L.find(a=>a.id==='minis').val(d),3);
 d.heroWins={momo:{wins:3,builds:{sniper:1,shotgun:1}}};assert.equal(awReached(L.find(a=>a.id==='hb_momo'),d),2);
-assert.deepEqual({...awReward(ch1,0)},{sugar:80,shovel:2});assert.equal(awReward(ch1,3).chest,'gold');assert(awReward(ch1,4).title);assert(awReward(L.find(a=>a.id==='hb_momo'),2).title,'last tier of a 3-tier award gives the title');
+assert.deepEqual({...awReward(ch1,0)},{sugar:80});assert.equal(awReward(ch1,3).chest,'gold');assert(awReward(ch1,4).title);assert(awReward(L.find(a=>a.id==='hb_momo'),2).title,'last tier of a 3-tier award gives the title');
 // claim one tier at a time via the real method
 const m=src.slice(src.indexOf('  awClaim(a){'),src.indexOf('\n',src.indexOf('  awClaim(a){')+400));
 const cls=vm.runInContext('(class{'+src.slice(src.indexOf('  awClaim(a){'),src.indexOf('  buildSettings(){'))+'})',ctx);const sc=new cls();Object.assign(sc,{showBanner(){},buildAchievements(){},openChest(c,f){sc.chest=f;}});

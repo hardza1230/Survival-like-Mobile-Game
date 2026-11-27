@@ -1000,7 +1000,6 @@
       if(m[0]){ const sh=[8,16,32][i]; Save.addThreads(sh); lines.push('🧶 +'+sh+' Weave Thread');
         const nc=[0,2,4][i],got={}; for(let k=0;k<nc;k++){ const rk=typeof rollWeightedCurrency==='function'?rollWeightedCurrency('rare'):'transmute',c=CURRENCY.find(x=>x.key===rk)||CURRENCY[0]; Save.addCurrency(c.key,1); got[c.key]=(got[c.key]||0)+1; }
         for(const k in got){ const c=CURRENCY.find(x=>x.key===k); lines.push((c.emoji||'✦')+' +'+got[k]+' '+c.name); } }
-      if(m[1]){ const sv=[3,4,6][i]; Save.addShovels(sv); lines.push('⛏️ +'+sv+' Shovels'); }
       if(i===2&&m[0]){ const it=this.grantGear(Math.random()<0.25?'epic':'rare'); if(it)lines.push('🎁 '+(it.name||'Gear item')+(it.delivery==='inbox'?' (Inbox)':'')); }
     } finally { DailyQ._mute=false; }
     Save.save(); try{ Sfx.menuCue?.('dq_box_'+['s','m','l'][i],.45)||Sfx.rewardCue(['sfx_event_loot_rare_reveal','sfx_event_loot_epic_reveal','sfx_chest_win'][i],0.6); }catch(e){ try{Sfx.clear();}catch(_){} }

@@ -18,7 +18,7 @@ for(const [w,h]of [[320,568],[360,640],[390,844],[430,932],[691,1536],[768,1024]
  for(const z of s._summaryBtns)within(z,w,h);assert.equal(s._summaryBtns.find(z=>z.tag==='continue').h,48);assert.equal(Save.saves,quit?0:1);
  const stale=click(s,'details');assert(s._summaryDetailsLayer?.active);stale.fn();assert.equal(s._summaryBtns.filter(z=>z.tag==='close_details').length,1,'stale main action ignored');
  click(s,'tab_loot');let seen=[];while(true){seen.push(...objects.filter(o=>typeof o.text==='string'&&/^Equipment \d+$/.test(o.text)).map(o=>o.text));const pages=objects.filter(o=>typeof o.text==='string'&&/^\d+ \/ \d+$/.test(o.text)).at(-1)?.text;if(!pages)break;const[a,b]=pages.split(' / ').map(Number);if(a===b)break;click(s,'next');for(const z of s._summaryBtns)within(z,w,h);}
- assert(new Set(seen).size===23,'all boxes accessible through paged details');assert(objects.some(o=>o.text==='Material c11'));assert(objects.some(o=>o.text==='Temple shovels'));
+ assert(new Set(seen).size===23,'all boxes accessible through paged details');assert(objects.some(o=>o.text==='Material c11'));assert(!objects.some(o=>o.text==='Temple shovels'),'v8.3.20 no Shovels row');
  click(s,'tab_stars');if(!quit)assert(objects.some(o=>o.text==='★ Finish with 70%+ HP'));click(s,'close_details');
  const ad=click(s,'ad');assert(s.adCallback);s.adCallback();assert.equal(s.doubled,1);s._summaryDoubled=true;s.showStageSummary(true);assert(!s._summaryBtns.some(z=>z.tag==='ad'));assert.equal(Save.saves,quit?0:1,'redraw cannot save rewards again');ad.fn();assert.equal(s.doubled,1,'stale rebuilt ad action ignored');click(s,'continue');assert(s.continued);
 }

@@ -1365,7 +1365,7 @@
     const ring=this.camWorld(this.add.circle(p.x,p.y,R,0xc7a6ff,0.18).setStrokeStyle(5,0xe0c8ff,0.9).setDepth(90000).setScale(0.3)); this.tweens.add({targets:ring,scale:1,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
     this.enemies.getChildren().forEach(e=>{ if(e.active&&this.dist(e.x,e.y,p.x,p.y)<=R)this.damage(e,dmg); }); }
   // v5.30 ⛏️ Treasure Sense: ฆ่ามอนมีโอกาสได้พลั่ว (สูงสุด 3/ด่าน)
-  ancientTreasure(e){ if(!Save.ancientHas('treasureSense')||(this._shovelFind||0)>=3||Math.random()>0.005)return; this._shovelFind=(this._shovelFind||0)+1; Save.addShovels(1); this.floatText(e.x,e.y-24,'+'+(typeof SHOVEL_CRUMBS!=='undefined'?SHOVEL_CRUMBS+' 🍪':'1 ⛏️'),0xffd9a8); }
+  ancientTreasure(e){ }   /* v8.3.20 เจ้าของ: Ancient Perks และ Shovels ถูกเอาออกแล้ว */
   relicDmg(mul){ return (10+(this.level||1)*1.5)*(this.player.dmgMul||1)*(1+(this.stageIndex||0)*0.35)*mul; }
   /* v8.2.29 Pact Relics: รวมผลกับด่านจาก Relic + Trade-off ที่ถือ + คำสาป Cursed Crown ของเวฟนี้ */
   rpIds(){ const out=Object.keys(this._rel||{}).filter(k=>this._rel[k]); for(const t of (this.basicAttack?.trades||[]))out.push(t); return out; }

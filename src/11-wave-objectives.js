@@ -284,7 +284,7 @@ const CHAPTERS = [
 
 // v8.0.23 เจ้าของ: Awards ใหม่ — 4 หมวด · แต่ละรายการมีขั้น ★ (ส่วนใหญ่ 5) · รางวัล Sugar → Thread → หีบทอง → ฉายา · ★ สุดท้ายของหมวดปลดกรอบโปรไฟล์สีหมวด
 const AW_CATS=[{id:'story',emoji:'📖',name:'Story',col:0xffd166},{id:'heroes',emoji:'🍡',name:'Heroes',col:0xff8fb8},{id:'combat',emoji:'⚔️',name:'Combat',col:0xff7a6a},{id:'collect',emoji:'💎',name:'Collection',col:0x7fe3d0}];
-const AW_REWARD=[{sugar:80,shovel:2},{thread:20,shovel:2},{sugar:200,thread:25,shovel:3},{chest:'gold'},{thread:60,title:true}];
+const AW_REWARD=[{sugar:80},{thread:20},{sugar:200,thread:25},   /* v8.3.20 ไม่มี Shovels */{chest:'gold'},{thread:60,title:true}];
 function awSum(o,re){ let n=0; for(const k in o||{})if(!re||re.test(k))n+=Number(o[k])||0; return n; }
 function awCleared(d,a,b){ const m=d.stageMastery||{}; let n=0; for(let i=a;i<=b;i++)if(m[i])n++; return n; }
 function awStars(d,a,b){ const S=d.stageStars||{}; let n=0; for(let i=a;i<=b;i++){ const m=S[i]|0; n+=(m&1?1:0)+(m&2?1:0)+(m&4?1:0); } return n; }

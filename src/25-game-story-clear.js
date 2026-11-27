@@ -353,10 +353,9 @@
     const pool=[
       {id:'sugar',artKey:'prize_sugar',name:'Sugar',sub:'+'+S(120),w:5,color:0xff7fb0,give:()=>{this.sugarStage+=S(120);}},
       {id:'currency',artKey:'prize_currency',name:'Currency',sub:'×'+(2+Math.floor(si/3)),w:5,color:0x7fd0ff,give:()=>this.grantCurrencyReward(2+Math.floor(si/3),this.currencyTierFor(),'Boss wheel')},
-      {id:'shovel',artKey:'prize_shovel',name:'Shovels',sub:'+'+(3+Math.floor(dr)),w:4,color:0xc9a36b,give:()=>Save.addShovels(3+Math.floor(dr))},
       {id:'thread',artKey:'prize_thread',name:'Weave Thread',sub:'+'+S(25),w:5,color:0xd59bff,give:()=>Save.addThreads(S(25))},
       {id:'gear',artKey:'prize_chest',name:'Gear',sub:'Random item',w:3,color:0x8ff0b0,give:()=>{ const t=Math.random()<0.15*dr?'epic':'rare'; this.grantGear&&this.grantGear(t); }},
-      {id:'jackpot',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3 · Shovels +5',w:2.4,color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');Save.addShovels(5);}}];
+      {id:'jackpot',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3',w:2.4,color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');}}];   /* v8.3.20 เจ้าของ: เอา Shovels ออกจากเกมทั้งหมด */
     this.openPrizeWheel('gold',()=>done(),{prizes:pool,title:'👑 Boss Loot',double:true});
   }
   openDoubleOrNothing(p,done){
@@ -410,7 +409,7 @@
   }
   onStageClear(){ try{ const _ss=this.rpAdd?.('starsugar')||0; if(_ss>0&&typeof Save!=='undefined'){ Save.addCurrency('starsugar',_ss); this.showBanner?.('🪟 Glass Garden','+'+_ss+' Star Sugar',1500); } }catch(e){}   /* v8.2.29 */ this.clearSugarCoins(); this.evalStageStars?.();
     // v5.32 ⛏️ พลั่วจากการผ่านด่าน: ปกติ 1 / ยาก 2 / นรก 3 (กฎเหล็ก) · ไม่ให้ใน tutorial
-    this._clearShovels=0;if(!this._inTutorial){ const n=Math.max(1,Math.min(3,this.stageDiff||1))+2; Save.addShovels(n);this._clearShovels=n; this.time.delayedCall(900,()=>this.showBanner&&this.showBanner('⛏️ +'+n+' Shovel'+(n>1?'s':''),'Dig for treasure in the Temple Depths',1600)); }
+    this._clearShovels=0;   /* v8.3.20 เจ้าของ: ไม่แจก Shovels ตอนจบด่านแล้ว */
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
     this.clearFoes(); this.clearPickups(true); this.waveAlive=0; this.pipG.clear();
@@ -643,7 +642,7 @@
     const tabs=['run','loot','stars'],cw=(pw-40)/3;tabs.forEach((id,i)=>this.summaryButton(box,{x:x+20+i*cw,y:y+50,w:cw-6,h:44},id===tab?'• '+id.toUpperCase():id.toUpperCase(),()=>this.openSummaryDetails(id),false,'tab_'+id));
     let rows=[];const cp=Save.cp(this.character),sr=this._quitSummary?null:this._starRes;
     if(tab==='stars')rows=STAGE_STARS.map((v,i)=>({label:(sr?.mask&(1<<i)?'★ ':'☆ ')+v.name,value:sr?(sr.mask&(1<<i)?'Earned':'Not earned'):'Not evaluated'}));
-    else if(tab==='loot'){rows=stageSummaryLoot(this._openedBoxes).map(v=>({label:v.name||'Box reward',value:(v.tier||'common').toUpperCase()+(v.ilv?' · iLv '+v.ilv:''),key:v.id?'gear_'+v.id:null}));if(this._clearShovels>0)rows.push({label:'Temple shovels',value:'×'+this._clearShovels});for(const [k,n]of Object.entries(this._runCurrency||{}))if(n>0){const d=currencyDef(k);rows.push({label:d?.name||k,value:'×'+n,key:d?.asset});}}
+    else if(tab==='loot'){rows=stageSummaryLoot(this._openedBoxes).map(v=>({label:v.name||'Box reward',value:(v.tier||'common').toUpperCase()+(v.ilv?' · iLv '+v.ilv:''),key:v.id?'gear_'+v.id:null}));for(const [k,n]of Object.entries(this._runCurrency||{}))if(n>0){const d=currencyDef(k);rows.push({label:d?.name||k,value:'×'+n,key:d?.asset});}}
     else{rows=[{label:'Time',value:Math.floor((this.elapsed||0)/60)+':'+Math.floor((this.elapsed||0)%60).toString().padStart(2,'0')},{label:'Enemies defeated',value:String(this.stageKills||0)},{label:'Sugar earned',value:'+'+(this.sugarStage||0)},{label:'Boxes opened',value:String((this._openedBoxes||[]).length)},{label:'Character level',value:'Lv '+cp.lvl},{label:'Power',value:(this._powerBefore??Save.power(this.character))+' → '+(this._powerAfter??Save.power(this.character))}];
       if(sr?.bonus)rows.push({label:'Included: star Sugar',value:'+'+sr.bonus});if(this._dailyBonus)rows.push({label:'Included: daily Sugar',value:'+'+this._dailyBonus});if((this._newSpecies||[]).length)rows.push({label:'New monsters discovered',value:String(this._newSpecies.length),action:true});}
     const per=Math.max(1,Math.floor((ph-216)/54)),pages=Math.max(1,Math.ceil(rows.length/per)),pg=Math.max(0,Math.min(pages-1,page)),slice=rows.slice(pg*per,pg*per+per);
@@ -990,7 +989,7 @@
   _coachFinish(){ this.time?.delayedCall?.(0,()=>this.coachControls?.()); if(this._coachIntro){this._coachIntro.destroy();this._coachIntro=null;} if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.data.tutorialCoachPassed=true; Save.save(); try{ Tele.ev('tutorial_done'); }catch(e){}
     // v4.25: รางวัลจบสอน = 🍬 Sugar (พออัพ Flavor Weave 3 แก่นได้ — เปิดตั้งแต่เริ่ม · gear ยังล็อกจนผ่านด่าน 1)
     const rewardGranted=!Save.data.tutorialRewardGiven;
-    if(rewardGranted){ Save.data.tutorialRewardGiven=true; Save.addSugar(140); Save.addShovels(10); Save.save(); }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
+    if(rewardGranted){ Save.data.tutorialRewardGiven=true; Save.addSugar(140); Save.save(); }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
     this.sugarStage=0; Sfx.clear&&Sfx.clear();
     // หน้า "จบการสอน" ค้างจนกว่าจะแตะ (ไม่เด้งออกเองให้ดูไม่ทัน)
     this.showTutorialComplete(rewardGranted);
@@ -1008,9 +1007,9 @@
     const t=this.add.text(w/2,h*0.415,'Tutorial Complete!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe1a2'}).setOrigin(0.5);
     const rlabel=this.add.text(w/2,h*0.485,rewardGranted?'STARTER REWARDS':'REWARDS ALREADY CLAIMED',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9ce5e1'}).setOrigin(0.5);
     const cards=this.add.graphics(),items=[],gap=8,cw=(pw-32-gap)/2,cy=h*0.575;
-    const rewards=[{key:'ic_sugar',name:'Sugar',amount:'+140',color:0xffd782},{key:'dig_shovel',name:'Shovels',amount:'+10',color:0xaee8df}];
+    const rewards=[{key:'ic_sugar',name:'Sugar',amount:'+140',color:0xffd782}];
     rewards.forEach((reward,i)=>{
-      const x=w/2+(i?gap/2:-gap/2-cw),y=cy-35;
+      const x=rewards.length===1?w/2-cw/2:w/2+(i?gap/2:-gap/2-cw),y=cy-35;
       cards.fillStyle(0x42304e,1);cards.fillRoundedRect(x,y,cw,70,13);
       cards.lineStyle(1,reward.color,0.55);cards.strokeRoundedRect(x,y,cw,70,13);
       const icon=this.add.image(x+30,cy,reward.key).setDisplaySize(43,43);

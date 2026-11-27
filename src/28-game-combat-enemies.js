@@ -68,7 +68,7 @@
       if(victory){this.queueBossVictory(victoryPose,bx,by);return;}
       this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
-    if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+'+(typeof SHOVEL_CRUMBS!=='undefined'?SHOVEL_CRUMBS+' 🍪':'1 ⛏️'),0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
+   // v5.32 มินิบอส 25% +1 พลั่ว
     if(isMini){ const mt=this.miniChestTier(),mx=e.x,my=e.y,ms=this._lootTok||0; if(!this._inTutorial&&!this.bossRush)this._levelHoldUntil=(this.time?.now||0)+2900;   /* v8.1.144 owner 🐞: loot → EXP/level-up → chest, one after another (level-up and the Spin wheel used to cover the loot) */
       let tries=0; const drop=()=>{ if(this.state==='menu'||this.state==='summary'||ms!==(this._lootTok||0))return; if((this.state!=='play'||(this.pendingLvl||0)>0)&&tries++<40){ this.time.delayedCall(400,drop); return; } this._nextChestTier=mt; this.spawnChest(mx,my,'mini'); }; this.time.delayedCall(this._inTutorial||this.bossRush?0:3600,drop);this.onWaveCleared(false,true); return; }   /* v8.1.101 เจ้าของ: วงล้อ (Spin) เปิดทับ loot bomb → กล่องมินิบอสหล่นหลังของระเบิดออกและดูดเข้าตัวแล้ว (~2.3 วิ) */   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }

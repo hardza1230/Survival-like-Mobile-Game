@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.19';
+const GAME_VERSION = '8.3.20';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -148,6 +148,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.20',date:'2026-11-27',title:'No more Shovels',items:['Shovels are gone from every reward','Chapter 1 side objects sit in the stage with no label — walk onto one to start it']},
   {v:'8.3.19',date:'2026-11-27',title:'Berry Blast fixes and easier side events',items:['Berry Blast has its firing sound back and the aim cone now starts at Strawberry','The mini-boss prize wheel no longer offers Shovels','Chapter 1 side events start when you walk onto them and keep going after the wave ends']},
   {v:'8.3.18',date:'2026-11-27',title:'Smoother app updates',items:['Future app updates install over the old app without removing it']},
   {v:'8.3.17',date:'2026-11-26',title:'A livelier stage loading screen',items:['The stage loading screen now has slow light rays, drifting mist in the stage’s colour and rising sparkles']},
@@ -10165,7 +10166,7 @@ const CHAPTERS = [
 
 // v8.0.23 เจ้าของ: Awards ใหม่ — 4 หมวด · แต่ละรายการมีขั้น ★ (ส่วนใหญ่ 5) · รางวัล Sugar → Thread → หีบทอง → ฉายา · ★ สุดท้ายของหมวดปลดกรอบโปรไฟล์สีหมวด
 const AW_CATS=[{id:'story',emoji:'📖',name:'Story',col:0xffd166},{id:'heroes',emoji:'🍡',name:'Heroes',col:0xff8fb8},{id:'combat',emoji:'⚔️',name:'Combat',col:0xff7a6a},{id:'collect',emoji:'💎',name:'Collection',col:0x7fe3d0}];
-const AW_REWARD=[{sugar:80,shovel:2},{thread:20,shovel:2},{sugar:200,thread:25,shovel:3},{chest:'gold'},{thread:60,title:true}];
+const AW_REWARD=[{sugar:80},{thread:20},{sugar:200,thread:25},   /* v8.3.20 ไม่มี Shovels */{chest:'gold'},{thread:60,title:true}];
 function awSum(o,re){ let n=0; for(const k in o||{})if(!re||re.test(k))n+=Number(o[k])||0; return n; }
 function awCleared(d,a,b){ const m=d.stageMastery||{}; let n=0; for(let i=a;i<=b;i++)if(m[i])n++; return n; }
 function awStars(d,a,b){ const S=d.stageStars||{}; let n=0; for(let i=a;i<=b;i++){ const m=S[i]|0; n+=(m&1?1:0)+(m&2?1:0)+(m&4?1:0); } return n; }
@@ -13014,7 +13015,6 @@ class Game extends Phaser.Scene {
       if(m[0]){ const sh=[8,16,32][i]; Save.addThreads(sh); lines.push('🧶 +'+sh+' Weave Thread');
         const nc=[0,2,4][i],got={}; for(let k=0;k<nc;k++){ const rk=typeof rollWeightedCurrency==='function'?rollWeightedCurrency('rare'):'transmute',c=CURRENCY.find(x=>x.key===rk)||CURRENCY[0]; Save.addCurrency(c.key,1); got[c.key]=(got[c.key]||0)+1; }
         for(const k in got){ const c=CURRENCY.find(x=>x.key===k); lines.push((c.emoji||'✦')+' +'+got[k]+' '+c.name); } }
-      if(m[1]){ const sv=[3,4,6][i]; Save.addShovels(sv); lines.push('⛏️ +'+sv+' Shovels'); }
       if(i===2&&m[0]){ const it=this.grantGear(Math.random()<0.25?'epic':'rare'); if(it)lines.push('🎁 '+(it.name||'Gear item')+(it.delivery==='inbox'?' (Inbox)':'')); }
     } finally { DailyQ._mute=false; }
     Save.save(); try{ Sfx.menuCue?.('dq_box_'+['s','m','l'][i],.45)||Sfx.rewardCue(['sfx_event_loot_rare_reveal','sfx_event_loot_epic_reveal','sfx_chest_win'][i],0.6); }catch(e){ try{Sfx.clear();}catch(_){} }
@@ -18860,7 +18860,6 @@ class Game extends Phaser.Scene {
     list.forEach((def,k)=>{const {x,y}=this.objectivePosition(k,list.length,300,520),visuals=[];
       const art=this.artSpr?.(def.key,x,y+22,72,0,{sig:false,depth:y+3});   /* v8.3.19 เจ้าของ: เอาวงกลมสีออก · ไม่ต้องแตะ เดินไปเหยียบวัตถุ = เริ่ม */
       visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
-      visuals.push(this.camWorld(this.add.text(x,y-70,def.icon+' '+def.name+'\nWalk here to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',align:'center',stroke:'#171321',strokeThickness:4}).setOrigin(.5).setDepth(90010)));
       d.objects.push({def,x,y,visuals,done:false});});
   }
   chapterSideObjectStart(d,o){o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
@@ -19510,10 +19509,9 @@ class Game extends Phaser.Scene {
     const pool=[
       {id:'sugar',artKey:'prize_sugar',name:'Sugar',sub:'+'+S(120),w:5,color:0xff7fb0,give:()=>{this.sugarStage+=S(120);}},
       {id:'currency',artKey:'prize_currency',name:'Currency',sub:'×'+(2+Math.floor(si/3)),w:5,color:0x7fd0ff,give:()=>this.grantCurrencyReward(2+Math.floor(si/3),this.currencyTierFor(),'Boss wheel')},
-      {id:'shovel',artKey:'prize_shovel',name:'Shovels',sub:'+'+(3+Math.floor(dr)),w:4,color:0xc9a36b,give:()=>Save.addShovels(3+Math.floor(dr))},
       {id:'thread',artKey:'prize_thread',name:'Weave Thread',sub:'+'+S(25),w:5,color:0xd59bff,give:()=>Save.addThreads(S(25))},
       {id:'gear',artKey:'prize_chest',name:'Gear',sub:'Random item',w:3,color:0x8ff0b0,give:()=>{ const t=Math.random()<0.15*dr?'epic':'rare'; this.grantGear&&this.grantGear(t); }},
-      {id:'jackpot',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3 · Shovels +5',w:2.4,color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');Save.addShovels(5);}}];
+      {id:'jackpot',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3',w:2.4,color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');}}];   /* v8.3.20 เจ้าของ: เอา Shovels ออกจากเกมทั้งหมด */
     this.openPrizeWheel('gold',()=>done(),{prizes:pool,title:'👑 Boss Loot',double:true});
   }
   openDoubleOrNothing(p,done){
@@ -19567,7 +19565,7 @@ class Game extends Phaser.Scene {
   }
   onStageClear(){ try{ const _ss=this.rpAdd?.('starsugar')||0; if(_ss>0&&typeof Save!=='undefined'){ Save.addCurrency('starsugar',_ss); this.showBanner?.('🪟 Glass Garden','+'+_ss+' Star Sugar',1500); } }catch(e){}   /* v8.2.29 */ this.clearSugarCoins(); this.evalStageStars?.();
     // v5.32 ⛏️ พลั่วจากการผ่านด่าน: ปกติ 1 / ยาก 2 / นรก 3 (กฎเหล็ก) · ไม่ให้ใน tutorial
-    this._clearShovels=0;if(!this._inTutorial){ const n=Math.max(1,Math.min(3,this.stageDiff||1))+2; Save.addShovels(n);this._clearShovels=n; this.time.delayedCall(900,()=>this.showBanner&&this.showBanner('⛏️ +'+n+' Shovel'+(n>1?'s':''),'Dig for treasure in the Temple Depths',1600)); }
+    this._clearShovels=0;   /* v8.3.20 เจ้าของ: ไม่แจก Shovels ตอนจบด่านแล้ว */
     this.boss=null; this.mode='clear'; this.bossUI.forEach(o=>o.setVisible(false));
     this.enemies.children.iterate(e=>{ if(e&&e.active){ e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } });
     this.clearFoes(); this.clearPickups(true); this.waveAlive=0; this.pipG.clear();
@@ -19800,7 +19798,7 @@ class Game extends Phaser.Scene {
     const tabs=['run','loot','stars'],cw=(pw-40)/3;tabs.forEach((id,i)=>this.summaryButton(box,{x:x+20+i*cw,y:y+50,w:cw-6,h:44},id===tab?'• '+id.toUpperCase():id.toUpperCase(),()=>this.openSummaryDetails(id),false,'tab_'+id));
     let rows=[];const cp=Save.cp(this.character),sr=this._quitSummary?null:this._starRes;
     if(tab==='stars')rows=STAGE_STARS.map((v,i)=>({label:(sr?.mask&(1<<i)?'★ ':'☆ ')+v.name,value:sr?(sr.mask&(1<<i)?'Earned':'Not earned'):'Not evaluated'}));
-    else if(tab==='loot'){rows=stageSummaryLoot(this._openedBoxes).map(v=>({label:v.name||'Box reward',value:(v.tier||'common').toUpperCase()+(v.ilv?' · iLv '+v.ilv:''),key:v.id?'gear_'+v.id:null}));if(this._clearShovels>0)rows.push({label:'Temple shovels',value:'×'+this._clearShovels});for(const [k,n]of Object.entries(this._runCurrency||{}))if(n>0){const d=currencyDef(k);rows.push({label:d?.name||k,value:'×'+n,key:d?.asset});}}
+    else if(tab==='loot'){rows=stageSummaryLoot(this._openedBoxes).map(v=>({label:v.name||'Box reward',value:(v.tier||'common').toUpperCase()+(v.ilv?' · iLv '+v.ilv:''),key:v.id?'gear_'+v.id:null}));for(const [k,n]of Object.entries(this._runCurrency||{}))if(n>0){const d=currencyDef(k);rows.push({label:d?.name||k,value:'×'+n,key:d?.asset});}}
     else{rows=[{label:'Time',value:Math.floor((this.elapsed||0)/60)+':'+Math.floor((this.elapsed||0)%60).toString().padStart(2,'0')},{label:'Enemies defeated',value:String(this.stageKills||0)},{label:'Sugar earned',value:'+'+(this.sugarStage||0)},{label:'Boxes opened',value:String((this._openedBoxes||[]).length)},{label:'Character level',value:'Lv '+cp.lvl},{label:'Power',value:(this._powerBefore??Save.power(this.character))+' → '+(this._powerAfter??Save.power(this.character))}];
       if(sr?.bonus)rows.push({label:'Included: star Sugar',value:'+'+sr.bonus});if(this._dailyBonus)rows.push({label:'Included: daily Sugar',value:'+'+this._dailyBonus});if((this._newSpecies||[]).length)rows.push({label:'New monsters discovered',value:String(this._newSpecies.length),action:true});}
     const per=Math.max(1,Math.floor((ph-216)/54)),pages=Math.max(1,Math.ceil(rows.length/per)),pg=Math.max(0,Math.min(pages-1,page)),slice=rows.slice(pg*per,pg*per+per);
@@ -20147,7 +20145,7 @@ class Game extends Phaser.Scene {
   _coachFinish(){ this.time?.delayedCall?.(0,()=>this.coachControls?.()); if(this._coachIntro){this._coachIntro.destroy();this._coachIntro=null;} if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.data.tutorialCoachPassed=true; Save.save(); try{ Tele.ev('tutorial_done'); }catch(e){}
     // v4.25: รางวัลจบสอน = 🍬 Sugar (พออัพ Flavor Weave 3 แก่นได้ — เปิดตั้งแต่เริ่ม · gear ยังล็อกจนผ่านด่าน 1)
     const rewardGranted=!Save.data.tutorialRewardGiven;
-    if(rewardGranted){ Save.data.tutorialRewardGiven=true; Save.addSugar(140); Save.addShovels(10); Save.save(); }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
+    if(rewardGranted){ Save.data.tutorialRewardGiven=true; Save.addSugar(140); Save.save(); }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
     this.sugarStage=0; Sfx.clear&&Sfx.clear();
     // หน้า "จบการสอน" ค้างจนกว่าจะแตะ (ไม่เด้งออกเองให้ดูไม่ทัน)
     this.showTutorialComplete(rewardGranted);
@@ -20165,9 +20163,9 @@ class Game extends Phaser.Scene {
     const t=this.add.text(w/2,h*0.415,'Tutorial Complete!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe1a2'}).setOrigin(0.5);
     const rlabel=this.add.text(w/2,h*0.485,rewardGranted?'STARTER REWARDS':'REWARDS ALREADY CLAIMED',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9ce5e1'}).setOrigin(0.5);
     const cards=this.add.graphics(),items=[],gap=8,cw=(pw-32-gap)/2,cy=h*0.575;
-    const rewards=[{key:'ic_sugar',name:'Sugar',amount:'+140',color:0xffd782},{key:'dig_shovel',name:'Shovels',amount:'+10',color:0xaee8df}];
+    const rewards=[{key:'ic_sugar',name:'Sugar',amount:'+140',color:0xffd782}];
     rewards.forEach((reward,i)=>{
-      const x=w/2+(i?gap/2:-gap/2-cw),y=cy-35;
+      const x=rewards.length===1?w/2-cw/2:w/2+(i?gap/2:-gap/2-cw),y=cy-35;
       cards.fillStyle(0x42304e,1);cards.fillRoundedRect(x,y,cw,70,13);
       cards.lineStyle(1,reward.color,0.55);cards.strokeRoundedRect(x,y,cw,70,13);
       const icon=this.add.image(x+30,cy,reward.key).setDisplaySize(43,43);
@@ -21788,7 +21786,7 @@ class Game extends Phaser.Scene {
     const ring=this.camWorld(this.add.circle(p.x,p.y,R,0xc7a6ff,0.18).setStrokeStyle(5,0xe0c8ff,0.9).setDepth(90000).setScale(0.3)); this.tweens.add({targets:ring,scale:1,alpha:0,duration:380,ease:'Cubic.out',onComplete:()=>ring.destroy()});
     this.enemies.getChildren().forEach(e=>{ if(e.active&&this.dist(e.x,e.y,p.x,p.y)<=R)this.damage(e,dmg); }); }
   // v5.30 ⛏️ Treasure Sense: ฆ่ามอนมีโอกาสได้พลั่ว (สูงสุด 3/ด่าน)
-  ancientTreasure(e){ if(!Save.ancientHas('treasureSense')||(this._shovelFind||0)>=3||Math.random()>0.005)return; this._shovelFind=(this._shovelFind||0)+1; Save.addShovels(1); this.floatText(e.x,e.y-24,'+'+(typeof SHOVEL_CRUMBS!=='undefined'?SHOVEL_CRUMBS+' 🍪':'1 ⛏️'),0xffd9a8); }
+  ancientTreasure(e){ }   /* v8.3.20 เจ้าของ: Ancient Perks และ Shovels ถูกเอาออกแล้ว */
   relicDmg(mul){ return (10+(this.level||1)*1.5)*(this.player.dmgMul||1)*(1+(this.stageIndex||0)*0.35)*mul; }
   /* v8.2.29 Pact Relics: รวมผลกับด่านจาก Relic + Trade-off ที่ถือ + คำสาป Cursed Crown ของเวฟนี้ */
   rpIds(){ const out=Object.keys(this._rel||{}).filter(k=>this._rel[k]); for(const t of (this.basicAttack?.trades||[]))out.push(t); return out; }
@@ -24271,7 +24269,7 @@ class Game extends Phaser.Scene {
       if(victory){this.queueBossVictory(victoryPose,bx,by);return;}
       this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
-    if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+'+(typeof SHOVEL_CRUMBS!=='undefined'?SHOVEL_CRUMBS+' 🍪':'1 ⛏️'),0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
+   // v5.32 มินิบอส 25% +1 พลั่ว
     if(isMini){ const mt=this.miniChestTier(),mx=e.x,my=e.y,ms=this._lootTok||0; if(!this._inTutorial&&!this.bossRush)this._levelHoldUntil=(this.time?.now||0)+2900;   /* v8.1.144 owner 🐞: loot → EXP/level-up → chest, one after another (level-up and the Spin wheel used to cover the loot) */
       let tries=0; const drop=()=>{ if(this.state==='menu'||this.state==='summary'||ms!==(this._lootTok||0))return; if((this.state!=='play'||(this.pendingLvl||0)>0)&&tries++<40){ this.time.delayedCall(400,drop); return; } this._nextChestTier=mt; this.spawnChest(mx,my,'mini'); }; this.time.delayedCall(this._inTutorial||this.bossRush?0:3600,drop);this.onWaveCleared(false,true); return; }   /* v8.1.101 เจ้าของ: วงล้อ (Spin) เปิดทับ loot bomb → กล่องมินิบอสหล่นหลังของระเบิดออกและดูดเข้าตัวแล้ว (~2.3 วิ) */   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }

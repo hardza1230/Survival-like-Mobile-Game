@@ -1420,7 +1420,6 @@
     list.forEach((def,k)=>{const {x,y}=this.objectivePosition(k,list.length,300,520),visuals=[];
       const art=this.artSpr?.(def.key,x,y+22,72,0,{sig:false,depth:y+3});   /* v8.3.19 เจ้าของ: เอาวงกลมสีออก · ไม่ต้องแตะ เดินไปเหยียบวัตถุ = เริ่ม */
       visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
-      visuals.push(this.camWorld(this.add.text(x,y-70,def.icon+' '+def.name+'\nWalk here to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff',align:'center',stroke:'#171321',strokeThickness:4}).setOrigin(.5).setDepth(90010)));
       d.objects.push({def,x,y,visuals,done:false});});
   }
   chapterSideObjectStart(d,o){o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
