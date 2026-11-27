@@ -417,7 +417,7 @@
     this.menu.setVisible(true);
   }
   // v4.87: บอสดุขึ้น — ตัวเร่งรอบโจมตี (ทุกบอส/มินิ) + คลั่งเมื่อ HP<30%
-  bossAggro(b){ let m=b.isBoss?1.45:1.3; if(b.hp<b.maxhp*0.3){ m*=1.2; if(!b._enraged&&!(b._phaseInvuln>0)){ b._enraged=true; if(b._pinnacleArt)b.setFrame(6); if(b.delveBoss)return m; b.spd*=1.12; this.screenFlash(0xff4d6d,0.18,300); this.showBanner('💢 ENRAGED','It attacks faster — keep moving!',1200); } } return m; }
+  bossAggro(b){ const story=!this.recipeMode&&!this.riftMode&&!this.bossRush&&!this._pinnacleRun;   /* v8.3.32 เจ้าของ 27 พ.ย.: Story ไม่มีตัวคูณความดุ (ท่าเว้นตามที่ออกแบบ) · ความดุเหลือเฉพาะ endgame */ let m=story?STORY_BOSS_AGGRO:(b.isBoss?1.45:1.3); if(b.hp<b.maxhp*0.3){ if(!story)m*=1.2; if(!b._enraged&&!(b._phaseInvuln>0)){ b._enraged=true; if(b._pinnacleArt)b.setFrame(6); if(b.delveBoss)return m; b.spd*=1.12; this.screenFlash(0xff4d6d,0.18,300); this.showBanner('💢 ENRAGED',story?'It moves faster — keep moving!':'It attacks faster — keep moving!',1200); } } return m; }
   // เล็งดักทาง: ยิงไปตำแหน่งที่ผู้เล่นกำลังจะไป (ไม่ใช่ที่ยืนอยู่)
   leadAim(x,y,speed){ const p=this.player,v=p.body?p.body.velocity:{x:0,y:0},t=Math.min(0.9,this.dist(x,y,p.x,p.y)/Math.max(1,speed)); return Math.atan2(p.y+v.y*t-y,p.x+v.x*t-x); }
   // คอมโบต่อท้าย: หลังบอสใช้ท่า มีโอกาสตามด้วยท่าสั้น (ยิงดักทาง / วงไล่ / พุ่งสั้น)

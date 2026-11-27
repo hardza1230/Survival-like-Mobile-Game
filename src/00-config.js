@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.31';
+const GAME_VERSION = '8.3.32';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -111,6 +111,10 @@ const C1_SIDE_HALF=.5;
 const BOSS_RAGE_ON=false;
 /* v8.3.31 เจ้าของ 27 พ.ย.: เอาเสียง Ambient ด่าน/บอสออกทั้งหมด (ฟังเป็น noise) */
 const STAGE_AMBIENT_ON=false;
+/* v8.3.32 เจ้าของ 27 พ.ย.: บอส/มินิบอส Story ไม่เร่งคูลดาวน์ท่า (เดิม ×1.45 บอส · ×1.3 มินิ · เลือด <30% ×1.2) · Delve/Rift คงเดิม */
+const STORY_BOSS_AGGRO=1;
+/* v8.3.32 เจ้าของ: วง Glacier Bloom ของ Mint (กด Unique ค้าง) ย่อทั้งภาพและวงตี ×0.7 */
+const MINT_BLOOM_SCALE=.7;
 const C1_POT_R=95;   // v8.3.25 เจ้าของ: วง Grandma’s Pot ใหญ่ขึ้น (เดิม 58)
 /* v8.3.27 เจ้าของ: Grandma’s Golem แบบ Metamorph · ชิ้นส่วน 5 ชนิด (จากบอส C1) × 3 ระดับ · ตกพื้น ไม่ดูดเข้าตัว · เก็บข้ามด่าน (สูงสุด 12)
    ดรอป: มอน 3% ชิ้นธรรมดา · มินิบอส ชิ้นหายาก 1 · บอส ชิ้นระดับสูง 2 (ชนิดของบอสด่านนั้น) · เตา: popup ใส่ 3 ช่อง → อบ

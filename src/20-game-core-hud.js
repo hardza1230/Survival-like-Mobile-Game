@@ -681,7 +681,7 @@ class Game extends Phaser.Scene {
     this.fxScopeStop?.(true);
     if(!Sfx.bp?.('uq_sniper_fire',.5+.3*Math.min(1,c),.15,c>=1?1:.92)){ if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam(); } else this.artDelay(260,()=>{ if(this.state==='play')Sfx.bp?.('uq_sniper_bolt',.3,.5); });
     this.uqMutHook?.('snipe',{c,hits});if(c>=1)this.showBanner('🎯 Perfect Shot','Full charge · '+hits+' hit'+(hits===1?'':'s'),900); }
-  bloomRadius(c){ return (110+150*c)*(1+0.25*(this.mintLv().m_grow||0)); }
+  bloomRadius(c){ return (110+150*c)*(1+0.25*(this.mintLv().m_grow||0))*MINT_BLOOM_SCALE; }
   lanceLen(){ return 350*(1+0.3*(this.mintLv().l_far||0)); }
   mintUniqueStart(){ const u=this.uniqueInfo(); this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this._mxSrc='unique';this.fireRecipes('unique');
     return {ul:this.uniqueLevel||1,unit:(this.player.dmgMul||1)*this.uniquePower()}; }

@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.31';
+const GAME_VERSION = '8.3.32';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -111,6 +111,10 @@ const C1_SIDE_HALF=.5;
 const BOSS_RAGE_ON=false;
 /* v8.3.31 เจ้าของ 27 พ.ย.: เอาเสียง Ambient ด่าน/บอสออกทั้งหมด (ฟังเป็น noise) */
 const STAGE_AMBIENT_ON=false;
+/* v8.3.32 เจ้าของ 27 พ.ย.: บอส/มินิบอส Story ไม่เร่งคูลดาวน์ท่า (เดิม ×1.45 บอส · ×1.3 มินิ · เลือด <30% ×1.2) · Delve/Rift คงเดิม */
+const STORY_BOSS_AGGRO=1;
+/* v8.3.32 เจ้าของ: วง Glacier Bloom ของ Mint (กด Unique ค้าง) ย่อทั้งภาพและวงตี ×0.7 */
+const MINT_BLOOM_SCALE=.7;
 const C1_POT_R=95;   // v8.3.25 เจ้าของ: วง Grandma’s Pot ใหญ่ขึ้น (เดิม 58)
 /* v8.3.27 เจ้าของ: Grandma’s Golem แบบ Metamorph · ชิ้นส่วน 5 ชนิด (จากบอส C1) × 3 ระดับ · ตกพื้น ไม่ดูดเข้าตัว · เก็บข้ามด่าน (สูงสุด 12)
    ดรอป: มอน 3% ชิ้นธรรมดา · มินิบอส ชิ้นหายาก 1 · บอส ชิ้นระดับสูง 2 (ชนิดของบอสด่านนั้น) · เตา: popup ใส่ 3 ช่อง → อบ
@@ -216,6 +220,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.32',date:'2026-11-27',title:'Story bosses keep their move gaps; smaller Mint Glacier Bloom',items:['Story bosses and minibosses pause between moves as designed instead of chaining them','Mint’s Glacier Bloom ring is 30% smaller']},
   {v:'8.3.31',date:'2026-11-27',title:'Boss Rage off, single loading screen, no stage ambience, New Discovery fix',items:['Bosses no longer get tougher the more monsters you defeat (Boss Rage removed)','Entering a stage shows one loading screen, not a second one after picking your card','Stage background ambience removed','New Discovery after C1-2 shows each unlock once']},
   {v:'8.3.30',date:'2026-11-27',title:'C1 side missions: full league versions at half time and target',items:['C1 side objects now start the full Herald, Hunger’s Mouth, Grandma’s Pot and Frozen Pantry missions at half time and half target']},
   {v:'8.3.29',date:'2026-11-27',title:'Art 96: side-mission objects, fog wisp, roots, shades, golem parts, oven',items:['Side-mission objects on the map now have real art (Escort, Hunt, Hunger Crack, Fog, Roots)','Clear the Fog opens with a black wisp flying at the screen; Creeping Roots grow from a wilted flower','Fog shadow monsters, Golem parts, Grandma’s oven panel, Pot dust and Vault ring use new art']},
@@ -11149,7 +11154,7 @@ class Game extends Phaser.Scene {
     this.fxScopeStop?.(true);
     if(!Sfx.bp?.('uq_sniper_fire',.5+.3*Math.min(1,c),.15,c>=1?1:.92)){ if(Sfx.boom)Sfx.boom(); if(Sfx.beam)Sfx.beam(); } else this.artDelay(260,()=>{ if(this.state==='play')Sfx.bp?.('uq_sniper_bolt',.3,.5); });
     this.uqMutHook?.('snipe',{c,hits});if(c>=1)this.showBanner('🎯 Perfect Shot','Full charge · '+hits+' hit'+(hits===1?'':'s'),900); }
-  bloomRadius(c){ return (110+150*c)*(1+0.25*(this.mintLv().m_grow||0)); }
+  bloomRadius(c){ return (110+150*c)*(1+0.25*(this.mintLv().m_grow||0))*MINT_BLOOM_SCALE; }
   lanceLen(){ return 350*(1+0.3*(this.mintLv().l_far||0)); }
   mintUniqueStart(){ const u=this.uniqueInfo(); this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(420);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this._mxSrc='unique';this.fireRecipes('unique');
     return {ul:this.uniqueLevel||1,unit:(this.player.dmgMul||1)*this.uniquePower()}; }
@@ -26177,7 +26182,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // v4.87: บอสดุขึ้น — ตัวเร่งรอบโจมตี (ทุกบอส/มินิ) + คลั่งเมื่อ HP<30%
-  bossAggro(b){ let m=b.isBoss?1.45:1.3; if(b.hp<b.maxhp*0.3){ m*=1.2; if(!b._enraged&&!(b._phaseInvuln>0)){ b._enraged=true; if(b._pinnacleArt)b.setFrame(6); if(b.delveBoss)return m; b.spd*=1.12; this.screenFlash(0xff4d6d,0.18,300); this.showBanner('💢 ENRAGED','It attacks faster — keep moving!',1200); } } return m; }
+  bossAggro(b){ const story=!this.recipeMode&&!this.riftMode&&!this.bossRush&&!this._pinnacleRun;   /* v8.3.32 เจ้าของ 27 พ.ย.: Story ไม่มีตัวคูณความดุ (ท่าเว้นตามที่ออกแบบ) · ความดุเหลือเฉพาะ endgame */ let m=story?STORY_BOSS_AGGRO:(b.isBoss?1.45:1.3); if(b.hp<b.maxhp*0.3){ if(!story)m*=1.2; if(!b._enraged&&!(b._phaseInvuln>0)){ b._enraged=true; if(b._pinnacleArt)b.setFrame(6); if(b.delveBoss)return m; b.spd*=1.12; this.screenFlash(0xff4d6d,0.18,300); this.showBanner('💢 ENRAGED',story?'It moves faster — keep moving!':'It attacks faster — keep moving!',1200); } } return m; }
   // เล็งดักทาง: ยิงไปตำแหน่งที่ผู้เล่นกำลังจะไป (ไม่ใช่ที่ยืนอยู่)
   leadAim(x,y,speed){ const p=this.player,v=p.body?p.body.velocity:{x:0,y:0},t=Math.min(0.9,this.dist(x,y,p.x,p.y)/Math.max(1,speed)); return Math.atan2(p.y+v.y*t-y,p.x+v.x*t-x); }
   // คอมโบต่อท้าย: หลังบอสใช้ท่า มีโอกาสตามด้วยท่าสั้น (ยิงดักทาง / วงไล่ / พุ่งสั้น)
