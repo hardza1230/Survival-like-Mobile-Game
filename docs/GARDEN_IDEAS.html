@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mochi Garden แบบให้เลือก</title>
+<style>
+:root{--bg:#f7f3f8;--card:#fff;--ink:#2a2233;--mute:#6f6479;--line:#e6dcea;--a:#c8406f;--t1:#2f9a66;--t2:#c98a12;--t3:#8a4fd6;--c1:#2b7bd6;--chip:#f1e9f5;--keep:#2f9a66;--cut:#c43b3b;--move:#c98a12;--new:#2b7bd6;}
+@media (prefers-color-scheme:dark){:root{--bg:#17121c;--card:#231b2b;--ink:#efe6f5;--mute:#a99db6;--line:#3a2f45;--a:#ff8fb1;--t1:#6fdc9e;--t2:#ffcf5a;--t3:#c9a3ff;--c1:#8fc7ff;--chip:#2e2438;--keep:#6fdc9e;--cut:#ff7a7a;--move:#ffcf5a;--new:#8fc7ff;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:24px;margin:4px 0 2px}
+.sub{color:var(--mute);font-size:13px;margin-bottom:12px}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px}
+nav a{font-size:13px;padding:5px 10px;border-radius:999px;background:var(--chip);color:var(--ink);text-decoration:none;border:1px solid var(--line)}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 8px;margin:14px 0}
+section h2{font-size:18px;margin:2px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lead{color:var(--mute);font-size:13.5px;margin:0 0 10px}
+.tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.t1{background:var(--t1)}.t2{background:var(--t2)}.t3{background:var(--t3)}.c1{background:var(--c1)}.ax{background:var(--a)}
+.m{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0;background:var(--bg)}
+.m h3{font-size:15.5px;margin:0 0 4px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.poe{font-size:12px;font-weight:600;color:var(--a)}
+.st{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.keep{color:var(--keep)}.cut{color:var(--cut)}.move{color:var(--move)}.new{color:var(--new)}
+ol{margin:6px 0 6px 20px;padding:0}li{margin:2px 0}
+.plan{margin-top:6px;font-size:13.5px;border-left:3px solid var(--move);padding:4px 10px;background:var(--chip);border-radius:0 8px 8px 0}
+.plan.cut{border-color:var(--cut)}.plan.new{border-color:var(--new)}.plan.keep{border-color:var(--keep)}
+.plan b{color:var(--ink)}
+.note{font-size:12.5px;color:var(--mute);margin:8px 0}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:7px 8px;border-top:1px solid var(--line)}
+th{font-size:12px;color:var(--mute);font-weight:600;border-top:none}
+.log li{margin:4px 0}
+.good{border-left:3px solid var(--keep);padding:4px 10px;background:var(--chip);border-radius:0 8px 8px 0;font-size:13.5px;margin:6px 0}
+.badx{border-left:3px solid var(--cut);padding:4px 10px;background:var(--chip);border-radius:0 8px 8px 0;font-size:13.5px;margin:6px 0}
+.loop{font-size:13.5px;background:var(--chip);border-radius:10px;padding:8px 10px;margin:6px 0}
+</style>
+</head>
+<body><main>
+<h1>🌸 Mochi Garden — แบบ core loop ให้เลือก</h1>
+<div class="sub">แทน Expedition · Idle ไม่ทับเกมหลัก · คนทำงานเปิดแวะดูสั้น ๆ ได้ · ร่าง 27 พ.ย. 2026</div>
+<nav><a href="#oA">A · 🌱 แปลงปลูก</a><a href="#oB">B · 🏡 หมู่บ้านโมจิ</a><a href="#oC">C · 🍰 ร้านน้ำชา</a><a href="#oD">D · 🌳 ต้นไม้วิญญาณ</a><a href="#oE">E · 🧺 ทีมเก็บของในสวน</a><a href="#rule">กฎร่วม</a><a href="#rec">คำแนะนำ</a></nav>
+<section id="rule"><h2>กฎร่วมทุกแบบ</h2><ol>
+<li>เปิดหลังผ่าน C2-1 (ไม่เพิ่มภาระช่วงต้น ตาม GAME_PILLARS)</li>
+<li>ของที่ได้ = Sugar / Twist Cream / ของแต่งตัว / ของแต่งสวน · ไม่ให้พลังต่อสู้ตรง ๆ ที่หาไม่ได้จากเกมหลัก</li>
+<li>เวลาออฟไลน์มีเพดาน (8–12 ชม.) ไม่ต้องเข้าทุกชั่วโมง · มีจุดแดงเมื่อพร้อมเก็บ</li>
+<li>ห้ามขายเวลาเร่งด้วยเงินจริงจนกว่าจะมี Play Billing + เซิร์ฟเวอร์ (LAUNCH_RULES กฎ 4) · ช่วงทดสอบใช้โฆษณา rewarded เร่งได้วันละไม่กี่ครั้ง</li>
+</ol></section>
+<section id="oA"><h2>A · 🌱 แปลงปลูก (Plant · Wait · Harvest) <span class="tag ax">ต้นทุน ต่ำ</span></h2><p class="lead">ปลูกเมล็ด → รอเวลาจริง → เก็บผล → อัปแปลง</p>
+<div class="loop"><b>Core loop</b><ol><li>เลือกเมล็ด (เมล็ดได้จากด่าน Story / ภารกิจ)</li><li>ปลูกลงแปลง 3–6 แปลง · โตตามเวลาจริง 30 นาที–8 ชม. (ออฟไลน์ก็โต)</li><li>กลับมาเก็บ → ได้ Sugar / Twist Cream / สีย้อมชุด</li><li>ใช้ผลผลิตอัปแปลง (โตเร็วขึ้น · แปลงเพิ่ม)</li></ol></div>
+<div class="good"><b>ข้อดี</b><ul><li>เข้าใจทันที คนทำงานเปิด 30 วิ เก็บแล้วปิด</li><li>สร้างง่ายสุด 1 หน้าจอ ใช้ระบบเวลาออฟไลน์อย่างเดียว</li><li>ผูกกับเกมหลักเบา ๆ (เมล็ดจากด่าน)</li></ul></div>
+<div class="badx"><b>ข้อเสีย / ความเสี่ยง</b><ul><li>ซ้ำ ๆ น่าเบื่อเร็ว ถ้าไม่มีอะไรใหม่</li><li>คล้ายเกมฟาร์มทั่วไป</li></ul></div>
+<p class="note">อาร์ตที่ต้องสั่ง: อาร์ตแปลง 3 ขั้น × พืช 4–6 ชนิด + พื้นสวน</p></section><section id="oB"><h2>B · 🏡 หมู่บ้านโมจิ (Assign helpers) <span class="tag ax">ต้นทุน กลาง</span></h2><p class="lead">โมจิที่ช่วยไว้จากด่าน → ส่งไปทำงานในสวน → ผลิตของตามเวลา</p>
+<div class="loop"><b>Core loop</b><ol><li>เคลียร์ด่าน Story = ช่วยโมจิได้ 1 ตัว (มีนิสัย/ถนัดงานต่างกัน)</li><li>วางโมจิในสถานี: เตาขนม / บ่อน้ำผึ้ง / แปลงผัก / โรงทอผ้า</li><li>สถานีผลิตต่อเนื่อง (มีเพดาน 8–12 ชม.)</li><li>โมจิเลเวลขึ้นตามเวลาทำงาน → ผลิตเร็วขึ้น · ปลดสถานีใหม่</li></ol></div>
+<div class="good"><b>ข้อดี</b><ul><li>ผูกกับเรื่องหลักชัด (ช่วยเพื่อนคุณยาย) · มีของสะสม</li><li>ตัดสินใจเล็ก ๆ ทุกครั้งที่เข้า (ใครทำอะไร)</li><li>โตยาว เล่นได้หลายเดือน</li></ul></div>
+<div class="badx"><b>ข้อเสีย / ความเสี่ยง</b><ul><li>UI และระบบเยอะกว่า A</li><li>ต้องมีอาร์ตโมจิหลายตัว + สถานี</li></ul></div>
+<p class="note">อาร์ตที่ต้องสั่ง: โมจิ 8–12 ตัว (นิ่ง + ทำงาน 2 เฟรม) + สถานี 4</p></section><section id="oC"><h2>C · 🍰 ร้านน้ำชา (Garden → Orders) <span class="tag ax">ต้นทุน กลาง–สูง</span></h2><p class="lead">สวนผลิตวัตถุดิบ → ลูกค้าโมจิสั่งขนม → ส่งออเดอร์รับรางวัล</p>
+<div class="loop"><b>Core loop</b><ol><li>สวนผลิตวัตถุดิบ 3–4 ชนิดตามเวลา</li><li>มีออเดอร์ 3 ใบ รีเฟรชทุก 4 ชม. (เช่น เบอร์รี่ 5 + น้ำผึ้ง 2)</li><li>ส่งครบ → รางวัล + ความสนิทของลูกค้า</li><li>สนิทถึงขั้น → ปลดชุดแต่งตัว / เรื่องสั้นของตัวละคร</li></ol></div>
+<div class="good"><b>ข้อดี</b><ul><li>มีเป้าหมายชัดทุกครั้งที่เข้า</li><li>ปลดของแต่งตัว/เรื่องราว = ไม่ขายพลัง</li><li>เข้ากับธีมขนมของเกมมาก</li></ul></div>
+<div class="badx"><b>ข้อเสีย / ความเสี่ยง</b><ul><li>ต้องจูนวัตถุดิบ–ออเดอร์ให้พอดี</li><li>ซับซ้อนกว่า A สองชั้น (ผลิต + ส่ง)</li></ul></div>
+<p class="note">อาร์ตที่ต้องสั่ง: วัตถุดิบ 4 + ลูกค้า 4–6 + หน้าร้าน</p></section><section id="oD"><h2>D · 🌳 ต้นไม้วิญญาณ (Incremental tree) <span class="tag ax">ต้นทุน ต่ำ</span></h2><p class="lead">ต้นไม้ใหญ่ 1 ต้นเก็บน้ำค้างตลอดเวลา → ใช้น้ำค้างปลูกกิ่ง → กิ่งให้โบนัส QoL</p>
+<div class="loop"><b>Core loop</b><ol><li>ต้นไม้สะสม 💧 น้ำค้างต่อเนื่อง (เพดาน 12 ชม.)</li><li>เข้ามาแตะเก็บ → ใช้ปลดกิ่ง (ต้นไม้ทักษะของสวน)</li><li>กิ่งให้: เพดานเก็บนานขึ้น · Sugar รายวัน · ของแต่งสวน/ลอบบี้</li><li>ต้นไม้โตเห็นภาพเปลี่ยนตามขั้น</li></ol></div>
+<div class="good"><b>ข้อดี</b><ul><li>ถูกที่สุด หน้าจอเดียว</li><li>เปิด 10 วิ ก็ได้ของ</li><li>เห็นการเติบโตชัด</li></ul></div>
+<div class="badx"><b>ข้อเสีย / ความเสี่ยง</b><ul><li>ตื้นที่สุด ไม่มีการตัดสินใจ</li><li>ถ้ากิ่งให้พลังต่อสู้ = ผิดกฎห้ามขายพลังทางอ้อม → ต้องเป็น QoL/แต่งเท่านั้น</li></ul></div>
+<p class="note">อาร์ตที่ต้องสั่ง: ต้นไม้ 4 ขั้น + กิ่ง/ใบ</p></section><section id="oE"><h2>E · 🧺 ทีมเก็บของในสวน (Expedition-lite) <span class="tag ax">ต้นทุน ต่ำ</span></h2><p class="lead">ส่งทีมโมจิไปเขตสวน 2/4/8 ชม. → กลับมาพร้อมของ + โปสการ์ดเรื่องสั้น</p>
+<div class="loop"><b>Core loop</b><ol><li>เลือกเขต (ป่าเบอร์รี่ / ลำธารน้ำผึ้ง / ถ้ำน้ำตาล)</li><li>ส่งทีม 1–3 ตัว ตามเวลาที่เลือก</li><li>กลับมาได้ของ + โปสการ์ด (สะสมเป็นอัลบั้มเรื่องราว)</li></ol></div>
+<div class="good"><b>ข้อดี</b><ul><li>ใช้โค้ด/อาร์ต Expedition เดิมได้บางส่วน · เร็วที่สุด</li><li>สะสมโปสการ์ดได้</li></ul></div>
+<div class="badx"><b>ข้อเสีย / ความเสี่ยง</b><ul><li>ใกล้ของเดิมที่จะเปลี่ยนออก</li><li>ตัดสินใจน้อย</li></ul></div>
+<p class="note">อาร์ตที่ต้องสั่ง: โปสการ์ด 10–15 ใบ + เขต 3</p></section>
+<section id="rec"><h2>คำแนะนำของ AI</h2>
+<p><b>ผสม A + B (แปลงปลูก + โมจิผู้ช่วย)</b> — เริ่มจาก A ให้ทันใช้ (หน้าเดียว ง่าย) แล้วเพิ่ม "โมจิที่ช่วยไว้จากด่าน" มาเป็นผู้ช่วยแปลง (B แบบเบา) ทีหลัง</p>
+<ul><li>ได้: loop ชัด 30 วิ/ครั้ง · ผูกเรื่องหลัก · ขยายต่อเป็น C (ร้านน้ำชา) ได้ภายหลัง</li>
+<li>เสีย: ต้องสั่งอาร์ตใหม่ (แปลง/พืช/โมจิผู้ช่วย) · ใช้เวลา 2–3 รอบงาน</li>
+<li>จังหวะ: Closed test 13 ธ.ค. ใกล้แล้ว → แนะนำให้ Expedition อยู่ต่อจนหลัง Closed test แล้วค่อยเปลี่ยน หรือทำ A เวอร์ชันเล็กก่อน</li></ul>
+<p class="note">ตัวเลขเวลา/รางวัลในหน้านี้เป็นตัวอย่างเพื่อเทียบแบบ · จะยืนยันกับเจ้าของก่อนลงมือ</p></section>
+</main></body></html>
