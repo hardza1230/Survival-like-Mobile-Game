@@ -5,164 +5,204 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>สรุปภารกิจ Mochi Mayhem</title>
 <style>
-:root{--bg:#f7f3f8;--card:#ffffff;--ink:#2a2233;--mute:#6f6479;--line:#e6dcea;--a:#c8406f;--t1:#2f9a66;--t2:#c98a12;--t3:#8a4fd6;--c1:#2b7bd6;--chip:#f1e9f5;}
-@media (prefers-color-scheme:dark){:root{--bg:#17121c;--card:#231b2b;--ink:#efe6f5;--mute:#a99db6;--line:#3a2f45;--a:#ff8fb1;--t1:#6fdc9e;--t2:#ffcf5a;--t3:#c9a3ff;--c1:#8fc7ff;--chip:#2e2438;}}
+:root{--bg:#f7f3f8;--card:#fff;--ink:#2a2233;--mute:#6f6479;--line:#e6dcea;--a:#c8406f;--t1:#2f9a66;--t2:#c98a12;--t3:#8a4fd6;--c1:#2b7bd6;--chip:#f1e9f5;--keep:#2f9a66;--cut:#c43b3b;--move:#c98a12;--new:#2b7bd6;}
+@media (prefers-color-scheme:dark){:root{--bg:#17121c;--card:#231b2b;--ink:#efe6f5;--mute:#a99db6;--line:#3a2f45;--a:#ff8fb1;--t1:#6fdc9e;--t2:#ffcf5a;--t3:#c9a3ff;--c1:#8fc7ff;--chip:#2e2438;--keep:#6fdc9e;--cut:#ff7a7a;--move:#ffcf5a;--new:#8fc7ff;}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
 main{max-width:980px;margin:0 auto;padding:20px 16px 60px}
 h1{font-size:24px;margin:4px 0 2px}
-.sub{color:var(--mute);font-size:13px;margin-bottom:16px}
+.sub{color:var(--mute);font-size:13px;margin-bottom:12px}
 nav{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px}
 nav a{font-size:13px;padding:5px 10px;border-radius:999px;background:var(--chip);color:var(--ink);text-decoration:none;border:1px solid var(--line)}
-section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 6px;margin:14px 0}
-section h2{font-size:18px;margin:2px 0 4px;display:flex;align-items:center;gap:8px}
-.tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff}
-.t1{background:var(--t1)}.t2{background:var(--t2)}.t3{background:var(--t3)}.c1{background:var(--c1)}.ax{background:var(--a)}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 8px;margin:14px 0}
+section h2{font-size:18px;margin:2px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .lead{color:var(--mute);font-size:13.5px;margin:0 0 10px}
-.wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:620px}
-th,td{text-align:left;vertical-align:top;padding:8px 8px;border-top:1px solid var(--line)}
+.tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.t1{background:var(--t1)}.t2{background:var(--t2)}.t3{background:var(--t3)}.c1{background:var(--c1)}.ax{background:var(--a)}
+.m{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0;background:var(--bg)}
+.m h3{font-size:15.5px;margin:0 0 4px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.poe{font-size:12px;font-weight:600;color:var(--a)}
+.st{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.keep{color:var(--keep)}.cut{color:var(--cut)}.move{color:var(--move)}.new{color:var(--new)}
+ol{margin:6px 0 6px 20px;padding:0}li{margin:2px 0}
+.plan{margin-top:6px;font-size:13.5px;border-left:3px solid var(--move);padding:4px 10px;background:var(--chip);border-radius:0 8px 8px 0}
+.plan.cut{border-color:var(--cut)}.plan.new{border-color:var(--new)}.plan.keep{border-color:var(--keep)}
+.plan b{color:var(--ink)}
+.note{font-size:12.5px;color:var(--mute);margin:8px 0}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:7px 8px;border-top:1px solid var(--line)}
 th{font-size:12px;color:var(--mute);font-weight:600;border-top:none}
-td b{white-space:nowrap}
-.poe{font-weight:600;color:var(--a);white-space:nowrap}
-.note{font-size:12.5px;color:var(--mute);margin:8px 0 10px}
-.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:6px 0 12px}
-.flow div{background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px}
-.flow b{display:block;font-size:13.5px;margin-bottom:2px}
+.log li{margin:4px 0}
 </style>
 </head>
 <body><main>
 <h1>สรุปภารกิจ Mochi Mayhem</h1>
-<div class="sub">สถานะเกม v8.3.20 · สรุปจากโค้ดจริง (<code>src/00-config.js</code>, <code>src/11-wave-objectives.js</code>, <code>src/24-game-missions.js</code>) · เทียบกับ Path of Exile</div>
+<div class="sub">อ้างอิงเกม v8.3.22 · สรุปจากโค้ดจริง · เทียบกับ Path of Exile · ป้ายสถานะ = แผนของเจ้าของ 27 พ.ย. (<span class="st keep">คงไว้</span> <span class="st move">ย้าย/ปรับ</span> <span class="st cut">เอาออก</span> <span class="st new">ของใหม่</span>) · ป้ายเป็น "แผน" ยังไม่ได้แก้ในเกม จนกว่าจะขึ้นในหัวข้ออัปเดตล่าสุด</div>
 
 <nav>
-<a href="#map">ภาพรวม</a><a href="#c1main">C1 ภารกิจหลัก</a><a href="#c1side">C1 ภารกิจรอง</a><a href="#basic">ทั่วไป (Tier 1)</a><a href="#stage">ประจำด่าน (Tier 2)</a><a href="#league">League (Tier 3)</a><a href="#boss">ลูกเล่นบอส</a><a href="#events">เหตุการณ์สุ่ม</a><a href="#systems">ระบบรอบภารกิจ</a>
+<a href="#log">อัปเดตล่าสุด</a><a href="#map">ภาพรวมใหม่</a><a href="#combat">ภารกิจหลัก: Combat Situations</a><a href="#side">ภารกิจรอง</a><a href="#stage">ภารกิจเฉพาะด่าน</a><a href="#league">League</a><a href="#env">Environment Event</a><a href="#boss">ลูกเล่นบอส</a><a href="#systems">ระบบรอบภารกิจ</a><a href="#cut">รายการที่เอาออก</a>
 </nav>
 
+<section id="log">
+<h2>อัปเดตล่าสุด</h2>
+<ul class="log">
+<li><b>27 พ.ย. (เอกสาร):</b> ใส่กลไกทีละขั้นของทุกภารกิจ และใส่แผนปรับของเจ้าของในแต่ละอัน <b>ยังไม่ได้แก้ในเกม</b> รอยืนยันลำดับงานและรายละเอียด</li>
+<li><b>v8.3.20:</b> เอา Shovels ออกจากรางวัลทั้งหมด · วัตถุภารกิจรอง C1 ไม่มีป้าย เดินไปเหยียบ = เริ่ม</li>
+<li><b>v8.3.19:</b> วัตถุภารกิจรอง C1 ไม่มีวงกลม ไม่ต้องแตะ · ภารกิจรองที่เริ่มแล้วไม่หายเมื่อจบเวฟ</li>
+</ul>
+</section>
+
 <section id="map">
-<h2>ภาพรวม: ภารกิจอยู่ตรงไหนบ้าง</h2>
-<div class="flow">
-<div><b>Chapter 1 (ด่าน 1–5)</b>ทุกเวฟคือ "สถานการณ์การต่อสู้" + ภารกิจรองแบบย่อวางอยู่ในแมพ</div>
-<div><b>Chapter 2–3 (ด่าน 6–15)</b>สำรับภารกิจ: เวฟละ 1 ใบ · 1 ใบประจำด่าน + ที่เหลือสุ่มจากสำรับกลาง</div>
-<div><b>บอสด่าน (C2–C3)</b>ลูกเล่นบอส 2 ครั้งตอนเลือดบอส 60% และ 30%</div>
-<div><b>Mochi Delve</b>ห้องพิเศษ: Sugar Crown Trial · Siege · Hunger’s Domain</div>
-</div>
-<p class="note">ระดับความยาก (MISSION_TIER): <span class="tag t1">Tier 1</span> ทั่วไป · <span class="tag t2">Tier 2</span> ประจำด่าน · <span class="tag t3">Tier 3</span> ภารกิจใหญ่/League · เวฟเรียงจากง่ายไปยาก · ภารกิจที่เจอแล้วจะเข้าสำรับกลางและสุ่มไปโผล่ด่านอื่นได้ (60% แทนช่อง Capture/Escort/Survive)</p>
+<h2>ภาพรวม: โครงภารกิจหลังปรับ (แผน)</h2>
+<div class="wrap"><table>
+<tr><th>ชั้น</th><th>คืออะไร</th><th>มีอะไรบ้าง (หลังปรับ)</th></tr>
+<tr><td><b>ภารกิจหลัก</b></td><td>ทุกเวฟคือ Combat Situation 1 แบบ (ทุก Chapter)</td><td>Ambush, Fortress, Barrage, Stampede, Pincer, Commander, Hazard Shift, Hunter Pack, Last Stand + แบบใหม่ (ดูหัวข้อถัดไป) · แทน Fill the Meter / Survive the Swarm</td></tr>
+<tr><td><b>ภารกิจรอง</b></td><td>วัตถุในแมพ เดินไปเหยียบ = เริ่ม ไม่ทำก็ไม่มีโทษ</td><td>Hunt the Threat · Hunger Crack · Clear the Fog (+ Monster เงา) · Creeping Roots · Shake the Hollow Trees · ภารกิจรอง C1 5 อัน</td></tr>
+<tr><td><b>ภารกิจเฉพาะด่าน</b></td><td>ผูกกับด่านเดียว</td><td>Escort the Wisp · Vault Altar (popup เลือกคำสาป) · Grandma’s Pot (วงใหญ่ขึ้น + ปรากฏการณ์ธรรมชาติ)</td></tr>
+<tr><td><b>League</b></td><td>ภารกิจใหญ่</td><td>Frozen Pantry · Hunger’s Mouth · Hunger Herald · Grandma’s Golem (ระบบใหม่แบบ Metamorph) · Siege · Hunger’s Domain · Sugar Crown Trial</td></tr>
+<tr><td><b>Environment Event</b></td><td>สภาพแวดล้อมพิเศษสุ่มเจอ</td><td>Seasonal Harvest (เปลี่ยนเป็น event · หลังเล่น C2-4) · Golden Wave · Seed Rift</td></tr>
+</table></div>
 </section>
 
-<section id="c1main">
-<h2><span class="tag c1">C1</span> ภารกิจหลัก = สถานการณ์การต่อสู้ (Combat Situations)</h2>
-<p class="lead">ตั้งแต่ v8.3.12 · ทุกเวฟ (ยกเว้นเวฟมินิบอส) มีชื่อสถานการณ์ + คำใบ้วิธีเล่น · ทำเป้าสำเร็จได้ EXP ก้อนโบนัส · ไม่มีโทษถ้าพลาด</p>
+<section id="combat">
+<h2><span class="tag c1">ภารกิจหลัก</span> Combat Situations</h2>
+<p class="lead">ตอนนี้มีเฉพาะ Chapter 1 · แผน: ขยายไปทุก Chapter และแทน Fill the Meter / Survive the Swarm</p>
+<div class="m"><h3>ขั้นตอนทั่วไปของทุก Situation <span class="st keep">คงไว้</span></h3>
+<ol><li>ก่อนเข้าด่าน การ์ดพรีวิวบอกชื่อ Situation ของแต่ละเวฟ</li><li>เริ่มเวฟ: ป้ายชื่อ + คำใบ้วิธีเล่นขึ้นด้านบน</li><li>ศัตรูมาตามรูปแบบ (pattern) ของ Situation</li><li>ทำเป้าโบนัสสำเร็จ (ล้มทั้งกลุ่มทันเวลา / ล้มหัวหน้า / ไม่โดนพื้นอันตราย) = ได้ EXP ก้อน</li><li>พลาดเป้า = ไม่มีโทษ เล่นต่อได้ตามปกติ</li></ol></div>
 <div class="wrap"><table>
-<tr><th>รูปแบบ (pattern)</th><th>เกิดอะไรขึ้น</th><th>เป้าโบนัส</th><th>เทียบ PoE</th></tr>
-<tr><td><b>Ambush</b></td><td>ศัตรูโผล่จากอุโมงค์ล้อมรอบตัว ต้องฝ่าวงออก</td><td>ล้มทั้งกลุ่มทันเวลา (pack)</td><td class="poe">Pack ล้อม (ไม่มีลีกตรง)</td></tr>
-<tr><td><b>Fortress</b></td><td>แนวโล่ด้านหน้า ตัวยิงอยู่ด้านหลัง ต้องอ้อมไปตี</td><td>pack</td><td class="poe">Phalanx / Tank front-line</td></tr>
-<tr><td><b>Barrage</b></td><td>ตัวยิงระยะไกลระดมยิง ต้องเข้าประชิด</td><td>pack</td><td class="poe">Ranged pack</td></tr>
-<tr><td><b>Stampede</b></td><td>ฝูงวิ่งชนเป็นแนว ต้อง Dash ผ่านช่อง</td><td>pack</td><td class="poe">Charging pack</td></tr>
-<tr><td><b>Pincer</b></td><td>มาจากสองฝั่ง อย่าติดตรงกลาง</td><td>pack</td><td class="poe">—</td></tr>
-<tr><td><b>Commander</b></td><td>หัวหน้าเร่งความเร็วลูกน้อง ต้องล้มหัวหน้าก่อน</td><td>ล้มหัวหน้า (leader)</td><td class="poe">Aura Rare (Rare ที่บัฟลูกน้อง)</td></tr>
-<tr><td><b>Hazard Shift</b></td><td>พื้นอันตรายไหลผ่าน ต้องเดินตลอด</td><td>ไม่โดนพื้นจนจบ (dodge)</td><td class="poe">Map mod พื้นอันตราย</td></tr>
-<tr><td><b>Hunter Pack</b></td><td>นักล่าวิ่งไล่ หันกลับไปสู้ อย่าวิ่งตรง</td><td>pack</td><td class="poe">—</td></tr>
-<tr><td><b>Last Stand</b></td><td>คลื่นใหญ่ท้ายด่าน อยู่ขอบฝูง</td><td>pack</td><td class="poe">Breach/Legion แบบเบา</td></tr>
+<tr><th>รูปแบบ</th><th>ขั้นตอน</th><th>เป้า</th><th>สถานะ</th></tr>
+<tr><td><b>Ambush</b></td><td>1) ศัตรูโผล่จากอุโมงค์รอบตัว 2) ล้อมเป็นวง 3) ฝ่าออกด้านหนึ่งแล้วไล่ล้ม</td><td>pack</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Fortress</b></td><td>1) แนวโล่ตั้งด้านหน้า 2) ตัวยิงอยู่ด้านหลัง 3) อ้อมไปตีจากข้าง/หลัง</td><td>pack</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Barrage</b></td><td>1) ตัวยิงยืนไกล 2) ระดมยิงเป็นชุด 3) เข้าประชิดตีระหว่างช่วงพัก</td><td>pack</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Stampede</b></td><td>1) ฝูงตั้งแถว 2) วิ่งชนเป็นแนว 3) Dash ผ่านช่องว่างแล้วตีหลัง</td><td>pack</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Pincer</b></td><td>1) มาสองฝั่งพร้อมกัน 2) อย่าติดตรงกลาง 3) ฝ่าออกด้านหนึ่ง</td><td>pack</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Commander</b></td><td>1) หัวหน้าเกิดพร้อมลูกน้อง 2) ลูกน้องเร็วขึ้นเมื่ออยู่ใกล้หัวหน้า 3) ล้มหัวหน้าก่อน</td><td>leader</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Hazard Shift</b></td><td>1) พื้นอันตรายไหลผ่าน 2) เดินหลบตลอด 3) ไม่โดนจนจบ</td><td>dodge</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Hunter Pack</b></td><td>1) นักล่าเร็ววิ่งไล่ 2) หันกลับไปสู้ อย่าวิ่งตรง</td><td>pack</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Last Stand</b></td><td>1) คลื่นใหญ่ 2) อยู่ขอบฝูง ตีจากด้านนอก</td><td>pack</td><td><span class="st keep">คงไว้</span></td></tr>
+<tr><td><b>Root Lure</b> (จาก Lure the Crown Root)</td><td>1) รากราชันมุดตาม 2) ยืนข้างหินสมอ 3) หลบตอนเตือน ให้มันพุ่งชนหิน 4) ทุบหินครบ = มันอ่อนแรง</td><td>leader</td><td><span class="st new">ของใหม่</span></td></tr>
 </table></div>
-<p class="note">แต่ละด่านมี 4 สถานการณ์เรียงตามเวฟ เช่น C1-1: Tunnel Ambush → Soldier Line → Spitter Barrage → Colony Swarm · C1-2: Pipe Burst → Clog Commander → Sewage Shift → Flood Swarm</p>
+<p class="note"><b>ข้อเสนอแบบใหม่เพิ่ม (ให้ไม่ซ้ำใน C2–C3)</b> · รอเลือก</p>
+<div class="wrap"><table>
+<tr><th>แบบที่เสนอ</th><th>ขั้นตอน</th><th>เหมาะกับ</th></tr>
+<tr><td><b>Spore Bloom</b></td><td>1) ศัตรูตายแล้วทิ้งดอกเห็ด 2) ดอกพองแล้วระเบิดใน 2 วิ 3) ดึงฝูงไปตายห่างตัว</td><td>C2 Mycelium Marsh</td></tr>
+<tr><td><b>Splitters</b></td><td>1) ตัวใหญ่ตายแล้วแตกเป็นตัวเล็ก 2 ตัว 2) ตัวเล็กเร็ว 3) ใช้ท่าวงกว้างเก็บ</td><td>C2 Nectar Hive</td></tr>
+<tr><td><b>Sniper Nest</b></td><td>1) ตัวยิงซ่อนหลังกำแพงหนาม 2) เส้นเล็งแดงก่อนยิง 3) อ้อมกำแพงไปเก็บ</td><td>C3 Glass Greenhouse</td></tr>
+<tr><td><b>Shield Carrier</b></td><td>1) ตัวถือโล่ให้เกราะทุกตัวในวง 2) ล้มตัวถือโล่ = เกราะหาย</td><td>C3 Seed Vault</td></tr>
+<tr><td><b>Elite Duo</b></td><td>1) Elite 2 ตัว 2) อยู่ใกล้กัน = บัฟกัน 3) แยกแล้วล้มทีละตัว</td><td>C2/C3 เวฟก่อนบอส</td></tr>
+<tr><td><b>Shrinking Arena</b></td><td>1) ขอบสนามค่อย ๆ หด (พื้นพิษ) 2) ล้มฝูงก่อนพื้นที่เหลือน้อย</td><td>C3 ด่านท้าย</td></tr>
+</table></div>
 </section>
 
-<section id="c1side">
-<h2><span class="tag c1">C1</span> ภารกิจรอง = วัตถุในแมพ (แบบย่อของ League)</h2>
-<p class="lead">วางอยู่ในแมพทั้งด่าน (ด่านละไม่เกิน 2 อัน: ของด่านนี้ + อันที่เคยเจอแล้ว) · v8.3.20: ไม่มีวงกลม ไม่มีป้าย เดินไปเหยียบ = เริ่ม · ทำได้ทีละอัน · 20 วินาที · ทำต่อข้ามเวฟได้ · ไม่ทำก็ไม่มีโทษ</p>
-<div class="wrap"><table>
-<tr><th>ภารกิจ</th><th>ด่านบ้าน</th><th>ทำอะไร (แบบย่อ C1)</th><th>รางวัล</th><th>ฉบับเต็มคือ</th></tr>
-<tr><td><b>📯 Hunger Herald</b></td><td>C1-1</td><td>ล้มศัตรูที่มีจุดสี 4 ตัว (เร็ว, ธรรมดา×2, พุ่ง)</td><td>22 Sugar</td><td class="poe">Harbinger</td></tr>
-<tr><td><b>✦ Hunger’s Mouth</b></td><td>C1-2</td><td>ล้ม 3 ตัว (เร็ว×2, พุ่ง)</td><td>24 Sugar</td><td class="poe">Breach</td></tr>
-<tr><td><b>♨ Grandma’s Pot</b></td><td>C1-3</td><td>ยืนในวง 7 วินาที (มีวงกลมบอกพื้นที่ตอนเริ่ม)</td><td>26 Sugar</td><td class="poe">Ritual</td></tr>
-<tr><td><b>❄ Frozen Pantry</b></td><td>C1-4</td><td>ล้ม 3 ตัว (แทงก์, ธรรมดา×2)</td><td>28 Sugar</td><td class="poe">Legion</td></tr>
-<tr><td><b>🗿 Grandma’s Golem</b></td><td>C1-5</td><td>ล้ม 3 ตัว (แทงก์×2, เร็ว)</td><td>30 Sugar</td><td class="poe">Metamorph</td></tr>
-</table></div>
-<p class="note">ข้อสังเกต: ฉบับ C1 ทุกอันเป็น "ล้ม N ตัว / ยืนเฝ้า" เท่านั้น ยังไม่มีกลไกเฉพาะของ League → เจ้าของรู้สึกว่าสั้น/จืด (รอตัดสินใจ)</p>
-</section>
+<section id="side">
+<h2><span class="tag t1">ภารกิจรอง</span> วัตถุในแมพ</h2>
+<p class="lead">กติการ่วม: วัตถุอยู่ในแมพทั้งด่าน · เดินไปเหยียบ = เริ่ม · ทำได้ทีละอัน · ทำต่อข้ามเวฟได้ · ไม่ทำก็ไม่มีโทษ</p>
 
-<section id="basic">
-<h2><span class="tag t1">Tier 1</span> ภารกิจทั่วไป (เจอได้ทุกด่าน C2+)</h2>
-<p class="lead">สำรับกลางพื้นฐาน: fill · survive · hunt · purge · capture</p>
-<div class="wrap"><table>
-<tr><th>ภารกิจ</th><th>ทำงานยังไง</th><th>รางวัล</th><th>เทียบ PoE</th></tr>
-<tr><td><b>🍬 Fill the Meter</b></td><td>ฆ่าศัตรูเติมมิเตอร์ให้เต็ม (สูงสุด 35 ตัว)</td><td>Transmute ×1</td><td class="poe">— (เป้าฆ่าพื้นฐาน)</td></tr>
-<tr><td><b>⏳ Survive the Swarm</b></td><td>อยู่รอดจนหมดเวลา</td><td>Transmute ×1</td><td class="poe">— (Timer)</td></tr>
-<tr><td><b>🎯 Hunt the Threat</b></td><td>ล้ม Elite ที่มีเป้า มันหนีเมื่อเข้าใกล้และวางกับดัก</td><td>Gear ×1</td><td class="poe">Rogue Exile / Bounty</td></tr>
-<tr><td><b>🕯️ Escort the Wisp</b></td><td>พาวิญญาณไปแต่ละแกนต้องสาป กันตัวแดงที่ไล่ล่าวิญญาณ</td><td>Transmute ×1</td><td class="poe">Escort (ใกล้ Heist/Sentinel)</td></tr>
-<tr><td><b>🕳️ Hunger Crack</b></td><td>แตะรอยแยกเรืองแสง มันวิ่งไปหลุมถัดไป แต่ละหลุมระเบิดเป็นมอน+ของ เคลียร์หลุมสุดท้าย</td><td>Transmute ×2</td><td class="poe">Abyss</td></tr>
-</table></div>
+<div class="m"><h3>🎯 Hunt the Threat <span class="poe">≈ Rogue Exile / Bounty</span> <span class="st move">ย้าย → ภารกิจรอง</span></h3>
+<ol><li>Elite ที่มีเป้า 🎯 เกิดในแมพ</li><li>เข้าใกล้ = มันกระพริบหนีไปไกลและวางกับดักไว้ที่เดิม</li><li>ไล่ตามไปตีจนล้ม</li><li>สำเร็จ = ได้ Gear 1 ชิ้น</li></ol>
+<div class="plan"><b>แผน:</b> จากภารกิจทั่วไปประจำเวฟ เปลี่ยนเป็นวัตถุภารกิจรองในแมพ</div></div>
+
+<div class="m"><h3>🕳️ Hunger Crack <span class="poe">≈ Abyss</span> <span class="st move">ย้าย → ภารกิจรอง</span></h3>
+<ol><li>แตะรอยแยกเรืองแสง</li><li>รอยแยกวิ่งไปหลุมถัดไป ทิ้งรอยไว้</li><li>แต่ละหลุมระเบิดเป็นมอน + ของ</li><li>เคลียร์หลุมสุดท้าย = จบ ได้รางวัลใหญ่</li></ol>
+<div class="plan"><b>แผน:</b> เปลี่ยนเป็นภารกิจรอง</div></div>
+
+<div class="m"><h3>🫧 Clear the Fog <span class="poe">≈ Delirium</span> <span class="st move">ย้าย → ภารกิจรอง + ปรับ</span></h3>
+<ol><li>(ตอนนี้) เก็บฟองอากาศดี</li><li>หมอกพิษปกคลุม เดินในหมอกเสียเลือด</li><li>ไปช่วยเพื่อนที่ติดในหมอก</li><li>ช่วยครบ = จบ</li></ol>
+<div class="plan"><b>แผน:</b> 1) ตัวเปิดภารกิจ = Wisp สีดำ 2) แตะแล้วมี animation Wisp บินมาที่หน้าจอ → จอมืด → หมอกลง 3) เพิ่ม <b>Monster เงา</b> (ย้ายมาจาก Mirror Path) เป็นศัตรูประจำภารกิจนี้</div></div>
+
+<div class="m"><h3>🌱 Creeping Roots <span class="poe">≈ Blight</span> <span class="st move">ย้าย → ภารกิจรอง + ปรับ</span></h3>
+<ol><li>รากหลายแบบ (เร็ว/หนา/แตกตัว) คลานไปหาดอก nectar</li><li>ไปยืนบนแม่รากเพื่อตัดเส้นทาง</li><li>กันไม่ให้รากถึงดอกจนหมดเวลา</li></ol>
+<div class="plan"><b>แผน:</b> 1) ตัวเปิด = ดอกไม้เหี่ยว ดูน่ากลัว 2) Animation รากค่อย ๆ งอกออกมา ช่วงยาวขึ้น 3) Monster ที่ออกมาถึกเป็นพิเศษ</div></div>
+
+<div class="m"><h3>🌳 Shake the Hollow Trees <span class="poe">≈ Strongbox</span> <span class="st move">ปรับ</span></h3>
+<ol><li>(ตอนนี้) ยืนในวงใต้ต้นไม้จนต้นสั่น</li><li>สุ่มได้ ผลไม้ / รังผึ้ง / ต้นทอง / ต้นไม้ปลอม</li></ol>
+<div class="plan"><b>แผน:</b> เอาวงออก · ผู้เล่นเดินชน/แตะต้นไม้ → ต้นสั่น → มอนออกมา บางครั้งทยอยออก บางครั้งโผล่ออกมาทีเดียว</div></div>
+
+<div class="m"><h3>📯✦♨❄🗿 ภารกิจรอง C1 (แบบย่อของ League) <span class="st keep">คงไว้ (รอตัดสินเรื่องความยาว)</span></h3>
+<ol><li>เดินไปเหยียบวัตถุ</li><li>ศัตรูที่มีจุดสีเกิดรอบวัตถุ 3–4 ตัว (Grandma’s Pot = ยืนในวง 7 วิ)</li><li>มีเวลา 20 วิ</li><li>สำเร็จ = Sugar 22–30</li></ol></div>
 </section>
 
 <section id="stage">
-<h2><span class="tag t2">Tier 2</span> ภารกิจประจำด่าน (C2–C3)</h2>
-<p class="lead">แต่ละด่านมี 1 ใบประจำ (lead) · ผ่านแล้วเข้าสำรับกลาง</p>
-<div class="wrap"><table>
-<tr><th>ภารกิจ</th><th>ด่าน</th><th>ทำงานยังไง</th><th>เทียบ PoE</th></tr>
-<tr><td><b>🌺 Defend Nectar</b></td><td>C2-1</td><td>ปกป้องดอก nectar ถ้าเสียดอก เสีย HP 1/3 และดอกใหม่ไปขึ้นที่อื่น</td><td class="poe">Defense (ใกล้ Blight)</td></tr>
-<tr><td><b>🫧 Clear the Fog</b></td><td>C2-2</td><td>เก็บฟองอากาศดี แล้วไปช่วยเพื่อนที่ติดในหมอกพิษ</td><td class="poe">Delirium (หมอก)</td></tr>
-<tr><td><b>🌱 Creeping Roots</b> <span class="tag t3">T3</span></td><td>C2-3</td><td>รากหลายแบบคลานไปหาดอก nectar ต้องไปยืนบนแม่รากเพื่อตัดทาง</td><td class="poe">Blight</td></tr>
-<tr><td><b>🌦️ Seasonal Harvest</b></td><td>C2-4</td><td>เก็บกลีบจากมอน เหยียบศาลเพื่อเรียกฤดู เติมให้ครบ 4 ฤดู</td><td class="poe">Harvest</td></tr>
-<tr><td><b>🐛 Lure the Crown Root</b></td><td>C2-5</td><td>รากราชันมุดตามตัว ยืนข้างหินสมอแล้วหลบ ให้มันพุ่งชนหิน</td><td class="poe">Boss-bait (ไม่มีลีกตรง)</td></tr>
-<tr><td><b>🎯 Hunt</b></td><td>C3-1</td><td>(ใช้ Hunt เป็นใบประจำด่าน)</td><td class="poe">Bounty</td></tr>
-<tr><td><b>🌳 Shake the Hollow Trees</b></td><td>C3-2</td><td>ยืนใต้ต้นไม้เพื่อเขย่า ได้ผลไม้/รังผึ้ง/ต้นทอง/ต้นไม้ปลอม</td><td class="poe">Strongbox</td></tr>
-<tr><td><b>🔮 Light the Mirror Path</b></td><td>C3-3</td><td>ชาร์จกระจกทุกบาน แล้วคริสตัลยิงทั้งสนาม เงาพยายามบังลำแสง</td><td class="poe">Expedition (วางแล้วจุดระเบิด)</td></tr>
-<tr><td><b>🗝️ Vault Altar</b> <span class="tag t3">T3</span></td><td>C3-4</td><td>2 รอบ เลือกคำสาปทีละรอบ แล้วเลือกรับของหรือเสี่ยงต่อ</td><td class="poe">Ultimatum ฉบับย่อ</td></tr>
-<tr><td><b>🏮 Hold the Last Light</b></td><td>C3-5</td><td>รักษาตะเกียงให้ติดอย่างน้อย 1 ดวง ไปยืนใกล้เพื่อจุดใหม่ กันผีเสื้อขโมยแสง เก็บ ✨</td><td class="poe">Delirium / Ritual light</td></tr>
-</table></div>
+<h2><span class="tag t2">ภารกิจเฉพาะด่าน</span></h2>
+<div class="m"><h3>🕯️ Escort the Wisp <span class="poe">≈ Escort</span> <span class="st move">ย้าย → ภารกิจเฉพาะด่าน</span></h3>
+<ol><li>Wisp ลอยไปทีละแกนต้องสาป</li><li>ต้องอยู่ใกล้ Wisp ไว้</li><li>ตัวแดงพุ่งไล่ล่า Wisp ต้องดักล้มก่อน</li><li>ถึงแกนสุดท้าย = สำเร็จ</li></ol>
+<div class="plan"><b>แผน:</b> ไม่อยู่ในสำรับทั่วไปแล้ว ผูกกับด่านเดียว (รอเลือกด่าน)</div></div>
+
+<div class="m"><h3>🗝️ Vault Altar <span class="poe">≈ Ultimatum ฉบับย่อ</span> <span class="st move">ปรับ</span></h3>
+<ol><li>(ตอนนี้) 2 รอบ แต่ละรอบเลือกคำสาป</li><li>สู้ผ่านรอบนั้นภายใต้คำสาป</li><li>จบรอบ เลือกรับของ หรือเสี่ยงต่อ</li></ol>
+<div class="plan"><b>แผน:</b> เป็น popup ให้ผู้เล่นกดเลือกคำสาปเอง · ระหว่างเลือก เวลาในด่านหยุด + VFX แบบ Ultimatum (วงพิธี/จอมืดรอบ ๆ)</div></div>
+
+<div class="m"><h3>🍲 Grandma’s Pot <span class="poe">≈ Ritual</span> <span class="st move">ปรับ</span></h3>
+<ol><li>ก้าวเข้าวงหม้อเพื่อเริ่มพิธี</li><li>โมจิหิวเกิดในแสง ล้มทีละคอร์ส</li><li>จบคอร์ส ได้ "รส" สะสม</li><li>ใช้รสซื้ออาหาร/รางวัลที่โต๊ะคุณยาย</li></ol>
+<div class="plan"><b>แผน:</b> วงใหญ่กว่าเดิม · ในวงมีพายุฝุ่น/ควัน หรือปรากฏการณ์ธรรมชาติ (เช่น ลมหมุน ฝนผลไม้)</div></div>
 </section>
 
 <section id="league">
-<h2><span class="tag t3">Tier 3</span> League missions (ฉบับเต็ม)</h2>
-<p class="lead">ปรับจาก League ของ PoE ให้เข้ากับ lore · ฉบับเต็มไม่โผล่ใน C1 รอบแรก (C1 ใช้แบบย่อด้านบน) · <b>ยังไม่แก้อะไร รอเจ้าของดูก่อน</b></p>
-<div class="wrap"><table>
-<tr><th>ภารกิจ</th><th>ทำงานยังไง</th><th>เทียบ PoE</th></tr>
-<tr><td><b>🧊 Frozen Pantry</b></td><td>เปิดโหลน้ำตาล แล้วเดินผ่านกองทัพโมจิแช่แข็ง (30/45 ตัว) เพื่อทาสีให้ตื่น ลังแช่แข็งทาสีแล้วแตกเป็นของ ล้ม 👑 Captain ก่อน หมดเวลาแล้วทุกตัวแตกพร้อมกัน</td><td class="poe">Legion</td></tr>
-<tr><td><b>🖐️ Hunger’s Mouth</b></td><td>แตะมือ Hunger เพื่อเปิด breach ฆ่าในวงช่วยยืดเวลา มีเศษ splinter และหีบรออยู่ข้างใน</td><td class="poe">Breach</td></tr>
-<tr><td><b>🌱 Creeping Roots</b></td><td>(ดู Tier 2) รากคลานเข้าหาดอก ยืนบนแม่รากเพื่อตัดทาง</td><td class="poe">Blight</td></tr>
-<tr><td><b>📯 Hunger Herald</b></td><td>Herald แตะต้องไม่ได้ ยิงพลังใส่มอนขณะประตูเปิด ต้องล้มตัวที่ถูกบัฟ ตัวฮีล ตัวบูสต์ และตัวสิง จนมันถอย</td><td class="poe">Harbinger</td></tr>
-<tr><td><b>🍲 Grandma’s Pot</b></td><td>ก้าวเข้าวงหม้อเพื่อเริ่มพิธี ล้มโมจิหิวในแสงทีละคอร์ส แล้วใช้รสที่ได้ซื้ออาหารที่โต๊ะคุณยาย</td><td class="poe">Ritual</td></tr>
-<tr><td><b>🗿 Grandma’s Golem</b></td><td>ศัตรูถือรสหล่นชิ้นส่วนโกเลม (✨ ชิ้นทองแรงกว่า) อบแล้วสู้โกเลม แต่ละชิ้นให้สกิล: Cake Head ยิงแยม · Pretzel Arms ทุบพื้น · Baguette Legs พุ่งเร็ว · Lollipop Tail เรียกลูกน้อง · Jelly Heart ฮีล</td><td class="poe">Metamorph</td></tr>
-<tr><td><b>🏰 Siege of the Hunger</b></td><td>ยืนในวง ขณะที่ 5 ประตูเทมอนเข้า ฆ่าในวงเติมหม้อ กัน 💣 sapper และเก็บ 📦 supplies · ห้องพิเศษใน Delve (ชั้น 3 ขึ้นไป)</td><td class="poe">Legion 5-Way</td></tr>
-<tr><td><b>🪨 Hunger’s Domain</b></td><td>ใช้ Hunger Stone ดึงทั้งถ้ำเข้า breach รอดคลื่นมอน แล้วสู้ Breachlord · ใช้ใน Delve</td><td class="poe">Breachstone / Breach Domain</td></tr>
-<tr><td><b>⚖️ Sugar Crown Trial</b></td><td>4 รอบ คำสาปซ้อนกัน เลือกรับกองรางวัล หรือเสี่ยงต่อ (แพ้เสียครึ่ง) · ห้อง Trial ใน Delve</td><td class="poe">Ultimatum</td></tr>
-<tr><td><b>🌀 Seal the Seed Rift</b></td><td>รอยแยกดูดตัวเข้าไป ต้องจับตัวขนเมล็ด (เร็ว/เกราะ/แตกตัว) ก่อนมันป้อนรอยแยก · ตอนนี้เป็นเหตุการณ์สุ่ม (ดูด้านล่าง)</td><td class="poe">Breach (ทางเลือก)</td></tr>
-</table></div>
+<h2><span class="tag t3">League</span> ภารกิจใหญ่</h2>
+
+<div class="m"><h3>🗿 Grandma’s Golem <span class="poe">≈ Metamorph</span> <span class="st new">ออกแบบใหม่</span></h3>
+<ol><li>(ตอนนี้) ศัตรูถือรสหล่นชิ้นส่วนโกเลม (✨ ชิ้นทองแรงกว่า)</li><li>เดินไปเก็บ แล้วนำไปอบที่เตา (ขั้นต่ำ 2–3 ชิ้น)</li><li>โกเลมเกิด ได้สกิลตามชิ้น: Cake Head ยิงแยม · Pretzel Arms ทุบพื้น · Baguette Legs พุ่งเร็ว · Lollipop Tail เรียกลูกน้อง · Jelly Heart ฮีล</li><li>ล้มโกเลม = รางวัล (ชิ้นเยอะ = ยากขึ้น รางวัลดีขึ้น)</li></ol>
+<div class="plan new"><b>แผนใหม่ (แบบ Metamorph เต็ม):</b>
+<ol><li>ชิ้นส่วนดรอปจาก Monster / Miniboss / Boss · ระดับต่างกันตามแหล่ง</li><li>ชิ้นส่วนเป็นของตกพื้น <b>ไม่ดูดเข้าตัว</b> เหมือน EXP ต้องเดินไปเก็บเอง</li><li>เดินเข้าหม้อ → popup ใส่วัตถุดิบที่เก็บมา</li><li>สูตรที่ผสมกำหนด Monster ที่จะออกมา (หลายแบบ)</li><li>สกิลของ Golem มาจากสกิลของบอสหลายตัวผสมกัน ตามชิ้นที่ใส่</li></ol></div></div>
+
+<div class="m"><h3>🧊 Frozen Pantry <span class="poe">≈ Legion</span> <span class="st keep">คงไว้</span></h3>
+<ol><li>เดินไปเปิดโหลน้ำตาล (ปุ่ม Open the Jar)</li><li>กองทัพโมจิแช่แข็งผุดขึ้น เวลานับถอยหลัง</li><li>เดินผ่านตัวไหน = ทาสีให้ตื่น ลังแช่แข็งทาสีแล้วจะแตกเป็นของ</li><li>ล้ม 👑 Captain ก่อน (ลูกหมู่อ่อนลง)</li><li>หมดเวลา: ทุกตัวแตกพร้อมกัน ตัวที่ไม่ได้ทาสีหายไป · ล้มได้มาก = รางวัลท้ายดีขึ้น</li></ol></div>
+
+<div class="m"><h3>🖐️ Hunger’s Mouth <span class="poe">≈ Breach</span> <span class="st keep">คงไว้</span></h3>
+<ol><li>แตะมือของ Hunger → เปิด breach เป็นวงขยาย</li><li>มอนจาก breach ทะลักออกมา</li><li>ฆ่าในวง = วงเปิดนานขึ้น</li><li>ข้างในมี splinter และหีบ รอจนวงปิด</li></ol></div>
+
+<div class="m"><h3>📯 Hunger Herald <span class="poe">≈ Harbinger</span> <span class="st keep">คงไว้</span></h3>
+<ol><li>Herald (แตะต้องไม่ได้) ปรากฏ ประตูเปิด</li><li>มันยิงพลังใส่มอน → มอนถูกบัฟ</li><li>ล้มตัวที่ถูกบัฟ ตัวฮีล ตัวบูสต์ และตัวสิง</li><li>ล้มครบ = Herald ถอย ประตูปิด</li></ol></div>
+
+<div class="m"><h3>🏰 Siege of the Hunger <span class="poe">≈ Legion 5-Way</span> <span class="st keep">คงไว้ (Delve)</span></h3>
+<ol><li>ห้องพิเศษใน Delve (ชั้น 3+) ยืนในวง</li><li>5 ประตูเทมอนเข้า</li><li>ฆ่าในวง = เติมหม้อ</li><li>กัน 💣 sapper และเก็บ 📦 supplies</li></ol></div>
+
+<div class="m"><h3>🪨 Hunger’s Domain <span class="poe">≈ Breach Domain</span> <span class="st keep">คงไว้ (Delve)</span></h3>
+<ol><li>ใช้ Hunger Stone</li><li>ทั้งถ้ำถูกดึงเข้า breach รอดคลื่นมอน</li><li>สู้ Breachlord</li></ol></div>
+
+<div class="m"><h3>⚖️ Sugar Crown Trial <span class="poe">≈ Ultimatum</span> <span class="st keep">คงไว้ (Delve)</span></h3>
+<ol><li>ห้อง Trial ใน Delve</li><li>4 รอบ คำสาปซ้อนกันทุกรอบ</li><li>จบแต่ละรอบ เลือกรับกองรางวัล หรือเสี่ยงต่อ</li><li>แพ้ = เสียครึ่ง</li></ol></div>
+</section>
+
+<section id="env">
+<h2><span class="tag ax">Environment Event</span> สภาพแวดล้อมพิเศษ (สุ่ม)</h2>
+<div class="m"><h3>🌦️ Seasonal Harvest <span class="poe">≈ Harvest</span> <span class="st move">ปรับ → Environment Event</span></h3>
+<ol><li>(ตอนนี้) เก็บกลีบจากมอน → เหยียบศาลเรียกฤดู → เติมครบ 4 ฤดู</li></ol>
+<div class="plan"><b>แผน:</b> ซับซ้อนเกิน → เปลี่ยนเป็นสภาพแวดล้อมพิเศษที่สุ่มเจอได้ หลังเล่น C2-4 เป็นต้นไป (เช่น ทั้งด่านเป็นฤดูหนึ่ง มีผลกับสนาม)</div></div>
+<div class="m"><h3>✨ Golden Wave <span class="st keep">คงไว้</span></h3><ol><li>5% ต่อเวฟ</li><li>เวฟเป็นสีทอง</li><li>รางวัลเวฟนั้น ×2</li></ol></div>
+<div class="m"><h3>🌀 Seed Rift (เหตุการณ์สุ่ม) <span class="poe">≈ Breach</span> <span class="st keep">คงไว้</span></h3><ol><li>ด่าน 6+ โอกาส 15–35% ในวินาทีที่ 8–20 ของเวฟ</li><li>เตือน 1.5 วิ</li><li>รอยแยกดูดผู้เล่น 20 วิ ต้องจับตัวขนเมล็ด</li></ol></div>
 </section>
 
 <section id="boss">
-<h2><span class="tag ax">บอส</span> ลูกเล่นบอส (Boss Twists · แทนภารกิจบอสเดิม)</h2>
-<p class="lead">ด่าน C2–C3 · ทำงานตอนเลือดบอสเหลือ 60% และ 30% · ครั้งละ 15 วินาที · รอดแล้วได้ Sugar และกล่องรางวัล</p>
-<div class="wrap"><table>
-<tr><th>ลูกเล่น</th><th>ทำงานยังไง</th><th>เทียบ PoE</th></tr>
-<tr><td><b>🌱 Root Surge</b></td><td>รากคลานออกจากบอส แล้วพ่นมอนออกมา</td><td class="poe">Boss add phase</td></tr>
-<tr><td><b>🌰 Seed Rain</b></td><td>เมล็ดตก ต้องเหยียบให้แตกก่อนฟัก (3 วินาที)</td><td class="poe">Mechanic ground</td></tr>
-<tr><td><b>🍎 Falling Fruit</b></td><td>ระเบิดผลไม้ตกใส่ ต้องเดินตลอด</td><td class="poe">Telegraphed slam</td></tr>
-<tr><td><b>🌑 Frenzy Dark</b></td><td>แสงหรี่ มอนคลั่ง เร็วขึ้น ×1.3</td><td class="poe">Delirium-like</td></tr>
-<tr><td><b>🪞 Boss Shadows</b></td><td>เงาบอส 3 ตัว</td><td class="poe">Boss clones</td></tr>
-</table></div>
-</section>
-
-<section id="events">
-<h2><span class="tag ax">สุ่ม</span> เหตุการณ์สุ่มในด่าน</h2>
-<div class="wrap"><table>
-<tr><th>เหตุการณ์</th><th>ทำงานยังไง</th><th>เทียบ PoE</th></tr>
-<tr><td><b>🌀 Seed Rift</b></td><td>ตั้งแต่ด่าน 6 ขึ้นไป มีโอกาส 15–35% ระหว่างวินาทีที่ 8–20 ของเวฟ เตือน 1.5 วินาที แล้วรอยแยกดูดผู้เล่นนาน 20 วินาที</td><td class="poe">Breach เกิดเอง</td></tr>
-<tr><td><b>✨ Golden Wave</b></td><td>5% ต่อเวฟ เวฟกลายเป็นสีทอง รางวัล ×2</td><td class="poe">Map mod / Rare bonus</td></tr>
-</table></div>
+<h2><span class="tag ax">บอส</span> ลูกเล่นบอส <span class="st keep">คงไว้</span></h2>
+<ol><li>ด่าน C2–C3 เลือดบอสเหลือ 60% และ 30% = ลูกเล่นเริ่ม 15 วิ</li><li>แบบ: 🌱 Root Surge · 🌰 Seed Rain (เหยียบเมล็ดก่อนฟัก 3 วิ) · 🍎 Falling Fruit · 🌑 Frenzy Dark (มอนเร็ว ×1.3) · 🪞 Boss Shadows (เงา 3 ตัว)</li><li>รอดจนจบ = Sugar + กล่องรางวัล</li></ol>
 </section>
 
 <section id="systems">
 <h2>ระบบรอบภารกิจ</h2>
 <div class="wrap"><table>
-<tr><th>ระบบ</th><th>ทำงานยังไง</th><th>เทียบ PoE</th></tr>
-<tr><td><b>🃏 สำรับภารกิจ (Mission Deck)</b></td><td>แจกไพ่ก่อนเข้าด่าน บอกว่าแต่ละเวฟเจออะไร · Reroll ฟรี 1 ครั้ง ครั้งที่ 2 ดูโฆษณา · C1 = การ์ดพรีวิวสถานการณ์ (ไม่มี Reroll)</td><td class="poe">Map device / Scarab</td></tr>
-<tr><td><b>⭐ Mission Atlas</b></td><td>เปิดหลังจบ Chapter 2 · ทุกภารกิจมีต้นไม้ 3 ขั้น เลือก 1 ใน 2 · ขั้น 1: +15% เวลา / +1 currency · ขั้น 2: ยากขึ้น 25% รางวัล ×1.35 / โอกาส 35% ได้กล่อง Gear · ขั้น 3: 12% โอกาสรางวัล ×3 / ยากขึ้น 40% รางวัล ×1.6 +Star Sugar · มีเพดานแต้ม และ Focus ภารกิจโปรด ×2</td><td class="poe">Atlas Passive Tree</td></tr>
-<tr><td><b>🎁 รางวัลประจำภารกิจ</b></td><td>แต่ละภารกิจให้ currency/Gear ตามชนิด · ด่าน 6+ และ 11+ ได้เพิ่ม +1</td><td class="poe">League reward</td></tr>
-<tr><td><b>⛏ Mochi Delve</b></td><td>endgame ไล่ความลึก มีห้อง Trial / Siege / Domain · รางวัลตามความลึก</td><td class="poe">Delve / Maps tier</td></tr>
+<tr><th>ระบบ</th><th>ขั้นตอน</th><th>เทียบ PoE</th></tr>
+<tr><td><b>🃏 การ์ดก่อนด่าน</b></td><td>1) ก่อนเข้าด่าน แจกการ์ดบอกแต่ละเวฟ 2) พลิกครบแล้วแตะเพื่อเริ่ม 3) (C2+) Reroll ฟรี 1 ครั้ง ครั้งที่ 2 ดูโฆษณา</td><td>Map device / Scarab</td></tr>
+<tr><td><b>⭐ Mission Atlas</b></td><td>1) เปิดหลังจบ Chapter 2 2) ทุกภารกิจมีต้นไม้ 3 ขั้น เลือก 1 ใน 2 3) มีเพดานแต้ม 4) Focus ภารกิจโปรด ×2</td><td>Atlas Passive Tree</td></tr>
+<tr><td><b>⛏ Mochi Delve</b></td><td>1) ลงลึกทีละชั้น 2) ห้องพิเศษ Trial / Siege / Domain 3) ยิ่งลึก รางวัลยิ่งดี</td><td>Delve</td></tr>
 </table></div>
-<p class="note">หมายเหตุ: คอลัมน์ "เทียบ PoE" ที่ไม่มีลีกตรงตัว เป็นการเทียบโดยประมาณจากกลไก ส่วนที่มีลีกตรง (Abyss, Legion, Breach, Blight, Harbinger, Ritual, Metamorph, Ultimatum, Harvest, Strongbox, Expedition, Delirium) อ้างจาก comment ในโค้ด</p>
+</section>
+
+<section id="cut">
+<h2>รายการที่เอาออก (แผน)</h2>
+<div class="wrap"><table>
+<tr><th>ภารกิจ</th><th>เหตุผล</th></tr>
+<tr><td>🍬 Fill the Meter</td><td>แทนด้วย Combat Situations</td></tr>
+<tr><td>⏳ Survive the Swarm</td><td>มีใน Combat Situations แล้ว</td></tr>
+<tr><td>🌺 Defend Nectar</td><td>ซ้ำกับ Creeping Roots</td></tr>
+<tr><td>🎯 Hunt (ใบประจำด่าน C3-1)</td><td>ซ้ำกับ Elite (Hunt ยังอยู่ในรูปภารกิจรอง)</td></tr>
+<tr><td>🔮 Light the Mirror Path</td><td>เอาออก เหลือ Monster เงา ไปรวมกับ Clear the Fog</td></tr>
+<tr><td>🏮 Hold the Last Light</td><td>ซ้ำกับ Grandma’s Pot</td></tr>
+<tr><td>🌀 Seal the Seed Rift (ภารกิจ)</td><td>ซ้ำกับเหตุการณ์สุ่ม Seed Rift</td></tr>
+<tr><td>🐛 Lure the Crown Root (ภารกิจ)</td><td>ย้ายไปเป็น Combat Situation "Root Lure"</td></tr>
+</table></div>
+<p class="note">ด่านที่เคยมีใบประจำด่านเป็นของที่ถูกเอาออก (C2-1, C2-5, C3-1, C3-3, C3-5) ต้องหาใบประจำด่านใหม่ หรือใช้ Combat Situations ล้วน</p>
 </section>
 </main></body>
 </html>
