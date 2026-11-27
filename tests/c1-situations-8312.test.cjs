@@ -63,6 +63,10 @@ console.log('C1 situations: 5×4 combat situations, side objects (own + met), di
   A.ok(src.includes("{g2:true,home:5,generic:true"),'golem oven can appear as a C2–C3 side object'); }
 // v8.3.28 base missions (hunt/purge/capture/cleanAir/breakRoots) run as the main objective in continuous runs and persist across waves
 { const src=require('fs').readFileSync('game.js','utf8'),A=require('assert');
-  A.ok(src.includes("const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission):this.v83MissionStart(o.def.mission)))return;"),'base missions are not sent to the side stack');
+  A.ok(src.includes("const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission,o.def.half?{half:true}:undefined):this.v83MissionStart(o.def.mission)))return;"),'base missions are not sent to the side stack');
+  // v8.3.30 owner 27 Nov: C1 side objects start the full league mission at half time / half target
+  for(const [n,m] of [['Hunger Herald','hungerHerald'],['Hunger’s Mouth','hungersMouth'],['Grandma’s Pot','grandmasPot'],['Frozen Pantry','frozenPantry']]){ const e=C1_SIDE_EVENTS.find(x=>x.name===n); A.equal(e.mission,m); A.equal(e.half,true); }
+  A.equal(C1_SIDE_EVENTS.find(x=>x.g2).mission,undefined,'golem keeps the oven popup');
+  A.ok(src.includes("T=half?Math.round(T0*C1_SIDE_HALF):T0;")&&src.includes("this._sigForceFull=half;")&&src.includes("o.target=Math.max(1,Math.ceil((o.target||1)*C1_SIDE_HALF)); if(S&&S.rounds)S.rounds=o.target;")&&src.includes("fpFull(){ if(this._sigForceFull)return true;"),'full version, half time and half target');
   A.ok(src.includes("clearWaveObjective(force){const VM=this._v83Mission;if(!force&&VM&&this._v83Run&&this.waveObjective===VM.o&&!VM.o.done)return;"),'wave change keeps the running mission');
   A.ok(src.includes('  tickV83Mission(){'),'mission expiry / boss end'); }

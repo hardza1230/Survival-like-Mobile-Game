@@ -69,15 +69,16 @@ for (const row of manifest) {
 }
 
 const run=vm.runInContext('({'+['missionArtKeys','fpTick','sigClear'].map(method).join(',')+'})',context);
-const stageCases={0:['gates_shut'],1:['breach_open','splinter_pick','breach_chest','stone_fuse'],
-  2:['dish_served'],3:['statue_paint'],4:['golem_bake'],7:['root_cut'],13:['trial_curse','trial_take','trial_risk']};
+const H=['gates_shut'],M=['breach_open','splinter_pick','breach_chest','stone_fuse'];   // v8.3.30 C1 stages also load earlier C1 homes (full side missions halved)
+const stageCases={0:H,1:[...H,...M],
+  2:[...H,...M,'dish_served'],3:[...H,...M,'dish_served','statue_paint'],4:[...H,...M,'dish_served','statue_paint','golem_bake'],7:['root_cut'],13:['trial_curse','trial_take','trial_risk']};
 for (const [stage,names] of Object.entries(stageCases)) {
   const got=run.missionArtKeys.call({},+stage).filter(k=>k.startsWith('vfx78_'));
   assert.equal(JSON.stringify(got),JSON.stringify(names.map(n=>'vfx78_'+n)));
 }
 assert.equal(run.missionArtKeys.call({},5).some(k=>k.startsWith('vfx78_')),false);
 const delve=run.missionArtKeys.call({recipeMode:true},5);
-for (const name of [...stageCases[1],...stageCases[13],'siege_break']) assert(delve.includes('vfx78_'+name));
+for (const name of [...M,...stageCases[13],'siege_break']) assert(delve.includes('vfx78_'+name));
 
 // v8.1.111 Frozen Pantry reworked (Legion): the paint swirl follows the player while painting, one sprite, cleared by sigClear.
 let created=0;const state={phase:'paint',T:10,full:false,st:[{x:999,y:999,state:'frozen',fill:0,t:{}}],objs:[],lx:null,ly:null,fx:null,paint:null};

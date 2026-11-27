@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.29';
+const GAME_VERSION = '8.3.30';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -97,14 +97,16 @@ const C1_COMBAT_PATTERNS={
 const C1_WAVE_SEC=[24,30,0,30,30],C1_RECOVERY_SEC=8;   // v8.3.13 เจ้าของ: ทุกเวฟไม่เกิน 30 วิ
 // v8.3.10 เจ้าของ: ภารกิจแทรกโผล่เฉพาะที่เคยเจอ · home = ด่านที่ภารกิจเต็มอยู่ (C1-2 Hunger’s Mouth · C1-3 Grandma’s Pot · C1-4 Frozen Pantry)
 const C1_SIDE_EVENTS=[
-  {name:'Hunger Herald',home:0,key:'hh_gate',icon:'📯',color:0xff8fb1,types:['fast','basic','basic','dasher'],reward:22},
-  {name:'Hunger’s Mouth',home:1,key:'hm_hand',icon:'✦',color:0xbc89ff,types:['fast','fast','dasher'],reward:24},
-  {name:'Grandma’s Pot',home:2,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26},
-  {name:'Frozen Pantry',home:3,key:'fp_jar',icon:'❄',color:0x9fe0ff,types:['tank','basic','basic'],reward:28},
+  {name:'Hunger Herald',home:0,mission:'hungerHerald',half:true,key:'hh_gate',icon:'📯',color:0xff8fb1,types:['fast','basic','basic','dasher'],reward:22},
+  {name:'Hunger’s Mouth',home:1,mission:'hungersMouth',half:true,key:'hm_hand',icon:'✦',color:0xbc89ff,types:['fast','fast','dasher'],reward:24},
+  {name:'Grandma’s Pot',home:2,mission:'grandmasPot',half:true,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26},
+  {name:'Frozen Pantry',home:3,mission:'frozenPantry',half:true,key:'fp_jar',icon:'❄',color:0x9fe0ff,types:['tank','basic','basic'],reward:28},
   {name:'Grandma’s Golem',home:4,key:'gg_oven',icon:'🗿',color:0xf2b06b,types:['tank','tank','fast'],reward:30,g2:true}   // v8.3.27 = เตาโกเลมแบบใหม่ (Metamorph)
 ];
 /* v8.3.24 เจ้าของ: ภารกิจรอง C2–C3 = ภารกิจเต็มเดิม เดินไปเหยียบวัตถุ = เริ่ม (ระบบ side mission) · home = ด่านที่เจอครั้งแรก · generic = สุ่มได้ทุกด่านหลังจากนั้น
    Escort the Wisp = ภารกิจเฉพาะด่าน C2-1 (มีวัตถุในด่านนี้เท่านั้น) */
+/* v8.3.30 เจ้าของ 27 พ.ย.: ภารกิจรอง C1 = ภารกิจฉบับเต็ม หาร 2 (เวลา + เป้า/จำนวน) · Golem ยังเป็นเตาแบบใหม่ */
+const C1_SIDE_HALF=.5;
 const C1_POT_R=95;   // v8.3.25 เจ้าของ: วง Grandma’s Pot ใหญ่ขึ้น (เดิม 58)
 /* v8.3.27 เจ้าของ: Grandma’s Golem แบบ Metamorph · ชิ้นส่วน 5 ชนิด (จากบอส C1) × 3 ระดับ · ตกพื้น ไม่ดูดเข้าตัว · เก็บข้ามด่าน (สูงสุด 12)
    ดรอป: มอน 3% ชิ้นธรรมดา · มินิบอส ชิ้นหายาก 1 · บอส ชิ้นระดับสูง 2 (ชนิดของบอสด่านนั้น) · เตา: popup ใส่ 3 ช่อง → อบ
@@ -210,6 +212,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.30',date:'2026-11-27',title:'C1 side missions: full league versions at half time and target',items:['C1 side objects now start the full Herald, Hunger’s Mouth, Grandma’s Pot and Frozen Pantry missions at half time and half target']},
   {v:'8.3.29',date:'2026-11-27',title:'Art 96: side-mission objects, fog wisp, roots, shades, golem parts, oven',items:['Side-mission objects on the map now have real art (Escort, Hunt, Hunger Crack, Fog, Roots)','Clear the Fog opens with a black wisp flying at the screen; Creeping Roots grow from a wilted flower','Fog shadow monsters, Golem parts, Grandma’s oven panel, Pot dust and Vault ring use new art']},
   {v:'8.3.28',date:'2026-11-27',title:'Side missions fixed',items:['Escort, Hunt, Hunger Crack, Clear the Fog and Root Lure in Chapters 2–3 now play properly and carry on across waves','Clear the Fog now has shadow monsters lurking in the mist']},
   {v:'8.3.27',date:'2026-11-27',title:'Grandma’s Golem reborn',items:['Monsters, minibosses and bosses drop golem parts — walk over them to pick them up','Bring parts to Grandma’s oven, choose three and bake a golem with boss skills']},
@@ -16742,8 +16745,8 @@ class Game extends Phaser.Scene {
     if(!ok)return; this.a12?.('a22_twist_survive',.4,.5); const si=this.stageIndex||0,b=Math.round(BOSS_TWIST_SUGAR[0]+si*BOSS_TWIST_SUGAR[1]+(T.popped||0)); this.sugarStage=(this.sugarStage||0)+b; this.sugarRun=(this.sugarRun||0)+b; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); this.showBanner?.('✅ Survived!','Sugar +'+b,1200); }
   stackPick(primary){ const pc=STACK_CAT[primary?.type]; if(pc==='global')return null; const ok=STACK_POOL.filter(t=>t!==primary?.type&&STACK_CAT[t]!==pc&&WAVE_OBJECTIVES[t]); return ok.length?ok[Math.floor(Math.random()*ok.length)]:null; }
   stackStart(type,opt){ if(this._stack||!type)return null; const boss=!!(opt&&opt.boss); const def=WAVE_OBJECTIVES[type],color=0xb8f0ff,o={type,emoji:def.emoji,name:def.name,desc:def.desc,color,progress:0,target:0,done:false,_stack:true},g=this.add.graphics().setScrollFactor(1).setDepth(90041); this.camWorld?.(g);
-    const T=boss?(typeof BOSS_MISSION_DUR!=='undefined'?BOSS_MISSION_DUR:45):this._v83Run?(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._):Math.max(30,Math.min(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._,(this.waveTimer||60)-4));   /* v8.3.24 C2–C3 ภารกิจรองข้ามเวฟ = เวลาเต็มของภารกิจ */ this._stack={o,S:null,g,T,T0:T,type,txt:null,boss}; this.logMission?.(type);
-    this.stackRun(()=>{ this._sig=null; this.sigSetup(o,type,{dur:T}); this.rpMissionSetup?.(o); this.maSetup?.(o); }); if(o._timedGoal)o.target=Math.max(1,Math.floor(T)-1);
+    const half=!!(opt&&opt.half)&&typeof C1_SIDE_HALF!=='undefined',T0=boss?(typeof BOSS_MISSION_DUR!=='undefined'?BOSS_MISSION_DUR:45):this._v83Run?(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._):Math.max(30,Math.min(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._,(this.waveTimer||60)-4)),T=half?Math.round(T0*C1_SIDE_HALF):T0;   /* v8.3.24 C2–C3 ภารกิจรองข้ามเวฟ = เวลาเต็มของภารกิจ · v8.3.30 C1 = หาร 2 */ this._stack={o,S:null,g,T,T0:T,type,txt:null,boss}; this.logMission?.(type);
+    this.stackRun(()=>{ this._sig=null; this._sigForceFull=half; try{ this.sigSetup(o,type,{dur:T}); } finally{ this._sigForceFull=false; } const S=this._sig; if(half&&!o._timedGoal){ o.target=Math.max(1,Math.ceil((o.target||1)*C1_SIDE_HALF)); if(S&&S.rounds)S.rounds=o.target; } if(half&&o.desc)o.desc=o.desc.replace(/last \d+s/,'last '+Math.floor(T)+'s').replace(/for \d+ courses/,'for '+o.target+' courses'); this.rpMissionSetup?.(o); this.maSetup?.(o); }); if(o._timedGoal)o.target=Math.max(1,Math.floor(T)-1);
     if(this.add?.text&&this.camUI){ const y=(this.waveObjTxt?.y||40)+(this.waveObjTxt?.height||18)+14,t=this.add.text(this.W/2,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#b8f0ff',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5,0).setScrollFactor(1).setDepth(54); this.camUI(t); this._stack.txt=t; const ck=boss&&this.realTex?.('ev90_boss_chip')?'ev90_boss_chip':'ui87_side_chip'; if(this.realTex?.(ck)){ const ch=this.add.image(this.W/2,y+9,ck).setScrollFactor(1).setDepth(53).setDisplaySize(230,24); this.camUI(ch); this._stack.chip=ch; } }   /* v8.2.24 ใบ 87 แถบภารกิจเสริม */
     this.showBanner?.((boss?'👑 Boss mission: ':'➕ Side mission: ')+def.emoji+' '+def.name,boss?'The boss calls on the stage — finish it for a Gear box':def.desc,2200); if(boss){ (this.a12?.('a18_boss_mission',.5,.5))||Sfx.card?.(); this.rubyVoiceReact?.('bossmission',600); } else { this.a12?.('a16_side_mission',.45,.5)||Sfx.card?.(); this.rubyVoiceReact?.('side',600); } return this._stack; }
   stackTick(dt){ const K=this._stack;
@@ -17944,7 +17947,7 @@ class Game extends Phaser.Scene {
   }
   c1FirstPool(pool){ const idx=this.stageIndex||0,d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.stageMastery||{})[3]&&pool.includes('grandmasPot')){ const p2=pool.filter(t=>t!=='grandmasPot'); if(p2.length)pool=p2; }   /* v8.1.115 Pot ปลดหลังเจอคุณยาย (ผ่าน C1-4) แม้เล่นซ้ำ */ if(idx>4||this.recipeMode||this.riftMode||this.bossRush||this._replayMeter||(d.stageMastery||{})[idx]||(typeof storyCleared==='function'&&storyCleared()>=5))return pool;
     const out=pool.filter(t=>!C1_LATER_LEAGUE.includes(t)); return out.length?out:pool; }
-  fpFull(){ return !!(this._replayMeter||this.riftMode||(typeof storyCleared==='function'&&storyCleared()>=10)); }
+  fpFull(){ if(this._sigForceFull)return true;   /* v8.3.30 C1 ฉบับเต็มหาร 2 */ return !!(this._replayMeter||this.riftMode||(typeof storyCleared==='function'&&storyCleared()>=10)); }
   /* v8.1.111 เจ้าของ: Frozen Pantry ยังจืด → ทำแบบเสา Legion ของ PoE ทั้งหมด (ปรับอาร์ตเข้าธีม)
      เดินไปโหล = ปุ่ม "Open the Jar" ขึ้นบนจอ · กด → กองทัพโมจิแช่แข็งเยอะ ๆ ผุดจากพื้นเป็นกลุ่มพร้อมเอฟเฟกต์น้ำแข็ง · นับถอยหลัง
      เดินแล้วพื้นเป็นสีระบาย (ไม่มีวง) · ตัวที่โดนสีระบาย = ตื่นมาสู้ได้ · หมดเวลา/ทาครบ = ทุกตัวแตกน้ำแข็งพร้อมกัน (ตัวที่ไม่โดนสี = แตกหายไปพร้อมรางวัล)
@@ -18430,10 +18433,10 @@ class Game extends Phaser.Scene {
   /* ===== v8.1.93 อาร์ตภารกิจ ใบ 71–74 · ไม่มีภาพ = ใช้อีโมจิ/วงกราฟิกเดิม ===== */
   missionArtKeys(idx){ const A=typeof ASSET_FX!=='undefined'?ASSET_FX:{},pre=p=>Object.keys(A).filter(x=>x.startsWith(p)),k=[],by={0:['hh_'],1:['hm_','brm_'],2:['gp_'],3:['fp_'],4:['gg_'],7:['cr_root_'],13:['ult_']},m={6:['msn71_bubble'],8:['msn71_season_shrines','msn71_petals'],10:['msn71_rift','vfx_seed_rift_feed'],11:['msn71_tree'],12:['msn71_mirror','msn71_crystal','msn71_crystal_blast','vfx_mirror_path_lock'],14:['msn71_lantern','msn71_lantern_out']};
     const fx={hh_:['gates_shut'],hm_:['breach_open','splinter_pick','breach_chest','stone_fuse'],gp_:['dish_served'],fp_:['statue_paint'],gg_:['golem_bake'],cr_root_:['root_cut'],hs_:['siege_break'],ult_:['trial_curse','trial_take','trial_risk']};
-    const prefixes=[...(by[idx]||[])];
+    const homes=idx<5?[0,1,2,3,4].filter(h=>h===idx||(h<idx&&h<4)):[idx],prefixes=homes.flatMap(h=>by[h]||[]);   /* v8.3.30 ภารกิจรอง C1 ฉบับเต็มของด่านก่อนหน้ามาได้ */
     if(this.recipeMode||this._recipeRequested||this.riftMode)prefixes.push('hm_','brm_','hs_','ult_');
     for(const prefix of prefixes)k.push(...pre(prefix),...(fx[prefix]||[]).map(name=>'vfx78_'+name));
-    { const M85={0:['hh85_','hh87_'],3:['fp85_'],4:['gg87_'],7:['cr87_'],10:['sr87_'],11:['st87_'],12:['mp85_'],13:['ult85_'],14:['ll85_']}; for(const pf of M85[idx]||[])k.push(...pre(pf)); k.push(...pre('mc86_'),...pre('hn87_')); k.push(...pre('cb93_'),...pre('hn92_'),...pre('ws92_'),...pre('hc_new_'));   /* v8.2.24 การ์ดแจก + ขวดพิษ Hunt ทุกด่าน */ if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh87_'),...pre('st87_'),...pre('cr87_'),...pre('sr87_'),...pre('gg87_'),...pre('ui87_')); if(this.recipeMode||this._recipeRequested||this.riftMode)k.push(...pre('hs85_'),...pre('ult85_')); if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh85_'),...pre('mp85_'),...pre('ll85_')); }   /* v8.2.23 ใบ 85 · ภารกิจเสริม (ซ้อน) ใน Ch2+ อาจเป็น Herald/Mirror/Last Light */
+    { const M85={0:['hh85_','hh87_'],3:['fp85_'],4:['gg87_'],7:['cr87_'],10:['sr87_'],11:['st87_'],12:['mp85_'],13:['ult85_'],14:['ll85_']}; for(const h of homes)for(const pf of M85[h]||[])k.push(...pre(pf)); k.push(...pre('mc86_'),...pre('hn87_')); k.push(...pre('cb93_'),...pre('hn92_'),...pre('ws92_'),...pre('hc_new_'));   /* v8.2.24 การ์ดแจก + ขวดพิษ Hunt ทุกด่าน */ if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh87_'),...pre('st87_'),...pre('cr87_'),...pre('sr87_'),...pre('gg87_'),...pre('ui87_')); if(this.recipeMode||this._recipeRequested||this.riftMode)k.push(...pre('hs85_'),...pre('ult85_')); if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh85_'),...pre('mp85_'),...pre('ll85_')); }   /* v8.2.23 ใบ 85 · ภารกิจเสริม (ซ้อน) ใน Ch2+ อาจเป็น Herald/Mirror/Last Light */
     k.push(...(m[idx]||[]),'msn71_stalker_captain','msn71_stalker_captain_attack','msn71_stalker_captain_death'); if(idx<5)k.push('msn71_supply_crate');
     if(idx>=5&&idx!==10&&typeof SR_EVENT_ON!=='undefined'&&SR_EVENT_ON)k.push('msn71_rift',...pre('sr87_'));   /* v8.2.83 เหตุการณ์ Seed Rift สุ่มได้ทุกด่าน Ch2–3 */
     return [...new Set(k)].filter(x=>x!=='hm_rim'&&A[x]); }
@@ -19151,7 +19154,7 @@ class Game extends Phaser.Scene {
   chapterSideObjectStart(d,o){ if(o.def.g2){ this.g2OvenOpen(o); return; }   /* v8.3.27 */
     if(o.def.mission==='cleanAir'&&!this._stack&&!this._v83Mission)this.fogWispIntro();   /* v8.3.29 ใบ 96: Wisp ดำบินเข้าจอ → มืด */
     if(o.def.mission==='creepingRoots'&&!this._stack&&!this._v83Mission)this.rootGrowFx(o.x,o.y);   /* v8.3.29 รากงอก */
-    if(o.def.mission){ if(this._stack||this._v83Mission)return; const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission):this.v83MissionStart(o.def.mission)))return;   /* v8.3.28 ภารกิจพื้นฐานเป็นภารกิจหลัก · sig เป็น side stack */ o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
+    if(o.def.mission){ if(this._stack||this._v83Mission)return; const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission,o.def.half?{half:true}:undefined):this.v83MissionStart(o.def.mission)))return;   /* v8.3.28 ภารกิจพื้นฐานเป็นภารกิจหลัก · sig เป็น side stack */ o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
     o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
   tickChapterSideObjects(d){
     if(!d.objects)this.placeChapterSideObjects(d);

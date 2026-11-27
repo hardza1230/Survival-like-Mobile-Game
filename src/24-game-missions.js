@@ -362,7 +362,7 @@
   }
   c1FirstPool(pool){ const idx=this.stageIndex||0,d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.stageMastery||{})[3]&&pool.includes('grandmasPot')){ const p2=pool.filter(t=>t!=='grandmasPot'); if(p2.length)pool=p2; }   /* v8.1.115 Pot ปลดหลังเจอคุณยาย (ผ่าน C1-4) แม้เล่นซ้ำ */ if(idx>4||this.recipeMode||this.riftMode||this.bossRush||this._replayMeter||(d.stageMastery||{})[idx]||(typeof storyCleared==='function'&&storyCleared()>=5))return pool;
     const out=pool.filter(t=>!C1_LATER_LEAGUE.includes(t)); return out.length?out:pool; }
-  fpFull(){ return !!(this._replayMeter||this.riftMode||(typeof storyCleared==='function'&&storyCleared()>=10)); }
+  fpFull(){ if(this._sigForceFull)return true;   /* v8.3.30 C1 ฉบับเต็มหาร 2 */ return !!(this._replayMeter||this.riftMode||(typeof storyCleared==='function'&&storyCleared()>=10)); }
   /* v8.1.111 เจ้าของ: Frozen Pantry ยังจืด → ทำแบบเสา Legion ของ PoE ทั้งหมด (ปรับอาร์ตเข้าธีม)
      เดินไปโหล = ปุ่ม "Open the Jar" ขึ้นบนจอ · กด → กองทัพโมจิแช่แข็งเยอะ ๆ ผุดจากพื้นเป็นกลุ่มพร้อมเอฟเฟกต์น้ำแข็ง · นับถอยหลัง
      เดินแล้วพื้นเป็นสีระบาย (ไม่มีวง) · ตัวที่โดนสีระบาย = ตื่นมาสู้ได้ · หมดเวลา/ทาครบ = ทุกตัวแตกน้ำแข็งพร้อมกัน (ตัวที่ไม่โดนสี = แตกหายไปพร้อมรางวัล)
@@ -848,10 +848,10 @@
   /* ===== v8.1.93 อาร์ตภารกิจ ใบ 71–74 · ไม่มีภาพ = ใช้อีโมจิ/วงกราฟิกเดิม ===== */
   missionArtKeys(idx){ const A=typeof ASSET_FX!=='undefined'?ASSET_FX:{},pre=p=>Object.keys(A).filter(x=>x.startsWith(p)),k=[],by={0:['hh_'],1:['hm_','brm_'],2:['gp_'],3:['fp_'],4:['gg_'],7:['cr_root_'],13:['ult_']},m={6:['msn71_bubble'],8:['msn71_season_shrines','msn71_petals'],10:['msn71_rift','vfx_seed_rift_feed'],11:['msn71_tree'],12:['msn71_mirror','msn71_crystal','msn71_crystal_blast','vfx_mirror_path_lock'],14:['msn71_lantern','msn71_lantern_out']};
     const fx={hh_:['gates_shut'],hm_:['breach_open','splinter_pick','breach_chest','stone_fuse'],gp_:['dish_served'],fp_:['statue_paint'],gg_:['golem_bake'],cr_root_:['root_cut'],hs_:['siege_break'],ult_:['trial_curse','trial_take','trial_risk']};
-    const prefixes=[...(by[idx]||[])];
+    const homes=idx<5?[0,1,2,3,4].filter(h=>h===idx||(h<idx&&h<4)):[idx],prefixes=homes.flatMap(h=>by[h]||[]);   /* v8.3.30 ภารกิจรอง C1 ฉบับเต็มของด่านก่อนหน้ามาได้ */
     if(this.recipeMode||this._recipeRequested||this.riftMode)prefixes.push('hm_','brm_','hs_','ult_');
     for(const prefix of prefixes)k.push(...pre(prefix),...(fx[prefix]||[]).map(name=>'vfx78_'+name));
-    { const M85={0:['hh85_','hh87_'],3:['fp85_'],4:['gg87_'],7:['cr87_'],10:['sr87_'],11:['st87_'],12:['mp85_'],13:['ult85_'],14:['ll85_']}; for(const pf of M85[idx]||[])k.push(...pre(pf)); k.push(...pre('mc86_'),...pre('hn87_')); k.push(...pre('cb93_'),...pre('hn92_'),...pre('ws92_'),...pre('hc_new_'));   /* v8.2.24 การ์ดแจก + ขวดพิษ Hunt ทุกด่าน */ if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh87_'),...pre('st87_'),...pre('cr87_'),...pre('sr87_'),...pre('gg87_'),...pre('ui87_')); if(this.recipeMode||this._recipeRequested||this.riftMode)k.push(...pre('hs85_'),...pre('ult85_')); if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh85_'),...pre('mp85_'),...pre('ll85_')); }   /* v8.2.23 ใบ 85 · ภารกิจเสริม (ซ้อน) ใน Ch2+ อาจเป็น Herald/Mirror/Last Light */
+    { const M85={0:['hh85_','hh87_'],3:['fp85_'],4:['gg87_'],7:['cr87_'],10:['sr87_'],11:['st87_'],12:['mp85_'],13:['ult85_'],14:['ll85_']}; for(const h of homes)for(const pf of M85[h]||[])k.push(...pre(pf)); k.push(...pre('mc86_'),...pre('hn87_')); k.push(...pre('cb93_'),...pre('hn92_'),...pre('ws92_'),...pre('hc_new_'));   /* v8.2.24 การ์ดแจก + ขวดพิษ Hunt ทุกด่าน */ if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh87_'),...pre('st87_'),...pre('cr87_'),...pre('sr87_'),...pre('gg87_'),...pre('ui87_')); if(this.recipeMode||this._recipeRequested||this.riftMode)k.push(...pre('hs85_'),...pre('ult85_')); if(idx>=(typeof STACK_FROM!=='undefined'?STACK_FROM:5))k.push(...pre('hh85_'),...pre('mp85_'),...pre('ll85_')); }   /* v8.2.23 ใบ 85 · ภารกิจเสริม (ซ้อน) ใน Ch2+ อาจเป็น Herald/Mirror/Last Light */
     k.push(...(m[idx]||[]),'msn71_stalker_captain','msn71_stalker_captain_attack','msn71_stalker_captain_death'); if(idx<5)k.push('msn71_supply_crate');
     if(idx>=5&&idx!==10&&typeof SR_EVENT_ON!=='undefined'&&SR_EVENT_ON)k.push('msn71_rift',...pre('sr87_'));   /* v8.2.83 เหตุการณ์ Seed Rift สุ่มได้ทุกด่าน Ch2–3 */
     return [...new Set(k)].filter(x=>x!=='hm_rim'&&A[x]); }
@@ -1569,7 +1569,7 @@
   chapterSideObjectStart(d,o){ if(o.def.g2){ this.g2OvenOpen(o); return; }   /* v8.3.27 */
     if(o.def.mission==='cleanAir'&&!this._stack&&!this._v83Mission)this.fogWispIntro();   /* v8.3.29 ใบ 96: Wisp ดำบินเข้าจอ → มืด */
     if(o.def.mission==='creepingRoots'&&!this._stack&&!this._v83Mission)this.rootGrowFx(o.x,o.y);   /* v8.3.29 รากงอก */
-    if(o.def.mission){ if(this._stack||this._v83Mission)return; const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission):this.v83MissionStart(o.def.mission)))return;   /* v8.3.28 ภารกิจพื้นฐานเป็นภารกิจหลัก · sig เป็น side stack */ o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
+    if(o.def.mission){ if(this._stack||this._v83Mission)return; const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission,o.def.half?{half:true}:undefined):this.v83MissionStart(o.def.mission)))return;   /* v8.3.28 ภารกิจพื้นฐานเป็นภารกิจหลัก · sig เป็น side stack */ o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
     o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
   tickChapterSideObjects(d){
     if(!d.objects)this.placeChapterSideObjects(d);

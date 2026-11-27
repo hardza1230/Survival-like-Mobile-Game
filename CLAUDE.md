@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.3.29**. Next release:8.3.30. Fetch the deploy branch before new work.
+Current release: **8.3.30**. Next release:8.3.31. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.3.29 — Art 96: side-mission objects, fog wisp, roots, shades, golem parts, oven** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.30 — C1 side missions: full league versions at half time and target** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
