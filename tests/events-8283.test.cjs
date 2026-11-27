@@ -10,7 +10,7 @@ const s2=new T();Object.assign(s2,{state:'play',mode:'wave',stageIndex:6,waveInd
 s2.stageIndex=10;s2.waveIndex=2;s2.seedRiftEventTick(1);assert.equal(s2._srAt,null);Math.random=()=>.3;s2.waveIndex=3;s2.seedRiftEventTick(1);assert(s2._srAt!=null,'home stage 35%');
 const s3=new T();Object.assign(s3,{state:'play',mode:'wave',stageIndex:3,waveIndex:1,seedRiftEventStart(){throw 1;}});Math.random=()=>0;for(let i=0;i<30;i++)s3.seedRiftEventTick(1);assert.equal(s3._srAt,undefined,'never in Chapter 1');Math.random=R;
 assert(src.includes("STACK_POOL=['shakeTrees',")&&src.includes("MISSION_DECK_SKIP=['seasonCycle','seedRift']")&&!/MISSION_HOME=\{[^}]*seedRift/.test(src),'Seed Rift out of every mission pool');
-assert(src.includes('this.stackTick?.(dt);this.seedRiftEventTick?.(dt);'),'ticked in waves');
+assert(src.includes('this.stackTick?.(dt);this.tickSeasonEnv?.(dt);this.seedRiftEventTick?.(dt);'),'ticked in waves');
 // boss twists
 assert(src.includes('BOSS_MISSION_ON=false')&&/BOSS_TWIST_AT=\[\.6,\.3\],BOSS_TWIST_DUR=15/.test(src),'twists at 60% / 30%, 15 s');
 for(const k of ['roots','seeds','fruit','dark','shadows'])assert(new RegExp(k+":\\{emoji:").test(src),'twist '+k);

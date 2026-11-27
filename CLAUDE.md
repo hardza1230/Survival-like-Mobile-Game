@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.3.25**. Next release:8.3.26. Fetch the deploy branch before new work.
+Current release: **8.3.26**. Next release:8.3.27. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.3.25 — Vault Altar curse popup with frozen time, bigger Grandma’s Pot ring** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.26 — Seasonal Harvest as an environment event, Root Lure situation** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

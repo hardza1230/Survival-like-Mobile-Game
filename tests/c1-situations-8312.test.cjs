@@ -12,7 +12,7 @@ const {C1_SITUATIONS,C1_SIDE_EVENTS,C1_COMBAT_PATTERNS}=ctx;
 // every C1 stage: 4 situations (waves 1,2,4,5), valid patterns + goals, readable hint
 const formation=method('chapterCombatFormation');
 assert.equal(C1_SITUATIONS.length,15);   /* v8.3.23 all 15 story stages */
-for(const row of C1_SITUATIONS){assert.equal(row.length,4);for(const x of row){assert(['pack','leader','dodge'].includes(x.goal),x.name);assert(x.hint.length>12&&!/[฀-๿]/.test(x.hint+x.name));
+for(const row of C1_SITUATIONS){assert.equal(row.length,4);for(const x of row){assert(['pack','leader','dodge','lure'].includes(x.goal),x.name);if(x.goal==='lure')continue;assert(x.hint.length>12&&!/[฀-๿]/.test(x.hint+x.name));
   assert(x.pattern==='Last Stand'||formation.includes("'"+x.pattern+"'"),x.pattern);if(x.goal==='leader')assert(['Commander','Shield Carrier'].includes(x.pattern),x.pattern);if(x.goal==='dodge')assert.equal(x.pattern,'Hazard Shift');}}
 const g=new ctx.G();g.stageIndex=0;
 // side objects: own stage + 1 met before (C1-1 only its own)
@@ -49,3 +49,8 @@ console.log('C1 situations: 5×4 combat situations, side objects (own + met), di
   require('assert').ok(src.includes("if(o.type==='vaultAltar'){ S.offer=pick;")&&src.includes('  ultCursePopup(o,S){')&&src.includes("this.physics?.pause?.(); this.state='cinematic';"),'Vault Altar curse popup freezes time');
   require('assert').ok(/const C1_POT_R=95;/.test(src)&&src.includes('<C1_POT_R)e.hold='),'Pot ring radius 95');
   require('assert').ok(src.includes("{mission:'vaultAltar',home:13,only:true"),'Vault Altar is the C3-4 stage mission'); }
+// v8.3.26 Seasonal Harvest environment event + Root Lure
+{ const src=require('fs').readFileSync('game.js','utf8'),A=require('assert');
+  A.ok(/const SEASON_ENV_FROM=9,SEASON_ENV_CHANCE=1,SEASON_ENV_EVERY=10;/.test(src)&&src.includes('  seasonEnvPick(i){')&&src.includes('this.seasonEnvPick?.(i);'),'season environment picked per continuous stage');
+  A.ok(src.includes("if(S.def.pattern==='Root Lure'){ const K=!this._stack&&this.stackStart?.('breakRoots');"),'Root Lure starts Lure the Crown Root');
+  A.equal((src.match(/pattern:'Root Lure'/g)||[]).length,4,'Root Lure in 4 stages from C2-5'); }

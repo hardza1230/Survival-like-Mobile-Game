@@ -116,7 +116,7 @@
   startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._qfRun={};this._a23AudioAt=0;this._holdFire=false;this.time?.delayedCall?.(0,()=>this.stageMood?.(this.recipeMode||this.riftMode?null:i));this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this.clearChapterCombatWave(true);
     this._c1Combat=null;
-    this._v83Run=false;
+    this._v83Run=false;this.seasonEnvEnd?.();this._seasonEnv=null;
     this._a22Said={};
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;this._leadUsed=false;this._bountyLead=false;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
@@ -158,7 +158,7 @@
     if(this._v83Run){
       this._powerGuide=this.getPowerGuide(i);   /* v8.3.12 คิดใหม่หลังรู้ว่าเป็น C1 ต่อเนื่อง (ไม่สเกลตามพลังผู้เล่น) */
       this._c1Combat={deck:this.c1SideDeck(i),offered:new Set(),loot:new Map()};
-      this._missionDeal=this.c1PreviewDeal?.(i)||null;this.updateWaveText();
+      this._missionDeal=this.c1PreviewDeal?.(i)||null;this.updateWaveText();this.seasonEnvPick?.(i);
     }
     else this._missionDeal=MISSION_DECK&&!this.riftMode&&!this._inTutorial?this.missionDeckDeal?.():null;   /* v8.2.6 สำรับภารกิจ + แจกไพ่ */
     if(this._missionDeal)this.time.delayedCall(700,()=>{ if(this._busy())this.missionDealShow(this._missionDeal,()=>{ if(this._busy())this.startWave(0); }); });
@@ -802,7 +802,7 @@
     K.T-=dt; this.stackRun(()=>{ this.sigTick(dt,K.o); if(K.o._timedGoal&&K.S&&(K.S.t||0)>=K.o.target&&!K.o.done)this.hhFinish?.(K.o,K.S); if(!K.o.done&&K.o.target>0&&K.o.progress>=K.o.target)this.stackComplete(); });
     if(!K.o.done&&K.T<=0){ if(K.o._timedGoal)this.stackRun(()=>this.hhFinish?.(K.o,K.S)); else this.stackEnd(true); return; }
     const o=K.o,v=o._timedGoal?Math.ceil(Math.max(0,K.T))+'s':Math.floor(o.progress)+'/'+(o.target||1); K.txt?.setText('➕ '+o.emoji+' '+o.name+' · '+v+(o._timedGoal?'':' · '+Math.ceil(Math.max(0,K.T))+'s')).setVisible(true); if(K.chip&&K.txt)K.chip.setDisplaySize(Math.max(160,K.txt.width+40),24); }
-  stackComplete(){ const K=this._stack; if(!K||K.o.done)return; const o=K.o; o.done=true; const bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(this.maPay?.(o)||1)); this.maEarn?.(1); this.sugarStage+=bonus; this.sugarRun+=bonus;   // ภารกิจเสริมจบ: รางวัลเต็มเหมือนภารกิจหลัก แต่ไม่ปิดเวฟ
+  stackComplete(){ const K=this._stack; if(!K||K.o.done)return; const o=K.o; o.done=true; o._won=true; const bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(this.maPay?.(o)||1)); this.maEarn?.(1); this.sugarStage+=bonus; this.sugarRun+=bonus;   // ภารกิจเสริมจบ: รางวัลเต็มเหมือนภารกิจหลัก แต่ไม่ปิดเวฟ
     const sw=this._stackSwap; const give=()=>{ this.missionLootBurst?.(o,bonus); this.missionRewardGive?.(o); if(typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(o.type))this.leagueCurrencyDrop?.(o); }; if(sw)give(); else this.stackRun(give);
     this.missionJuice?.(o); this.doubleClearMark?.('side');
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); this.showBanner?.('✅ Side mission complete','Sugar +'+bonus,1400); Sfx.orderCue?.('mission_tube_pop',.4,.5); this.time?.delayedCall?.(0,()=>this.stackEnd(false)); }
@@ -1204,6 +1204,17 @@
   c24ClearCur(c){if(!c)return;c.burn=this.c24Drop(c.burn);for(const L of c.lines||[])L.s=this.c24Drop(L.s);for(const P of c.patches||[])P.s=this.c24Drop(P.s);}
   c24HealFx(n){const wv=this.cameras?.main?.worldView;let k=0;this.enemies.children.iterate(e=>{if(k>=n||!e||!e.active||e.isBoss||e.isMini||(wv&&!wv.contains(e.x,e.y)))return;k++;this.c24Fx('vfx_c24_spring_heal',e.x,e.y-10,64);});}
   c24Bullet(b,key){if(!b||!this.realTex?.(key))return b;b.setTexture(key,0);if(this.anims.exists(key+'_walk'))b.play(key+'_walk');return b;}
+  /* v8.3.26 เจ้าของ: Seasonal Harvest = Environment Event · ด่าน 10+ (หลัง C2-4) สุ่ม 1 ฤดู ใน 1 เวฟ (ไม่ใช่เวฟมินิบอส) · ผลเดิมของ C2-4 ทุก 10 วิ · จบเวฟ = จบ */
+  seasonEnvPick(i){ this._seasonEnv=null; const st=STAGES[i]; if(!this._v83Run||!st||i<SEASON_ENV_FROM||Math.random()>=SEASON_ENV_CHANCE)return; const ws=[];for(let w=0;w<(st.waves||5);w++)if(w!==st.miniAt)ws.push(w); this._seasonEnv={wave:ws[Math.floor(Math.random()*ws.length)],idx:Math.floor(Math.random()*4),t:3,on:false,done:false}; }
+  tickSeasonEnv(dt){ const E=this._seasonEnv; if(!E||E.done||this.mode!=='wave')return; if(this.waveIndex>E.wave){ if(E.on)this.seasonEnvEnd(); E.done=true; return; } if(this.waveIndex!==E.wave)return; const info=this.seasonInfo(E.idx);
+    if(!E.on){ E.on=true; this.showBanner?.('🌦️ '+info.emoji+' '+info.name,'A season sweeps the stage this wave',1800); this.screenFlash?.(info.color,.2,400); E.ov=this.camUI?.(this.add.rectangle(0,0,this.W,this.H,info.color,.07).setOrigin(0).setScrollFactor(1).setDepth(40)); }
+    E.t-=dt; if(E.t>0)return; E.t=SEASON_ENV_EVERY; this.seasonEffect(E.idx,info); }
+  seasonEnvEnd(){ const E=this._seasonEnv; if(!E)return; E.ov?.destroy?.(); E.ov=null; if(E.on)this.floatText?.(this.player?.x||0,(this.player?.y||0)-70,'The season passes',0xcfc6dc); }
+  seasonEffect(idx,info){ const P=this.player; if(!P)return; if(!this.c24Fx?.(['vfx_c24_season_shift_spring','vfx_c24_season_shift_summer','vfx_c24_season_shift_autumn','vfx_c24_season_shift_winter'][idx],this.W/2,this.H/2,this.W,{ui:true,h:this.H,depth:81,must:true}))this.screenFlash?.(info.color,.14,300);
+    if(idx===0){this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.055);});this.c24HealFx?.(5);}
+    else if(idx===1){for(let i=0;i<3;i++){const a=i*TAU/3+Math.random()*.5;this.spawnHazard?.(P.x+Math.cos(a)*Phaser.Math.Between(80,175),P.y+Math.sin(a)*Phaser.Math.Between(80,175),58,Math.round(10+this.stageIndex*2.1),info.color);}}
+    else if(idx===2){if(this.enemies.countActive(true)<this.maxLive-3)for(let i=0;i<2;i++)this.spawnEnemy('dasher',Math.random()*TAU,Math.max(this.W,this.H)/(this.viewZoom||1)*.58);}
+    else {const n=10,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n)continue;const a=i*TAU/n,x=P.x+Math.cos(a)*260,y=P.y+Math.sin(a)*260;this.foeShot?.(x,y,a+Math.PI,230,Math.round(9+this.stageIndex*1.7),info.color,.96);}} }
   tickSeasonArena(dt){
     if(this._c24Keep?.size&&!(this.waveObjective?.type==='seasonCycle'&&this.waveObjective.storm&&!this.waveObjective.done))for(const k of [...this._c24Keep])k.destroy();
     if(this.stageIndex!==8||!['wave','mini','boss'].includes(this.mode))return;

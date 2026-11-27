@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.25';
+const GAME_VERSION = '8.3.26';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -157,10 +157,10 @@ const C1_SITUATIONS=[
    {name:'Season Shift',pattern:'Hazard Shift',hint:'The weather sweeps the floor — keep moving',goal:'dodge'}],
   [{name:'Root Ambush',pattern:'Ambush',hint:'Roots burst up around you — break out of the ring',goal:'pack'},
    {name:'Thorn Fortress',pattern:'Fortress',hint:'Thorny guards hold the line — circle behind them',goal:'pack'},
-   {name:'Root Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Crown Root Lure',pattern:'Root Lure',hint:'The crown root burrows after you — stand by a stone, dodge, and let it smash the stone',goal:'lure'},
    {name:'Throne Last Stand',pattern:'Last Stand',hint:'The throne calls everyone — stay at the edge of the crowd',goal:'pack'}],
   [{name:'Ash Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
-   {name:'Ember Hunters',pattern:'Hunter Pack',hint:'Fast hunters chase you — turn and fight, don’t run straight',goal:'pack'},
+   {name:'Ash Root Lure',pattern:'Root Lure',hint:'The crown root burrows after you — stand by a stone, dodge, and let it smash the stone',goal:'lure'},
    {name:'Ash Shield',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
    {name:'Closing Embers',pattern:'Shrinking Arena',hint:'The safe ground shrinks — clear the pack before the embers close in',goal:'pack'}],
   [{name:'Orchard Ambush',pattern:'Ambush',hint:'Fruit monsters drop from the trees — break out of the ring',goal:'pack'},
@@ -169,19 +169,20 @@ const C1_SITUATIONS=[
    {name:'Harvest Stampede',pattern:'Stampede',hint:'A rush of fruit charges — dash through the gap',goal:'pack'}],
   [{name:'Glass Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind glass thorns — go around, don’t touch them',goal:'pack'},
    {name:'Shard Shield',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
-   {name:'Prism Pincer',pattern:'Pincer',hint:'They close in from both sides — break out to one side',goal:'pack'},
+   {name:'Glass Root Lure',pattern:'Root Lure',hint:'The crown root burrows after you — stand by a stone, dodge, and let it smash the stone',goal:'lure'},
    {name:'Glass Collapse',pattern:'Shrinking Arena',hint:'The floor cracks inward — clear the pack before it closes',goal:'pack'}],
   [{name:'Vault Guard',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
    {name:'Vault Fortress',pattern:'Fortress',hint:'Heavy wardens block the way — circle behind them',goal:'pack'},
    {name:'Vault Wardens',pattern:'Elite Duo',hint:'Two elites guard each other when close — pull them apart',goal:'pack'},
-   {name:'Vault Barrage',pattern:'Barrage',hint:'Guards fire from range — close in and take them out',goal:'pack'}],
+   {name:'Vault Root Lure',pattern:'Root Lure',hint:'The crown root burrows after you — stand by a stone, dodge, and let it smash the stone',goal:'lure'}],
   [{name:'First Seed Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
    {name:'Last Seed Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
    {name:'Shrinking Throne',pattern:'Shrinking Arena',hint:'The safe ground shrinks — clear the pack before it closes',goal:'pack'},
    {name:'Final Stand',pattern:'Last Stand',hint:'Everything comes at once — stay at the edge of the crowd',goal:'pack'}]
 ];
 const C1_SIT_SEC=20,C1_SIT_XP=.5;
-const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺','Spore Bloom':'🍄','Splitters':'🫧','Sniper Nest':'🏹','Shield Carrier':'🛡️','Elite Duo':'👥','Shrinking Arena':'⭕'};   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
+const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺','Spore Bloom':'🍄','Splitters':'🫧','Sniper Nest':'🏹','Shield Carrier':'🛡️','Elite Duo':'👥','Shrinking Arena':'⭕','Root Lure':'🐛'};
+const SEASON_ENV_FROM=9,SEASON_ENV_CHANCE=1,SEASON_ENV_EVERY=10;   // v8.3.26 เจ้าของ: Seasonal Harvest = Environment Event · หลัง C2-4 · ด่านละ 1 ฤดู สุ่มเวฟเดียว · ผลเดิมของ C2-4 ทุก 10 วิ · จบเวฟ = จบ   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
 /* v8.3.12 เจ้าของ: Combat Director เลือก pattern ตาม เอกลักษณ์ด่าน × ช่วงเวลา × จำนวนศัตรูในสนาม (ไม่สุ่มลอย ๆ) · น้ำหนักเอกลักษณ์ด่าน (ไม่มี = 1) */
 const C1_STAGE_PATTERN_WEIGHT=[
   {Ambush:2.2,Stampede:1.8,'Hunter Pack':1.3},

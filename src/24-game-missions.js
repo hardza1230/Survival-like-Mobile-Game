@@ -1347,6 +1347,7 @@
       const room=Math.min(this.maxLive,this.storyLiveCap())-this.enemies.countActive(true);if(room<3)return;
       S.state='active';
       this.showBanner?.('⚔️ '+S.def.name,S.def.hint,3000);
+      if(S.def.pattern==='Root Lure'){ const K=!this._stack&&this.stackStart?.('breakRoots'); if(K){ S.lure=K; S.left=(MISSION_WAVE_DUR.breakRoots||100); d.delay=Math.max(d.delay||0,8); return; } S.def={...S.def,pattern:'Commander',goal:'leader'}; }   /* v8.3.26 Root Lure = Lure the Crown Root แบบ situation · ภารกิจรองทำอยู่ = ใช้ Commander แทน */
       this.spawnChapterCombatPattern(d,S.def.pattern,Math.max(room,5),S);
       d.recent=[S.def.pattern,...(d.recent||[])].slice(0,2);d.last=S.def.pattern;d.delay=Math.max(d.delay||0,8);
       if(S.def.goal==='leader'&&d.command)S.leaderId=d.command.id;
@@ -1358,8 +1359,10 @@
     if(S.def.goal==='pack'){for(const [foe,id] of S.marks)if(!foe.active||foe._c1SpawnId!==id)S.marks.delete(foe);done=S.marks.size===0;}
     else if(S.def.goal==='leader')done=!d.command||d.command.id!==S.leaderId;
     else if(S.def.goal==='dodge'){if(S.hit){this.endChapterSituation(d,false);return;}done=!d.hazard;}
+    else if(S.def.goal==='lure'){ if(S.lure&&this._stack!==S.lure){ this.endChapterSituation(d,!!S.lure.o._won); return; } }
     if(done){this.endChapterSituation(d,true);return;}
     if(S.left<=0){this.endChapterSituation(d,false);return;}
+    if(S.def.goal==='lure')return;   /* แถบ side mission แสดงความคืบหน้าแทน */
     if(!d.event){const what=S.def.goal==='pack'?S.marks.size+' left':S.def.goal==='leader'?'Defeat the leader':'Don’t get hit';
       this.waveObjTxt?.setText(S.def.name+' · '+what+' · '+Math.ceil(S.left)+'s').setVisible(true).setColor('#ffe9bd');this.waveObjBg?.setVisible(true);this.waveObjBar?.setVisible(false);}
   }
@@ -1610,7 +1613,7 @@
       const _obj=this.waveObjective, _timed=!this._replayMeter&&(!_obj||_obj.type==='survive'||!!this._waveTimed);   // v8.2.20 เวฟภารกิจ Story นับเวลาด้วย (_waveTimed)   // นับถอยหลังเฉพาะเวฟ survive · เวฟภารกิจอื่นต้องเคลียร์ให้จบ (ไม่หมดเวลา)
       if(_timed)this.waveTimer-=dt;
       if(this._waveTimed&&!this._hurrySaid&&this.waveTimer>0&&this.waveTimer<=10&&this.waveObjective&&!this.waveObjective.done){ this._hurrySaid=true; this.rubyVoiceReact?.('hurry'); }   // v8.2.24 A16
-      if(!this._replayMeter){if(this.stageIndex===8)this.tickSeasonArena(dt);if(this.stageIndex===9)this.tickRootThrone(dt);}this.tickWaveObjective(dt);this.stackTick?.(dt);this.seedRiftEventTick?.(dt);
+      if(!this._replayMeter){if(this.stageIndex===8)this.tickSeasonArena(dt);if(this.stageIndex===9)this.tickRootThrone(dt);}this.tickWaveObjective(dt);this.stackTick?.(dt);this.tickSeasonEnv?.(dt);this.seedRiftEventTick?.(dt);
       if(this.mode!=='wave')return;
       if(this.recipeMode)this.tickRecipeHunger(dt);else if(this.checkEndgameCurse(this.bossRush?(this._rushPos||0)/Math.max(1,this._rushList.length):this.waveIndex/Math.max(1,STAGES[this.stageIndex].waves)))return;if(this.state!=='play')return;if(this._replayMeter)this.tickReplayProgress(dt); if(this.mode!=='wave')return;
       if(this._v83Run)this.tickChapterCombat(dt);

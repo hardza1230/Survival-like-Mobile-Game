@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.25';
+const GAME_VERSION = '8.3.26';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -157,10 +157,10 @@ const C1_SITUATIONS=[
    {name:'Season Shift',pattern:'Hazard Shift',hint:'The weather sweeps the floor — keep moving',goal:'dodge'}],
   [{name:'Root Ambush',pattern:'Ambush',hint:'Roots burst up around you — break out of the ring',goal:'pack'},
    {name:'Thorn Fortress',pattern:'Fortress',hint:'Thorny guards hold the line — circle behind them',goal:'pack'},
-   {name:'Root Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
+   {name:'Crown Root Lure',pattern:'Root Lure',hint:'The crown root burrows after you — stand by a stone, dodge, and let it smash the stone',goal:'lure'},
    {name:'Throne Last Stand',pattern:'Last Stand',hint:'The throne calls everyone — stay at the edge of the crowd',goal:'pack'}],
   [{name:'Ash Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
-   {name:'Ember Hunters',pattern:'Hunter Pack',hint:'Fast hunters chase you — turn and fight, don’t run straight',goal:'pack'},
+   {name:'Ash Root Lure',pattern:'Root Lure',hint:'The crown root burrows after you — stand by a stone, dodge, and let it smash the stone',goal:'lure'},
    {name:'Ash Shield',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
    {name:'Closing Embers',pattern:'Shrinking Arena',hint:'The safe ground shrinks — clear the pack before the embers close in',goal:'pack'}],
   [{name:'Orchard Ambush',pattern:'Ambush',hint:'Fruit monsters drop from the trees — break out of the ring',goal:'pack'},
@@ -169,19 +169,20 @@ const C1_SITUATIONS=[
    {name:'Harvest Stampede',pattern:'Stampede',hint:'A rush of fruit charges — dash through the gap',goal:'pack'}],
   [{name:'Glass Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind glass thorns — go around, don’t touch them',goal:'pack'},
    {name:'Shard Shield',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
-   {name:'Prism Pincer',pattern:'Pincer',hint:'They close in from both sides — break out to one side',goal:'pack'},
+   {name:'Glass Root Lure',pattern:'Root Lure',hint:'The crown root burrows after you — stand by a stone, dodge, and let it smash the stone',goal:'lure'},
    {name:'Glass Collapse',pattern:'Shrinking Arena',hint:'The floor cracks inward — clear the pack before it closes',goal:'pack'}],
   [{name:'Vault Guard',pattern:'Shield Carrier',hint:'The carrier shields its pack — break the carrier first',goal:'leader'},
    {name:'Vault Fortress',pattern:'Fortress',hint:'Heavy wardens block the way — circle behind them',goal:'pack'},
    {name:'Vault Wardens',pattern:'Elite Duo',hint:'Two elites guard each other when close — pull them apart',goal:'pack'},
-   {name:'Vault Barrage',pattern:'Barrage',hint:'Guards fire from range — close in and take them out',goal:'pack'}],
+   {name:'Vault Root Lure',pattern:'Root Lure',hint:'The crown root burrows after you — stand by a stone, dodge, and let it smash the stone',goal:'lure'}],
   [{name:'First Seed Commander',pattern:'Commander',hint:'The commander speeds up its pack — defeat it first',goal:'leader'},
    {name:'Last Seed Snipers',pattern:'Sniper Nest',hint:'Snipers hide behind a thorn wall — go around it, don’t touch it',goal:'pack'},
    {name:'Shrinking Throne',pattern:'Shrinking Arena',hint:'The safe ground shrinks — clear the pack before it closes',goal:'pack'},
    {name:'Final Stand',pattern:'Last Stand',hint:'Everything comes at once — stay at the edge of the crowd',goal:'pack'}]
 ];
 const C1_SIT_SEC=20,C1_SIT_XP=.5;
-const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺','Spore Bloom':'🍄','Splitters':'🫧','Sniper Nest':'🏹','Shield Carrier':'🛡️','Elite Duo':'👥','Shrinking Arena':'⭕'};   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
+const C1_SIT_EMOJI={Ambush:'🕳️',Fortress:'🛡️',Barrage:'🎯',Stampede:'💨',Pincer:'↔️',Commander:'👑','Hazard Shift':'⚠️','Last Stand':'🔥','Hunter Pack':'🐺','Spore Bloom':'🍄','Splitters':'🫧','Sniper Nest':'🏹','Shield Carrier':'🛡️','Elite Duo':'👥','Shrinking Arena':'⭕','Root Lure':'🐛'};
+const SEASON_ENV_FROM=9,SEASON_ENV_CHANCE=1,SEASON_ENV_EVERY=10;   // v8.3.26 เจ้าของ: Seasonal Harvest = Environment Event · หลัง C2-4 · ด่านละ 1 ฤดู สุ่มเวฟเดียว · ผลเดิมของ C2-4 ทุก 10 วิ · จบเวฟ = จบ   // เป้าโบนัสภายใน 20 วิ · EXP burst = 50% ของ EXP ที่ต้องใช้ขึ้นเลเวลถัดไป
 /* v8.3.12 เจ้าของ: Combat Director เลือก pattern ตาม เอกลักษณ์ด่าน × ช่วงเวลา × จำนวนศัตรูในสนาม (ไม่สุ่มลอย ๆ) · น้ำหนักเอกลักษณ์ด่าน (ไม่มี = 1) */
 const C1_STAGE_PATTERN_WEIGHT=[
   {Ambush:2.2,Stampede:1.8,'Hunter Pack':1.3},
@@ -203,6 +204,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.26',date:'2026-11-27',title:'Seasons and the Crown Root',items:['From Chapter 2 stage 5 on, one wave per stage may turn into a season with its own hazards','New Root Lure situation: bait the Crown Root into the anchor stones']},
   {v:'8.3.25',date:'2026-11-27',title:'Vault Altar choices and a bigger pot',items:['Vault Altar: step up to the altar and pick a curse while time stands still','Grandma’s Pot has a bigger ring with swirling dust']},
   {v:'8.3.24',date:'2026-11-27',title:'Side missions in Chapters 2 and 3',items:['Chapter 2 and 3 side missions wait on the map: walk onto one to start it','Escort the Wisp now belongs to the first Chapter 2 stage','Shake the Hollow Trees: bump a tree to shake it and monsters pour out']},
   {v:'8.3.23',date:'2026-11-27',title:'Combat Situations everywhere',items:['Every Chapter 2 and 3 wave is now a named combat situation','New situations: Spore Bloom, Splitters, Elite Duo, Sniper Nest, Shield Carrier and Shrinking Arena']},
@@ -16044,7 +16046,7 @@ class Game extends Phaser.Scene {
   startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._qfRun={};this._a23AudioAt=0;this._holdFire=false;this.time?.delayedCall?.(0,()=>this.stageMood?.(this.recipeMode||this.riftMode?null:i));this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this.clearChapterCombatWave(true);
     this._c1Combat=null;
-    this._v83Run=false;
+    this._v83Run=false;this.seasonEnvEnd?.();this._seasonEnv=null;
     this._a22Said={};
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;this._leadUsed=false;this._bountyLead=false;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
@@ -16086,7 +16088,7 @@ class Game extends Phaser.Scene {
     if(this._v83Run){
       this._powerGuide=this.getPowerGuide(i);   /* v8.3.12 คิดใหม่หลังรู้ว่าเป็น C1 ต่อเนื่อง (ไม่สเกลตามพลังผู้เล่น) */
       this._c1Combat={deck:this.c1SideDeck(i),offered:new Set(),loot:new Map()};
-      this._missionDeal=this.c1PreviewDeal?.(i)||null;this.updateWaveText();
+      this._missionDeal=this.c1PreviewDeal?.(i)||null;this.updateWaveText();this.seasonEnvPick?.(i);
     }
     else this._missionDeal=MISSION_DECK&&!this.riftMode&&!this._inTutorial?this.missionDeckDeal?.():null;   /* v8.2.6 สำรับภารกิจ + แจกไพ่ */
     if(this._missionDeal)this.time.delayedCall(700,()=>{ if(this._busy())this.missionDealShow(this._missionDeal,()=>{ if(this._busy())this.startWave(0); }); });
@@ -16730,7 +16732,7 @@ class Game extends Phaser.Scene {
     K.T-=dt; this.stackRun(()=>{ this.sigTick(dt,K.o); if(K.o._timedGoal&&K.S&&(K.S.t||0)>=K.o.target&&!K.o.done)this.hhFinish?.(K.o,K.S); if(!K.o.done&&K.o.target>0&&K.o.progress>=K.o.target)this.stackComplete(); });
     if(!K.o.done&&K.T<=0){ if(K.o._timedGoal)this.stackRun(()=>this.hhFinish?.(K.o,K.S)); else this.stackEnd(true); return; }
     const o=K.o,v=o._timedGoal?Math.ceil(Math.max(0,K.T))+'s':Math.floor(o.progress)+'/'+(o.target||1); K.txt?.setText('➕ '+o.emoji+' '+o.name+' · '+v+(o._timedGoal?'':' · '+Math.ceil(Math.max(0,K.T))+'s')).setVisible(true); if(K.chip&&K.txt)K.chip.setDisplaySize(Math.max(160,K.txt.width+40),24); }
-  stackComplete(){ const K=this._stack; if(!K||K.o.done)return; const o=K.o; o.done=true; const bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(this.maPay?.(o)||1)); this.maEarn?.(1); this.sugarStage+=bonus; this.sugarRun+=bonus;   // ภารกิจเสริมจบ: รางวัลเต็มเหมือนภารกิจหลัก แต่ไม่ปิดเวฟ
+  stackComplete(){ const K=this._stack; if(!K||K.o.done)return; const o=K.o; o.done=true; o._won=true; const bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(this.maPay?.(o)||1)); this.maEarn?.(1); this.sugarStage+=bonus; this.sugarRun+=bonus;   // ภารกิจเสริมจบ: รางวัลเต็มเหมือนภารกิจหลัก แต่ไม่ปิดเวฟ
     const sw=this._stackSwap; const give=()=>{ this.missionLootBurst?.(o,bonus); this.missionRewardGive?.(o); if(typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(o.type))this.leagueCurrencyDrop?.(o); }; if(sw)give(); else this.stackRun(give);
     this.missionJuice?.(o); this.doubleClearMark?.('side');
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); this.showBanner?.('✅ Side mission complete','Sugar +'+bonus,1400); Sfx.orderCue?.('mission_tube_pop',.4,.5); this.time?.delayedCall?.(0,()=>this.stackEnd(false)); }
@@ -17132,6 +17134,17 @@ class Game extends Phaser.Scene {
   c24ClearCur(c){if(!c)return;c.burn=this.c24Drop(c.burn);for(const L of c.lines||[])L.s=this.c24Drop(L.s);for(const P of c.patches||[])P.s=this.c24Drop(P.s);}
   c24HealFx(n){const wv=this.cameras?.main?.worldView;let k=0;this.enemies.children.iterate(e=>{if(k>=n||!e||!e.active||e.isBoss||e.isMini||(wv&&!wv.contains(e.x,e.y)))return;k++;this.c24Fx('vfx_c24_spring_heal',e.x,e.y-10,64);});}
   c24Bullet(b,key){if(!b||!this.realTex?.(key))return b;b.setTexture(key,0);if(this.anims.exists(key+'_walk'))b.play(key+'_walk');return b;}
+  /* v8.3.26 เจ้าของ: Seasonal Harvest = Environment Event · ด่าน 10+ (หลัง C2-4) สุ่ม 1 ฤดู ใน 1 เวฟ (ไม่ใช่เวฟมินิบอส) · ผลเดิมของ C2-4 ทุก 10 วิ · จบเวฟ = จบ */
+  seasonEnvPick(i){ this._seasonEnv=null; const st=STAGES[i]; if(!this._v83Run||!st||i<SEASON_ENV_FROM||Math.random()>=SEASON_ENV_CHANCE)return; const ws=[];for(let w=0;w<(st.waves||5);w++)if(w!==st.miniAt)ws.push(w); this._seasonEnv={wave:ws[Math.floor(Math.random()*ws.length)],idx:Math.floor(Math.random()*4),t:3,on:false,done:false}; }
+  tickSeasonEnv(dt){ const E=this._seasonEnv; if(!E||E.done||this.mode!=='wave')return; if(this.waveIndex>E.wave){ if(E.on)this.seasonEnvEnd(); E.done=true; return; } if(this.waveIndex!==E.wave)return; const info=this.seasonInfo(E.idx);
+    if(!E.on){ E.on=true; this.showBanner?.('🌦️ '+info.emoji+' '+info.name,'A season sweeps the stage this wave',1800); this.screenFlash?.(info.color,.2,400); E.ov=this.camUI?.(this.add.rectangle(0,0,this.W,this.H,info.color,.07).setOrigin(0).setScrollFactor(1).setDepth(40)); }
+    E.t-=dt; if(E.t>0)return; E.t=SEASON_ENV_EVERY; this.seasonEffect(E.idx,info); }
+  seasonEnvEnd(){ const E=this._seasonEnv; if(!E)return; E.ov?.destroy?.(); E.ov=null; if(E.on)this.floatText?.(this.player?.x||0,(this.player?.y||0)-70,'The season passes',0xcfc6dc); }
+  seasonEffect(idx,info){ const P=this.player; if(!P)return; if(!this.c24Fx?.(['vfx_c24_season_shift_spring','vfx_c24_season_shift_summer','vfx_c24_season_shift_autumn','vfx_c24_season_shift_winter'][idx],this.W/2,this.H/2,this.W,{ui:true,h:this.H,depth:81,must:true}))this.screenFlash?.(info.color,.14,300);
+    if(idx===0){this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini)e.hp=Math.min(e.maxhp,e.hp+e.maxhp*.055);});this.c24HealFx?.(5);}
+    else if(idx===1){for(let i=0;i<3;i++){const a=i*TAU/3+Math.random()*.5;this.spawnHazard?.(P.x+Math.cos(a)*Phaser.Math.Between(80,175),P.y+Math.sin(a)*Phaser.Math.Between(80,175),58,Math.round(10+this.stageIndex*2.1),info.color);}}
+    else if(idx===2){if(this.enemies.countActive(true)<this.maxLive-3)for(let i=0;i<2;i++)this.spawnEnemy('dasher',Math.random()*TAU,Math.max(this.W,this.H)/(this.viewZoom||1)*.58);}
+    else {const n=10,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n)continue;const a=i*TAU/n,x=P.x+Math.cos(a)*260,y=P.y+Math.sin(a)*260;this.foeShot?.(x,y,a+Math.PI,230,Math.round(9+this.stageIndex*1.7),info.color,.96);}} }
   tickSeasonArena(dt){
     if(this._c24Keep?.size&&!(this.waveObjective?.type==='seasonCycle'&&this.waveObjective.storm&&!this.waveObjective.done))for(const k of [...this._c24Keep])k.destroy();
     if(this.stageIndex!==8||!['wave','mini','boss'].includes(this.mode))return;
@@ -18896,6 +18909,7 @@ class Game extends Phaser.Scene {
       const room=Math.min(this.maxLive,this.storyLiveCap())-this.enemies.countActive(true);if(room<3)return;
       S.state='active';
       this.showBanner?.('⚔️ '+S.def.name,S.def.hint,3000);
+      if(S.def.pattern==='Root Lure'){ const K=!this._stack&&this.stackStart?.('breakRoots'); if(K){ S.lure=K; S.left=(MISSION_WAVE_DUR.breakRoots||100); d.delay=Math.max(d.delay||0,8); return; } S.def={...S.def,pattern:'Commander',goal:'leader'}; }   /* v8.3.26 Root Lure = Lure the Crown Root แบบ situation · ภารกิจรองทำอยู่ = ใช้ Commander แทน */
       this.spawnChapterCombatPattern(d,S.def.pattern,Math.max(room,5),S);
       d.recent=[S.def.pattern,...(d.recent||[])].slice(0,2);d.last=S.def.pattern;d.delay=Math.max(d.delay||0,8);
       if(S.def.goal==='leader'&&d.command)S.leaderId=d.command.id;
@@ -18907,8 +18921,10 @@ class Game extends Phaser.Scene {
     if(S.def.goal==='pack'){for(const [foe,id] of S.marks)if(!foe.active||foe._c1SpawnId!==id)S.marks.delete(foe);done=S.marks.size===0;}
     else if(S.def.goal==='leader')done=!d.command||d.command.id!==S.leaderId;
     else if(S.def.goal==='dodge'){if(S.hit){this.endChapterSituation(d,false);return;}done=!d.hazard;}
+    else if(S.def.goal==='lure'){ if(S.lure&&this._stack!==S.lure){ this.endChapterSituation(d,!!S.lure.o._won); return; } }
     if(done){this.endChapterSituation(d,true);return;}
     if(S.left<=0){this.endChapterSituation(d,false);return;}
+    if(S.def.goal==='lure')return;   /* แถบ side mission แสดงความคืบหน้าแทน */
     if(!d.event){const what=S.def.goal==='pack'?S.marks.size+' left':S.def.goal==='leader'?'Defeat the leader':'Don’t get hit';
       this.waveObjTxt?.setText(S.def.name+' · '+what+' · '+Math.ceil(S.left)+'s').setVisible(true).setColor('#ffe9bd');this.waveObjBg?.setVisible(true);this.waveObjBar?.setVisible(false);}
   }
@@ -19159,7 +19175,7 @@ class Game extends Phaser.Scene {
       const _obj=this.waveObjective, _timed=!this._replayMeter&&(!_obj||_obj.type==='survive'||!!this._waveTimed);   // v8.2.20 เวฟภารกิจ Story นับเวลาด้วย (_waveTimed)   // นับถอยหลังเฉพาะเวฟ survive · เวฟภารกิจอื่นต้องเคลียร์ให้จบ (ไม่หมดเวลา)
       if(_timed)this.waveTimer-=dt;
       if(this._waveTimed&&!this._hurrySaid&&this.waveTimer>0&&this.waveTimer<=10&&this.waveObjective&&!this.waveObjective.done){ this._hurrySaid=true; this.rubyVoiceReact?.('hurry'); }   // v8.2.24 A16
-      if(!this._replayMeter){if(this.stageIndex===8)this.tickSeasonArena(dt);if(this.stageIndex===9)this.tickRootThrone(dt);}this.tickWaveObjective(dt);this.stackTick?.(dt);this.seedRiftEventTick?.(dt);
+      if(!this._replayMeter){if(this.stageIndex===8)this.tickSeasonArena(dt);if(this.stageIndex===9)this.tickRootThrone(dt);}this.tickWaveObjective(dt);this.stackTick?.(dt);this.tickSeasonEnv?.(dt);this.seedRiftEventTick?.(dt);
       if(this.mode!=='wave')return;
       if(this.recipeMode)this.tickRecipeHunger(dt);else if(this.checkEndgameCurse(this.bossRush?(this._rushPos||0)/Math.max(1,this._rushList.length):this.waveIndex/Math.max(1,STAGES[this.stageIndex].waves)))return;if(this.state!=='play')return;if(this._replayMeter)this.tickReplayProgress(dt); if(this.mode!=='wave')return;
       if(this._v83Run)this.tickChapterCombat(dt);
