@@ -2,7 +2,9 @@
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
 const src=fs.readFileSync(path.join(__dirname,'..','game.js'),'utf8');
 const grab=n=>{ const i=src.indexOf('\n  '+n+'('); assert(i>0,n); let k=src.indexOf('\n',i+1); while(src.startsWith('\n    ',k))k=src.indexOf('\n',k+1); return src.slice(i+3,k); };
-const run=(lvl)=>{ const S=vm.runInNewContext('class S{'+grab('cleanAirFog')+'}; S',{Math,TAU:Math.PI*2,PERF:{lvl}}); const s=new S(); const circles=[];
+// v8.3.22 deterministic random: CI failed once when every puff landed outside the clean ring
+const seeded=()=>{ let x=12345; const M=Object.create(Math); M.random=()=>{ x=(x*1103515245+12345)%2147483648; return x/2147483648; }; return M; };
+const run=(lvl)=>{ const S=vm.runInNewContext('class S{'+grab('cleanAirFog')+'}; S',{Math:seeded(),TAU:Math.PI*2,PERF:{lvl}}); const s=new S(); const circles=[];
   const g={scene:1,clear(){circles.length=0;return g;},fillStyle(){return g;},fillCircle(x,y,r){circles.push([x,y,r]);return g;},setDepth(){return g;}};
   Object.assign(s,{add:{graphics:()=>g},camWorld:o=>o,cameras:{main:{worldView:{x:0,y:0,width:400,height:800}}},player:{x:200,y:400}});
   const c={x:200,y:400,tx:200,ty:100,r:145}; let drawn=0; for(let i=0;i<30;i++)drawn=s.cleanAirFog(c,{},1/30); return {s,c,drawn}; };
