@@ -553,6 +553,12 @@ const ASSET_FX = {
   cos_pop_berry_motion:{url:'assets/art/wardrobe_motion/cos_pop_berry_motion.webp',fw:144,fh:144,frames:8,rate:18,anchor:'center',loop:false,ox:0.5000,oy:0.5000},
   cos_pet_fox_motion:{url:'assets/art/wardrobe_motion/cos_pet_fox_motion.webp',fw:144,fh:144,frames:8,rate:8,anchor:'center',loop:true,ox:0.5000,oy:0.5000},
   cos_accessories_paint:{url:'assets/art/cosmetics/cos_accessories_paint.webp',fw:144,fh:144,frames:16,rate:8,anchor:'center',loop:false},   // v8.3.21 shop icons: trails, dashes, pops, fox
+  // v8.3.29 ใบ 96 (stage / on demand)
+  fx96_wisp_fly:{url:'assets/art/mission96/fx96_wisp_fly.webp',fw:256,fh:256,frames:12,rate:16,anchor:'center',loop:false},
+  fx96_root_grow:{url:'assets/art/mission96/fx96_root_grow.webp',fw:256,fh:256,frames:12,rate:16,anchor:'center',loop:false},
+  e96_shade_walk:{url:'assets/art/mission96/e96_shade_walk.webp',fw:112,fh:112,frames:8,rate:9,anchor:'center',loop:true},
+  gp96_parts:{url:'assets/art/mission96/gp96_parts.webp',fw:112,fh:112,frames:15,rate:8,anchor:'center',loop:false},
+  fx96_pot_dust:{url:'assets/art/mission96/fx96_pot_dust.webp',fw:256,fh:256,frames:8,rate:10,anchor:'center',loop:true},
   cos_icons2:{url:'assets/art/cosmetics/cos_icons2.webp',fw:128,fh:128,frames:19,rate:8,anchor:'center',loop:false},
   bshot_anim817_01:{url:'assets/art/boss_shots817/bshot_anim817_01.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
   bshot_anim817_02:{url:'assets/art/boss-motion-phase5d/bshot_anim817_02.webp',fw:128,fh:128,frames:8,rate:16,anchor:'center',loop:true},

@@ -980,6 +980,7 @@
     const cx=W/2,cy=H*.33,R=Math.min(W*.42,170),ring=this.add.container(cx,cy),rg=this.add.graphics(); rg.lineStyle(3,0xff8fb0,.85).strokeCircle(0,0,R).lineStyle(1.5,0xffd166,.6).strokeCircle(0,0,R*.82).lineStyle(1,0xff8fb0,.35).strokeCircle(0,0,R*1.12);
     for(let i=0;i<12;i++){ const a=i*TAU/12; rg.fillStyle(0xffd166,.9).fillPoints([{x:Math.cos(a)*R,y:Math.sin(a)*R-6},{x:Math.cos(a)*R+5,y:Math.sin(a)*R},{x:Math.cos(a)*R,y:Math.sin(a)*R+6},{x:Math.cos(a)*R-5,y:Math.sin(a)*R}],true); }
     for(let i=0;i<3;i++){ const a=i*TAU/3; rg.lineStyle(1.5,0xff8fb0,.5).lineBetween(Math.cos(a)*R*.82,Math.sin(a)*R*.82,Math.cos(a+TAU/3)*R*.82,Math.sin(a+TAU/3)*R*.82); }
+    if(this.realTex?.('fx96_vault_ring')){ rg.setVisible(false); ring.add(this.add.image(0,0,'fx96_vault_ring').setDisplaySize(R*2.3,R*2.3)); }   /* v8.3.29 ใบ 96 วงพิธี */
     ring.add(rg); L.add(ring); this.tweens.add({targets:ring,angle:360,duration:16000,repeat:-1}); this.tweens.add({targets:rg,alpha:{from:.55,to:1},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const glow=this.add.circle(cx,cy,R*.55,0xff5c8a,.16); L.add(glow); this.tweens.add({targets:glow,scale:{from:.85,to:1.15},alpha:{from:.1,to:.28},duration:1100,yoyo:true,repeat:-1});
     L.add(this.add.text(cx,cy-12,'⚖️',{fontSize:'44px'}).setOrigin(.5)); L.add(this.add.text(cx,cy+34,'Vault Altar · Round '+S.r+'/'+S.rounds,{fontFamily:F,fontStyle:'bold',fontSize:'15px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5));
@@ -1459,6 +1460,13 @@
       }
     }
   }
+  /* v8.3.29 โหลดอาร์ตใบ 96 ตอนใช้ (ภาพใหญ่ เล่นครั้งเดียว) · ไม่ทันก็ข้าม */
+  art96Need(key,cb){ if(this.realTex?.(key)){ cb&&cb(); return true; } if(!this.ensureGroup)return false; const ep=this._artEpoch; try{ this.ensureGroup(k=>k===key,()=>{ if(this._artEpoch===ep&&this.realTex?.(key))cb&&cb(); },{all:true,quiet:true,fx:true}); }catch(e){} return false; }
+  fogWispIntro(){ this.art96Need('fx96_wisp_fly',()=>{ if(this.state!=='play'||!this.camUI)return; const W=this.W,H=this.H,dk=this.camUI(this.add.rectangle(0,0,W,H,0x05020a,0).setOrigin(0).setScrollFactor(1).setDepth(60)),sp=this.camUI(this.add.sprite(W/2,H/2,'fx96_wisp_fly',0).setScrollFactor(1).setDepth(61)); sp.setDisplaySize(Math.max(W,H)*.9,Math.max(W,H)*.9);
+    if(this.bpAnim?.('fx96_wisp_fly')){ sp.play('fx96_wisp_fly'); sp.once('animationcomplete',()=>sp.destroy()); } else this.time?.delayedCall?.(750,()=>sp.destroy());
+    this.tweens.add({targets:dk,fillAlpha:{from:0,to:.6},duration:520,yoyo:true,hold:300,onComplete:()=>dk.destroy()}); }); }
+  rootGrowFx(x,y){ this.art96Need('fx96_root_grow',()=>{ if(this.state!=='play')return; const s=this.camWorld(this.add.sprite(x,y-40,'fx96_root_grow',0).setDepth(y+4)); s.setDisplaySize(160,160);
+    if(this.bpAnim?.('fx96_root_grow')){ s.play('fx96_root_grow'); s.once('animationcomplete',()=>{ this.tweens.add({targets:s,alpha:0,delay:2500,duration:600,onComplete:()=>s.destroy()}); }); } else this.time?.delayedCall?.(3000,()=>s.destroy()); }); }
   /* v8.3.28 เริ่มภารกิจพื้นฐาน (ไม่ใช่ sig) เป็นภารกิจหลักของเวฟในโหมดต่อเนื่อง · หมดเวลา = หนีไป · บอสมา = จบ */
   v83MissionStart(type){ if(!this._v83Run||this.waveObjective||this._v83Mission)return null; const dur=(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._); this.setupWaveObjective(Math.max(1,this.waveIndex||1),{dur,forceType:type}); const o=this.waveObjective; if(!o)return null;
     const VM=this._v83Mission={o,type,until:(this.elapsed||0)+dur,won:false}; this.renderWaveObjectiveHUD?.(); this.showBanner?.('➕ '+(WAVE_OBJECTIVES[type]?.emoji||'')+' '+(WAVE_OBJECTIVES[type]?.name||type),Math.round(dur)+'s · '+(WAVE_OBJECTIVES[type]?.desc||''),2200); Sfx.orderCue?.('wave_start',.35,.6); return VM; }
@@ -1466,12 +1474,12 @@
     if(['boss','bossWarning','reward'].includes(this.mode)||(this.elapsed||0)>=VM.until){ const gone=(this.elapsed||0)>=VM.until; this.clearWaveObjective(true); if(gone)this.floatText?.(this.player?.x||0,(this.player?.y||0)-80,'⌛ '+(WAVE_OBJECTIVES[VM.type]?.name||'Mission')+' slipped away',0xcfc6dc); } }
   /* v8.3.27 Monster เงาในหมอก: ทุก 5 วิ เงา 2 ตัวโผล่จากหมอก (สูงสุด 6) · เร็วขึ้น 30% · สีมืดโปร่ง */
   fogShadeTick(dt){ const P=this.player; if(!P)return; this._fogShadeT=(this._fogShadeT??3)-dt; if(this._fogShadeT>0)return; this._fogShadeT=5; let n=0; this.enemies.children.iterate(e=>{ if(e&&e.active&&e._fogShade)n++; });
-    for(let i=0;i<2&&n<6;i++,n++){ const a=Math.random()*TAU,e=this.spawnEnemy('fast',a,Math.max(this.W,this.H)/(this.viewZoom||1)*.45,true); if(!e)continue; e._fogShade=true; e.spd=(e.spd||100)*1.3; e.setTint?.(0x3a2a5a); e.tintColor=0x3a2a5a; e.setAlpha?.(.72); } }
+    for(let i=0;i<2&&n<6;i++,n++){ const a=Math.random()*TAU,e=this.spawnEnemy('fast',a,Math.max(this.W,this.H)/(this.viewZoom||1)*.45,true); if(!e)continue; e._fogShade=true; e.spd=(e.spd||100)*1.3; if(!(this.realTex?.('e96_shade_walk')&&this.artFollow?.(e,'e96_shade_walk',56))){ e.setTint?.(0x3a2a5a); e.tintColor=0x3a2a5a; e.setAlpha?.(.72); } } }   /* v8.3.29 ใบ 96 ภาพมอนเงา */
   /* ===== v8.3.27 เจ้าของ: Grandma’s Golem แบบ Metamorph ===== */
   g2Inv(){ const d=Save.data; if(!Array.isArray(d.g2parts))d.g2parts=[]; return d.g2parts; }
   g2OnKill(e){ const G=this._g2; if(!G||G.golem&&e===G.golem.e)return this.g2GolemDown(e); if(!G||e.isDummy)return; const si=this.stageIndex||0,rk=()=>G2_KINDS[Math.floor(Math.random()*G2_KINDS.length)].k;
     if(e.isBoss){ for(let i=0;i<2;i++)this.g2Drop(e.x+(i?30:-30),e.y,G2_KINDS[si%5].k,3); } else if(e.isMini)this.g2Drop(e.x,e.y,rk(),2); else if(Math.random()<G2_DROP_MOB)this.g2Drop(e.x,e.y,rk(),1); }
-  g2Drop(x,y,k,t){ const G=this._g2; if(!G||G.picks.length>=10)return; const K=G2_KINDS.find(q=>q.k===k),col=t===3?0xffd166:t===2?0xc9a3ff:0xffffff,g=this.camWorld(this.add.circle(x,y,15,K.c,.35).setStrokeStyle(t>1?3:2,col,1).setDepth(y+2)),tx=this.camWorld(this.add.text(x,y,K.em,{fontSize:'16px'}).setOrigin(.5).setDepth(y+3));
+  g2Drop(x,y,k,t){ const G=this._g2; if(!G||G.picks.length>=10)return; const K=G2_KINDS.find(q=>q.k===k),ki=G2_KINDS.indexOf(K),col=t===3?0xffd166:t===2?0xc9a3ff:0xffffff,art=this.realTex?.('gp96_parts'),g=this.camWorld(this.add.circle(x,y,15,K.c,art?.12:.35).setStrokeStyle(t>1?3:2,col,art?.5:1).setDepth(y+2)),tx=this.camWorld(art?this.add.image(x,y,'gp96_parts',(t-1)*5+ki).setDisplaySize(32,32).setDepth(y+3):this.add.text(x,y,K.em,{fontSize:'16px'}).setOrigin(.5).setDepth(y+3));   /* v8.3.29 ใบ 96 */
     this.tweens.add({targets:[g,tx],y:'-=6',duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); G.picks.push({x,y,k,t,g,tx,life:G2_PICK_LIFE}); }
   g2Tick(dt){ const G=this._g2,P=this.player; if(!G||!P)return;
     for(const q of G.picks){ q.life-=dt; if(this.dist(P.x,P.y,q.x,q.y)<G2_PICK_R){ q.got=true; const inv=this.g2Inv(); if(inv.length<G2_MAX_INV){ inv.push({k:q.k,t:q.t}); Save.save?.(); const K=G2_KINDS.find(z=>z.k===q.k); this.floatText?.(P.x,P.y-60,K.em+' '+G2_TIERS[q.t]+' '+K.name,q.t===3?0xffd166:0xe8dcff); Sfx.orderCue?.('lg_golem_part',.35,.15); } else this.floatText?.(P.x,P.y-60,'Golem bag full ('+G2_MAX_INV+')',0xcfc6dc); }
@@ -1489,17 +1497,18 @@
     Q.lab?.setPosition(e.x,e.y-(e.displayHeight||80)*.7); }
   g2OvenOpen(o){ const G=this._g2; if(!G||G.golem||G.popup)return; const inv=this.g2Inv(); if(!inv.length){ this.floatText?.(o.x,o.y-80,'Bring golem parts: monsters, minibosses and bosses drop them',0xffe08a); return; } if(!this.add?.container||!this.camUI)return;
     G.popup=true; const W=this.W,H=this.H,prev=this.state,F='NunitoUI, sans-serif',L=this.camUI(this.add.container(0,0).setDepth(130)); L.setScrollFactor?.(1); this.physics?.pause?.(); this.state='cinematic';
-    L.add(this.add.rectangle(0,0,W,H,0x120a06,.78).setOrigin(0)); const pw=Math.min(W-24,380),ph=Math.min(H-120,470),px=(W-pw)/2,py=(H-ph)/2,bg=this.add.graphics(); bg.fillStyle(0x2a1a12,.98).fillRoundedRect(px,py,pw,ph,16).lineStyle(3,0xf2b06b,1).strokeRoundedRect(px,py,pw,ph,16); L.add(bg);
+    L.add(this.add.rectangle(0,0,W,H,0x120a06,.78).setOrigin(0)); const pw=Math.min(W-24,380),ph=Math.min(H-120,470),px=(W-pw)/2,py=(H-ph)/2; if(this.realTex?.('ui96_oven_panel'))L.add(this.add.image(px+pw/2,py+ph/2,'ui96_oven_panel').setDisplaySize(pw,ph)); else { const bg=this.add.graphics(); bg.fillStyle(0x2a1a12,.98).fillRoundedRect(px,py,pw,ph,16).lineStyle(3,0xf2b06b,1).strokeRoundedRect(px,py,pw,ph,16); L.add(bg); this.art96Need?.('ui96_oven_panel'); }   /* v8.3.29 ใบ 96 แผงเตา */
     const T=(x,y,s,sz,col,o2)=>{ const t=this.add.text(x,y,s,{fontFamily:F,fontStyle:'bold',fontSize:sz+'px',color:col,align:'center',wordWrap:{width:pw-24}}).setOrigin(.5,o2??.5); L.add(t); return t; };
     T(W/2,py+24,'🗿 Grandma’s Oven',18,'#ffe08a'); T(W/2,py+48,'Tap parts to fill 3 slots · most parts decide the monsters · every kind adds a boss skill',11,'#e8d8c8',0);
     const slots=[],slotY=py+118,sw=70; const sel=[]; const counts=()=>{ const m={}; for(const p of inv){ const id=p.k+p.t; m[id]=(m[id]||0)+1; } for(const p of sel){ const id=p.k+p.t; m[id]--; } return m; };
-    for(let i=0;i<G2_SLOTS;i++){ const x=W/2+(i-1)*(sw+12),g=this.add.graphics(); g.fillStyle(0x140c08,1).fillRoundedRect(x-sw/2,slotY-sw/2,sw,sw,12).lineStyle(2,0xf2b06b,.8).strokeRoundedRect(x-sw/2,slotY-sw/2,sw,sw,12); L.add(g); const t=T(x,slotY,'+',26,'#8a6a50'); slots.push({x,y:slotY,t}); }
+    const pArt=this.realTex?.('gp96_parts');
+    for(let i=0;i<G2_SLOTS;i++){ const x=W/2+(i-1)*(sw+12); if(this.realTex?.('ui96_oven_slot'))L.add(this.add.image(x,slotY,'ui96_oven_slot').setDisplaySize(sw,sw)); else { const g=this.add.graphics(); g.fillStyle(0x140c08,1).fillRoundedRect(x-sw/2,slotY-sw/2,sw,sw,12).lineStyle(2,0xf2b06b,.8).strokeRoundedRect(x-sw/2,slotY-sw/2,sw,sw,12); L.add(g); } const t=T(x,slotY,'+',26,'#8a6a50'),im=pArt?this.add.image(x,slotY-4,'gp96_parts',0).setDisplaySize(52,52).setVisible(false):null; if(im)L.add(im); slots.push({x,y:slotY,t,im}); }
     const info=T(W/2,slotY+58,'',11,'#ffd9a8',0); const chips=[]; let chipObjs=[];
-    const redraw=()=>{ slots.forEach((s,i)=>{ const p=sel[i],K=p&&G2_KINDS.find(z=>z.k===p.k); s.t.setText(K?K.em+'\n'+G2_TIERS[p.t]:'+').setFontSize(K?16:26).setColor(K?(p.t===3?'#ffd166':p.t===2?'#e0c8ff':'#ffffff'):'#8a6a50'); });
+    const redraw=()=>{ slots.forEach((s,i)=>{ const p=sel[i],K=p&&G2_KINDS.find(z=>z.k===p.k); s.im?.setVisible(!!K); if(K&&s.im)s.im.setFrame((p.t-1)*5+G2_KINDS.indexOf(K)); s.t.setText(K?(s.im?'':K.em+'\n'+G2_TIERS[p.t]):'+').setFontSize(K?16:26).setColor(K?(p.t===3?'#ffd166':p.t===2?'#e0c8ff':'#ffffff'):'#8a6a50'); });
       const pts=sel.reduce((a,p)=>a+p.t,0),mk={}; sel.forEach(p=>mk[p.k]=(mk[p.k]||0)+1); const top=Object.keys(mk).sort((a,b)=>mk[b]-mk[a])[0],K=top&&G2_KINDS.find(z=>z.k===top);
       info.setText(sel.length?'Monsters: '+K.minion+' · Skills: '+[...new Set(sel.map(p=>G2_KINDS.find(z=>z.k===p.k).skill))].join(', ')+' · Power '+pts:'Empty oven');
       for(const o of chipObjs)o.destroy(); chipObjs=[]; chips.length=0; const m=counts(),ids=Object.keys(m).filter(id=>m[id]>0); ids.forEach((id,j)=>{ const k=id.slice(0,-1),t=+id.slice(-1),K=G2_KINDS.find(z=>z.k===k),cols=4,cw=(pw-36)/cols,x=px+18+cw*(j%cols)+cw/2,y=py+232+Math.floor(j/cols)*64,g=this.add.graphics();
-        g.fillStyle(0x3a2618,1).fillRoundedRect(x-cw/2+4,y-26,cw-8,52,10).lineStyle(2,t===3?0xffd166:t===2?0xc9a3ff:0x8a6a50,1).strokeRoundedRect(x-cw/2+4,y-26,cw-8,52,10); const tx=this.add.text(x,y-6,K.em,{fontSize:'20px'}).setOrigin(.5),cn=this.add.text(x,y+15,G2_TIERS[t]+' ×'+m[id],{fontFamily:F,fontSize:'9.5px',color:'#ffe8d0'}).setOrigin(.5); L.add([g,tx,cn]); chipObjs.push(g,tx,cn); chips.push({x,y,w:cw-8,h:52,k,t}); }); };
+        g.fillStyle(0x3a2618,1).fillRoundedRect(x-cw/2+4,y-26,cw-8,52,10).lineStyle(2,t===3?0xffd166:t===2?0xc9a3ff:0x8a6a50,1).strokeRoundedRect(x-cw/2+4,y-26,cw-8,52,10); const tx=pArt?this.add.image(x,y-6,'gp96_parts',(t-1)*5+G2_KINDS.indexOf(K)).setDisplaySize(30,30):this.add.text(x,y-6,K.em,{fontSize:'20px'}).setOrigin(.5),cn=this.add.text(x,y+15,G2_TIERS[t]+' ×'+m[id],{fontFamily:F,fontSize:'9.5px',color:'#ffe8d0'}).setOrigin(.5); L.add([g,tx,cn]); chipObjs.push(g,tx,cn); chips.push({x,y,w:cw-8,h:52,k,t}); }); };
     const btn=(x,y,w,label,col)=>{ const g=this.add.graphics(); g.fillStyle(col,1).fillRoundedRect(x-w/2,y-20,w,40,12); L.add(g); T(x,y,label,14,'#ffffff'); return {x,y,w,h:40}; };
     const bake=btn(W/2+70,py+ph-36,120,'🔥 Bake',0xc25a2a),later=btn(W/2-70,py+ph-36,110,'Later',0x5a4b75); redraw();
     const close=()=>{ this.input?.off?.('pointerdown',onTap); L.destroy(); if(this.state==='cinematic')this.state=prev==='cinematic'?'play':prev; this.physics?.resume?.(); G.popup=false; };
@@ -1558,6 +1567,8 @@
       d.objects.push({def,x,y,visuals,done:false}); if(def.g2){ this._g2={x,y,obj:d.objects[d.objects.length-1],picks:[],golem:null}; } });
   }
   chapterSideObjectStart(d,o){ if(o.def.g2){ this.g2OvenOpen(o); return; }   /* v8.3.27 */
+    if(o.def.mission==='cleanAir'&&!this._stack&&!this._v83Mission)this.fogWispIntro();   /* v8.3.29 ใบ 96: Wisp ดำบินเข้าจอ → มืด */
+    if(o.def.mission==='creepingRoots'&&!this._stack&&!this._v83Mission)this.rootGrowFx(o.x,o.y);   /* v8.3.29 รากงอก */
     if(o.def.mission){ if(this._stack||this._v83Mission)return; const sig=typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(o.def.mission); if(!(sig?this.stackStart?.(o.def.mission):this.v83MissionStart(o.def.mission)))return;   /* v8.3.28 ภารกิจพื้นฐานเป็นภารกิจหลัก · sig เป็น side stack */ o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
     o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
   tickChapterSideObjects(d){
@@ -1574,6 +1585,7 @@
     };
     if(def.hold){ active.visuals.push(this.camWorld(this.add.circle(x,y,C1_POT_R,def.color,.10).setStrokeStyle(3,def.color,.85).setDepth(-989)));
       /* v8.3.25 เจ้าของ: วงใหญ่ขึ้น + พายุฝุ่น/ควันหมุนในวง */
+      if(this.realTex?.('fx96_pot_dust')){ const ds=this.camWorld(this.add.sprite(x,y,'fx96_pot_dust',0).setDepth(y+5).setAlpha(.85)); ds.setDisplaySize(C1_POT_R*2,C1_POT_R*2); if(this.bpAnim?.('fx96_pot_dust'))ds.play({key:'fx96_pot_dust',repeat:-1}); active.visuals.push(ds); } else   /* v8.3.29 ใบ 96 */
       for(let k=0;k<12;k++){ const a=k*TAU/12,r=C1_POT_R*(.35+.55*((k*37)%10)/10),puff=this.camWorld(this.add.circle(x+Math.cos(a)*r,y+Math.sin(a)*r*.7,10+(k%3)*5,k%2?0xd8c0a0:0xf0e0c8,.32).setDepth(y+5)),host={a,r};
         active.visuals.push(puff); this.tweens.add({targets:host,a:a+TAU,duration:2600+(k%4)*500,repeat:-1,onUpdate:()=>{ if(puff.active)puff.setPosition(x+Math.cos(host.a)*host.r,y+Math.sin(host.a)*host.r*.7); }}); this.tweens.add({targets:puff,alpha:{from:.15,to:.45},scale:{from:.8,to:1.3},duration:900+(k%3)*300,yoyo:true,repeat:-1}); puff.once?.('destroy',()=>{ this.tweens?.killTweensOf?.(host); this.tweens?.killTweensOf?.(puff); }); } }   /* v8.3.19 วงกลมเหลือเฉพาะภารกิจยืนเฝ้า (บอกพื้นที่) */
     const art=this.artSpr(def.key,x,y+22,72,0,{sig:false,depth:y+3});

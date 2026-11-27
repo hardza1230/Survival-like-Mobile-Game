@@ -701,6 +701,10 @@ const ASSET_IMAGES = {
   cos_wing_honeycomb_paint:'assets/art/wardrobe_wings/cos_wing_honeycomb_paint.webp',
   cos_wing_matcha_paint:'assets/art/wardrobe_wings/cos_wing_matcha_paint.webp',
   cos_wing_midnight_paint:'assets/art/wardrobe_wings/cos_wing_midnight_paint.webp',
+  // v8.3.29 ใบ 96 ภารกิจช่วง B (scripts/pack-mission-plan-b96.py · lazy: stage / on demand)
+  mo96_escort:'assets/art/mission96/mo96_escort.webp', mo96_hunt:'assets/art/mission96/mo96_hunt.webp', mo96_crack:'assets/art/mission96/mo96_crack.webp',
+  mo96_fog_wisp:'assets/art/mission96/mo96_fog_wisp.webp', mo96_roots_flower:'assets/art/mission96/mo96_roots_flower.webp',
+  ui96_oven_panel:'assets/art/mission96/ui96_oven_panel.webp', ui96_oven_slot:'assets/art/mission96/ui96_oven_slot.webp', fx96_vault_ring:'assets/art/mission96/fx96_vault_ring.webp',
   skin_banner69:'assets/art/cosmetics/skin_banner69.webp',   // v8.1.73 ใบ 69 แบนเนอร์สกิน Festival (โหลดตอนเปิด Wardrobe)
   roster_momo:'assets/art/hero_roster/momo.webp',roster_mint:'assets/art/hero_roster/mint.webp',roster_cocoa:'assets/art/hero_roster/cocoa.webp',roster_taro:'assets/art/hero_roster/taro.webp',roster_yuzu:'assets/art/hero_roster/yuzu.webp',roster_sesame:'assets/art/hero_roster/sesame.webp',
   card_momo:'assets/character_cards/card_momo.webp', card_mint:'assets/character_cards/card_mint_frostleaf.webp',

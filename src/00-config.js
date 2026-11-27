@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.28';
+const GAME_VERSION = '8.3.29';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -113,13 +113,13 @@ const G2_KINDS=[{k:'acid',em:'🧪',name:'Acid Gland',boss:'Sour Ant Queen',skil
 const G2_TIERS=['','Common','Rare','Epic'],G2_DROP_MOB=.03,G2_SLOTS=3,G2_MAX_INV=12,G2_PICK_R=40,G2_PICK_LIFE=30;
 const C2_SIDE_MISSIONS=[
   {g2:true,home:5,generic:true,mission:'',key:'gg_oven',icon:'🗿',color:0xf2b06b,name:'Grandma’s Golem'},
-  {mission:'vaultAltar',home:13,only:true,key:'',icon:'🗝️',color:0xff8fb0},
-  {mission:'purge',home:5,only:true,key:'',icon:'🕯️',color:0xffe08a},
-  {mission:'hunt',home:5,generic:true,key:'',icon:'🎯',color:0xff8a5a},
-  {mission:'capture',home:5,generic:true,key:'',icon:'🕳️',color:0xb48cff},
-  {mission:'cleanAir',home:6,key:'',icon:'🫧',color:0x9fe0c0},
-  {mission:'creepingRoots',home:7,key:'',icon:'🌱',color:0x8fd06a},
-  {mission:'shakeTrees',home:11,key:'',icon:'🌳',color:0xc9e07a}
+  {mission:'vaultAltar',home:13,only:true,key:'ult_altar',icon:'🗝️',color:0xff8fb0},
+  {mission:'purge',home:5,only:true,key:'mo96_escort',icon:'🕯️',color:0xffe08a},
+  {mission:'hunt',home:5,generic:true,key:'mo96_hunt',icon:'🎯',color:0xff8a5a},
+  {mission:'capture',home:5,generic:true,key:'mo96_crack',icon:'🕳️',color:0xb48cff},
+  {mission:'cleanAir',home:6,key:'mo96_fog_wisp',icon:'🫧',color:0x9fe0c0},
+  {mission:'creepingRoots',home:7,key:'mo96_roots_flower',icon:'🌱',color:0x8fd06a},
+  {mission:'shakeTrees',home:11,key:'msn71_tree',icon:'🌳',color:0xc9e07a}
 ];
 /* v8.3.12 เจ้าของ: ภารกิจหลัก C1 = สถานการณ์การต่อสู้ทุกเวฟ (เวฟ 1,2,4,5 · เวฟ 3 = มินิบอส) · pattern = รูปแบบศัตรู · goal = เป้าโบนัส EXP
    goal 'leader' = ล้มหัวหน้า · 'pack' = ล้มทั้งกลุ่มภายใน C1_SIT_SEC · 'dodge' = ไม่โดนพื้นอันตรายจนจบ */
