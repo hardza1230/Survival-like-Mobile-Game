@@ -1666,6 +1666,7 @@
     d.loot.clear();
   }
   tickA23Audio(){
+    if(!STAGE_AMBIENT_ON){ if(this._a23AmbientKey){ Sfx.eventLoopStop?.(this._a23AmbientKey); this._a23AmbientKey=null; } return; }
     if(this.state!=='play'||!this.player?.active||this._inTutorial||typeof A23_STAGE_FAMILY==='undefined')return;
     const stage=this.stageIndex;if(!Number.isInteger(stage)||stage<0||stage>=15||this.recipeMode||this.riftMode)return;
     const boss=this.mode==='boss'||this.mode==='mini',key=boss?'a23_boss_ambience_s'+String(Math.floor(stage/5)*5+5).padStart(2,'0'):'a23_ambience_s'+String(stage+1).padStart(2,'0')+'_1';
@@ -1753,13 +1754,13 @@
       {min:140,name:'Furious',emoji:'🔥',color:0xff7a4d,hp:1.5,dmg:1.22,spd:1.09,cd:0.86,reward:1.45,gear:0.62,minTier:'rare'},
       {min:240,name:'Enraged',emoji:'👹',color:0xff405c,hp:1.9,dmg:1.38,spd:1.14,cd:0.78,reward:1.80,gear:0.74,minTier:'rare'},
       {min:360,name:'Berserk',emoji:'👑',color:0xd95cff,hp:2.4,dmg:1.58,spd:1.20,cd:0.70,reward:2.30,gear:0.88,minTier:'epic'},
-    ];let tier=0;for(let i=1;i<tiers.length;i++)if(n>=tiers[i].min)tier=i;return Object.assign({tier,kills:n},tiers[tier]);
+    ];let tier=0;if(typeof BOSS_RAGE_ON==='undefined'||BOSS_RAGE_ON)for(let i=1;i<tiers.length;i++)if(n>=tiers[i].min)tier=i;return Object.assign({tier,kills:n},tiers[tier]);
   }
   applyBossRage(b,announce){
     if(!b||!b.active)return;const r=this.bossRageInfo(),old=b.rage||this.bossRageInfo(0);if(b.rage&&r.tier<=b.rage.tier)return;
     if(!b._rageBaseHp){b._rageBaseHp=b.maxhp;b._rageBaseDmg=b.dmg;b._rageBaseSpd=b.spd;}
     const hpPct=b.maxhp>0?b.hp/b.maxhp:1,spdRatio=r.spd/(old.spd||1);b.maxhp=b._rageBaseHp*r.hp;b.hp=Math.max(1,b.maxhp*hpPct);b.dmg=Math.round((b.dmg||b._rageBaseDmg)*(r.dmg/(old.dmg||1)));b.spd=(b.spd||b._rageBaseSpd)*spdRatio;b.rage=r;b.rageCdMul=r.cd;
-    const st=STAGES[this.stageIndex];this.bossName.setText((b.isBoss?'👹 ':'💢 ')+(b.isBoss?(b.delveBoss?(b.delveBoss==='warden'?'The Jelly Warden':'Madame Candlewick'):this._pinnacleRun?'The Hunger Beneath':st.boss):st.mini)+' · '+r.emoji+' '+r.name).setColor('#'+r.color.toString(16).padStart(6,'0'));
+    const st=STAGES[this.stageIndex];this.bossName.setText((b.isBoss?'👹 ':'💢 ')+(b.isBoss?(b.delveBoss?(b.delveBoss==='warden'?'The Jelly Warden':'Madame Candlewick'):this._pinnacleRun?'The Hunger Beneath':st.boss):st.mini)+(BOSS_RAGE_ON?' · '+r.emoji+' '+r.name:'')).setColor('#'+r.color.toString(16).padStart(6,'0'));
     if(announce&&r.tier>old.tier){this.showBanner(r.emoji+' Boss '+r.name,'Minions killed '+r.kills+' · reward x'+r.reward.toFixed(2),1500);this.screenFlash(r.color,0.14,300);Sfx.bossWarn();}
   }
   spawnMiniBoss(){ if(!this.recipeMode&&!this.bossRush)this.rubyTip?.('mini',3200);

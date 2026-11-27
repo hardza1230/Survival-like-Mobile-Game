@@ -273,7 +273,7 @@
     if(fromMini&&this._replayMeter){this._replayMeter.miniDone=true;this.mode='breather';this.clearPickups(false);this.scheduleStageEvent(900,'breather',()=>this.startWave(this.waveIndex+1,false));return;}
     const st=STAGES[this.stageIndex],next=this.waveIndex+1;this.mode='breather';this.clearPickups(false);this.updateWaveText();this.poseFlash(CF.cheer,600);
     if(next>=st.waves){this.mode='bossWarning';this.updateWaveText();
-      this.scheduleStageEvent(300,'bossWarning',()=>{const rage=this.bossRageInfo();this.showBanner('⚠️ '+rage.emoji+' Boss '+rage.name,st.boss+' · Minions '+rage.kills+' · reward x'+rage.reward.toFixed(2),2600);Sfx.bossWarn();this.screenFlash(rage.color,0.20,650);
+      this.scheduleStageEvent(300,'bossWarning',()=>{const rage=this.bossRageInfo();if(BOSS_RAGE_ON)this.showBanner('⚠️ '+rage.emoji+' Boss '+rage.name,st.boss+' · Minions '+rage.kills+' · reward x'+rage.reward.toFixed(2),2600); else this.showBanner('⚠️ Boss incoming',st.boss,2600);Sfx.bossWarn();this.screenFlash(rage.color,0.20,650);
         this.scheduleStageEvent(3000,'bossWarning',()=>this.spawnFinalBoss());});return;}
     this.scheduleStageEvent(300,'breather',()=>{this.showBanner('Breather: 3 seconds','Wave '+(next+1)+' incoming',2400);
       this.scheduleStageEvent(3200,'breather',()=>this.startWave(next,false));});

@@ -162,7 +162,7 @@ class Game extends Phaser.Scene {
       if(n){ for(let j=0;j<(STAGES||[]).length;j++)if(j!==idx&&this._stageArtReady)this._stageArtReady.delete(j); if(this._warmed)for(const wk in this._warmed)if(!wk.startsWith(idx+'|'))delete this._warmed[wk]; }
     }catch(e){} }
   // v7.4 ตัวจัดงบหน่วยความจำกราฟิก (GPU): นับ MB ที่ถอดรหัสแล้ว · คืนภาพ lazy ที่ไม่ได้แสดงอยู่ เรียงจากที่ใช้ล่าสุดนานสุด (LRU)
-  realTex(k){ if(!this.textures.exists(k))return false; const s=this.textures.get(k).getSourceImage(); return !(s instanceof HTMLCanvasElement); }
+  realTex(k){ if(!this.textures.exists(k))return false; const t=this.textures.get(k); if(t&&t._codeTex)return true;   /* v8.3.31 ภาพ VFX ที่โค้ดวาดแทนไฟล์ตั้งใจ (codeGenericTex) = พร้อมแล้ว · เดิมนับว่าขาด → โหลดวนและเด้งหน้าโหลดรอบ 2 หลังเลือกการ์ด */ const s=t.getSourceImage(); return !(s instanceof HTMLCanvasElement); }
   texBytes(k){ const t=this.textures.list[k]; let b=0; if(t)for(const x of t.source||[])if(x&&x.width)b+=x.width*x.height*4; return b; }
   texMB(){ let b=0; for(const k in this.textures.list)if(k[0]!=='_')b+=this.texBytes(k); return b/1e6; }
   texInUse(){ const used=new Set(),walk=list=>{ for(const o of list){ if(!o||o.active===false)continue; if(o.texture&&o.texture.key)used.add(o.texture.key); if(o.displayTexture&&o.displayTexture.key)used.add(o.displayTexture.key); if(Array.isArray(o.list))walk(o.list); } }; walk(this.children.list); return used; }
