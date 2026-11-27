@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.23';
+const GAME_VERSION = '8.3.24';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -102,6 +102,16 @@ const C1_SIDE_EVENTS=[
   {name:'Grandma’s Pot',home:2,key:'gp_pot',icon:'♨',color:0xffcd88,types:['basic','fast'],hold:7,reward:26},
   {name:'Frozen Pantry',home:3,key:'fp_jar',icon:'❄',color:0x9fe0ff,types:['tank','basic','basic'],reward:28},
   {name:'Grandma’s Golem',home:4,key:'gg_oven',icon:'🗿',color:0xf2b06b,types:['tank','tank','fast'],reward:30}
+];
+/* v8.3.24 เจ้าของ: ภารกิจรอง C2–C3 = ภารกิจเต็มเดิม เดินไปเหยียบวัตถุ = เริ่ม (ระบบ side mission) · home = ด่านที่เจอครั้งแรก · generic = สุ่มได้ทุกด่านหลังจากนั้น
+   Escort the Wisp = ภารกิจเฉพาะด่าน C2-1 (มีวัตถุในด่านนี้เท่านั้น) */
+const C2_SIDE_MISSIONS=[
+  {mission:'purge',home:5,only:true,key:'',icon:'🕯️',color:0xffe08a},
+  {mission:'hunt',home:5,generic:true,key:'',icon:'🎯',color:0xff8a5a},
+  {mission:'capture',home:5,generic:true,key:'',icon:'🕳️',color:0xb48cff},
+  {mission:'cleanAir',home:6,key:'',icon:'🫧',color:0x9fe0c0},
+  {mission:'creepingRoots',home:7,key:'',icon:'🌱',color:0x8fd06a},
+  {mission:'shakeTrees',home:11,key:'',icon:'🌳',color:0xc9e07a}
 ];
 /* v8.3.12 เจ้าของ: ภารกิจหลัก C1 = สถานการณ์การต่อสู้ทุกเวฟ (เวฟ 1,2,4,5 · เวฟ 3 = มินิบอส) · pattern = รูปแบบศัตรู · goal = เป้าโบนัส EXP
    goal 'leader' = ล้มหัวหน้า · 'pack' = ล้มทั้งกลุ่มภายใน C1_SIT_SEC · 'dodge' = ไม่โดนพื้นอันตรายจนจบ */
@@ -191,6 +201,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.24',date:'2026-11-27',title:'Side missions in Chapters 2 and 3',items:['Chapter 2 and 3 side missions wait on the map: walk onto one to start it','Escort the Wisp now belongs to the first Chapter 2 stage','Shake the Hollow Trees: bump a tree to shake it and monsters pour out']},
   {v:'8.3.23',date:'2026-11-27',title:'Combat Situations everywhere',items:['Every Chapter 2 and 3 wave is now a named combat situation','New situations: Spore Bloom, Splitters, Elite Duo, Sniper Nest, Shield Carrier and Shrinking Arena']},
   {v:'8.3.22',date:'2026-11-27',title:'New Wardrobe items',items:['New in the Wardrobe: Honeycomb, Matcha and Midnight Wings, Pudding Fox, Mint Leaf Trail, Caramel Dash and Berry Pop']},
   {v:'8.3.21',date:'2026-11-27',title:'Animated Wardrobe',items:['Wings, pets, trails, dashes and pops now use new animated artwork','Wardrobe shop icons are freshly painted']},
@@ -16706,13 +16717,13 @@ class Game extends Phaser.Scene {
     if(!ok)return; this.a12?.('a22_twist_survive',.4,.5); const si=this.stageIndex||0,b=Math.round(BOSS_TWIST_SUGAR[0]+si*BOSS_TWIST_SUGAR[1]+(T.popped||0)); this.sugarStage=(this.sugarStage||0)+b; this.sugarRun=(this.sugarRun||0)+b; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); this.showBanner?.('✅ Survived!','Sugar +'+b,1200); }
   stackPick(primary){ const pc=STACK_CAT[primary?.type]; if(pc==='global')return null; const ok=STACK_POOL.filter(t=>t!==primary?.type&&STACK_CAT[t]!==pc&&WAVE_OBJECTIVES[t]); return ok.length?ok[Math.floor(Math.random()*ok.length)]:null; }
   stackStart(type,opt){ if(this._stack||!type)return null; const boss=!!(opt&&opt.boss); const def=WAVE_OBJECTIVES[type],color=0xb8f0ff,o={type,emoji:def.emoji,name:def.name,desc:def.desc,color,progress:0,target:0,done:false,_stack:true},g=this.add.graphics().setScrollFactor(1).setDepth(90041); this.camWorld?.(g);
-    const T=boss?(typeof BOSS_MISSION_DUR!=='undefined'?BOSS_MISSION_DUR:45):Math.max(30,Math.min(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._,(this.waveTimer||60)-4)); this._stack={o,S:null,g,T,T0:T,type,txt:null,boss}; this.logMission?.(type);
+    const T=boss?(typeof BOSS_MISSION_DUR!=='undefined'?BOSS_MISSION_DUR:45):this._v83Run?(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._):Math.max(30,Math.min(MISSION_WAVE_DUR[type]||MISSION_WAVE_DUR._,(this.waveTimer||60)-4));   /* v8.3.24 C2–C3 ภารกิจรองข้ามเวฟ = เวลาเต็มของภารกิจ */ this._stack={o,S:null,g,T,T0:T,type,txt:null,boss}; this.logMission?.(type);
     this.stackRun(()=>{ this._sig=null; this.sigSetup(o,type,{dur:T}); this.rpMissionSetup?.(o); this.maSetup?.(o); }); if(o._timedGoal)o.target=Math.max(1,Math.floor(T)-1);
     if(this.add?.text&&this.camUI){ const y=(this.waveObjTxt?.y||40)+(this.waveObjTxt?.height||18)+14,t=this.add.text(this.W/2,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#b8f0ff',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5,0).setScrollFactor(1).setDepth(54); this.camUI(t); this._stack.txt=t; const ck=boss&&this.realTex?.('ev90_boss_chip')?'ev90_boss_chip':'ui87_side_chip'; if(this.realTex?.(ck)){ const ch=this.add.image(this.W/2,y+9,ck).setScrollFactor(1).setDepth(53).setDisplaySize(230,24); this.camUI(ch); this._stack.chip=ch; } }   /* v8.2.24 ใบ 87 แถบภารกิจเสริม */
     this.showBanner?.((boss?'👑 Boss mission: ':'➕ Side mission: ')+def.emoji+' '+def.name,boss?'The boss calls on the stage — finish it for a Gear box':def.desc,2200); if(boss){ (this.a12?.('a18_boss_mission',.5,.5))||Sfx.card?.(); this.rubyVoiceReact?.('bossmission',600); } else { this.a12?.('a16_side_mission',.45,.5)||Sfx.card?.(); this.rubyVoiceReact?.('side',600); } return this._stack; }
   stackTick(dt){ const K=this._stack;
     if(!K){ if(!STACK_ON||this._stackTried||this.mode!=='wave'||!this._waveTimed||this.state!=='play'||(this.stageIndex||0)<STACK_FROM||this._replayMeter||!this.usesStoryBudget?.())return; const o=this.waveObjective; if(!o||o.done||(this.waveDur||0)-(this.waveTimer||0)<STACK_AT)return; this._stackTried=true; if((this.waveTimer||0)<STACK_MIN_LEFT||Math.random()>=STACK_CHANCE)return; this.stackStart(this.stackPick(o)); return; }
-    if(K.o.done){ this.stackEnd(false); return; } if(K.boss?(this.mode!=='boss'||!this.boss?.active):this.mode!=='wave'){ this.stackEnd(true); return; }
+    if(K.o.done){ this.stackEnd(false); return; } if(K.boss?(this.mode!=='boss'||!this.boss?.active):(this._v83Run?['boss','bossWarning','reward'].includes(this.mode):this.mode!=='wave')){ this.stackEnd(true); return; }   /* v8.3.24 C2–C3 ภารกิจรองทำต่อข้ามเวฟ (หยุดเวลาช่วงมินิบอส) */
     K.T-=dt; this.stackRun(()=>{ this.sigTick(dt,K.o); if(K.o._timedGoal&&K.S&&(K.S.t||0)>=K.o.target&&!K.o.done)this.hhFinish?.(K.o,K.S); if(!K.o.done&&K.o.target>0&&K.o.progress>=K.o.target)this.stackComplete(); });
     if(!K.o.done&&K.T<=0){ if(K.o._timedGoal)this.stackRun(()=>this.hhFinish?.(K.o,K.S)); else this.stackEnd(true); return; }
     const o=K.o,v=o._timedGoal?Math.ceil(Math.max(0,K.T))+'s':Math.floor(o.progress)+'/'+(o.target||1); K.txt?.setText('➕ '+o.emoji+' '+o.name+' · '+v+(o._timedGoal?'':' · '+Math.ceil(Math.max(0,K.T))+'s')).setVisible(true); if(K.chip&&K.txt)K.chip.setDisplaySize(Math.max(160,K.txt.width+40),24); }
@@ -17777,7 +17788,7 @@ class Game extends Phaser.Scene {
   sigSetup(o,type,p){ const si=this.stageIndex||0,c=o.color; this._sig={type,objs:[]}; const S=this._sig; if(!this.objNodeG){ this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040); this.camWorld(this.objNodeG); }
     if(type==='seedRift'){ const q=this.objectivePosition(0,1,260,360); Object.assign(S,{x:q.x,y:q.y,R:110,pull:55,seeds:0,spawn:.6,hurtT:0,tag:'sr'+Math.random(),carriers:[]}); o.target=8; o.desc='The rift pulls you in — catch '+o.target+' green seed carriers before they feed it';   /* v8.2.8 เจ้าของ: ไม่ซ้ำ Hunger's Mouth → แรงดูด + ไล่จับตัวขนเมล็ด */
       S.ring=this.sigAdd(this.add.circle(q.x,q.y,S.R,0x6a2bd8,.18).setStrokeStyle(5,0xb88cff,.9).setDepth(q.y-3)); S.core=this.sigArt('msn71_rift',0,q.x,q.y,S.R*2.1,'🌀',40); if(this.artIsSpr(S.core))S.core.setDepth(q.y-3); this.tweens.add({targets:S.core,rotation:TAU,duration:1600,repeat:-1}); }
-    else if(type==='shakeTrees'){ const n=this.fpFull?.()?ST_TREES[1]:ST_TREES[0],kinds=ST_KINDS.slice(0,n); for(let i=kinds.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [kinds[i],kinds[j]]=[kinds[j],kinds[i]]; } o.target=n; S.trees=[];   /* v8.2.17 เจ้าของ: ต้นไม้หลายแบบ — ผลไม้ · รังผึ้ง · ต้นทอง (มีประกายให้เห็น) · ต้นไม้ปลอม (กลายเป็นมอน) */ for(let i=0;i<n;i++){ const q=this.objectivePosition(i,n,200,380),tk87={hive:'st87_tree_hive',golden:'st87_tree_golden',mimic:'st87_tree_mimic'}[kinds[i]],use87=tk87&&this.realTex?.(tk87),t=this.sigArt(use87?tk87:'msn71_tree',0,q.x,q.y+50,130,'🌳',54,q.y-20),ring=this.sigAdd(this.add.circle(q.x,q.y+10,92,c,.08).setStrokeStyle(3,c,.6).setDepth(q.y-2)); const kind=kinds[i],shine=kind==='golden'?this.sigText(q.x,q.y-70,'✨',26):null; if(kind==='golden'){ if(!use87)t.setTint?.(0xfff2a8); if(shine)this.tweens.add({targets:shine,alpha:{from:.35,to:1},scale:{from:.85,to:1.2},duration:620,yoyo:true,repeat:-1}); } S.trees.push({x:q.x,y:q.y,t,ring,pc:0,done:false,kind,shine}); } }
+    else if(type==='shakeTrees'){ const n=this.fpFull?.()?ST_TREES[1]:ST_TREES[0],kinds=ST_KINDS.slice(0,n); for(let i=kinds.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [kinds[i],kinds[j]]=[kinds[j],kinds[i]]; } o.target=n; S.trees=[];   /* v8.2.17 เจ้าของ: ต้นไม้หลายแบบ — ผลไม้ · รังผึ้ง · ต้นทอง (มีประกายให้เห็น) · ต้นไม้ปลอม (กลายเป็นมอน) */ for(let i=0;i<n;i++){ const q=this.objectivePosition(i,n,200,380),tk87={hive:'st87_tree_hive',golden:'st87_tree_golden',mimic:'st87_tree_mimic'}[kinds[i]],use87=tk87&&this.realTex?.(tk87),t=this.sigArt(use87?tk87:'msn71_tree',0,q.x,q.y+50,130,'🌳',54,q.y-20),ring=this.sigAdd(this.add.circle(q.x,q.y+10,92,c,.08).setStrokeStyle(3,c,.6).setDepth(q.y-2)); const kind=kinds[i],shine=kind==='golden'?this.sigText(q.x,q.y-70,'✨',26):null; if(kind==='golden'){ if(!use87)t.setTint?.(0xfff2a8); if(shine)this.tweens.add({targets:shine,alpha:{from:.35,to:1},scale:{from:.85,to:1.2},duration:620,yoyo:true,repeat:-1}); } ring.setVisible(false);   /* v8.3.24 เจ้าของ: เอาวงออก · เดินชนต้นไม้ = สั่น */ S.trees.push({x:q.x,y:q.y,t,ring,pc:0,done:false,kind,shine}); } }
     else if(type==='mirrorPath'){ const cq=this.objectivePosition(0,1,140,220); S.cx=cq.x; S.cy=cq.y; S.crystal=this.sigArt('msn71_crystal',0,cq.x,cq.y+30,110,'💎',46,cq.y-16); S.mirrors=[]; o.target=3; for(let i=0;i<3;i++){ const a=i/3*TAU+Math.random()*.6,r=230+Math.random()*80,x=Phaser.Math.Clamp(cq.x+Math.cos(a)*r,-WORLD/2+130,WORLD/2-130),y=Phaser.Math.Clamp(cq.y+Math.sin(a)*r,-WORLD/2+130,WORLD/2-130); S.mirrors.push({x,y,pc:0,lit:false,pow:1,t:this.sigArt('msn71_mirror',0,x,y+30,90,'🪞',40,y-14),ring:this.sigAdd(this.add.circle(x,y+8,84,0x9fe0ff,.08).setStrokeStyle(3,0x9fe0ff,.6).setDepth(y-2))}); } S.beam=this.sigAdd(this.add.graphics().setDepth(90030)); S.shades=[]; S.shadeCd=4; S.beamCd=0; S.dimmed=0; }   /* v8.2.19 เงามืด 🌑 มายืนบังลำแสง (กระจกค่อย ๆ มืด) · ลำแสงทำดาเมจมอนที่ขวาง */
     else if(type==='vaultAltar'||type==='ultimatum'){ this.ultSetup(o,S,type==='ultimatum'?4:2); }
     else if(type==='frozenPantry'){ this.fpSetup(o,S); }
@@ -18120,7 +18131,7 @@ class Game extends Phaser.Scene {
     for(const L of S.lanes){ if(!L.open)continue; open++; if(L.grow<1)continue; const m=L.pts[0],near=this.sigNear(m.x,m.y,90),CUT=L.K?.cut||2.2; if(L.lb&&!L.lbOn){ L.lbOn=true; L.lb.setAlpha?.(1); } L.pc=Math.max(0,Math.min(CUT,L.pc+(near?dt:-dt*.5))); L.ring.setFillStyle(0xb36bff,near?.24:.1);
       if(L.pc>0){ g?.lineStyle(7,0xffffff,.95); g?.beginPath(); g?.arc(m.x,m.y+6,78,-Math.PI/2,-Math.PI/2+TAU*L.pc/CUT,false); g?.strokePath(); }
       if(L.pc>=CUT){ L.open=false; open--; L.lb?.setVisible?.(false); if(this.artIsSpr(L.t))L.t.setFrame(1); else L.t.setAlpha(.35); L.ring.setVisible(false); this.crDraw(S); this.vfxHitRing?.(m.x,m.y,0xd9a6ff,true); this.a12?.('lg_root_cut',.4,.2); this.artFx?.('vfx78_root_cut',m.x,m.y,140); this.floatText?.(m.x,m.y-60,'✂️ Root cut!',0xd9a6ff); continue; }
-      L.spawn-=dt; if(L.spawn<=0){ L.spawn=(S.full?2:2.6)*(L.K?.spawn||1); const e=this.sigSpawnAt(m.x+(Math.random()-.5)*40,m.y+(Math.random()-.5)*40,false,L.K?.type); if(e){ e._lanePath=L; e._laneI=1; e._goTo=L.pts[1]; if(L.K?.split)e._crSplit=true; if(L.K){ e.setTint?.(L.K.c); e.tintColor=L.K.c; } } } }
+      L.spawn-=dt; if(L.spawn<=0){ L.spawn=(S.full?2:2.6)*(L.K?.spawn||1); const e=this.sigSpawnAt(m.x+(Math.random()-.5)*40,m.y+(Math.random()-.5)*40,false,L.K?.type); if(e){ if(this._v83Run&&e.maxhp){ e.maxhp=Math.round(e.maxhp*1.6); e.hp=e.maxhp; e.setScale?.((e.scaleX||1)*1.12); }   /* v8.3.24 เจ้าของ: มอนจากรากถึกเป็นพิเศษ (C2–C3) */ e._lanePath=L; e._laneI=1; e._goTo=L.pts[1]; if(L.K?.split)e._crSplit=true; if(L.K){ e.setTint?.(L.K.c); e.tintColor=L.K.c; } } } }
     let att=0; this.enemies?.children?.iterate?.(e=>{ if(!e||!e.active)return; if(e._lanePath){ if(!S.lanes.includes(e._lanePath)){ e._lanePath=null; e._goTo=null; return; } if(this.dist(e.x,e.y,e._goTo.x,e._goTo.y)<40&&e._laneI<4){ e._laneI++; e._goTo=e._lanePath.pts[e._laneI]; } }
       if(!e.isBoss&&this.dist(e.x,e.y,S.x,S.y)<120)att++; });
     S.hp-=att*(S.full?3:2.4)*dt; if(this.sigNear(S.x,S.y,135))S.hp=Math.min(S.maxhp,S.hp+16*dt);
@@ -18482,8 +18493,8 @@ class Game extends Phaser.Scene {
           S.seeds++; S.pull=Math.min(170,S.pull+20); this.floatText?.(S.x,S.y-R-20,'🌰 The rift feeds — it pulls harder!',0x9cff6b); this.screenShake?.(140,.006); } }
       g?.clear(); const tt=S.t||0; for(let i=0;i<6;i++){ const a=tt*1.6+i/6*TAU,r1=R+70+((tt*90+i*40)%120),r2=R*.8; g?.lineStyle(2,0xb88cff,.35); g?.beginPath(); g?.moveTo(S.x+Math.cos(a)*r1,S.y+Math.sin(a)*r1*.7); g?.lineTo(S.x+Math.cos(a+.5)*r2,S.y+Math.sin(a+.5)*r2*.7); g?.strokePath(); }
       for(const e of S.carriers){ const r=e._srWorth>1?9:6; g?.fillStyle(e._srC||0x9cff6b,.9).fillCircle(e.x,e.y-38,r); g?.lineStyle(2,0x2c5a14,1).strokeCircle(e.x,e.y-38,r); } }
-    else if(o.type==='shakeTrees'){ g?.clear(); for(const t of S.trees){ if(t.done)continue; const near=this.sigNear(t.x,t.y,100); t.pc=Math.max(0,Math.min(1.8,t.pc+(near?dt:-dt*.5))); t.ring.setFillStyle(o.color,near?.2:.08); if(t.pc>0){ g?.lineStyle(7,0xffffff,.95); g?.beginPath(); g?.arc(t.x,t.y+10,86,-Math.PI/2,-Math.PI/2+TAU*t.pc/1.8,false); g?.strokePath(); }
-        if(near)t.t.setRotation(Math.sin(S.t*30)*.08*(t.pc/1.8)); if(t.pc>=1.8){ t.done=true; t.t.setRotation(0).setAlpha(this.artIsSpr(t.t)?1:.45); if(this.artIsSpr(t.t))t.t.setFrame(1);; t.ring.setVisible(false); o.progress++; this.screenShake?.(90,.004);
+    else if(o.type==='shakeTrees'){ g?.clear(); for(const t of S.trees){ if(t.done)continue; const near=this.sigNear(t.x,t.y,70); if(near&&!t.pc){ t.pc=.001; t.shakeT=.45; this.tweens?.add?.({targets:t.t,angle:{from:-9,to:9},duration:70,yoyo:true,repeat:3,onComplete:()=>t.t?.setAngle?.(0)}); } if(t.pc>0&&t.shakeT!=null){ t.shakeT-=dt; if(t.shakeT<=0){ t.pc=1.8; t.shakeT=null; this.stTreeFoes?.(t,si); } }   /* v8.3.24 แตะแล้วสั่นทันที · มอนออกมา */
+        if(t.pc>=1.8){ t.done=true; t.t.setRotation(0).setAlpha(this.artIsSpr(t.t)?1:.45); if(this.artIsSpr(t.t))t.t.setFrame(1);; t.ring.setVisible(false); o.progress++; this.screenShake?.(90,.004);
           t.shine?.setVisible?.(false); if(t.kind==='hive'||t.kind==='mimic'||t.kind==='golden')this.stTreeSurprise(t,si);
           else { const su=Math.round(4+si*1.2); this.sugarStage+=su; this.sugarRun+=su; const L0=this._lootAt; this._lootAt={x:t.x,y:t.y+20}; try{ this.missionLootBurst?.({type:'tree',noCur:true,noHold:true},su); }finally{ this._lootAt=L0; } } } }
       if(o.progress>=o.target)this.completeWaveObjective(); }
@@ -18634,6 +18645,10 @@ class Game extends Phaser.Scene {
     const sz=16,gap=2,iw=4*sz+3*gap;T.setFontSize(11).setWordWrapWidth(this.W-54-iw-6);const total=iw+6+T.width,x0=this.W/2-total/2,cy=T.y+T.height/2;this._seasonIconsOn=true;T.setOrigin(0,0).setX(x0+iw+6);
     this._seasonIcons.forEach((im,k)=>{const cur=o.storm.cur&&o.storm.cur.idx===k&&!o.storm.passed[k];im.setTexture('ui_c24_season_icons',o.storm.passed[k]?4+k:k).setDisplaySize(cur?sz+4:sz,cur?sz+4:sz).setPosition(x0+sz/2+k*(sz+gap),cy).setVisible(true);});}
   /* v8.1.50 เจ้าของ: เป้ารองต่อภารกิจ (แบบ Deep Rock) · ทำได้ = EXP +50% ของรางวัลคลื่น + Sugar +50% · ไม่มีในบทสอน/Fill */
+  /* v8.3.24 เจ้าของ: ต้นไม้สั่นแล้วมีมอนออกมา · บางครั้งทยอยออก บางครั้งโผล่ทีเดียว */
+  stTreeFoes(t,si){ const P=this.player; if(!P||!t)return; const n=3+Math.floor((si||0)/3),burst=Math.random()<.5,one=k=>{ if(this.state!=='play'||!this.player)return; const a=k*TAU/n+Math.random()*.4,x=t.x+Math.cos(a)*60,y=t.y+Math.sin(a)*40,ang=Math.atan2(y-P.y,x-P.x),dist=Math.max(70,Math.hypot(x-P.x,y-P.y)); this.spawnEnemy(k%3===2?'fast':'basic',ang,dist,true); };
+    if(burst){ for(let k=0;k<n;k++)one(k); this.vfxHitRing?.(t.x,t.y,0xc9e07a,true); this.floatText?.(t.x,t.y-70,'Ambush!',0xffd166); }
+    else for(let k=0;k<n;k++)this.time?.delayedCall?.(350*k,()=>one(k)); }
   objBonusInit(o,planned){ const B={survive:['Take 5 hits or fewer','hits',5],hunt:['Catch them before Overtime','overtime'],purge:['Keep the Wisp lit','wisp'],capture:['Never bleed outside the ring','bleed'],cleanAir:['Stay in clean air (3s outside max)','out',3],defendNectar:['Don’t lose a flower','flower'],seasonCycle:['Take 8 hits or fewer','hits',8],breakRoots:['Take 6 hits or fewer','hits',6],seedRift:['Never let the rift close','rift'],shakeTrees:['Take 6 hits or fewer','hits',6],mirrorPath:['Take 6 hits or fewer','hits',6],vaultAltar:['Take 8 hits or fewer','hits',8],ultimatum:['Take 12 hits or fewer','hits',12],lastLight:['Keep all 3 lanterns lit','lantern'],frozenPantry:['Take 6 hits or fewer','hits',6],hungersMouth:['Take 6 hits or fewer','hits',6],creepingRoots:['Don’t lose the flower','flower'],hungerHerald:['Take 6 hits or fewer','hits',6],grandmasPot:['Take 8 hits or fewer','hits',8],grandmasGolem:['Take 8 hits or fewer','hits',8],hungerSiege:['Take 10 hits or fewer','hits',10],hungerDomain:['Take 12 hits or fewer','hits',12]}[o.type];
     if(!B||planned||this._inTutorial||this.recipeMode||this.riftMode){o.bonus=null;return;} o.bonus={label:B[0],kind:B[1],lim:B[2]||0,n:0,ok:true}; this.time?.delayedCall?.(6600,()=>{ if(this.waveObjective===o&&o.bonus?.ok)this.floatText?.(this.player.x,this.player.y-90,'⭐ Bonus: '+o.bonus.label,0xffe08a); }); }
   objBonusFail(){ const b=this.waveObjective?.bonus; if(!b||!b.ok||this.waveObjective.done)return; b.ok=false; Sfx.orderCue?.('out_of_zone',.18,.8); this.floatText?.(this.player.x,this.player.y-80,'☆ Bonus lost',0xb8a8c8); }
@@ -18775,7 +18790,9 @@ class Game extends Phaser.Scene {
     return points;
   }
   /* v8.3.10 เจ้าของ: ภารกิจแทรกเฉพาะที่เคยเจอ (home ≤ ด่านนี้) · ของด่านนี้มาก่อน แล้วสุ่มที่เหลือ */
-  c1SideDeck(i){const own=C1_SIDE_EVENTS.filter(e=>e.home===i),past=Phaser.Utils.Array.Shuffle(C1_SIDE_EVENTS.filter(e=>e.home<i));return own.concat(past).slice(0,2);}   /* v8.3.12 ของด่านนี้ 1 + ที่เคยเจอ 1 */
+  c1SideDeck(i){ if(i>=5&&typeof C2_SIDE_MISSIONS!=='undefined'){ const mk=m=>({...m,name:WAVE_OBJECTIVES[m.mission]?.name||m.mission,types:[]}),own=C2_SIDE_MISSIONS.filter(m=>m.home===i&&!m.generic).map(mk),rest=Phaser.Utils.Array.Shuffle(C2_SIDE_MISSIONS.filter(m=>m.home<=i&&!m.only&&!(m.home===i&&!m.generic)).map(mk)); return own.concat(rest).slice(0,2); }   /* v8.3.24 C2–C3 */
+    return this.c1SideDeckC1(i); }
+  c1SideDeckC1(i){const own=C1_SIDE_EVENTS.filter(e=>e.home===i),past=Phaser.Utils.Array.Shuffle(C1_SIDE_EVENTS.filter(e=>e.home<i));return own.concat(past).slice(0,2);}   /* v8.3.12 ของด่านนี้ 1 + ที่เคยเจอ 1 */
   /* v8.3.10 เจ้าของ: แจกไพ่ก่อนด่าน C1 แบบใหม่ = บอกเฉย ๆ ว่าแต่ละเวฟเจออะไร (ไม่มี Reroll) · ภารกิจแทรกโผล่ในเวฟ 2 และ 4 */
   /* v8.3.12 เจ้าของ: การ์ดก่อนด่าน = ชื่อสถานการณ์ของแต่ละเวฟ + ภารกิจรองที่มีในแมพ (ไม่มี Reroll) */
   c1PreviewDeal(i){const st=STAGES[i];if(!st)return null;const sits=C1_SITUATIONS[i]||[],labels={},waves={},slots=[];
@@ -18998,10 +19015,12 @@ class Game extends Phaser.Scene {
       visuals.push(art||this.camWorld(this.add.text(x,y-12,def.icon,{fontSize:'27px',stroke:'#171321',strokeThickness:3}).setOrigin(.5).setDepth(y+4)));
       d.objects.push({def,x,y,visuals,done:false});});
   }
-  chapterSideObjectStart(d,o){o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
+  chapterSideObjectStart(d,o){ if(o.def.mission){ if(this._stack)return; if(!this.stackStart?.(o.def.mission))return; o.done=true; for(const v of o.visuals)v.destroy(); o.visuals=[]; return; }   /* v8.3.24 ภารกิจเต็มแบบ side mission */
+    o.done=true;for(const v of o.visuals)v.destroy();o.visuals=[];this.startChapterSideEvent(d,o.def,o);}
   tickChapterSideObjects(d){
     if(!d.objects)this.placeChapterSideObjects(d);
     const P=this.player;if(!P)return;
+    if(this._stack)return;   /* v8.3.24 ทำได้ทีละอัน */
     for(const o of d.objects){if(o.done)continue;if(this.dist(P.x,P.y,o.x,o.y)<60){this.chapterSideObjectStart(d,o);return;}}
   }
   clearChapterSideObjects(d){for(const o of d?.objects||[])for(const v of o.visuals)v.destroy();if(d)d.objects=null;if(this._c1SideTap){this.input?.off?.('pointerdown',this._c1SideTap);this._c1SideTap=null;}}

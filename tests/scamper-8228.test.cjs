@@ -22,5 +22,5 @@ s.bossMissionTick(.1);assert.deepStrictEqual(started,['seeds'],'once per thresho
 let focus=0,ban='';s.time={delayedCall(ms,f){f()}};s.questFocus=()=>focus++;s.showBanner=t=>ban=t;const o={type:'seedRift',_first:true,desc:'d'};s.waveObjective=o;s.missionIntroExtra(o);assert(ban.includes('New mission')&&focus===1);
 // static
 assert(/\*\(o\._first\?\(typeof FIRST_TIME_MUL/.test(src),'+20% time');assert(src.includes("if(this._goldWave&&!e.tintColor"),'gold tint');
-assert(src.includes("K.boss?(this.mode!=='boss'||!this.boss?.active):this.mode!=='wave'"),'boss side mission ends with the boss');
+assert(src.includes("K.boss?(this.mode!=='boss'||!this.boss?.active):(this._v83Run?['boss','bossWarning','reward'].includes(this.mode):this.mode!=='wave')"),'boss side mission ends with the boss · v8.3.24 continuous runs keep it across waves');
 console.log('SCAMPER 8.2.28: golden wave, first-time missions, boss missions passed');

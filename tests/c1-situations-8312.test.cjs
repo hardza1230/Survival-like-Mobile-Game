@@ -7,7 +7,7 @@ const consts=s.slice(s.indexOf('const C1_COMBAT_PATTERNS='),s.indexOf('// v7.9.5
 const ctx={Math,Phaser:{Utils:{Array:{Shuffle:a=>a}},Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},STAGES:[{waves:5,miniAt:2},{waves:5,miniAt:2},{waves:5,miniAt:2},{waves:5,miniAt:2},{waves:5,miniAt:2}],
   Save:{power:()=>9999},stageRecommendedPower:()=>100};
 vm.createContext(ctx);
-vm.runInContext(consts.replace(/^const /gm,'var ')+'\nclass G{'+['c1SideDeck','c1SituationFor','chapterCombatPatternScore','chapterCombatPick','getPowerGuide','bossHpMul'].map(method).join('\n')+'\n}\nthis.G=G;',ctx);
+vm.runInContext(consts.replace(/^const /gm,'var ')+'\nclass G{'+['c1SideDeck','c1SideDeckC1','c1SituationFor','chapterCombatPatternScore','chapterCombatPick','getPowerGuide','bossHpMul'].map(method).join('\n')+'\n}\nthis.G=G;',ctx);
 const {C1_SITUATIONS,C1_SIDE_EVENTS,C1_COMBAT_PATTERNS}=ctx;
 // every C1 stage: 4 situations (waves 1,2,4,5), valid patterns + goals, readable hint
 const formation=method('chapterCombatFormation');
@@ -19,6 +19,11 @@ const g=new ctx.G();g.stageIndex=0;
 let deck=g.c1SideDeck(0);assert.equal(JSON.stringify(deck.map(e=>e.name)),'["Hunger Herald"]');
 deck=g.c1SideDeck(3);assert.equal(deck.length,2);assert.equal(deck[0].home,3);assert(deck[1].home<3);
 for(let i=0;i<5;i++)for(const e of g.c1SideDeck(i))assert(e.home<=i,'only events met before');
+// v8.3.24 C2–C3 side objects start full missions; Escort only in C2-1
+if(typeof ctx.C2_SIDE_MISSIONS!=='undefined'||/C2_SIDE_MISSIONS/.test(consts)){ ctx.WAVE_OBJECTIVES=ctx.WAVE_OBJECTIVES||{};
+  let d5=g.c1SideDeck(5);assert.equal(d5[0].mission,'purge');assert.equal(d5.length,2);assert(['hunt','capture'].includes(d5[1].mission));
+  for(let i=6;i<15;i++){const dk=g.c1SideDeck(i);assert(dk.every(m=>m.mission&&m.mission!=='purge'),'Escort only in C2-1');}
+  assert.equal(g.c1SideDeck(6)[0].mission,'cleanAir');assert.equal(g.c1SideDeck(7)[0].mission,'creepingRoots');assert.equal(g.c1SideDeck(11)[0].mission,'shakeTrees'); }
 // situation per wave, none on the miniboss wave
 assert.equal(g.c1SituationFor(0).name,'Tunnel Ambush');assert.equal(g.c1SituationFor(2),null);assert.equal(g.c1SituationFor(4).name,'Colony Swarm');
 // Director: identity weight wins on an even field; full field avoids heavy patterns; last 2 never repeat
