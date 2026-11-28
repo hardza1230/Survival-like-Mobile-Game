@@ -496,10 +496,10 @@ const FORGE_CATALOG = [{"number":1,"id":"f_might","label":"Might","description":
 const FORGE_ROWS=['Power','Sustain','Utility'];
 function forgeValue(p,n){return Math.max(0,Number(p&&p.forgeMods&&p.forgeMods[n])||0);}
 /* v8.1.42 เจ้าของ: เพดาน mod ที่ซ้อนแล้วหลุด — HP จาก Vital Dough รวมไม่เกิน +150 · ลดดาเมจรวมไม่เกิน 40% · Clean Recipe รวมไม่เกิน 20% · โบนัสดาเมจรวมไม่เกิน +150% */
-const FORGE_HP_CAP=150,FORGE_DR_CAP=.3,FORGE_DMG_CAP=1.5,FORGE_CLEAN_CAP=.2;
+const FORGE_ARMOR_CAP=100,DMG_TAKEN_FLOOR=.3,FORGE_HP_CAP=150,FORGE_DR_CAP=.3,FORGE_DMG_CAP=1.5,FORGE_CLEAN_CAP=.2;
 function forgeApply(p,n,v){p.forgeMods=p.forgeMods||{};p.forgeMods[n]=(p.forgeMods[n]||0)+v;
   if(n===1)p.dmgMul+=v/100;if(n===3)p.critChance=(p.critChance||0)+v/100;if(n===4)p.critMul=(p.critMul||1.55)+v/100;
-  if(n===6)p.gearArea=(p.gearArea||0)+v/100;if(n===13){if(v<0)p.maxhp+=v;else{const have=p._forgeHp||0,add=Math.max(0,Math.min(v,FORGE_HP_CAP-have));p._forgeHp=have+add;p.maxhp+=add;}}if(n===14)p.armor=(p.armor||0)+v;
+  if(n===6)p.gearArea=(p.gearArea||0)+v/100;if(n===13){if(v<0)p.maxhp+=v;else{const have=p._forgeHp||0,add=Math.max(0,Math.min(v,FORGE_HP_CAP-have));p._forgeHp=have+add;p.maxhp+=add;}}if(n===14){const have=p._forgeArmor||0,add=Math.max(0,Math.min(v,FORGE_ARMOR_CAP-have));p._forgeArmor=have+add;p.armor=(p.armor||0)+add;}   /* v8.3.38 🐞 เกราะจาก Mod ไม่มีเพดาน → ยืนเฉยไม่ตาย · เพดานแบบเดียวกับ HP */
   if(n===15)p.regen=(p.regen||0)+v/10;if(n===16)p.lifeOnKill=(p.lifeOnKill||0)+v;
   if(n===20)p.lowHpGuard=(p.lowHpGuard||0)+v/100;if(n===57)p.uniqueCdMul=(p.uniqueCdMul||1)*(1-v/100);
   if(n===63)p.healEffect=(p.healEffect||1)+v/100;}

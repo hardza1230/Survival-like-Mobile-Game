@@ -18,6 +18,7 @@ const HEROES={momo:['sniper','shotgun','ricochet'],mint:['glacier','barrage','pi
 // ---- job list ----
 function jobs(){const J=[],add=(persona,o)=>J.push({id:persona+':'+(o.tag||o.stage),persona,stage:4,hero:'momo',card:'first',move:'chase',god:true,dmg:true,speed:2,view:PHONE,quality:0,...o});
   for(const [h,paths] of Object.entries(HEROES))for(const p of paths)add('build',{tag:h+'.'+p,hero:h,card:'path:'+p,stage:h==='momo'||h==='mint'?4:9,move:'kite'});
+  for(const st of [6,11])add('build',{tag:'sesame.runes@'+st,hero:'sesame',card:'random',stage:st,move:'kite',runes:true});   // v8.3.38 owner: Sesame (rune invoker, no Build Path) — casts every recipe in turn
   [['first',6],['random',7],['relic',8],['mod',10],['random',12]].forEach(([c,s],i)=>add('cards',{tag:c+'@'+s,stage:s,card:c,hero:['taro','mint','cocoa','yuzu','momo'][i],dmg:true}));
   [5,6,7,9,10,11,12,13,14].forEach(s=>add('missions',{tag:'s'+s,stage:s,hero:'mint',move:'chase',card:'random',dmg:true}));
   [3,6,11].forEach(s=>add('idle',{tag:'s'+s,stage:s,move:'idle',hero:'cocoa'}));
@@ -61,6 +62,7 @@ function botTick(cfg){const s=window.__g.scene.getScene('Game'),g=window.__g,P=s
     else if(s.state==='levelup')act='wait';
     else if(s.state==='play'&&P&&P.body){
       if(cfg.speed>1&&s.gameSpeed!==cfg.speed&&s.setGameSpeed)s.setGameSpeed(cfg.speed);
+      if(cfg.runes&&s._sesRuneMode&&typeof SES_RUNE_RECIPES!=='undefined'){const t0=s.time.now;if(t0-(s.__qaRuneAt||0)>1500){s.__qaRuneAt=t0;const K=Object.keys(SES_RUNE_RECIPES),rk=K[(s.__qaRuneI=(s.__qaRuneI||0)+1)%K.length];for(const ch of rk)s.sesRuneAdd?.(ch);s.sesRuneCast?.();(window.__qaPicks=window.__qaPicks||[]).length<40&&window.__qaPicks.push('Rune:'+rk);}}
       if(cfg.god&&P.hp<P.maxhp*.5)P.hp=P.maxhp;
       const t=s.time.now/1000,S=s._sig;let ob=null;try{ob=(s.mode==='wave'&&s._nearestWaveObjective)?s._nearestWaveObjective():null;}catch(e){}
       if(!ob&&S&&S.lanes){const L=S.lanes.find(L=>L.open&&(L.grow==null||L.grow>=1));if(L)ob=L.pts[0];}

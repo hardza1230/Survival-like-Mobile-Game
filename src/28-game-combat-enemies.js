@@ -821,8 +821,8 @@
     this.objBonusHit?.();   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;
     if(this.character==='yuzu'){dmg=this.yuzuAbsorb(dmg*this.yuzuGuard());if(dmg<=0)return;}   // guard NaN
-    dmg*=armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*this.cocoaGuard()*this.condTakenMul()*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
-    if(this.player.forgeMods){const p=this.player;if(p.body&&p.body.velocity&&Math.hypot(p.body.velocity.x,p.body.velocity.y)<25)dmg*=(100+Math.max(0,p.armor||0))/(100+Math.max(0,p.armor||0)+forgeValue(p,67));dmg=forgeHurt(this,dmg);}
+    const _raw=dmg; dmg*=armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*this.cocoaGuard()*this.condTakenMul()*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
+    if(this.player.forgeMods){const p=this.player;if(p.body&&p.body.velocity&&Math.hypot(p.body.velocity.x,p.body.velocity.y)<25)dmg*=(100+Math.max(0,p.armor||0))/(100+Math.max(0,p.armor||0)+forgeValue(p,67));} if(typeof DMG_TAKEN_FLOOR==='number')dmg=Math.max(dmg,_raw*DMG_TAKEN_FLOOR);   /* v8.3.38 🐞 เกราะ/ทาเลนต์/เกียร์รวมกันลดดาเมจได้ไม่เกิน 70% (ก่อน Forge DR และโล่) */ if(this.player.forgeMods){dmg=forgeHurt(this,dmg);}
     if(this.isSesRune?.()){dmg=this.sesRuneAbsorb(dmg);if(dmg<=0){this.player.iframe=(ix||.5)*HURT_IFRAME_MUL;return;}}
     this._noteHit(this.mode==='boss'?'boss':this.mode==='mini'?'mini':'shot',dmg);
     this.player.iframe=(ix||0.5)*HURT_IFRAME_MUL; this.player.hp-=dmg; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(150,0.009);

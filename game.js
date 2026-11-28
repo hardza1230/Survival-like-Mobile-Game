@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.37';
+const GAME_VERSION = '8.3.38';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -230,6 +230,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.38',date:'2026-11-28',title:'Fix: heroes became nearly immune from stacked armor; Sesame in QA bots',items:['Fixed: stacking Hard Shell armor made heroes nearly unkillable — armor from mods is now capped and total damage reduction tops out']},
   {v:'8.3.37',date:'2026-11-28',title:'Delve currencies: Crystal Glaze reroll and Crown Icing tier-up; Divine +40',items:['New Delve rewards: 💎 Crystal Glaze rerolls one mod and 👑 Crown Icing raises one mod’s tier','After Delve opens, tap a mod on your gear to use them','Divine gear can be upgraded to +40']},
   {v:'8.3.36',date:'2026-11-28',title:'Gear: merge refunds, more mod rows, implicit scaling, ×5/Max upgrade, colored mods',items:['Merging refunds the Sugar and Twist Cream you spent upgrading the merged items','Legend gear has 4 mods, Mythic 5, Ancient and Divine 6','Upgrades also raise the item’s built-in bonus','⬆ ×5 and Max upgrade buttons with a before → after preview','Mods are color-coded: Power, Sustain and Play','Fixed: upgraded gear showed its mods as inactive']},
   {v:'8.3.35',date:'2026-11-28',title:'Power tips show the new gear upgrade cost',items:['Power tips suggest gear upgrades with their Sugar and Twist Cream cost']},
@@ -7790,10 +7791,10 @@ const FORGE_CATALOG = [{"number":1,"id":"f_might","label":"Might","description":
 const FORGE_ROWS=['Power','Sustain','Utility'];
 function forgeValue(p,n){return Math.max(0,Number(p&&p.forgeMods&&p.forgeMods[n])||0);}
 /* v8.1.42 เจ้าของ: เพดาน mod ที่ซ้อนแล้วหลุด — HP จาก Vital Dough รวมไม่เกิน +150 · ลดดาเมจรวมไม่เกิน 40% · Clean Recipe รวมไม่เกิน 20% · โบนัสดาเมจรวมไม่เกิน +150% */
-const FORGE_HP_CAP=150,FORGE_DR_CAP=.3,FORGE_DMG_CAP=1.5,FORGE_CLEAN_CAP=.2;
+const FORGE_ARMOR_CAP=100,DMG_TAKEN_FLOOR=.3,FORGE_HP_CAP=150,FORGE_DR_CAP=.3,FORGE_DMG_CAP=1.5,FORGE_CLEAN_CAP=.2;
 function forgeApply(p,n,v){p.forgeMods=p.forgeMods||{};p.forgeMods[n]=(p.forgeMods[n]||0)+v;
   if(n===1)p.dmgMul+=v/100;if(n===3)p.critChance=(p.critChance||0)+v/100;if(n===4)p.critMul=(p.critMul||1.55)+v/100;
-  if(n===6)p.gearArea=(p.gearArea||0)+v/100;if(n===13){if(v<0)p.maxhp+=v;else{const have=p._forgeHp||0,add=Math.max(0,Math.min(v,FORGE_HP_CAP-have));p._forgeHp=have+add;p.maxhp+=add;}}if(n===14)p.armor=(p.armor||0)+v;
+  if(n===6)p.gearArea=(p.gearArea||0)+v/100;if(n===13){if(v<0)p.maxhp+=v;else{const have=p._forgeHp||0,add=Math.max(0,Math.min(v,FORGE_HP_CAP-have));p._forgeHp=have+add;p.maxhp+=add;}}if(n===14){const have=p._forgeArmor||0,add=Math.max(0,Math.min(v,FORGE_ARMOR_CAP-have));p._forgeArmor=have+add;p.armor=(p.armor||0)+add;}   /* v8.3.38 🐞 เกราะจาก Mod ไม่มีเพดาน → ยืนเฉยไม่ตาย · เพดานแบบเดียวกับ HP */
   if(n===15)p.regen=(p.regen||0)+v/10;if(n===16)p.lifeOnKill=(p.lifeOnKill||0)+v;
   if(n===20)p.lowHpGuard=(p.lowHpGuard||0)+v/100;if(n===57)p.uniqueCdMul=(p.uniqueCdMul||1)*(1-v/100);
   if(n===63)p.healEffect=(p.healEffect||1)+v/100;}
@@ -15685,7 +15686,7 @@ class Game extends Phaser.Scene {
   }
   applyMeta(){ if(this.player){this.player._tagIgnite=0;this.player._tagChill=0;this.player._tdBerserk=false;this.player._cond={};}
     const p=this.player;
-    p.forgeMods={};p._forgeHp=0;p.cdMul=1;p.powerMul=1;p.armor=0;p.gearAttackMin=0;p.gearAttackMax=0; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
+    p.forgeMods={};p._forgeHp=0;p._forgeArmor=0;p.cdMul=1;p.powerMul=1;p.armor=0;p.gearAttackMin=0;p.gearAttackMax=0; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
     p.sugarFindMul=1; p.boxFindMul=1; p.currencyFindMul=1; p.uniqueCdMul=1; p.gearDashNova=0; p.gearCritArc=0; p.gearKillShell=0; p.gearStillDmg=0; p.gearOpener=0; p.gearThorns=0; p.gearCount=0; p.gearBounce=0; p.gearArea=0; p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0; p._uqGlass=0; p._uqNoRegen=false; p._uqCritBurst=0;
     p.bossDmg=0; p.lowHpGuard=0; p.xpMul=1; p.dashCdMul=1; if(this._runTrait?.player)this._runTrait.player(p);   // v7.8.100 ลักษณะพิเศษของรอบ
     p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false; p._gearRevive=0;
@@ -25445,8 +25446,8 @@ class Game extends Phaser.Scene {
     this.objBonusHit?.();   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;
     if(this.character==='yuzu'){dmg=this.yuzuAbsorb(dmg*this.yuzuGuard());if(dmg<=0)return;}   // guard NaN
-    dmg*=armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*this.cocoaGuard()*this.condTakenMul()*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
-    if(this.player.forgeMods){const p=this.player;if(p.body&&p.body.velocity&&Math.hypot(p.body.velocity.x,p.body.velocity.y)<25)dmg*=(100+Math.max(0,p.armor||0))/(100+Math.max(0,p.armor||0)+forgeValue(p,67));dmg=forgeHurt(this,dmg);}
+    const _raw=dmg; dmg*=armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*this.cocoaGuard()*this.condTakenMul()*(this.player.wardGuardT>0?0.70:1)*(this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1);   // เกราะ + เขตคำสัตย์ + emergency guard
+    if(this.player.forgeMods){const p=this.player;if(p.body&&p.body.velocity&&Math.hypot(p.body.velocity.x,p.body.velocity.y)<25)dmg*=(100+Math.max(0,p.armor||0))/(100+Math.max(0,p.armor||0)+forgeValue(p,67));} if(typeof DMG_TAKEN_FLOOR==='number')dmg=Math.max(dmg,_raw*DMG_TAKEN_FLOOR);   /* v8.3.38 🐞 เกราะ/ทาเลนต์/เกียร์รวมกันลดดาเมจได้ไม่เกิน 70% (ก่อน Forge DR และโล่) */ if(this.player.forgeMods){dmg=forgeHurt(this,dmg);}
     if(this.isSesRune?.()){dmg=this.sesRuneAbsorb(dmg);if(dmg<=0){this.player.iframe=(ix||.5)*HURT_IFRAME_MUL;return;}}
     this._noteHit(this.mode==='boss'?'boss':this.mode==='mini'?'mini':'shot',dmg);
     this.player.iframe=(ix||0.5)*HURT_IFRAME_MUL; this.player.hp-=dmg; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(150,0.009);
