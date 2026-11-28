@@ -1,4 +1,5 @@
 const CHANGELOG = [
+  {v:'8.3.41',date:'2026-11-28',title:'Hero bar on the stage screen',items:['The stage screen shows every hero at the top: tap a face to switch hero before you play','The bar shows the chosen hero’s style, difficulty and Power']},
   {v:'8.3.40',date:'2026-11-28',title:'Story draft 4: every hero is a Seedbearer',items:['Story text no longer treats Strawberry as the only chosen hero: every hero is a Seedbearer','The opening comic ends with the Heart Seed splitting into sprouts of light','The Stage 5 boss is now called Hunger’s Mouth','Some story lines are silent until their new voice takes arrive']},
   {v:'8.3.39',date:'2026-11-28',title:'All heroes open from the start, with play-style tags and difficulty',items:['Every hero can be picked from the start','Hero cards show play-style tags (Ranged, Melee, Crowd control, Companion…) and a difficulty rating']},
   {v:'8.3.38',date:'2026-11-28',title:'Fix: heroes became nearly immune from stacked armor; Sesame in QA bots',items:['Fixed: stacking Hard Shell armor made heroes nearly unkillable — armor from mods is now capped and total damage reduction tops out']},

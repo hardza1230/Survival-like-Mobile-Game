@@ -107,12 +107,33 @@
     const note=this.add.text(this.W/2,this.W<=this.H?83:55,'CHAPTER SELECT  ·  Power ⚡ '+Save.power(Save.data.character),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#d3bce1'}).setOrigin(0.5);
     this.menu.add(note);
     const portrait=this.W<=this.H,cols=portrait?1:2,gapX=10,gapY=portrait?10:8,cardW=portrait?Math.min(this.W-28,410):Math.min(370,(this.W-38)/2),totalW=cardW*cols+gapX*(cols-1),x0=(this.W-totalW)/2;
-    const rows=Math.ceil(stageIds.length/cols),y0=portrait?100:69,rowH=Math.min(portrait?112:90,(this.H-y0-18-gapY*(rows-1))/rows);
+    const barH=this.stageHeroBar?.(portrait?92:62,portrait)||0;   // v8.3.41 เจ้าของ: แถบเลือกฮีโร่บนหน้าเลือกด่าน (แตะรูป = เปลี่ยนตัวทันที)
+    const rows=Math.ceil(stageIds.length/cols),y0=(portrait?100:69)+barH,rowH=Math.min(portrait?112:90,(this.H-y0-18-gapY*(rows-1))/rows);
     stageIds.forEach((i,pos)=>{const st=STAGES[i],col=pos%cols,row=Math.floor(pos/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked&&isStageReady(i);
       this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.startStoryStage(i)); const lz=this.tapZones[this.tapZones.length-1]; if(lz)lz.tag='stage_'+i;
       if(open){const m=(Save.data.stageStars||{})[i]|0;this.menu.add(this.add.text(x+cardW-12,y+rowH*.36,this.starText(m),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:m?'#ffd84a':'#9a8fa8',stroke:'#2a1530',strokeThickness:3}).setOrigin(1,0)); if(sweepOk(i))this.sweepBtn(x+cardW-96,y+rowH-8,i);}   // v7.8.60 ดาวรายด่าน · v8.1.70 Sweep
     });
     this.menu.setVisible(true);
+  }
+  /* v8.3.41 เจ้าของ: แถบเลือกฮีโร่บนหน้าเลือกด่าน · รูปหน้าทุกตัวที่เล่นได้ + ชื่อ/tag/ความยาก/Power ของตัวที่เลือก · คืนความสูงที่ใช้ */
+  stageHeroBar(y,portrait){
+    const own=CHAR_ORDER.filter(c=>typeof heroRevealed==='function'?heroRevealed(c):(FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(c)));
+    if(own.length<2)return 0;
+    const cur=own.includes(Save.data.character)?Save.data.character:own[0],ch=CHARACTERS[cur]||{},W=this.W;
+    { const miss=own.map(c=>this.skinKey?.('card_'+c,c)||('card_'+c)).filter(k=>!this.realTex?.(k)&&ASSET_IMAGES[k]); if(miss.length&&!(this._stageHeroLoading&&Date.now()-this._stageHeroLoading<8000)){ this._stageHeroLoading=Date.now(); try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._stageHeroLoading=false; if(this.state==='menu'&&this.menuScreen==='stage')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._stageHeroLoading=false; } } }   // หน้าฮีโร่ lazy (ภาพสำรอง = emoji)
+    const bw=Math.min(W-28,portrait?410:760),bx=(W-bw)/2,fs=portrait?40:36,gap=portrait?8:6,bh=portrait?76:46;
+    const g=this.add.graphics();g.fillStyle(0x1e1229,.92).fillRoundedRect(bx,y,bw,bh,14);g.lineStyle(2,0xc58bff,.7).strokeRoundedRect(bx,y,bw,bh,14);this.menu.add(g);
+    const rowW=own.length*fs+(own.length-1)*gap,fx0=portrait?W/2-rowW/2:bx+10,fy=y+(portrait?6:5)+fs/2;
+    own.forEach((c,i)=>{ const cx=fx0+i*(fs+gap)+fs/2,on=c===cur,hk=this.skinKey?.('card_'+c,c)||('card_'+c),fc=typeof LOBBY_FACE!=='undefined'?LOBBY_FACE[c]:null,rg=this.add.graphics();
+      rg.fillStyle(on?0x5a3470:0x2c2038,1).fillRoundedRect(cx-fs/2,fy-fs/2,fs,fs,9);this.menu.add(rg);
+      if(fc&&this.textures.exists(hk)){ const av=this.add.image(0,0,hk).setOrigin(0),iw=av.width,ih=av.height,q=fc[2]*ih,px=fc[0]*iw-q/2,py=fc[1]*ih-q/2,k=(fs-4)/q;av.setCrop(px,py,q,q).setScale(k).setPosition(cx-(px+q/2)*k,fy-(py+q/2)*k).setAlpha(on?1:.62);this.menu.add(av); }
+      else this.menu.add(this.add.text(cx,fy,(CHARACTERS[c]||{}).emoji||'🍡',{fontSize:Math.round(fs*.55)+'px'}).setOrigin(.5).setAlpha(on?1:.62));
+      const ln=this.add.graphics();ln.lineStyle(on?3:1.5,on?0xffd36e:0x6a5a86,1).strokeRoundedRect(cx-fs/2,fy-fs/2,fs,fs,9);this.menu.add(ln);
+      this._zone(cx-fs/2-gap/2,fy-fs/2-4,fs+gap,fs+8,()=>{ if(c===Save.data.character)return; Save.data.character=c;Save.save();this.character=c;Sfx.select?.();this.buildMenuScreen(); }); const z=this.tapZones[this.tapZones.length-1]; if(z)z.tag='stage_hero_'+c; });
+    const info=(ch.emoji||'🍡')+' '+(ch.name||cur)+'  ·  '+(typeof heroTagLine==='function'?heroTagLine(cur):'')+'  ·  '+(typeof heroDiffLine==='function'?heroDiffLine(cur):'')+'  ·  ⚡ '+Save.power(cur);
+    const tx=portrait?this.add.text(W/2,y+bh-14,info,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe9b0'}).setOrigin(.5):this.add.text(fx0+rowW+14,y+bh/2,info,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe9b0'}).setOrigin(0,.5);
+    const mw=portrait?bw-16:bx+bw-tx.x-10; if(tx.width>mw)tx.setScale(mw/tx.width); this.menu.add(tx);
+    return bh+(portrait?8:6);
   }
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
   startStoryStage(idx){
