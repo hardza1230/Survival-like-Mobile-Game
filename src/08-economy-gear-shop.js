@@ -540,6 +540,9 @@ const RAR_LINES={start:0,common:1,rare:2,epic:3,legend:3,mythic:4,ancient:5,divi
 /* v8.3.33 เจ้าของ 27 พ.ย.: Gear แบบ Archero 2 · Mod ติดมากับของ (ตามระดับ) · อัปเลเวล Sugar + Twist Cream ไม่มีล้ม · เลเวลละ +4% ค่าหลักและ Mod · รวม 3 ชิ้น = ระดับถัดไป + Mod แถวใหม่สุ่มให้ · ปิดหน้า Forge · Star Sugar 1→5 / Recipe Ink 1→3 Twist Cream */
 const GEAR_SIMPLE=true,GEAR_LV_CAP={start:10,common:10,rare:15,epic:20,legend:25,mythic:30,ancient:30,divine:30},GEAR_LV_PCT=.04,GEAR_CUR_TO_CREAM={starsugar:5,recipeink:3};
 if(GEAR_SIMPLE&&typeof HUB_GROUPS!=='undefined'){ const G=HUB_GROUPS.gLoadout; G.rows=G.rows.filter(r=>r[0]!=='craft'); for(const sc of G.sections||[])sc[2]=sc[2].filter(t=>t[0]!=='craft'); }   /* v8.3.33 Forge ปิด */
+if(GEAR_SIMPLE){ RAR_LINES.legend=4; RAR_LINES.mythic=5; RAR_LINES.ancient=6; RAR_LINES.divine=6; }   /* v8.3.36 เจ้าของ: Legend 4 · Mythic 5 · Ancient/Divine 6 แถว (รวมทุกครั้งได้ Mod ใหม่) */
+function gearUpTotal(lv){let s=0,c=0;for(let L=0;L<Math.max(0,lv|0);L++){const u=gearUpCost(L);s+=u.sugar;c+=u.cream;}return {sugar:s,cream:c};}   /* v8.3.36 ราคารวมถึงเลเวลนี้ (ใช้คืนตอนรวม) */
+function gearImplicit(item){const im=ensureImplicit(item);if(!im||!GEAR_SIMPLE)return im;const m=1+GEAR_LV_PCT*gearEffectiveEnhance(item);return m===1?im:Object.assign({},im,{v:Math.round((im.v||0)*m*10)/10});}   /* v8.3.36 Implicit โตตามเลเวลด้วย */
 function gearUpCost(lv){lv=Math.max(0,lv|0);return {sugar:40*(lv+1),cream:1+Math.floor(lv/3)};}
 function gearFillLines(item){if(!item)return 0;let n=0;for(let i=0;i<FORGE_MAX_LINES;i++){if(!forgeLineOpen(item,i)||forgeLines(item)[i])continue;let mod=null;try{mod=pickWeightedMod(forgePool(item,i));}catch(e){mod=null;}if(!mod)continue;const ls=forgeLines(item);ls[i]=Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1),{line:i});forgeSetLines(item,ls);n++;}return n;}
 const GRADE_ORDER=['start','common','rare','epic','legend','mythic','ancient','divine'],FORGE_MAX_LINES=6;function gradeRank(g){return Math.max(0,GRADE_ORDER.indexOf(g));}   // v8.0.87 เจ้าของ: เหนือ Legend อีก 3 ขั้น (Merge อย่างเดียว) +1 แถวต่อขั้น
@@ -641,7 +644,7 @@ function rollOneAffixLocked(mod,best,ilvl,lock){ if(!lock||lock.id!==mod.id)retu
   const band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; return {id:mod.id,t,v:band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)),t11:1,tierSchema:2}; }
 function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl,mod.tiers.length-1), band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v,t11:1,tierSchema:2}; }
 function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);return l<12?1:l<25?2:3;}   // iLv12 unlocks Sustain; iLv25 unlocks Play.
-function rollAffixes(baseTier,itemLevel=1,base=null){const L0=Math.max(1,Number(itemLevel)||1),n=GEAR_SIMPLE?Math.min(AFFIX_COUNT[baseTier]||0,3):Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel),L0<12?0:L0<25?1:L0<45?2:3,3),item={baseId:base&&base.id,slot:base&&base.slot||'weapon',grade:baseTier,itemLevel,affixes:[]};for(let line=0;line<n;line++){const mod=pickWeightedMod(forgePool(item,line));if(mod)item.affixes.push(Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),itemLevel),{line}));}return item.affixes;}
+function rollAffixes(baseTier,itemLevel=1,base=null){const L0=Math.max(1,Number(itemLevel)||1),n=GEAR_SIMPLE?Math.min(RAR_LINES[baseTier]||0,FORGE_MAX_LINES):Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel),L0<12?0:L0<25?1:L0<45?2:3,3),item={baseId:base&&base.id,slot:base&&base.slot||'weapon',grade:baseTier,itemLevel,affixes:[]};for(let line=0;line<n;line++){const mod=pickWeightedMod(forgePool(item,line));if(mod)item.affixes.push(Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),itemLevel),{line}));}return item.affixes;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
 function gearAffixName(baseName,affs){ return baseName;   // v7.8.94 เจ้าของ: ชื่อของ = ชื่อฐาน (mod อยู่ในรายการด้านล่างแล้ว)
   if(!affs||!affs.length)return baseName;
@@ -882,7 +885,7 @@ function gearBaseStats(item){
 // v6.55.78: mod Damage % บนอาวุธเป็น local แบบ PoE — คูณ ATK ของอาวุธชิ้นนั้น ×3 แทน +dmg ทั้งตัว
 const WEAPON_LOCAL_MUL=3;
 function weaponLocalMod(item,id){return !!item&&item.slot==='weapon'&&(id==='dmg'||id==='i_dmg');}
-function weaponLocalPct(item){if(!item||item.slot!=='weapon')return 0;let v=0;for(const a of gearActiveAffixes(item))if(a&&a.id==='dmg')v+=a.v||0;const im=ensureImplicit(item);if(im&&im.id==='i_dmg')v+=im.v||0;return v*WEAPON_LOCAL_MUL;}
+function weaponLocalPct(item){if(!item||item.slot!=='weapon')return 0;let v=0;for(const a of gearActiveAffixes(item))if(a&&a.id==='dmg')v+=a.v||0;const im=gearImplicit(item);if(im&&im.id==='i_dmg')v+=im.v||0;return v*WEAPON_LOCAL_MUL;}
 function gearBaseStatText(item){const b=gearBaseStats(item);if(b.attackMax)return 'ATK '+b.attackMin+'-'+b.attackMax;if(b.armor)return 'Armor '+b.armor+(b.hp?' · HP +'+b.hp:'');if(b.crit)return 'Crit +'+b.crit+'% · Crit DMG +'+b.critDmg+'%';if(b.speed)return 'Speed +'+b.speed+'% · Dash CD −'+b.dashCd+'%';if(b.skillCd)return 'Cooldown −'+b.skillCd+'%';return 'Starter';}
 function applyGearBaseStats(p,item){const b=gearBaseStats(item);p.gearAttackMin=(p.gearAttackMin||0)+b.attackMin;p.gearAttackMax=(p.gearAttackMax||0)+b.attackMax;p.armor=(p.armor||0)+b.armor;
   if(b.hp)p.maxhp=(p.maxhp||0)+b.hp;if(b.crit)p.critChance=(p.critChance||0)+b.crit/100;if(b.critDmg)p.critMul=(p.critMul||1.55)+b.critDmg/100;
@@ -943,8 +946,8 @@ function rollImplicit(slot,ilvl,grade,rnd){rnd=rnd||Math.random;const l=Math.max
 function ensureImplicit(item){if(!item)return null;const base=GEAR_ALL.find(g=>g.id===item.baseId);if(!base||base.tier==='start'||base.unique)return null;
   if(item.implicit&&implicitDef(item.implicit.id))return item.implicit;let s=_uidSeed(item.uid);const rnd=()=>{s=(Math.imul(s^(s>>>15),2246822507)+0x9e3779b9)>>>0;return (s%100000)/100000;};
   item.implicit=rollImplicit(item.slot||base.slot,item.itemLevel,base.tier,rnd);return item.implicit;}
-function implicitText(item){const im=ensureImplicit(item),d=im&&implicitDef(im.id);return d?d.emoji+' '+d.label+' '+d.fmt(im.v):'';}
-function applyScaledGear(p,it,lv,ilvl,inst){if(it&&!it.unique&&inst){const im=ensureImplicit(inst),d=im&&implicitDef(im.id);if(d&&!weaponLocalMod(inst,im.id))d.apply(p,im.v);return;}
+function implicitText(item){const im=gearImplicit(item),d=im&&implicitDef(im.id);return d?d.emoji+' '+d.label+' '+d.fmt(im.v):'';}
+function applyScaledGear(p,it,lv,ilvl,inst){if(it&&!it.unique&&inst){const im=gearImplicit(inst),d=im&&implicitDef(im.id);if(d&&!weaponLocalMod(inst,im.id))d.apply(p,im.v);return;}
   const f=gearBaseScale(ilvl),add=['dmgMul','critChance','critMul','maxhp','regen','regenFlat','pickup','lifeOnKill','lowHpDmg','bossDmg','lowHpGuard','flatDmg','lifesteal'],mul=['cdMul','dmgTakenMul','baseSpeed','xpMul','dashCdMul'],b={};
   for(const k of add)b[k]=p[k]||0;for(const k of mul)b[k]=p[k]==null?1:p[k];it.apply(p,lv);
   for(const k of add)if(typeof p[k]==='number')p[k]=b[k]+(p[k]-b[k])*f;for(const k of mul)if(typeof p[k]==='number'&&b[k]>0&&p[k]>0)p[k]=b[k]*Math.pow(p[k]/b[k],f);}

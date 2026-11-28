@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.3.35**. Next release:8.3.36. Fetch the deploy branch before new work.
+Current release: **8.3.36**. Next release:8.3.37. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.3.35 — Power tips show the new gear upgrade cost** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.36 — Gear: merge refunds, more mod rows, implicit scaling, ×5/Max upgrade, colored mods** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

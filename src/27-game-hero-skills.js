@@ -1964,20 +1964,22 @@
   _clampFonts(min){ const add=this.add,f=add.text; add.text=function(x,y,t,st){ if(st&&st.fontSize){const n=parseFloat(st.fontSize);if(n<min)st=Object.assign({},st,{fontSize:min+'px'});} return f.call(add,x,y,t,st); }; return ()=>{ delete add.text; if(add.text!==f)add.text=f; }; }
   drawModCompare(eqIt,selIt,isEq,y,w,maxY){ if(!selIt)return y;
     // v7.8.67 เจ้าของ: เลิกตารางเทียบ — บอกว่าชิ้นนี้มี mod อะไร + แต่ละตัวทำอะไร
-    const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=ensureImplicit(selIt),idf=im&&implicitDef(im.id),active=gearActiveAffixes(selIt),mods=(selIt.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);
+    const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=gearImplicit(selIt),idf=im&&implicitDef(im.id),active=gearActiveAffixes(selIt),mods=(selIt.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);
     if(idf)lines.push({t:'◇ '+idf.emoji+' '+modLine(idf,im.v),c:IMPLICIT_COLOR[idf.rank],d:MOD_EFFECT[idf.id]?'':modDesc(idf)});else if(ib&&ib.unique)lines.push({t:'★ Unique',c:'#ff8f3a',d:ib.desc||''});
-    for(const {a,d} of mods){const open=active.includes(a),fit=open&&forgeModFits(d),tc=open?(MOD_TIER_COLOR[tierStars(d,a.t)]||MOD_TIER_COLOR[1]):'#8a809a';lines.push({t:(open?'':'🔒 Inactive · ')+d.emoji+' '+modLine(d,a.v)+(fit?'  ✓':''),c:tc,r:tierStarText(d,a.t),rc:tc,d:open?(MOD_EFFECT[d.id]?'':(fit?'✓ Fits your hero · ':'')+modDesc(d)):'Saved mod · requires higher item level'});}   // v7.8.95 สีตามขั้น mod
-    if(!mods.length)lines.push({t:'No mods yet · tap Craft to add some',c:'#8a809a'});
+    for(let {a,d} of mods){const live=active.find(x=>x===a||(x.id===a.id&&x.line===a.line)),open=!!live;if(live)a=live;   /* v8.3.36 🐞 ค่าที่โตตามเลเวลเป็นสำเนา → เทียบด้วย id+แถว */ const fit=open&&forgeModFits(d),tc=open?(MOD_TIER_COLOR[tierStars(d,a.t)]||MOD_TIER_COLOR[1]):'#8a809a';const cat=AFFIX_CATEGORY[{power:'offense',sustain:'defense',play:'play'}[d.row]||d.category]; lines.push({bar:open&&cat?cat.color:null,t:(open?'':'🔒 Inactive · ')+d.emoji+' '+modLine(d,a.v)+(fit?'  ✓':''),c:tc,r:tierStarText(d,a.t),rc:tc,d:open?(MOD_EFFECT[d.id]?'':(fit?'✓ Fits your hero · ':'')+modDesc(d)):'Saved mod · requires higher item level'});}   // v7.8.95 สีตามขั้น mod
+    if(!mods.length)lines.push({t:(typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE)?'No mods yet · merge to a higher rarity for more':'No mods yet · tap Craft to add some',c:'#8a809a'});
     /* v7.8.102 เจ้าของ: หน้า Equipment ห้ามเลื่อน → ถ้าสูงเกิน maxY ตัดคำอธิบายก่อน แล้วค่อยตัดบรรทัด (+N more) */
     let compact=false; const hOf=()=>24+lines.reduce((n,l)=>n+(compact||!l.d?24:36),0)+4;
-    if(maxY&&y+hOf()>maxY){compact=true; const cap=Math.max(1,Math.floor((maxY-y-28)/24)); if(lines.length>cap){const k=lines.length-cap+1;lines.splice(cap-1);lines.push({t:'+'+k+' more mod'+(k>1?'s':'')+' · open Craft to see all',c:'#a99fbb'});}}
+    if(maxY&&y+hOf()>maxY){compact=true; const cap=Math.max(1,Math.floor((maxY-y-28)/24)); if(lines.length>cap){const k=lines.length-cap+1;lines.splice(cap-1);lines.push({t:'+'+k+' more mod'+(k>1?'s':''),c:'#a99fbb'});}}
     const free=[0,1,2,3,4,5].filter(i=>forgeLineOpen(selIt,i)&&!forgeLines(selIt)[i]).length,rh=l=>(compact||!l.d)?24:36,top=y,h=hOf(),g=this.add.graphics();
     const J=this._jrSkin; if(J)this.jrPanel('jr_panel',0,14,top-2,w-28,h+4,.3); else {g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);} this.menu.add(g);
     this.menu.add(this.add.text(J?24:22,top+(J?5:6),'MODS · +'+gearEffectiveEnhance(selIt)+' / '+gearEnhanceCap(selIt)+' cap',{fontFamily:J?'Georgia, serif':'NunitoUI, sans-serif',fontStyle:'bold',fontSize:J?'12px':'10px',color:'#ffd9a0'}));
+    if(typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE){ let lx=w-22; for(const [k,n] of [['play','Play'],['defense','Sustain'],['offense','Power']]){ const c=AFFIX_CATEGORY[k],tx=this.add.text(lx,top+6,'■ '+n,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:c.hex}).setOrigin(1,0); this.menu.add(tx); lx-=tx.width+8; } } else   /* v8.3.36 เจ้าของ: สีแยกหมวด Mod */
     this.menu.add(this.add.text(w-22,top+6,free?'🛠 '+free+' free slot'+(free>1?'s':''):'🛠 slots full',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:free?'#7de0a1':'#a99fbb'}).setOrigin(1,0));
     let ry=top+22;
     lines.forEach((l,i)=>{ const hh=rh(l); if(J){if(i>0)this.jrImg('jr_divider',0,w/2,ry-1,w-52,10)?.setAlpha(.8);} else if(i%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,hh);this.menu.add(zb);}
-      const t=this.add.text(22,ry+3,l.t,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:l.c});const room=w-44-(l.r?40:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
+      if(l.bar){ const cb=this.add.graphics(); cb.fillStyle(l.bar,1).fillRoundedRect(16,ry+1,4,hh-4,2); this.menu.add(cb); }   /* v8.3.36 แถบสีหมวด Mod */
+      const t=this.add.text(l.bar?24:22,ry+3,l.t,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:l.c});const room=w-44-(l.r?40:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
       if(l.r)this.menu.add(this.add.text(w-22,ry+3,l.r,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:l.rc||'#a99fbb'}).setOrigin(1,0));
       if(l.d&&!compact){const dt=this.add.text(22,ry+18,l.d,{fontFamily:'NunitoUI, sans-serif',fontSize:'9.5px',color:'#b9abc5'});if(dt.width>w-44)dt.setScale((w-44)/dt.width);this.menu.add(dt);}
       ry+=hh; });
