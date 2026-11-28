@@ -3,12 +3,12 @@
   "epilogues": [
     {
       "title": "The Empress Falls Silent",
-      "body": "The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Strawberry toward the drains where the sour acid still flows.",
+      "body": "The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point you toward the drains where the sour acid still flows.",
       "why": "Follow the poisoned current downstream to find its source."
     },
     {
       "title": "The Pipes Run Clear",
-      "body": "Clogmaw bursts and the fermented flood drains away. In the last trickle Strawberry hears a furnace roar far below — something is burning stolen flavor into raw power.",
+      "body": "Clogmaw bursts and the fermented flood drains away. In the last trickle you hear a furnace roar far below — something is burning stolen flavor into raw power.",
       "why": "Descend to the Chili Engine before it finishes stoking."
     },
     {
@@ -22,7 +22,7 @@
       "why": "Ascend to the Crown Oven and cut the root."
     },
     {
-      "title": "The Great Hunger Recedes",
+      "title": "The Hunger’s Mouth Recedes",
       "body": "The Hunger’s mouth recoils and flavor floods back into the kitchen in a rush of color and sound. But the wounded root slides down through the floor — toward the garden, to grow a new body.",
       "why": "Chapter 1 is complete. Follow the root into the Fermented Canopy."
     },
@@ -48,7 +48,7 @@
     },
     {
       "title": "Memories Choose Their Own Shape",
-      "body": "The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. The Heart Seed glows brighter in Strawberry’s hands — the First Tree is calling.",
+      "body": "The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. The Heart Seed glows brighter and sends out new sprouts — the First Tree is calling.",
       "why": "Chapter 2 is complete. The freed memories point somewhere older — to the fields where the First Tree grows."
     },
     {
@@ -73,7 +73,7 @@
     },
     {
       "title": "The Cycle Ends With a Choice",
-      "body": "The First Planter lifts the Crown from the First Tree. Strawberry plants the Heart Seed in its place, and a new tree sends every stolen flavor home. The curse breaks — all across Mochitopia, mochi become people again. Grandma laughs, Ruby cries, and the Hunger sinks, sleeping, beneath the roots.",
+      "body": "The First Planter lifts the Crown from the First Tree. Together, the Seedbearers plant the Heart Seed in its place, and a new tree sends every stolen flavor home. The curse breaks — all across Mochitopia, mochi become people again. Grandma laughs, Ruby cries, and the Hunger sinks, sleeping, beneath the roots.",
       "why": "The story is complete. Each night the Hunger stirs below — the Delve and the Pinnacle await."
     }
   ],

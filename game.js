@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.39';
+const GAME_VERSION = '8.3.40';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -230,6 +230,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.40',date:'2026-11-28',title:'Story draft 4: every hero is a Seedbearer',items:['Story text no longer treats Strawberry as the only chosen hero: every hero is a Seedbearer','The opening comic ends with the Heart Seed splitting into sprouts of light','The Stage 5 boss is now called Hunger’s Mouth','Some story lines are silent until their new voice takes arrive']},
   {v:'8.3.39',date:'2026-11-28',title:'All heroes open from the start, with play-style tags and difficulty',items:['Every hero can be picked from the start','Hero cards show play-style tags (Ranged, Melee, Crowd control, Companion…) and a difficulty rating']},
   {v:'8.3.38',date:'2026-11-28',title:'Fix: heroes became nearly immune from stacked armor; Sesame in QA bots',items:['Fixed: stacking Hard Shell armor made heroes nearly unkillable — armor from mods is now capped and total damage reduction tops out']},
   {v:'8.3.37',date:'2026-11-28',title:'Delve currencies: Crystal Glaze reroll and Crown Icing tier-up; Divine +40',items:['New Delve rewards: 💎 Crystal Glaze rerolls one mod and 👑 Crown Icing raises one mod’s tier','After Delve opens, tap a mod on your gear to use them','Divine gear can be upgraded to +40']},
@@ -9095,7 +9096,7 @@ const BESTIARY = [
     bonus:[{dmg:0.005},{dmg:0.009},{dmg:0.013},{dmg:0.018},{dmg:0.024,crit:0.008}] },
   { id:'boss3', emoji:'🍦', name:'Ice Cream Golem',        tex:'boss4', desc:'Stage 4 boss — the frost warden',
     bonus:[{hp:1,def:0.004},{hp:2,def:0.007},{hp:3,def:0.011},{hp:5,def:0.014},{hp:7,def:0.019}] },
-  { id:'boss4', emoji:'🌑', name:'The Great Hunger',       tex:'boss5_sovereign', desc:'Stage 5 boss — the bottomless hunger',
+  { id:'boss4', emoji:'🌑', name:'Hunger’s Mouth',         tex:'boss5_sovereign', desc:'Stage 5 boss — the bottomless hunger',
     bonus:[{hp:2,dmg:0.006},{hp:3,dmg:0.011},{hp:5,dmg:0.016,crit:0.008},{hp:7,dmg:0.022,crit:0.011},{hp:10,dmg:0.028,crit:0.015,def:0.012}] },
   { id:'boss5', emoji:'🌿', name:'Rootmother’s Bud',       tex:'boss6_rootmother', desc:'C2-1 boss — the first crown seed',
     bonus:[{hp:2,dmg:0.006},{hp:3,dmg:0.011},{hp:5,dmg:0.016},{hp:7,dmg:0.022,def:0.01},{hp:10,dmg:0.028,def:0.015,crit:0.012}] },
@@ -9287,7 +9288,7 @@ const STAGES = [
   { name:'The Crown Oven of Hunger', en:'The Crown Oven of Hunger', emoji:'🌑', grid:0x2a102f, tint:0xd95cff,
     lore:'A root of the Crown rises through the royal oven to drink the whole kitchen dry — and The Great Hunger speaks through it',
     objectives:['grandmasGolem','hunt','capture','purge'],lead:'grandmasGolem',
-    waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner', boss:'The Great Hunger', bossHp:2800, bossDmg:40 },
+    waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner', boss:'Hunger’s Mouth', bossHp:2800, bossDmg:40 },
   { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1, ready:true,
     lore:'The wounded root slides into the garden and starts growing the Hunger a new body from stolen memories',
     objectives:['defendNectar','hunt','purge','capture'],lead:'defendNectar',
@@ -9629,7 +9630,7 @@ function bossStoryLayout(w,h){
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
 const STAGE_STORY_BEATS = [
   [
-    {title:'Crack Beneath the Pantry',sub:'The acid crystal calls the workers to seal Strawberry’s way back'},
+    {title:'Crack Beneath the Pantry',sub:'The acid crystal calls the workers to seal your way back'},
     {title:'A Sour Scent Buries Memory',sub:'The scouts forget their names, recalling only the crystal orders'},
     {title:'The Guard of the Egg Nest',sub:'Ruby Fang accepts the curse to protect the nest heirs'},
     {title:'The Empress Oath',sub:'The legion opens the hatchery — a pact trading freedom for her children lives'},
@@ -9687,10 +9688,10 @@ const STAGE_STORY_BEATS = [
   null,null,   // C2-4/C2-5 ใช้ cutscene เดิมของตัวเอง
   // v4.85: Chapter 3 story beats (index 10-14)
   [
-    {title:'Ash Where the Harvest Was',sub:'The root Strawberry followed ends in fields that were burned to feed a single crown'},
+    {title:'Ash Where the Harvest Was',sub:'The root you followed ends in fields that were burned to feed a single crown'},
     {title:'Scarecrows Still Keep Watch',sub:'Straw guards swear an oath to a planter no one has seen in centuries'},
     {title:'The Reaper in the Rows',sub:'Its scythe remembers every harvest it was ordered to take'},
-    {title:'Soil That Hungers Back',sub:'The ground itself pulls at Strawberry’s feet, begging for one more seed'},
+    {title:'Soil That Hungers Back',sub:'The ground itself pulls at your feet, begging for one more seed'},
     {title:'The Colossus Wakes',sub:'The whole harvest rises as one body to guard the road inward'}
   ],
   [
@@ -9698,21 +9699,21 @@ const STAGE_STORY_BEATS = [
     {title:'Husks That Remember Sweetness',sub:'The empty fruit still whisper what they used to taste like'},
     {title:'The Gardener of Husks',sub:'It prunes the orchard so nothing can ever ripen again'},
     {title:'Sap Runs Toward the Glass',sub:'The last living sap flows uphill, toward a shining greenhouse'},
-    {title:'The Hollow Bloom Opens',sub:'A flower made of every stolen taste unfolds to stop Strawberry'}
+    {title:'The Hollow Bloom Opens',sub:'A flower made of every stolen taste unfolds to stop you'}
   ],
   [
     {title:'The Greenhouse Is Broken',sub:'Shattered glass reflects a thousand different futures'},
-    {title:'Prisms Split the Path',sub:'Light bends Strawberry’s way into false turns and mirrored foes'},
+    {title:'Prisms Split the Path',sub:'Light bends your way into false turns and mirrored foes'},
     {title:'The Prism Sentinel',sub:'It guards the only panes that still show the truth'},
     {title:'The Kingdom Before',sub:'Old panes still show Mochitopia before the curse — people, not mochi'},
     {title:'The Glass Gardener',sub:'The keeper of the greenhouse chooses which future grows'}
   ],
   [
     {title:'The Seed Vault Doors',sub:'Behind these doors lies every crown seed the Planter ever made'},
-    {title:'Locks That Taste Fear',sub:'The vault opens only for those who crave — Strawberry must hold steady'},
+    {title:'Locks That Taste Fear',sub:'The vault opens only for those who crave — you must hold steady'},
     {title:'The Vault Keeper',sub:'It counts every seed and knows exactly one is missing'},
     {title:'Roots Beneath the Floor',sub:'The vault is not built on stone but on one ancient root'},
-    {title:'The Seedwarden Rises',sub:'The last guard of the vault would rather burn it than let Strawberry pass'}
+    {title:'The Seedwarden Rises',sub:'The last guard of the vault would rather burn it than let you pass'}
   ],
   [
     {title:'The Throne of the First Seed',sub:'The root leads to a quiet throne where the first crown was planted'},
@@ -9743,10 +9744,10 @@ function epilogueLayout(w,h){
 }
 const STAGE_EPILOGUE = [
   { title:'The Empress Falls Silent',
-    body:'The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Strawberry toward the drains where the sour acid still flows.',
+    body:'The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point you toward the drains where the sour acid still flows.',
     why:'Follow the poisoned current downstream to find its source.' },
   { title:'The Pipes Run Clear',
-    body:'Clogmaw bursts and the fermented flood drains away. In the last trickle Strawberry hears a furnace roar far below — something is burning stolen flavor into raw power.',
+    body:'Clogmaw bursts and the fermented flood drains away. In the last trickle you hear a furnace roar far below — something is burning stolen flavor into raw power.',
     why:'Descend to the Chili Engine before it finishes stoking.' },
   { title:'The Furnace Goes Cold',
     body:'Mr. Griddle sputters out and his cursed engine stalls. But that heat was feeding a freezer above, where sweet flavor-spirits are being frozen as the next batch of fuel.',
@@ -9754,7 +9755,7 @@ const STAGE_EPILOGUE = [
   { title:'The Ice Lets Go',
     body:'The Golem melts into slush and the frozen mochi drift free, whispering their thanks. Grandma stays behind in the ice — her flavor is locked inside the Crown itself. She warns of an oven higher up, where a root of the Crown drinks the kitchen dry.',
     why:'Ascend to the Crown Oven and cut the root.' },
-  { title:'The Great Hunger Recedes',
+  { title:'The Hunger’s Mouth Recedes',
     body:'The Hunger’s mouth recoils and flavor floods back into the kitchen in a rush of color and sound. But the wounded root slides down through the floor — toward the garden, to grow a new body.',
     why:'Chapter 1 is complete. Follow the root into the Fermented Canopy.' },
   { title:'The First Bloom Withers',
@@ -9770,7 +9771,7 @@ const STAGE_EPILOGUE = [
     body:'Chronobloom Orchid returns each season to its rightful path. Beneath its clock, an ancient stair descends toward the first root and the throne that planted every curse.',
     why:'Descend to the Root Throne and face the True Rootmother.' },
   { title:'Memories Choose Their Own Shape',
-    body:'The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. The Heart Seed glows brighter in Strawberry’s hands — the First Tree is calling.',
+    body:'The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. The Heart Seed glows brighter and sends out new sprouts — the First Tree is calling.',
     why:'Chapter 2 is complete. The freed memories point somewhere older — to the fields where the First Tree grows.' },
   // v4.85: Chapter 3 epilogues (index 10-14)
   { title:'The Harvest Lies Down',
@@ -9786,7 +9787,7 @@ const STAGE_EPILOGUE = [
     body:'The Seedwarden falls and the jars of crown seeds dim into ordinary seeds, harmless and small. Under the vault floor, a single ancient root pulses toward a quiet throne.',
     why:'Climb the root to the Throne of the First Seed and meet the Planter.' },
   { title:'The Cycle Ends With a Choice',
-    body:'The First Planter lifts the Crown from the First Tree. Strawberry plants the Heart Seed in its place, and a new tree sends every stolen flavor home. The curse breaks — all across Mochitopia, mochi become people again. Grandma laughs, Ruby cries, and the Hunger sinks, sleeping, beneath the roots.',
+    body:'The First Planter lifts the Crown from the First Tree. Together, the Seedbearers plant the Heart Seed in its place, and a new tree sends every stolen flavor home. The curse breaks — all across Mochitopia, mochi become people again. Grandma laughs, Ruby cries, and the Hunger sinks, sleeping, beneath the roots.',
     why:'The story is complete. Each night the Hunger stirs below — the Delve and the Pinnacle await.' },
 ];
 const STORY_REACTIONS = {
@@ -9850,10 +9851,10 @@ function rubyWrap(text,max){ const out=[]; for(const ln of String(text).split('\
   for(const w of words){ const len=(cur+' '+w).replace(/[\[\]]/g,'').length; if(cur&&len>max){ out.push(cur); cur=w; } else cur=cur?cur+' '+w:w; } out.push(cur); } return out; }   // v7.9.81 ตัดบรรทัดกล่อง Ruby (ไม่ตัดกลางคำใน [ ])
 const RUBY_STORY=[   // v7.9.98 เรื่องหลัก docs/STORY_CANON.md
   'You found the Heart Seed and became a person again! I’m Ruby.',
-  'The Empress is beaten and Mint is free! Grandma’s recipes are down these pipes.',
-  'So hot! This machine burns stolen flavor. Cocoa is free now!',
-  'The frozen mochi here were people once. Taro is free!',
-  'A Crown root drinks this kitchen. Yuzu is here — let’s cut it!',
+  'The Empress is beaten! Grandma’s recipes are down these pipes.',
+  'So hot! This machine burns stolen flavor. Every spark is someone’s memory.',
+  'The frozen mochi here were people once. Let’s bring their flavor home!',
+  'A Crown root drinks this kitchen. Let’s cut it!',
   'The root slid into the garden. Grandma’s flavor is still in the Crown.',
   'These spores eat memories. Stay close to me!',
   'The bees once made honey for everyone. Now they guard it for the Hunger.',
@@ -9897,7 +9898,7 @@ const MC_PANTRY=['cs_s01_far_pantry','cs_s01_mid_pantry','cs_s01_fg_pantry'],MC_
 const MC_HERO_VOICE={mint:['vo_mint_unlock','Chill. I’ve got your back.'],cocoa:['vo_cocoa_unlock','Free at last. Can I nap now?'],taro:['vo_taro_unlock','I’m free! Which way is adventure?'],yuzu:['vo_yuzu_unlock','Citrus squad, ready to grow?'],sesame:['vo_sesame_unlock','I remember now… let’s go together.']};   /* v8.1.65 A11 */
 const mcHero=(bg,h,card,name,line)=>({title:'A FRIEND RETURNS',shots:[
   {bg:[bg],zoom:[1,1.07],cap:'A cursed friend is trapped here, drained of flavor…',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240,{bob:3}]]},
-  {bg:[bg],zoom:[1.07,1.1],flash:[1300,0xffd6e8],cap:'The Heart Seed glows in Strawberry’s hands.',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240],['cs_fx_seed_glow',180,250,150,150,{fps:10}],['cs_pup_seed_wake',180,250,70,105,{glow:1}]]},
+  {bg:[bg],zoom:[1.07,1.1],flash:[1300,0xffd6e8],cap:'A sprout of the Heart Seed drifts down to them.',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240],['cs_fx_seed_glow',180,250,150,150,{fps:10}],['cs_pup_seed_wake',180,250,70,105,{glow:1}]]},
   {bg:[bg],zoom:[1.1,1.04],shake:[300,350,.008],cap:'The curse breaks!',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240,{out:450}],['cs_pup_mochi_'+h+'_free',180,400,170,170,{at:450,out:1100}],['cs_fx_curse_smoke',180,360,300,300,{fps:10,loop:false}],['cs_fx_transform',180,360,340,340,{fps:12,loop:false,at:200}],[card,180,340,230,320,{at:1100,fade:420}]]},
   {bg:[bg],zoom:[1.04,1],cap:line,L:[[card,180,330,240,330,{bob:6}],['cs_fx_sparkle',90,230,70,70,{fps:9}],['cs_fx_sparkle',275,290,55,55,{fps:9,fr:3}]]},
   ...(MC_HERO_VOICE[h]?[{bg:[bg],zoom:[1,1.03],cap:MC_HERO_VOICE[h][1],voiceKey:MC_HERO_VOICE[h][0],L:[[card,180,330,240,330,{bob:6}]]}]:[])]});
@@ -9916,7 +9917,8 @@ const MOTION_COMICS={
     {bg:MC_ROOT,zoom:[1.04,1.1],cap:'There, among the roots, something tiny is glowing — a sleeping seed.',L:[['cs_fx_seed_glow',265,395,120,120,{fps:8,a:.55}],['cs_pup_seed_sleep',265,402,75,100,{at:900,fade:1100,glow:1}],['cs_pup_ruby_hide',300,300,80,88,{bob:2}],['cs_pup_mochi_berry_reach',115,350,230,180,{at:600,to:[140,350],ms:2200}]]},
     {bg:MC_ROOT,zoom:[1.08,1.12],flash:[1500,0xffd6e8],cap:'The Heart Seed wakes at her touch…',L:[['cs_pup_mochi_berry_reach',140,350,230,180],['cs_fx_seed_glow',265,382,175,175,{fps:10}],['cs_pup_seed_wake',265,382,85,130,{glow:1}]]},
     {bg:MC_ROOT,zoom:[1.12,1.04],shake:[420,420,.012],cap:'…and the curse breaks. Strawberry is a person again!',L:[['cs_pup_mochi_berry_reach',180,345,230,280,{out:560}],['cs_pup_berry_land',180,345,230,280,{at:560,sq:560}],['cs_fx_transform',180,330,355,355,{fps:12,loop:false}]]},
-    {bg:MC_NEST,zoom:[1.1,1],cap:'“I’m Ruby, Grandma’s jam spirit! That seed can free everyone. Let’s go!”',L:[['cs_pup_berry_hero',170,310,230,330],['ruby_talk_proud',290,320,105,110,{bob:5}],['cs_fx_sparkle',70,220,75,75,{fps:9}]]}]},
+    {bg:MC_NEST,zoom:[1.1,1],cap:'“I’m Ruby, Grandma’s jam spirit! That seed can free everyone. Let’s go!”',L:[['cs_pup_berry_hero',170,310,230,330],['ruby_talk_proud',290,320,105,110,{bob:5}],['cs_fx_sparkle',70,220,75,75,{fps:9}]]},
+    {bg:MC_ROOT,zoom:[1,1.06],flash:[600,0xffd6e8],cap:'Then the Heart Seed splits into tiny sprouts of light. Each one flies off to find someone still brave.',L:[['cs_fx_seed_glow',180,330,170,170,{fps:10}],['cs_pup_seed_wake',180,330,70,105,{glow:1}],['cs_fx_sparkle',150,320,70,70,{fps:9,to:[40,90],ms:2400}],['cs_fx_sparkle',210,320,60,60,{fps:9,fr:2,to:[330,110],ms:2400,at:200}],['cs_fx_sparkle',180,300,55,55,{fps:9,fr:3,to:[180,50],ms:2400,at:400}]]}]}, // v8.3.40 story draft 4: Seedbearers
   s02:{title:'GRANDMA’S JAM JAR',shots:[
     {bg:['cs_s02_far_drains','cs_s02_mid_drains'],pan:[-26,26],cap:RUBY_STORYBOOK[1].pages[0].text,L:[['cs_s02_prop_jam_jar',185,355,180,200,{at:600,fade:500}]]},
     {bg:['cs_s02_far_drains','cs_s02_mid_drains'],zoom:[1.06,1.18],cap:RUBY_STORYBOOK[1].pages[1].text,L:[['cs_s02_prop_jam_jar',185,355,200,220],['cs_s02_prop_recipe_rolled',245,300,100,100,{bob:3}]]},
@@ -9952,11 +9954,11 @@ const MOTION_COMICS={
     {bg:['cs_s14_far_tree'],zoom:[1,1.15],cap:'On the far hill stands the First Tree, black roots climbing its trunk. The Hunger is almost there.',L:[]}]},
   s15:{title:'MEMORIES IN GLASS',shots:[
     {bg:['cs_s15_far_glasshall'],zoom:[1,1.04],cap:'Broken mirrors hold the kingdom’s memories — people laughing, before the Crown.',L:[['cs_s15_prop_memory_town',75,210,120,150,{bob:4,rot:4}],['cs_s15_prop_memory_grandma',280,205,120,155,{bob:5,rot:-4}],['cs_s15_prop_memory_family',180,330,190,200,{bob:3}]]},
-    {bg:['cs_s15_far_glasshall'],zoom:[1.06,1.16],cap:'One mirror shows a pink-haired girl with her family. Strawberry remembers.',L:[['cs_s15_prop_memory_family',180,315,220,232,{bob:2}],['cs_pup_berry_look',85,440,135,180]]}]},
+    {bg:['cs_s15_far_glasshall'],zoom:[1.06,1.16],cap:'In one mirror, a family laughs in the royal kitchen. Everyone here was someone once.',L:[['cs_s15_prop_memory_family',180,315,220,232,{bob:2}],['cs_pup_berry_look',85,440,135,180]]}]},
   s16:{title:'THE FIRST TREE',shots:[
     {bg:['cs_s16_far_clearing'],zoom:[1,1.08],cap:'The First Planter kneels and lifts the Crown from the First Tree.',L:[['cs_pup_planter_kneel',180,390,260,260],['cs_pup_crown_glow',190,255,120,95,{to:[190,205],ms:2400,glow:1}]]},
     {bg:['cs_s16_far_clearing'],zoom:[1.08,1.1],shake:[650,520,.016],flash:[700,0xffffff],cap:'The Crown cracks apart!',L:[['cs_pup_crown_crack',180,280,170,130]]},
-    {bg:['cs_s16_far_clearing'],zoom:[1,1.12],cap:'Strawberry plants the Heart Seed at the roots.',L:[['cs_s16_chr_berry_plant',180,400,250,240],['cs_pup_seed_wake',212,470,48,72,{at:900,glow:1}]]},
+    {bg:['cs_s16_far_clearing'],zoom:[1,1.12],cap:'Together, the Seedbearers plant the Heart Seed at the roots.',L:[['cs_s16_chr_berry_plant',180,400,250,240],['cs_pup_seed_wake',212,470,48,72,{at:900,glow:1}]]},
     {bg:['cs_s16_far_clearing'],zoom:[1.04,1.08],cap:'A new tree grows, and the stolen flavor rushes back to every home.',L:[['cs_s16_prop_sprout',180,470,100,120,{out:700}],['cs_s16_prop_sapling',180,450,150,170,{at:700,out:1400,sq:700}],['cs_s16_prop_young_tree',180,410,220,250,{at:1400,sq:1400}],['cs_fx_flavor_ribbon',180,330,330,100,{fps:10,at:1400}],['cs_fx_flavor_ribbon',180,250,300,90,{fps:10,fr:3,at:1700}]]},
     {bg:MC_CITY,zoom:[1.02,1.08],cap:'One by one, the people of Mochitopia become themselves again.',L:[['cs_pup_crowd_mochi',180,430,330,150,{out:1250}],['cs_pup_crowd_people',180,420,330,170,{at:1250}],['cs_fx_transform',90,405,160,160,{fps:12,loop:false,at:250}],['cs_fx_transform',180,385,170,170,{fps:12,loop:false,at:650}],['cs_fx_transform',270,405,160,160,{fps:12,loop:false,at:1050}]]},
     {bg:['cs_s16_far_clearing'],zoom:[1.08,1],cap:'Grandma is free. Ruby hugs her and will not let go.',L:[['cs_s16_prop_young_tree',265,240,190,290],['cs_pup_planter_old',290,360,110,180],['cs_s16_chr_grandma_ruby_hug',145,365,250,310,{bob:2}]]},
@@ -10403,7 +10405,7 @@ const ACHIEVEMENTS=[
   {id:'stage2',emoji:'🚰',name:'Drain Diver',desc:'Clear Stage 2 — The Rotting Drain',reward:90,test:d=>!!(d.stageMastery||{})[1]},
   {id:'stage3',emoji:'🌶️',name:'Engine Room Escape',desc:'Clear Stage 3 — Chili Engine Room',reward:110,test:d=>!!(d.stageMastery||{})[2]},
   {id:'stage4',emoji:'🧊',name:'Prison Break',desc:'Clear Stage 4 — Sugar Frost Prison',reward:140,test:d=>!!(d.stageMastery||{})[3]},
-  {id:'hunger',emoji:'🌑',name:'Hunger Ender',desc:'Defeat The Great Hunger',reward:300,test:d=>!!(d.stageMastery||{})[4]},
+  {id:'hunger',emoji:'🌑',name:'Hunger Ender',desc:'Defeat the Hunger’s Mouth',reward:300,test:d=>!!(d.stageMastery||{})[4]},
   {id:'master',emoji:'🏆',name:'Lord of the Under-Kitchen',desc:'Mastery on all 5 stages',reward:250,test:d=>[0,1,2,3,4].every(i=>(d.stageMastery||{})[i])},
   {id:'hell',emoji:'🔥',name:'Pinnacle Breaker',desc:'Defeat the Pinnacle boss',reward:220,test:d=>(d.pinnacleKills||0)>=1||(d.diffBest||[]).some(v=>v>=3)},   // v7.8.93 Story ระดับเดียว → เป้าใหม่ (diffBest เก่าเก็บไว้นับให้เซฟเดิม)
   {id:'gear3',emoji:'🎒',name:'Kitted Out',desc:'Collect 3 pieces of equipment',reward:70,test:d=>(d.ownedGear||[]).length>=3},

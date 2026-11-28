@@ -650,7 +650,7 @@ const BESTIARY = [
     bonus:[{dmg:0.005},{dmg:0.009},{dmg:0.013},{dmg:0.018},{dmg:0.024,crit:0.008}] },
   { id:'boss3', emoji:'🍦', name:'Ice Cream Golem',        tex:'boss4', desc:'Stage 4 boss — the frost warden',
     bonus:[{hp:1,def:0.004},{hp:2,def:0.007},{hp:3,def:0.011},{hp:5,def:0.014},{hp:7,def:0.019}] },
-  { id:'boss4', emoji:'🌑', name:'The Great Hunger',       tex:'boss5_sovereign', desc:'Stage 5 boss — the bottomless hunger',
+  { id:'boss4', emoji:'🌑', name:'Hunger’s Mouth',         tex:'boss5_sovereign', desc:'Stage 5 boss — the bottomless hunger',
     bonus:[{hp:2,dmg:0.006},{hp:3,dmg:0.011},{hp:5,dmg:0.016,crit:0.008},{hp:7,dmg:0.022,crit:0.011},{hp:10,dmg:0.028,crit:0.015,def:0.012}] },
   { id:'boss5', emoji:'🌿', name:'Rootmother’s Bud',       tex:'boss6_rootmother', desc:'C2-1 boss — the first crown seed',
     bonus:[{hp:2,dmg:0.006},{hp:3,dmg:0.011},{hp:5,dmg:0.016},{hp:7,dmg:0.022,def:0.01},{hp:10,dmg:0.028,def:0.015,crit:0.012}] },

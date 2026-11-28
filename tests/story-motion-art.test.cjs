@@ -23,7 +23,8 @@ const voiceCatalog=JSON.parse(src.match(/const A07_CATALOG = (\{[^\n]+\});/)[1])
 for(const id of ['s06','s07','s08','s09']){const shot=MOTION_COMICS[id].shots.at(-1);assert(shot.voiceKey&&voiceCatalog[shot.voiceKey]);assert.equal(shot.cap,voiceCatalog[shot.voiceKey].text);}
 assert(MOTION_COMICS.s10.shots.some(sh=>sh.L.some(l=>l[0]==='cs_pup_mochi_sesame_trapped')));
 assert(src.includes("{idx:5,id:'sesame',flag:'sesameIntro'"));
-for(const [id,scene] of Object.entries(MOTION_COMICS))scene.shots.forEach((shot,i)=>{const key='vo_story_'+id+'_'+(i+1);if(voiceCatalog[key])assert.equal(shot.cap,voiceCatalog[key].text,key+' exact comic voice');});
+const REVOICE=new Set(['vo_story_s06_2','vo_story_s07_2','vo_story_s08_2','vo_story_s09_2','vo_story_s15_2','vo_story_s16_3']);   /* v8.3.40 story draft 4: new captions, old takes stay silent until re-voiced (docs/audio_orders) */
+for(const [id,scene] of Object.entries(MOTION_COMICS))scene.shots.forEach((shot,i)=>{const key='vo_story_'+id+'_'+(i+1);if(voiceCatalog[key]&&!REVOICE.has(key))assert.equal(shot.cap,voiceCatalog[key].text,key+' exact comic voice');});
 assert(src.includes("specific&&specific.text===speech?storyKey:null"),'scene voice uses its own take before duplicate book text');
 const J=JSON.stringify;assert.equal(J(MC_STAGE_STORY.flat()),J(['s00','s01','s02','s03','s04','s05']));assert.equal(J(MC_HERO_SCENE),J({mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09',sesame:'s10'}));assert.equal(J(MC_AFTER_STAGE),J({4:'s11',9:'s13',14:'s16'}));
 // 3. hook อยู่ครบทุกจุด และของเดิมยังเป็น fallback

@@ -331,7 +331,7 @@ const ACHIEVEMENTS=[
   {id:'stage2',emoji:'🚰',name:'Drain Diver',desc:'Clear Stage 2 — The Rotting Drain',reward:90,test:d=>!!(d.stageMastery||{})[1]},
   {id:'stage3',emoji:'🌶️',name:'Engine Room Escape',desc:'Clear Stage 3 — Chili Engine Room',reward:110,test:d=>!!(d.stageMastery||{})[2]},
   {id:'stage4',emoji:'🧊',name:'Prison Break',desc:'Clear Stage 4 — Sugar Frost Prison',reward:140,test:d=>!!(d.stageMastery||{})[3]},
-  {id:'hunger',emoji:'🌑',name:'Hunger Ender',desc:'Defeat The Great Hunger',reward:300,test:d=>!!(d.stageMastery||{})[4]},
+  {id:'hunger',emoji:'🌑',name:'Hunger Ender',desc:'Defeat the Hunger’s Mouth',reward:300,test:d=>!!(d.stageMastery||{})[4]},
   {id:'master',emoji:'🏆',name:'Lord of the Under-Kitchen',desc:'Mastery on all 5 stages',reward:250,test:d=>[0,1,2,3,4].every(i=>(d.stageMastery||{})[i])},
   {id:'hell',emoji:'🔥',name:'Pinnacle Breaker',desc:'Defeat the Pinnacle boss',reward:220,test:d=>(d.pinnacleKills||0)>=1||(d.diffBest||[]).some(v=>v>=3)},   // v7.8.93 Story ระดับเดียว → เป้าใหม่ (diffBest เก่าเก็บไว้นับให้เซฟเดิม)
   {id:'gear3',emoji:'🎒',name:'Kitted Out',desc:'Collect 3 pieces of equipment',reward:70,test:d=>(d.ownedGear||[]).length>=3},
