@@ -6,7 +6,10 @@ const ctx={};vm.createContext(ctx);
 vm.runInContext(grab('const CORE_UNLOCK_STAGE=','const SIGNATURE_WEAPONS')+';this.C=CORE_UNLOCK_STAGE;this.H=HERO_INTROS;',ctx);
 vm.runInContext(grab('const FEATURE_OPEN=','\n')+';this.F=FEATURE_OPEN;',ctx);
 assert.deepStrictEqual({...ctx.C},{mint:0,cocoa:1,taro:2,yuzu:3,sesame:4});
-assert.equal(ctx.F.char,1,'Heroes tab opens with the first unlock');
+assert.equal(ctx.F.char,0,'v8.3.39 owner: Heroes tab open from the start (all heroes selectable)');
+assert(src.includes('const HEROES_ALL_OPEN=true;'),'all heroes open');
+assert(src.includes("if(typeof HEROES_ALL_OPEN!=='undefined'&&HEROES_ALL_OPEN){ for(const id of Object.keys(CORE_UNLOCK_STAGE))if(!this.data.chars.includes(id)){ this.data.chars.push(id); changed=true; } return changed; }"),'every save gets every hero');
+{ const t=vm.runInNewContext(grab('const HERO_TAGS=','function heroTagLine')+';HERO_TAGS',{}); for(const h of ['momo','mint','cocoa','taro','yuzu','sesame'])assert(t[h]&&t[h].tags.length>=2&&t[h].diff>=1&&t[h].diff<=3,h+' tags + difficulty'); assert.equal(t.sesame.diff,3); assert.equal(t.momo.diff,1); }
 for(const h of ctx.H){assert.equal(h.idx,ctx.C[h.id]+1,h.id+' intro plays on its first playable stage');assert(!/Hornet|Fermented Canopy|harvest fields|Chili Engine Room ahead is burning/.test(h.text),h.id+' intro text still points at the old stage');}
 const want={s06:'cs_s02_far_drains',s07:'cs_s03_far_furnace',s08:'cs_s04_far_prison',s09:'cs_s05_far_oven'};
 for(const [k,bg] of Object.entries(want)){assert(src.includes(k+":mcHero('"+bg+"'"),k+' uses the Chapter 1 background');assert(src.includes("  "+bg+":'assets/"),bg+' is a registered image');}

@@ -1,8 +1,8 @@
 # Version line
 
-Current release: **8.3.38**. Next release:8.3.39. Fetch the deploy branch before new work.
+Current release: **8.3.39**. Next release:8.3.40. Fetch the deploy branch before new work.
 
-Latest delivery: **v8.3.38 — Fix: heroes became nearly immune from stacked armor; Sesame in QA bots** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
+Latest delivery: **v8.3.39 — All heroes open from the start, with play-style tags and difficulty** · full notes of the last 2 releases: `docs/DELIVERIES.md` · older: `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

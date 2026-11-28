@@ -22,6 +22,7 @@
     badgeText.setPosition(tx+badgeH+3,badgeY+badgeH/2).setOrigin(0,.5);let bf=parseFloat(badgeText.style.fontSize);while(badgeText.width>badgeW-badgeH-7&&bf>8)badgeText.setFontSize(--bf+'px');this.menu.add(badgeText);
     const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(tx,top+panelH*.47,sw.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(11,28*p)+'px',color:'#ffe5aa',wordWrap:{width:rw},maxLines:1});this.menu.add(weapon);
     const hint=this.add.text(tx,top+panelH*.60,detail[2],{fontFamily:'NunitoUI, sans-serif',fontSize:Math.max(10,25*p)+'px',color:'#ddd0e3',lineSpacing:2,wordWrap:{width:rw},maxLines:2});this.menu.add(hint);
+    if(typeof HERO_TAGS!=='undefined'&&HERO_TAGS[id]){ const ty=Math.max(hint.y+hint.height+6,top+panelH*.78),tg=this.add.text(tx,ty,heroTagLine(id),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(9,21*p)+'px',color:'#bfe8ff',wordWrap:{width:rw}}),df=this.add.text(tx,ty+tg.height+3,heroDiffLine(id),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(9,21*p)+'px',color:['','#9dffc0','#ffe08a','#ff9bb5'][HERO_TAGS[id].diff]||'#fff'}); for(const o of [tg,df])if(o.width>rw)o.setScale(rw/o.width); this.menu.add([tg,df]); }   /* v8.3.39 แท็กแนวเล่น + ความยาก */
     this.rosterChrome('badge',infoX,infoY,infoSize,infoSize);this.menu.add(this.add.text(infoX+infoSize/2,infoY+infoSize/2,'!',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff1ee'}).setOrigin(.5));
     this._zone(infoX,infoY,infoSize,infoSize,()=>this.showCharacterInfo(id));this.tapZones[this.tapZones.length-1].tag='hero_details';
 
@@ -51,12 +52,13 @@
   }
   showCharacterInfo(id){const returnScroll=this._mScroll||0;this.cancelMenuMotion();this.setMenuScroll(0);const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-60,410),x=(w-bw)/2,y=(h-bh)/2;
     const shade=this.add.rectangle(0,0,w,h,0x0c0815,0.88).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x281e34,1);panel.fillRoundedRect(x,y,bw,bh,18);panel.lineStyle(2,c.color,1);panel.strokeRoundedRect(x,y,bw,bh,18);
-    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=HEROES_WIP.includes(id)&&id!=='sesame'?'🚧 In development — cards and balance will change':FIGHTER_PLAYTEST_ALL?'Available for playtest ✓':owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
+    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=HEROES_WIP.includes(id)&&id!=='sesame'?'🚧 In development — cards and balance will change':(typeof HEROES_ALL_OPEN!=='undefined'&&HEROES_ALL_OPEN)?'Available ✓':FIGHTER_PLAYTEST_ALL?'Available for playtest ✓':owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
     const title=this.add.text(w/2,y+32,c.emoji+' '+c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff'}).setOrigin(0.5);
     const role=this.add.text(w/2,y+71,c.role+' · '+SIGNATURE_WEAPONS[c.weapon].name,{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#ffe6ad',align:'center',wordWrap:{width:bw-34}}).setOrigin(0.5);
+    const tagT=this.add.text(w/2,y+92,(typeof HERO_TAGS!=='undefined'&&HERO_TAGS[id])?heroTagLine(id)+'   ·   '+heroDiffLine(id):'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff',align:'center',wordWrap:{width:bw-34}}).setOrigin(0.5);
     const desc=this.add.text(x+22,y+111,c.desc,{fontFamily:'NunitoUI, sans-serif',fontSize:'14px',color:'#e7daed',wordWrap:{width:bw-44},lineSpacing:6}).setOrigin(0,0);
     const condition=this.add.text(w/2,y+bh-62,unlock,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#a8f0c0',align:'center'}).setOrigin(0.5);
-    const close=this.add.text(w/2,y+bh-26,'Tap to close',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#b9aac9'}).setOrigin(0.5);this.menu.add([shade,panel,title,role,desc,condition,close]);
+    const close=this.add.text(w/2,y+bh-26,'Tap to close',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#b9aac9'}).setOrigin(0.5);this.menu.add([shade,panel,title,role,tagT,desc,condition,close]);
     this.tapZones=[];this._zone(0,0,w,h,()=>{this._mScroll=returnScroll;this.buildMenuScreen();});
   }
   buildChapterSelect(){

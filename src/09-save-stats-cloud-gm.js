@@ -59,6 +59,7 @@ const Save = {
     return this.data; },
   save(){ this.data.sugar=clampSugar(this.data.sugar);this.data.rev=(this.data.rev||0)+1;this.data.savedAt=Date.now();try{this.data.lastDev=Tele.id();}catch(e){} try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
   unlockCoreCharacters(notify=true){let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
+    if(typeof HEROES_ALL_OPEN!=='undefined'&&HEROES_ALL_OPEN){ for(const id of Object.keys(CORE_UNLOCK_STAGE))if(!this.data.chars.includes(id)){ this.data.chars.push(id); changed=true; } return changed; }   /* v8.3.39 เจ้าของ: ปลดทุกตัวตั้งแต่เริ่ม */
     for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(((this.data.stageMastery&&this.data.stageMastery[stage])||(this.data.unlockedStage||0)>stage)&&!this.data.chars.includes(id))   /* v8.2.15 เจ้าของ: ถึง C2-1 แล้วยังไม่ได้ Yuzu — เซฟเก่า/เซฟคลาวด์มี unlockedStage แต่ไม่มี stageMastery ของด่านนั้น → ผ่านด่านไปแล้ว (unlockedStage > ด่าน) ก็ปลดฮีโร่ (เดิมมีแค่ Sesame) */{this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
     return changed;},
   // ---- Cloud sync (Supabase) ----

@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.38';
+const GAME_VERSION = '8.3.39';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -230,6 +230,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.39',date:'2026-11-28',title:'All heroes open from the start, with play-style tags and difficulty',items:['Every hero can be picked from the start','Hero cards show play-style tags (Ranged, Melee, Crowd control, Companion…) and a difficulty rating']},
   {v:'8.3.38',date:'2026-11-28',title:'Fix: heroes became nearly immune from stacked armor; Sesame in QA bots',items:['Fixed: stacking Hard Shell armor made heroes nearly unkillable — armor from mods is now capped and total damage reduction tops out']},
   {v:'8.3.37',date:'2026-11-28',title:'Delve currencies: Crystal Glaze reroll and Crown Icing tier-up; Divine +40',items:['New Delve rewards: 💎 Crystal Glaze rerolls one mod and 👑 Crown Icing raises one mod’s tier','After Delve opens, tap a mod on your gear to use them','Divine gear can be upgraded to +40']},
   {v:'8.3.36',date:'2026-11-28',title:'Gear: merge refunds, more mod rows, implicit scaling, ×5/Max upgrade, colored mods',items:['Merging refunds the Sugar and Twist Cream you spent upgrading the merged items','Legend gear has 4 mods, Mythic 5, Ancient and Divine 6','Upgrades also raise the item’s built-in bonus','⬆ ×5 and Max upgrade buttons with a before → after preview','Mods are color-coded: Power, Sustain and Play','Fixed: upgraded gear showed its mods as inactive']},
@@ -6151,6 +6152,11 @@ const CHARACTERS = {
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','yuzu','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
+/* v8.3.39 เจ้าของ 28 พ.ย.: ฮีโร่ทุกตัวเลือกได้ตั้งแต่เริ่ม (ไม่ผูกด่าน · รองรับตัวใหม่) + แท็กแนวเล่น + ระดับความยาก · ฉากช่วยฮีโร่ใน C1 ยังเล่นเป็นเนื้อเรื่องเหมือนเดิม */
+const HEROES_ALL_OPEN=true;
+const HERO_TAGS={momo:{tags:['🏹 Ranged','🎯 Crit'],diff:1},mint:{tags:['🏹 Ranged','❄️ Crowd control'],diff:2},cocoa:{tags:['👊 Melee','🛡️ Tank'],diff:2},taro:{tags:['🏹 Ranged','⚡ Area damage'],diff:2},yuzu:{tags:['🍊 Companion','💚 Support'],diff:2},sesame:{tags:['🏹 Ranged','🔮 Spell combos'],diff:3}},HERO_DIFF_LABEL=['','Easy','Normal','Hard'];
+function heroTagLine(id){const t=HERO_TAGS[id];return t?t.tags.join('  ·  '):'';}
+function heroDiffLine(id){const t=HERO_TAGS[id];if(!t)return '';return 'Difficulty '+'●'.repeat(t.diff)+'○'.repeat(Math.max(0,3-t.diff))+' '+HERO_DIFF_LABEL[t.diff];}
 // v7.9.22 เจ้าของ: การ์ด ⭐ Unique ระหว่างเล่น — โผล่หลังใช้ Unique ครบ 3 ครั้งในด่าน (แบบ ก) · ชั้น 1 การ์ดกลาง · ชั้น 2 Unique Mutation เลือก 1 จาก 2 ต่อสาย
 const UNIQUE_CARDS=[
   {id:'uq_power',emoji:'⭐',name:'Unique Power',max:3,headline:'+20% Unique damage',desc:'Your Unique deals 20% more damage per rank.'},
@@ -6228,7 +6234,7 @@ const FIGHTER_PLAYTEST_ALL=false; // ก่อนขึ้น Store เปิด
 const CORE_UNLOCK_STAGE={mint:0,cocoa:1,taro:2,yuzu:3,sesame:4};   /* v8.1.0 Sesame: จบ C1-5 -> เล่นตั้งแต่ C2-1; Rune Invoker prototype ยัง WIP */   /* v8.0.66 เจ้าของ: ฮีโร่ทุกตัวปลดใน Chapter 1 ทีละด่าน — Mint C1-2 · Cocoa C1-3 · Taro C1-4 · Yuzu C1-5 */   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame เดิมวางแผน C3-3; ถูกแทนด้วยเกณฑ์ C1-5 ใน v8.1.0 */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) · v8.0.66 idx = ด่านที่เล่นได้ครั้งแรก (C1-2…C1-5)
 /* v8.1.105 เจ้าของ: จบ C1-2 แล้วเปิด Heroes เห็น Cocoa ก่อนดูฉากช่วยเพื่อน → ฮีโร่ที่มีฉากแนะนำ (HERO_INTROS) โชว์ในรายชื่อหลังเห็นฉาก/ข้อความแนะนำแล้วเท่านั้น */
-function heroRevealed(id){ if(id==='momo'||(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL))return true; const d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.chars||[]).includes(id))return false;
+function heroRevealed(id){ if(id==='momo'||(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL))return true; const d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.chars||[]).includes(id))return false; if(typeof HEROES_ALL_OPEN!=='undefined'&&HEROES_ALL_OPEN)return true;   /* v8.3.39 ไม่ต้องรอฉากช่วย */
   const hi=HERO_INTROS.find(x=>x.id===id); if(!hi)return true; return !!(d[hi.flag]||(d.stageMastery||{})[hi.idx]||(typeof MC_HERO_SCENE!=='undefined'&&(d.mcSeen||{})[MC_HERO_SCENE[id]])||d.character===id); }
 const HERO_INTROS=[
   {idx:1,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
@@ -7395,7 +7401,7 @@ const PW57=['core_life','core_flavor','core_bond','weave_crest','thread_knot','w
 const MENU59=['tab_login','tab_daily','tab_awards','row_rewards','row_kitchen','row_recipe_maps','tab_chests','tab_shop','tab_trade','tab_heroes','tab_talents','tab_stats','set_sound','set_music','set_voice','set_shake','set_flash','set_vfx','set_cloud','set_tutorial','mail','news','codex_recipe','codex_bestiary'];   // ใบ 59 ลำดับเซลล์
 const M59_ROW={rewards:'row_rewards',kitchen:'row_kitchen',recipes:'row_recipe_maps',__tutorial:'set_tutorial',skills:'codex_recipe',bestiary:'codex_bestiary',news:'news',gearInbox:'mail',daily:'tab_daily',achievements:'tab_awards'},M59_EMOJI={'🔊':'set_sound','🎵':'set_music','🔔':'set_sound','💬':'set_voice','📳':'set_shake','✨':'set_flash','🎆':'set_vfx','☁️':'set_cloud','✅':'set_cloud'};
 const BOSS_NO_SHOT=new Set([0,3,6,10,14]);   // C1-1 Ant Empress · C1-4 Frost Golem · C2-2 Behemoth · C3-1 Colossus · C3-5 First Planter (บอส + มินิด่านนั้น; Pinnacle/Delve ยิงเหมือนเดิม)
-const FEATURE_OPEN={patrol:3,dig:5,bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
+const FEATURE_OPEN={patrol:3,dig:5,bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:0,gCodex:2,skills:2,bestiary:2};
 const FEAT_TAG={dig:'gActivity',bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
 const FEAT_ICON={dig:'tile_dig',rewards:'ic_side_daily',bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
 const FEAT_LINE={dig:'Mochi Garden is open! Send heroes on garden trips — they keep collecting Sugar and Twist Cream while you’re away. Find it in Activities.',rewards:'Rewards is open! Your daily login gift, Daily Quests and Awards are all here.',bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'Gear Merge is open! Merge 3 items of the same slot and rarity for a higher rarity and a new mod. Upgrade gear with Sugar and Twist Cream.',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
@@ -8498,6 +8504,7 @@ const Save = {
     return this.data; },
   save(){ this.data.sugar=clampSugar(this.data.sugar);this.data.rev=(this.data.rev||0)+1;this.data.savedAt=Date.now();try{this.data.lastDev=Tele.id();}catch(e){} try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
   unlockCoreCharacters(notify=true){let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
+    if(typeof HEROES_ALL_OPEN!=='undefined'&&HEROES_ALL_OPEN){ for(const id of Object.keys(CORE_UNLOCK_STAGE))if(!this.data.chars.includes(id)){ this.data.chars.push(id); changed=true; } return changed; }   /* v8.3.39 เจ้าของ: ปลดทุกตัวตั้งแต่เริ่ม */
     for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(((this.data.stageMastery&&this.data.stageMastery[stage])||(this.data.unlockedStage||0)>stage)&&!this.data.chars.includes(id))   /* v8.2.15 เจ้าของ: ถึง C2-1 แล้วยังไม่ได้ Yuzu — เซฟเก่า/เซฟคลาวด์มี unlockedStage แต่ไม่มี stageMastery ของด่านนั้น → ผ่านด่านไปแล้ว (unlockedStage > ด่าน) ก็ปลดฮีโร่ (เดิมมีแค่ Sesame) */{this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
     return changed;},
   // ---- Cloud sync (Supabase) ----
@@ -14260,6 +14267,7 @@ class Game extends Phaser.Scene {
     badgeText.setPosition(tx+badgeH+3,badgeY+badgeH/2).setOrigin(0,.5);let bf=parseFloat(badgeText.style.fontSize);while(badgeText.width>badgeW-badgeH-7&&bf>8)badgeText.setFontSize(--bf+'px');this.menu.add(badgeText);
     const sw=SIGNATURE_WEAPONS[c.weapon],weapon=this.add.text(tx,top+panelH*.47,sw.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(11,28*p)+'px',color:'#ffe5aa',wordWrap:{width:rw},maxLines:1});this.menu.add(weapon);
     const hint=this.add.text(tx,top+panelH*.60,detail[2],{fontFamily:'NunitoUI, sans-serif',fontSize:Math.max(10,25*p)+'px',color:'#ddd0e3',lineSpacing:2,wordWrap:{width:rw},maxLines:2});this.menu.add(hint);
+    if(typeof HERO_TAGS!=='undefined'&&HERO_TAGS[id]){ const ty=Math.max(hint.y+hint.height+6,top+panelH*.78),tg=this.add.text(tx,ty,heroTagLine(id),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(9,21*p)+'px',color:'#bfe8ff',wordWrap:{width:rw}}),df=this.add.text(tx,ty+tg.height+3,heroDiffLine(id),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(9,21*p)+'px',color:['','#9dffc0','#ffe08a','#ff9bb5'][HERO_TAGS[id].diff]||'#fff'}); for(const o of [tg,df])if(o.width>rw)o.setScale(rw/o.width); this.menu.add([tg,df]); }   /* v8.3.39 แท็กแนวเล่น + ความยาก */
     this.rosterChrome('badge',infoX,infoY,infoSize,infoSize);this.menu.add(this.add.text(infoX+infoSize/2,infoY+infoSize/2,'!',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'20px',color:'#fff1ee'}).setOrigin(.5));
     this._zone(infoX,infoY,infoSize,infoSize,()=>this.showCharacterInfo(id));this.tapZones[this.tapZones.length-1].tag='hero_details';
 
@@ -14289,12 +14297,13 @@ class Game extends Phaser.Scene {
   }
   showCharacterInfo(id){const returnScroll=this._mScroll||0;this.cancelMenuMotion();this.setMenuScroll(0);const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-60,410),x=(w-bw)/2,y=(h-bh)/2;
     const shade=this.add.rectangle(0,0,w,h,0x0c0815,0.88).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x281e34,1);panel.fillRoundedRect(x,y,bw,bh,18);panel.lineStyle(2,c.color,1);panel.strokeRoundedRect(x,y,bw,bh,18);
-    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=HEROES_WIP.includes(id)&&id!=='sesame'?'🚧 In development — cards and balance will change':FIGHTER_PLAYTEST_ALL?'Available for playtest ✓':owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
+    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=HEROES_WIP.includes(id)&&id!=='sesame'?'🚧 In development — cards and balance will change':(typeof HEROES_ALL_OPEN!=='undefined'&&HEROES_ALL_OPEN)?'Available ✓':FIGHTER_PLAYTEST_ALL?'Available for playtest ✓':owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
     const title=this.add.text(w/2,y+32,c.emoji+' '+c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff'}).setOrigin(0.5);
     const role=this.add.text(w/2,y+71,c.role+' · '+SIGNATURE_WEAPONS[c.weapon].name,{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#ffe6ad',align:'center',wordWrap:{width:bw-34}}).setOrigin(0.5);
+    const tagT=this.add.text(w/2,y+92,(typeof HERO_TAGS!=='undefined'&&HERO_TAGS[id])?heroTagLine(id)+'   ·   '+heroDiffLine(id):'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#bfe8ff',align:'center',wordWrap:{width:bw-34}}).setOrigin(0.5);
     const desc=this.add.text(x+22,y+111,c.desc,{fontFamily:'NunitoUI, sans-serif',fontSize:'14px',color:'#e7daed',wordWrap:{width:bw-44},lineSpacing:6}).setOrigin(0,0);
     const condition=this.add.text(w/2,y+bh-62,unlock,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#a8f0c0',align:'center'}).setOrigin(0.5);
-    const close=this.add.text(w/2,y+bh-26,'Tap to close',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#b9aac9'}).setOrigin(0.5);this.menu.add([shade,panel,title,role,desc,condition,close]);
+    const close=this.add.text(w/2,y+bh-26,'Tap to close',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#b9aac9'}).setOrigin(0.5);this.menu.add([shade,panel,title,role,tagT,desc,condition,close]);
     this.tapZones=[];this._zone(0,0,w,h,()=>{this._mScroll=returnScroll;this.buildMenuScreen();});
   }
   buildChapterSelect(){

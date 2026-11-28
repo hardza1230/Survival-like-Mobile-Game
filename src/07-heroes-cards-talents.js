@@ -166,6 +166,11 @@ const CHARACTERS = {
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','yuzu','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
+/* v8.3.39 เจ้าของ 28 พ.ย.: ฮีโร่ทุกตัวเลือกได้ตั้งแต่เริ่ม (ไม่ผูกด่าน · รองรับตัวใหม่) + แท็กแนวเล่น + ระดับความยาก · ฉากช่วยฮีโร่ใน C1 ยังเล่นเป็นเนื้อเรื่องเหมือนเดิม */
+const HEROES_ALL_OPEN=true;
+const HERO_TAGS={momo:{tags:['🏹 Ranged','🎯 Crit'],diff:1},mint:{tags:['🏹 Ranged','❄️ Crowd control'],diff:2},cocoa:{tags:['👊 Melee','🛡️ Tank'],diff:2},taro:{tags:['🏹 Ranged','⚡ Area damage'],diff:2},yuzu:{tags:['🍊 Companion','💚 Support'],diff:2},sesame:{tags:['🏹 Ranged','🔮 Spell combos'],diff:3}},HERO_DIFF_LABEL=['','Easy','Normal','Hard'];
+function heroTagLine(id){const t=HERO_TAGS[id];return t?t.tags.join('  ·  '):'';}
+function heroDiffLine(id){const t=HERO_TAGS[id];if(!t)return '';return 'Difficulty '+'●'.repeat(t.diff)+'○'.repeat(Math.max(0,3-t.diff))+' '+HERO_DIFF_LABEL[t.diff];}
 // v7.9.22 เจ้าของ: การ์ด ⭐ Unique ระหว่างเล่น — โผล่หลังใช้ Unique ครบ 3 ครั้งในด่าน (แบบ ก) · ชั้น 1 การ์ดกลาง · ชั้น 2 Unique Mutation เลือก 1 จาก 2 ต่อสาย
 const UNIQUE_CARDS=[
   {id:'uq_power',emoji:'⭐',name:'Unique Power',max:3,headline:'+20% Unique damage',desc:'Your Unique deals 20% more damage per rank.'},
@@ -243,7 +248,7 @@ const FIGHTER_PLAYTEST_ALL=false; // ก่อนขึ้น Store เปิด
 const CORE_UNLOCK_STAGE={mint:0,cocoa:1,taro:2,yuzu:3,sesame:4};   /* v8.1.0 Sesame: จบ C1-5 -> เล่นตั้งแต่ C2-1; Rune Invoker prototype ยัง WIP */   /* v8.0.66 เจ้าของ: ฮีโร่ทุกตัวปลดใน Chapter 1 ทีละด่าน — Mint C1-2 · Cocoa C1-3 · Taro C1-4 · Yuzu C1-5 */   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame เดิมวางแผน C3-3; ถูกแทนด้วยเกณฑ์ C1-5 ใน v8.1.0 */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) · v8.0.66 idx = ด่านที่เล่นได้ครั้งแรก (C1-2…C1-5)
 /* v8.1.105 เจ้าของ: จบ C1-2 แล้วเปิด Heroes เห็น Cocoa ก่อนดูฉากช่วยเพื่อน → ฮีโร่ที่มีฉากแนะนำ (HERO_INTROS) โชว์ในรายชื่อหลังเห็นฉาก/ข้อความแนะนำแล้วเท่านั้น */
-function heroRevealed(id){ if(id==='momo'||(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL))return true; const d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.chars||[]).includes(id))return false;
+function heroRevealed(id){ if(id==='momo'||(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL))return true; const d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.chars||[]).includes(id))return false; if(typeof HEROES_ALL_OPEN!=='undefined'&&HEROES_ALL_OPEN)return true;   /* v8.3.39 ไม่ต้องรอฉากช่วย */
   const hi=HERO_INTROS.find(x=>x.id===id); if(!hi)return true; return !!(d[hi.flag]||(d.stageMastery||{})[hi.idx]||(typeof MC_HERO_SCENE!=='undefined'&&(d.mcSeen||{})[MC_HERO_SCENE[id]])||d.character===id); }
 const HERO_INTROS=[
   {idx:1,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
