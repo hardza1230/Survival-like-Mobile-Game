@@ -589,6 +589,8 @@ const ASSET_IMAGES = {
   bg10:'assets/bg10.webp',
   currency_twist_cream:'assets/ui/currency/twist-cream.webp',
   currency_wish_candy:'assets/ui/currency/wish-candy.webp',
+  currency_crystal_glaze:'assets/ui/currency/crystal-glaze.webp',   // v8.3.37 Delve reroll
+  currency_crown_icing:'assets/ui/currency/crown-icing.webp',   // v8.3.37 Delve tier up
   heal:'assets/items/heal_mochi_heart.webp',
   gift:'assets/items/gear_gift.webp',
   prize_sugar:'assets/icons/icon_sugar.webp',

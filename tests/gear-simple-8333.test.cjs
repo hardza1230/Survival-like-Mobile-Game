@@ -26,4 +26,10 @@ assert(g.includes('  gearUpPlan(item,n){')&&g.includes("multi(5,'×5',")&&g.incl
 assert(g.includes("const cat=AFFIX_CATEGORY[{power:'offense',sustain:'defense',play:'play'}[d.row]||d.category];")&&g.includes('fillRoundedRect(16,ry+1,4,hh-4,2)'),'mod rows colored by category');
 assert(g.includes("?!GRADE_NEXT[gearGrade(selected)]:selected.grade==='legend')?'Max rarity'"),'merge button allows beyond Legend');
 assert(g.includes('for(let {a,d} of mods){const live=active.find(x=>x===a||(x.id===a.id&&x.line===a.line)),open=!!live;if(live)a=live;'),'upgraded mods stay active in the list');
+assert(g.includes("divine:40}")&&g.includes("const DELVE_CUR={glaze:")&&g.includes("DELVE_GLAZE_BOSS=2,DELVE_GLAZE_ELITE=.25,DELVE_CROWN_DEPTH=10;"),'v8.3.37 Divine cap 40 and Delve currencies');
+assert(g.includes("const dg=isBoss?DELVE_GLAZE_BOSS:(isElite&&Math.random()<DELVE_GLAZE_ELITE?1:0),dc=isBoss&&(this._amapNode.d||1)>=DELVE_CROWN_DEPTH?1:0;"),'Delve-only drops');
+assert(g.includes("&&!!Save.endgameUnlocked?.()&&!selIt.locked")&&g.includes("gearModReroll(it,l.ln)")&&g.includes("gearModTierUp(it,l.ln)"),'row tap → reroll / tier up after Delve opens');
+{ const vm=require('node:vm');vm.runInContext(source.slice(source.indexOf('function gearModReroll('),source.indexOf('function gearUpCost(')),ctx);
+  const it={uid:'r',baseId:'test',slot:'weapon',grade:'epic',itemLevel:60,affixes:[{id:'f_might',v:5,t:5,line:0}]};ctx.gearFillLines(it);const before=ctx.forgeLines(it)[0];const up=ctx.gearModTierUp(it,0);assert.equal(up.t,before.t-1,'tier up one step');
+  const top={...it,affixes:[{id:'f_might',v:16,t:0,line:0}]};assert.equal(ctx.gearModTierUp(top,0),null,'already T1');const rr=ctx.gearModReroll(it,0);assert(rr&&rr.line===0,'reroll keeps the row');assert.equal(ctx.forgeLines(it).filter(Boolean).length,3); }
 console.log('Gear 8.3.33: rarity caps, no failure, cost curve, rarity mods at drop, +4%/level mods, fill lines, currency conversion, auto-merge, Forge closed passed');

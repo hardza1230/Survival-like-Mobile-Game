@@ -538,11 +538,16 @@ function forgeSetLines(item,lines){item.affixes=lines.map((a,i)=>a?Object.assign
 // v8.0.32 เจ้าของ: รวมของ (หลัก + 2 ชิ้นช่อง/ระดับเดียวกัน → ระดับถัดไป) · ระดับต่อชิ้น = item.grade · ช่อง mod ตามระดับ (เพดาน iLv ยังอยู่)
 const RAR_LINES={start:0,common:1,rare:2,epic:3,legend:3,mythic:4,ancient:5,divine:6},GRADE_NEXT={common:'rare',rare:'epic',epic:'legend',legend:'mythic',mythic:'ancient',ancient:'divine'};
 /* v8.3.33 เจ้าของ 27 พ.ย.: Gear แบบ Archero 2 · Mod ติดมากับของ (ตามระดับ) · อัปเลเวล Sugar + Twist Cream ไม่มีล้ม · เลเวลละ +4% ค่าหลักและ Mod · รวม 3 ชิ้น = ระดับถัดไป + Mod แถวใหม่สุ่มให้ · ปิดหน้า Forge · Star Sugar 1→5 / Recipe Ink 1→3 Twist Cream */
-const GEAR_SIMPLE=true,GEAR_LV_CAP={start:10,common:10,rare:15,epic:20,legend:25,mythic:30,ancient:30,divine:30},GEAR_LV_PCT=.04,GEAR_CUR_TO_CREAM={starsugar:5,recipeink:3};
+const GEAR_SIMPLE=true,GEAR_LV_CAP={start:10,common:10,rare:15,epic:20,legend:25,mythic:30,ancient:30,divine:40},GEAR_LV_PCT=.04,GEAR_CUR_TO_CREAM={starsugar:5,recipeink:3};
 if(GEAR_SIMPLE&&typeof HUB_GROUPS!=='undefined'){ const G=HUB_GROUPS.gLoadout; G.rows=G.rows.filter(r=>r[0]!=='craft'); for(const sc of G.sections||[])sc[2]=sc[2].filter(t=>t[0]!=='craft'); }   /* v8.3.33 Forge ปิด */
 if(GEAR_SIMPLE){ RAR_LINES.legend=4; RAR_LINES.mythic=5; RAR_LINES.ancient=6; RAR_LINES.divine=6; }   /* v8.3.36 เจ้าของ: Legend 4 · Mythic 5 · Ancient/Divine 6 แถว (รวมทุกครั้งได้ Mod ใหม่) */
 function gearUpTotal(lv){let s=0,c=0;for(let L=0;L<Math.max(0,lv|0);L++){const u=gearUpCost(L);s+=u.sugar;c+=u.cream;}return {sugar:s,cream:c};}   /* v8.3.36 ราคารวมถึงเลเวลนี้ (ใช้คืนตอนรวม) */
 function gearImplicit(item){const im=ensureImplicit(item);if(!im||!GEAR_SIMPLE)return im;const m=1+GEAR_LV_PCT*gearEffectiveEnhance(item);return m===1?im:Object.assign({},im,{v:Math.round((im.v||0)*m*10)/10});}   /* v8.3.36 Implicit โตตามเลเวลด้วย */
+/* v8.3.37 เจ้าของ: สกุล Delve 2 ตัว (asset เดิม) · 💎 Crystal Glaze = สุ่ม Mod 1 แถวใหม่ · 👑 Crown Icing = ดัน tier แถวนั้นขึ้น 1 ขั้น (สูงสุด T1)
+   ดรอปเฉพาะ Delve: บอส 2 Glaze · อีลิท 25% 1 Glaze · บอสชั้น 10+ 1 Crown · ใช้ได้หลังเปิด Delve */
+const DELVE_CUR={glaze:{emoji:'💎',asset:'currency_crystal_glaze',name:'Crystal Glaze',desc:'Reroll one mod row (found in Delve)'},crown:{emoji:'👑',asset:'currency_crown_icing',name:'Crown Icing',desc:'Raise one mod row by one tier, up to T1 (deep Delve)'}},DELVE_GLAZE_BOSS=2,DELVE_GLAZE_ELITE=.25,DELVE_CROWN_DEPTH=10;
+function gearModReroll(item,line){const ls=forgeLines(item),a=ls[line];if(!a||!forgeLineOpen(item,line))return null;const keep=ls.slice();keep[line]=null;forgeSetLines(item,keep);let mod=null;try{const pool=forgePool(item,line).filter(m=>m.id!==a.id);mod=pickWeightedMod(pool.length?pool:forgePool(item,line));}catch(e){mod=null;}if(!mod){forgeSetLines(item,ls);return null;}const n=forgeLines(item);n[line]=Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1),{line});forgeSetLines(item,n);return n[line];}
+function gearModTierUp(item,line){const ls=forgeLines(item),a=ls[line],d=a&&affixDef(a.id);if(!a||!d||!d.tiers||!(a.t>0))return null;const t=a.t-1,band=d.tiers[t]||d.tiers[0];ls[line]=Object.assign({},a,{t,v:band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)),line});forgeSetLines(item,ls);return ls[line];}
 function gearUpCost(lv){lv=Math.max(0,lv|0);return {sugar:40*(lv+1),cream:1+Math.floor(lv/3)};}
 function gearFillLines(item){if(!item)return 0;let n=0;for(let i=0;i<FORGE_MAX_LINES;i++){if(!forgeLineOpen(item,i)||forgeLines(item)[i])continue;let mod=null;try{mod=pickWeightedMod(forgePool(item,i));}catch(e){mod=null;}if(!mod)continue;const ls=forgeLines(item);ls[i]=Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),item.itemLevel||1),{line:i});forgeSetLines(item,ls);n++;}return n;}
 const GRADE_ORDER=['start','common','rare','epic','legend','mythic','ancient','divine'],FORGE_MAX_LINES=6;function gradeRank(g){return Math.max(0,GRADE_ORDER.indexOf(g));}   // v8.0.87 เจ้าของ: เหนือ Legend อีก 3 ขั้น (Merge อย่างเดียว) +1 แถวต่อขั้น
@@ -690,6 +695,7 @@ const CURRENCY = [
 const CUR_ALIAS={berryjam:'transmute',honeydrop:'transmute',divine:'transmute',exalt:'transmute',regal:'transmute',annul:'transmute',scour:'transmute',alt:'transmute',chaos:'transmute'};
 function curKey(k){ return CUR_ALIAS[k]||k; }
 function currencyDef(k){ k=curKey(k); return CURRENCY.find(c=>c.key===k); }
+for(const k in DELVE_CUR)if(!CURRENCY.some(c=>c.key===k))CURRENCY.push(Object.assign({key:k},DELVE_CUR[k]));   /* v8.3.37 */
 // v4.30: flame-sand แบบ Torchlight — reroll ค่าของ mod ที่เลือก ใช้ได้ทุก rarity แต่ "ผลาญเยอะ" (เผา 3 ต่อครั้ง)
 const FLAME_REROLL_COST = 1;
 // v7.8.84 ราคา Glaze ต่อการอัป 1 ขั้น: ขั้นยิ่งดียิ่งแพง (T10→9 = 1 … T1→0 = 10)

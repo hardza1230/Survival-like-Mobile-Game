@@ -5,7 +5,7 @@ const R=s=>vm.runInContext(s,ctx);
 for(const k of ['FP_MAX','FP_ADD','FP_SWAP','FP_REMOVE','FP_LUCKY','gearFP(','fpStarCost','forgeAct('])assert(!source.includes(k),k+' removed');
 // One currency: Glaze retired from the list, drops, prices and boosts; old keys alias to Twist Cream
 // v8.1.84 owner (League phase 5 · Reforge): row currencies for upgrades + Recipe Ink; Twist Cream still adds/removes on every row
-assert.equal(R('JSON.stringify(CURRENCY.map(c=>c.key))'),'["transmute","starsugar","recipeink"]');assert.equal(R("curKey('berryjam')+curKey('honeydrop')"),'transmutetransmute');   /* v8.2.52 ECRS */assert.equal(R("curKey('divine')"),'transmute');
+assert.equal(R('JSON.stringify(CURRENCY.map(c=>c.key))'),'["transmute","starsugar","recipeink","glaze","crown"]');assert.equal(R("curKey('berryjam')+curKey('honeydrop')"),'transmutetransmute');   /* v8.2.52 ECRS */assert.equal(R("curKey('divine')"),'transmute');
 assert.equal(R('JSON.stringify(CURRENCY_DROP_POOLS.common)'),JSON.stringify({transmute:100}),'common drops stay Twist Cream');assert.ok(R('CURRENCY_DROP_POOLS.legend.starsugar>0&&!CURRENCY_DROP_POOLS.rare.starsugar'),'harder = rarer currencies');
 assert.equal(R("'divine' in CURRENCY_BUY"),false);for(let i=0;i<20;i++){assert.equal(R(`rollWeightedCurrency('common')`),'transmute');assert.equal(R(`forgeCurrency('common',{133:100})`),'transmute');}
 assert.deepEqual([0,1,2,3,4,5].map(i=>R('forgeRowCur')(i)),['transmute','transmute','transmute','starsugar','starsugar','starsugar'],'upgrade currency per row (8.2.52)');
