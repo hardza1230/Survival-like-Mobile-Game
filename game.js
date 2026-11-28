@@ -51,7 +51,7 @@ const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้าง
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
 const VO_BOSS_VOL=1;   // v8.2.50 เสียงพากย์บอสในการต่อสู้ (เสียงพากย์ทั่วไป .65)
-const GAME_VERSION = '8.3.34';
+const GAME_VERSION = '8.3.35';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -230,6 +230,7 @@ function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Pat
 function storyXpNext(level){const L=Math.max(1,level);return Math.round((12+6*(L-1))*(1+XP_LATE_GROW*Math.max(0,L-10)));}   // v8.3.13 เจ้าของ: Lv 10+ ขึ้นช้าลง (+2%/เลเวล → Lv 20 ≈ +20%)
 const XP_LATE_GROW=.02;
 const CHANGELOG = [
+  {v:'8.3.35',date:'2026-11-28',title:'Power tips show the new gear upgrade cost',items:['Power tips suggest gear upgrades with their Sugar and Twist Cream cost']},
   {v:'8.3.34',date:'2026-11-27',title:'Mochi Garden replaces Expedition',items:['🌸 Mochi Garden: send 1–3 heroes on 1, 4 or 8 hour garden trips — they keep collecting while you are away','Trips bring back Sugar, Twist Cream, gear boxes and postcards','Every Story stage you clear rescues a mochi helper; place them in the garden for bonuses','Upgrade each zone’s camp with Sugar','Expedition Crumbs became Sugar']},
   {v:'8.3.33',date:'2026-11-27',title:'Archero-style gear: mods included, Sugar upgrades, merge adds mods; Delve aggro by depth',items:['Gear comes with its mods — no more crafting','⬆ Upgrade gear with Sugar and Twist Cream; it never fails and raises base stats and every mod by 4% per level','Merging 3 items of the same slot and rarity adds a new mod; ⚡ Auto merges them for you','Star Sugar and Recipe Ink become Twist Cream','Delve bosses act faster the deeper you go']},
   {v:'8.3.32',date:'2026-11-27',title:'Story bosses keep their move gaps; smaller Mint Glacier Bloom',items:['Story bosses and minibosses pause between moves as designed instead of chaining them','Mint’s Glacier Bloom ring is 30% smaller']},
@@ -12570,8 +12571,8 @@ class Game extends Phaser.Scene {
         if(best)out.push({k:'tal',icon:'🌟',title:'Talent: '+best.n.name,sub:tp+' point'+(tp>1?'s':'')+' free · Heroes → Talents',gain:best.g,go:'talents'});
         else if(heroTalentSpendable(cid))wait.push({k:'tal',icon:'🌟',label:tp+' Talent pt'+(tp>1?'s':''),go:'talents'}); } }catch(e){}
     // ตีบวกของที่ใส่อยู่
-    if(!d.enhDone)try{ let best=null,bg=0; for(const sd of GEAR_SLOTS){ const it=Save.equippedGearItem(sd.slot); if(!it||it.grade==='start')continue; const lv=gearEffectiveEnhance(it); if(lv>=gearEnhanceCap(it))continue; const cost=gearEnhShardCost(lv); if(thr<cost)continue; const was=it.enhanceLv; it.enhanceLv=lv+1; let g=0; try{ g=heroPower(cid,null)-base; }finally{ it.enhanceLv=was; } if(g>bg){bg=g;best={it,lv,cost};} }
-      if(best){ const b=GEAR_ALL.find(x=>x.id===best.it.baseId)||{name:'gear'}; out.push({k:'enh',icon:'⚒',title:'Enhance '+b.name+' to +'+(best.lv+1),sub:'🧶 '+best.cost+' Thread'+(best.lv>=3?' · may drop a level on a miss':''),gain:bg,go:'gear',uid:best.it.uid}); } }catch(e){}
+    if(!d.enhDone)try{ let best=null,bg=0; for(const sd of GEAR_SLOTS){ const it=Save.equippedGearItem(sd.slot); if(!it||it.grade==='start')continue; const lv=gearEffectiveEnhance(it); if(lv>=gearEnhanceCap(it))continue; const GS=typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE,uc=GS?gearUpCost(lv):null,cost=GS?uc.sugar:gearEnhShardCost(lv); if(GS?((d.sugar||0)<uc.sugar||(Save.currency?.('transmute')||0)<uc.cream):thr<cost)continue; const was=it.enhanceLv; it.enhanceLv=lv+1; let g=0; try{ g=heroPower(cid,null)-base; }finally{ it.enhanceLv=was; } if(g>bg){bg=g;best={it,lv,cost};} }
+      if(best){ const b=GEAR_ALL.find(x=>x.id===best.it.baseId)||{name:'gear'}; const GS=typeof GEAR_SIMPLE!=='undefined'&&GEAR_SIMPLE,uc=GS?gearUpCost(best.lv):null; out.push({k:'enh',icon:'⬆',title:(GS?'Upgrade ':'Enhance ')+b.name+' to +'+(best.lv+1),sub:GS?'🍬 '+uc.sugar+' · 🟢 '+uc.cream+' · never fails':'🧶 '+best.cost+' Thread'+(best.lv>=3?' · may drop a level on a miss':''),gain:bg,go:'gear',uid:best.it.uid}); } }catch(e){}
     try{ if(Save.rankUnpicked&&Save.rankUnpicked()>0)wait.push({k:'perk',icon:'🎁',label:'Rank reward',go:'perks'}); }catch(e){}
     try{ const nb=(Save.gearInboxItems?.()||[]).length; if(nb)wait.push({k:'mail',icon:'📦',label:nb+' in Mail',go:'gearInbox'}); }catch(e){}
     out.sort((x,y)=>y.gain-x.gain); const top=out.slice(0,3); top.wait=wait; return top; }
