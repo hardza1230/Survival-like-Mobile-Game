@@ -41,7 +41,7 @@ if (existsSync(join(root, 'download.html'))) {
 
 // v8.3.21 เจ้าของ: สรุปภารกิจเป็นหน้าเว็บแยก → /missions-review.html (ชื่อ *-review = ไม่ใส่ในแอป · android.yml ลบออก)
 // v8.3.30 เจ้าของ: หน้าสรุปตัวละคร / ไอเทม / ร่าง Mochi Garden (*-review = ไม่ใส่ในแอป)
-for (const [from, to] of [['docs/HEROES_OVERVIEW.html', 'heroes-review.html'], ['docs/ITEMS_OVERVIEW.html', 'items-review.html'], ['docs/GARDEN_IDEAS.html', 'garden-review.html'], ['docs/PLANS_GEAR_GARDEN.html', 'plans-review.html'], ['docs/GEAR_GUIDE.html', 'gear-review.html'], ['docs/HEROES_AUDIT.html', 'audit-review.html'], ['docs/STORY_AUDIT.html', 'story-review.html']]) {
+for (const [from, to] of [['docs/HEROES_OVERVIEW.html', 'heroes-review.html'], ['docs/ITEMS_OVERVIEW.html', 'items-review.html'], ['docs/GARDEN_IDEAS.html', 'garden-review.html'], ['docs/PLANS_GEAR_GARDEN.html', 'plans-review.html'], ['docs/GEAR_GUIDE.html', 'gear-review.html'], ['docs/HEROES_AUDIT.html', 'audit-review.html'], ['docs/STORY_AUDIT.html', 'story-review.html'], ['docs/IDEAS_FROM_GAMES.html', 'ideas-review.html']]) {
   if (existsSync(join(root, from))) { copyFileSync(join(root, from), join(www, to)); console.log('copied ' + to); }
 }
 if (existsSync(join(root, 'docs/MISSIONS_OVERVIEW.html'))) {

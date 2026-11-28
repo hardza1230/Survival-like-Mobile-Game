@@ -18,6 +18,7 @@ on:
       - "docs/GEAR_GUIDE.html"
       - "docs/HEROES_AUDIT.html"
       - "docs/STORY_AUDIT.html"
+      - "docs/IDEAS_FROM_GAMES.html"
       - "download.html"
       - "manifest.webmanifest"
       - "phaser.min.js"
